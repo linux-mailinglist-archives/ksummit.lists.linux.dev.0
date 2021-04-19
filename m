@@ -1,129 +1,93 @@
-Return-Path: <ksummit+bounces-2-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-3-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC08364727
-	for <lists@lfdr.de>; Mon, 19 Apr 2021 17:29:06 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5445F364814
+	for <lists@lfdr.de>; Mon, 19 Apr 2021 18:18:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 89E7C3E0F71
-	for <lists@lfdr.de>; Mon, 19 Apr 2021 15:29:04 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id 05EAF1C0F1D
+	for <lists@lfdr.de>; Mon, 19 Apr 2021 16:18:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342502F9F;
-	Mon, 19 Apr 2021 15:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465612F9F;
+	Mon, 19 Apr 2021 16:18:20 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78F72F9A
-	for <ksummit@lists.linux.dev>; Mon, 19 Apr 2021 15:28:54 +0000 (UTC)
-Received: from cwcc.thunk.org (pool-72-74-133-215.bstnma.fios.verizon.net [72.74.133.215])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 13JFSplv032708
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Apr 2021 11:28:51 -0400
-Received: by cwcc.thunk.org (Postfix, from userid 15806)
-	id 3695315C3B0D; Mon, 19 Apr 2021 11:28:51 -0400 (EDT)
-Date: Mon, 19 Apr 2021 11:28:51 -0400
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-mm@kvack.org, netdev@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-api@vger.kernel.org
-Subject: Maintainers / Kernel Summit 2021 planning kick-off
-Message-ID: <YH2hs6EsPTpDAqXc@mit.edu>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0682A2F9A
+	for <ksummit@lists.linux.dev>; Mon, 19 Apr 2021 16:18:18 +0000 (UTC)
+Received: by mail-qk1-f177.google.com with SMTP id o5so36365490qkb.0
+        for <ksummit@lists.linux.dev>; Mon, 19 Apr 2021 09:18:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=date:from:to:subject:message-id:mime-version:content-disposition;
+        bh=f4ycai9Fftfkq+uRJva5Jm4n53y6PnQD3cfEf0YyPes=;
+        b=PvVyOKvzJ3TyoV5FT9Jjz1kio9MfwjyO+ETQfFMZSjWAfFgS73TCeaPMGYKuoVfHIs
+         fOzz8dPrqb8FeYy0Ghr4Of1d+m99Ploye0uLi9eX9UhyQ30oFfjMHCvp8d3mtIZ/G6uX
+         LXASjgPSBsupAtX9JOudchQcavsjjtVpxO+b0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:subject:message-id:mime-version
+         :content-disposition;
+        bh=f4ycai9Fftfkq+uRJva5Jm4n53y6PnQD3cfEf0YyPes=;
+        b=Y4X94p0xQLui92B15EPq/K56Q9SxGnqgucgkdXtMHYp6IufmogYp38Oe5Alls+XXCX
+         sSBDmsGo5dchOQm1/f/srpJmcsK0VFox2LKSlAN5GALqcHMLvlogugLPRtOii6+eu6Fq
+         SGOiid9faioSkZImIWmsJ2/rJsWfzG7jqU3G3C7Y9/UWMkAvdxwO8Ngw6xnKFvy1nn2H
+         tQwG1Mzfjz6NVl+zw49miTOdtcgIyh0rq5L/yLcEebulo+GshNwR4JU5jMC3en+68ERL
+         ztIGUx8+R9W3m+X7SWnfQCxSzmuI/Th934En4KH7WzNxc/gj7L3KtxrJ62tQgDnXEbWK
+         H3MA==
+X-Gm-Message-State: AOAM531d79/ehEMvc+fjZzQ2kGy7xTv2GctF7+L/lxAlgA2b6OuhfLSn
+	Vbejk/+wzjard9RyjXo+GPVEBYB+iwNGgKikr/o=
+X-Google-Smtp-Source: ABdhPJy66MC5vD3Q4JmweMv9EKMrk7a54f7hDyQQ33E872BZXkE4vk8EnFgrWXPvwCTiCxQavNI4JA==
+X-Received: by 2002:a05:620a:248f:: with SMTP id i15mr5637433qkn.26.1618849097525;
+        Mon, 19 Apr 2021 09:18:17 -0700 (PDT)
+Received: from nitro.local ([89.36.78.230])
+        by smtp.gmail.com with ESMTPSA id l12sm9468834qth.72.2021.04.19.09.18.17
+        for <ksummit@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Apr 2021 09:18:17 -0700 (PDT)
+Date: Mon, 19 Apr 2021 12:18:15 -0400
+From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+To: ksummit@lists.linux.dev
+Subject: [TECH TOPIC] Doing more with lore and b4
+Message-ID: <20210419161815.ng5hp364x6mzucpv@nitro.local>
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 
-[ Feel free to forward this to other Linux kernel mailing lists as
-  appropriate -- Ted ]
+While lore.kernel.org is a fairly new service, it has quickly become an
+indispensable workflow part for many maintainers. Tools like b4 allow to
+automate many aspects of maintainer duties:
 
-This year, the Maintainers and Kernel Summit is currently planned to
-be held in Dublin, Ireland, September 27 -- 29th.  Of course, this is
-subject to change depending on how much progress the world makes
-towards vaccinating the population against the COVID-19 virus, and
-whether employers are approving conference travel.  At this point,
-there's a fairly good chance that we will need to move to a virtual
-conference format, either for one or both of the summits.
+- retrieving entire patch series
+- tallying up and applying review trailers from thread follow-ups
+- diffing re-rolled series against previous versions
+- sending templated thank-you notes for applied series and merged pull
+  requests
+- cryptographically verifying patches for attestation purposes (using DKIM,
+  PGP, and more)
 
-As in previous years, the Maintainers Summit is invite-only, where the
-primary focus will be process issues around Linux Kernel Development.
-It will be limited to 30 invitees and a handful of sponsored
-attendees.
+This talk will review some of the above functionality that may be already
+familiar to maintainers, but will also go through other features of
+public-inbox, and peek into what is coming in newer releases, such as:
 
-The Kernel Summit is organized as a track which is run in parallel
-with the other tracks at the Linux Plumbers Conference (LPC), and is
-open to all registered attendees of LPC.
+- how to mirror lore.kernel.org locally (in part or in full)
+- how to integrate public-inbox sources into your automated tools
+- how to use anonymous imap service for reading mail without subscribing
+- how to use local-email-interface (lei) command to create saved searches and
+  get pre-filtered threads from multiple local and remote sources into your
+  inbox
 
-Linus has generated a core list of people to be invited to the
-Maintainers Summit, and the program committee will be using that list
-a starting point of people to be considered.  People who suggest
-topics that should be discussed at the Maintainers Summit will also be
-added to the list for consideration.  To make topic suggestions for
-the Maintainers Summit, please send e-mail to the
-ksummit@lists.linux.dev with a subject prefix of [MAINTAINERS SUMMIT].
+Working with patches sent via email does not need to be frustrating or
+insecure. We are aiming to provide a set of tools to further streamline this
+process -- your feedback and suggestions are extremely useful and help
+prioritize our efforts.
 
-(Note: The older ksummit-discuss@lists.linuxfoundation.org list has
-been migrated to lists.linux.dev, with the subscriber list and
-archives preserved.)
-
-The other job of the program committee will be to organize the program
-for the Kernel Summit.  The goal of the Kernel Summit track will be to
-provide a forum to discuss specific technical issues that would be
-easier to resolve in person than over e-mail.  The program committee
-will also consider "information sharing" topics if they are clearly of
-interest to the wider development community (i.e., advanced training
-in topics that would be useful to kernel developers).
-
-To suggest a topic for the Kernel Summit, please do two things.
-First, please tag your e-mail with [TECH TOPIC].  As before, please
-use a separate e-mail for each topic, and send the topic suggestions
-to the ksummit-discuss list.
-
-Secondly, please create a topic at the Linux Plumbers Conference
-proposal submission site and target it to the Kernel Summit track.
-For your convenience you can use:
-
-	https://bit.ly/lpc21-summit
-
-Please do both steps.  I'll try to notice if someone forgets one or
-the other, but your chances of making sure your proposal gets the
-necessary attention and consideration are maximized by submitting both
-to the mailing list and the web site.
-
-People who submit topic suggestions before June 12th and which are
-accepted, will be given free admission to the Linux Plumbers
-Conference.
-
-We will be reserving roughly half of the Kernel Summit slots for
-last-minute discussions that will be scheduled during the week of
-Plumbers, in an "unconference style".  This allows last-minute ideas
-that come up to be given given slots for discussion.
-
-If you were not subscribed on to the kernel@lists.linux-dev mailing
-list from last year (or if you had removed yourself from the
-ksummit-discuss@lists.linux-foundation.org mailing list after the
-previous year's kernel and maintainers' summit summit), you can
-subscribe sending an e-mail to:
-
-	ksummit+subscribe@lists.linux.dev
-
-The mailing list archive is available at:
-
-	https://lore.kernel.org/ksummit
-
-The program committee this year is composed of the following people:
-
-Jens Axboe
-Arnd Bergmann
-Jon Corbet
-Greg Kroah-Hartman
-Ted Ts'o
+-K
 
