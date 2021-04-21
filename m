@@ -1,82 +1,111 @@
-Return-Path: <ksummit+bounces-5-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-6-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
-	by mail.lfdr.de (Postfix) with ESMTPS id E67863672E0
-	for <lists@lfdr.de>; Wed, 21 Apr 2021 20:52:04 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7934B3672ED
+	for <lists@lfdr.de>; Wed, 21 Apr 2021 20:55:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id E7ABB1C0F62
-	for <lists@lfdr.de>; Wed, 21 Apr 2021 18:52:03 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 1CC763E1440
+	for <lists@lfdr.de>; Wed, 21 Apr 2021 18:53:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415E02FA0;
-	Wed, 21 Apr 2021 18:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 705722FA0;
+	Wed, 21 Apr 2021 18:53:35 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC342F83
-	for <ksummit@lists.linux.dev>; Wed, 21 Apr 2021 18:51:53 +0000 (UTC)
-Received: by mail-ed1-f48.google.com with SMTP id i3so24867198edt.1
-        for <ksummit@lists.linux.dev>; Wed, 21 Apr 2021 11:51:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=i1d9i3H9R8UyWuiuqYfXg6bItjby/vBRfKZq4JzDYsE=;
-        b=HqqUeMWXffI8hM8ulrvR5HHhVnaheSlGnCYqQiWpaxGsU7AhtRu8KoawxpGIc1xlBb
-         rS9Js/Q/Ft8MyDHLUkljrAMKO3WIEMyMVOZswWmhkmgokf8P8hHXWYX2En5sCrcX9Y07
-         wUSYQGqR2NBcyaBwHk54AnR6xb7R117JKEr483ftlZEzkx4kkZkwW1p9HqRLB+rB/GO2
-         +kGYL0vv6R11zSzrAnLvCsm4OsKxWrpvCs/0zTyxtmvHkSHbPvz7HANlTVwM5eKcXPsl
-         8EocjtwvTvQDY/EVZgd8FLC/bpvIScb7WRvUNFDgcOlIz3tA8t8xtcyXtZ93XUjMbqdL
-         /3tQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=i1d9i3H9R8UyWuiuqYfXg6bItjby/vBRfKZq4JzDYsE=;
-        b=qmmfYvsJlQ5fx542wU/gLmEY/WyCOPoM1CzVLekZ7i0EAN/iUCkhmljUTe6tSD6acq
-         hlI7JnZUV2YwBtQPPDlTB7qx3bovKRlBCXz4hOFhQMb3PNNBV3FFhH/ll0rTtOQ15XIA
-         bW/jKfaj/SOVFC6fcaelHclTT6Z+MRf7QpF2Yuhf7SOmMkS42994s12YPNkDkkhoTf10
-         5Hq3LJSl5xz1QoH6BMbg0sWKUxHDlWCeoLrZ6Wak6xVdbkySsLLlGNTBrmB2Z8hmqXUK
-         KWLzXHxnBGZb90QYHyf6Mnvz4LbVKq8m0sfSSw+U7K0EOxoi48cfQpaPqQAwJ7TeNusV
-         R0LQ==
-X-Gm-Message-State: AOAM532ig7mBJcjIvk0jCcyrkH5WmtmxeP9qnR4drSEHcPbDe6ZCC95R
-	oPzLFGn3vOxh00idESQhDA==
-X-Google-Smtp-Source: ABdhPJzGL+EVOKUcZSdTY3n6lh4rO4bsE0DPERiNQqehtaurx8L8Q3E0cvaFUFodGT5Q9n5IlOO24g==
-X-Received: by 2002:a05:6402:5a:: with SMTP id f26mr40533617edu.285.1619031112588;
-        Wed, 21 Apr 2021 11:51:52 -0700 (PDT)
-Received: from localhost.localdomain ([46.53.249.197])
-        by smtp.gmail.com with ESMTPSA id n2sm210212edi.32.2021.04.21.11.51.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Apr 2021 11:51:52 -0700 (PDT)
-Date: Wed, 21 Apr 2021 21:51:50 +0300
-From: Alexey Dobriyan <adobriyan@gmail.com>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: ksummit@lists.linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7652F83
+	for <ksummit@lists.linux.dev>; Wed, 21 Apr 2021 18:53:34 +0000 (UTC)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 13LIYZku166702;
+	Wed, 21 Apr 2021 14:53:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=N+HZx2mfjV7JtclKC0uRek2FqYsGF5enJAZTBXlc4wA=;
+ b=H6uzE8aQMY7RFnXwgiBg66DwwEfQZq+IQC8IWMLu24LfIVk1o7/RJPAXwdoj+R6dTQJr
+ gIFSnqgGIwzZMKw2nRmcV1/ksdppmYHk4FBH7/Qqith7IoaM2L97DArmUWZMLKnEV/EJ
+ Rh6hlPkI0j7zcTtcn+rhXnqY+Uu7MrCkKyyVxYT84xoF6Ehw0or3YSoF0Ov2bC9crX2N
+ XqUjA56cksPrWnqGVadApld9GoK2ZfKalxSYvTf4Sqkvwy0I5bX8YRMdPnBFRlJwOZSe
+ c5s9V0bWYTP8IwWgqRmOcTe1XrVig604l+9K+wpyMpEw1m/dbVBq52JdDWxV/IqFVftW Hg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 382pmm6n3g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 21 Apr 2021 14:53:32 -0400
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13LIaRlL172803;
+	Wed, 21 Apr 2021 14:53:32 -0400
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 382pmm6n36-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 21 Apr 2021 14:53:32 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13LIiMAX005455;
+	Wed, 21 Apr 2021 18:53:30 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+	by ppma06ams.nl.ibm.com with ESMTP id 37yt2rtdhs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 21 Apr 2021 18:53:30 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 13LIrSfW66060720
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 21 Apr 2021 18:53:28 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3E74A52054;
+	Wed, 21 Apr 2021 18:53:28 +0000 (GMT)
+Received: from oc7455500831.ibm.com (unknown [9.171.22.74])
+	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 060B952050;
+	Wed, 21 Apr 2021 18:53:27 +0000 (GMT)
 Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
  "trivial" patches
-Message-ID: <YIB0RvzWYhURa1ui@localhost.localdomain>
+To: Alexey Dobriyan <adobriyan@gmail.com>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: ksummit@lists.linux.dev
 References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
+ <YIB0RvzWYhURa1ui@localhost.localdomain>
+From: Christian Borntraeger <borntraeger@de.ibm.com>
+Message-ID: <6ff1fb66-6f1e-340a-b6b2-c717c1fe5d66@de.ibm.com>
+Date: Wed, 21 Apr 2021 20:53:27 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.1
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
+In-Reply-To: <YIB0RvzWYhURa1ui@localhost.localdomain>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: f3dz_P9qYISuJhQhtWgUmVSwMUno1R_l
+X-Proofpoint-ORIG-GUID: BxHX8ftul4zI-fyrwwVf493l8ttpfCMk
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
+ definitions=2021-04-21_05:2021-04-21,2021-04-21 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ lowpriorityscore=0 adultscore=0 clxscore=1015 priorityscore=1501
+ mlxlogscore=999 mlxscore=0 phishscore=0 impostorscore=0 spamscore=0
+ suspectscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104210128
 
-On Wed, Apr 21, 2021 at 11:35:36AM -0700, James Bottomley wrote:
-> Our policy in SCSI for a long time has been no trivial patches accepted
-> to maintained drivers, and I think that would be a good start if
-> adopted kernel wide, but I think the next policy should be no trivial
-> bug fix without a pointer to the actual bug report or report from a
-> trusted static checker.  This would likely mean we have to create a
-> list of trusted static checkers ... obviously 0day and coverity but
-> what else?
 
-How does the list get expanded if new static checker is not on
-the list and its patches won't be applied?
+
+On 21.04.21 20:51, Alexey Dobriyan wrote:
+> On Wed, Apr 21, 2021 at 11:35:36AM -0700, James Bottomley wrote:
+>> Our policy in SCSI for a long time has been no trivial patches accepted
+>> to maintained drivers, and I think that would be a good start if
+>> adopted kernel wide, but I think the next policy should be no trivial
+>> bug fix without a pointer to the actual bug report or report from a
+>> trusted static checker.  This would likely mean we have to create a
+>> list of trusted static checkers ... obviously 0day and coverity but
+>> what else?
+> 
+> How does the list get expanded if new static checker is not on
+> the list and its patches won't be applied?
+
+I think the answer is common sense. Take James proposal as a guideline
+but use your common sense as a maintainer to apply patches nevertheless.
+This would also address my concern.
 
