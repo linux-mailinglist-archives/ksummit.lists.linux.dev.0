@@ -1,100 +1,90 @@
-Return-Path: <ksummit+bounces-9-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-10-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 323A0367342
-	for <lists@lfdr.de>; Wed, 21 Apr 2021 21:16:21 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 517A536735F
+	for <lists@lfdr.de>; Wed, 21 Apr 2021 21:22:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 505753E183D
-	for <lists@lfdr.de>; Wed, 21 Apr 2021 19:14:40 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id A89FC1C1502
+	for <lists@lfdr.de>; Wed, 21 Apr 2021 19:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEFA12FA0;
-	Wed, 21 Apr 2021 19:14:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 161D82FA0;
+	Wed, 21 Apr 2021 19:22:13 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2B052F83
-	for <ksummit@lists.linux.dev>; Wed, 21 Apr 2021 19:14:30 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 53DC6128014C
-	for <ksummit@lists.linux.dev>; Wed, 21 Apr 2021 12:14:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1619032470;
-	bh=wdVrzSjTf9KJOd+GHHdcZb7lKEEl45895MFlxtf4GqY=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=o6bAvyBQvT5Dlk8bAmEL29JwqGKheVPFjXJaodHAwNvL8oU9GwpDSdGalACw70d8A
-	 OmpZGdFuGh2FU0pkicrzROgEB1xjOOqrTfMujXOGpur/nv9bA0zPGd+ihgqZp5P2+f
-	 V4z58r3iGPsoi+U0HNk4mSpq3tjSd3EZQZvoxyCk=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-	by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id VcBRAFkAZh_f for <ksummit@lists.linux.dev>;
-	Wed, 21 Apr 2021 12:14:30 -0700 (PDT)
-Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:600:8280:66d1::527])
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77712F83
+	for <ksummit@lists.linux.dev>; Wed, 21 Apr 2021 19:22:11 +0000 (UTC)
+Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 2354C1280151
-	for <ksummit@lists.linux.dev>; Wed, 21 Apr 2021 12:14:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1619032470;
-	bh=wdVrzSjTf9KJOd+GHHdcZb7lKEEl45895MFlxtf4GqY=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=o6bAvyBQvT5Dlk8bAmEL29JwqGKheVPFjXJaodHAwNvL8oU9GwpDSdGalACw70d8A
-	 OmpZGdFuGh2FU0pkicrzROgEB1xjOOqrTfMujXOGpur/nv9bA0zPGd+ihgqZp5P2+f
-	 V4z58r3iGPsoi+U0HNk4mSpq3tjSd3EZQZvoxyCk=
-Message-ID: <868f996b6dd20226c35e200a4b9611f2b6e8b559.camel@HansenPartnership.com>
+	by mail.kernel.org (Postfix) with ESMTPSA id F0AFA61454;
+	Wed, 21 Apr 2021 19:22:10 +0000 (UTC)
+Date: Wed, 21 Apr 2021 15:22:09 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: ksummit@lists.linux.dev
 Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
  "trivial" patches
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: ksummit@lists.linux.dev
-Date: Wed, 21 Apr 2021 12:14:29 -0700
+Message-ID: <20210421152209.68075314@gandalf.local.home>
 In-Reply-To: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
-References: 
-	<afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 
+References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 2021-04-21 at 11:35 -0700, James Bottomley wrote:
+On Wed, 21 Apr 2021 11:35:36 -0700
+James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
+
 > I've long been on record as not really being a fan of trivial patches
-> because they can cause merge issues with current patches and
-> introduce bugs, particularly in older drivers, that don't get
-> detected for a long while.  However, the recent events with the
-> University of Minnesota:
+> because they can cause merge issues with current patches and introduce
+> bugs, particularly in older drivers, that don't get detected for a long
+> while.  However, the recent events with the University of Minnesota:
 > 
 > https://lore.kernel.org/lkml/20210421130105.1226686-1-gregkh@linuxfoundation.org/
 > 
 > Have elevated the risk factor around trivial patches claiming to fix
-> bugs to the point where it looks like there's no such thing as a
-> truly trivial patch and they all need reviewing.
+> bugs to the point where it looks like there's no such thing as a truly
+> trivial patch and they all need reviewing.
 > 
-> Our policy in SCSI for a long time has been no trivial patches
-> accepted to maintained drivers,
-
-Sorry, Viro caught this: that should be "no trivial patches accepted to
-*un*maintained driver ..."
-
-James
-
-
->  and I think that would be a good start if
+> Our policy in SCSI for a long time has been no trivial patches accepted
+> to maintained drivers, and I think that would be a good start if
 > adopted kernel wide, but I think the next policy should be no trivial
 > bug fix without a pointer to the actual bug report or report from a
 > trusted static checker.  This would likely mean we have to create a
 > list of trusted static checkers ... obviously 0day and coverity but
 > what else?
-> 
-> James
-> 
-> 
-> 
 
+I take a lot of trivial fixes. I found two that I accepted that were from
+umn.edu, and both of them (after a second review) were legitimate fixes.
+One was in Greg's revert patch series, which I asked him to not revert, and
+the other was me looking at all patches I've received with a Cc to umn.edu
+emails, and was from a gmail account (which I'm assuming was someone that
+was part of this group).
+
+I have no problem with taking a trivial patch if they are really fixing a
+bug. I think what needs to be done here is look at the patches that got in
+that were buggy, and see why they got in.
+
+Perhaps the answer is to scrutinize trivial patches more. To me, the only
+"trivial" patch is a comment fix, or update to documentation. And even
+then, I spend time reviewing it.
+
+If you don't have time to review a patch, then by all means, don't accept
+it. Perhaps the answer is simply have a higher bar on what you do accept.
+
+There are a few people that I will accept patches from with out review. But
+anyone else, I scrutinize the code before taking it in.
+
+
+-- Steve
 
 
