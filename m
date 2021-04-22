@@ -1,122 +1,90 @@
-Return-Path: <ksummit+bounces-55-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-56-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDE4F367FEF
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 14:01:55 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88FFD36800F
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 14:08:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 819A83E5116
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 12:01:54 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id AD9603E5293
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 12:08:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CBD12FA2;
-	Thu, 22 Apr 2021 12:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 352592FA1;
+	Thu, 22 Apr 2021 12:08:05 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2675E2F83
-	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 12:01:45 +0000 (UTC)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id ED398613FA;
-	Thu, 22 Apr 2021 12:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5160F2F81
+	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 12:08:04 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 69F8961164;
+	Thu, 22 Apr 2021 12:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1619092903;
-	bh=+wU3He4npS/C+Zt/rZimjCmPtjMvu9xJe0SD/+f1TmM=;
+	s=k20201202; t=1619093283;
+	bh=NaZMGisERVpMnLDJzMXvOMmdE5G5DEGTBCbuFyuI1bA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TYXKRTADoKieYvplMfDWGiaGAAjQPJ082CrcLO6tmBe9HazVX28uKZF0jQhjaa7f6
-	 /BdpLNhlfPSDRotWfvbOlQzKSEjin6NDIZPIz0A/ZwmBg1fWvn4EsgLecddvAeAaGv
-	 q7FOjumvQLcG5GwQz+T5hUaUCD+F2BYowt7Zivz1/YnGJgrpzJQtOFqWsq5WDOauW0
-	 BKO3ZRPrk5JI5a2eRUjrhpYlutb5M2WFKBMkRSC+RM+A9jvumfYaZm+0ZOtDAHG0IB
-	 x8/GeDdfXIhFJZphsFTO+sOdn+XnxzmXLSbM57KGQy8fBMG5uASo4Gq3r21Nl79XLt
-	 05nM7yvu8x2Hw==
-Date: Thu, 22 Apr 2021 15:01:39 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-	James Morris <jmorris@namei.org>,
-	Julia Lawall <julia.lawall@inria.fr>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Roland Dreier <roland@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	b=VVjCCbaFVxlgwHZZF4VhZ0QlY/WvpC3mg1YzhOUVUkjeNryQVmsJef1/JsMq+x3eT
+	 1zleAu6CswVVUQQr7kSRHvGowDgvxeBuXoxAIXOA34NERKNbNhUubdJ90MCeuaqPhS
+	 Dwx1Z9VmhidtDAfWUwt8u7hE7c/Tvpcqf/IEw5Cb2LVMa36R/9kLdfjnueAPPEJBAd
+	 ymG4WaBKosKKZuget9/hjpcDthL2jtVYpRDPNkdZ2gQ8d5QtABeaDrYUpsx8lacSwJ
+	 Tse3xKXRkAAcslSRCWRaeN/PDa/Je0ZHEFyXnyKk4mEMpwC1FBMMixZgsrfdsoXPxv
+	 NM5ZE8iOdGOXA==
+Date: Thu, 22 Apr 2021 13:07:35 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Joe Perches <joe@perches.com>
+Cc: "Martin K. Petersen" <martin.petersen@oracle.com>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
 	ksummit@lists.linux.dev
 Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
  "trivial" patches
-Message-ID: <YIFlo6TSE1n6tD6K@unreal>
+Message-ID: <20210422120735.GB4572@sirena.org.uk>
 References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
- <20210421152209.68075314@gandalf.local.home>
- <CAG4TOxNOHRexUoKTo7ndViNtss0_BDeh4YCVHexvdQhQWF+vaw@mail.gmail.com>
- <alpine.DEB.2.22.394.2104212150230.20674@hadrien>
- <20210421132824.13a70f6c@hermes.local>
- <alpine.DEB.2.22.394.2104212233450.20674@hadrien>
- <d95ee281-4dc0-c5c1-ec87-81d83f44979@namei.org>
- <CAMuHMdU=c2bY1_sq+rSh1fON5QhNx8xWqMQLT+cD0BpqG0RtCg@mail.gmail.com>
- <20210422115511.60d1f735@coco.lan>
+ <yq1y2dbtbrm.fsf@ca-mkp.ca.oracle.com>
+ <b8827b4267648f35c31628e73be42efee52f5cf5.camel@perches.com>
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="+pHx0qQiF2pBVqBT"
+Content-Disposition: inline
+In-Reply-To: <b8827b4267648f35c31628e73be42efee52f5cf5.camel@perches.com>
+X-Cookie: Jesus is my POSTMASTER GENERAL ...
+User-Agent: Mutt/1.10.1 (2018-07-13)
+
+
+--+pHx0qQiF2pBVqBT
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210422115511.60d1f735@coco.lan>
 
-On Thu, Apr 22, 2021 at 11:55:11AM +0200, Mauro Carvalho Chehab wrote:
-> Em Thu, 22 Apr 2021 09:34:38 +0200
-> Geert Uytterhoeven <geert@linux-m68k.org> escreveu:
-> 
-> > On Wed, Apr 21, 2021 at 11:50 PM James Morris <jmorris@namei.org> wrote:
-> > > On Wed, 21 Apr 2021, Julia Lawall wrote:  
-> > > > The apology states that they didn't detect any vulnerabilities.  They
-> > > > found three non exploitable bugs and submitted incorrect patches for them.
-> > > > When the patches received some positive feedback, they explained that the
-> > > > patches were incorrect and provided a proper fix.
-> > > >
-> > > > So they damaged trust, but not actually the Linux kernel...  
-> > >
-> > > The issue is that there was no consent and no coordination, so we don't
-> > > know the scope of the experiment and whether it was still continuing.
-> > >
-> > > We are this not able to trust anything the group said about what they'd
-> > > done or not done, until now [1].
-> > >
-> > > In all probability there is nothing further amiss but we would not have
-> > > expected them to use fake gmail accounts to submit bugs to the kernel
-> > > either.
-> > >
-> > > It's now on us to audit all of their known contributions, because we don't
-> > > know the scope of the experiment, which was based on the use of deception,
-> > > and we can't make any assumptions based on what they have said.
-> > >
-> > > We also need the identity of the 'random' gmail accounts they used,
-> > > although this should be handled by a small trusted group in private, as it
-> > > will lead to privacy issues for kernel maintainers who responded to them
-> > > in public.  
-> > 
-> > What do we gain by blindly reverting all[1] umn.edu patches, and
-> > ignoring future patches from umn.edu?
-> > I think all of this is moot: other people may be doing the same thing,
-> > or even "in worse faith".  The only thing that helps is making sure
-> > patches get reviewed[2] before being applied.
-> > 
-> > [1] Judging from the new review comments, many of the 190 patches
-> >     to be reverted were real fixes.
-> 
-> The reverted ones for media (29 patches) didn't contain any malicious code.
-> One was useless (because the media core already fixes the pointed issue),
-> but the other ones were valid patches.
+On Wed, Apr 21, 2021 at 08:04:17PM -0700, Joe Perches wrote:
 
-And didn't you ask yourself after seeing same 29 patches that the
-correct fix should be in another place? pm_runtime_get_sync?
+> True, but perhaps most of the pickiness can be mitigated by moving
+> various warnings to W=2 or W=3.
 
-> 
-> > [2] Whether we can trust the reviewers is another question, and might
-> >     become the topic of another research project :-(
-> 
-> That's the main concern.
-> 
-> Thanks,
-> Mauro
-> 
+There are already people like Arnd actively working on managing what
+warnings are at what levels for various compiler versions, but this
+isn't just a case of wanting to shut up new warnings - a lot of the
+new warnings that get introduced are legitimate and we both want to
+fix the existing issues they identify and be able to enable them more
+widely to benefit from them.
+
+--+pHx0qQiF2pBVqBT
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmCBZwYACgkQJNaLcl1U
+h9CWwwf/ScaGlApYNmW7vgD4Py99sqN0mGrsK2LxSWemkhs7moT38ofa8TJYXPxQ
+xt2iabxyf8K5gSKl0E2J7+jpBzs6ZgIkOu85fD7IzyORUnZbrt5tSrpC7AQjikxO
+VSq9FjIsFPOC23HlHq90MvTAJh5fs8T3ie9h09uUrqaRD6ORHoxxO5dPnklBc6YQ
+EOzgCtzDpALNb86+f5LoSDG4tHmwnVurBG3xhAyNChw8r9CweavZ8l+UN0knsYo7
+wT1DSQFs59KM/DHgaCgmv9Tu8cpf20690vtOgY/vX9WFBcO2fptRa7oMVrnwjAOy
+FaKooKuS3+Aqdc3rVSf+JbIOrFAyoQ==
+=xp+a
+-----END PGP SIGNATURE-----
+
+--+pHx0qQiF2pBVqBT--
 
