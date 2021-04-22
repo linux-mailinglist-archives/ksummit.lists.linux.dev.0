@@ -1,59 +1,51 @@
-Return-Path: <ksummit+bounces-72-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-73-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1CCB36817C
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 15:34:05 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3851136819B
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 15:41:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id A521C1C36D7
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 13:34:04 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 7E4AE3E553F
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 13:41:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2B352FA2;
-	Thu, 22 Apr 2021 13:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB0852FA1;
+	Thu, 22 Apr 2021 13:41:14 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794732F9B
-	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 13:33:56 +0000 (UTC)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4314D6145B;
-	Thu, 22 Apr 2021 13:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE8D2F9B
+	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 13:41:13 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A4F3D61426;
+	Thu, 22 Apr 2021 13:41:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1619098436;
-	bh=oISFEoZqMsjdaQDjlNExGCcoiqE5j8Cbe0igLU0p9Q0=;
+	s=k20201202; t=1619098873;
+	bh=AV8XfeFatitbRPA8kk3azKWG1/TBbVLMw1uLCCPHI6M=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sw8wbVib5p/U0VKOwx5EIhRTYJQ8e2MMLar+q0WN6Rka5TQjuLzXYbSnV9sOPP7xo
-	 G0FazoGwVXoAe1ESa1fPKisHIqpfsawt9GW7336JIODEmzr6Z/odM2fDI4lfYgJFJq
-	 LEMh7uIcxT1XYvwsWyYD3gS7CLifVnc4i29me1e3W/GZwgzQV5tXvqJD4edcRheOR3
-	 v/AgajSHE7EUWRwMK+RYQcy6VUKXohUXCo05Ns9CrhyFiR9ena3NFkyXNl1q09lA/u
-	 fDiq5ccM5cgWUv+SuQWDVkrKIW4KLgDEUnJUKM5/PTFHq3pbc5ttZFwI6WZqbbijiq
-	 lsJfB7enH7ETw==
-Date: Thu, 22 Apr 2021 15:33:49 +0200
+	b=M2eWp66UXMHM28sdJ0lzXwVK/nlfQITSiMjtVJXI9nmuxsDMa5LRQxFqnI/+WLsIM
+	 WJAkZRMAEyVV1ibOsysgYEMPZaELxN4fgulLJX14EkVnlajc4zUmH1D5/A5uU+mYAZ
+	 MpjFIQeR4j5d++Spv+t0yHsuVq+asMANXDK+RREWVszuY0+6k2zp4zkKl4r7G1HGcg
+	 cmn8kcNYHxhc20y/IFeyebq7YtkEptY+wfK97qEQDtWL3iR91Ar8+qA3B0snAfzw+J
+	 RvIa9tvs+G02Fl9LieYkor5b5q+t5XeSVQnKFEYfGEB/u4yPJWVefO8QmEY6gt+Bin
+	 O+sA1dg3DC85g==
+Date: Thu, 22 Apr 2021 15:41:06 +0200
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, Geert Uytterhoeven
- <geert@linux-m68k.org>, James Morris <jmorris@namei.org>, Julia Lawall
- <julia.lawall@inria.fr>, Stephen Hemminger <stephen@networkplumber.org>,
- Roland Dreier <roland@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- James Bottomley <James.Bottomley@hansenpartnership.com>,
- ksummit@lists.linux.dev
+To: Mike Rapoport <rppt@linux.ibm.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>, Dan Carpenter
+ <dan.carpenter@oracle.com>, James Bottomley
+ <James.Bottomley@hansenpartnership.com>, ksummit@lists.linux.dev
 Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
  "trivial" patches
-Message-ID: <20210422153349.650f13b7@coco.lan>
-In-Reply-To: <YIFtf+1Oj7oJn/43@unreal>
-References: <20210421152209.68075314@gandalf.local.home>
-	<CAG4TOxNOHRexUoKTo7ndViNtss0_BDeh4YCVHexvdQhQWF+vaw@mail.gmail.com>
-	<alpine.DEB.2.22.394.2104212150230.20674@hadrien>
-	<20210421132824.13a70f6c@hermes.local>
-	<alpine.DEB.2.22.394.2104212233450.20674@hadrien>
-	<d95ee281-4dc0-c5c1-ec87-81d83f44979@namei.org>
-	<CAMuHMdU=c2bY1_sq+rSh1fON5QhNx8xWqMQLT+cD0BpqG0RtCg@mail.gmail.com>
-	<20210422115511.60d1f735@coco.lan>
-	<YIFlo6TSE1n6tD6K@unreal>
-	<20210422122604.GC4572@sirena.org.uk>
-	<YIFtf+1Oj7oJn/43@unreal>
+Message-ID: <20210422154106.5dd10395@coco.lan>
+In-Reply-To: <YIFpJ55cCPxd/las@linux.ibm.com>
+References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
+	<20210421194702.GH1981@kadam>
+	<20210422113404.09f35a85@coco.lan>
+	<68c628ed354ea1ddea81878f0d713d2ce6426126.camel@sipsolutions.net>
+	<20210422125233.4eed09be@coco.lan>
+	<YIFpJ55cCPxd/las@linux.ibm.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -63,63 +55,39 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-Em Thu, 22 Apr 2021 15:35:11 +0300
-Leon Romanovsky <leon@kernel.org> escreveu:
+Em Thu, 22 Apr 2021 15:16:39 +0300
+Mike Rapoport <rppt@linux.ibm.com> escreveu:
 
-> On Thu, Apr 22, 2021 at 01:26:04PM +0100, Mark Brown wrote:
-> > On Thu, Apr 22, 2021 at 03:01:39PM +0300, Leon Romanovsky wrote:  
-> > > On Thu, Apr 22, 2021 at 11:55:11AM +0200, Mauro Carvalho Chehab wrote:  
+> On Thu, Apr 22, 2021 at 12:52:33PM +0200, Mauro Carvalho Chehab wrote:
+> > Em Thu, 22 Apr 2021 11:59:38 +0200
+> > Johannes Berg <johannes@sipsolutions.net> escreveu:
 > >   
-> > > > The reverted ones for media (29 patches) didn't contain any malicious code.
-> > > > One was useless (because the media core already fixes the pointed issue),
-> > > > but the other ones were valid patches.  
-> >   
-> > > And didn't you ask yourself after seeing same 29 patches that the
-> > > correct fix should be in another place? pm_runtime_get_sync?  
+> > > On Thu, 2021-04-22 at 11:34 +0200, Mauro Carvalho Chehab wrote:  
+> > > > 
+> > > > Here, I use "wdiff" in order to deal with renames. It has a somewhat
+> > > > funny dialect, but it helps a lot reviewing renaming patches.    
+> > > 
+> > > This also helps for casual "git show" etc.:
+> > > 
+> > > [core]
+> > > 	pager = /usr/share/git-core/contrib/diff-highlight | less -RFX
+> > > 
+> > > (path may vary, of course)  
 > > 
-> > The runtime PM APIs are for legitimate reasons really fiddly to get
-> > right - there's a bunch of different ways to do things and disabling
-> > runtime PM in Kconfig can cause surprises.  It's been identified as an
-> > issue for years but it's really not trivial to address it at the API
-> > level.  
+> > Nice!
+> > 
+> > Yet, at least on Fedora 33, I had to add a small perl script for it to
+> > work (modified from https://github.com/git/git/blob/master/contrib/diff-highlight/diff-highlight.perl),
+> > as git-core-doc-2.28.0-1.fc33.noarch only contains DiffHighlight.pm.  
 > 
-> There is no need to fix all problems at once, but seeing same mistake
-> over and over like in commit 57cc666d36ad ("media: st-delta: Fix reference
-> count leak in delta_run_work") can be fixed very easily (+grep all source
-> code to remove extra put):
-> 
-> diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-> index 18b82427d0cb..d73c967ddb80 100644
-> --- a/drivers/base/power/runtime.c
-> +++ b/drivers/base/power/runtime.c
-> @@ -1089,6 +1089,9 @@ int __pm_runtime_resume(struct device *dev, int rpmflags)
->         retval = rpm_resume(dev, rpmflags);
->         spin_unlock_irqrestore(&dev->power.lock, flags);
-> 
-> +       if (retval && rpmflags & RPM_GET_PUT)
-> +               atomic_dec(&dev->power.usage_count);
-> +
->         return retval;
->  }
->  EXPORT_SYMBOL_GPL(__pm_runtime_resume);
+> With git 2.29 it works fine on my F33.
 
-This would break existing code that would try to do a _put_ themselves. 
+Didn't test 2.29. I had to downgrade yesterday from 2.30, due to this
+issue:
 
-> A new function was created that does the correct cleanup:
-> pm_runtime_resume_and_get().
-> 
-> But these patches predate that addition.
+	https://bugzilla.redhat.com/show_bug.cgi?id=1952030
 
-Yeah, a patch changing the logic to use pm_runtime_resume_and_get()
-would equally solve, but, as Hans pointed, this new function
-is brand new:
 
-	commit dd8088d5a8969dc2b42f71d7bc01c25c61a78066
-	Author: Zhang Qilong <zhangqilong3@huawei.com>
-	Date:   Tue Nov 10 17:29:32 2020 +0800
-	
-	    PM: runtime: Add pm_runtime_resume_and_get to deal with usage counter
-	
 Thanks,
 Mauro
 
