@@ -1,60 +1,49 @@
-Return-Path: <ksummit+bounces-75-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-76-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD00B3681A1
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 15:43:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 768F73681C8
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 15:48:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 4EF3E3E6375
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 13:43:07 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 3A99B3E647A
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 13:48:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 537AF2FA2;
-	Thu, 22 Apr 2021 13:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526F72FA1;
+	Thu, 22 Apr 2021 13:48:01 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68FED2F9B
-	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 13:42:59 +0000 (UTC)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1DD486144E;
-	Thu, 22 Apr 2021 13:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682D02F9B
+	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 13:48:00 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3227E600D1;
+	Thu, 22 Apr 2021 13:47:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1619098978;
-	bh=pFR6gf+6Zt5gmy3cZR2nxcShGqgwMtaezGwauBFSTGY=;
+	s=k20201202; t=1619099280;
+	bh=FSYQFuGU17plA3qllHCpDz+rIiwGGUV/2r4WDFBHFnM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SN02B85k5C84DsatpqqIf2zRkD6wGUgb5ShzjYMHmzJygHuU6TWrwlW5/K74/CsRQ
-	 WWyRTIaZCqvbFyQD/mQQQ8sGW8d7aVJ9FYItaGEGXPckwgwM2kE7R8FasyhKt5YV0+
-	 TnusvT45vMLvKAbinyVH441HW/Iex6/t9A9pFu7I8Z1HqjdcICSC5EpE0paMv1qd9C
-	 7v+xsb4vn7rYODi3ncAq/jCJPMZHyjMICavbZ0Gt0CdssyTsxfdeDZ+w+jOw5W8mwx
-	 g0ctA9xdZJFnmf4kfwWtb/t7SJFeTNPb2XQejdvwF3EMS42NIApAaOX/AKL8/yNfqo
-	 hcsqaSbi9VNvQ==
-Date: Thu, 22 Apr 2021 16:42:55 +0300
+	b=h9b0WJzJcyw3kJGRZ6DCivO9nT8g+qEUVhdkB7IDxbwyJnui1U6W7+1edIwcHMKAZ
+	 RTPPxmgu9IYV6IOpdh95kf4VmRYNZrAC6nVIYoRpSyqnC2uK3RUYWyLZ9fD5bnD+cV
+	 Cxzr2uBIu+Exs2ZfUy2ca5ekFsXtt8LnwmLMN5WiMzu7lsZ66cUJWWBXBsiDCno0us
+	 Hwvfi7t+0TlvILHyAa3UN1RjC+kTUxRcqPVUe20ruRqjmu82nJt9IkBUBtn2EQEtXf
+	 mQTKRmtmhuu8+4ygazV+aYzJcb4TeVF02iZUuIn5Cdq/5eqH0eWoPvHVsTy7nyu/Nv
+	 Wn5ofkpGuN5fQ==
+Date: Thu, 22 Apr 2021 16:47:56 +0300
 From: Leon Romanovsky <leon@kernel.org>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	James Morris <jmorris@namei.org>,
-	Julia Lawall <julia.lawall@inria.fr>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Roland Dreier <roland@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
+To: Mark Brown <broonie@kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
 	James Bottomley <James.Bottomley@hansenpartnership.com>,
 	ksummit@lists.linux.dev
 Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
  "trivial" patches
-Message-ID: <YIF9X/l+Sw/d/Jqa@unreal>
-References: <alpine.DEB.2.22.394.2104212150230.20674@hadrien>
- <20210421132824.13a70f6c@hermes.local>
- <alpine.DEB.2.22.394.2104212233450.20674@hadrien>
- <d95ee281-4dc0-c5c1-ec87-81d83f44979@namei.org>
- <CAMuHMdU=c2bY1_sq+rSh1fON5QhNx8xWqMQLT+cD0BpqG0RtCg@mail.gmail.com>
- <20210422115511.60d1f735@coco.lan>
- <YIFlo6TSE1n6tD6K@unreal>
- <20210422122604.GC4572@sirena.org.uk>
- <YIFtf+1Oj7oJn/43@unreal>
- <20210422153349.650f13b7@coco.lan>
+Message-ID: <YIF+jDPl8aoqHu2K@unreal>
+References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
+ <YID5xhy2vv45fnOv@unreal>
+ <20210422112001.22c64fe9@coco.lan>
+ <YIFfXTVMDmHwVmSR@unreal>
+ <20210422132202.GE4572@sirena.org.uk>
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
@@ -62,54 +51,27 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210422153349.650f13b7@coco.lan>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20210422132202.GE4572@sirena.org.uk>
 
-On Thu, Apr 22, 2021 at 03:33:49PM +0200, Mauro Carvalho Chehab wrote:
-> Em Thu, 22 Apr 2021 15:35:11 +0300
-> Leon Romanovsky <leon@kernel.org> escreveu:
-> 
-> > On Thu, Apr 22, 2021 at 01:26:04PM +0100, Mark Brown wrote:
-> > > On Thu, Apr 22, 2021 at 03:01:39PM +0300, Leon Romanovsky wrote:  
-> > > > On Thu, Apr 22, 2021 at 11:55:11AM +0200, Mauro Carvalho Chehab wrote:  
-> > >   
-> > > > > The reverted ones for media (29 patches) didn't contain any malicious code.
-> > > > > One was useless (because the media core already fixes the pointed issue),
-> > > > > but the other ones were valid patches.  
-> > >   
-> > > > And didn't you ask yourself after seeing same 29 patches that the
-> > > > correct fix should be in another place? pm_runtime_get_sync?  
-> > > 
-> > > The runtime PM APIs are for legitimate reasons really fiddly to get
-> > > right - there's a bunch of different ways to do things and disabling
-> > > runtime PM in Kconfig can cause surprises.  It's been identified as an
-> > > issue for years but it's really not trivial to address it at the API
-> > > level.  
-> > 
-> > There is no need to fix all problems at once, but seeing same mistake
-> > over and over like in commit 57cc666d36ad ("media: st-delta: Fix reference
-> > count leak in delta_run_work") can be fixed very easily (+grep all source
-> > code to remove extra put):
-> > 
-> > diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-> > index 18b82427d0cb..d73c967ddb80 100644
-> > --- a/drivers/base/power/runtime.c
-> > +++ b/drivers/base/power/runtime.c
-> > @@ -1089,6 +1089,9 @@ int __pm_runtime_resume(struct device *dev, int rpmflags)
-> >         retval = rpm_resume(dev, rpmflags);
-> >         spin_unlock_irqrestore(&dev->power.lock, flags);
-> > 
-> > +       if (retval && rpmflags & RPM_GET_PUT)
-> > +               atomic_dec(&dev->power.usage_count);
-> > +
-> >         return retval;
-> >  }
-> >  EXPORT_SYMBOL_GPL(__pm_runtime_resume);
-> 
-> This would break existing code that would try to do a _put_ themselves. 
+On Thu, Apr 22, 2021 at 02:22:02PM +0100, Mark Brown wrote:
+> On Thu, Apr 22, 2021 at 02:34:53PM +0300, Leon Romanovsky wrote:
+>=20
+> > Like Christoph said, if it is unrelated send the patches as separated
+> > series.
+>=20
+> A very common case is for MFDs where you've got a core driver which is
+> either being newly added or as far as external interfaces go having some
+> defines added to it and then a bunch of basically unrelated driver
+> patches.  There is often a build time dependency (not so much with the
+> newly added stuff) so there is an actual dependency but no meaningful
+> overlap with reviews.  You get a similar thing with people bringing up
+> new SoCs where they send a minimal set of drivers in the initial series
+> so people can usefully test.
 
-I'll cite myself from the line above: "(+grep all source code to remove extra put)"
-
-It doesn't matter.
+I don't know anything about MFD subsystem, but for the subsystems (netdev, =
+RDMA, PCI and MM)
+which I'm following, is important to get whole series.
 
 Thanks
 
