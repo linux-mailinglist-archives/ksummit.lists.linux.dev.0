@@ -1,83 +1,96 @@
-Return-Path: <ksummit+bounces-85-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-87-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 651033682C1
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 16:52:17 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0050D368319
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 17:12:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 16A693E6B93
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 14:51:56 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id 2D5AB1C307A
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 15:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1E02FA0;
-	Thu, 22 Apr 2021 14:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E472FA0;
+	Thu, 22 Apr 2021 15:11:10 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0050470
-	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 14:51:43 +0000 (UTC)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id BF05760FE6;
-	Thu, 22 Apr 2021 14:51:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1619103103;
-	bh=UKFwJRDdbiiT/pHn/I/4Vhnh7pvxc3TTP3gH/DQ70lI=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A107A70
+	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 15:11:08 +0000 (UTC)
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 07CE73EE;
+	Thu, 22 Apr 2021 17:11:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1619104267;
+	bh=7+yKp4URuBmC7vrgTCFbuPv98jAJDeXRRHngGJr1vL0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=awlxtowJMX9s2njkoMkFpLZPc36A7KwtfnP73LkRfy66rVIv34lImGWXqxYFuK0Zi
-	 yif6nJMbhBDQJb/tXrDfpoGLdSRAKzpjXnhW/ah2dwdmjyKJ5xOIbnqWqaDjPbmWU1
-	 QfmAqgtQ8UR1IuQHEJpVVOeTiMXPeZNP43DGEvJVjQY3EJ5xNQlxdcK7PZ2A8HxECR
-	 BnuA8bOxgTYVbskWBoYLrGypeVP65rrCH3tfHBMaV0/B7jB/hlkz7wsOrZD9eWhIIQ
-	 QGbXYGOQx3sjQwZu7pQt34vVOOlvQvniuGKV84JMycd4kGop8JHCf6jFQHUCDM7XX5
-	 KYAZhC76Ix2IQ==
-Date: Thu, 22 Apr 2021 17:51:39 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	b=opqtWyZbBLHa32m+lvyLonQU+qI7idfwi0UwUj+3+Yb8J81l3OKfOyAQFny7IfWVp
+	 bEN5jlc/5Ka/iC13HPOkx3fYULSTyOrnBR6o87tzkF2mIQht+Vo9X+I2uLM18/t+vC
+	 dwDZjVwLouNV6NxcIBcSnXnmZ9qNIU7458q0tV6o=
+Date: Thu, 22 Apr 2021 18:11:02 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
 	ksummit@lists.linux.dev
 Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
  "trivial" patches
-Message-ID: <YIGNe07xtf1adA/G@unreal>
+Message-ID: <YIGSBkOvtwfCBs11@pendragon.ideasonboard.com>
 References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
- <YID5xhy2vv45fnOv@unreal>
- <20210422112001.22c64fe9@coco.lan>
- <YIFfXTVMDmHwVmSR@unreal>
- <20210422132202.GE4572@sirena.org.uk>
- <20210422161207.3350a36e@coco.lan>
+ <20210422123559.1dc647fb@coco.lan>
+ <yq1o8e6shil.fsf@ca-mkp.ca.oracle.com>
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20210422161207.3350a36e@coco.lan>
+In-Reply-To: <yq1o8e6shil.fsf@ca-mkp.ca.oracle.com>
 
-On Thu, Apr 22, 2021 at 04:12:07PM +0200, Mauro Carvalho Chehab wrote:
-> Em Thu, 22 Apr 2021 14:22:02 +0100
-> Mark Brown <broonie@kernel.org> escreveu:
+On Thu, Apr 22, 2021 at 08:32:11AM -0400, Martin K. Petersen wrote:
 > 
-> > On Thu, Apr 22, 2021 at 02:34:53PM +0300, Leon Romanovsky wrote:
-> > 
-> > > Like Christoph said, if it is unrelated send the patches as separated
-> > > series.  
-> > 
-> > A very common case is for MFDs where you've got a core driver which is
-> > either being newly added or as far as external interfaces go having some
-> > defines added to it and then a bunch of basically unrelated driver
-> > patches.  There is often a build time dependency (not so much with the
-> > newly added stuff) so there is an actual dependency but no meaningful
-> > overlap with reviews.  You get a similar thing with people bringing up
-> > new SoCs where they send a minimal set of drivers in the initial series
-> > so people can usefully test.
+> Hi Mauro!
 > 
-> Another common case are patches changing a kAPI that it is used on
-> other subsystems. They should be grouped as a hole, and applied
-> altogether, but each subsystem maintainer should ack/review only the
-> stuff related to the subsystem's scope.
+> > Perhaps one thing that we could add would be a
+> > scripts/get_developer_trustee_status, which would be returning
+> > a set of indicators that would help the maintainer to know
+> > how much it can trust a random contributor, like:
+> >
+> > 	- how many drivers and patches a contributor has written;
+> > 	- how long and how frequent he's sending Kernel patches;
+> > 	- what subsystems received patches from him;
+> > 	- if the developer isn't on a blacklist/graylist.
+> 
+> I do a 'git log --grep' when I see an email address I do not recognize,
+> sometimes I also Google. It would definitely be nice to automate some of
+> this.
+> 
+> From past program committee tenures I have a bunch of perl hacks to rank
+> people based on git history, mailing list posts, etc. But until now I
+> hadn't really thought of doing something that elaborate in my patch
+> workflow.
+> 
+> Scraping the list archives was the most painful part but that is now
+> trivially easy thanks to lore ('git log --author pakki001'). And much
+> faster too.
+> 
+> I think your proposal is fine as long as it is just printing raw
+> statistics. I am concerned that if we turn those numbers into a
+> one-dimensional "trust level", people will instantly start to game the
+> system to artificially inflate their score.
+> 
+> Another metric that may be worth capturing is how many Fixes: tags refer
+> to patches authored by this submitter.
 
-This is exactly when I want to see all relevant mailing lists to be CCed.
+Looking forward to the resulting discussions on when to add a Fixes: tag
+:-) If Fixes: becomes a negative ranking tool, developers will lobby to
+not get their patches blamed, and we'll lose part of the value of
+Fixes:.
 
-Thanks
+-- 
+Regards,
+
+Laurent Pinchart
 
