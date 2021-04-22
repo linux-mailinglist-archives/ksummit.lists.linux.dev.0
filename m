@@ -1,113 +1,111 @@
-Return-Path: <ksummit+bounces-53-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-54-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4873D367F3F
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 13:06:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4982367FA4
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 13:36:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 31CC23E4834
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 11:04:11 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id F30663E46F4
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 11:35:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A72B52FA1;
-	Thu, 22 Apr 2021 11:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 704A42FA1;
+	Thu, 22 Apr 2021 11:35:00 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FEB62F81
-	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 11:04:01 +0000 (UTC)
-Received: by mail-yb1-f169.google.com with SMTP id k73so44596906ybf.3
-        for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 04:04:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=qjTs4AqjLam+YkZ2KtvCRui2AqngoGKLnNt22W783oA=;
-        b=O92Fp0G1DEPWYSj+a1XvJkfdWO5nCpI5TKQoKRPPbxY7MEhOYo7w26EPEk9vX11OqG
-         mZGyRuki/mrXe3CBPf+/wwCp36JV+yL9F1PwKXBNlUKkk5MosHcN9Sb6hd48BUCjpPmH
-         yyOKQzz2y2pwoR9+LQ34i/3PRMInbhtiJVHLpfHSu4bX5r6/tqInTs9d1smwdYhQPjpE
-         dZ+4ZII7l0m4L2lz5RuakB4cZV7jCOBNZFDhzaw1J8Riwu5eU8jjqZslMxENVq2OPYIy
-         Bg96GUeWX0k53l7T3Qyxt+AGv5z3t+uilbQAjyAh/zvGlOn4LM1y8Zs3to16oYQcDP5T
-         DDSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=qjTs4AqjLam+YkZ2KtvCRui2AqngoGKLnNt22W783oA=;
-        b=F1A+0279bZXBBZf1WGPu/0sFjH+Hs0eefInyL79vC+KkRoyCemnjAIm6SD0XMQd/EV
-         cXBft75Cjnj6QDBxFHfZU9uUAtFx549i3+hfG3Y7Yvme5qWpW2UWpdQWaBsdsAi8ZOMh
-         2eLr8MFwpbmH52VQpaGSU+ZkGvPodfeCGG/uFkak+/3i/xZCwsrxm5+MbjG2WA8Q80v7
-         hexCoTp/9anPBvHAYcQk3uRBxHEIbxff9EDs/0vAbxi2QcPcveswNsjKuY/AX6at7ny6
-         KS9tezj64nGzloJP/duugTcem4yr63+MLbfZ6YURJynELbHjoqXnmjWw7kC6fUzv7ahh
-         700w==
-X-Gm-Message-State: AOAM5307+c2aNZfVmcGwRbCzlM7CzsF/RXPB4nRm8rvboTwISsCNupH7
-	P4a59kPh98voPyy0Kjs0Vc3TgCeWb0mUi+k/EC0=
-X-Google-Smtp-Source: ABdhPJzd0PSdmkmHK0CMuD6lYWOK3WMd5vAovdgO+0e3MenlMlLz5yQH9PIRNMdp2eUr8OGPhu190f/kcokCBbE1ylk=
-X-Received: by 2002:a25:d113:: with SMTP id i19mr3638724ybg.39.1619089440526;
- Thu, 22 Apr 2021 04:04:00 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFF72F81
+	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 11:34:59 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C75B061435;
+	Thu, 22 Apr 2021 11:34:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1619091298;
+	bh=QLTzaWayTPrYqnc5yLBvfe/6XDJKBkwKZfi6WZEDurg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WcFwEgurAt/tiYGcXYiLzdC+bLqkJ9wQDUubCidqyYT7qAjVWTBBtuTfs1UlNqz2u
+	 Sx4RdWuG5TUoKPq6waCoXh77UB40AbEc8nTyyjyDJc4eDSnNTVxETkT8l/G80iiYGg
+	 41PWYQGwZpw8iRozihDpbR8dCrHzIoQIBcPcTQQp0cubmsGaINEV2xatgZZiIQxiw9
+	 nSm/6LX3cLgCzUUIQGPyPoYE/UPbZgbGIk34/vnqFnMaXvCSaNZ0ADHNqOFEQrSEHE
+	 VIAMGTkdFx7kUZ8fXfsSVHhVHvEGIigawxxPkDl0zaPVuUbPrT71+Cq876D8LHrG3a
+	 S9XYy0UH9F9Jw==
+Date: Thu, 22 Apr 2021 14:34:53 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
+	ksummit@lists.linux.dev
+Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
+ "trivial" patches
+Message-ID: <YIFfXTVMDmHwVmSR@unreal>
+References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
+ <YID5xhy2vv45fnOv@unreal>
+ <20210422112001.22c64fe9@coco.lan>
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
- <20210422123559.1dc647fb@coco.lan>
-In-Reply-To: <20210422123559.1dc647fb@coco.lan>
-From: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Date: Thu, 22 Apr 2021 12:03:24 +0100
-Message-ID: <CADVatmM8Nrht+nWpP99WQSm8HtHimNkjmUFDjjRTmMjuB+401Q@mail.gmail.com>
-Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
- "trivial" patches
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, ksummit@lists.linux.dev, 
-	Jiri Kosina <jikos@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210422112001.22c64fe9@coco.lan>
 
-On Thu, Apr 22, 2021 at 11:37 AM Mauro Carvalho Chehab
-<mchehab+huawei@kernel.org> wrote:
->
-> Hi James,
->
-> Em Wed, 21 Apr 2021 11:35:36 -0700
-> James Bottomley <James.Bottomley@HansenPartnership.com> escreveu:
->
-> > I've long been on record as not really being a fan of trivial patches
-> > because they can cause merge issues with current patches and introduce
-> > bugs, particularly in older drivers, that don't get detected for a long
-> > while.  However, the recent events with the University of Minnesota:
-> >
-> > https://lore.kernel.org/lkml/20210421130105.1226686-1-gregkh@linuxfoundation.org/
-> >
-> > Have elevated the risk factor around trivial patches claiming to fix
-> > bugs to the point where it looks like there's no such thing as a truly
-> > trivial patch and they all need reviewing.
-> >
-> > Our policy in SCSI for a long time has been no trivial patches accepted
-> > to maintained drivers, and I think that would be a good start if
-> > adopted kernel wide, but I think the next policy should be no trivial
-> > bug fix without a pointer to the actual bug report or report from a
-> > trusted static checker.  This would likely mean we have to create a
-> > list of trusted static checkers ... obviously 0day and coverity but
-> > what else?
->
-> I agree that we should have a "Rethinking the acceptance policy" talk
-> at the Maintainer Summit, but it should cover a scope wider than just
-> trivial patches. At least the patches I checked, sent from "@unm.edu"
-> to media subsystem, they all looked good enough to be merged[1].
->
+On Thu, Apr 22, 2021 at 11:20:01AM +0200, Mauro Carvalho Chehab wrote:
+> Em Thu, 22 Apr 2021 07:21:26 +0300
+> Leon Romanovsky <leon@kernel.org> escreveu:
+> 
+> > On Wed, Apr 21, 2021 at 11:35:36AM -0700, James Bottomley wrote:
+> > > I've long been on record as not really being a fan of trivial patches
+> > > because they can cause merge issues with current patches and introduce
+> > > bugs, particularly in older drivers, that don't get detected for a long
+> > > while.  However, the recent events with the University of Minnesota:
+> > > 
+> > > https://lore.kernel.org/lkml/20210421130105.1226686-1-gregkh@linuxfoundation.org/
+> > > 
+> > > Have elevated the risk factor around trivial patches claiming to fix
+> > > bugs to the point where it looks like there's no such thing as a truly
+> > > trivial patch and they all need reviewing.  
+> > 
+> > While we are talking about policies, I would like to raise another bad
+> > practice that is done by even seasoned developers - sending patches with
+> > carefully crafted and filtered TO and CC.
+> > 
+> > This practice causes to get out of context patches without ability to
+> > see whole picture and the worse part that it divides feedback to
+> > "islands" without ability to agree or disagree with the feedback.
+> > 
+> > I'm putting this link as an EXAMPLE where every patch has different CC participants:
+> > https://lore.kernel.org/linux-rdma/CAJX1Ytb=XYKGeYuEN-2tPv9hx3G+=wnGWMzPk893J__JJFyhGQ@mail.gmail.com/T/#mf56c926ec0279a65fe180110b7dcf93fe053b91a
+> 
+> This is not a matter of bad practice. There are a couple of reasons
+> why each patch on a series will have a different group of Cc, like:
+> 
+> 	- driver maintainers for each patch may be different;
+> 	- scripts/get_maintainers.pl will return a different Cc/To;
+> 	- patch series touch different subsystems;
 
-May I suggest that we have a separate tree for trivial patches like
-the trivial.git tree that Jiri has and all trivial patches goes
-through that tree. There can be a separate set of reviewers for those
-patches who can work under the guidance of GregKH or others who are
-looking at trivial patches on a daily basis for staging subsystem. But
-I guess the question is where do you draw the boundary of a patch
-being trivial or not.
+Like Christoph said, if it is unrelated send the patches as separated
+series.
 
+> 	- sending a patch with too many c/c can make it rejected by
+> 	  mail list servers.
 
--- 
-Regards
-Sudip
+In such cases, I put in To people who will apply the patches and in CC
+only mailing lists.
+
+> 
+> Also, nowadays, with lore and b4, it would be easy to retrieve the
+> entire patch series, even for those that aren't subscribed on a 
+> c/c mailing list.
+
+I'm pretty happy with my email flow and see a little value in reconstruction
+of emails thread with b4 just to realize that the series is not important to me.
+
+It also don't solve my "knowledge island" issue.
+
+Thanks
+
+> 
+> Thanks,
+> Mauro
 
