@@ -1,90 +1,119 @@
-Return-Path: <ksummit+bounces-104-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-105-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 766BB36845D
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 18:06:23 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD7E7368465
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 18:08:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 21F473E7B27
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 16:06:22 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id CCD5F1C6288
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 16:08:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581482FA0;
-	Thu, 22 Apr 2021 16:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 683992FA0;
+	Thu, 22 Apr 2021 16:08:30 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+Received: from mail-io1-f53.google.com (mail-io1-f53.google.com [209.85.166.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 493C570
-	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 16:06:14 +0000 (UTC)
-Received: by mail-ot1-f41.google.com with SMTP id y14-20020a056830208eb02902a1c9fa4c64so6138540otq.9
-        for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 09:06:14 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497BA70
+	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 16:08:29 +0000 (UTC)
+Received: by mail-io1-f53.google.com with SMTP id p8so24693902iol.11
+        for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 09:08:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=qGEWsTg+l+192htA/20iH9KxQd+8WJN8loTbl9hhDpE=;
+        b=bnXstzv1qJDOPAQcC7bv6NEE87zSP6FxhJlhDEzCyVzO19E6c+gWf7UDR07mGbjwLg
+         tbJlU4eUdAGMYrGy8vdz9xm0RwmVZmWWRL3SM49kn7D0bNU6OjgOcQYe7lYnkw7WMYMw
+         AlrbVAOERmDT4MxwLM5uhJj40N1VV5F3v5kkA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=AhBDtUdTrz/ItndSurfpAEvlVg0tL87TVWQV/exUqSo=;
-        b=LrXYTDvly/VCUqd2yklTpWXggTNfwbnBi+q1WzfyTbmRuSrSfx+UcLZvndc6/6sbpN
-         /dIOTWt9SfUwbJlENRDVsyZxUK16uEal9z62bixoGmu+9mqqg089N5Z65h5kRRC90vUR
-         xe7zGBs/YFe4zhuGmYVkWVCnadYpsNOM6SLPe0IBPoPhdrANnYa6/Nm8Wqfy8aEe4FDl
-         LcALZmY8vM4kTZXniC50GcSO2B2C9IjaH9umyqrMLnFOWAbFIYBY/syqsyIAXjloRg+u
-         0PXYpdGAQz/TTp/268Na9EAmDIItN9tOumP8e5kVSu+cyQozB1C4dqZMw4G9mQXkwEqu
-         GXSA==
-X-Gm-Message-State: AOAM531yZgbttRuvFEKlVU0rD7MhpXkxmF03l4zWirtKhP0zorjVQn/N
-	CXzLG8lQjnbswfIuCdARyw1nh3ccdTnGRpE8PvI=
-X-Google-Smtp-Source: ABdhPJyXcuVZQ+G+6N7jE97ABDxsI5gS+pBBpMFKy+u3ZJn3LPjBdVnQeCwSmOtFLQu5PfwMKbNzEqZ1D2YB401YHvk=
-X-Received: by 2002:a05:6830:1094:: with SMTP id y20mr3534008oto.135.1619107573584;
- Thu, 22 Apr 2021 09:06:13 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=qGEWsTg+l+192htA/20iH9KxQd+8WJN8loTbl9hhDpE=;
+        b=ugiYMan94COQjFb0sPcrTosJfVQ6D1HN+XxmgSFjHZUHA9wGn8ZlM0KJuS8fsG4snE
+         15epQYxMnaGdhOAXyqoz2OF0SIdspUFAtqerE+mDn7Gl1PPyyARG20+TDvoGKL2NdnnF
+         ePbFSLhVExxxao3tHnPIdYbfrDObnLpFYAZWd5WYBSVaZFD0n8lIyszU7cHzju/wOn7Z
+         5Y+7jgmadE3U3r8PqWYmHZItaXKKnc3Szyzg94xGHGtvtTuAYgdRp3uLNlzOzyHWCAeX
+         F4venL7huvAAwpyZVte2X4Ud0moNz78D6E9/rHoyYkUBo1wy9NhwfUNhTqfzRvpi1bmZ
+         ffzA==
+X-Gm-Message-State: AOAM531QbDlQCGPTLkdu6iKNqM4jybLZ5NIMae5qOcMzQclZ4Tb/jm9W
+	JuVaAubkFD1vozqyIF3wMVu6sLss9Tf9DQ==
+X-Google-Smtp-Source: ABdhPJy1W1DIMtmDFiZs+e7NKuD/ZCe6bft/JlDGc8dDKxDu4WqJgGjDGj37OQQwClMZBQsVmXzqOQ==
+X-Received: by 2002:a6b:d213:: with SMTP id q19mr3297342iob.203.1619107708471;
+        Thu, 22 Apr 2021 09:08:28 -0700 (PDT)
+Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
+        by smtp.gmail.com with ESMTPSA id f18sm1337206ile.40.2021.04.22.09.08.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 Apr 2021 09:08:28 -0700 (PDT)
+Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
+ "trivial" patches
+To: Steven Rostedt <rostedt@goodmis.org>,
+ James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ ksummit@lists.linux.dev, Shuah Khan <skhan@linuxfoundation.org>
+References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
+ <20210422123559.1dc647fb@coco.lan>
+ <0d83502f-eb29-9b06-ada8-fcd03f9c87a8@linuxfoundation.org>
+ <a72a13e56ee5f19b0dee9ae8c1928b020e8809c2.camel@HansenPartnership.com>
+ <dfa424e7e23f82965e7e956ef16abe6617534dd9.camel@HansenPartnership.com>
+ <20210422115235.0526dabd@gandalf.local.home>
+From: Shuah Khan <skhan@linuxfoundation.org>
+Message-ID: <0c6e9057-b7f5-f18d-5f88-beb95a33f41f@linuxfoundation.org>
+Date: Thu, 22 Apr 2021 10:08:27 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
- <20210421152209.68075314@gandalf.local.home> <CAG4TOxNOHRexUoKTo7ndViNtss0_BDeh4YCVHexvdQhQWF+vaw@mail.gmail.com>
- <20210422055948.GA4171859@infradead.org>
-In-Reply-To: <20210422055948.GA4171859@infradead.org>
-From: Roland Dreier <roland@kernel.org>
-Date: Thu, 22 Apr 2021 09:05:56 -0700
-Message-ID: <CAG4TOxP8ZjDYJn5eZmF28Niv6=cMcTMhwaOb8QkoZR0WReT9FQ@mail.gmail.com>
-Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
- "trivial" patches
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210422115235.0526dabd@gandalf.local.home>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 21, 2021 at 11:00 PM Christoph Hellwig <hch@infradead.org> wrote:
+On 4/22/21 9:52 AM, Steven Rostedt wrote:
+> On Thu, 22 Apr 2021 08:48:21 -0700
+> James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
+> 
+>> On Thu, 2021-04-22 at 08:42 -0700, James Bottomley wrote:
+>> [...]
+>>>     2. Improving the requirement for bug fixes and large series, like
+>>> cover letters to everyone, adding fixes: tag and clear explanation.
+>>
+>> Just on this one, can we get the mailing list to help now we're moving
+>> to a new infrastructure?  I was already thinking of asking if it could
+>> reject email with html parts rather than simply losing it, but perhaps
+>> it could reject threaded submissions where the cover letter isn't
+>> correctly cc'd?  I know that's a big ask because there has to be an
+>> easy way to recognize them (heuristics on the PATCH tag?) and a way to
+>> recognize missing cc's (perhaps simply that someone cc'd on the
+>> threaded [PATCH x/y] reply isn't cc'd on [PATCH 0/y]?)
+> 
 
-> On Wed, Apr 21, 2021 at 12:32:33PM -0700, Roland Dreier wrote:
-> > I also think there does need to be a strong sanction against this UMN
-> > research group, since we need to make sure there are strong incentives
-> > against wasting everyone's time with stunts like this.  Hopefully on
-> > the academic side it can be made clear that this is not ethical
-> > research - for example, why did IEEE think this was an acceptable
-> > paper?
->
-> I wholeheartedly disagree.  Demonstrating this kind of "attack" has
-> been long overdue, and kicked off a very important discussion.  Even
-> more so as in this area malice is almost indistinguishable from normal
-> incompetence.  I think they deserve a medel of honor.
+One thing that would be helpful is rejecting patches that aren't cc'ed
+to the maintainers. I have had two recent cases where the patches were
+delegated to me in patchwork and I had to go find them. I did the
+extra work primarily because the patch was sent by a new developer.
 
-I think everyone already knew bad patches could get merged.  I'm not
-convinced Greg sending a giant pile of patches, some/most of which
-seem to be reverting valid fixes and reintroducing bugs, is
-particularly productive either.
+It adds extra work for sure.
 
-In any case, academic researchers have an ethical obligation not to
-experiment on people without informing them.  When CS research turns
-into social science or psychology research, the researchers need to
-follow well-established rules about research on human subjects.
+> Unfortunately, this breaks all quilt users, as quilt does not support this.
+> 
+> Which includes myself, perhaps Peter Zijlstra, and I believe Andrew Morton.
+> 
+> I also, don't want to be Cc'd on the cover letter of stable patches, which
+> also doesn't follow this procedure.
+> 
 
-In fact it's not clear what happened here - the UMN group has said
-that their research was reviewed and approved by their IRB and was
-designed and conducted so that no malicious patches ended up applied
-to any git tree.  That may or may not be true but Greg's
-(over)reaction seems to have generated a lot of unhelpful noise.
+I didn't realize quilt doesn't support it.
 
- - R.
+thanks,
+-- Shuah
+
+
 
