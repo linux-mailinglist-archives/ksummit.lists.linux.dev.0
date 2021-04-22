@@ -1,96 +1,110 @@
-Return-Path: <ksummit+bounces-77-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-78-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECED93681EA
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 15:52:36 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6C08368210
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 16:02:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id E882A1C588C
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 13:52:35 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 4C8E43E43C1
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 13:58:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B262FA2;
-	Thu, 22 Apr 2021 13:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693BF2FA1;
+	Thu, 22 Apr 2021 13:58:50 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1090A29CA
-	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 13:52:27 +0000 (UTC)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A5491608FE;
-	Thu, 22 Apr 2021 13:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB182F9B
+	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 13:58:49 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3A4F66142F;
+	Thu, 22 Apr 2021 13:58:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1619099547;
-	bh=1gap/QZ3TPUmRvwyz1sg/cLiOEKnj23CQ5/ns60Nt8o=;
+	s=k20201202; t=1619099929;
+	bh=s3pvpCDOREvE27flcago34oZz5ZFfbpfGg37m8ZmJuQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hOwAjnvaJWYXteBprxnhThY4/ZBGoygIeFdyyfWqrZWRiE+DzetVt3dqoMF3qRcNx
-	 cxACnBVE2MDdhKu2O0UrBWU6YASxUAEDYyyKJ7iQzbCWvb+Mx5yv6dW4Qq760X9q9P
-	 QWqXjIaguNdUVZPADZ8tTBVbtR4pSHxJUU9WYddi9TlVldXzmTvnJHR83fh8zQ77Rl
-	 6y/acAxk83zIq0fSzqANqohdqF35ozYXuV5+h/d8nOvoW9j0KDHxvl8E+ASPXDCMXC
-	 XePw8pWxpfx8J/Tf/uMx4Fvte0G6Ir8eAXxxh1ksZCJjZS1cq/YH2Ue2tfLpVP5ywb
-	 hfCWWAK6rhmGw==
-Date: Thu, 22 Apr 2021 14:51:59 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Leon Romanovsky <leon@kernel.org>
+	b=DtUSL35wU9Y6RVF8qItoClvwm+Cjn547F9LXiZKQQxcDOWi5fc/IiIA1jkb1M/dnz
+	 0S8O0o/kOUSjtF5RO5P5lihPosyVhd4oZ6bEuWqn8r7xhCSWtDcnjojlWLSdGd0IwD
+	 pcxxiL7eDFKEV+Huw1r7DoUfvmKQghOJNtGPTrguDj2Q91/v7g2oEt7NcO/l1ThfAg
+	 Ukb5D4EUtJb5t32J29W5MJAKvbluFxgTWDbxfyCdz8mmahYSthRgxnK4/MHjTOOm5/
+	 wG+4qOcD95xSbIVM7oXfvdKHOh/Jh4tQqOwqPM3gK3x3k1BdcLONgNu5cZy5l9mNDz
+	 vXxhWfXG3wmLA==
+Date: Thu, 22 Apr 2021 16:58:45 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Steven Rostedt <rostedt@goodmis.org>
 Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
 	James Bottomley <James.Bottomley@hansenpartnership.com>,
 	ksummit@lists.linux.dev
 Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
  "trivial" patches
-Message-ID: <20210422135159.GG4572@sirena.org.uk>
+Message-ID: <YIGBFeTlaY947wh3@unreal>
 References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
  <YID5xhy2vv45fnOv@unreal>
  <20210422112001.22c64fe9@coco.lan>
  <YIFfXTVMDmHwVmSR@unreal>
- <20210422132202.GE4572@sirena.org.uk>
- <YIF+jDPl8aoqHu2K@unreal>
+ <20210422092916.556e5e50@gandalf.local.home>
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="oXNgvKVxGWJ0RPMJ"
-Content-Disposition: inline
-In-Reply-To: <YIF+jDPl8aoqHu2K@unreal>
-X-Cookie: Jesus is my POSTMASTER GENERAL ...
-User-Agent: Mutt/1.10.1 (2018-07-13)
-
-
---oXNgvKVxGWJ0RPMJ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20210422092916.556e5e50@gandalf.local.home>
 
-On Thu, Apr 22, 2021 at 04:47:56PM +0300, Leon Romanovsky wrote:
-> On Thu, Apr 22, 2021 at 02:22:02PM +0100, Mark Brown wrote:
+On Thu, Apr 22, 2021 at 09:29:16AM -0400, Steven Rostedt wrote:
+> On Thu, 22 Apr 2021 14:34:53 +0300
+> Leon Romanovsky <leon@kernel.org> wrote:
+> 
+> > > This is not a matter of bad practice. There are a couple of reasons
+> > > why each patch on a series will have a different group of Cc, like:
+> > > 
+> > > 	- driver maintainers for each patch may be different;
+> > > 	- scripts/get_maintainers.pl will return a different Cc/To;
+> > > 	- patch series touch different subsystems;  
+> > 
+> > Like Christoph said, if it is unrelated send the patches as separated
+> > series.
 
-> > A very common case is for MFDs where you've got a core driver which is
-> > either being newly added or as far as external interfaces go having some
+<...>
 
-> I don't know anything about MFD subsystem, but for the subsystems (netdev, RDMA, PCI and MM)
-> which I'm following, is important to get whole series.
+> Please, just Cc me on code that touches something I maintain or listed as
+> a reviewer (which is still a lot).
 
-These are chips where there's one device which has drivers in multiple
-subsystems which are basically separate IPs that happen to be in the
-same package (PMICs are a common case) - the drivers are generally
-unrelated to each other in any meaningful sense, they're grouped as a
-result of physical packaging and manufacturing concerns.
+Actually, we are drifting into another interesting topic to discuss.
+"How to make life of patch submitters easy?" The difference in
+maintainer's preferences, mailing list rules, e.t.c makes submission
+process unbelievably painful.
 
---oXNgvKVxGWJ0RPMJ
-Content-Type: application/pgp-signature; name="signature.asc"
+<...>
 
------BEGIN PGP SIGNATURE-----
+> > I'm pretty happy with my email flow and see a little value in reconstruction
+> > of emails thread with b4 just to realize that the series is not important to me.
+> 
+> It's not b4 you need. I seldom use that (but perhaps I should start). But
+> lore is really easy. My email client, by default, shows the message id of
+> the email I'm looking at. If I want to know more, I copy that message id,
+> open a browser, and type:
+> 
+>  lore.kernel.org/r/<message-id>
+> 
+> Hit enter, and boom! the entire thread is there!
+> 
+> Try it!
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmCBf34ACgkQJNaLcl1U
-h9DxNwf/S3SZ0/CLPsT2Yu/XwWEAsRM80eI3oIFT6vrNXMTQns56+XFm5ihgukc/
-ra+QWj20sIbROT0QokFuRqLx6Kh9Yw6WcJea4Fo0q69wcfaOyWQ6y9p/6y0uQK8s
-QCGcU1c96s+JYGk9JPT2Yz5JfPofnYQNnTV6HkpvwKjD9unHrOclBrezbeffYvPg
-qNxd74mudT6suHdfBOkfzBmfGagV6bqPAYc8+1Qw4ZDpkbaYH7bCq8c5jsvRDL7I
-Pm1QrWpB7juTJIVppLvpszCsPjQhdY+ysNHMr/VkUUCGqoYARZqlmDWSA2jx1oTf
-OAAp8M0PamxUOo/p1XdfYnl/rYsMeg==
-=RO1V
------END PGP SIGNATURE-----
+I'm using lorifier on daily basis.
 
---oXNgvKVxGWJ0RPMJ--
+> 
+> > 
+> > It also don't solve my "knowledge island" issue.
+> 
+> I believe lore does.
+
+Did you try to follow netdev and MM with lore only?
+
+Thanks
+
+> 
+> -- Steve
 
