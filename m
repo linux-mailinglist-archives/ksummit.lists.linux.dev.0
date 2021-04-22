@@ -1,116 +1,108 @@
-Return-Path: <ksummit+bounces-82-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-83-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C2C36825C
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 16:20:47 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5D3136827B
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 16:31:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 9F2F23E68AB
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 14:20:41 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 82B3A3E69B2
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 14:31:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDD32FA1;
-	Thu, 22 Apr 2021 14:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC92C2FA0;
+	Thu, 22 Apr 2021 14:31:08 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5043A2F9B
-	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 14:20:33 +0000 (UTC)
-Received: by mail-ej1-f51.google.com with SMTP id w23so53255931ejb.9
-        for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 07:20:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=jkPYIsj817pR7egh4JpfEo++2XD6di1X6Sdt0Th0+v8=;
-        b=t9Y2LU1gNaFESxdSP6LLYDPEYpeFkg5YMsAPzobdw+SqSvDxOcq4PsOiZyftJIh0mV
-         NRHJvgRkaOKriTRxcw5F9Rj7f06j2qTNW589VjYMmpT+jVar3ZPtVTsD1IqjDImyBFyl
-         lU9MET9y9mNlMwtxvl8EZW/GLUQ0CKW2W/JCQ2MZ/eWByj85p5ViVsoYj6cVbHLIxJu4
-         Pw3hynn2ZJmZYR/snYaFWEu+lzosiGMQzHBvRMEqYshgFSY0E+/cujTDGr3pwbFxMEk/
-         qi+3UV5W3WRWqJ2+hX4J6HrcxIrY+cjfciXpOQj2Ut8EWLLILL01kiqMAcsHxBfYmLwS
-         Dqww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=jkPYIsj817pR7egh4JpfEo++2XD6di1X6Sdt0Th0+v8=;
-        b=VH9bkwv5s5ETlcBIrf67M9RYKf+CgcJbcix2wYw23RxLttYS9XhTJ/rJFBIGbMJAH2
-         8woOApl+dAfoS6I9uVMSXtAVFaxQpk7HYLOWuN271acILxJDdmzIAR9oxDOble5VvAZq
-         r6tmZvx9XPy5uUhrlCTFOCxCHeegWoW7NSmSCVU2CMXA9KPfpb+je/mi5u0Hu269HtEF
-         Nsfj+4H+rpJSTAF4l+CrLZjsHhdxCqgQbpCwRxfBo5uhpY7Pk4D/yugfdiJmR1c5Xi5U
-         uvVgCeq6C6v6JRvjHH90AXGOALhkNpRRHBxdPAcs9UnDOoi2yAIZ33ghyHLppXSvLIEw
-         mSXg==
-X-Gm-Message-State: AOAM531hypm83UtgL6bndaanwHjvGSf4y1rF4oay01Pxamj+VOEjKmug
-	qWDWiDNxcQmaQLhUHOqUrDWMA0QLBLeD+ST4P5YEK54=
-X-Google-Smtp-Source: ABdhPJz2Ak93FzDDxJrmmsKW5XH9bxG+v5JhBBjrxAk3Gnka1vTDAz6fmjfy0otZ86oSxQGLlvvkoiMoT4k9A9+fCj0=
-X-Received: by 2002:a17:906:7806:: with SMTP id u6mr3482083ejm.130.1619101231492;
- Thu, 22 Apr 2021 07:20:31 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06D070
+	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 14:31:07 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8D8AB613E1;
+	Thu, 22 Apr 2021 14:31:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1619101867;
+	bh=LxzxJXcAoUP5mfMmF7FBpdwrMYgfddWWm8erVEoQ278=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=S+91RxGW1llDdGfs5Q58dQoHqRICXx06A0Bemy9xtj8e/tbiNY7UUrFO916vAoNi+
+	 TXPQD1CuIqcKNCzhv2gYNUBNahEdWsM66ea2/kMwSj0WmwG3B41kkS1ysZG2Dgd4dz
+	 V4K2UfMTTQLccsX1mgQCeIyzqa9kuRu7bUkXU5bGoAaVOVxB1nK6TiHAz6a2emeZEP
+	 aIIguuaI1JMYDnK30nYAOmbDXHBRJl4J/PED5LJhU5TxGaj/yhoA+r9wPgJek1Yp1S
+	 fu+hzE81PLfUTvg7DANAmsFjVdxDoeJfZLxjWGP6ZMH7fRzqgwm5iq9nA3Q42yPADL
+	 3PjozwAjR4K6Q==
+Date: Thu, 22 Apr 2021 16:31:03 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
+ ksummit@lists.linux.dev
+Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
+ "trivial" patches
+Message-ID: <20210422163103.4db095bd@coco.lan>
+In-Reply-To: <20210422132401.grykyup37xdz3yly@nitro.local>
+References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
+	<20210422123559.1dc647fb@coco.lan>
+	<20210422132401.grykyup37xdz3yly@nitro.local>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
- <YID5xhy2vv45fnOv@unreal> <20210422112001.22c64fe9@coco.lan>
- <YIFfXTVMDmHwVmSR@unreal> <20210422092916.556e5e50@gandalf.local.home>
-In-Reply-To: <20210422092916.556e5e50@gandalf.local.home>
-From: Rob Herring <robherring2@gmail.com>
-Date: Thu, 22 Apr 2021 09:20:19 -0500
-Message-ID: <CAL_JsqKS-=shqkLhzKeLHqNPhosGJw5X-fOi+dy1rT3Q_LfBZg@mail.gmail.com>
-Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
- "trivial" patches
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Leon Romanovsky <leon@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Apr 22, 2021 at 8:30 AM Steven Rostedt <rostedt@goodmis.org> wrote:
->
-> On Thu, 22 Apr 2021 14:34:53 +0300
-> Leon Romanovsky <leon@kernel.org> wrote:
->
-> > > This is not a matter of bad practice. There are a couple of reasons
-> > > why each patch on a series will have a different group of Cc, like:
-> > >
-> > >     - driver maintainers for each patch may be different;
-> > >     - scripts/get_maintainers.pl will return a different Cc/To;
-> > >     - patch series touch different subsystems;
-> >
-> > Like Christoph said, if it is unrelated send the patches as separated
-> > series.
->
-> Since I use quilt to send my patches, my only two choices are all patches,
-> or individual ones with Cc. Some of my patches will need to touch every
-> architecture. I'll Cc the maintainers of the architecture code, but not
-> include them in every architecture patch. And because this code depends on
-> other patches, I can not send them as individual series.
->
-> I use to have issues with this, but now with lore, I can trivially find the
-> entire thread and read it the whole story. IMO, it is no longer bad
-> practice to Cc only a single patch is a larger series to a maintainer, for
-> the one patch that touches their code. It's a "FYI, I'm touching your
-> code". But because of lore, it's really easy for them to get the full
-> picture.
->
-> I much rather have my INBOX today be only patches that touches my code,
-> then full series of patches that I really don't care about. Worse yet, I'll
-> get Cc'd on a full series of 20 patches, where only one patch touches my
-> code. The sad part is, I'm much more likely to ignore that series, because
-> I'm added to stuff by get-maintainers for the strangest reason, and
-> completely miss that there's a single patch in there that really requires
-> my review.
->
-> Please, just Cc me on code that touches something I maintain or listed as
-> a reviewer (which is still a lot).
+Em Thu, 22 Apr 2021 09:24:01 -0400
+Konstantin Ryabitsev <konstantin@linuxfoundation.org> escreveu:
 
-Unless the process of who to Cc or not is completely automated,
-relying on submitters to do the right thing to give you the subset of
-emails you want to see is never going to work. I have frequent
-problems with folks not Cc'ing the DT list for DT patches, how hard is
-that? I think the answer is making where patches are sent less
-important and better/easier filtering from lore (which is coming).
+> On Thu, Apr 22, 2021 at 12:35:59PM +0200, Mauro Carvalho Chehab wrote:
+> > I mean, usually, each maintainer develops internally a "trust score"
+> > from subsystem's contributors, but such trustee level is usually not
+> > shared with other maintainers.
+> > 
+> > When a developer reaches a certain level, maintainers are willing
+> > to merge their work faster as they know that the developer is
+> > there for a while and it is not trying to harm the community.  
+> 
+> > 
+> > Perhaps one thing that we could add would be a
+> > scripts/get_developer_trustee_status, which would be returning
+> > a set of indicators that would help the maintainer to know
+> > how much it can trust a random contributor, like:
+> > 
+> > 	- how many drivers and patches a contributor has written;
+> > 	- how long and how frequent he's sending Kernel patches;
+> > 	- what subsystems received patches from him;
+> > 	- if the developer isn't on a blacklist/graylist.  
+> 
+> I must point out that "karma" systems are quite ripe for abuse and can create
+> negative dynamics within the project. Right now, without an accepted framework
+> of cryptographic patch attestation, high-karma accounts will be more likely to
+> be targeted for impersonation -- typo spoofing, account hijacking, "From"
+> fudging [*], etc.
 
-Rob
+Good point.
+
+> Even if we do everything right and implement strong cryptographic end-to-end
+> attestation,
+
+IMO, it makes sense to improve our workflow towards having gpg-signed patches
+that are cross-signed by Kernel maintainers from developers that are regular
+contributors.
+
+Of course, a change like that takes time.
+
+> I think karma makes sense within the vertical confines of submaintainer
+> hierarchy -- X collects patches and sends a pull request to Y; Y verifies the
+> signature on the pull request, gives it a quick review and submits another
+> request to Z, etc. Exporting the "karma points" outside of this hierarchy
+> doesn't really make sense.
+
+Yeah, it makes a lot sense vertically, but it also makes sense horizontally:
+the karma from a long time subsystem maintainer is higher than a random
+contributor, even when contributing to a different subsystem. The reason is
+that it is unlikely that such contributor would just disappear in the thin
+air if something bad comes up from merging his patch.
+
+Thanks,
+Mauro
 
