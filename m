@@ -1,83 +1,74 @@
-Return-Path: <ksummit+bounces-120-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-121-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
-	by mail.lfdr.de (Postfix) with ESMTPS id A11C33687E0
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 22:27:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02B57368810
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 22:31:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 207363E87B2
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 20:27:39 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 8ADEF3E6138
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 20:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7B52FA3;
-	Thu, 22 Apr 2021 20:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DF22FA3;
+	Thu, 22 Apr 2021 20:28:33 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C8C2F81
-	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 20:27:29 +0000 (UTC)
-Received: from relay7-d.mail.gandi.net (unknown [217.70.183.200])
-	by mslow1.mail.gandi.net (Postfix) with ESMTP id 9DA9DE54E7
-	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 20:15:40 +0000 (UTC)
-X-Originating-IP: 89.83.200.203
-Received: from localhost (i15-lef02-th2-89-83-200-203.ft.lns.abo.bbox.fr [89.83.200.203])
-	(Authenticated sender: alexandre.belloni@bootlin.com)
-	by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 3927320003;
-	Thu, 22 Apr 2021 20:15:32 +0000 (UTC)
-Date: Thu, 22 Apr 2021 22:15:31 +0200
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Dan Carpenter <dan.carpenter@oracle.com>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	ksummit@lists.linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6B12F81
+	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 20:28:32 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id BEE71613FA;
+	Thu, 22 Apr 2021 20:28:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1619123312;
+	bh=zLQ/88ZvjlcczWNF5LPxUk5A51kCmzR4XXTYGv2mDyw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Gi+MK507C3dhvAQJuFvxoKDZRqA8VNrFW7Qr5Z7Rz2AXZku5+OE0gMs+tchM4XFx1
+	 n5M7gzND1eZBWUOrcfFXqOdH0IDQInauSPlovHCc/BZNee2JIHb/BG25TpF+An60vt
+	 vsEc6DkhRcxwj7IPlr4gcaauMTMSGqF2w15v3ptY=
+Date: Thu, 22 Apr 2021 13:28:31 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, James Bottomley
+ <James.Bottomley@hansenpartnership.com>, ksummit@lists.linux.dev, Jiri
+ Kosina <jikos@kernel.org>
 Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
  "trivial" patches
-Message-ID: <YIHZY1oWNRLOCtQa@piout.net>
+Message-Id: <20210422132831.51a711b9c08678a37dad85b5@linux-foundation.org>
+In-Reply-To: <CADVatmM8Nrht+nWpP99WQSm8HtHimNkjmUFDjjRTmMjuB+401Q@mail.gmail.com>
 References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
- <20210421194702.GH1981@kadam>
- <20210422113404.09f35a85@coco.lan>
- <68c628ed354ea1ddea81878f0d713d2ce6426126.camel@sipsolutions.net>
+	<20210422123559.1dc647fb@coco.lan>
+	<CADVatmM8Nrht+nWpP99WQSm8HtHimNkjmUFDjjRTmMjuB+401Q@mail.gmail.com>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <68c628ed354ea1ddea81878f0d713d2ce6426126.camel@sipsolutions.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 22/04/2021 11:59:38+0200, Johannes Berg wrote:
-> On Thu, 2021-04-22 at 11:34 +0200, Mauro Carvalho Chehab wrote:
-> > 
-> > Here, I use "wdiff" in order to deal with renames. It has a somewhat
-> > funny dialect, but it helps a lot reviewing renaming patches.
-> 
-> This also helps for casual "git show" etc.:
-> 
-> [core]
-> 	pager = /usr/share/git-core/contrib/diff-highlight | less -RFX
-> 
-> (path may vary, of course)
-> 
+On Thu, 22 Apr 2021 12:03:24 +0100 Sudip Mukherjee <sudipm.mukherjee@gmail.com> wrote:
 
-I've been shown https://github.com/dandavison/delta/ a little while ago
-and it has a very good side by side view, showing exactly what change on
-each line. I'm using:
+> May I suggest that we have a separate tree for trivial patches like
+> the trivial.git tree that Jiri has and all trivial patches goes
+> through that tree.
 
-[core]
-        pager = delta
-[delta]
-        plus-color = "#012800"
-        minus-color = "#340001"
-        syntax-theme = Solarized (light)
-        line-numbers = true
-        side-by-side = true
+I'd prefer that such things go through my own hands, please.  For
+reasons such as those that started this discussion.
 
--- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+
+Also, yes, "who sent it" is a key input to how carefully the patch is
+treated.  If I don't recognize the name, I'll go through the patch with
+a toothcomb due to lack of trust.
+
+If I'm still not confident and nobody else has reviewed it (believably)
+then I simply won't send it upstream.
+
+So, obviously, the way to get malicious stuff past me is to forge the
+sender's email address.  But hopefully the developer whose address was
+forged will be awake enough to say "hey I didn't write that" in
+response to the 2+ copies which I'll echo back at him/her.
+
 
