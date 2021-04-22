@@ -1,133 +1,146 @@
-Return-Path: <ksummit+bounces-57-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-58-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A9D5368020
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 14:17:04 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62684368024
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 14:18:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 7DC433E5390
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 12:17:01 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id 1911E1C4A11
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 12:18:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E9212FA1;
-	Thu, 22 Apr 2021 12:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC1F2FA1;
+	Thu, 22 Apr 2021 12:18:37 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1302F81
-	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 12:16:51 +0000 (UTC)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 13MC4Xha123390;
-	Thu, 22 Apr 2021 08:16:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : content-type : in-reply-to :
- mime-version; s=pp1; bh=nOAUow8p4Er64RSJuTNd1TMYfqxJu+0M9dLZRrUu5DA=;
- b=n5GbU6KMBqbbP+mLzcPE8fTHXUwLVGa1g1z98CAL9cNyycgUV8IXnTIkYlJjKsiVmUZe
- Re4GuTg8kQJRCw1qMBwIie6I12BvlYz4AJDjjLkE9SjoQSbopgYEp+N+iVaa56i5WQ7O
- SoSw7Ka45YFRTCFNhXyUQCJAKXCcfjZOgtpFQpEyAfEtrGArUHS1dGHl9qNe10A3aGE5
- 37IJFxEnJJhDOgpngW+UoIUKPo1GjupX5usNTwsG4EeRkyQkas+2NlleIr8cts7mKXDv
- wgeIhuwX0IwNH8bHRjI6d9YgmjFpFhk5A9ConPoGOYCa1HlGgMB7WtXGLFfYLmB+FLy/ iw== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 3838r1rgy6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 22 Apr 2021 08:16:47 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13MCF6NV027347;
-	Thu, 22 Apr 2021 12:16:45 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-	by ppma02fra.de.ibm.com with ESMTP id 37yqa89jne-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 22 Apr 2021 12:16:45 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 13MCGgRh25493786
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 22 Apr 2021 12:16:42 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AED05A405F;
-	Thu, 22 Apr 2021 12:16:42 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 04794A4060;
-	Thu, 22 Apr 2021 12:16:42 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.145.40.129])
-	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-	Thu, 22 Apr 2021 12:16:41 +0000 (GMT)
-Date: Thu, 22 Apr 2021 15:16:39 +0300
-From: Mike Rapoport <rppt@linux.ibm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1715D2F81
+	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 12:18:36 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 61D246144E;
+	Thu, 22 Apr 2021 12:18:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1619093915;
+	bh=aTqax5DHYHQNorUbKzHumYXBLulakurPjUzK2cNq7xk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=a3g3rbCcwD465nUVlRpCN0I66PTj2MNQB0BibRnqNbvE5S0GfZVDwpopENF1A+cFy
+	 fC94CBZIZCj6VNAa7TTFy+pi7FWC04nfIXgt+8fJUX45sa9q7h539UpQZE4F80k08v
+	 IBJSWNiri3Fb9XNOno/H7Jkfn4AG2nTpdLkCB5XHihc9X11k1XeNk+3GIwE//6zJBK
+	 8oezZ2SYBOufhq6sIdF3A00NoDJPYhoRlXf2sjlxeGS9t7Df0R7Kekh8yF24+FQlXM
+	 ElLH2/Yp5YPSCQ6WI4BdQmQIr8fSb2ohqcf9HKDA2E0VtUMr7NSrlNjqb6QAElaKUW
+	 Q8YCwF1+rXuhA==
+Date: Thu, 22 Apr 2021 15:18:31 +0300
+From: Leon Romanovsky <leon@kernel.org>
 To: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        ksummit@lists.linux.dev
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+	James Morris <jmorris@namei.org>,
+	Julia Lawall <julia.lawall@inria.fr>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Roland Dreier <roland@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	ksummit@lists.linux.dev
 Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
  "trivial" patches
-Message-ID: <YIFpJ55cCPxd/las@linux.ibm.com>
+Message-ID: <YIFpl4iAe/0zOTsh@unreal>
 References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
- <20210421194702.GH1981@kadam>
- <20210422113404.09f35a85@coco.lan>
- <68c628ed354ea1ddea81878f0d713d2ce6426126.camel@sipsolutions.net>
- <20210422125233.4eed09be@coco.lan>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210422125233.4eed09be@coco.lan>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: A6baF2VWmP1_-y5hOJwu4tzyoMIyEG4y
-X-Proofpoint-ORIG-GUID: A6baF2VWmP1_-y5hOJwu4tzyoMIyEG4y
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ <20210421152209.68075314@gandalf.local.home>
+ <CAG4TOxNOHRexUoKTo7ndViNtss0_BDeh4YCVHexvdQhQWF+vaw@mail.gmail.com>
+ <alpine.DEB.2.22.394.2104212150230.20674@hadrien>
+ <20210421132824.13a70f6c@hermes.local>
+ <alpine.DEB.2.22.394.2104212233450.20674@hadrien>
+ <d95ee281-4dc0-c5c1-ec87-81d83f44979@namei.org>
+ <CAMuHMdU=c2bY1_sq+rSh1fON5QhNx8xWqMQLT+cD0BpqG0RtCg@mail.gmail.com>
+ <20210422115511.60d1f735@coco.lan>
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
- definitions=2021-04-22_04:2021-04-21,2021-04-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- bulkscore=0 impostorscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0
- mlxscore=0 adultscore=0 spamscore=0 clxscore=1011 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104220102
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210422115511.60d1f735@coco.lan>
 
-On Thu, Apr 22, 2021 at 12:52:33PM +0200, Mauro Carvalho Chehab wrote:
-> Em Thu, 22 Apr 2021 11:59:38 +0200
-> Johannes Berg <johannes@sipsolutions.net> escreveu:
+On Thu, Apr 22, 2021 at 11:55:11AM +0200, Mauro Carvalho Chehab wrote:
+> Em Thu, 22 Apr 2021 09:34:38 +0200
+> Geert Uytterhoeven <geert@linux-m68k.org> escreveu:
 > 
-> > On Thu, 2021-04-22 at 11:34 +0200, Mauro Carvalho Chehab wrote:
-> > > 
-> > > Here, I use "wdiff" in order to deal with renames. It has a somewhat
-> > > funny dialect, but it helps a lot reviewing renaming patches.  
+> > On Wed, Apr 21, 2021 at 11:50 PM James Morris <jmorris@namei.org> wrote:
+> > > On Wed, 21 Apr 2021, Julia Lawall wrote:  
+> > > > The apology states that they didn't detect any vulnerabilities.  They
+> > > > found three non exploitable bugs and submitted incorrect patches for them.
+> > > > When the patches received some positive feedback, they explained that the
+> > > > patches were incorrect and provided a proper fix.
+> > > >
+> > > > So they damaged trust, but not actually the Linux kernel...  
+> > >
+> > > The issue is that there was no consent and no coordination, so we don't
+> > > know the scope of the experiment and whether it was still continuing.
+> > >
+> > > We are this not able to trust anything the group said about what they'd
+> > > done or not done, until now [1].
+> > >
+> > > In all probability there is nothing further amiss but we would not have
+> > > expected them to use fake gmail accounts to submit bugs to the kernel
+> > > either.
+> > >
+> > > It's now on us to audit all of their known contributions, because we don't
+> > > know the scope of the experiment, which was based on the use of deception,
+> > > and we can't make any assumptions based on what they have said.
+> > >
+> > > We also need the identity of the 'random' gmail accounts they used,
+> > > although this should be handled by a small trusted group in private, as it
+> > > will lead to privacy issues for kernel maintainers who responded to them
+> > > in public.  
 > > 
-> > This also helps for casual "git show" etc.:
+> > What do we gain by blindly reverting all[1] umn.edu patches, and
+> > ignoring future patches from umn.edu?
+> > I think all of this is moot: other people may be doing the same thing,
+> > or even "in worse faith".  The only thing that helps is making sure
+> > patches get reviewed[2] before being applied.
 > > 
-> > [core]
-> > 	pager = /usr/share/git-core/contrib/diff-highlight | less -RFX
-> > 
-> > (path may vary, of course)
+> > [1] Judging from the new review comments, many of the 190 patches
+> >     to be reverted were real fixes.
 > 
-> Nice!
-> 
-> Yet, at least on Fedora 33, I had to add a small perl script for it to
-> work (modified from https://github.com/git/git/blob/master/contrib/diff-highlight/diff-highlight.perl),
-> as git-core-doc-2.28.0-1.fc33.noarch only contains DiffHighlight.pm.
+> The reverted ones for media (29 patches) didn't contain any malicious code.
+> One was useless (because the media core already fixes the pointed issue),
+> but the other ones were valid patches.
 
-With git 2.29 it works fine on my F33.
- 
-> Thanks,
-> Mauro
-> 
-> #!/usr/bin/perl
-> BEGIN {push @INC, '/usr/share/doc/git/contrib/diff-highlight/'}
-> use DiffHighlight;
-> 
-> # Some scripts may not realize that SIGPIPE is being ignored when launching the
-> # pager--for instance scripts written in Python.
-> $SIG{PIPE} = 'DEFAULT';
-> 
-> DiffHighlight::highlight_stdin();
-> exit 0;
-> 
+I'm sorry that I didn't check all media commits, but this random commit
+467a37fba93f ("media: dvb: Add check on sp8870_readreg") has a bug and
+broke sp8870 (I don't know what is it).
 
--- 
-Sincerely yours,
-Mike.
+diff --git a/drivers/media/dvb-frontends/sp8870.c b/drivers/media/dvb-frontends/sp8870.c
+index 8d31cf3f4f07..270a3c559e08 100644
+--- a/drivers/media/dvb-frontends/sp8870.c
++++ b/drivers/media/dvb-frontends/sp8870.c
+@@ -293,7 +293,9 @@ static int sp8870_set_frontend_parameters(struct dvb_frontend *fe)
+        sp8870_writereg(state, 0xc05, reg0xc05);
+
+        // read status reg in order to clear pending irqs
+-       sp8870_readreg(state, 0x200);
++       err = sp8870_readreg(state, 0x200);
++       if (err)
++               return err;
+
+        // system controller start
+        sp8870_microcontroller_start(state);
+
+
+   67 static int sp8870_readreg (struct sp8870_state* state, u16 reg)
+   68 {
+   69         int ret;
+ <...>
+   77         if (ret != 2) {
+   78                 dprintk("%s: readreg error (ret == %i)\n", __func__, ret);
+   79                 return -1;
+   80         }
+   81
+   82         return (b1[0] << 8 | b1[1]);
+   83 }
+
+The valid check should be if (err < 0);
+
+Thanks
 
