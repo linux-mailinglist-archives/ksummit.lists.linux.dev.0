@@ -1,176 +1,111 @@
-Return-Path: <ksummit+bounces-99-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-100-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4B1136837D
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 17:38:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A84F368397
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 17:41:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 4027F3E774D
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 15:38:13 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 23DE63E777D
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 15:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C7FE2FA0;
-	Thu, 22 Apr 2021 15:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BED2FA0;
+	Thu, 22 Apr 2021 15:40:47 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C1E70
-	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 15:38:05 +0000 (UTC)
-Received: by mail-oi1-f169.google.com with SMTP id e25so16252840oii.2
-        for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 08:38:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=JK2soomspYTuQSSOhJK9tHriSLOGjCKEaIjmgqpnvhI=;
-        b=eV1rCvX6fRGDy8fQbRspVchO9ps0vAhpxqlqVBs82mO78cofZHkCUr9mpd5Lzvus/h
-         q347pntznhGIYtGQg6g+8rVr3Iv15DKEpW8NZa0Faqf0FzxIDCl780qiqcerxCcKSYYW
-         W49ICKl/4ymrtHPcD8daTWyoi+FIv1i4WIMgw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=JK2soomspYTuQSSOhJK9tHriSLOGjCKEaIjmgqpnvhI=;
-        b=IOPPosTWHDHnIoCZzJN7q3+Pdj+XkHJCOGeCaUe/JaUp6pmnxWDGzWzNOl20UfGwbj
-         2Vr18v4Ktl70vnivrRH4Mxm0Pi9iLkWukRsif6MEgkZiVZ+vCqEuEvAkAJFN3aREGesE
-         h6ZZq0CeHjDCxwMGU1WA29E4D5QUKJI4kqIQLLZ7uefg43ePVmLZNHx7Z/+YHLM63IpZ
-         jpmQVuuW3DTQyoEEapKKnvKfXsO2UhTYX18LV4OoVQuZR1BqQ9OnHOgYzaDCFerYgLo9
-         MYp9OlFz2fRBzvGHNJpxISsyRu/k6LJVMgVKiFzXv179jVbUA8Xe4jhAMEbU8uG5E7Wo
-         MSqA==
-X-Gm-Message-State: AOAM532jYklutsCDwvZwaAd4Z5R8VamuQ6lspTttOQLnNIqj5JpqY+Ig
-	+rBUFJAmlYMQFbK2OGACo/VJOA==
-X-Google-Smtp-Source: ABdhPJypg6hzaY6ktH8ZyP7FDRB/fEeuNhtBVPxSPOOZ+g8nCbx/b296Ly+Cko1qHcpo24V2gVnl2g==
-X-Received: by 2002:aca:484f:: with SMTP id v76mr2607948oia.57.1619105884566;
-        Thu, 22 Apr 2021 08:38:04 -0700 (PDT)
-Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
-        by smtp.gmail.com with ESMTPSA id r14sm728105oth.3.2021.04.22.08.38.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Apr 2021 08:38:04 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A73370
+	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 15:40:46 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id CD6EC128011B;
+	Thu, 22 Apr 2021 08:40:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1619106045;
+	bh=2siloGvUFeivImMBTowcbnRSONxR6P12rHghowdJ0oM=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=LwKW25kuxhNjZe64UTyd0EwJAjpNXHt7rFJIm16So1oeHoPmH0TpStyKr90qpDyks
+	 18NwJ9OtHjVNJTFQ5MB6WPq2omHhro6pklSmLXup7Y+y6BT3c+WPh6nOTps8vmffaW
+	 kmsisHaJulW/29YjGD7CGLvOQ+sRJR7tHFsyduwQ=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+	by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id pZ3oN7uQ-Pa4; Thu, 22 Apr 2021 08:40:45 -0700 (PDT)
+Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:600:8280:66d1::527])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 6E66E12800F7;
+	Thu, 22 Apr 2021 08:40:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1619106045;
+	bh=2siloGvUFeivImMBTowcbnRSONxR6P12rHghowdJ0oM=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=LwKW25kuxhNjZe64UTyd0EwJAjpNXHt7rFJIm16So1oeHoPmH0TpStyKr90qpDyks
+	 18NwJ9OtHjVNJTFQ5MB6WPq2omHhro6pklSmLXup7Y+y6BT3c+WPh6nOTps8vmffaW
+	 kmsisHaJulW/29YjGD7CGLvOQ+sRJR7tHFsyduwQ=
+Message-ID: <6ed3c03acf5aca727a443ea6e26e3b023a060905.camel@HansenPartnership.com>
 Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
  "trivial" patches
-To: Leon Romanovsky <leon@kernel.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
- James Morris <jmorris@namei.org>, Julia Lawall <julia.lawall@inria.fr>,
- Stephen Hemminger <stephen@networkplumber.org>,
- Roland Dreier <roland@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- James Bottomley <James.Bottomley@hansenpartnership.com>,
- ksummit@lists.linux.dev, Shuah Khan <skhan@linuxfoundation.org>
-References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
- <20210421152209.68075314@gandalf.local.home>
- <CAG4TOxNOHRexUoKTo7ndViNtss0_BDeh4YCVHexvdQhQWF+vaw@mail.gmail.com>
- <alpine.DEB.2.22.394.2104212150230.20674@hadrien>
- <20210421132824.13a70f6c@hermes.local>
- <alpine.DEB.2.22.394.2104212233450.20674@hadrien>
- <d95ee281-4dc0-c5c1-ec87-81d83f44979@namei.org>
- <CAMuHMdU=c2bY1_sq+rSh1fON5QhNx8xWqMQLT+cD0BpqG0RtCg@mail.gmail.com>
- <20210422115511.60d1f735@coco.lan> <YIFpl4iAe/0zOTsh@unreal>
-From: Shuah Khan <skhan@linuxfoundation.org>
-Message-ID: <24762711-0252-f7d2-4e41-3eb1e27955ea@linuxfoundation.org>
-Date: Thu, 22 Apr 2021 09:38:03 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: "Martin K. Petersen" <martin.petersen@oracle.com>, Mauro Carvalho Chehab
+	 <mchehab+huawei@kernel.org>, ksummit@lists.linux.dev
+Date: Thu, 22 Apr 2021 08:40:35 -0700
+In-Reply-To: <20210422153646.GI4572@sirena.org.uk>
+References: 
+	<afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
+	 <20210422123559.1dc647fb@coco.lan> <yq1o8e6shil.fsf@ca-mkp.ca.oracle.com>
+	 <99289ff4cf7b1e59f82c330728c80dc7e63319a7.camel@HansenPartnership.com>
+	 <20210422153646.GI4572@sirena.org.uk>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-J/blA/n5uRNiD7YBjOhm"
+User-Agent: Evolution 3.34.4 
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <YIFpl4iAe/0zOTsh@unreal>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+
+
+--=-J/blA/n5uRNiD7YBjOhm
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, 2021-04-22 at 16:36 +0100, Mark Brown wrote:
+> On Thu, Apr 22, 2021 at 08:28:00AM -0700, James Bottomley wrote:
+> > On Thu, 2021-04-22 at 08:32 -0400, Martin K. Petersen wrote:
+> > > Another metric that may be worth capturing is how many Fixes:
+> > > tags refer to patches authored by this submitter.
+> > =20
+> > Or perhaps invert it: no bug fix without a Fixes: tag.  Some of the
+> > human handlers of robot based finders, like Dan's smatch, do go
+> > back and figure out where the bug came from, but if we encourage
+> > the rule that if you're fixing a bug you must identify the origin
+> > and explain the bug it may help weed out some bogus fixes.
+>=20
+> Script that use git blame to generate a commit to put in the Fixes:
+> tag incoming...
+
+Any system can be gamed, but I was thinking fixes helps ground the
+reviewer in where the bug was introduced.  I also wasn't thinking fixes
+alone, but fixes: *and* explanation of the bug.
+
+James
+
+
+--=-J/blA/n5uRNiD7YBjOhm
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 Content-Transfer-Encoding: 7bit
 
-On 4/22/21 6:18 AM, Leon Romanovsky wrote:
-> On Thu, Apr 22, 2021 at 11:55:11AM +0200, Mauro Carvalho Chehab wrote:
->> Em Thu, 22 Apr 2021 09:34:38 +0200
->> Geert Uytterhoeven <geert@linux-m68k.org> escreveu:
->>
->>> On Wed, Apr 21, 2021 at 11:50 PM James Morris <jmorris@namei.org> wrote:
->>>> On Wed, 21 Apr 2021, Julia Lawall wrote:
->>>>> The apology states that they didn't detect any vulnerabilities.  They
->>>>> found three non exploitable bugs and submitted incorrect patches for them.
->>>>> When the patches received some positive feedback, they explained that the
->>>>> patches were incorrect and provided a proper fix.
->>>>>
->>>>> So they damaged trust, but not actually the Linux kernel...
->>>>
->>>> The issue is that there was no consent and no coordination, so we don't
->>>> know the scope of the experiment and whether it was still continuing.
->>>>
->>>> We are this not able to trust anything the group said about what they'd
->>>> done or not done, until now [1].
->>>>
->>>> In all probability there is nothing further amiss but we would not have
->>>> expected them to use fake gmail accounts to submit bugs to the kernel
->>>> either.
->>>>
->>>> It's now on us to audit all of their known contributions, because we don't
->>>> know the scope of the experiment, which was based on the use of deception,
->>>> and we can't make any assumptions based on what they have said.
->>>>
->>>> We also need the identity of the 'random' gmail accounts they used,
->>>> although this should be handled by a small trusted group in private, as it
->>>> will lead to privacy issues for kernel maintainers who responded to them
->>>> in public.
->>>
->>> What do we gain by blindly reverting all[1] umn.edu patches, and
->>> ignoring future patches from umn.edu?
->>> I think all of this is moot: other people may be doing the same thing,
->>> or even "in worse faith".  The only thing that helps is making sure
->>> patches get reviewed[2] before being applied.
->>>
->>> [1] Judging from the new review comments, many of the 190 patches
->>>      to be reverted were real fixes.
->>
->> The reverted ones for media (29 patches) didn't contain any malicious code.
->> One was useless (because the media core already fixes the pointed issue),
->> but the other ones were valid patches.
-> 
-> I'm sorry that I didn't check all media commits, but this random commit
-> 467a37fba93f ("media: dvb: Add check on sp8870_readreg") has a bug and
-> broke sp8870 (I don't know what is it).
-> 
-> diff --git a/drivers/media/dvb-frontends/sp8870.c b/drivers/media/dvb-frontends/sp8870.c
-> index 8d31cf3f4f07..270a3c559e08 100644
-> --- a/drivers/media/dvb-frontends/sp8870.c
-> +++ b/drivers/media/dvb-frontends/sp8870.c
-> @@ -293,7 +293,9 @@ static int sp8870_set_frontend_parameters(struct dvb_frontend *fe)
->          sp8870_writereg(state, 0xc05, reg0xc05);
-> 
->          // read status reg in order to clear pending irqs
-> -       sp8870_readreg(state, 0x200);
-> +       err = sp8870_readreg(state, 0x200);
-> +       if (err)
-> +               return err;
-> 
->          // system controller start
->          sp8870_microcontroller_start(state);
-> 
-> 
->     67 static int sp8870_readreg (struct sp8870_state* state, u16 reg)
->     68 {
->     69         int ret;
->   <...>
->     77         if (ret != 2) {
->     78                 dprintk("%s: readreg error (ret == %i)\n", __func__, ret);
->     79                 return -1;
->     80         }
->     81
->     82         return (b1[0] << 8 | b1[1]);
->     83 }
-> 
-> The valid check should be if (err < 0);
-> 
+-----BEGIN PGP SIGNATURE-----
 
-Correct. Like all the other callers of sp8870_readreg() do with
-its return. Non-zero return is valid for this routine.
+iHUEABMIAB0WIQTnYEDbdso9F2cI+arnQslM7pishQUCYIGY8wAKCRDnQslM7pis
+hSM7AQDvJWjNjPYNCdblgpOLpvkb3BZL3anM1q3MUiHE6azuRwEAyytcBWfuup9E
+CS3ErEsS5gn87k3W66N4U7n8ZLhwPzo=
+=jcYb
+-----END PGP SIGNATURE-----
 
-thanks,
--- Shuah
-
-
+--=-J/blA/n5uRNiD7YBjOhm--
 
 
