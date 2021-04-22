@@ -1,46 +1,47 @@
-Return-Path: <ksummit+bounces-31-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-32-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FC3F367988
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 07:53:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D77236799D
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 08:02:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id 267E91C2CA8
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 05:53:03 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id 6F5341C2D74
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 06:00:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 352E32FA3;
-	Thu, 22 Apr 2021 05:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E1372FA2;
+	Thu, 22 Apr 2021 06:00:37 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313C72F9B
-	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 05:52:53 +0000 (UTC)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B29B861425;
-	Thu, 22 Apr 2021 05:52:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1619070772;
-	bh=ppguqPbfcxvbb2ZosdqesSeExTB3hunq3TaB8ITgS1A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V9PGJbL3iQ5O+fcHd7joLgdZFSIErSIEct6OMEH1F8XTVLow5DxF7DQ0kEeE0SBLA
-	 QUNvAk/K4c8OTdvuZnXEiEuGSwGIbriQWMRDMkiqJegliTXNGeXeWNoaf0S3eAfL5b
-	 JX7vn5wYcI57Ub1+HmlaYTBd/xFKfoZJ0CZ0k2Z0W4eG3gCaIGxHD1k5HWykUURjcp
-	 /bV2alyJbroiLMp/EKWRBxCSw1XepFApY2+N8Wy2yzzOx2gIme1BIVEkYtUCu7QKdg
-	 LSdV/4/yCzXmQ09SG9+mc+BzMQAlS15456+T+Q5j5iHL5ZVb0bqBkIgFkPlsmUjxm9
-	 CrKuuuv4j3eLw==
-Date: Thu, 22 Apr 2021 08:52:48 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A357A2F9B
+	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 06:00:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=AlqzyhDQ4JKWXNRvnxM1Dw0PsLVo8M9cSDkMlNnueME=; b=j4xBJBbHZaneeH4VtzQHX3OkVN
+	8RwlTnW1wn40KS8wSYwr2wz+r1/DmkxG1LSCncfasBDEyBvRBiQn/ftSpfSzRxj6T7GrcpkQF6Vqe
+	yNmk9mZfDq3FyQRBZgkQGkAbX++inRY56KZViHRnNcDotyQW6BTN/KPC21ShpGffrOqMxiD/B7n3m
+	cYjzBPh25rApxe57EtHqnkZZoqubyvOiLVYRjLyOcB23Tq72PjCrBOeQ/bRggOXp22UVvguUcihst
+	KV/eSG9Gu2z2wLh4F7kurXHpVc5NHQgsWkfHkDHPBG7k1CODpU6s43jlMyIF1ttOOeDIjg8OZcTJx
+	VqpkxEog==;
+Received: from hch by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
+	id 1lZSNQ-00HVOH-OZ; Thu, 22 Apr 2021 06:00:01 +0000
+Date: Thu, 22 Apr 2021 06:59:48 +0100
+From: Christoph Hellwig <hch@infradead.org>
+To: Roland Dreier <roland@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
 	ksummit@lists.linux.dev
 Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
  "trivial" patches
-Message-ID: <YIEPMMH6dOmMrYqU@unreal>
+Message-ID: <20210422055948.GA4171859@infradead.org>
 References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
- <YID5xhy2vv45fnOv@unreal>
- <YIEB/Azk3cGD8osf@zeniv-ca.linux.org.uk>
+ <20210421152209.68075314@gandalf.local.home>
+ <CAG4TOxNOHRexUoKTo7ndViNtss0_BDeh4YCVHexvdQhQWF+vaw@mail.gmail.com>
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
@@ -48,39 +49,19 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YIEB/Azk3cGD8osf@zeniv-ca.linux.org.uk>
+In-Reply-To: <CAG4TOxNOHRexUoKTo7ndViNtss0_BDeh4YCVHexvdQhQWF+vaw@mail.gmail.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-On Thu, Apr 22, 2021 at 04:56:28AM +0000, Al Viro wrote:
-> On Thu, Apr 22, 2021 at 07:21:26AM +0300, Leon Romanovsky wrote:
-> > On Wed, Apr 21, 2021 at 11:35:36AM -0700, James Bottomley wrote:
-> > > I've long been on record as not really being a fan of trivial patches
-> > > because they can cause merge issues with current patches and introduce
-> > > bugs, particularly in older drivers, that don't get detected for a long
-> > > while.  However, the recent events with the University of Minnesota:
-> > > 
-> > > https://lore.kernel.org/lkml/20210421130105.1226686-1-gregkh@linuxfoundation.org/
-> > > 
-> > > Have elevated the risk factor around trivial patches claiming to fix
-> > > bugs to the point where it looks like there's no such thing as a truly
-> > > trivial patch and they all need reviewing.
-> > 
-> > While we are talking about policies, I would like to raise another bad
-> > practice that is done by even seasoned developers - sending patches with
-> > carefully crafted and filtered TO and CC.
-> > 
-> > This practice causes to get out of context patches without ability to
-> > see whole picture and the worse part that it divides feedback to
-> > "islands" without ability to agree or disagree with the feedback.
-> 
-> Suppose you have a 60-patch series, with 56 in fs/*.c (and related headers
-> in include/linux) and 4 - in arch/*/include/asm/*; should e.g. MIPS folks
-> get spammed with the entire thing, just because one patch consolidates
-> some ifdefs?
+On Wed, Apr 21, 2021 at 12:32:33PM -0700, Roland Dreier wrote:
+> I also think there does need to be a strong sanction against this UMN
+> research group, since we need to make sure there are strong incentives
+> against wasting everyone's time with stunts like this.  Hopefully on
+> the academic side it can be made clear that this is not ethical
+> research - for example, why did IEEE think this was an acceptable
+> paper?
 
-Yes, I still would like to see whole series, because such patch bombs
-are not supposed to be too often and if they are, it can hint that the
-changed area needs some restructure/changes/e.t.c to make submission
-easier.
-
-Thanks
+I wholeheartedly disagree.  Demonstrating this kind of "attack" has
+been long overdue, and kicked off a very important discussion.  Even
+more so as in this area malice is almost indistinguishable from normal
+incompetence.  I think they deserve a medel of honor.
 
