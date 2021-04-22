@@ -1,86 +1,83 @@
-Return-Path: <ksummit+bounces-86-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-85-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
-	by mail.lfdr.de (Postfix) with ESMTPS id B09343682D8
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 16:57:10 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 651033682C1
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 16:52:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id F03141C5E61
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 14:57:09 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 16A693E6B93
+	for <lists@lfdr.de>; Thu, 22 Apr 2021 14:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2682FA0;
-	Thu, 22 Apr 2021 14:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1E02FA0;
+	Thu, 22 Apr 2021 14:51:44 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3967970
-	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 14:57:01 +0000 (UTC)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 2BBC93EE;
-	Thu, 22 Apr 2021 16:51:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1619103088;
-	bh=D1GpBOeWIGYhUkIwsi8+wZTjqQ6FdE008bms/uUjAm0=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0050470
+	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 14:51:43 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id BF05760FE6;
+	Thu, 22 Apr 2021 14:51:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1619103103;
+	bh=UKFwJRDdbiiT/pHn/I/4Vhnh7pvxc3TTP3gH/DQ70lI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NeM51YoGOIyrHyculEtYtTk6Nngu2y6uxDj8u71GJkDhomtrDEDKRb4YnntcC0FQ7
-	 /Zs5U8Qz5jU5nIY3KpfnXI5WRAhKxpPWPbT3nSC8KUndbboMyksKFWd2gmjMTyiks4
-	 huomU/QnRB30LAcP6+Cl7v8m/AOcDvdZZnNIwna8=
-Date: Thu, 22 Apr 2021 17:51:23 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Mike Rapoport <rppt@linux.ibm.com>
-Cc: Mark Brown <broonie@kernel.org>, Leon Romanovsky <leon@kernel.org>,
+	b=awlxtowJMX9s2njkoMkFpLZPc36A7KwtfnP73LkRfy66rVIv34lImGWXqxYFuK0Zi
+	 yif6nJMbhBDQJb/tXrDfpoGLdSRAKzpjXnhW/ah2dwdmjyKJ5xOIbnqWqaDjPbmWU1
+	 QfmAqgtQ8UR1IuQHEJpVVOeTiMXPeZNP43DGEvJVjQY3EJ5xNQlxdcK7PZ2A8HxECR
+	 BnuA8bOxgTYVbskWBoYLrGypeVP65rrCH3tfHBMaV0/B7jB/hlkz7wsOrZD9eWhIIQ
+	 QGbXYGOQx3sjQwZu7pQt34vVOOlvQvniuGKV84JMycd4kGop8JHCf6jFQHUCDM7XX5
+	 KYAZhC76Ix2IQ==
+Date: Thu, 22 Apr 2021 17:51:39 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>,
 	James Bottomley <James.Bottomley@hansenpartnership.com>,
 	ksummit@lists.linux.dev
 Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
  "trivial" patches
-Message-ID: <YIGNa8iAoJSFmkT1@pendragon.ideasonboard.com>
+Message-ID: <YIGNe07xtf1adA/G@unreal>
 References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
  <YID5xhy2vv45fnOv@unreal>
- <20210422124023.GD4572@sirena.org.uk>
- <YIFx/iorjncjslob@linux.ibm.com>
+ <20210422112001.22c64fe9@coco.lan>
+ <YIFfXTVMDmHwVmSR@unreal>
+ <20210422132202.GE4572@sirena.org.uk>
+ <20210422161207.3350a36e@coco.lan>
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YIFx/iorjncjslob@linux.ibm.com>
+In-Reply-To: <20210422161207.3350a36e@coco.lan>
 
-On Thu, Apr 22, 2021 at 03:54:22PM +0300, Mike Rapoport wrote:
-> On Thu, Apr 22, 2021 at 01:40:23PM +0100, Mark Brown wrote:
-> > On Thu, Apr 22, 2021 at 07:21:26AM +0300, Leon Romanovsky wrote:
-> > 
-> > > While we are talking about policies, I would like to raise another bad
-> > > practice that is done by even seasoned developers - sending patches with
-> > > carefully crafted and filtered TO and CC.
-> > 
-> > > This practice causes to get out of context patches without ability to
-> > > see whole picture and the worse part that it divides feedback to
-> > > "islands" without ability to agree or disagree with the feedback.
-> > 
-> > The flip side of copying everyone on everything is that especially for
-> > serieses which aren't just repetitive changes this gets really noisy
-> > really quickly and things end up just not getting read.
+On Thu, Apr 22, 2021 at 04:12:07PM +0200, Mauro Carvalho Chehab wrote:
+> Em Thu, 22 Apr 2021 14:22:02 +0100
+> Mark Brown <broonie@kernel.org> escreveu:
 > 
-> I think this is quite subjective and different people have different email
-> flows.
+> > On Thu, Apr 22, 2021 at 02:34:53PM +0300, Leon Romanovsky wrote:
+> > 
+> > > Like Christoph said, if it is unrelated send the patches as separated
+> > > series.  
+> > 
+> > A very common case is for MFDs where you've got a core driver which is
+> > either being newly added or as far as external interfaces go having some
+> > defines added to it and then a bunch of basically unrelated driver
+> > patches.  There is often a build time dependency (not so much with the
+> > newly added stuff) so there is an actual dependency but no meaningful
+> > overlap with reviews.  You get a similar thing with people bringing up
+> > new SoCs where they send a minimal set of drivers in the initial series
+> > so people can usefully test.
 > 
-> For me the most annoying is to get several patches from the middle of a
-> series. IMHO, sending at least cover letter to everyone is the bare minimum
-> so that people at least can take a look at high level details and request a
-> repost.
+> Another common case are patches changing a kAPI that it is used on
+> other subsystems. They should be grouped as a hole, and applied
+> altogether, but each subsystem maintainer should ack/review only the
+> stuff related to the subsystem's scope.
 
-Could tooling based on lore and b4 help here ? The prospect of getting
-more patches in my inbox isn't exactly enticing, but the ability to
-quickly get the full context of a patch series is certainly useful (I've
-had to look up parts I wasn't CC'ed on previously).
+This is exactly when I want to see all relevant mailing lists to be CCed.
 
--- 
-Regards,
-
-Laurent Pinchart
+Thanks
 
