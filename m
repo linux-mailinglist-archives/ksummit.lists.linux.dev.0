@@ -1,78 +1,133 @@
-Return-Path: <ksummit+bounces-142-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-132-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEF88368DFF
-	for <lists@lfdr.de>; Fri, 23 Apr 2021 09:36:26 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05561368CEF
+	for <lists@lfdr.de>; Fri, 23 Apr 2021 08:07:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id CCF0E1C6256
-	for <lists@lfdr.de>; Fri, 23 Apr 2021 07:34:28 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 4FE7A3E5469
+	for <lists@lfdr.de>; Fri, 23 Apr 2021 06:05:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 635A22FA5;
-	Fri, 23 Apr 2021 07:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F38A52FA4;
+	Fri, 23 Apr 2021 06:05:00 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from smtprelay.hostedemail.com (smtprelay0028.hostedemail.com [216.40.44.28])
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C40F70
-	for <ksummit@lists.linux.dev>; Fri, 23 Apr 2021 07:34:20 +0000 (UTC)
-Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
-	by smtpgrave03.hostedemail.com (Postfix) with ESMTP id AEF16181CB153
-	for <ksummit@lists.linux.dev>; Fri, 23 Apr 2021 00:26:16 +0000 (UTC)
-Received: from omf11.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-	by smtprelay06.hostedemail.com (Postfix) with ESMTP id 944121800803F;
-	Fri, 23 Apr 2021 00:26:10 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf11.hostedemail.com (Postfix) with ESMTPA id 6434320A294;
-	Fri, 23 Apr 2021 00:26:09 +0000 (UTC)
-Message-ID: <e3325ada985cf22b3a1d5300ef3c6ab7a9fdea8f.camel@perches.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB0F29CA
+	for <ksummit@lists.linux.dev>; Fri, 23 Apr 2021 06:04:59 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B078361404;
+	Fri, 23 Apr 2021 06:04:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1619157899;
+	bh=D4r0o+1Zd4d9tNystDimGhAjWAGvE+l0/PYVFEOxd/g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ssY1/XqT/8hDp8DpBtcj9V4m7R9vO/sDlPPRBzB12ZsUBbUal1jRMCek6pQfLBrNt
+	 +4QsFKdVf34cBzt/YSZMZe7Z8Vxt+/HkTxiUpDxgzc61IiNXebG9phmg6EpWXTpS8s
+	 oL5FUuUcsGUyTwztvEj+MPeX9sC226HP45AfRgEXq5CL4a2km51PjUxWFWecsK4oQb
+	 jkJuW6p6ps6U2MmRaTx7cg8gDgq72Qq7bm2BKvtHzGC25Mi2ApGJNX491FWSTTBdBg
+	 VzmD7psW+5h+X9vP9TxPwVq1/eIcihdep5gBOYV+/Yx5aX5/YLwhuziLuo+Tbr47ZY
+	 MQN8fyzJlJuyQ==
+Date: Fri, 23 Apr 2021 08:04:54 +0200
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
+To: Rob Herring <robherring2@gmail.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Leon Romanovsky <leon@kernel.org>,
+ James Bottomley <James.Bottomley@hansenpartnership.com>,
+ ksummit@lists.linux.dev, tools@linux.kernel.org
 Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
  "trivial" patches
-From: Joe Perches <joe@perches.com>
-To: Thomas Gleixner <tglx@linutronix.de>, Steven Rostedt
- <rostedt@goodmis.org>
-Cc: Mark Brown <broonie@kernel.org>, Mike Rapoport <rppt@linux.ibm.com>, 
- Leon Romanovsky <leon@kernel.org>, James Bottomley
- <James.Bottomley@hansenpartnership.com>,  ksummit@lists.linux.dev
-Date: Thu, 22 Apr 2021 17:26:08 -0700
-In-Reply-To: <87tunyvt8h.ffs@nanos.tec.linutronix.de>
-References: 
-	<afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
-	 <YID5xhy2vv45fnOv@unreal> <20210422124023.GD4572@sirena.org.uk>
-	 <YIFx/iorjncjslob@linux.ibm.com> <20210422132339.GF4572@sirena.org.uk>
-	 <20210422111939.0c555039@gandalf.local.home>
-	 <875z0exbiq.ffs@nanos.tec.linutronix.de>
-	 <20210422173637.67354c26@gandalf.local.home>
-	 <87tunyvt8h.ffs@nanos.tec.linutronix.de>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.38.1-1 
+Message-ID: <20210423080454.78f4f662@coco.lan>
+In-Reply-To: <CAL_JsqKS-=shqkLhzKeLHqNPhosGJw5X-fOi+dy1rT3Q_LfBZg@mail.gmail.com>
+References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
+	<YID5xhy2vv45fnOv@unreal>
+	<20210422112001.22c64fe9@coco.lan>
+	<YIFfXTVMDmHwVmSR@unreal>
+	<20210422092916.556e5e50@gandalf.local.home>
+	<CAL_JsqKS-=shqkLhzKeLHqNPhosGJw5X-fOi+dy1rT3Q_LfBZg@mail.gmail.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6434320A294
-X-Spam-Status: No, score=0.10
-X-Stat-Signature: 4993ng1du1wcjtuxydfje4e88ojjb4hc
-X-Rspamd-Server: rspamout04
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX1/AqMf09iuNLJn8pb05hYfw9Fd6QAoXqAU=
-X-HE-Tag: 1619137569-214155
 
-On Fri, 2021-04-23 at 00:39 +0200, Thomas Gleixner wrote:
-> > Another approach is to have quilt just save to a mbox, and modify that, and
-> > use another mail program to send that mbox.
+Em Thu, 22 Apr 2021 09:20:19 -0500
+Rob Herring <robherring2@gmail.com> escreveu:
 
-Which, if the cc list is long, won't let the cover letter be accepted
-and forwarded by some mailing lists.
+> On Thu, Apr 22, 2021 at 8:30 AM Steven Rostedt <rostedt@goodmis.org> wrote:
+> >
+> > On Thu, 22 Apr 2021 14:34:53 +0300
+> > Leon Romanovsky <leon@kernel.org> wrote:
+> >  
+> > > > This is not a matter of bad practice. There are a couple of reasons
+> > > > why each patch on a series will have a different group of Cc, like:
+> > > >
+> > > >     - driver maintainers for each patch may be different;
+> > > >     - scripts/get_maintainers.pl will return a different Cc/To;
+> > > >     - patch series touch different subsystems;  
+> > >
+> > > Like Christoph said, if it is unrelated send the patches as separated
+> > > series.  
+> >
+> > Since I use quilt to send my patches, my only two choices are all patches,
+> > or individual ones with Cc. Some of my patches will need to touch every
+> > architecture. I'll Cc the maintainers of the architecture code, but not
+> > include them in every architecture patch. And because this code depends on
+> > other patches, I can not send them as individual series.
+> >
+> > I use to have issues with this, but now with lore, I can trivially find the
+> > entire thread and read it the whole story. IMO, it is no longer bad
+> > practice to Cc only a single patch is a larger series to a maintainer, for
+> > the one patch that touches their code. It's a "FYI, I'm touching your
+> > code". But because of lore, it's really easy for them to get the full
+> > picture.
+> >
+> > I much rather have my INBOX today be only patches that touches my code,
+> > then full series of patches that I really don't care about. Worse yet, I'll
+> > get Cc'd on a full series of 20 patches, where only one patch touches my
+> > code. The sad part is, I'm much more likely to ignore that series, because
+> > I'm added to stuff by get-maintainers for the strangest reason, and
+> > completely miss that there's a single patch in there that really requires
+> > my review.
+> >
+> > Please, just Cc me on code that touches something I maintain or listed as
+> > a reviewer (which is still a lot).  
+> 
+> Unless the process of who to Cc or not is completely automated,
+> relying on submitters to do the right thing to give you the subset of
+> emails you want to see is never going to work. I have frequent
+> problems with folks not Cc'ing the DT list for DT patches, how hard is
+> that? I think the answer is making where patches are sent less
+> important and better/easier filtering from lore (which is coming).
 
-There are no great options for some treewide patch cases.
+I have a script to automate it, but I had to tweak it while handling
+patches that cross a single subsystem boundaries, using git send-email
+with the c/c list obtained from get_maintainers.pl.
 
-A possible option would be to bcc individuals on the cover letter, and
-cc all the mailing lists, but in that case if an individual replies,
-only the lists would get the replies.
+By default, the script adds all maintainers, reviewers and all mailing
+lists to the cover letter, but that sometimes generate a cover letter
+with 80+ c/c, which will be automatically rejected by anti-spam
+measures and by mail servers.
 
+So, I played with two different alternatives:
 
+1. At the beginning, I changed the script to c/c only the mailing lists,
+   excluding maintainers/reviewers;
+2. As the feedback was not great, I changed the script to c/c only
+   the maintainers, excluding mailing lists/reviewers. It seems that
+   this worked better.
+
+I didn't try to play with bcc, as replying to it would not send
+the replies to everyone.
+
+If you think it is worth, I could submit it to scripts/, but I
+suspect we may need to adjust it to work with all maintainers'
+workflows.
+
+Thanks,
+Mauro
 
