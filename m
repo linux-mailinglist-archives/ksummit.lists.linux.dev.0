@@ -1,104 +1,751 @@
-Return-Path: <ksummit+bounces-139-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-140-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55B1E368DD7
-	for <lists@lfdr.de>; Fri, 23 Apr 2021 09:22:25 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91121368DD9
+	for <lists@lfdr.de>; Fri, 23 Apr 2021 09:22:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id C1B9A1C633B
-	for <lists@lfdr.de>; Fri, 23 Apr 2021 07:20:07 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id 2E37A1C792D
+	for <lists@lfdr.de>; Fri, 23 Apr 2021 07:21:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 510112FA4;
-	Fri, 23 Apr 2021 07:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544512FA5;
+	Fri, 23 Apr 2021 07:21:06 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B4F70
-	for <ksummit@lists.linux.dev>; Fri, 23 Apr 2021 07:19:59 +0000 (UTC)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailout.west.internal (Postfix) with ESMTP id 225EB127D;
-	Fri, 23 Apr 2021 03:19:58 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Fri, 23 Apr 2021 03:19:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
-	date:from:to:cc:subject:message-id:references:mime-version
-	:content-type:in-reply-to; s=fm3; bh=8gLzmBC+Z56cg6lmfpNVdUIZE2d
-	pYZIGFirlHIfVmes=; b=CoyBdoEoevLOc4s33RO2A4TbJJ0NOAzUqZ5hm3qviyJ
-	fBQj2XeRJL+4jpqplq/V5Vj2tuHokSuUSqJbduzNQAdnvWqro/nzbJGmhxiRUzhQ
-	j/37fZVlewHfJG1j9QQH7wtSOInme1cnHlellMO7OwAOJVeCo6xchwYxBS3hOoJL
-	ImZBS8uzAaJ838uYILl69dFfNwyJkpfKMCOqZa4H+XjmElGJ+9Ka7barSpSOiZ1d
-	LkvSFAM9fcOXo1RqjfYY0Dx4YfDfUfoyBK1xOY32qSe/1gsvxw6ht6chENZwWhwR
-	P/8fD+ga8AN6YiDjY605SLv0oyufQZI0LCEkI4fH82w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to:x-me-proxy
-	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=8gLzmB
-	C+Z56cg6lmfpNVdUIZE2dpYZIGFirlHIfVmes=; b=PFa5vvT1JdR2fgP0gEeUyV
-	FCtEcPGo5wILiTRsHnmSnd1tFnKSZAr97w+wBTrkP+o/0TLy231vUDHE0OVBbVOM
-	wh60yNmAyJwIW2shgAd+H7py4zi2VqzPIPq47hqo3s2szskijBakgMPzplo5BrPh
-	xCOomMW5lHmcavdPVmeNp4TmgsEmhz7h998lg9d6XIbBzCqdsIfofD9xzk/Ha5sZ
-	Qgklg/pQ8pv6Gf1l3Fy4nfpix+QRHPOyiUFGGi0xPtC9rV2dov3FzG4BPEaMLqNO
-	hjSJuHv7G7ybGDxAl/PURNLvGwuWLnqa3ATcnGxfMElIMC26QTRZij54hfGa4/pw
-	==
-X-ME-Sender: <xms:HHWCYCIH8rvDOEb8f0xyyiZrr9e8Wi6AXJUn6GefnzlyYUUmxaARYw>
-    <xme:HHWCYKKxw88tZG5mR48dTMc-06gPo4P7GyaCq6FPScYfLAc7oq1A6h5cDYQ3pMlJw
-    3eDE6MjLM-coQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrvdduuddgudduiecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepveeuhe
-    ejgfffgfeivddukedvkedtleelleeghfeljeeiueeggeevueduudekvdetnecukfhppeek
-    fedrkeeirdejgedrieegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
-    hilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
-X-ME-Proxy: <xmx:HXWCYCuGonyNorn1kAh_djcU16GS8aA4gZfZAwn0oXoTk2CZAP_9-A>
-    <xmx:HXWCYHYuRVRNoQCpRfEzQK4xOeGzJGsSsxVWYPB7d9fHZvpoEE4JsQ>
-    <xmx:HXWCYJaQPm5q5HKEe42H-hWCvcmlMHrBq5QCmB85QwhoIP-wg7OYbw>
-    <xmx:HXWCYInaVt5k6yGksmC2g5aAmvsOGiuVVM37_AOHJXInUQO9tBawJQ>
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-	by mail.messagingengine.com (Postfix) with ESMTPA id 891FF240057;
-	Fri, 23 Apr 2021 03:19:56 -0400 (EDT)
-Date: Fri, 23 Apr 2021 09:19:54 +0200
-From: Greg KH <greg@kroah.com>
-To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	ksummit@lists.linux.dev
-Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
- "trivial" patches
-Message-ID: <YIJ1GqH0s437hXtv@kroah.com>
-References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
- <YID5xhy2vv45fnOv@unreal>
- <20210422112001.22c64fe9@coco.lan>
- <20210422125357.uuxprp6rqxewcdsr@nitro.local>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3B22FA1
+	for <ksummit@lists.linux.dev>; Fri, 23 Apr 2021 07:21:03 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D93CA613DB;
+	Fri, 23 Apr 2021 07:21:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1619162463;
+	bh=Ecjcv7rCQzGfjeRxL6T0JbpHE99KffGApYjYGPM3LeU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=T+TtFvh7HbQpfSRyvesZjdi32NIaA8Q5uZt9CaGVQcM6u81iqKr74BdKcEow9jpMK
+	 WhBGS1hab7Pfa+O8FnhC4CJxhrmmZ0BX7zO1TQSbcUr/28feSoc7vRugXE0hpF8kIR
+	 Cwhk6RLPOJ54aQXzk14gkU2eVseUZbXgWN6jssxjrT2mrcqjy+b5OH4CltYPFVj5P5
+	 OX8KIxCK5q93D1fDEyEz8LFqAIr4GNDkQF1F/LGKDFJBh74HTVne9q4g/2lI19fqPr
+	 ZerUpjmTqykaxpAxfo2zivZ09t8YK6/bpFTOi/86CPMvMIA1iggisBUPck1SyZlXrH
+	 YnCHXKskGQWiA==
+Received: by mail.kernel.org with local (Exim 4.94)
+	(envelope-from <mchehab@kernel.org>)
+	id 1lZq7Y-002h1g-A4; Fri, 23 Apr 2021 09:21:00 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: 
+Cc: linuxarm@huawei.com,
+	mauro.chehab@huawei.com,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	"James Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Joe Perches" <joe@perches.com>,
+	"Leon Romanovsky" <leon@kernel.org>,
+	"Rob Herring" <robherring2@gmail.com>,
+	"Steven Rostedt" <rostedt@goodmis.org>,
+	ksummit@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	tools@linux.kernel.org
+Subject: [PATCH RFC] scripts: add a script for sending patches
+Date: Fri, 23 Apr 2021 09:20:50 +0200
+Message-Id: <a1cb3534217fbaae2a464c853031a5d353009f6c.1619162258.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210423091320.4f2381b2@coco.lan>
+References: <20210423091320.4f2381b2@coco.lan>
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210422125357.uuxprp6rqxewcdsr@nitro.local>
+Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-On Thu, Apr 22, 2021 at 08:53:57AM -0400, Konstantin Ryabitsev wrote:
-> On Thu, Apr 22, 2021 at 11:20:01AM +0200, Mauro Carvalho Chehab wrote:
-> > Also, nowadays, with lore and b4, it would be easy to retrieve the
-> > entire patch series, even for those that aren't subscribed on a 
-> > c/c mailing list.
-> 
-> If you're a mutt user, you can set up a keybinding, e.g.:
-> 
->     macro index 4 "<pipe-message>~/work/git/korg/b4/b4.sh mbox -f -o ~/Mail<return>"
+This script send patches to an upstream maintainer's tree,
+using git send-email and producing the relevant c/c list,
+by using scripts/get_maintainers.pl.
 
-What???
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+---
 
-I didn't know about "-f", that is wonderful!!!
+As result of the current discussions about Rethinking the acceptance
+policy for  "trivial" patches,  I'm submitting the script I wrote in order
+to help me to send patches upstream using get_maintainers.pl.
 
-/me goes off to add yet-another-mutt-macro
+I've been playing with this script since 2015, and had to improve and
+add new options to it over time, based on some specific needs that
+I detected while submitting patches both to a single subsystem and to
+multiple ones.
 
-greg k-h
+ scripts/send-patches.pl | 658 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 658 insertions(+)
+ create mode 100755 scripts/send-patches.pl
+
+diff --git a/scripts/send-patches.pl b/scripts/send-patches.pl
+new file mode 100755
+index 000000000000..b4aa73979e4d
+--- /dev/null
++++ b/scripts/send-patches.pl
+@@ -0,0 +1,658 @@
++#!/usr/bin/perl
++# SPDX-License-Identifier: GPL-2.0
++# Copyright (c) 2015- by Mauro Carvalho Chehab <mchehab@kernel.org>
++
++use strict;
++use warnings;
++use Email::Simple;
++use Email::Address;
++use Getopt::Long;
++use Pod::Usage;
++use File::Path 'make_path';
++require Tk;
++require Tk::Text;
++require Tk::Font;
++require Tk::Toplevel;
++
++# Where the patch series will be stored. If doesn't exits,
++# it will be automatically created
++my $tmp_dir = "patches/tmp";
++
++# Used together with --avoid-resend
++my $resend_cache_dir = "patches/last_patches";
++my $version_ctrl = ".version_control";
++
++#
++# File editor function. Currently relies on Tk to open
++# a separate edit window.
++#
++sub edit_text($) {
++	my $fname = shift;
++	my $string = qx(cat $fname);
++	my $edited_text;
++
++	my $toplvl = MainWindow->new();
++	my $font = $toplvl->Font(family  => 'fixed', size => 12);
++
++	my $frame_txt = $toplvl->Frame();
++	my $frame_btn = $toplvl->Frame();
++
++	$toplvl->configure(-title => "Editing $fname");
++
++	my $text = $frame_txt->Scrolled('Text')->pack;
++	$text->configure(-height      => 30,
++			-background  => 'black',
++			-foreground  => 'gray',
++			-insertbackground => 'white',
++			-width       => 80,
++			-wrap        => 'word',
++			-font        => $font);
++
++	my $Button1 = $frame_btn->Button();
++	$Button1->configure(-text    => 'OK',
++		       -bg      => 'lightblue',
++		       -width   => 5,
++		       -height  => 1,
++		       -command => sub{$edited_text = $text->get("1.0", "end"); $toplvl->destroy} );
++
++	$text->insert('1.0', $string);
++
++	# Pack the widgets in the frames
++	$text->pack();
++	$frame_txt->pack();
++	$frame_btn->pack();
++	$Button1->pack();
++
++	$text->waitWindow();
++
++	return $edited_text;
++}
++
++#
++# Argument handling
++#
++my $edit = 0;
++my $cover = 0;
++my $man = 0;
++my $help = 0;
++my $cmd_line = "git format-patch -o $tmp_dir --stat --summary --patience --signoff --thread=shallow";
++my $changeset = 0;
++my $dont_send = 0;
++my $avoid_resend = 0;
++my $reply_patches = 0;
++my $subject_prefix = "PATCH";
++my $dont_get_maintainer = 0;
++my $dont_get_reviewer = 0;
++my $reroll_count = "";
++my $git = 0;
++my $nogit = 0;
++my $add_everyone = 0;
++my $unify = "";
++my $to_maintainers = 0;
++
++GetOptions(
++	"cover|letter" => sub { $cmd_line .= " --cover-letter"; $cover = 1},
++	"no-merge|no-merges|no-renames" =>  sub { $cmd_line .= " --no-renames" },
++	"merge|M" =>  sub { $cmd_line .= " -M01" },
++	"delete|D" =>  sub { $cmd_line .= " -D" },
++	"unify|U=s" =>  \$unify,
++	"to=s" => sub { my ($opt, $arg) = @_; $cmd_line .= " --to '$arg'" },
++	"cc=s" => sub { my ($opt, $arg) = @_; $cmd_line .= " --cc '$arg'" },
++	"prefix|subject-prefix=s" => \$subject_prefix,
++	"edit|annotate" => \$edit,
++	"dry-run|dont-send" => \$dont_send,
++	"reply-patches" => sub { $reply_patches = 1; $avoid_resend = 1; $cmd_line .= " -N" },
++	"avoid-resend" => sub { $avoid_resend = 1; $cmd_line .= " -N" },
++	"dont-get-maintainer" => \$dont_get_maintainer,
++	"dont-get-reviewer" => \$dont_get_reviewer,
++	"everyone|add-everyone" => \$add_everyone,
++	"git" => \$git,
++	"no-git-fallback" => \$nogit,
++	"to-maintainers" => \$to_maintainers,
++	"v|reroll_count=s" => \$reroll_count,
++	"help" => \$help,
++	"man" => \$man,
++) or pod2usage(2);
++
++$help = 1 if (@ARGV < 1);
++
++if ($avoid_resend && $cover) {
++	printf ("Sorry, you can't avoid resend patches and add a cover yet.\n");
++}
++
++pod2usage(1) if $help;
++pod2usage(-verbose => 2) if $man;
++
++$cmd_line .= " --subject-prefix '$subject_prefix'";
++$cmd_line .= " -v $reroll_count" if ($reroll_count);
++$cmd_line .= " -U$unify" if ($unify);
++$cmd_line = join(' ', $cmd_line, @ARGV);
++
++$dont_get_reviewer = 1 if ($dont_get_maintainer);
++
++#
++# Prepare to avoid resending patches
++#
++
++my %cgid_to_msgid;
++my %msgid_to_file;
++my %msgid_to_subject;
++
++sub msgid_from_last_patch($)
++{
++	my $change_id = shift;
++
++	return 0 if (!$change_id);
++	return 0 if (!$cgid_to_msgid{$change_id});
++
++	return $cgid_to_msgid{$change_id};
++}
++
++if ($avoid_resend) {
++	open IN, $version_ctrl or print "Can't find $version_ctrl\n";
++	while (<IN>) {
++		if (m/([^\t]+)\t([^\t]+).*\n/) {
++			$cgid_to_msgid{$1} = $2;
++		}
++	}
++	close IN;
++
++	opendir(my $dh, $resend_cache_dir) || die "can't read patches at $resend_cache_dir";
++	while(readdir $dh) {
++		my $name = "$resend_cache_dir/$_";
++		next if (-d $name);
++
++		my $raw_email = qx(cat $name);
++		my $email = Email::Simple->new($raw_email);
++		my $msgid = $email->header("Message-Id");
++		my $subject = $email->header("Subject");
++
++		$msgid_to_file{$msgid} = $name if ($msgid);
++		$msgid_to_subject{$msgid} = $subject if ($subject && $msgid);
++	}
++	closedir $dh;
++}
++
++sub get_maintainer($$)
++{
++	my $cmd = $_[0];
++	my @file_cc = @{$_[1]};
++	my $role;
++	my $e_mail;
++	my %cc = (
++		"linux-kernel\@vger.kernel.org" => 1
++	);
++
++	foreach $e_mail (@file_cc) {
++		my @addresses = Email::Address->parse($e_mail);
++		for my $address (@addresses) {
++			$cc{$address} = "cc";
++		}
++	}
++
++	$cmd = "./scripts/get_maintainer.pl " . $cmd;
++
++	print "$cmd\n";
++	open IN, "$cmd |" or die "can't run $cmd";
++	while (<IN>) {
++		$e_mail = $_;
++		$e_mail =~ s/(.*\@\S+)\s*\(.*/$1/;
++		$e_mail =~ s/\s*$//;
++
++
++		if (m/\(.*(open list|moderated list|subscriber list|maintainer|reviewer|modified|chief|commit_signer).*\)/) {
++			$role = $1;
++		} else {
++			$role = "cc";
++		}
++		# Discard myself
++		next if ($e_mail =~ m/(mchehab|mauro.?chehab)\S+\@\S+/);
++		$cc{$e_mail} = $role;
++	}
++	close IN;
++
++	return %cc;
++}
++
++#
++# Generate patches with git format-patch
++#
++make_path($tmp_dir);
++unlink glob "$tmp_dir/*";
++
++print "\$ $cmd_line\n";
++system ("$cmd_line >>/dev/null") && die("Failed to run git format-patch");
++
++#
++# Add Cc: based on get_maintainer.pl script
++#
++my @patches;
++my @send_patches;
++
++opendir(my $dh, $tmp_dir) || die "can't read patches at $tmp_dir";
++while(readdir $dh) {
++	my $name = "$tmp_dir/$_";
++	push @patches,$name if (-f $name);
++}
++closedir $dh;
++
++my %changeids;
++
++my $has_cover;
++my %cover_cc;
++
++foreach my $f(sort @patches) {
++	print "Checking $f\n";
++	if ($f =~ m,0000-cover-letter.patch$,) {
++		push @send_patches, $f;
++		$has_cover = 1;
++		next;
++	}
++
++	my $raw_email = qx(cat $f);
++	die "Can't read $f" if (!$raw_email);
++
++	my $email = Email::Simple->new($raw_email);
++
++	my $msgid = 0;
++	my $oldsubject;
++	my $change_id;
++
++	if ($raw_email =~ m/\nChange-Id:\s+([^\n]+)\n/) {
++		$change_id = $1;
++	}
++
++	if ($avoid_resend) {
++		$msgid = msgid_from_last_patch($change_id);
++		if ($msgid) {
++			if ($msgid_to_subject{$msgid}) {
++				$oldsubject = $msgid_to_subject{$msgid};
++
++				my $file = $msgid_to_file{$msgid};
++
++				my $old_md5 = qx(filterdiff $file | md5sum);
++				my $new_md5 = qx(filterdiff $f | md5sum);
++
++				$old_md5 =~ s/(\S+).*$/$1/;
++				$new_md5 =~ s/(\S+).*$/$1/;
++
++				if ($old_md5 eq $new_md5) {
++					printf "   Skipping patch as it is identical to previous version\n";
++					unlink $f;
++					next;
++				}
++			}
++			my $new_msgid = $email->header("Message-Id");
++			$changeids{$change_id} = $new_msgid if ($new_msgid);
++		}
++	}
++
++	# Patch was not avoided. Push to the list of patches to send
++	push @send_patches, $f;
++
++	my $cmd = "";
++	$cmd .= "--git" if ($git);
++	$cmd .="--nogit-fallback --nogit-blame --nogit" if ($nogit);
++	$cmd .=" $f";
++
++	my @file_cc = $email->header("Cc");
++	if ($to_maintainers) {
++		push @file_cc, $email->header("To") if ($email->header("To"));
++	}
++	my %cc_email_map = get_maintainer $cmd, \@file_cc;
++	my %maintainers;
++
++	@file_cc = ();
++	my @file_to = ();
++	foreach my $cc (sort keys %cc_email_map) {
++		my $ml_added = 0;
++		my $role = $cc_email_map{$cc};
++
++		my $type = "Cc";
++		$type = "To" if ($to_maintainers && $role =~ "maintainer");
++
++		if ($role =~ "maintainer") {
++			if (!$dont_get_maintainer) {
++				$ml_added = 1;
++				$cover_cc{$cc} = 1;
++			}
++		} elsif ($role =~ "reviewer") {
++			if (!$dont_get_reviewer) {
++				$ml_added = 1;
++				$cover_cc{$cc} = 1;
++			}
++		} elsif ($role =~ "list") {
++			$ml_added = 1;
++			$cover_cc{$cc} = 1;
++		} elsif ($add_everyone) {
++			$ml_added = 1;
++			$cover_cc{$cc} = 1;
++		}
++
++		if ($type eq "To") {
++			push @file_to, $cc;
++		} else {
++			push @file_cc, $cc;
++		}
++		if ($ml_added && $cover) {
++			printf "    $type + cover Cc: $cc (%s)\n", $role;
++		} else {
++			printf "    $type: $cc (%s)\n", $role;
++		}
++	}
++
++	$email->header_set("To", @file_to) if (@file_to);
++	$email->header_set("Cc", @file_cc) if (@file_cc);
++
++	# Remove Change-Id meta-data from the e-mail to be submitted
++	my $body = $email->body;
++	$body =~ s/(\nChange-Id:\s+[^\n]+\n)/\n/;
++	$email->body_set($body);
++
++	if ($avoid_resend) {
++		if (!$reply_patches && $msgid) {
++			$email->body_set("New version of $oldsubject\n\n$body");
++		} else {
++			die "New patches in the series. Can't proceed." if (!$msgid);
++			die "Failed to find old subject. Can't proceed." if (!$oldsubject);
++
++			$email->header_set("Subject", "Re: $oldsubject");
++		}
++		$email->header_set("In-Reply-To", $msgid);
++		$email->header_set("References", $msgid);
++	}
++
++	open OUT, ">$f";
++	print OUT $email->as_string;
++	close OUT;
++}
++
++# Sanity check
++die "Something wrong when generating/detecting a cover" if ($cover && !$has_cover);
++
++#
++# Add everyone at the cover's to: field
++#
++if ($has_cover) {
++	my $count_cc = 0;
++	foreach my $f(sort @patches) {
++		next if (!($f =~ m,0000-cover-letter.patch$,));
++
++		print "$f:\n";
++		my $raw_email = qx(cat $f);
++		die "Can't read $f" if (!$raw_email);
++
++		my $email = Email::Simple->new($raw_email);
++
++		my @file_cc = $email->header("Cc");
++
++		foreach my $e_mail (@file_cc) {
++			my @addresses = Email::Address->parse($e_mail);
++			for my $address (@addresses) {
++				$cover_cc{$address} = 1;
++			}
++		}
++
++		foreach my $to(sort keys %cover_cc) {
++			print "    Cc: $to\n";
++			push @file_cc, $to;
++			$count_cc++;
++		}
++
++		$email->header_set("Cc", @file_cc);
++
++		open OUT, ">$f";
++		print OUT $email->as_string;
++		close OUT;
++
++		print "Number of Cc at cover: $count_cc\n";
++	}
++}
++
++#
++# Renumber the patches
++#
++if ($avoid_resend && !$reply_patches) {
++	my $tot_patch = @send_patches;
++
++	$tot_patch-- if ($cover);
++
++	my $digits = int(log($tot_patch)/log(10)+0.99999);
++	my $patch = 1;
++
++	foreach my $f(@send_patches) {
++		next if ($f =~ m,0000-cover-letter.patch$,);
++
++		my $raw_email = qx(cat $f);
++		die "Can't read $f" if (!$raw_email);
++
++		my $email = Email::Simple->new($raw_email);
++
++		my $subject = $email->header("Subject");
++
++		my $number = sprintf("%0${digits}d/%0${digits}d", $patch, $tot_patch);
++
++		$subject =~ s/^\[[^\]]+\]\s*//;
++		$subject = "[$subject_prefix $number] " . $subject;
++		printf("$subject\n");
++		$email->header_set("Subject", $subject);
++
++		$patch++;
++
++		open OUT, ">$f";
++		print OUT $email->as_string;
++		close OUT;
++	}
++}
++
++#
++# Open an editor if needed
++#
++if ($edit || $cover) {
++	foreach my $f(sort @send_patches) {
++		my $new_text;
++
++		do {
++			$new_text = edit_text($f);
++		} while (!$new_text);
++
++		open OUT, ">$f";
++		print OUT $new_text;
++		close OUT;
++
++		last if ($cover);
++	}
++}
++
++#
++# Send the emails
++#
++
++if (!$dont_send) {
++	printf("\$ git send-email $tmp_dir\n");
++	system("git send-email $tmp_dir");
++} else {
++	printf("Use git send-email $tmp_dir to send the patches\n");
++}
++
++#
++# Update the change IDs with the new patches
++#
++foreach my $chgid (keys %changeids) {
++	$cgid_to_msgid{$chgid} = $changeids{$chgid};
++}
++
++open OUT,">$version_ctrl.new";
++foreach my $chgid (sort keys %cgid_to_msgid) {
++	printf OUT "%s\t%s\n", $chgid, $cgid_to_msgid{$chgid};
++}
++close OUT;
++
++if ($dont_send) {
++	printf("New version control stored as: .version_control.new\n" .
++	       "Don't forget rename it to .version_control for the next patch series after sending it.\n");
++} else {
++	rename $version_ctrl, "$version_ctrl.old";
++	rename "$version_ctrl.new", $version_ctrl;
++}
++
++
++__END__
++
++=head1 NAME
++
++send-patches.pl - Send patches upstream
++
++=head1 SYNOPSIS
++
++send-patches.pl [options] [changeset] -- [options for git format-patch]
++
++Options:
++
++--cover/--cover-letter
++--no-renames/--no-merges/--no-renames
++--merge/-M
++--delete/-D
++--unify/-U [level]
++--to [e@mail]
++--cc [e@mail]
++--prefix/--subject-prefix
++--edit
++--dont-send/--dry-run
++--avoid-resend
++--reply-patches
++--dont-get-maintainer
++--not-everyone/--dont-add-everyone
++--no-git-fallback
++--to-maintainers
++--help
++--man
++--reroll-count/-v [version number]
++
++=head1 OPTIONS
++
++=over 8
++
++=item B<--cover> or B<--cover-letter>
++
++Patch series will have a cover letter. Automatically enables edition
++
++=item B<--no-renames> or B<--no-merges> or B<--no-merge>
++
++Disables git merge detection with git show --no-renames
++
++=item B<--merge> or B<--M>
++
++Enables aggressive git merge detection with git show -M01
++
++=item B<--delete> or B<--D>
++
++Omit the previous content on deletes, printing only the header but
++not the diff between the removed files and /dev/null.
++
++=item B<--unify> or B<--U>
++
++Set the unify diff level (default=3).
++
++=item B<--to>
++
++Add one more recipient destination for the e-mail
++(at the To: part of the email)
++
++=item B<--cc>
++
++Add one more recipient carbon copy destination for the e-mail
++(at the Cc: part of the email)
++
++=item B<--prefix> or B<--subject-prefix>
++
++By default, the subject prefix will be "PATCH". This otpion allows changing
++it.
++
++=item B<--edit>
++
++Allows editing each patch in the series, and the cover letter.
++
++=item B<--dont-send> or B<--dry-run>
++
++Do everything but calling git send-email. Useful to test the tool or
++when you need to do more complex things.
++
++=item B<--reply-patches>
++
++Instead of sending a new series, reply to an existing one. This only
++works if no new patches were added at the series.
++
++=item B<--avoid-resend>
++
++Don't resend patches that are identical to the previosly send
++series of patches. The patches that will be send will be renumbered.
++
++Please notice that this option is currently incompatible with
++a --cover, as we need to teach this script how to remove the
++removed patches from the letter summary.
++
++=item B<--dont-get-maintainer>
++
++Ignore maintainers at the cover letter.
++
++=item B<--dont-get-reviewer>
++
++Ignore reviewers at the cover letter.
++
++=item B<--everyone>/<--add-everyone>
++
++The script/get_maintainers.pl returns maintainers, reviewers and mailing lists.
++It also returns a list of usual contributors.
++
++By default, the usual contributors are ignored at the cover letter, being
++added only at the patches themselves. When this flag is used, they'll also
++be c/c to the cover letter.
++
++=item B<--git>
++
++Include recent git *-by: signers.
++
++=item B<--no-git-fallback>
++
++Use git when no exact MAINTAINERS pattern. This disables detection of the
++usual contributors.
++
++=item B<--to-maintainers>
++
++Instead of placing patches on a series, send them individually
++to their own maintainers.
++
++=item B<-v>/<--reroll-count>
++
++Change the version number on a patch series, by passing --reroll-count
++to git format-patch.
++
++=item B<--help>
++
++Print a brief help message and exits.
++
++=item B<--man>
++
++Prints the manual page and exits.
++
++=back
++
++=head1 DESCRIPTION
++B<This program> will submit a patch series upstream.
++=cut
++
++=head1 BUGS
++
++Report bugs to Mauro Carvalho Chehab <mchehab@kernel.org>
++
++=head1 COPYRIGHT
++
++Copyright (c) 2015- by Mauro Carvalho Chehab <mcheha@kernel.org>.
++
++License GPLv2: GNU GPL version 2 <http://gnu.org/licenses/gpl.html>.
++
++This is free software: you are free to change and redistribute it.
++There is NO WARRANTY, to the extent permitted by law.
++
++=cut
+-- 
+2.30.2
+
+
 
