@@ -1,148 +1,125 @@
-Return-Path: <ksummit+bounces-148-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-149-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6456436909F
-	for <lists@lfdr.de>; Fri, 23 Apr 2021 12:52:29 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEFF93690AD
+	for <lists@lfdr.de>; Fri, 23 Apr 2021 12:55:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id 745C71C6FC1
-	for <lists@lfdr.de>; Fri, 23 Apr 2021 10:49:43 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 378BA3E89E3
+	for <lists@lfdr.de>; Fri, 23 Apr 2021 10:54:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6289C2FA6;
-	Fri, 23 Apr 2021 10:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3508A2FA5;
+	Fri, 23 Apr 2021 10:54:41 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81CDA2FA1;
-	Fri, 23 Apr 2021 10:49:34 +0000 (UTC)
-Received: from ip4d14bd53.dynamic.kabel-deutschland.de ([77.20.189.83] helo=[192.168.66.200]); authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1lZtNG-0000is-Iv; Fri, 23 Apr 2021 12:49:26 +0200
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, regressions@lists.linux.dev,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
- Pablo Neira Ayuso <pablo@netfilter.org>, ksummit@lists.linux.dev,
- workflows@vger.kernel.org
-References: <268a3049-7c0b-8a33-1ff6-5a2d35fcba16@leemhuis.info>
- <YIKdQKJNZOSfdL9B@kroah.com>
-From: Thorsten Leemhuis <linux@leemhuis.info>
-Subject: Re: RFC: building a regression tracking bot for Linux kernel
- development
-Message-ID: <8a44e6b3-fff4-ea6f-2643-bb2a15ff990a@leemhuis.info>
-Date: Fri, 23 Apr 2021 12:49:25 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30FF72
+	for <ksummit@lists.linux.dev>; Fri, 23 Apr 2021 10:54:39 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id F0B15613F2;
+	Fri, 23 Apr 2021 10:54:38 +0000 (UTC)
+Date: Fri, 23 Apr 2021 12:54:36 +0200
+From: Greg KH <greg@kroah.com>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Shuah Khan <skhan@linuxfoundation.org>, ksummit@lists.linux.dev
+Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
+ "trivial" patches
+Message-ID: <YIKnbDRUKODfj+iF@kroah.com>
+References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
+ <20210422123559.1dc647fb@coco.lan>
+ <0d83502f-eb29-9b06-ada8-fcd03f9c87a8@linuxfoundation.org>
+ <a72a13e56ee5f19b0dee9ae8c1928b020e8809c2.camel@HansenPartnership.com>
+ <dfa424e7e23f82965e7e956ef16abe6617534dd9.camel@HansenPartnership.com>
+ <20210422115235.0526dabd@gandalf.local.home>
+ <20210423095830.684d22c4@coco.lan>
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <YIKdQKJNZOSfdL9B@kroah.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-BS
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1619174974;c67f6ab2;
-X-HE-SMSGID: 1lZtNG-0000is-Iv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210423095830.684d22c4@coco.lan>
 
-On 23.04.21 12:11, Greg KH wrote:
-> On Thu, Apr 22, 2021 at 09:16:40AM +0200, Thorsten Leemhuis wrote:
->> Lo! As mentioned a few times recently I'm staring to build a bot for
->> semi-automatic Linux kernel regressions tracking. Find below a rough
->> description of how I imagine it's going to work. That way I want to give
->> everyone a chance to influence things before I'm starting to code for
->> real. Early feedback will help to build something that's acceptable for
->> the Linux kernel developer community and used in practice in the long
->> run, and that's what I aim for.
->>
->> I know, I know, "Talk is cheap. Show me the code.". But I had to think
->> things through and write some of it down anyway, so no harm done in
->> posting it as RFC. I CCed ksummit, as many maintainers hang out there
->> and because this is a follow up to my former regression tracking work we
->> discussed on both kernel and maintainers summit 2017; it fact it
->> hopefully might be something for this year as well, we'll see, too early
->> to tell.
->>
->> So how will the "regzbot" work? The ideal case is simple:
->>
->> Someone reports a regression to the recently created regressions mailing
->> list(regressions@lists.linux.dev). There the user includes a tag like this:
->>> #regzb introduced: 94a632d91ad1 ("usc: xhbi-foo: check bar_params earlier")
+On Fri, Apr 23, 2021 at 09:58:30AM +0200, Mauro Carvalho Chehab wrote:
+> Em Thu, 22 Apr 2021 11:52:35 -0400
+> Steven Rostedt <rostedt@goodmis.org> escreveu:
 > 
-> That's great, but the ability for most people to track stuff down to the
-> commit id feels very low.  I would think that the "this no longer works"
-> is the bug report / regression, and eventually that can be tracked down
-> to "commit XXXX caused this" which is what you want to see above.
+> > On Thu, 22 Apr 2021 08:48:21 -0700
+> > James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
+> > 
+> > > On Thu, 2021-04-22 at 08:42 -0700, James Bottomley wrote:
+> > > [...]  
+> > > >    2. Improving the requirement for bug fixes and large series, like
+> > > > cover letters to everyone, adding fixes: tag and clear explanation.    
+> > > 
+> > > Just on this one, can we get the mailing list to help now we're moving
+> > > to a new infrastructure?  I was already thinking of asking if it could
+> > > reject email with html parts rather than simply losing it, but perhaps
+> > > it could reject threaded submissions where the cover letter isn't
+> > > correctly cc'd?  I know that's a big ask because there has to be an
+> > > easy way to recognize them (heuristics on the PATCH tag?) and a way to
+> > > recognize missing cc's (perhaps simply that someone cc'd on the
+> > > threaded [PATCH x/y] reply isn't cc'd on [PATCH 0/y]?)  
+> > 
+> > Unfortunately, this breaks all quilt users, as quilt does not support this.
 > 
-> Or am I confused?
-
-Sorry, I should have made it more obvious that I leave some stuff out
-initially and get to aspect like that later. :-/
-
-[…]
->> That can't be all
->> -----------------
->>
->> Of course the world is more complicated than the simple example scenario
->> above, as the devil is always in the details. The three most obvious
->> problems the initial ideal scenario left aside:
->>
->> * The reporter doesn't specify the #regzb tag at all. Regzbot can't do
->> anything about it, it sadly won't have visionary power and a AI engine
->> any time soon. Some human (for a while that often will be me) thus needs
->> to reply with the tag with a proper reply-to to the report to make
->> regboz track it.
+> This will also break patch series that touch several subsystems.
 > 
-> Any specific format/tag we can use to help make this easier?  Or is that
-> just something that you are going to do "by hand" to start with?
-
-For now making sure regressions@lists.linux.dev is added to the CCed of
-any replies to regression reports would be a really big help to already
-establish it as central place where they are all visible. Then no human
-or bot needs to monitor hundreds of mailing list to find them -- which
-obviously is doomed to fail and was one of the pain points when I
-tracked regressions manually years ago.
-
-And in the long run of course everyone is free to use those tags
-(obviously they won't help before I get that bot running), but for in
-the beginning it will be mainly "me doing it by hand"...
-
->>  * regression in stable and longterm kernels sometimes affect multiple
->> versions, for example if a patch that works fine in mainline was
->> backported to the longterm kernel 5.10 and 5.4 – but causes problems in
->> both, as something required by the patch is missing in those lines. How
->> this will be solved exactly remains to be seen, maybe like this:
->>> #regzb Introduced: c39667ddcfd6 e39667ddcfd1 ("usc: xhbi-foo: check bar_params a little later again")
->>
->>  Then regzbot can look those commits up and from that determine the
->> affected versions. Obviously the reporter will likely not be aware of
->> it, hence it's likely that the stable maintainer or the developer need
->> to send a mail to make regzbot aware that this regression affects
->> multiple versions.
+> Out of curiosity, I ran my script letting it to place at the cover letter
+> maintainers, reviewers and mailing lists, for this patch series:
 > 
-> This shouldn't be that big of an issue, as the stable maintainers have
-> simple tools that can show "what releases was this commit in" today,
-> which is what we use to track what commits need to be backported where.
+> 	[PATCH 000/190] Revertion of all of the umn.edu commits
+> 	https://lore.kernel.org/lkml/YIJyzkgglMrAzIwh@kroah.com/T/#m087445f69f5dd590b9ad5f4cdd62c2a812956435
 > 
-> I can give you a copy of my tools off-line if you are curious about this
-> and think it's worth adding to your tool.
+> The number of e-mails to be C/c is 221 e-mails! (see enclosed)
+> 
+> An e-mail like that will almost for sure be ignored by  all mail
+> servers[1], as the e-mail will be considered as SPAM.
+> 
+> [1] Except if the servers would have explicit rules to allow such
+>     really big c/c list to be accepted from maintainers, which is
+>     risky.
+> 
+> Looking at the actual e-mail from Greg at lore, the CC list was a lot
+> smaller than that:
+> 
+> Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+>         Linus Torvalds <torvalds@linux-foundation.org>,
+>         Aditya Pakki <pakki001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
+>         Qiushi Wu <wu000273@umn.edu>, x86@kernel.org,
+>         Bjorn Helgaas <bhelgaas@google.com>,
+>         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+>         Arnd Bergmann <arnd@arndb.de>, David Airlie <airlied@linux.ie>,
+>         Michael Turquette <mturquette@baylibre.com>,
+>         Bjorn Andersson <bjorn.andersson@linaro.org>,
+>         Linus Walleij <linus.walleij@linaro.org>,
+>         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+>         Daniel Vetter <daniel@ffwll.ch>,
+>         Jean Delvare <jdelvare@suse.com>,
+>         Guenter Roeck <linux@roeck-us.net>,
+>         Jiri Kosina <jikos@kernel.org>, Will Deacon <will@kernel.org>,
+>         Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+>         Jakub Kicinski <kuba@kernel.org>,
+>         "David S. Miller" <davem@davemloft.net>,
+>         Johan Hovold <johan@kernel.org>,
+>         Jiri Slaby <jirislaby@kernel.org>,
+>         Pablo Neira Ayuso <pablo@netfilter.org>,
+>         Johannes Berg <johannes@sipsolutions.net>,
+>         Takashi Iwai <tiwai@suse.com>
+> 
+> (Not sure what criteria Greg used to shorten the C/c list)
 
-Guess I might get back to that sooner or later, but if you already have
-something to handle that I might ignore that case initially and focus on
-other aspects to make sure that stuff gets properly off the ground.
+I looked at the actual maintainers for the whole list of patches and
+made a judgement call to slim it down to something "manageable"
 
-> Oh, and many thanks for doing this, I think this looks great.
+In other words, I was forced to do it "by hand" :(
 
-Thx for taking a look. Feels good to hear that, as I really don't want
-to build something which in the end doesn't get used.
+thanks,
 
-Ciao, Thorsten
-
-P.S.: There is one thing I forgot to mention: regzbot will obviously in
-the long run also be able to generate reports in text form and send them
-to Linus or LKML occasionally (likely once a week before or after a new rc).
+greg k-h
 
