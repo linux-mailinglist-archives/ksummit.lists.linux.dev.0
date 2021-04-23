@@ -1,158 +1,98 @@
-Return-Path: <ksummit+bounces-130-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-131-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7F57368924
-	for <lists@lfdr.de>; Fri, 23 Apr 2021 00:53:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9866D3689AA
+	for <lists@lfdr.de>; Fri, 23 Apr 2021 02:11:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 5F2663E900E
-	for <lists@lfdr.de>; Thu, 22 Apr 2021 22:53:18 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id AE9A33E8630
+	for <lists@lfdr.de>; Fri, 23 Apr 2021 00:10:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 197472FA3;
-	Thu, 22 Apr 2021 22:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CCDD2FA2;
+	Fri, 23 Apr 2021 00:10:16 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C9070
-	for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 22:53:09 +0000 (UTC)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 0200B564;
-	Fri, 23 Apr 2021 00:53:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1619131987;
-	bh=ZzF2erTe3fXQiFhdXkj3DhsmmB3kEFY7iEyzN9UISX0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GH5ankGJ915+93U2HsruLrQV7SNmsuhMQDuTrAKTf8AsY1yBEaN6bXnyft4GIfjpa
-	 uvh2mvxGhaoOVap6u1zWvEeinPqW+TCGFPMRLR0kaK1LnEOtVNf9EpHSYLLernE8Kd
-	 ojEgk6WlGB67UaKUKEKCvbSqGZM77+my2N3ygFA4=
-Date: Fri, 23 Apr 2021 01:53:02 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: Al Viro <viro@zeniv.linux.org.uk>,
-	Christoph Hellwig <hch@infradead.org>,
-	Roland Dreier <roland@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	ksummit@lists.linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132B170
+	for <ksummit@lists.linux.dev>; Fri, 23 Apr 2021 00:10:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+	:Reply-To:Content-ID:Content-Description;
+	bh=b658WO1cfkCzmniAQjbswqvEqiD20keA/c2Qdz3GX3M=; b=ED+wcWFYWZLq2ifP7AnHRSdw9v
+	8cr6F7CaTXfrbXJtDM0qyZuVQ5H4dmJa7iAxd3hDTueAXbtz6SVh3p5a1p1NSTInNtNCC4/5E7gwR
+	BjPpaR+G4/3qazqCllpAllMZ8U3QdpApjvSTaFLFezipZl/ZSnmEsA8Udqu2H7hLRLmb8nH8lvpyG
+	r9MKOVJLXVVFBv6dcDfCwEQoqq+rGfFJoQVBk+5NnQy4DAIP5VGDH+hgTPTSOGwSk4z3D/mtYlNf4
+	80WNRDUNqgWjqZbLQ5TAaF86TzvimK5eQX17jOioU1cEHrIkCbgbLvznkoSv30vrcRtoZEnzh/pvY
+	h++ujD8g==;
+Received: from [2601:1c0:6280:3f0::df68]
+	by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+	id 1lZjO0-001AYY-2K; Fri, 23 Apr 2021 00:09:40 +0000
 Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
  "trivial" patches
-Message-ID: <YIH+Tu7I1pctKSXj@pendragon.ideasonboard.com>
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Johannes Berg <johannes@sipsolutions.net>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Dan Carpenter <dan.carpenter@oracle.com>,
+ James Bottomley <James.Bottomley@hansenpartnership.com>,
+ ksummit@lists.linux.dev
 References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
- <20210421152209.68075314@gandalf.local.home>
- <CAG4TOxNOHRexUoKTo7ndViNtss0_BDeh4YCVHexvdQhQWF+vaw@mail.gmail.com>
- <20210422055948.GA4171859@infradead.org>
- <YIG6XaUrdt6jUezJ@zeniv-ca.linux.org.uk>
- <87wnsuvtgp.ffs@nanos.tec.linutronix.de>
+ <20210421194702.GH1981@kadam> <20210422113404.09f35a85@coco.lan>
+ <68c628ed354ea1ddea81878f0d713d2ce6426126.camel@sipsolutions.net>
+ <YIHZY1oWNRLOCtQa@piout.net>
+From: Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <bf59ed57-376d-785b-3c93-ed5f30d3846a@infradead.org>
+Date: Thu, 22 Apr 2021 17:09:25 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.0
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+In-Reply-To: <YIHZY1oWNRLOCtQa@piout.net>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87wnsuvtgp.ffs@nanos.tec.linutronix.de>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 
-Hi Thomas,
+On 4/22/21 1:15 PM, Alexandre Belloni wrote:
+> On 22/04/2021 11:59:38+0200, Johannes Berg wrote:
+>> On Thu, 2021-04-22 at 11:34 +0200, Mauro Carvalho Chehab wrote:
+>>>
+>>> Here, I use "wdiff" in order to deal with renames. It has a somewhat
+>>> funny dialect, but it helps a lot reviewing renaming patches.
+>>
+>> This also helps for casual "git show" etc.:
+>>
+>> [core]
+>> 	pager = /usr/share/git-core/contrib/diff-highlight | less -RFX
+>>
+>> (path may vary, of course)
+>>
+> 
+> I've been shown https://github.com/dandavison/delta/ a little while ago
+> and it has a very good side by side view, showing exactly what change on
+> each line. I'm using:
+> 
+> [core]
+>         pager = delta
+> [delta]
+>         plus-color = "#012800"
+>         minus-color = "#340001"
+>         syntax-theme = Solarized (light)
+>         line-numbers = true
+>         side-by-side = true
+> 
 
-On Fri, Apr 23, 2021 at 12:35:02AM +0200, Thomas Gleixner wrote:
-> On Thu, Apr 22 2021 at 18:03, Al Viro wrote:
-> > On Thu, Apr 22, 2021 at 06:59:48AM +0100, Christoph Hellwig wrote:
-> >> On Wed, Apr 21, 2021 at 12:32:33PM -0700, Roland Dreier wrote:
-> >> > I also think there does need to be a strong sanction against this UMN
-> >> > research group, since we need to make sure there are strong incentives
-> >> > against wasting everyone's time with stunts like this.  Hopefully on
-> >> > the academic side it can be made clear that this is not ethical
-> >> > research - for example, why did IEEE think this was an acceptable
-> >> > paper?
-> >> 
-> >> I wholeheartedly disagree.  Demonstrating this kind of "attack" has
-> >> been long overdue, and kicked off a very important discussion.  Even
-> >> more so as in this area malice is almost indistinguishable from normal
-> >> incompetence.  I think they deserve a medel of honor.
-> >
-> > Demonstrating this kind of attack would be very useful, if they bothered to
-> > provide the raw data and their protocol.
-> >
-> > They'd done neither, AFAICS.  There's no way to actually look at how the
-> > submissions went, timings, etc.  We are offered what could (very generously)
-> > be called aggregate stats illustrating the problems, along with bloody
-> > worthless suggestions of improvements.  Use of the technics in question
-> > is not limited to introducing UAF bugs; it's certainly possible to use
-> > a (real or not) UAF bug as an excuse to get in something designed _not_
-> > to be caught by any of their suggested scler^Whardening patches, etc.
-> >
-> > There certainly are very real problems with review process, and examining
-> > their data might provide useful insights - had any of that data been
-> > given.
-> 
-> I agree.
-> 
-> Though the most important takeaway for me is that this demonstrated the
-> problems which the kernel development has - once more.
-> 
-> What's worse is that it's known for quite some time that the kernel
-> development is understaffed and cannot keep up with the influx of
-> patches. Of course this has been willfully ignored - similar to other
-> completely avoidable horrors like the ssl disaster.
-> 
-> There is a long list of issues which lead to that situation, but let me
-> pick a few really important ones:
-> 
->   - The 'features and performance first, correctness maybe' mentality in
->     this industry.
-> 
->   - The ignorance which takes the availability and sustainability of
->     FOSS components especially "low-level plumbing" ones for granted,
->     even if their business is built on and depends on these.
-> 
->   - The unwillingness to put money on basic "low-level" technology just
->     because it does not come with the 'hype-of-the-day' tag and is
->     therefore useless for marketing and headlines.
-> 
-> None of these things can be solved at the technical level. There is no
-> technical solution which solves problems at the human stupidity and
-> even less so at the greed level.
-> 
-> While in theory the approach of sharing the workload for base technology
-> is obviously the right thing to do, the reality tells that sharing is
-> interpreted as make sure that someone else pays for it and I can push my
-> feature agenda.
+If anyone is into a similar(?) (non-git) old school solution, you can try
+patchview:  https://www.infradead.org/~rdunlap/scripts/patchview
 
-I'd like to point out explicitly that this issue isn't limited to
-"low-level" or "core" technology. On the driver side, it feels more
-often than not that the community is used as a dumping ground for BSP
-core of dubious quality, when that code isn't just kept out-of-tree
-altogether. I wouldn't necessarily blame greed in all cases, as I've
-seen vendors who are willing to do the right thing but don't know what
-it would be (what we take for granted as being obvious seems not to be
-so for a large number of people who are not all stupid :-)).
-
-While I may not be fully convinced by all the details of the experiment,
-I think there's something to be learnt from how DRM/KMS handles
-contributors, and how they've managed to get many contributors from the
-industry to get and stay involved at the subsystem level in the longer
-term. I'm sure there can be other initiatives I'm not aware of.
-
-> As long as that does not change, nothing will change.
-> 
-> We can put technical countermeasures (as discussed elsewhere in this
-> thread) in place as much as we want, they are just futile attempts which
-> try to cure the symptoms.
-> 
-> As technical people we all know how useful the approach of curing the
-> symptoms instead of the root cause is. But still we try to do that
-> because we think it's our only option.
-> 
-> It's about time to rethink that approach.
-
-Amen. Incentives to contribute in the right way need to be higher, and
-depending on the vendors, this can be carrot, stick, or both.
+It might be nice to have an "ignore whitespace" option...
 
 -- 
-Regards,
+~Randy
 
-Laurent Pinchart
 
