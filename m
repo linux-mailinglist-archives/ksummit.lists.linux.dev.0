@@ -1,118 +1,92 @@
-Return-Path: <ksummit+bounces-136-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-135-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07CCA368D70
-	for <lists@lfdr.de>; Fri, 23 Apr 2021 08:56:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 837E3368D53
+	for <lists@lfdr.de>; Fri, 23 Apr 2021 08:50:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 627E53E75C1
-	for <lists@lfdr.de>; Fri, 23 Apr 2021 06:53:43 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 45FF03E93F1
+	for <lists@lfdr.de>; Fri, 23 Apr 2021 06:50:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A25B2FA3;
-	Fri, 23 Apr 2021 06:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38AD32FA3;
+	Fri, 23 Apr 2021 06:50:44 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from smtprelay.hostedemail.com (smtprelay0096.hostedemail.com [216.40.44.96])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C64D270
-	for <ksummit@lists.linux.dev>; Fri, 23 Apr 2021 06:53:34 +0000 (UTC)
-Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
-	by smtpgrave07.hostedemail.com (Postfix) with ESMTP id D19E1181D5AAB
-	for <ksummit@lists.linux.dev>; Fri, 23 Apr 2021 06:46:40 +0000 (UTC)
-Received: from omf19.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-	by smtprelay03.hostedemail.com (Postfix) with ESMTP id D125F837F24A;
-	Fri, 23 Apr 2021 06:46:33 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf19.hostedemail.com (Postfix) with ESMTPA id AE0C820D75C;
-	Fri, 23 Apr 2021 06:46:32 +0000 (UTC)
-Message-ID: <6c221d801c5a6834168207b5ccadc76ac432c766.camel@perches.com>
-Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
- "trivial" patches
-From: Joe Perches <joe@perches.com>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring
-	 <robherring2@gmail.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Leon Romanovsky <leon@kernel.org>,
-  James Bottomley <James.Bottomley@hansenpartnership.com>,
- ksummit@lists.linux.dev, tools@linux.kernel.org
-Date: Thu, 22 Apr 2021 23:46:31 -0700
-In-Reply-To: <20210423080454.78f4f662@coco.lan>
-References: 
-	<afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
-	 <YID5xhy2vv45fnOv@unreal> <20210422112001.22c64fe9@coco.lan>
-	 <YIFfXTVMDmHwVmSR@unreal> <20210422092916.556e5e50@gandalf.local.home>
-	 <CAL_JsqKS-=shqkLhzKeLHqNPhosGJw5X-fOi+dy1rT3Q_LfBZg@mail.gmail.com>
-	 <20210423080454.78f4f662@coco.lan>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.38.1-1 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDEA970
+	for <ksummit@lists.linux.dev>; Fri, 23 Apr 2021 06:50:41 +0000 (UTC)
+Received: by mail-ej1-f48.google.com with SMTP id w23so56555071ejb.9
+        for <ksummit@lists.linux.dev>; Thu, 22 Apr 2021 23:50:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=boKp2kpAV9F0gNbmCTdIslz2LjuMq1At2dkkTSdG3No=;
+        b=mRIvlR2t9SSfZMBO85xgfB6h9guEb9b9jsHy4eElI+14EtaHiq4IHOu+1idVr5LN1W
+         zt7/cWG9x9iuRuYjbnPL9KGuttECR4jYeFpLqiD09Xph0dXFHn2zr1P0FmlvhqKuQc1e
+         p1jJF/oIYPTG9iRLeJvL9xeUSfRULh28+4VTeZol66OBeZ8tajpsEH4841AoXWsKcpC8
+         /iCoxBXePoHP8QKLapqYPppvgCxun/ZUPX9TZSDYyM649RfvVANhnjrpQwFz+s8T6emV
+         9dV85SJjPamZazkp0IQS95swurpPYZSmtQuGCxDArhol1ByQe4eUQIUscPp/RVeavloE
+         AK1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=boKp2kpAV9F0gNbmCTdIslz2LjuMq1At2dkkTSdG3No=;
+        b=OzdujvihADe+EdUwqSze+LGn7PO9xJgzHaL+hVDWVHPmBwnhi75ayHUvuS7gxUTzaj
+         s2DOX0Q13LlXD8DY4c/7Q6GVA2KGm+EA/uC43/Vxr7qUmh4Bg9nOrmwUOApcmxdLiDeq
+         PyhIqyeaS7OWXCzaMQKSqRt5k4u2Xt2JAUuvG04IVVCcc7q5+GtA3H6uBuOu4WWLqe+i
+         PDnr/hqjdY9G9SvX00YwGyDlicYBawfQjdUcTo1bCY3xgSF3F36QJOhbWcycxcWomaIx
+         qaaya/lfRmOhr7pmXAp+AZ07XWy4FsH2H2Abds+BMGWvqcyz3mfErWE0Ifa2tjX2extw
+         6GLg==
+X-Gm-Message-State: AOAM532nFnU33SlUaUSE8PQ0WQFuDL2vF9ghjLJaN82drfeOoM5nz/t7
+	9+9oJiBC0aZeEERVvc80wYR/6nGSDHWjYIOOeujTUQ==
+X-Google-Smtp-Source: ABdhPJzs2IvRgWsnIwoQFS1yq/RyIR6gn7zcIhQk75gjHu6d0zvWtB/xRBDhZH8CKy8c24FRo19sKffuJ4RjUgwxYkw=
+X-Received: by 2002:a17:906:18e1:: with SMTP id e1mr2548723ejf.341.1619160640131;
+ Thu, 22 Apr 2021 23:50:40 -0700 (PDT)
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.10
-X-Stat-Signature: 1apc666e8d56wix4xizysw8ar4pnpwxf
-X-Rspamd-Server: rspamout05
-X-Rspamd-Queue-Id: AE0C820D75C
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX19z9rxj/NFpYEhJkTt18towQQaVKevDE2o=
-X-HE-Tag: 1619160392-84300
+References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
+ <YID5xhy2vv45fnOv@unreal> <20210422124023.GD4572@sirena.org.uk>
+ <YIFx/iorjncjslob@linux.ibm.com> <20210422132339.GF4572@sirena.org.uk>
+ <20210422111939.0c555039@gandalf.local.home> <YIJmBvtU74D+N2DL@kroah.com>
+In-Reply-To: <YIJmBvtU74D+N2DL@kroah.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Thu, 22 Apr 2021 23:50:34 -0700
+Message-ID: <CAPcyv4j4DiJeFL+BiQB6=bdEb-2v4GPLKOMR27_AS8h5VF9UqQ@mail.gmail.com>
+Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
+ "trivial" patches
+To: Greg KH <greg@kroah.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Mark Brown <broonie@kernel.org>, 
+	Mike Rapoport <rppt@linux.ibm.com>, Leon Romanovsky <leon@kernel.org>, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, ksummit@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 2021-04-23 at 08:04 +0200, Mauro Carvalho Chehab wrote:
-> I have a script to automate it, but I had to tweak it while handling
-> patches that cross a single subsystem boundaries, using git send-email
-> with the c/c list obtained from get_maintainers.pl.
-> 
-> By default, the script adds all maintainers, reviewers and all mailing
-> lists to the cover letter, but that sometimes generate a cover letter
-> with 80+ c/c, which will be automatically rejected by anti-spam
-> measures and by mail servers.
-> 
-> So, I played with two different alternatives:
-> 
-> 1. At the beginning, I changed the script to c/c only the mailing lists,
->    excluding maintainers/reviewers;
-> 2. As the feedback was not great, I changed the script to c/c only
->    the maintainers, excluding mailing lists/reviewers. It seems that
->    this worked better.
-> 
-> I didn't try to play with bcc, as replying to it would not send
-> the replies to everyone.
-> 
-> If you think it is worth, I could submit it to scripts/, but I
-> suspect we may need to adjust it to work with all maintainers'
-> workflows.
+On Thu, Apr 22, 2021 at 11:17 PM Greg KH <greg@kroah.com> wrote:
+>
+> On Thu, Apr 22, 2021 at 11:19:39AM -0400, Steven Rostedt wrote:
+> > On Thu, 22 Apr 2021 14:23:39 +0100
+> > Mark Brown <broonie@kernel.org> wrote:
+> >
+> > > > For me the most annoying is to get several patches from the middle of a
+> > > > series. IMHO, sending at least cover letter to everyone is the bare minimum
+> > > > so that people at least can take a look at high level details and request a
+> > > > repost.
+> > >
+> > > Yes, the cover letter should always go to everyone.
+> >
+> > And that's still the one thing that quilt send-mail does not support :-p
+>
+> 'git format-patch --cover-letter' also does not seem to support this, so
+> what tool does?
+>
 
-I have a very similar script
-
-A portion of a cc script I use tests whether cc'ing the cover letter
-to all listed maintainers of a patch series creates a header of less
-than 512 chars and if so cc's all relevant maintainers, otherwise it
-just cc's the mailing lists.
-
-(Ingo didn't/doesn't want to receive any emails from me)
-
-$ cat ~/bin/remove_undesirable_emails.sh
-grep -vPi "(?:\bIngo\s+Molnar\b)"
-
-$ cat ~/bin/cc.sh
-#!/bin/bash
-
-opts="--nogit --nogit-fallback --norolestats"
-maint_file=$(mktemp -t XXXXXXXX.cc)
-
-if [[ $(basename $1) =~ ^0000- ]] ; then
-    ./scripts/get_maintainer.pl $opts $(dirname $1)/* |  \
-	~/bin/remove_undesirable_emails.sh > $maint_file
-    count=$(wc -c $maint_file | cut -f1 -d" ")
-    if [[ $count -lt 512 ]] ; then
-	cat $maint_file
-    else
-	./scripts/get_maintainer.pl -nom -nor $opts $(dirname $1)/* | \
-	    ~/bin/remove_undesirable_emails.sh
-    fi
-
-...
-
+Hey, I know this one. Stacked GIT does, but I think I'm the last
+person using it.
 
