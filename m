@@ -1,170 +1,98 @@
-Return-Path: <ksummit+bounces-159-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-160-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE4CD369823
-	for <lists@lfdr.de>; Fri, 23 Apr 2021 19:17:52 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3081B369A66
+	for <lists@lfdr.de>; Fri, 23 Apr 2021 20:51:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id CEAA01C857A
-	for <lists@lfdr.de>; Fri, 23 Apr 2021 17:17:51 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 520733EA6BB
+	for <lists@lfdr.de>; Fri, 23 Apr 2021 18:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845CB2FA9;
-	Fri, 23 Apr 2021 17:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745BE2FA9;
+	Fri, 23 Apr 2021 18:50:52 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A03E71
-	for <ksummit@lists.linux.dev>; Fri, 23 Apr 2021 17:17:43 +0000 (UTC)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1730D613CB;
-	Fri, 23 Apr 2021 17:17:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1619198262;
-	bh=nZYMSwFNjqKZ4K5QofpzPBFqlFmB0XKmoHmBbvCabcc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Z3UBY6th0DL6fS7EfPdBJPRs/DEBOg5sumeGOzlIPzh/9lSQgUXC/xlBHx0SXr4Fq
-	 lFS3Lnxx0ua0QiKhUIE2NeOpMF04PJcQijZbdvqjX1BEAvvBEhK0hWgiZTGZ63rjpi
-	 rrFoKv6QvUbRo9UO+ThKbOhAcXzhuL/4zovy5IJcFC6tVW+RHzVggWTI10q+Ez0XBi
-	 bgED7y0zVtYrTBOThUwdCavH4+4njFn28aKmcDGO48QnFVlYAX/LLZu9g5NJjV1LF6
-	 0H+8v0LIdmBnBvLUiMLUt4eljTcwKtynVJr6qEVD4auaHmh0TB/jf+UK2tdKMJYxxn
-	 kVAZeL+0YNWwA==
-Date: Fri, 23 Apr 2021 20:17:38 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Shuah Khan <skhan@linuxfoundation.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	James Morris <jmorris@namei.org>,
-	Julia Lawall <julia.lawall@inria.fr>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Roland Dreier <roland@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BFA472
+	for <ksummit@lists.linux.dev>; Fri, 23 Apr 2021 18:50:51 +0000 (UTC)
+Received: by mail-qk1-f177.google.com with SMTP id 66so11044788qkf.2
+        for <ksummit@lists.linux.dev>; Fri, 23 Apr 2021 11:50:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=W8M3IOcLzcWvugIRUlf9I0itfXsnDfKznr5TIA7ld38=;
+        b=JfUeh2KSHFjho4joQh+XOGNBGnblJ7/uHMI+Mc+YDumNddPCDYR6lOnYa0m/Snqm8e
+         Px+k4qGbyHP2nK1IJzFfqPWdNCztWreIb9HfzDZHqmxffzfGA9Oa6SB6uZPhBx9nbt0p
+         6PuzwZ9pXJBjNfczc1BPsNqJXovskxgExSTpU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=W8M3IOcLzcWvugIRUlf9I0itfXsnDfKznr5TIA7ld38=;
+        b=n/Fr4rIpQi2VFPCJ8QRVkj5ia/1t1dwU58rN/Xwunjj+59xpK1KjLAtf6FioU6keTT
+         WpvzQ0DWyknS7AjTYIgOd2N945M62BfbIVACMKxByYMM3Rhnz0xbO4dOYLxOifnvaUzz
+         L9f6nVU8sjNkP02nDbu4rPyui5yHdiJfe9cliSKOJUaWqltCl2wwm2+/e+bMeewIq+QQ
+         Ym1Zb0+ZrMtgK+SQX/6pNxF/eyXRPNJ6HMqUwozPNu/1MnN0V+VqBtcqXMV3QmJK9OtX
+         1t55X9KEWuNNPu9+uPu/gzM0i2Ce0h8A+/F50JPK7myEFO9Bl7Zp7fTJeQzrqlmdDxqM
+         03sA==
+X-Gm-Message-State: AOAM533t/cbB7QdaLd5EBrEOi/7qETevJ1viU4G20hizrsW4TGzbgVmN
+	FAb0HRk9f8S9p/E6tXx5j7xp9A==
+X-Google-Smtp-Source: ABdhPJxijHCcnOch3UGUO8WkS4T38Y6glMUGGYB3+KwaeYxkwjkYMkEdYLvmo/mgxIKPnfsBvnerbQ==
+X-Received: by 2002:a37:bb42:: with SMTP id l63mr5572256qkf.127.1619203850250;
+        Fri, 23 Apr 2021 11:50:50 -0700 (PDT)
+Received: from nitro.local (bras-base-mtrlpq5031w-grc-32-216-209-220-18.dsl.bell.ca. [216.209.220.18])
+        by smtp.gmail.com with ESMTPSA id d3sm4903828qtm.56.2021.04.23.11.50.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Apr 2021 11:50:49 -0700 (PDT)
+Date: Fri, 23 Apr 2021 14:50:47 -0400
+From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+To: Christian Brauner <christian.brauner@ubuntu.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Leon Romanovsky <leon@kernel.org>,
 	James Bottomley <James.Bottomley@hansenpartnership.com>,
 	ksummit@lists.linux.dev
 Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
  "trivial" patches
-Message-ID: <YIMBMnbtzV7MagIp@unreal>
-References: <CAG4TOxNOHRexUoKTo7ndViNtss0_BDeh4YCVHexvdQhQWF+vaw@mail.gmail.com>
- <alpine.DEB.2.22.394.2104212150230.20674@hadrien>
- <20210421132824.13a70f6c@hermes.local>
- <alpine.DEB.2.22.394.2104212233450.20674@hadrien>
- <d95ee281-4dc0-c5c1-ec87-81d83f44979@namei.org>
- <CAMuHMdU=c2bY1_sq+rSh1fON5QhNx8xWqMQLT+cD0BpqG0RtCg@mail.gmail.com>
- <20210422115511.60d1f735@coco.lan>
- <YIFpl4iAe/0zOTsh@unreal>
- <24762711-0252-f7d2-4e41-3eb1e27955ea@linuxfoundation.org>
- <20210423110643.4b28c29b@coco.lan>
+Message-ID: <20210423185047.jlmzk75utekj2ijw@nitro.local>
+References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
+ <YID5xhy2vv45fnOv@unreal>
+ <20210422112001.22c64fe9@coco.lan>
+ <20210422125357.uuxprp6rqxewcdsr@nitro.local>
+ <20210423073120.2xm3prdjllpqdhgi@wittgenstein>
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20210423110643.4b28c29b@coco.lan>
+In-Reply-To: <20210423073120.2xm3prdjllpqdhgi@wittgenstein>
 
-On Fri, Apr 23, 2021 at 11:06:43AM +0200, Mauro Carvalho Chehab wrote:
-> Em Thu, 22 Apr 2021 09:38:03 -0600
-> Shuah Khan <skhan@linuxfoundation.org> escreveu:
-> 
-> > On 4/22/21 6:18 AM, Leon Romanovsky wrote:
-> > > On Thu, Apr 22, 2021 at 11:55:11AM +0200, Mauro Carvalho Chehab wrote:  
-> > >> Em Thu, 22 Apr 2021 09:34:38 +0200
-> > >> Geert Uytterhoeven <geert@linux-m68k.org> escreveu:
-> > >>  
-> > >>> On Wed, Apr 21, 2021 at 11:50 PM James Morris <jmorris@namei.org> wrote:  
-> > >>>> On Wed, 21 Apr 2021, Julia Lawall wrote:  
-> > >>>>> The apology states that they didn't detect any vulnerabilities.  They
-> > >>>>> found three non exploitable bugs and submitted incorrect patches for them.
-> > >>>>> When the patches received some positive feedback, they explained that the
-> > >>>>> patches were incorrect and provided a proper fix.
-> > >>>>>
-> > >>>>> So they damaged trust, but not actually the Linux kernel...  
-> > >>>>
-> > >>>> The issue is that there was no consent and no coordination, so we don't
-> > >>>> know the scope of the experiment and whether it was still continuing.
-> > >>>>
-> > >>>> We are this not able to trust anything the group said about what they'd
-> > >>>> done or not done, until now [1].
-> > >>>>
-> > >>>> In all probability there is nothing further amiss but we would not have
-> > >>>> expected them to use fake gmail accounts to submit bugs to the kernel
-> > >>>> either.
-> > >>>>
-> > >>>> It's now on us to audit all of their known contributions, because we don't
-> > >>>> know the scope of the experiment, which was based on the use of deception,
-> > >>>> and we can't make any assumptions based on what they have said.
-> > >>>>
-> > >>>> We also need the identity of the 'random' gmail accounts they used,
-> > >>>> although this should be handled by a small trusted group in private, as it
-> > >>>> will lead to privacy issues for kernel maintainers who responded to them
-> > >>>> in public.  
-> > >>>
-> > >>> What do we gain by blindly reverting all[1] umn.edu patches, and
-> > >>> ignoring future patches from umn.edu?
-> > >>> I think all of this is moot: other people may be doing the same thing,
-> > >>> or even "in worse faith".  The only thing that helps is making sure
-> > >>> patches get reviewed[2] before being applied.
-> > >>>
-> > >>> [1] Judging from the new review comments, many of the 190 patches
-> > >>>      to be reverted were real fixes.  
-> > >>
-> > >> The reverted ones for media (29 patches) didn't contain any malicious code.
-> > >> One was useless (because the media core already fixes the pointed issue),
-> > >> but the other ones were valid patches.  
-> > > 
-> > > I'm sorry that I didn't check all media commits, but this random commit
-> > > 467a37fba93f ("media: dvb: Add check on sp8870_readreg") has a bug and
-> > > broke sp8870 (I don't know what is it).
-> > > 
-> > > diff --git a/drivers/media/dvb-frontends/sp8870.c b/drivers/media/dvb-frontends/sp8870.c
-> > > index 8d31cf3f4f07..270a3c559e08 100644
-> > > --- a/drivers/media/dvb-frontends/sp8870.c
-> > > +++ b/drivers/media/dvb-frontends/sp8870.c
-> > > @@ -293,7 +293,9 @@ static int sp8870_set_frontend_parameters(struct dvb_frontend *fe)
-> > >          sp8870_writereg(state, 0xc05, reg0xc05);
-> > > 
-> > >          // read status reg in order to clear pending irqs
-> > > -       sp8870_readreg(state, 0x200);
-> > > +       err = sp8870_readreg(state, 0x200);
-> > > +       if (err)
-> > > +               return err;
-> > > 
-> > >          // system controller start
-> > >          sp8870_microcontroller_start(state);
-> > > 
-> > > 
-> > >     67 static int sp8870_readreg (struct sp8870_state* state, u16 reg)
-> > >     68 {
-> > >     69         int ret;
-> > >   <...>
-> > >     77         if (ret != 2) {
-> > >     78                 dprintk("%s: readreg error (ret == %i)\n", __func__, ret);
-> > >     79                 return -1;
-> > >     80         }
-> > >     81
-> > >     82         return (b1[0] << 8 | b1[1]);
-> > >     83 }
-> > > 
-> > > The valid check should be if (err < 0);
-> > >   
+On Fri, Apr 23, 2021 at 09:31:20AM +0200, Christian Brauner wrote:
+> > If you're a mutt user, you can set up a keybinding, e.g.:
 > > 
-> > Correct. Like all the other callers of sp8870_readreg() do with
-> > its return. Non-zero return is valid for this routine.
+> >     macro index 4 "<pipe-message>~/work/git/korg/b4/b4.sh mbox -f -o ~/Mail<return>"
+> > 
+> > You'll need to adjust it to point at where your maildir lives, of course, but
+> > that's the general idea. With it in place, you can hit "4" in the index view
+> > to get the rest of the thread (without duplicating the messages you already
+> > have).
 > 
-> This particular patch is completely broken and should be reverted.
+> I do currently have three keybindings:
+> 
+> macro index,pager A "<pipe-message>b4 am -t -l -s -g -c -C -Q <enter>"
+> macro index,pager S "<pipe-message>b4 am -t -c -Q <enter>"
+> macro index,pager M "<pipe-message>b4 mbox <enter>"
+> 
+> The -f switch is new, right?
 
-This is exactly the point, many patches from @umn are broken and the
-right way to check them is to checkout to the time when they were
-introduced.
+Relatively so, yes. Note, that it shouldn't be used on huge inboxes, as it
+will have to go through each message in the maildir to collect message-ids
+that are already present.
 
-I just wanted to show you that you claim about validity of patches is
-not accurate.
-
-"The reverted ones for media (29 patches) didn't contain any malicious code.
- One was useless (because the media core already fixes the pointed issue),
- out the other ones were valid patches."
-
-Thanks
+-K
 
