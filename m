@@ -1,108 +1,74 @@
-Return-Path: <ksummit+bounces-133-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-134-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE6C9368D02
-	for <lists@lfdr.de>; Fri, 23 Apr 2021 08:17:20 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0BDE368D37
+	for <lists@lfdr.de>; Fri, 23 Apr 2021 08:37:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id EC99E1C746B
-	for <lists@lfdr.de>; Fri, 23 Apr 2021 06:16:34 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 743FD3E4FDB
+	for <lists@lfdr.de>; Fri, 23 Apr 2021 06:34:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3A42FA3;
-	Fri, 23 Apr 2021 06:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2B102FA4;
+	Fri, 23 Apr 2021 06:34:34 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94FB12F83
-	for <ksummit@lists.linux.dev>; Fri, 23 Apr 2021 06:16:26 +0000 (UTC)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailout.west.internal (Postfix) with ESMTP id 9E837161F;
-	Fri, 23 Apr 2021 02:16:25 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Fri, 23 Apr 2021 02:16:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
-	date:from:to:cc:subject:message-id:references:mime-version
-	:content-type:in-reply-to; s=fm3; bh=p8ffhKIxmEkpSnDgHOa3giAINWk
-	QGT5aWRZ5bF8+wIE=; b=U2XiNZoy1YirjJvLt4IuOI9DhhrdxDc8LTL3x3eNDQR
-	TR8icV4dThNEcclSE5RDqeprVrdzzCuAiWcE6tdKFMjIdzvEdoNdsq4d7aArF2re
-	7FSdqPjbnqy8bdHzcXIxzt2jW4wbsrXMShvQ7R7n/yhaSv1ucX4qC7k/FsPRlRKQ
-	aLPYmULfow1qwmJxcaCSUItSpRbiExjhTFnCTVC+xTx7FSLpebHneyDBddokjVUC
-	irMJ/ye3nwHmdliSQDhXZaW0avVqDOjPPN2nqbB8QtCjaAFTCJikxzt2wXwtZaoH
-	/pVCTJrTUuFfmgAEBSjxlUBV6Pj/17GuEABMffa9fKQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to:x-me-proxy
-	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=p8ffhK
-	IxmEkpSnDgHOa3giAINWkQGT5aWRZ5bF8+wIE=; b=FcEzsioe2ym5VF3YZunmwi
-	dQw03xyoaEMOvwTqHbAaYt8t5Su7aeRBql+qm+9aGDCLJEu0SeiuX6nyoMSHPAcP
-	IlAzGvCLLmEINjn/58Pw/TAkjxfIjfDeuFl8NKcYhq7yELmpxWAVpXzXnZQ75mmS
-	QBSfPLCA9Dzr73ffWnEGWaF84hozNBnX+1n6MgtaIJybnIkKZwEDQqXhRrGJORAF
-	xuvSgQlnzS2JFZjcHSCjWauzkZAi7I9luwAAw2mUPMYA8CXR3eftcoXrmXT+hfWt
-	RikwsOyumcZu2NyHnxG2ZjL8ibVYNq5iRlYD7yxScdFnAn6lAGK1q7Uqx9SqkPsg
-	==
-X-ME-Sender: <xms:OGaCYJvowqoX3lD8u-iod__D6ldgIB6dg5-db4aTGiXtopTYkOGwYA>
-    <xme:OGaCYCdo0vKiDdbkmA_WTJbPlNSI5001wB4SpqyOzTb_dg7FJCsEeoc4tUMw20SZY
-    d2ryRi-jLVSUw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrvdduuddguddtfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepveeuhe
-    ejgfffgfeivddukedvkedtleelleeghfeljeeiueeggeevueduudekvdetnecukfhppeek
-    fedrkeeirdejgedrieegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
-    hilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
-X-ME-Proxy: <xmx:OGaCYMy6fTr7jkYWjKOKUjl8N81t-KN-Ow4rCitNYZJNjW33cdZNQg>
-    <xmx:OGaCYAM9Tz4lTz6Hpwrqjw5KcbF7HhGZ3QBCFmxmqbscv7LsGI3UWQ>
-    <xmx:OGaCYJ9wlc1bUGp-BbpFFF3h5f6-M4WNuiwj2z_7tAeCN6XOzzb78g>
-    <xmx:OWaCYEYr0rWH9xPcuEUN9ocR5S0LyLQuwbcEFm804PpJb3e0PWjHpw>
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-	by mail.messagingengine.com (Postfix) with ESMTPA id 73D6F240066;
-	Fri, 23 Apr 2021 02:16:23 -0400 (EDT)
-Date: Fri, 23 Apr 2021 08:15:34 +0200
-From: Greg KH <greg@kroah.com>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Mark Brown <broonie@kernel.org>, Mike Rapoport <rppt@linux.ibm.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	ksummit@lists.linux.dev
-Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
- "trivial" patches
-Message-ID: <YIJmBvtU74D+N2DL@kroah.com>
-References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
- <YID5xhy2vv45fnOv@unreal>
- <20210422124023.GD4572@sirena.org.uk>
- <YIFx/iorjncjslob@linux.ibm.com>
- <20210422132339.GF4572@sirena.org.uk>
- <20210422111939.0c555039@gandalf.local.home>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F004970;
+	Fri, 23 Apr 2021 06:34:32 +0000 (UTC)
+Received: from ip4d14bd53.dynamic.kabel-deutschland.de ([77.20.189.83] helo=[192.168.66.200]); authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1lZpOY-0005Wh-NT; Fri, 23 Apr 2021 08:34:30 +0200
+To: Mark Brown <broonie@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ Greg KH <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, regressions@lists.linux.dev,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
+ Pablo Neira Ayuso <pablo@netfilter.org>, ksummit@lists.linux.dev,
+ workflows@vger.kernel.org
+References: <268a3049-7c0b-8a33-1ff6-5a2d35fcba16@leemhuis.info>
+ <20210422145107.GH4572@sirena.org.uk>
+From: Thorsten Leemhuis <linux@leemhuis.info>
+Subject: Re: RFC: building a regression tracking bot for Linux kernel
+ development
+Message-ID: <1390e998-4847-eebf-1d7b-e9cb6625cff7@leemhuis.info>
+Date: Fri, 23 Apr 2021 08:34:29 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210422111939.0c555039@gandalf.local.home>
+In-Reply-To: <20210422145107.GH4572@sirena.org.uk>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-BS
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1619159673;8d252f6c;
+X-HE-SMSGID: 1lZpOY-0005Wh-NT
 
-On Thu, Apr 22, 2021 at 11:19:39AM -0400, Steven Rostedt wrote:
-> On Thu, 22 Apr 2021 14:23:39 +0100
-> Mark Brown <broonie@kernel.org> wrote:
+On 22.04.21 16:51, Mark Brown wrote:
+> On Thu, Apr 22, 2021 at 09:16:40AM +0200, Thorsten Leemhuis wrote:
 > 
-> > > For me the most annoying is to get several patches from the middle of a
-> > > series. IMHO, sending at least cover letter to everyone is the bare minimum
-> > > so that people at least can take a look at high level details and request a
-> > > repost.  
-> > 
-> > Yes, the cover letter should always go to everyone.
+>> That's it already. The regression was tracked with:
 > 
-> And that's still the one thing that quilt send-mail does not support :-p
+>>  * minimal overhead for the reporter
+>>  * no additional overhead for the developers – only something they ought
+>> to do already became more important
+> 
+> For things that are caught by the various automated systems the
+> deduplication might get annoying - even for the systems with a human in
+> the loop it's very common for things that the automated systems pick up
+> to end up getting reported several times over due to things like race
+> conditions in the reporting process.  We'll have to see how that goes,
+> it might be possible to automate some of it.
 
-'git format-patch --cover-letter' also does not seem to support this, so
-what tool does?
+Yeah, good point, thx for pointing it out, will keep an eye on this
+aspect to make sure it doesn't become a big problem.
 
-thanks,
+Ciao, Thorsten
 
-greg k-h
 
