@@ -1,111 +1,162 @@
-Return-Path: <ksummit+bounces-147-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-146-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5F20369091
-	for <lists@lfdr.de>; Fri, 23 Apr 2021 12:49:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BFD5369019
+	for <lists@lfdr.de>; Fri, 23 Apr 2021 12:12:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id E79ED1C7D54
-	for <lists@lfdr.de>; Fri, 23 Apr 2021 10:49:21 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id 00BAB1C7CEF
+	for <lists@lfdr.de>; Fri, 23 Apr 2021 10:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B882FA5;
-	Fri, 23 Apr 2021 10:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D8F72FA7;
+	Fri, 23 Apr 2021 10:11:19 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from aserp2130.oracle.com (aserp2130.oracle.com [141.146.126.79])
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7637772
-	for <ksummit@lists.linux.dev>; Fri, 23 Apr 2021 10:49:13 +0000 (UTC)
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-	by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 13N9Dvog156502;
-	Fri, 23 Apr 2021 09:27:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=pr7ipzJZjVsGINACo64gZveaS3Rc5t8HRuFex5uxKvA=;
- b=ykfxrpX5GVKbN2qm32pHU7FFk/WE0m5rxtM5JQqBwpaOdBHEZvZAWxcDzowG6tgCiFmH
- 5y9BNwm4ISCtsRTrzLXHfeL9zChrw6jJQ8Iv1/+5odrMuBaVdVwOdZQp2saRN51WfRi9
- 8tnNODUqYnGejI+YEEwEPhJRiX80ZDT1JJbJ9KezXIJBEYTYVy/q2yjIqz3sac2n2YkO
- JvR0ZeledB+5YAmZvuFx3u9BUb2ExTa8HjsW5jvdLFKZ8u20tDki9AnFATmRgPDsdjCq
- oI/tbs0NUcb6XpGLXarNkaWwp0FIy2UULwS8rNoXJLVQKfoLK9v8NhxXyd3xlOy6C4wT jg== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-	by aserp2130.oracle.com with ESMTP id 37yn6cfxuu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 23 Apr 2021 09:27:27 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-	by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 13N9Fu6W124659;
-	Fri, 23 Apr 2021 09:27:27 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by aserp3030.oracle.com with ESMTP id 383ccfcdfq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 23 Apr 2021 09:27:27 +0000
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
-	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 13N9RRC4148138;
-	Fri, 23 Apr 2021 09:27:27 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-	by aserp3030.oracle.com with ESMTP id 383ccfcdf2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 23 Apr 2021 09:27:26 +0000
-Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
-	by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 13N9RLO4005456;
-	Fri, 23 Apr 2021 09:27:25 GMT
-Received: from kadam (/102.36.221.92)
-	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Fri, 23 Apr 2021 02:27:21 -0700
-Date: Fri, 23 Apr 2021 12:27:14 +0300
-From: Dan Carpenter <dan.carpenter@oracle.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: James Bottomley <James.Bottomley@HansenPartnership.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        ksummit@lists.linux.dev
-Subject: Re: [MAINTAINER SUMMIT] Rethinking the acceptance policy for
- "trivial" patches
-Message-ID: <20210423092714.GJ1981@kadam>
-References: <afc5664dc2b60f912dd97abfa818b3f7c4237b92.camel@HansenPartnership.com>
- <20210422123559.1dc647fb@coco.lan>
- <yq1o8e6shil.fsf@ca-mkp.ca.oracle.com>
- <99289ff4cf7b1e59f82c330728c80dc7e63319a7.camel@HansenPartnership.com>
- <20210422153646.GI4572@sirena.org.uk>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5490771;
+	Fri, 23 Apr 2021 10:11:18 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2756B61406;
+	Fri, 23 Apr 2021 10:11:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1619172677;
+	bh=/o0BXhvCn3g+qLDsEXyFdO+FwTtsbkOwzDn8RkxaNLo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ekx0DYnh1ATISx6W3yjr6KQhPx8EfgS3Os+sBUwW/ksP5iHaJDJ8sY1soCTX6J5xU
+	 M6D/OB24ACFSWHXzdvNe69/DnufgtffGere6A0qY9Ch7c84wROVsoD10642+MoQejf
+	 4Sq6tHGMyiKCQm0X9Vq5da/GX/OdMi/O7TBucMQE=
+Date: Fri, 23 Apr 2021 12:11:12 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Thorsten Leemhuis <linux@leemhuis.info>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	regressions@lists.linux.dev,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>, ksummit@lists.linux.dev,
+	workflows@vger.kernel.org
+Subject: Re: RFC: building a regression tracking bot for Linux kernel
+ development
+Message-ID: <YIKdQKJNZOSfdL9B@kroah.com>
+References: <268a3049-7c0b-8a33-1ff6-5a2d35fcba16@leemhuis.info>
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20210422153646.GI4572@sirena.org.uk>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-GUID: hD8IRcggfemiT_tLZQ6SZGnF0Y8hEOpN
-X-Proofpoint-ORIG-GUID: hD8IRcggfemiT_tLZQ6SZGnF0Y8hEOpN
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9962 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 priorityscore=1501
- bulkscore=0 suspectscore=0 impostorscore=0 mlxscore=0 lowpriorityscore=0
- clxscore=1011 spamscore=0 mlxlogscore=999 adultscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
- definitions=main-2104230059
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <268a3049-7c0b-8a33-1ff6-5a2d35fcba16@leemhuis.info>
 
-On Thu, Apr 22, 2021 at 04:36:46PM +0100, Mark Brown wrote:
-> On Thu, Apr 22, 2021 at 08:28:00AM -0700, James Bottomley wrote:
-> > On Thu, 2021-04-22 at 08:32 -0400, Martin K. Petersen wrote:
-> > > Another metric that may be worth capturing is how many Fixes: tags
-> > > refer to patches authored by this submitter.
+On Thu, Apr 22, 2021 at 09:16:40AM +0200, Thorsten Leemhuis wrote:
+> Lo! As mentioned a few times recently I'm staring to build a bot for
+> semi-automatic Linux kernel regressions tracking. Find below a rough
+> description of how I imagine it's going to work. That way I want to give
+> everyone a chance to influence things before I'm starting to code for
+> real. Early feedback will help to build something that's acceptable for
+> the Linux kernel developer community and used in practice in the long
+> run, and that's what I aim for.
 > 
-> > Or perhaps invert it: no bug fix without a Fixes: tag.  Some of the
-> > human handlers of robot based finders, like Dan's smatch, do go back
-> > and figure out where the bug came from, but if we encourage the rule
-> > that if you're fixing a bug you must identify the origin and explain
-> > the bug it may help weed out some bogus fixes.
+> I know, I know, "Talk is cheap. Show me the code.". But I had to think
+> things through and write some of it down anyway, so no harm done in
+> posting it as RFC. I CCed ksummit, as many maintainers hang out there
+> and because this is a follow up to my former regression tracking work we
+> discussed on both kernel and maintainers summit 2017; it fact it
+> hopefully might be something for this year as well, we'll see, too early
+> to tell.
 > 
-> Script that use git blame to generate a commit to put in the Fixes: tag
-> incoming...
+> So how will the "regzbot" work? The ideal case is simple:
+> 
+> Someone reports a regression to the recently created regressions mailing
+> list(regressions@lists.linux.dev). There the user includes a tag like this:
+> > #regzb introduced: 94a632d91ad1 ("usc: xhbi-foo: check bar_params earlier")
 
-I always put the person who wrote the original commit in the To line.
-They're probably the best person to review the patch.  People do get
-annoyed if you blame them for someone else's bug.
+That's great, but the ability for most people to track stuff down to the
+commit id feels very low.  I would think that the "this no longer works"
+is the bug report / regression, and eventually that can be tracked down
+to "commit XXXX caused this" which is what you want to see above.
 
-regards,
-dan carpenter
+Or am I confused?
+
+> That will make regzbot add the report to its list of regressions it
+> tracks, which among other will make it store the mail's message-id
+> (let's assume it's `xt6uzpqtaqru6pmh@earth.solsystem`). Ideally some
+> developer within a few days will fix the regression with a patch. When
+> doing so, they already often include a tag linking to the report:
+> > Link: https://lore.kernel.org/r/xt6uzpqtaqru6pmh@earth.solsystem
+> 
+> 
+> Regzbot will notice this tag refers to the regression it tracks and
+> automatically close the entry for it.
+> 
+> That's it already. The regression was tracked with:
+> 
+>  * minimal overhead for the reporter
+>  * no additional overhead for the developers – only something they ought
+> to do already became more important
+
+That's great, and for tracking commits that we know are bad (like a few
+I see being reported against linux-next right now), that's wonderful and
+a huge step forward.
+
+But how are you going to track "issues that are not narrowed down to a
+commit" with this?  Or is that not the goal here?
+
+Ah, I should have kept reading:
+
+> That can't be all
+> -----------------
+> 
+> Of course the world is more complicated than the simple example scenario
+> above, as the devil is always in the details. The three most obvious
+> problems the initial ideal scenario left aside:
+> 
+> * The reporter doesn't specify the #regzb tag at all. Regzbot can't do
+> anything about it, it sadly won't have visionary power and a AI engine
+> any time soon. Some human (for a while that often will be me) thus needs
+> to reply with the tag with a proper reply-to to the report to make
+> regboz track it.
+
+Any specific format/tag we can use to help make this easier?  Or is that
+just something that you are going to do "by hand" to start with?
+
+> * The commit causing the regression is unknown to the reporter. In that
+> case the tag should mention the span when the regression was introduced:
+> > #regzb introduced: v5.7..v5.8-rc1
+
+Ah, "introduced", I should have read the whole email, my fault...
+
+> * The developer who fixes the issue forgets to place the "Link:" tag,
+> which can't be added once committed. In that case some human needs to
+> reply to the thread with the initial report with a tag like this:
+> > #regzb Fixed-by: c39667ddcfd5 
+
+nice!
+
+>  * regression in stable and longterm kernels sometimes affect multiple
+> versions, for example if a patch that works fine in mainline was
+> backported to the longterm kernel 5.10 and 5.4 – but causes problems in
+> both, as something required by the patch is missing in those lines. How
+> this will be solved exactly remains to be seen, maybe like this:
+> > #regzb Introduced: c39667ddcfd6 e39667ddcfd1 ("usc: xhbi-foo: check bar_params a little later again")
+> 
+>  Then regzbot can look those commits up and from that determine the
+> affected versions. Obviously the reporter will likely not be aware of
+> it, hence it's likely that the stable maintainer or the developer need
+> to send a mail to make regzbot aware that this regression affects
+> multiple versions.
+
+This shouldn't be that big of an issue, as the stable maintainers have
+simple tools that can show "what releases was this commit in" today,
+which is what we use to track what commits need to be backported where.
+
+I can give you a copy of my tools off-line if you are curious about this
+and think it's worth adding to your tool.
+
+Oh, and many thanks for doing this, I think this looks great.
+
+greg k-h
 
