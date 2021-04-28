@@ -1,108 +1,68 @@
-Return-Path: <ksummit+bounces-164-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-165-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 334A336BC60
-	for <lists@lfdr.de>; Tue, 27 Apr 2021 01:51:13 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EB8E36D5D5
+	for <lists@lfdr.de>; Wed, 28 Apr 2021 12:30:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id CBD331C0DED
-	for <lists@lfdr.de>; Mon, 26 Apr 2021 23:51:11 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 6C9743E0F7A
+	for <lists@lfdr.de>; Wed, 28 Apr 2021 10:30:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603912FA9;
-	Mon, 26 Apr 2021 23:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 568B52FA6;
+	Wed, 28 Apr 2021 10:29:59 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042AD2FA4
-	for <ksummit@lists.linux.dev>; Mon, 26 Apr 2021 23:51:03 +0000 (UTC)
-Received: by mail-wr1-f52.google.com with SMTP id x7so57556882wrw.10
-        for <ksummit@lists.linux.dev>; Mon, 26 Apr 2021 16:51:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Zy8lWToUipVMvn0XiQVQIZoTcmvgQu3I7mE833hMYwM=;
-        b=ToCV30oNB2ztVsxGgHjZKgWGYHygxvwZYJztsJgiQVka/AYfXPgtqAsCkbKrXUcYSJ
-         Dbk+uYILcXP0AmrWGpJKW+GOr5w6g3RRb6n3pOWgoz6AdCeDYN3X9nv8wwYOMFoCHmXi
-         zXTzcnWvUYUS761p3724CQJUtEHjzKCcj4/s4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Zy8lWToUipVMvn0XiQVQIZoTcmvgQu3I7mE833hMYwM=;
-        b=VYZYtSkT856qwrmD/FXa0C43+EkBmH4EIbyFm2Wh7X4tpW/dDQ4iH4ZKjBbvdbEQAz
-         Pbgj5YEndyxpVqNNQXHctVKUObkPHghj9M9KXvfjasYkxPoXPss8pDzClye5rmw28YGB
-         nurq3e/puKSXzXI1hxSABTdgS2k4r+GI/n/gW/LrPDDl+Tjz8nownbIHn7PvfrucTZGa
-         C7+6Y9/+DKo1w9ocEjP6FM3ITS/CxibB4newAXeU3e4iQ1h07law7BhnYsFiF4rZ7rqC
-         htH2XasK7W0J//PmBqoMx0+8RJe9Q6tpl0rQKocR+ivEL+0dqQCBSZsN+UXLULvImLMw
-         gJOg==
-X-Gm-Message-State: AOAM5318E7iYy8G2u05+LQdW0KWyfm2Rho4UIK//mdEKr4Owc3a2Vfwk
-	neKeJrWtPvIXOYvUrsUlIFlc0TH19/yhIjBcuUsYPw==
-X-Google-Smtp-Source: ABdhPJxF32ubQrQ4uMZYbdySNXoobqubGy9cvy/FSDol/Pn1ZTkMzxRMY7W4c++5/sLSKJId0rQ9C+kqf8fEIlSU5dg=
-X-Received: by 2002:adf:e647:: with SMTP id b7mr25328443wrn.43.1619481062390;
- Mon, 26 Apr 2021 16:51:02 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6BC71
+	for <ksummit@lists.linux.dev>; Wed, 28 Apr 2021 10:29:58 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A9162613FF;
+	Wed, 28 Apr 2021 10:29:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1619605797;
+	bh=8C+OErcF42crulhtmpO3zOoSt0k/g7nGDTskXCzZBv0=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=Da432CDk5RTSR+1+b85H4jxdY4rw0w2r+IVM2U59jpCTLGTuuTqyHcKD+gHDkWs5s
+	 tlCQdDuWIM5amEuBPZEbZLEp/8zF4A8Wa6bog/pzz6xY8HWmkIQY3eda4xcWV72zQH
+	 0EyDKY6foSXFcEVQPphyRgCCTiBLRlbfyUDJ5rDF5W3Hyh027BmMdsfRge//6oblO9
+	 DPxgUcmWFPah1k4/aNdkLDh46k+nRSKasC4vhxisUbFof6Cu4iKEpPNHwUn32INzIy
+	 sFCrJiflrUZfOAkZmrYkK8IwQm5hO2H2YfopdfozwyNX3WYNLIhxL2gxM99LWQx49C
+	 8CG1MeO321bMQ==
+Date: Wed, 28 Apr 2021 12:29:52 +0200 (CEST)
+From: Jiri Kosina <jikos@kernel.org>
+To: Theodore Ts'o <tytso@mit.edu>
+cc: ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+    linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+    linux-mm@kvack.org, netdev@vger.kernel.org, linux-arch@vger.kernel.org, 
+    linux-api@vger.kernel.org
+Subject: Re: Maintainers / Kernel Summit 2021 planning kick-off
+In-Reply-To: <YH2hs6EsPTpDAqXc@mit.edu>
+Message-ID: <nycvar.YFH.7.76.2104281228350.18270@cbobk.fhfr.pm>
+References: <YH2hs6EsPTpDAqXc@mit.edu>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <YID5xhy2vv45fnOv@unreal> <20210422112001.22c64fe9@coco.lan>
- <YIFfXTVMDmHwVmSR@unreal> <20210422092916.556e5e50@gandalf.local.home>
- <CAL_JsqKS-=shqkLhzKeLHqNPhosGJw5X-fOi+dy1rT3Q_LfBZg@mail.gmail.com>
- <20210423080454.78f4f662@coco.lan> <6c221d801c5a6834168207b5ccadc76ac432c766.camel@perches.com>
- <20210423091320.4f2381b2@coco.lan> <CAD=FV=Xi6TL05M2bYKNgNB-ePY40CvonPzJYeMhXMPGgYKA5_Q@mail.gmail.com>
- <20210423160310.GD5507@sirena.org.uk> <YIMAAFCe5N7ORNRX@unreal>
-In-Reply-To: <YIMAAFCe5N7ORNRX@unreal>
-From: Simon Glass <sjg@chromium.org>
-Date: Tue, 27 Apr 2021 09:50:51 +1000
-Message-ID: <CAPnjgZ2iiv-M3M8MaVFxQzHrT5jhL+YhPv+COxRMjCVU_OAS9w@mail.gmail.com>
-Subject: Re: Better tools for sending patches (was: Re: [MAINTAINER SUMMIT]
- Rethinking the acceptance policy for "trivial" patches)
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, Doug Anderson <dianders@chromium.org>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Joe Perches <joe@perches.com>, 
-	Rob Herring <robherring2@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, ksummit@lists.linux.dev, 
-	tools@linux.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
 
-Hi,
+On Mon, 19 Apr 2021, Theodore Ts'o wrote:
 
-The docs are on github also :
-https://github.com/siemens/u-boot/blob/master/tools/patman/README
+> This year, the Maintainers and Kernel Summit is currently planned to
+> be held in Dublin, Ireland, September 27 -- 29th.  
 
-I find it relatively easy to update each patch with a little change
-log as I change it. Then I know that when I type 'patman send' it will
-do the right thing.
+Hi Ted,
 
-If people have workflows that would benefit from patman's help, but
-need it to do an extra thing, I certainly accept patches to the tool.
+given the fact that OSS is being relocated from Dublin to Washington [1], 
+is Kernel Summit following that direction?
 
-Regards,
-Simon
+[1] https://www.linuxfoundation.org/en/press-release/the-linux-foundation-announces-open-source-summit-embedded-linux-conference-2021-will-move-from-dublin-ireland-to-seattle-washington/
 
-On Sat, 24 Apr 2021 at 03:12, Leon Romanovsky <leon@kernel.org> wrote:
->
-> On Fri, Apr 23, 2021 at 05:03:10PM +0100, Mark Brown wrote:
-> > On Fri, Apr 23, 2021 at 07:52:30AM -0700, Doug Anderson wrote:
-> >
-> > > I know it's nearly impossible to get people to change their workflows,
-> > > but if you're open to it I definitely suggest giving it a try. Simon
-> > > Glass (the original author) is also quite receptive to improvements.
-> >
-> > I have something broadly similar (much more simplistic and overall less
-> > capable) which I wrote myself - the things I have that this doesn't have
-> > are:
-> >
-> >  - Attesting the outgoing patches with b4.
-> >  - Tagging the published series in git.
->
-> I have something similar too, which actually wrapper over git format-patch
-> that properly set target (net-next, rdma-next, iproute2, rdma-core, mlx5-next
-> e.t.c) and changes "To;" based on target.
->
-> Thanks
+-- 
+Jiri Kosina
+SUSE Labs
+
 
