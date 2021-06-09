@@ -1,129 +1,122 @@
-Return-Path: <ksummit+bounces-179-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-180-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5BC23A102D
-	for <lists@lfdr.de>; Wed,  9 Jun 2021 12:37:50 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 814EA3A1DBB
+	for <lists@lfdr.de>; Wed,  9 Jun 2021 21:33:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 9BCE63E0F39
-	for <lists@lfdr.de>; Wed,  9 Jun 2021 10:37:48 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 00A833E0FFD
+	for <lists@lfdr.de>; Wed,  9 Jun 2021 19:33:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E03702FB5;
-	Wed,  9 Jun 2021 10:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44ADC2FB9;
+	Wed,  9 Jun 2021 19:33:22 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBC1C72
-	for <ksummit@lists.linux.dev>; Wed,  9 Jun 2021 10:37:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1623235060;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GXhuyr8heOXQm5DhE+A2Fq3L85+vZLqOuEIP9E5CaCk=;
-	b=QpF7HR/7zOGh61YOtlY8dqcVkUj+yYVo4cmQJvAskdE/cJnbqHCDWYPV11ObBsIUrvcyT3
-	pysNVP/he+CVTa66STgetI7XHG5fjnSOw3u2IFroXl+sGkTRKqZVXKW6hm+MTP+b/Lghub
-	in61uffd3xSL54ub9vSD66/PiBsF31g=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-574-uC7ZCQymOj2iGZZ33o0Ktw-1; Wed, 09 Jun 2021 06:37:39 -0400
-X-MC-Unique: uC7ZCQymOj2iGZZ33o0Ktw-1
-Received: by mail-wr1-f72.google.com with SMTP id l13-20020adfe9cd0000b0290119a0645c8fso7604983wrn.8
-        for <ksummit@lists.linux.dev>; Wed, 09 Jun 2021 03:37:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:references:from:organization:subject
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=GXhuyr8heOXQm5DhE+A2Fq3L85+vZLqOuEIP9E5CaCk=;
-        b=OsyIwuS4V5gtqqudChMysXpBZ3OtX8/Scv3RbarhIptMCM0NRDusKwoneCHtxuS1TL
-         UbxuDoZmR33Txr6P94FMROsA1qZG74dLXeXWxoLE/FsQbKAE2C0aq197asuFo25ed3mf
-         4R6jxpAfL+QScG44d0EsaVZ5HAN8zXGOnJrFwfPc6nQs3mOBaN+q4O8rhrRtImcRzUFx
-         fxLY6wXfr2v4+UR1Ut6pBpm5EWn0BcGRPLu8vDm5pv8dy8FYU3P3PiBXe9CehViCPgDR
-         H7P4T3sn9ogbp0kOk235fPHEGPI96TTgLc1RTx/O5Y/4BQHJHJoAaBiBdvC6eGMSTQE5
-         TQnQ==
-X-Gm-Message-State: AOAM530FMaUB2KlFcQCLlndToqCG3/esT2ixCFHXwuA+7D3nwA//9HmA
-	lXDuP3N/ngd0MAJW00YXbELEOQsVvvovdNeKLoKmVqAHNbg63yJwa5T6+vZmX4b78EX5T8Z7pxi
-	U0VFu8FR8MYVzvpjAuQ==
-X-Received: by 2002:a5d:4984:: with SMTP id r4mr27081037wrq.152.1623235058405;
-        Wed, 09 Jun 2021 03:37:38 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxx5QPJlJibMJq5KkrldmC0yuk9Qgb+mpFY3QEuhdJz4/D402+HjHMF51cTVSM1EXp++YpYXw==
-X-Received: by 2002:a5d:4984:: with SMTP id r4mr27081015wrq.152.1623235058237;
-        Wed, 09 Jun 2021 03:37:38 -0700 (PDT)
-Received: from [192.168.3.132] (p5b0c611d.dip0.t-ipconnect.de. [91.12.97.29])
-        by smtp.gmail.com with ESMTPSA id l5sm5668999wmi.46.2021.06.09.03.37.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Jun 2021 03:37:37 -0700 (PDT)
-To: James Bottomley <James.Bottomley@HansenPartnership.com>,
- Greg KH <greg@kroah.com>, Christoph Lameter <cl@gentwo.de>
-Cc: Theodore Ts'o <tytso@mit.edu>, Jiri Kosina <jikos@kernel.org>,
- ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, netdev@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-api@vger.kernel.org
-References: <YH2hs6EsPTpDAqXc@mit.edu>
- <nycvar.YFH.7.76.2104281228350.18270@cbobk.fhfr.pm>
- <YIx7R6tmcRRCl/az@mit.edu>
- <alpine.DEB.2.22.394.2105271522320.172088@gentwo.de>
- <YK+esqGjKaPb+b/Q@kroah.com>
- <c46dbda64558ab884af060f405e3f067112b9c8a.camel@HansenPartnership.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9FD72
+	for <ksummit@lists.linux.dev>; Wed,  9 Jun 2021 19:33:20 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 302271280667;
+	Wed,  9 Jun 2021 12:23:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1623266611;
+	bh=+ygb6ehnTWGTq4+1X/LDab7SOrMZFUMoYRjlVlc0Ylo=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=F4n1wSPIfTJQLoiDdI1yZL/EUP3WrqHdOowail12Ffw336iWpi00V+GARW0MpjRsA
+	 +kLf4BY4Sc6Ina61GAiJ1ssSy6/WS/P/lRQXRKmRPg9vCvtpZnVZw8QLYaEO4krOTO
+	 cn06zPp/BfpaaJ8Ty2o2LbNdYZeyz9zun05H49Dk=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+	by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id msFIPfflViLD; Wed,  9 Jun 2021 12:23:31 -0700 (PDT)
+Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:600:8280:66d1::c447])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 70C251280665;
+	Wed,  9 Jun 2021 12:23:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1623266611;
+	bh=+ygb6ehnTWGTq4+1X/LDab7SOrMZFUMoYRjlVlc0Ylo=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=F4n1wSPIfTJQLoiDdI1yZL/EUP3WrqHdOowail12Ffw336iWpi00V+GARW0MpjRsA
+	 +kLf4BY4Sc6Ina61GAiJ1ssSy6/WS/P/lRQXRKmRPg9vCvtpZnVZw8QLYaEO4krOTO
+	 cn06zPp/BfpaaJ8Ty2o2LbNdYZeyz9zun05H49Dk=
+Message-ID: <e993d6c84c79d083ecfe5a8c8edabef9e9caa3ce.camel@HansenPartnership.com>
 Subject: Re: Maintainers / Kernel Summit 2021 planning kick-off
-Message-ID: <b32c8672-06ee-bf68-7963-10aeabc0596c@redhat.com>
-Date: Wed, 9 Jun 2021 12:37:37 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: David Hildenbrand <david@redhat.com>, Greg KH <greg@kroah.com>, 
+	Christoph Lameter
+	 <cl@gentwo.de>
+Cc: Theodore Ts'o <tytso@mit.edu>, Jiri Kosina <jikos@kernel.org>, 
+ ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org,  netdev@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-api@vger.kernel.org
+Date: Wed, 09 Jun 2021 12:23:29 -0700
+In-Reply-To: <b32c8672-06ee-bf68-7963-10aeabc0596c@redhat.com>
+References: <YH2hs6EsPTpDAqXc@mit.edu>
+	 <nycvar.YFH.7.76.2104281228350.18270@cbobk.fhfr.pm>
+	 <YIx7R6tmcRRCl/az@mit.edu>
+	 <alpine.DEB.2.22.394.2105271522320.172088@gentwo.de>
+	 <YK+esqGjKaPb+b/Q@kroah.com>
+	 <c46dbda64558ab884af060f405e3f067112b9c8a.camel@HansenPartnership.com>
+	 <b32c8672-06ee-bf68-7963-10aeabc0596c@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <c46dbda64558ab884af060f405e3f067112b9c8a.camel@HansenPartnership.com>
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 28.05.21 16:58, James Bottomley wrote:
-> On Thu, 2021-05-27 at 15:29 +0200, Greg KH wrote:
->> On Thu, May 27, 2021 at 03:23:03PM +0200, Christoph Lameter wrote:
->>> On Fri, 30 Apr 2021, Theodore Ts'o wrote:
->>>
->>>> I know we're all really hungry for some in-person meetups and
->>>> discussions, but at least for LPC, Kernel Summit, and
->>>> Maintainer's Summit, we're going to have to wait for another
->>>> year,
->>>
->>> Well now that we are vaccinated: Can we still change it?
->>>
->>
->> Speak for yourself, remember that Europe and other parts of the world
->> are not as "flush" with vaccines as the US currently is :(
+On Wed, 2021-06-09 at 12:37 +0200, David Hildenbrand wrote:
+> On 28.05.21 16:58, James Bottomley wrote:
+> > On Thu, 2021-05-27 at 15:29 +0200, Greg KH wrote:
+> > > On Thu, May 27, 2021 at 03:23:03PM +0200, Christoph Lameter
+> > > wrote:
+> > > > On Fri, 30 Apr 2021, Theodore Ts'o wrote:
+> > > > 
+> > > > > I know we're all really hungry for some in-person meetups and
+> > > > > discussions, but at least for LPC, Kernel Summit, and
+> > > > > Maintainer's Summit, we're going to have to wait for another
+> > > > > year,
+> > > > 
+> > > > Well now that we are vaccinated: Can we still change it?
+> > > > 
+> > > 
+> > > Speak for yourself, remember that Europe and other parts of the
+> > > world are not as "flush" with vaccines as the US currently is :(
+> > 
+> > The rollout is accelerating in Europe.  At least in Germany, I know
+> > people younger than me are already vaccinated. 
 > 
-> The rollout is accelerating in Europe.  At least in Germany, I know
-> people younger than me are already vaccinated. 
+> And I know people younger than you in Germany personally ( ;) ) that
+> are not vaccinated yet and might not even get the first shot before 
+> September, not even dreaming about a second one + waiting until the 
+> vaccine is fully in effect.
 
-And I know people younger than you in Germany personally ( ;) ) that are 
-not vaccinated yet and might not even get the first shot before 
-September, not even dreaming about a second one + waiting until the 
-vaccine is fully in effect.
+I said "is accelerating" not "is on a par with the US and UK".
 
-So yes, sure, nobody can stop people that think the pandemic is over 
-("we are vaccinated") from meeting in person. Just make sure to not 
-ignore the poor souls that really won't be traveling this year, because 
-"we are not vaccinated".
+> So yes, sure, nobody can stop people that think the pandemic is over 
+> ("we are vaccinated") from meeting in person. Just make sure to not 
+> ignore the poor souls that really won't be traveling this year,
+> because "we are not vaccinated".
 
--- 
-Thanks,
+I realise the UK government attitude is that everyone should suffer
+until we say it's over (mainly, it must be admitted, to try to keep
+people from asking awkward questions about what went wrong initially)
+and to some extent the EU shares that, but the US is definitely moving
+to a regime that says once you're vaccinated it's pretty much over for
+you and I don't see a problem with taking advantage of that for hybrid
+style events.  However, even with the best will in the world, I can't
+see much of a way around the problem that remote people at hybrid
+events will always be at a disadvantage ... suggestions for improving
+this are always welcome.
 
-David / dhildenb
+James
+
 
 
