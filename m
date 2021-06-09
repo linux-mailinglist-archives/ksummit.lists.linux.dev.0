@@ -1,144 +1,129 @@
-Return-Path: <ksummit+bounces-178-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-179-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 954943945EA
-	for <lists@lfdr.de>; Fri, 28 May 2021 18:32:08 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5BC23A102D
+	for <lists@lfdr.de>; Wed,  9 Jun 2021 12:37:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 24C573E0F79
-	for <lists@lfdr.de>; Fri, 28 May 2021 16:32:07 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 9BCE63E0F39
+	for <lists@lfdr.de>; Wed,  9 Jun 2021 10:37:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929DB6D11;
-	Fri, 28 May 2021 16:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E03702FB5;
+	Wed,  9 Jun 2021 10:37:42 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A422FAD
-	for <ksummit@lists.linux.dev>; Fri, 28 May 2021 16:32:00 +0000 (UTC)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id A9951145A;
-	Fri, 28 May 2021 18:31:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1622219517;
-	bh=+TyhOSFQmEAuwn9UyncT/WVTRSzS2J1hdvF0wKV90Ek=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VQkCpRbD6H+bJVAAd9lyYa4pu52ay4Qqt26/Wy9RLLy31pHcgt1csMubyDlKxRuc2
-	 FC42eVquW4zSpxjaLcBvVOes/2+gjmdSY1rYNpXLiuPYm3VU4QZTRb4ccmP3ub1OoK
-	 Mv4N6hGXyNoeS8KvhXl/3c3qmp6eDHEVwnJtjPYE=
-Date: Fri, 28 May 2021 19:31:50 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Matthew Wilcox <willy@infradead.org>, Greg KH <greg@kroah.com>,
-	Christoph Lameter <cl@gentwo.de>, Theodore Ts'o <tytso@mit.edu>,
-	Jiri Kosina <jikos@kernel.org>, ksummit@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	netdev@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-api@vger.kernel.org
-Subject: Re: Maintainers / Kernel Summit 2021 planning kick-off
-Message-ID: <YLEa9uIScWfUU0Mw@pendragon.ideasonboard.com>
-References: <YIx7R6tmcRRCl/az@mit.edu>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBC1C72
+	for <ksummit@lists.linux.dev>; Wed,  9 Jun 2021 10:37:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1623235060;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GXhuyr8heOXQm5DhE+A2Fq3L85+vZLqOuEIP9E5CaCk=;
+	b=QpF7HR/7zOGh61YOtlY8dqcVkUj+yYVo4cmQJvAskdE/cJnbqHCDWYPV11ObBsIUrvcyT3
+	pysNVP/he+CVTa66STgetI7XHG5fjnSOw3u2IFroXl+sGkTRKqZVXKW6hm+MTP+b/Lghub
+	in61uffd3xSL54ub9vSD66/PiBsF31g=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-574-uC7ZCQymOj2iGZZ33o0Ktw-1; Wed, 09 Jun 2021 06:37:39 -0400
+X-MC-Unique: uC7ZCQymOj2iGZZ33o0Ktw-1
+Received: by mail-wr1-f72.google.com with SMTP id l13-20020adfe9cd0000b0290119a0645c8fso7604983wrn.8
+        for <ksummit@lists.linux.dev>; Wed, 09 Jun 2021 03:37:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:cc:references:from:organization:subject
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=GXhuyr8heOXQm5DhE+A2Fq3L85+vZLqOuEIP9E5CaCk=;
+        b=OsyIwuS4V5gtqqudChMysXpBZ3OtX8/Scv3RbarhIptMCM0NRDusKwoneCHtxuS1TL
+         UbxuDoZmR33Txr6P94FMROsA1qZG74dLXeXWxoLE/FsQbKAE2C0aq197asuFo25ed3mf
+         4R6jxpAfL+QScG44d0EsaVZ5HAN8zXGOnJrFwfPc6nQs3mOBaN+q4O8rhrRtImcRzUFx
+         fxLY6wXfr2v4+UR1Ut6pBpm5EWn0BcGRPLu8vDm5pv8dy8FYU3P3PiBXe9CehViCPgDR
+         H7P4T3sn9ogbp0kOk235fPHEGPI96TTgLc1RTx/O5Y/4BQHJHJoAaBiBdvC6eGMSTQE5
+         TQnQ==
+X-Gm-Message-State: AOAM530FMaUB2KlFcQCLlndToqCG3/esT2ixCFHXwuA+7D3nwA//9HmA
+	lXDuP3N/ngd0MAJW00YXbELEOQsVvvovdNeKLoKmVqAHNbg63yJwa5T6+vZmX4b78EX5T8Z7pxi
+	U0VFu8FR8MYVzvpjAuQ==
+X-Received: by 2002:a5d:4984:: with SMTP id r4mr27081037wrq.152.1623235058405;
+        Wed, 09 Jun 2021 03:37:38 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxx5QPJlJibMJq5KkrldmC0yuk9Qgb+mpFY3QEuhdJz4/D402+HjHMF51cTVSM1EXp++YpYXw==
+X-Received: by 2002:a5d:4984:: with SMTP id r4mr27081015wrq.152.1623235058237;
+        Wed, 09 Jun 2021 03:37:38 -0700 (PDT)
+Received: from [192.168.3.132] (p5b0c611d.dip0.t-ipconnect.de. [91.12.97.29])
+        by smtp.gmail.com with ESMTPSA id l5sm5668999wmi.46.2021.06.09.03.37.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Jun 2021 03:37:37 -0700 (PDT)
+To: James Bottomley <James.Bottomley@HansenPartnership.com>,
+ Greg KH <greg@kroah.com>, Christoph Lameter <cl@gentwo.de>
+Cc: Theodore Ts'o <tytso@mit.edu>, Jiri Kosina <jikos@kernel.org>,
+ ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, netdev@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-api@vger.kernel.org
+References: <YH2hs6EsPTpDAqXc@mit.edu>
+ <nycvar.YFH.7.76.2104281228350.18270@cbobk.fhfr.pm>
+ <YIx7R6tmcRRCl/az@mit.edu>
  <alpine.DEB.2.22.394.2105271522320.172088@gentwo.de>
  <YK+esqGjKaPb+b/Q@kroah.com>
  <c46dbda64558ab884af060f405e3f067112b9c8a.camel@HansenPartnership.com>
- <YLEIKk7IuWu6W4Sy@casper.infradead.org>
- <a8bbc5dab99a4af6e89a9521a5eb4cb4747d2afe.camel@HansenPartnership.com>
- <YLEM2WE0ezdrfMPt@pendragon.ideasonboard.com>
- <15419fa8e5c0047327395387b28c09d775b35a55.camel@HansenPartnership.com>
- <YLESaAP/Bu95ACvU@pendragon.ideasonboard.com>
- <df8c7c855279ff82e05e5142440149ae531a24e9.camel@HansenPartnership.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: Maintainers / Kernel Summit 2021 planning kick-off
+Message-ID: <b32c8672-06ee-bf68-7963-10aeabc0596c@redhat.com>
+Date: Wed, 9 Jun 2021 12:37:37 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <df8c7c855279ff82e05e5142440149ae531a24e9.camel@HansenPartnership.com>
+In-Reply-To: <c46dbda64558ab884af060f405e3f067112b9c8a.camel@HansenPartnership.com>
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 
-Hi James,
-
-On Fri, May 28, 2021 at 09:04:29AM -0700, James Bottomley wrote:
-> On Fri, 2021-05-28 at 18:55 +0300, Laurent Pinchart wrote:
-> > On Fri, May 28, 2021 at 08:44:23AM -0700, James Bottomley wrote:
-> > > On Fri, 2021-05-28 at 18:31 +0300, Laurent Pinchart wrote:
-> > > > On Fri, May 28, 2021 at 08:27:44AM -0700, James Bottomley wrote:
-> > > [...]
-> > > > > Well, I'm not going to get into a debate over the effectiveness
-> > > > > of the current vaccines.  I will say that all conferences have
-> > > > > to now recognize that a sizeable proportion of former attendees
-> > > > > will have fears about travelling and therefore remote
-> > > > > components are going to be a fixture of conferences going
-> > > > > forward.
-> > > > > 
-> > > > > However, while we should accommodate them, we can't let these
-> > > > > fears override people willing to take the risk and meet in
-> > > > > person.
-> > > > 
-> > > > The interesting question is how we'll make sure that those people
-> > > > will not be de facto excluded from the community, or end up as
-> > > > second-class citizens.
-> > > 
-> > > Before the pandemic, there was a small contingent who refused to
-> > > fly for various reasons.  We did sort of accommodate that by
-> > > rotating the conference to Europe where more people could come in
-> > > by train (like they did in Lisbon) but we didn't govern the whole
-> > > conference by trying to make aerophobes first class citizens.
-> > > 
-> > > The bottom line is that as long as enough people are willing to
-> > > meet in person and in-person delivers more value that remote (even
-> > > though we'll try to make remote as valuable as possible) we should
-> > > do it.   We should not handicap the desires of the one group by the
-> > > fears of the other because that's a false equality ... it's
-> > > reducing everyone to the level of the lowest common denominator
-> > > rather than trying to elevate people.
-> > 
-> > This should take into account the size of each group, and I believe
-> > even then it won't be a binary decision, there's lots of variation in
-> > local situations, creating more than just two groups of
-> > coward/careless people (let's not debate those two words if possible,
-> > they're not meant to insult anyway, but to emphasize that there are
-> > more categories). While I believe that in-person meetings will become
-> > the norm again in a reasonably near future, 2021 seems a bit
-> > premature to me.
+On 28.05.21 16:58, James Bottomley wrote:
+> On Thu, 2021-05-27 at 15:29 +0200, Greg KH wrote:
+>> On Thu, May 27, 2021 at 03:23:03PM +0200, Christoph Lameter wrote:
+>>> On Fri, 30 Apr 2021, Theodore Ts'o wrote:
+>>>
+>>>> I know we're all really hungry for some in-person meetups and
+>>>> discussions, but at least for LPC, Kernel Summit, and
+>>>> Maintainer's Summit, we're going to have to wait for another
+>>>> year,
+>>>
+>>> Well now that we are vaccinated: Can we still change it?
+>>>
+>>
+>> Speak for yourself, remember that Europe and other parts of the world
+>> are not as "flush" with vaccines as the US currently is :(
 > 
-> Well, this is why Plumbers and Kernel Summit are fully virtual for this
-> year, so you won't miss any content.  The idea of meetups is just to
-> test the water for restarting the social side.  In 2021 it's
-> necessarily going to be governed by which country is on which other
-> country's friends list, but hopefully that won't be the case in 2022.
+> The rollout is accelerating in Europe.  At least in Germany, I know
+> people younger than me are already vaccinated. 
 
-I seem to have misunderstood the original intent (or your intent at
-least) and thought the proposal was to reconsider the virtual conference
-for 2021 and go fully physical. Apologies for the misunderstanding if it
-was indeed one. Dreaming of having good meals in good company again
-doesn't make me bitter enough to claim that if I can't have them this
-year, nobody can :-)
+And I know people younger than you in Germany personally ( ;) ) that are 
+not vaccinated yet and might not even get the first shot before 
+September, not even dreaming about a second one + waiting until the 
+vaccine is fully in effect.
 
-> > If we want to brainstorm alternate solutions, an option could be to
-> > split the monolithic conference location into a small set of
-> > geographically distributed groups (assuming local travel would be
-> > easier and generally seen as an accepted solution compared to
-> > intercontinental travels) and link those through video conferencing.
-> > I don't have high hopes that this would be feasible in practice given
-> > the increase in efforts and costs to organize multiple locations in
-> > parallel, but maybe something interesting could come out of
-> > discussing different options.
-> 
-> Remember, remote isn't always the best solution either.  We got
-> complaints last year that we were disadvantaging people without high
-> speed internet by using video (i.e. large swathes of Africa and Asia). 
-> In a physical conference we can try to counteract this disadvantage by
-> offering attendance sponsorship, but I can't sponsor a fibre connection
-> on a continental scale.  I think we need to feel our way here, and
-> trying out meetups for size (which are traditionally more
-> geographically local) could be one way to do this.
+So yes, sure, nobody can stop people that think the pandemic is over 
+("we are vaccinated") from meeting in person. Just make sure to not 
+ignore the poor souls that really won't be traveling this year, because 
+"we are not vaccinated".
 
 -- 
-Regards,
+Thanks,
 
-Laurent Pinchart
+David / dhildenb
+
 
