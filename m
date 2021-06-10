@@ -1,122 +1,117 @@
-Return-Path: <ksummit+bounces-180-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-181-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 814EA3A1DBB
-	for <lists@lfdr.de>; Wed,  9 Jun 2021 21:33:29 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7DD23A32B6
+	for <lists@lfdr.de>; Thu, 10 Jun 2021 20:08:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 00A833E0FFD
-	for <lists@lfdr.de>; Wed,  9 Jun 2021 19:33:28 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 95FEF3E1018
+	for <lists@lfdr.de>; Thu, 10 Jun 2021 18:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44ADC2FB9;
-	Wed,  9 Jun 2021 19:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 074502FB9;
+	Thu, 10 Jun 2021 18:08:18 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9FD72
-	for <ksummit@lists.linux.dev>; Wed,  9 Jun 2021 19:33:20 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 302271280667;
-	Wed,  9 Jun 2021 12:23:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1623266611;
-	bh=+ygb6ehnTWGTq4+1X/LDab7SOrMZFUMoYRjlVlc0Ylo=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=F4n1wSPIfTJQLoiDdI1yZL/EUP3WrqHdOowail12Ffw336iWpi00V+GARW0MpjRsA
-	 +kLf4BY4Sc6Ina61GAiJ1ssSy6/WS/P/lRQXRKmRPg9vCvtpZnVZw8QLYaEO4krOTO
-	 cn06zPp/BfpaaJ8Ty2o2LbNdYZeyz9zun05H49Dk=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-	by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id msFIPfflViLD; Wed,  9 Jun 2021 12:23:31 -0700 (PDT)
-Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:600:8280:66d1::c447])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 70C251280665;
-	Wed,  9 Jun 2021 12:23:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1623266611;
-	bh=+ygb6ehnTWGTq4+1X/LDab7SOrMZFUMoYRjlVlc0Ylo=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=F4n1wSPIfTJQLoiDdI1yZL/EUP3WrqHdOowail12Ffw336iWpi00V+GARW0MpjRsA
-	 +kLf4BY4Sc6Ina61GAiJ1ssSy6/WS/P/lRQXRKmRPg9vCvtpZnVZw8QLYaEO4krOTO
-	 cn06zPp/BfpaaJ8Ty2o2LbNdYZeyz9zun05H49Dk=
-Message-ID: <e993d6c84c79d083ecfe5a8c8edabef9e9caa3ce.camel@HansenPartnership.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6A072
+	for <ksummit@lists.linux.dev>; Thu, 10 Jun 2021 18:08:16 +0000 (UTC)
+Received: from [192.168.1.155] ([95.115.39.199]) by mrelayeu.kundenserver.de
+ (mreue011 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1MAOa3-1m2Ar83JKV-00Bw0l; Thu, 10 Jun 2021 20:07:57 +0200
 Subject: Re: Maintainers / Kernel Summit 2021 planning kick-off
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: David Hildenbrand <david@redhat.com>, Greg KH <greg@kroah.com>, 
-	Christoph Lameter
-	 <cl@gentwo.de>
-Cc: Theodore Ts'o <tytso@mit.edu>, Jiri Kosina <jikos@kernel.org>, 
- ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+To: David Hildenbrand <david@redhat.com>,
+ James Bottomley <James.Bottomley@HansenPartnership.com>,
+ Greg KH <greg@kroah.com>, Christoph Lameter <cl@gentwo.de>
+Cc: Theodore Ts'o <tytso@mit.edu>, Jiri Kosina <jikos@kernel.org>,
+ ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
  linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org,  netdev@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-mm@kvack.org, netdev@vger.kernel.org, linux-arch@vger.kernel.org,
  linux-api@vger.kernel.org
-Date: Wed, 09 Jun 2021 12:23:29 -0700
-In-Reply-To: <b32c8672-06ee-bf68-7963-10aeabc0596c@redhat.com>
 References: <YH2hs6EsPTpDAqXc@mit.edu>
-	 <nycvar.YFH.7.76.2104281228350.18270@cbobk.fhfr.pm>
-	 <YIx7R6tmcRRCl/az@mit.edu>
-	 <alpine.DEB.2.22.394.2105271522320.172088@gentwo.de>
-	 <YK+esqGjKaPb+b/Q@kroah.com>
-	 <c46dbda64558ab884af060f405e3f067112b9c8a.camel@HansenPartnership.com>
-	 <b32c8672-06ee-bf68-7963-10aeabc0596c@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 
+ <nycvar.YFH.7.76.2104281228350.18270@cbobk.fhfr.pm>
+ <YIx7R6tmcRRCl/az@mit.edu>
+ <alpine.DEB.2.22.394.2105271522320.172088@gentwo.de>
+ <YK+esqGjKaPb+b/Q@kroah.com>
+ <c46dbda64558ab884af060f405e3f067112b9c8a.camel@HansenPartnership.com>
+ <b32c8672-06ee-bf68-7963-10aeabc0596c@redhat.com>
+From: "Enrico Weigelt, metux IT consult" <lkml@metux.net>
+Message-ID: <5038827c-463f-232d-4dec-da56c71089bd@metux.net>
+Date: Thu, 10 Jun 2021 20:07:55 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.0
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <b32c8672-06ee-bf68-7963-10aeabc0596c@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: tl
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:h3TsVFZQW1eeWxWIwEU03AV+gSVwsiMLM6JxbsYr4WP0Fwq23A2
+ CiXWNpTQ5rJyN4lnIlW3kNqu1QDJHOU9jXONXeRpeKHiJh149DjgQM0E2BKk2DnTypFbthH
+ r0BSBnK2DPiDCypN8o4dp/TEYuXShTv8MoV3a1LIiFYVPq/F68NtDYbwRsf40mUoOx6kkFA
+ jJOwRV273/dupW+JPy8Fg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:RPR8u21hQiQ=:WMPCtJcTv+xnqOrRaqItdg
+ pTQrLFmyOswfSwUDFdlHDGFylEX4TtOn0b9LskM+UqYiTWSbFD9p76i03ghY4Ke2PgXAKBZ75
+ q6ytFDizMVPHn6Zg+ZGzSq7vHCvS2xWn0u2B0YIhlTEAjiJd4bA+9rPrK0T1dcfGT6Mox8pkR
+ mtm1+Fw3thU+HLx+oKF7kfQyE8xMXqSnA3d4Ita5jpsrf/fTFJtUxSoPBPG+a8SZCFpdc9wvZ
+ 9/jlKkBDy/73YvOT/02BbZPep5/H51zO1ivWiWWbFcgC3bDLYQr8zXwsT/YU0Cmgv6M6zfq3j
+ 2TZ7gcubdef2OOqLR+t0vEVuQtJcNVHtDduwWi6dR9ofvNkrsewfSwcQi8w2Wr8P3olZ8aeWB
+ FfsQGDokItv2hz1feciWckHCLE/IBKROay7Om69AlP+YItfgS/W83MMpmR9PFn8f5dSIAdGWz
+ qH1svdZS7+V9gaDRw6uNwheFQ8HuFct02guXK9Gnh33W6t/+Gn84C5N7VIV/d2X/VbKAvg1vp
+ Ty6S/JHRodXa4AeYpvQH04=
 
-On Wed, 2021-06-09 at 12:37 +0200, David Hildenbrand wrote:
+On 09.06.21 12:37, David Hildenbrand wrote:
 > On 28.05.21 16:58, James Bottomley wrote:
-> > On Thu, 2021-05-27 at 15:29 +0200, Greg KH wrote:
-> > > On Thu, May 27, 2021 at 03:23:03PM +0200, Christoph Lameter
-> > > wrote:
-> > > > On Fri, 30 Apr 2021, Theodore Ts'o wrote:
-> > > > 
-> > > > > I know we're all really hungry for some in-person meetups and
-> > > > > discussions, but at least for LPC, Kernel Summit, and
-> > > > > Maintainer's Summit, we're going to have to wait for another
-> > > > > year,
-> > > > 
-> > > > Well now that we are vaccinated: Can we still change it?
-> > > > 
-> > > 
-> > > Speak for yourself, remember that Europe and other parts of the
-> > > world are not as "flush" with vaccines as the US currently is :(
-> > 
-> > The rollout is accelerating in Europe.  At least in Germany, I know
-> > people younger than me are already vaccinated. 
+>> On Thu, 2021-05-27 at 15:29 +0200, Greg KH wrote:
+>>> On Thu, May 27, 2021 at 03:23:03PM +0200, Christoph Lameter wrote:
+>>>> On Fri, 30 Apr 2021, Theodore Ts'o wrote:
+>>>>
+>>>>> I know we're all really hungry for some in-person meetups and
+>>>>> discussions, but at least for LPC, Kernel Summit, and
+>>>>> Maintainer's Summit, we're going to have to wait for another
+>>>>> year,
+>>>>
+>>>> Well now that we are vaccinated: Can we still change it?
+>>>>
+>>>
+>>> Speak for yourself, remember that Europe and other parts of the world
+>>> are not as "flush" with vaccines as the US currently is :(
+>>
+>> The rollout is accelerating in Europe.  At least in Germany, I know
+>> people younger than me are already vaccinated. 
 > 
-> And I know people younger than you in Germany personally ( ;) ) that
-> are not vaccinated yet and might not even get the first shot before 
+> And I know people younger than you in Germany personally ( ;) ) that are 
+> not vaccinated yet and might not even get the first shot before 
 > September, not even dreaming about a second one + waiting until the 
 > vaccine is fully in effect.
 
-I said "is accelerating" not "is on a par with the US and UK".
+And I know *a lot* of people who will never take part in this generic
+human experiment that basically creates a new humanoid race (people
+who generate and exhaust the toxic spike proteine, whose gene sequence
+doesn't look quote natural). I'm one of them, as my whole family.
 
 > So yes, sure, nobody can stop people that think the pandemic is over 
-> ("we are vaccinated") from meeting in person. Just make sure to not 
-> ignore the poor souls that really won't be traveling this year,
-> because "we are not vaccinated".
+> ("we are vaccinated") from meeting in person. 
 
-I realise the UK government attitude is that everyone should suffer
-until we say it's over (mainly, it must be admitted, to try to keep
-people from asking awkward questions about what went wrong initially)
-and to some extent the EU shares that, but the US is definitely moving
-to a regime that says once you're vaccinated it's pretty much over for
-you and I don't see a problem with taking advantage of that for hybrid
-style events.  However, even with the best will in the world, I can't
-see much of a way around the problem that remote people at hybrid
-events will always be at a disadvantage ... suggestions for improving
-this are always welcome.
-
-James
+Pandemic ? Did anybody look at the actual scientific data instead of
+just watching corporate tv ? #faucigate
 
 
+--mtx
+
+-- 
+---
+Hinweis: unverschlüsselte E-Mails können leicht abgehört und manipuliert
+werden ! Für eine vertrauliche Kommunikation senden Sie bitte ihren
+GPG/PGP-Schlüssel zu.
+---
+Enrico Weigelt, metux IT consult
+Free software and Linux embedded engineering
+info@metux.net -- +49-151-27565287
 
