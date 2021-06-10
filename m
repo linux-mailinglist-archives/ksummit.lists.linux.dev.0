@@ -1,35 +1,66 @@
-Return-Path: <ksummit+bounces-181-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-182-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7DD23A32B6
-	for <lists@lfdr.de>; Thu, 10 Jun 2021 20:08:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B89FB3A3305
+	for <lists@lfdr.de>; Thu, 10 Jun 2021 20:23:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 95FEF3E1018
-	for <lists@lfdr.de>; Thu, 10 Jun 2021 18:08:23 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 1A1223E0F91
+	for <lists@lfdr.de>; Thu, 10 Jun 2021 18:23:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 074502FB9;
-	Thu, 10 Jun 2021 18:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA7A2FB9;
+	Thu, 10 Jun 2021 18:23:23 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6A072
-	for <ksummit@lists.linux.dev>; Thu, 10 Jun 2021 18:08:16 +0000 (UTC)
-Received: from [192.168.1.155] ([95.115.39.199]) by mrelayeu.kundenserver.de
- (mreue011 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MAOa3-1m2Ar83JKV-00Bw0l; Thu, 10 Jun 2021 20:07:57 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4340C2FB5
+	for <ksummit@lists.linux.dev>; Thu, 10 Jun 2021 18:23:22 +0000 (UTC)
+Received: by mail-qt1-f170.google.com with SMTP id l17so560618qtq.12
+        for <ksummit@lists.linux.dev>; Thu, 10 Jun 2021 11:23:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=Gi/arimkSHwydb+IRl+gsdmHypvcrITgoc6X6YtJlzo=;
+        b=CrpNFLANQtl2GqFCm/Mz6BQVoy4o0fpyIY/77ZSfpYBaIeULYm8mLaFcXsUWOrAoLX
+         fUyrO2xKcER0ZP1XfghZP9dAZMU0rPFSlongJWsbBnFZR486z2lfsjXFwJ1ObzDnlAxH
+         UbJ5ykLFkF8nMeTFIWNH6jwuqEHk1CbSzdh0A=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Gi/arimkSHwydb+IRl+gsdmHypvcrITgoc6X6YtJlzo=;
+        b=BaP1haA2hOFt/0Z6pXw7bIwoii7b+r/hncyC7H5zD5idkA7LO6pTo1ztsAaOwwLU9I
+         HHO161lNimNKkrTNfboi+rhL+P2PWCAsR57ehCuL9tE5YPIW3OtygW72ns7W88jr+2f1
+         IJD564yugcbRXuFi9uxcsbD+txriB39cM0qKlACI7Dqc1ksNP+r8uspPG3xigf/YnRvw
+         mkSBkvYLxeY0wbtKeCeBMAPntgZW7z/DiEnwA4yotYNJEDO59YcKSjYnUOcdTVCudxfm
+         uG9+q5f+P5Jf5sjImFzCsjkA5GoFEv1MoeC4Z9dHCJZb4X/jtzcvXvgHZn3WGkt0s8SU
+         GuSQ==
+X-Gm-Message-State: AOAM530Kt8XJDU1NWlVVkif0fg1ThoRwkxU7Y1kBF7/J6ZmYadmj7soD
+	Wu3UcBpM2bfDEPFgIyfLRxAXDA==
+X-Google-Smtp-Source: ABdhPJzr/jg7uCK65jVADwAaDfKz6xQnTjHNB4oz9W8d9VnSPRV6hubXEEk8+XcP16M7322WdLinRQ==
+X-Received: by 2002:a05:622a:1495:: with SMTP id t21mr98910qtx.63.1623349401115;
+        Thu, 10 Jun 2021 11:23:21 -0700 (PDT)
+Received: from nitro.local ([89.36.78.230])
+        by smtp.gmail.com with ESMTPSA id k9sm2770435qkh.11.2021.06.10.11.23.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Jun 2021 11:23:20 -0700 (PDT)
+Date: Thu, 10 Jun 2021 14:23:18 -0400
+From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+To: "Enrico Weigelt, metux IT consult" <lkml@metux.net>
+Cc: David Hildenbrand <david@redhat.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Greg KH <greg@kroah.com>, Christoph Lameter <cl@gentwo.de>,
+	Theodore Ts'o <tytso@mit.edu>, Jiri Kosina <jikos@kernel.org>,
+	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, netdev@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-api@vger.kernel.org
 Subject: Re: Maintainers / Kernel Summit 2021 planning kick-off
-To: David Hildenbrand <david@redhat.com>,
- James Bottomley <James.Bottomley@HansenPartnership.com>,
- Greg KH <greg@kroah.com>, Christoph Lameter <cl@gentwo.de>
-Cc: Theodore Ts'o <tytso@mit.edu>, Jiri Kosina <jikos@kernel.org>,
- ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, netdev@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-api@vger.kernel.org
+Message-ID: <20210610182318.jrxe3avfhkqq7xqn@nitro.local>
 References: <YH2hs6EsPTpDAqXc@mit.edu>
  <nycvar.YFH.7.76.2104281228350.18270@cbobk.fhfr.pm>
  <YIx7R6tmcRRCl/az@mit.edu>
@@ -37,81 +68,24 @@ References: <YH2hs6EsPTpDAqXc@mit.edu>
  <YK+esqGjKaPb+b/Q@kroah.com>
  <c46dbda64558ab884af060f405e3f067112b9c8a.camel@HansenPartnership.com>
  <b32c8672-06ee-bf68-7963-10aeabc0596c@redhat.com>
-From: "Enrico Weigelt, metux IT consult" <lkml@metux.net>
-Message-ID: <5038827c-463f-232d-4dec-da56c71089bd@metux.net>
-Date: Thu, 10 Jun 2021 20:07:55 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+ <5038827c-463f-232d-4dec-da56c71089bd@metux.net>
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <b32c8672-06ee-bf68-7963-10aeabc0596c@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: tl
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:h3TsVFZQW1eeWxWIwEU03AV+gSVwsiMLM6JxbsYr4WP0Fwq23A2
- CiXWNpTQ5rJyN4lnIlW3kNqu1QDJHOU9jXONXeRpeKHiJh149DjgQM0E2BKk2DnTypFbthH
- r0BSBnK2DPiDCypN8o4dp/TEYuXShTv8MoV3a1LIiFYVPq/F68NtDYbwRsf40mUoOx6kkFA
- jJOwRV273/dupW+JPy8Fg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:RPR8u21hQiQ=:WMPCtJcTv+xnqOrRaqItdg
- pTQrLFmyOswfSwUDFdlHDGFylEX4TtOn0b9LskM+UqYiTWSbFD9p76i03ghY4Ke2PgXAKBZ75
- q6ytFDizMVPHn6Zg+ZGzSq7vHCvS2xWn0u2B0YIhlTEAjiJd4bA+9rPrK0T1dcfGT6Mox8pkR
- mtm1+Fw3thU+HLx+oKF7kfQyE8xMXqSnA3d4Ita5jpsrf/fTFJtUxSoPBPG+a8SZCFpdc9wvZ
- 9/jlKkBDy/73YvOT/02BbZPep5/H51zO1ivWiWWbFcgC3bDLYQr8zXwsT/YU0Cmgv6M6zfq3j
- 2TZ7gcubdef2OOqLR+t0vEVuQtJcNVHtDduwWi6dR9ofvNkrsewfSwcQi8w2Wr8P3olZ8aeWB
- FfsQGDokItv2hz1feciWckHCLE/IBKROay7Om69AlP+YItfgS/W83MMpmR9PFn8f5dSIAdGWz
- qH1svdZS7+V9gaDRw6uNwheFQ8HuFct02guXK9Gnh33W6t/+Gn84C5N7VIV/d2X/VbKAvg1vp
- Ty6S/JHRodXa4AeYpvQH04=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <5038827c-463f-232d-4dec-da56c71089bd@metux.net>
 
-On 09.06.21 12:37, David Hildenbrand wrote:
-> On 28.05.21 16:58, James Bottomley wrote:
->> On Thu, 2021-05-27 at 15:29 +0200, Greg KH wrote:
->>> On Thu, May 27, 2021 at 03:23:03PM +0200, Christoph Lameter wrote:
->>>> On Fri, 30 Apr 2021, Theodore Ts'o wrote:
->>>>
->>>>> I know we're all really hungry for some in-person meetups and
->>>>> discussions, but at least for LPC, Kernel Summit, and
->>>>> Maintainer's Summit, we're going to have to wait for another
->>>>> year,
->>>>
->>>> Well now that we are vaccinated: Can we still change it?
->>>>
->>>
->>> Speak for yourself, remember that Europe and other parts of the world
->>> are not as "flush" with vaccines as the US currently is :(
->>
->> The rollout is accelerating in Europe.  At least in Germany, I know
->> people younger than me are already vaccinated. 
-> 
-> And I know people younger than you in Germany personally ( ;) ) that are 
-> not vaccinated yet and might not even get the first shot before 
-> September, not even dreaming about a second one + waiting until the 
-> vaccine is fully in effect.
+On Thu, Jun 10, 2021 at 08:07:55PM +0200, Enrico Weigelt, metux IT consult wrote:
+> On 09.06.21 12:37, David Hildenbrand wrote:
+> > On 28.05.21 16:58, James Bottomley wrote:
 
-And I know *a lot* of people who will never take part in this generic
-human experiment that basically creates a new humanoid race (people
-who generate and exhaust the toxic spike proteine, whose gene sequence
-doesn't look quote natural). I'm one of them, as my whole family.
+*moderator hat on*
 
-> So yes, sure, nobody can stop people that think the pandemic is over 
-> ("we are vaccinated") from meeting in person. 
+I'm requesting that all vaccine talk is restricted solely to how it would
+impact international travel to/from ksummit.
 
-Pandemic ? Did anybody look at the actual scientific data instead of
-just watching corporate tv ? #faucigate
-
-
---mtx
-
--- 
----
-Hinweis: unverschlüsselte E-Mails können leicht abgehört und manipuliert
-werden ! Für eine vertrauliche Kommunikation senden Sie bitte ihren
-GPG/PGP-Schlüssel zu.
----
-Enrico Weigelt, metux IT consult
-Free software and Linux embedded engineering
-info@metux.net -- +49-151-27565287
+-K
 
