@@ -1,105 +1,80 @@
-Return-Path: <ksummit+bounces-231-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-232-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A1793B48C6
-	for <lists@lfdr.de>; Fri, 25 Jun 2021 20:28:40 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0F973B4A76
+	for <lists@lfdr.de>; Sat, 26 Jun 2021 00:09:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id 1EAAB1C0E0F
-	for <lists@lfdr.de>; Fri, 25 Jun 2021 18:28:38 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id 4CCCB1C0E5F
+	for <lists@lfdr.de>; Fri, 25 Jun 2021 22:09:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E806D11;
-	Fri, 25 Jun 2021 18:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D10FB2FB8;
+	Fri, 25 Jun 2021 22:09:12 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E02F2FB2
-	for <ksummit@lists.linux.dev>; Fri, 25 Jun 2021 18:28:30 +0000 (UTC)
-Received: by mail-wm1-f50.google.com with SMTP id r3so2315424wmq.1
-        for <ksummit@lists.linux.dev>; Fri, 25 Jun 2021 11:28:30 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2B0168
+	for <ksummit@lists.linux.dev>; Fri, 25 Jun 2021 22:09:11 +0000 (UTC)
+Received: by mail-yb1-f171.google.com with SMTP id p133so6896499yba.11
+        for <ksummit@lists.linux.dev>; Fri, 25 Jun 2021 15:09:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:from:to:references:message-id:date:user-agent:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=7uZ896GRLtwIx9KU1ax4TYsql4qljUIsXDZtBfMzuiY=;
-        b=XdgHY0rV0qN134TgyteQ8O83ouV28P18JHExO+Tc1gFXOyUQ9bX91wD5EjqaeTJe0w
-         wza7+zJpNBezeEALHzZJskyY/DCIk6pYWxpt06IoNUl71MfNFIw/rBGUoZe1CSGAlsHZ
-         41nuFQcaEYjYzFbTzChZ4esGJ+ozD9ypZQJJDjxBEFSYhS4zAOp8ixPaBknstwMAwMi8
-         AwwG5r7s+Yy14j7W8xgDQpT1zJLZBFS/tugqik1/ZKt70PShbZPlzrnWR+kIyDo5glE6
-         OXpZv7qYhX/fFC/x+evfDMuSRb6p8XzY4uUIcAfjzlsMErky70JFpXBaV8unRZJYIdOt
-         /OVQ==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=gfx6af2MxVNj970c4PxdNQDfFHnpvml5fODOk/bM/js=;
+        b=sonFCwHpmyT7uBpbZWuxXwXyDbJXyB2RV9xQ6gGcWwg8DYYR2j0gwHyei6ESTmpUIS
+         e479pd44OB7jlCv26pE9bWLOC/sOInGv0n6u6bQVO9CSaE8AjxnoqlST8fV6HhKWuAdj
+         wzML53cz9fyUZanImb5otjmB8AtDcd+NuSzmkhQa9eymX+8YZwRwgYB9V9FC+L8lxK+a
+         +gF4tHuR1IxQ2Va9XJFZ2zrYSO5cNTJHHDaA9V+QSBqjwwom309ytc1qHEfMsgPQoj2+
+         WwEwoNqH4Q5yYMlYO8jxqb5p2VNQMj1SFMw5XaL1a599ktx8/YtU1DEwp/a/fA2mh9xP
+         V0lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=7uZ896GRLtwIx9KU1ax4TYsql4qljUIsXDZtBfMzuiY=;
-        b=UG6XtIdrK1p7I0uzxBCmhhtbhPHok1S/geEGlAC3gpj4wsw+9bRGGryQGnUMuCNNyP
-         mDoVmz7VEmzELFf6YJ7ztGysGKqUYOotfn7L0vRbOJLRXux4uICSLh4dg8MHuk/abuX9
-         +XzrCaUm1APIkVhL5pPX7fCaMVYFj3fLxgj/8kdKuWcW6wSvfPqtM/JpGIY6QBlQC1OZ
-         zOW1Vet6r359yd5+9mT9/IXQGSf+fwPUoVFf833AVMhdg3J5WkUvJiMTKr/eq8Xk1Vvr
-         IAlkey+JMGGuxjYoZOKZE6a2fAkmvrNL5i2jI/fCxGZw1lmCFprqSMn9ZSAccTu7J/qv
-         3g7Q==
-X-Gm-Message-State: AOAM531cBEan29tcXGedJkyFDrGfC2JoFrROu90DH6cM1ToQCaAuw0rF
-	sP4ZCEGjdtUSqlUnO1IBpdcESW2wrzo=
-X-Google-Smtp-Source: ABdhPJwpJE3+7QRVXK46PiA37HaMbZtppbuADOzHKHlLSgi4Ql+t+IprYx9IhbkppaC5oqKQOKWoag==
-X-Received: by 2002:a7b:c351:: with SMTP id l17mr12252632wmj.120.1624645708755;
-        Fri, 25 Jun 2021 11:28:28 -0700 (PDT)
-Received: from [192.168.8.197] ([148.252.129.92])
-        by smtp.gmail.com with ESMTPSA id e8sm6587023wrq.10.2021.06.25.11.28.27
-        for <ksummit@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Jun 2021 11:28:28 -0700 (PDT)
-Subject: Re: [TECH TOPIC] io_uring: BPF controlled I/O
-From: Pavel Begunkov <asml.silence@gmail.com>
-To: ksummit@lists.linux.dev
-References: <b13d6f81-1679-dada-5bdf-1f94e0ba44c1@gmail.com>
-Message-ID: <66afa1cd-aeb9-1103-87b5-ab27734871d4@gmail.com>
-Date: Fri, 25 Jun 2021 19:28:14 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=gfx6af2MxVNj970c4PxdNQDfFHnpvml5fODOk/bM/js=;
+        b=jyR5MlWOw61UyaWPUtQlwcB5OvqA05cZh9/zxZ5v/FGCBzzZecqnOrkCn47+3sUqUH
+         afheEz/l9KDhTNscGa+NxNuFsA5VusYjMleAgiD19Bpui+UuUbUqH+qQhwwdo7dx9IAB
+         MLrxWaxBAsZW8ri5anaajjvP9DHryfUPwAiGk/q7VNvgaqW/5/tMgaZjokSv77rkXvtK
+         plKSwT0HvCsQksDWHjPYfEtBLZydgntWFM/ozFkSyhoKf7v4oZArjUbgOt3Xh1wl0FWF
+         GhRtWGExQBVCRvS0bls96gs9PzB9Te9IwNibKrRze/TONEMD9mbsniQciTOSKcwYZihu
+         XL9g==
+X-Gm-Message-State: AOAM531yOrQ67XD447ypOAcOGKIqYw57llOWq7d1Xb72UmQUAh00kmId
+	DIwEIfMfa8c2tNqRNvlzYy2QMQX1BQcKEGimNs8doeRKmJSHiQ==
+X-Google-Smtp-Source: ABdhPJyn+egyDakIgnXBJgSxGuk5IJqLaER2jUiA+l81e1N0X0arpOnwSmwAqg+R+6f+Hoa1da5eWaxh7PyU6BHo6XU=
+X-Received: by 2002:a25:33d7:: with SMTP id z206mr15094612ybz.33.1624658951171;
+ Fri, 25 Jun 2021 15:09:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <b13d6f81-1679-dada-5bdf-1f94e0ba44c1@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 26 Jun 2021 00:09:00 +0200
+Message-ID: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
+Subject: [TECH TOPIC] Rust for Linux
+To: ksummit@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On 6/25/21 7:24 PM, Pavel Begunkov wrote:
+The Rust for Linux project is adding support for the Rust language to
+the Linux kernel. This talk describes the work done so far and also
+serves as an introduction for other kernel developers interested in
+using Rust in the kernel.
 
-Please ignore this:
+It covers:
 
-My apologies, looks I screwed it and misread instructions.
-Please
-ignore this submission.
+- A quick introduction of the Rust language within the context of the kernel.
+- How Rust support works in the kernel: overall infrastructure,
+compilation model, the standard library (`core` and `alloc`), etc.
+- How Documentation for Rust code looks like.
+- Testing Rust code (unit tests and self tests).
+- Overview of tooling (e.g. compiler as a library, custom linters, Miri, etc.).
+- Explanation of coding guidelines (e.g. automatic formatting) and
+policies we follow (e.g. the `SAFETY` comments).
+- How kernel driver code looks like in Rust.
 
-> io_uring is an asynchronous I/O API crafted for efficiency, where one of
-> the reasons for using shared rings is to reduce context switching. It got
-> lots of of features since introduction, and pushing it further we want
-> to give away some of the control over submitting and controlling I/O to
-> BPF, minimising the number of context switches even more.
-> 
-> - It should keep the number of system calls to a minimum.
-> - Help to lower overhead on scheduling user processes to CPUs
->   when they have not much to do and will go to sleep briefly.
-> - Be an alternative to submission queue polling for latency
->   reduction not taking as much CPU time at the same moment.
-> 
-> We'll go over the current design [1] and decisions, issues and plans,
-> and hopefully it will engage a discussion and give impetus to curious
-> minds to try it out and share ideas on how to tailor the API to fit
-> their use cases.
-> 
-> [1] https://lore.kernel.org/io-uring/a83f147b-ea9d-e693-a2e9-c6ce16659749@gmail.com/T/#m31d0a2ac6e2213f912a200f5e8d88bd74f81406b
-> 
-
--- 
-Pavel Begunkov
+Cheers,
+Miguel
 
