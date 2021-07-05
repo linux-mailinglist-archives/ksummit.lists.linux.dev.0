@@ -1,140 +1,112 @@
-Return-Path: <ksummit+bounces-233-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-234-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FE5B3B7487
-	for <lists@lfdr.de>; Tue, 29 Jun 2021 16:41:03 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F35C3BC43D
+	for <lists@lfdr.de>; Tue,  6 Jul 2021 01:51:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id D8B313E0FA0
-	for <lists@lfdr.de>; Tue, 29 Jun 2021 14:41:01 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id 95E851C0DFD
+	for <lists@lfdr.de>; Mon,  5 Jul 2021 23:51:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389BB2FB7;
-	Tue, 29 Jun 2021 14:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 962DD2F80;
+	Mon,  5 Jul 2021 23:51:25 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-il1-f170.google.com (mail-il1-f170.google.com [209.85.166.170])
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF4617F
-	for <ksummit@lists.linux.dev>; Tue, 29 Jun 2021 14:40:53 +0000 (UTC)
-Received: by mail-il1-f170.google.com with SMTP id b5so21030834ilc.12
-        for <ksummit@lists.linux.dev>; Tue, 29 Jun 2021 07:40:53 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6335D72
+	for <ksummit@lists.linux.dev>; Mon,  5 Jul 2021 23:51:24 +0000 (UTC)
+Received: by mail-lj1-f178.google.com with SMTP id k8so26607606lja.4
+        for <ksummit@lists.linux.dev>; Mon, 05 Jul 2021 16:51:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=j6Jy3rLTG2CN/RogDKDnP8ljDvaOsXTLo2NCL3MVQIw=;
-        b=IthAjXN50DwraszkV0dnjbMjnSQO9gvxd+jmPw/h+fNN6RXb3Pku7aW7VbwJEf4X9P
-         DBwp9YX/0lrC0iOf9pmMeJ+QynzY8ZT4I3TtxD97zfAF9Gj1619OcjLBHhsPQ8Sru43K
-         dgv59K7sfGiqB29ZMX1OyEkvo0Mznb9ossrpR/Gy0qxjFUYOUwpjUGV150lL8ClIEwTM
-         ArFtSPqgPgl2KAnEr1/cBxepopA1GjYKCI1jD0khMYgTHvItpamRE28GOh/xQF2w7421
-         FL+QPz41iIHDGWPHE+KZFnAXtb55vHVWBWo9UlcYJU3ygj5dr4YREL5hfMqj2TFdQ1yl
-         20yw==
+        bh=BUw8Dh/lml6sLyXBVI/h1/fSRpqnpXukCnxmtAVtsCE=;
+        b=ZFWThXUpE8iCuxpCY+Cdr/hr7KzUVuTVwfQV4PUYlaP3UABHPJJLIwLQvptk/JvU3O
+         CLH9vZgVC7GTH1h06XI2/wDJzoucq4SAmtvy8YKfGHNwksO2zght072n9UEL3WHq//td
+         txoVobhonx0Z7BQliaPKCw/mhcxAMSrMIwXRVES8oQlcIhUb+7jMDJkDVTA+lXug2gMU
+         8HYfnOswJvZPjue6mdE+wXO7pkgq9GSfvq+S9wareSuDcDSvOer4mltQXjSXwCwHqWpS
+         OjzxoaYDOdKhd41NPUbaG3RdnYzK7bxfIdNcUJu/KfhfvXgC+GKSe5D8/iU2iqNHHcDb
+         vW7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=j6Jy3rLTG2CN/RogDKDnP8ljDvaOsXTLo2NCL3MVQIw=;
-        b=UmTdBDkp4RieCBdPhv/LC83BazQgng1N5m2Wl69WeB7j86aHS/1920cWg4ozqOPzY2
-         ZEmWtBf5h/mjOt3NIIZSUBUEvjiufGGTq11T3Hr7EXi8Ju2w6Iqo4nlHAO4/+eKZ04bC
-         tO8tPhqSEU1FmEtWFlUZJ9gwmBf77I7JXykm08dgz+ah30uJ09ryp/RCFAs0gx0CmQii
-         wsEiJqlgAL5GOgmpFy+aPC88dIRV5KNVHPSRklmGs4sz9ALMQntCk8qeaDl25DmawnSf
-         BPbLA0DKCvYcwYU24suFtMGiGG21apAEaxjsAdu0zMmzyJLc3CBo0al92EGV1Ap+UjRN
-         Nddw==
-X-Gm-Message-State: AOAM533FduaKrUyVPReKYXKGzUPnyQCcUoZcel1qMnjbAcbCl0Mw5MzQ
-	N7kSebllzH0nEq4CSNEQ1gXhJdza/KWSJYZURKs=
-X-Google-Smtp-Source: ABdhPJwA79LYYLtbs2fLxpxiwW7/WXYL1Uf4arukt3KDi6BhOlnFWxQmiYLcplaMn0yuO7r7+5Vxo55JnDWttc7MjR8=
-X-Received: by 2002:a05:6e02:4a1:: with SMTP id e1mr21813303ils.133.1624977652950;
- Tue, 29 Jun 2021 07:40:52 -0700 (PDT)
+        bh=BUw8Dh/lml6sLyXBVI/h1/fSRpqnpXukCnxmtAVtsCE=;
+        b=o6U0+1dupjvNVNNNIZoHaRQFmgaz7N8ZwCzwvWBFl5HVxCBvmqG3Axk/Jde0tfGbBx
+         ailAjDM6XrCeUJsO40fJe9XVW30nM1BAXf8tUfrXlfIZbp1liTVCZ8LdSiIpzHdW5yWs
+         ldirxj2327at43TB5MxXWkQxAqd4pZ+TshlZVizPVgjT8ZTDrM/2SeTzd7nOlgMhIqbt
+         JqYfC971RLiGMEmjEwjRRAD9F3H1JOivfvVhTe1Rlw7zmBsLHg+6p0MIuo6A43+ZL/IG
+         b/hZDP92t4ovC/MNjyPForhgWCO8gUbg7xuUeBPYAW2VkaoXR+EPvbmfvnOwbqZAzknU
+         /m9g==
+X-Gm-Message-State: AOAM5309HoI8WHsN+fKOlWxFlsVYN2tKcSJfOll5bjHZl8EYj9aIeCnM
+	DFEQ9drEPqE2XSFAlR/ccGweDlhGcttdAVUJq5Hr1Q==
+X-Google-Smtp-Source: ABdhPJx9djh5UK94YTs7qIZSavO2XdRcrvfXbsB4LAmgsBoYZiKUtnMkkshqkI8XQt3MgM0613Kp90uRRXwlkrIE9/c=
+X-Received: by 2002:a2e:9210:: with SMTP id k16mr11837465ljg.438.1625529082404;
+ Mon, 05 Jul 2021 16:51:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAHqX9vZ_F4p0J_E3DZ4eoW0d3J2dZET5GEbM4Gr5wkUdRRPsAQ@mail.gmail.com>
- <effe01f3-ddf9-64f8-da96-61bb82bfabc9@acm.org> <de903dcd41f8881a103a8ca955347b0ef4f176f3.camel@HansenPartnership.com>
-In-Reply-To: <de903dcd41f8881a103a8ca955347b0ef4f176f3.camel@HansenPartnership.com>
-From: Selva Jove <selvajove@gmail.com>
-Date: Tue, 29 Jun 2021 20:10:41 +0530
-Message-ID: <CAHqX9vaCHXKi9fnE7pbTNpavo511QwuZ=6j68xC_Jr9csn3LWw@mail.gmail.com>
-Subject: Re: [TECH TOPIC] Settling Copy Offload via NVMe SCC
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Bart Van Assche <bvanassche@acm.org>, ksummit@lists.linux.dev, joshiiitr@gmail.com, 
-	nitheshshetty@gmail.com
+References: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
+In-Reply-To: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Tue, 6 Jul 2021 01:51:11 +0200
+Message-ID: <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com>
+Subject: Re: [TECH TOPIC] Rust for Linux
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: ksummit@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-Hi Bart and James,
+On Sat, Jun 26, 2021 at 12:09 AM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 
-Thanks for the heads up.
-LSF/MM is a fine idea for the topic. It's just that we had a bit of uncertainty
-about in-person event and December felt somewhat distant. So we thought
-of making some progress by posting this to LPC.
+> The Rust for Linux project is adding support for the Rust language to
+> the Linux kernel. This talk describes the work done so far and also
+> serves as an introduction for other kernel developers interested in
+> using Rust in the kernel.
 
-Thanks,
-Selva & Nitesh
+I think this is a good tech topic.
 
-On Fri, Jun 25, 2021 at 9:38 PM James Bottomley
-<James.Bottomley@hansenpartnership.com> wrote:
->
-> On Fri, 2021-06-25 at 09:02 -0700, Bart Van Assche wrote:
-> > On 6/25/21 7:47 AM, Selva Jove wrote:
-> > > The de-facto way of copying data in I/O stack has been pulling it
-> > > from one location followed by pushing to another. The farther the
-> > > application, requiring copy, is from storage, the longer it takes
-> > > for the trip to be over. With copy-offload the trips get shorter as
-> > > the storage device presents an interface to do internal data-
-> > > copying.  This enables the host to optimise the pull-and-push
-> > > method, freeing up the host CPU, RAM and the fabric elements.
-> > >
-> > > The copy-offload interface has existed in SCSI storage for at least
-> > > a decade through XCOPY but faced insurmountable challenges in
-> > > getting into the Linux I/O stack. As for NVMe storage, copy-offload
-> > > made its way into the main specification with a new Simple Copy
-> > > Command(SCC) recently. This has stimulated a renewed interest and
-> > > efforts towards copy-offload in the Linux community.
-> > >
-> > > In this talk, we speak of the upstream efforts that we are doing
-> > > around SCC -
-> > > https://lore.kernel.org/linux-nvme/20210219124517.79359-1-selvakuma.s1@samsung.com/#r
-> > >
-> > > We'd extensively cover the design-decisions and seek the feedback
-> > > on the plumbing aspects such as -
-> > >
-> > > 1. User-interface. Should it be a new ioctl/syscall, io_uring based
-> > > opcode or must it fit into existing syscalls such as
-> > > copy_file_range.
-> > > 2. The transport mode between block-layer and NVMe. A chain of
-> > > empty bios (like discard) vs bio with payload.
-> > > 3. Must SCSI XCOPY compatibility be considered while we go about
-> > > building interfaces around NVMe SCC?
-> > > 4. Feasibility and challenges for in-kernel use cases, including
-> > > the file-systems and device-mappers
-> >
-> > This topic seems closely related to "Storage: Copy Offload"
-> > (
-> > https://lore.kernel.org/linux-block/BYAPR04MB49652C4B75E38F3716F3C06386539@BYAPR04MB4965.namprd04.prod.outlook.com/
-> > ).
->
-> Not only that but it would seem to be better suited for LSF/MM on the
-> IO track than the kernel summit track of Plumbers:
->
-> https://lore.kernel.org/bpf/60ca126b.1c69fb81.90af4.93a7@mx.google.com/
->
-> Since the plumbing aspects are more how would current practitioners use
-> the API and how might we plumb it into filesystems.
->
-> James
->
->
-> > Notes about implementing copy offloading are available at
-> > https://github.com/bvanassche/linux-kernel-copy-offload.
-> >
-> > Thanks,
-> >
-> > Bart.
-> >
->
->
+I think one thing that need discussing around this is implementation
+language fragmentation and brainshare: kernel developers are all
+assumed to grasp C, assembly, Make, KConfig, bash and some
+YAML, perl and python here and there. I bet there is some sed
+and awk in there and possibly more.
+
+So, admitting how lazily we sometimes learn languages, which is
+by copying, pasting and tweaking, then when that doesn't work
+actually looking at the language spec (or StackOverflow) how hard
+is that going to be with Rust? We get the hang of it quickly, yes?
+
+I also repeat my challenge from the mailing list, which is that
+while I understand that leaf drivers is a convenient place to start
+doing Rust code, the question is if that is where Rust as a language
+will pay off. My suggestion is to investigate git logs for the kind of
+problems that Rust solves best and then introduce Rust where
+those problems are. I believe that this would make be the
+Perfect(TM) selling point for the language in the strict
+hypothetico-deductive sense:
+
+Hypothesis: Rust solves kernel problems A,B,C.
+
+Collect occurrence data about problems A,B,C from git logs.
+
+Identify code sites often exposing problems A,B,C.
+
+Rewrite those in Rust.
+
+Demonstrate how the Rust code now elegantly avoid
+ever seeing problems A,B,C again.
+
+From this it is very easy for the kernel community to deduce that
+introducing Rust as an implementation language is worth it.
+
+Yours,
+Linus Walleij
 
