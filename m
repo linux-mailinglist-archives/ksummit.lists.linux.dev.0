@@ -1,119 +1,108 @@
-Return-Path: <ksummit+bounces-271-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-272-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
-	by mail.lfdr.de (Postfix) with ESMTPS id 108863BDF1D
-	for <lists@lfdr.de>; Tue,  6 Jul 2021 23:46:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56F593BDF24
+	for <lists@lfdr.de>; Tue,  6 Jul 2021 23:51:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id A37CB3E0FE9
-	for <lists@lfdr.de>; Tue,  6 Jul 2021 21:46:00 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 202AA3E1005
+	for <lists@lfdr.de>; Tue,  6 Jul 2021 21:51:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 615892FAD;
-	Tue,  6 Jul 2021 21:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8F622FAD;
+	Tue,  6 Jul 2021 21:51:04 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D418168
-	for <ksummit@lists.linux.dev>; Tue,  6 Jul 2021 21:45:53 +0000 (UTC)
-Received: by mail-pj1-f53.google.com with SMTP id b5-20020a17090a9905b029016fc06f6c5bso295455pjp.5
-        for <ksummit@lists.linux.dev>; Tue, 06 Jul 2021 14:45:53 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74108168
+	for <ksummit@lists.linux.dev>; Tue,  6 Jul 2021 21:51:03 +0000 (UTC)
+Received: by mail-io1-f41.google.com with SMTP id k16so458155ios.10
+        for <ksummit@lists.linux.dev>; Tue, 06 Jul 2021 14:51:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=+egNasBIj9EMUFU5Wwu1nvgxCZ+U9jX3uXdye1NifTI=;
+        b=N33IKgiHv5UTb2qSG9jQSN5z7nMo/1tzVZVWfwlt+sb3gw8K9bd0Eat/OheXDrZZi+
+         zHxvQcxCbv5NXah0IaYxdud92AIZOLTi9ALFtbpd1yYcsVRiXPnJFVp/B+Lp+kjCQRV7
+         rMP2DqTfYAgs19O/ecK8UJon0WA1GoqB9qidIfWrE3mwQWRZrcDGEmjXboqhlZOnSBT+
+         5pA6T2QlVU7XtLBT9u0S7E2numVYaR/EsHZjH4BzUkjBxltWZZPcaVG7LbAtXP0J/I/Z
+         PWD3ZA4P74/RMxPyxrWUhfXIRNVtbydYtw9gRhQKaBzsZEZLF4B00Jl8YkQQt0J7XyfT
+         MsRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:subject:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=5PHgPILxwuF6jnNtZbwU95n6sDSD7LCRNjIvV+FleDc=;
-        b=T9r+GxkMb04iKzLs2Ue1mt2i9MxDxa8sTudflYqEKNPJ2gytYKfX/W+627hGgd3Fd6
-         Xxynl/cCrWREo6tQ59eYm8SHA4xA0IKNuNfL47jiSNrLbIDfCHe+Afp1XV7Blue3M2Bz
-         w9wlj51wgIY7oU0uxO/GMaW+jpG9FxANrfX0so63caJq86C/eT7QiEqe7ZQIqI+2KlJC
-         hSWcTXa4fyuid35vOEuGGjAJAZikoHp12DjsfUx6qkSX2kBOtpU1TCbiqjaxjeR05sOv
-         CbPLWIqoown5CJPByeWYLVzPsNRsgScu5QXp1lQcGsuXZmX+M0oNTf4cyaT8/hxfYz0/
-         xVJQ==
-X-Gm-Message-State: AOAM530Jp41OlTPPlG1kL+/8UZ1u8HjRAXdRMxRmdYV0+IEOQasTx+j8
-	Ob5q+cUfcDYayLCfksDt+C/oh/nizZQ=
-X-Google-Smtp-Source: ABdhPJzWe7G0aqp41F0inHIP0UY6/ughSLjCrz+TDdZDLjHMQXnRvcNkTphGSD4/M/rZ0+yZiQFHQw==
-X-Received: by 2002:a17:902:c246:b029:129:b2e0:be90 with SMTP id 6-20020a170902c246b0290129b2e0be90mr3376081plg.84.1625607952503;
-        Tue, 06 Jul 2021 14:45:52 -0700 (PDT)
-Received: from ?IPv6:2601:647:4000:d7:252a:d844:346c:9921? ([2601:647:4000:d7:252a:d844:346c:9921])
-        by smtp.gmail.com with ESMTPSA id c12sm16927707pfl.27.2021.07.06.14.45.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Jul 2021 14:45:51 -0700 (PDT)
-From: Bart Van Assche <bvanassche@acm.org>
-Subject: Re: [TECH TOPIC] Rust for Linux
-To: Roland Dreier <roland@kernel.org>,
- Linus Walleij <linus.walleij@linaro.org>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, ksummit@lists.linux.dev
-References: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
- <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com>
- <CAG4TOxMzf1Wn6PcWk=XfB+SV+MHwbxUq8t1RNswie5e3=Y+OXQ@mail.gmail.com>
-Message-ID: <64de6a11-5ff0-9931-d09b-2246cb37b284@acm.org>
-Date: Tue, 6 Jul 2021 14:45:50 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+egNasBIj9EMUFU5Wwu1nvgxCZ+U9jX3uXdye1NifTI=;
+        b=H52dEcylwj5z6c44yU7PGGyVes7a+sNwLEEcMJU1388cl3zcSJr22ZXWf8MRURjeph
+         HEwworBUnRuGRC3JTIv03TlxkAzDzUQk2pLCc8Wd364K2kN10YztdcYx770fTXaelQHS
+         MTCkLVN790AJweDZK8y3D/7HxPihKlkl5okAI/WUsbIQDLSFZMPawXRFV5HXUi8b20kV
+         ZWJKV6J/U9p85X4sx3YWJnB3DcF/3LJuL713/+wTIkPihjkSOypGkB4Gvh432dI4wLO2
+         DB5WVG2mSWruh1VaBStbp7quYMa2b9zQYYPFqyaWtj4hOYrmQV1A2Q32WH1vAc1OXPTz
+         5MkA==
+X-Gm-Message-State: AOAM532F2G0/xNhPsKxRSvf6kCCsz0twbTvaEU9nZ0/RAl5DrtdWmsi0
+	TBSSVRRH/LRNtCtinasjDJOH2l6mzDBrvfYuR9Y=
+X-Google-Smtp-Source: ABdhPJwluWo+NvEQmVGzpIWCIrvDR5tQa5cCntUhcs0bEHXVAITb0suuJF69EiVyIldp9RcIzymFYuAVlhaD+LUDbKo=
+X-Received: by 2002:a02:2b21:: with SMTP id h33mr1878388jaa.31.1625608262663;
+ Tue, 06 Jul 2021 14:51:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <CAG4TOxMzf1Wn6PcWk=XfB+SV+MHwbxUq8t1RNswie5e3=Y+OXQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
+ <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com>
+ <YOPcZE+WjlwNueTa@unreal> <CACRpkdYDF-7=O1gc=Fh_mywtAgAtEVZhvoZXDFsAHMZe4FPGHQ@mail.gmail.com>
+ <CANiq72m3dkUOoAfQz8vY2UR3uaUkFD8rs=95k7sEm0KEqU8Zxw@mail.gmail.com>
+ <YORwwQJfrpNQsGT4@sashalap> <CANiq72n=_LG3z8-JYVSiNeM8PgxauPh5_xjfY1hY_gnJaGsYng@mail.gmail.com>
+ <YOSmkgFpSUWtf2ue@sashalap>
+In-Reply-To: <YOSmkgFpSUWtf2ue@sashalap>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 6 Jul 2021 23:50:51 +0200
+Message-ID: <CANiq72keYwLBY7_nRUN5RTxhQATgsi=LpYsCb59Zv+D4sg=iDg@mail.gmail.com>
+Subject: Re: [TECH TOPIC] Rust for Linux
+To: Sasha Levin <sashal@kernel.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Leon Romanovsky <leon@kernel.org>, ksummit@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On 7/6/21 1:00 PM, Roland Dreier wrote:
-> One area I see where Rust could make a big improvement for drivers is
-> in using RAII for error paths.  Drivers often have a lot of code like
-> 
->     if (something())
->         return err;
-> 
->     if (something_else())
->         goto undo_something;
-> 
->     if (a_third_thing())
->         goto undo_two_things;
-> 
-> and so on, which is difficult to get right in the first place and even
-> harder to keep correct in the face of changes.
+On Tue, Jul 6, 2021 at 10:47 PM Sasha Levin <sashal@kernel.org> wrote:
+>
+> I strongly disagree. If we have abstractions for a particular subsystem
+> all it means that someone at some point did that work, nothing more than
+> that.
+>
+> That someone might have moved on, working elsewhere, retired, etc, and
+> those abstractions are living orphaned in the kernel.
 
-Although cumbersome, it is possible to implement RAII by using the gcc
-extensions to the C language. An example:
+That problem is orthogonal to Rust/C. I already acknowledged that if
+you want to refactor Rust code, you will need some bare minimum Rust
+knowledge -- there is no way around that, for any language.
 
-#include <stdio.h>
-#include <stdlib.h>
+And indeed, a second language introduces downsides like this -- this
+is also acknowledged in the original RFC.
 
-#define CONCAT2(a, b) a##b
-#define CONCAT(a, b) CONCAT2(a, b)
-#define DECL_WITH_DTOR_NAME(declaration, initializer, cleanup_func_name,\
-                            arglist, cleanup_func_body)                 \
-    void cleanup_func_name(arglist) { cleanup_func_body; }              \
-    declaration __attribute__((cleanup(cleanup_func_name))) = initializer
-#define DECL_WITH_DTOR(declaration, initializer, arglist, cleanup_func_body) \
-    DECL_WITH_DTOR_NAME(declaration, initializer,                       \
-                        CONCAT(cleanup_func, __COUNTER__), arglist,     \
-                        cleanup_func_body)
+What I am saying is that, in the beginning (when most kernel
+developers are not accustomed to Rust), a solution would be that
+subsystem maintainers could step up and help those doing a refactor
+that touches their Rust code. We also discussed a bit of this in the
+original LKML discussion back in April; and we also offered ourselves
+(the Rust support folks) to help as much as we can if anybody is
+having issues on the Rust side.
 
-int main(int argc, char** argv)
-{
-    DECL_WITH_DTOR(void *p, NULL, void **p,
-                   printf("freeing p = %p\n", *p); free(*p););
-    DECL_WITH_DTOR(void *q, NULL, void **q,
-                   printf("freeing q = %p\n", *q); free(*q););
-    p = malloc(7);
-    q = malloc(3);
-    printf("p = %p; q = %p\n", p, q);
-    return 0;
-}
+But yes, if Rust usage grows in the kernel, then eventually it would
+be much better if most kernel developers have a handle on Rust.
 
-The output of the above code:
+> That's quite an ask. If the driver work goes in and I want to touch the
+> driver API, I need to get Greg KH to write code for me?
 
-p = 0xd952a0; q = 0xd952c0
-freeing q = 0xd952c0
-freeing p = 0xd952a0
+I have not said that, and that obviously that does not scale. I am
+just stating what I think could help everyone during the transition
+period, assuming we share a common goal and accept Rust into the
+kernel.
 
-Bart.
+Cheers,
+Miguel
 
