@@ -1,52 +1,52 @@
-Return-Path: <ksummit+bounces-241-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-242-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCB993BD83C
-	for <lists@lfdr.de>; Tue,  6 Jul 2021 16:30:27 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BC343BD83E
+	for <lists@lfdr.de>; Tue,  6 Jul 2021 16:33:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 22DF63E10B4
-	for <lists@lfdr.de>; Tue,  6 Jul 2021 14:30:26 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id E71B71C0E5B
+	for <lists@lfdr.de>; Tue,  6 Jul 2021 14:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843912F80;
-	Tue,  6 Jul 2021 14:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2628D2F80;
+	Tue,  6 Jul 2021 14:33:00 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
+Received: from mail-il1-f175.google.com (mail-il1-f175.google.com [209.85.166.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 877CE168
-	for <ksummit@lists.linux.dev>; Tue,  6 Jul 2021 14:30:18 +0000 (UTC)
-Received: by mail-io1-f54.google.com with SMTP id h190so3073602iof.12
-        for <ksummit@lists.linux.dev>; Tue, 06 Jul 2021 07:30:18 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33BC3168
+	for <ksummit@lists.linux.dev>; Tue,  6 Jul 2021 14:32:59 +0000 (UTC)
+Received: by mail-il1-f175.google.com with SMTP id o10so20929928ils.6
+        for <ksummit@lists.linux.dev>; Tue, 06 Jul 2021 07:32:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=95zCskDBz86au6UprMKlARup2EFZJMFxF8SIZMBQVmI=;
-        b=Kncl07mbnRch29K4FfRAeCQNy9QGfpXGgSNB1sasRgSxgapjuPk07ADdQd6QygUi3a
-         Lh+MyP3YxDxB0sTku1924a/VcJPLq0+ecE1bBJWk1GG35QqYTk/wvL97/zGhc30oONo0
-         Cap5/KRiuji38fJgqxCDXPqa9xSJEnHbEYpCTRPrMyCV4gMYggp8djTwf6J2AMGEJ7Xk
-         ZoFT0+tDsrrkAtHJwTRmL92fxta/ryakEXk/IobYGTz/u152H4hj2ya5PENEWCYFE4d6
-         nG8BAaFMTnpB6DwJ/CmvBSA8poAu5jWFkZuNRbNF+x/++KbHDFimk6VD89YIRjmPwshc
-         AmjQ==
+        bh=cLma3WwmXFP6okyxv3FtG3ivlrxpA+GCqZOfQldBlig=;
+        b=o6j1Byq8LuAB35pUNz42jB8pusccoJkdOy+Mjf1geD7smqln9nFE15aKGEn0BhVwgj
+         w7NBF0Twe0qNs+W0aKtBPw93TCgJbyGR+4otRmH0TUM8iDxy97yHPl+r4bI3Wyz1hfIy
+         Px1Eut+jGGE/kTbq24xkvDxelblgZ1twr7g3Q/eFeE4QU71yF5DkW4FcckAOOJDEaSBJ
+         ramvspA5nVtR7/94WDo4tffHfPuLEq4A89SDev0CNEofRgDkyUSjTstS1x4TYB5iaFxl
+         Djw5aZUFHqb230/lL5hJfNs5y1TFxjY6MVKQDpIKNvU33IYGQ+925yG2SsokQIHHywpR
+         a2ZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=95zCskDBz86au6UprMKlARup2EFZJMFxF8SIZMBQVmI=;
-        b=ZZ9JtPOykIqx0Rb3+qLEJd/ZzBOuKlcUqm9sSnAwYfcAqh9OGyujE40TSdADHX1K2K
-         pPKuneevaVV+0eswvOP/RoD998AU0Wu/Ng1IWW3W/Nmt0BzW5F3c345DY4gPI3nh0Ivq
-         Hq3EEKtQpS+23NzEcmx+jyAU7J8SJMwJVbxflrs9V0I8ipyUiPRmtQ5vNmzSWFrbfTiH
-         jg1avxBdBaES1rTg7ELmJ6JjfZ51kgNPEFX02ZfBbncfUMovSbNbzxuQeMHUCqnBgivR
-         HlSMSxfVV0KVgZGhePGPIEcGMywbyV6/9p/8DrhNgdV95lKGi7rmkMEBmhl9paH7s8dq
-         jT6g==
-X-Gm-Message-State: AOAM533vEzw/ElmMrQgUuaVasOhOOEGcpKV+AmHc3teRSGZ2ZE1VbYTU
-	nkri6Bep1QnuJLjA5O7thRtdAT8Ldo20Y+G5ksQ=
-X-Google-Smtp-Source: ABdhPJz/BOOZ5l9W5CJB37TRlmQnq+B+2WejfuSu1XKuZfS5TxjVFH52kc7klb9lRFp10p9TvB6cJjr1tcC4P28tf/w=
-X-Received: by 2002:a02:2b21:: with SMTP id h33mr401537jaa.31.1625581817824;
- Tue, 06 Jul 2021 07:30:17 -0700 (PDT)
+        bh=cLma3WwmXFP6okyxv3FtG3ivlrxpA+GCqZOfQldBlig=;
+        b=cV1k4oI6RNKOdAEzjj6sRtBKzmleMWLYeY63Seygup0zDndAuWH8sry6lYkIm+Mx5x
+         5w+9vPc9pNIYvnPVPNj4VgKTm9ctHSD7mXrEbi/1XOnIMMNUp6IHP521Wh4nw9PwdEvk
+         teLN5wPd0gcb2FOIP4G+fGg4Ev8t/okehhK0TFUAijM+E5yX/Ok8Is4H75O3yindeecs
+         Lh4o+AWnBF81oapCAP2vZyOCNlhHqsPoKAlcXx4qOFqE/AZJdDVDAZnuUgZoYMN6hSIj
+         joKTZ4kluQPnVXZvsr7aAuLBr5ws8LO6wrVnBOxHsVcG50GWmkBWzj3F5aArjJZCioPl
+         CGvA==
+X-Gm-Message-State: AOAM531NEDyvvRL3/tAcSs7kQ6naGM9NWWURfyEz9RfxjNPe66D2cCEy
+	B6By0vf6Acmjc+cN5E445L731Tnulx5IFBihqXc=
+X-Google-Smtp-Source: ABdhPJwn3rsGvpejBoiFa+k3Ne9i4Mw3sB7dZIokVSk4dcREUKH5qaiSK/skEd2GzBI1u1camI/JT17drjAI12/xWfY=
+X-Received: by 2002:a05:6e02:20ed:: with SMTP id q13mr14795585ilv.176.1625581977951;
+ Tue, 06 Jul 2021 07:32:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -56,34 +56,24 @@ MIME-Version: 1.0
 References: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
  <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com>
  <YOPcZE+WjlwNueTa@unreal> <CACRpkdYDF-7=O1gc=Fh_mywtAgAtEVZhvoZXDFsAHMZe4FPGHQ@mail.gmail.com>
-In-Reply-To: <CACRpkdYDF-7=O1gc=Fh_mywtAgAtEVZhvoZXDFsAHMZe4FPGHQ@mail.gmail.com>
+ <CANiq72m3dkUOoAfQz8vY2UR3uaUkFD8rs=95k7sEm0KEqU8Zxw@mail.gmail.com>
+In-Reply-To: <CANiq72m3dkUOoAfQz8vY2UR3uaUkFD8rs=95k7sEm0KEqU8Zxw@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 6 Jul 2021 16:30:06 +0200
-Message-ID: <CANiq72m3dkUOoAfQz8vY2UR3uaUkFD8rs=95k7sEm0KEqU8Zxw@mail.gmail.com>
+Date: Tue, 6 Jul 2021 16:32:47 +0200
+Message-ID: <CANiq72=qFaOnfdhRSeE6DyUOUTOeZbDR5Z4ZU9mMwHif78AexQ@mail.gmail.com>
 Subject: Re: [TECH TOPIC] Rust for Linux
 To: Linus Walleij <linus.walleij@linaro.org>
 Cc: Leon Romanovsky <leon@kernel.org>, ksummit@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Jul 6, 2021 at 11:55 AM Linus Walleij <linus.walleij@linaro.org> wrote:
+On Tue, Jul 6, 2021 at 4:30 PM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> AFAIU the idea is to replace an entire piece of code in C with the
-> same piece in Rust, it's not like we are going to develop a second
-> kernel in Rust inside the kernel in C. So both/and not either/or.
-> I.e. you have to compile some pieces of the kernel written in
-> Rust to even get to a working kernel.
+> But that does not mean we are not rewriting a second kernel either --
 
-Let me clarify this, since it is important: no, we are not replacing C
-code In fact, the Rust side is based on the C one.
+s/we are not/we are/
 
-But that does not mean we are not rewriting a second kernel either --
-for instance, we have red-black trees "abstracted" in the Rust side by
-reusing C's API.
-
-In other words, what we are doing is "abstract" the C APIs into Rust
-APIs that can ensure as many invariants as possible statically, using
-Rust facilities for that. Thus Rust is one more consumer of the C
-APIs.
+i.e. we are *not* rewriting a second kernel, but abstracting the C APIs.
 
 Cheers,
 Miguel
