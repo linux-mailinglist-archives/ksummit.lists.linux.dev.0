@@ -1,52 +1,52 @@
-Return-Path: <ksummit+bounces-268-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-270-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 128123BDE7A
-	for <lists@lfdr.de>; Tue,  6 Jul 2021 22:36:37 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D563BDEEC
+	for <lists@lfdr.de>; Tue,  6 Jul 2021 23:32:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id 18E981C0EC3
-	for <lists@lfdr.de>; Tue,  6 Jul 2021 20:36:36 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id F16803E1044
+	for <lists@lfdr.de>; Tue,  6 Jul 2021 21:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598A42F80;
-	Tue,  6 Jul 2021 20:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847922FAD;
+	Tue,  6 Jul 2021 21:32:14 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F180168
-	for <ksummit@lists.linux.dev>; Tue,  6 Jul 2021 20:36:28 +0000 (UTC)
-Received: by mail-lf1-f41.google.com with SMTP id a18so16635lfs.10
-        for <ksummit@lists.linux.dev>; Tue, 06 Jul 2021 13:36:27 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5C7168
+	for <ksummit@lists.linux.dev>; Tue,  6 Jul 2021 21:32:13 +0000 (UTC)
+Received: by mail-io1-f52.google.com with SMTP id y8so388002iop.13
+        for <ksummit@lists.linux.dev>; Tue, 06 Jul 2021 14:32:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=B5B5PILNSl3DCnq05/J/BhgQn6x6Nm/DF+61MERybY0=;
-        b=gynA8R4XrCZAydxKA2wWOL7IvMAVRDGnZWneXHS14vos888+hkppTnwG/U+wSAljJh
-         2AQIXq7F+3PTYRXLCHa/Abqt+kPw3pNW2ydSUenIh+OM66k4ntalH56sbYy4EPlZWsEn
-         AlEECLBNwdbFo+0f49OhbwzD+q6Ph+xRWCalyeEhw/ERJnVoU++z0CUT5xggwhlKWRKP
-         BjaWAY75CZMX7UAtg+xs04eRBQdjniMV3ULf17ygtr0eC5jIOIftSvdYn//9+Jnr3XcS
-         anBwx/+hsF5BnGNnqxfdhOVGET0a8BAzKo4mi/9Rd9co/VKNhWQDrm8P85DOM9Gc5WaT
-         UIBA==
+        bh=cnUoSrW9rk8e/FSKyNHS4k9CUnDp6erUN2wyVfXW/FM=;
+        b=u44pvAszQaPK0q+MpF/UrXzevzJLTbLS3F7OClCsFLsa4i+g6EfN4e118gXjYLZIih
+         xaJOZq7jIU6cd1HiE43uTUrdjJ+b57TenkKrZLg+J0cDqSfE9A4bB1s7vUH2HTgUkxAa
+         +/gXZYO8IkLbEjLZl+h1hS06rk9JtNYz8M+wP92rstRTP8uOXxxY+Z5DJr2gaUyKdisw
+         ivHBf5JNV+bmKKN2aYh5rxMnZNMVYxTewu5nJGWQ2SUYVWJcIdzGKZrGTDPdNsHr37eu
+         eLjpCwje8oPgM/vJSIDnrvESLxXPadFzZmzY4+7z7g2K9FJtD5b3JEsvbeFuIO/7aDrE
+         hd8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=B5B5PILNSl3DCnq05/J/BhgQn6x6Nm/DF+61MERybY0=;
-        b=bVrJiRXpZyrqfumhDls7HPebjpl95xOnzmdI252e4A0jCRPOsk1eMQFfKejYNVcott
-         4coZdag0RQsVoObQuM4ltTAidv7E/S7ufz07mTU+6ndLIT3Ik+OxAy0CeDV9i40O7F6w
-         rVrOn5T7XqT9jIHOS5LMX81QhtWMTnvpdN/TpeR/txKZ7TyEpj3dwpkqtMRS9lzt2QFN
-         8jV9eZmUj0juEFfUQRZg21tAhqmPK/lX8N2rm9gCrufMROIPc6qa5EY9WFKAtr7/4B9L
-         rvFj84Al7Am8YCXGhIcazlML/uex4bPtjbKoJX0CcV9ZZg97ZnZ2OFt1kMbfhL8kWzsE
-         6Nqg==
-X-Gm-Message-State: AOAM530NYF0R31V4LeB4MrJg+RdoqA7mdy75DS+OP2sMUh1q2e7l1865
-	lWFisnhP6i+uhfIkAfs82lyJnIcMvrqoZFwMWtOORg==
-X-Google-Smtp-Source: ABdhPJzuGep5/VvDWoyBB1O6rgebJhoIIgKzGczu9v/tQqpyLizM7aDZNNNNVk47kRHM1mWS+A1qjStFdFiDOLY1uLo=
-X-Received: by 2002:a05:6512:e99:: with SMTP id bi25mr1597304lfb.649.1625603786068;
- Tue, 06 Jul 2021 13:36:26 -0700 (PDT)
+        bh=cnUoSrW9rk8e/FSKyNHS4k9CUnDp6erUN2wyVfXW/FM=;
+        b=FJmuXKP+3pzo8uKLmJ/UDW6tCMnhSwcevp4bMbefg/jtpeK+UBPX1T6A3sgSYBuh+g
+         ue25keXlzR7zUeRnFxzI2YD6rXq7O1kH1EQV6jY4RzQzL4cn3OlC7dQ4YwgSLup78KfV
+         X2/gASnRkRegDlsZ2Gnqu+pXsi1KC1E6Fa+5QeTip6TkCvgXU15YO+Uw5M0r97+DMqvf
+         iQBxgQICBEXzFydAC9Ne/Im8Zf6yd/DHLrUwe/yThLvEHzzJTmUwbaVEhLp7QmM9kYbs
+         rbHggvFlPrHLcHGBDDEOuc6Ma89AX8Prf93Lr0WjVGKXRhAVoBncwL5l3s2lQqVnCZXt
+         M+Xw==
+X-Gm-Message-State: AOAM532wkx/bksh31KH3DLDhPF602MXmo3h4XztGtQyCRy/OxgsWfz7g
+	/xRw+VXZ/ueodOXnqcrLFVv06BdNyj7Tq3o0T6Y=
+X-Google-Smtp-Source: ABdhPJwIgrflD026f+omPfQjh9Xa5jmGDTVCUdcaD0kojPSXgZQIzYxzEmLlur5Xmo+7iu8ebDTZQx44Ls1hv6P1CwU=
+X-Received: by 2002:a05:6602:2c85:: with SMTP id i5mr2297718iow.91.1625607132911;
+ Tue, 06 Jul 2021 14:32:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -54,70 +54,29 @@ List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
- <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com> <CAG4TOxMzf1Wn6PcWk=XfB+SV+MHwbxUq8t1RNswie5e3=Y+OXQ@mail.gmail.com>
-In-Reply-To: <CAG4TOxMzf1Wn6PcWk=XfB+SV+MHwbxUq8t1RNswie5e3=Y+OXQ@mail.gmail.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 6 Jul 2021 22:36:14 +0200
-Message-ID: <CACRpkdZyJd0TW5aVRfxSSWknzCyVhjMwQuAj9i9iuQ6pW9vftQ@mail.gmail.com>
+ <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com>
+ <YOPcZE+WjlwNueTa@unreal> <CACRpkdYDF-7=O1gc=Fh_mywtAgAtEVZhvoZXDFsAHMZe4FPGHQ@mail.gmail.com>
+ <CAMuHMdU5FOdSj+-d38t3BuPrZsYF0YT-Ff1efYLS3W7yNN_Y6Q@mail.gmail.com>
+ <CACRpkdbr9orKFfDmwZDz1wPHZvUfSaDVJtJB1uz+2Ho=QZFGiQ@mail.gmail.com>
+ <CANiq72no33T6RXMyZ18bS_nVaUcOpWEmu15Bs=+zJPnnhrnYRA@mail.gmail.com> <CACRpkdbF88Xaz-X1q7-5o9mpq7Lyq0Z4ReFBzCqgVFrbMWw3hw@mail.gmail.com>
+In-Reply-To: <CACRpkdbF88Xaz-X1q7-5o9mpq7Lyq0Z4ReFBzCqgVFrbMWw3hw@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 6 Jul 2021 23:32:01 +0200
+Message-ID: <CANiq72=O2MD=3TCHfY5acjS2saJCQ_OiSCX_o-Hb7TRt4qXQSA@mail.gmail.com>
 Subject: Re: [TECH TOPIC] Rust for Linux
-To: Roland Dreier <roland@kernel.org>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, ksummit@lists.linux.dev
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Leon Romanovsky <leon@kernel.org>, ksummit@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Jul 6, 2021 at 10:00 PM Roland Dreier <roland@kernel.org> wrote:
-
-> One area I see where Rust could make a big improvement for drivers is
-> in using RAII for error paths.  Drivers often have a lot of code like
+On Tue, Jul 6, 2021 at 9:12 PM Linus Walleij <linus.walleij@linaro.org> wrote:
 >
->     if (something())
->         return err;
->
->     if (something_else())
->         goto undo_something;
->
->     if (a_third_thing())
->         goto undo_two_things;
->
-> and so on, which is difficult to get right in the first place and even
-> harder to keep correct in the face of changes.
+> Yeah that was the thing I read about in The Register through my
+> newsfeed.
 
-Yes.
+Ah, yes, I have read the article now -- it has a few mistakes,
+including that `rustc_codegen_gcc` explanation, so it is
+understandable where the confusion came from.
 
-> "devres" / devm_xxx was an attempt to deal with this in C, but it only
-> solves some cases of this and has not received a lot of adoption (we
-> can argue about the reasons).
-
-Really? From my point of view that is adopted all over the map.
-I add new users all the time and use it as much as I can when
-writing new drivers.
-
-$ git grep devm_  | wc -l
-26112
-
-Dmitry in the input subsystem even insist to use it for e.g. powering
-down and disabling regulators on remove(), like recently in
-drivers/input/touchscreen/cy8ctma140.c
-
-/* Called from the registered devm action */
-static void cy8ctma140_power_off_action(void *d)
-{
-        struct cy8ctma140 *ts = d;
-
-        cy8ctma140_power_down(ts);
-}
-(...)
-error = devm_add_action_or_reset(dev, cy8ctma140_power_off_action, ts);
-if (error) {
-        dev_err(dev, "failed to install power off handler\n");
-        return error;
-}
-
-I think it's a formidable success, people just need to learn to do it more.
-
-But if an easier path to learn better behaviours is to shuffle the whole
-chessboard and replace it with drivers written in Rust, I don't know?
-Maybe?
-
-Yours,
-Linus Walleij
+Cheers,
+Miguel
 
