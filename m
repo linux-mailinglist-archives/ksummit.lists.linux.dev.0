@@ -1,112 +1,98 @@
-Return-Path: <ksummit+bounces-234-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-235-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F35C3BC43D
-	for <lists@lfdr.de>; Tue,  6 Jul 2021 01:51:34 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B9873BC57F
+	for <lists@lfdr.de>; Tue,  6 Jul 2021 06:30:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id 95E851C0DFD
-	for <lists@lfdr.de>; Mon,  5 Jul 2021 23:51:32 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id CDEAC3E0FA5
+	for <lists@lfdr.de>; Tue,  6 Jul 2021 04:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 962DD2F80;
-	Mon,  5 Jul 2021 23:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4987A2F80;
+	Tue,  6 Jul 2021 04:30:34 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6335D72
-	for <ksummit@lists.linux.dev>; Mon,  5 Jul 2021 23:51:24 +0000 (UTC)
-Received: by mail-lj1-f178.google.com with SMTP id k8so26607606lja.4
-        for <ksummit@lists.linux.dev>; Mon, 05 Jul 2021 16:51:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=BUw8Dh/lml6sLyXBVI/h1/fSRpqnpXukCnxmtAVtsCE=;
-        b=ZFWThXUpE8iCuxpCY+Cdr/hr7KzUVuTVwfQV4PUYlaP3UABHPJJLIwLQvptk/JvU3O
-         CLH9vZgVC7GTH1h06XI2/wDJzoucq4SAmtvy8YKfGHNwksO2zght072n9UEL3WHq//td
-         txoVobhonx0Z7BQliaPKCw/mhcxAMSrMIwXRVES8oQlcIhUb+7jMDJkDVTA+lXug2gMU
-         8HYfnOswJvZPjue6mdE+wXO7pkgq9GSfvq+S9wareSuDcDSvOer4mltQXjSXwCwHqWpS
-         OjzxoaYDOdKhd41NPUbaG3RdnYzK7bxfIdNcUJu/KfhfvXgC+GKSe5D8/iU2iqNHHcDb
-         vW7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BUw8Dh/lml6sLyXBVI/h1/fSRpqnpXukCnxmtAVtsCE=;
-        b=o6U0+1dupjvNVNNNIZoHaRQFmgaz7N8ZwCzwvWBFl5HVxCBvmqG3Axk/Jde0tfGbBx
-         ailAjDM6XrCeUJsO40fJe9XVW30nM1BAXf8tUfrXlfIZbp1liTVCZ8LdSiIpzHdW5yWs
-         ldirxj2327at43TB5MxXWkQxAqd4pZ+TshlZVizPVgjT8ZTDrM/2SeTzd7nOlgMhIqbt
-         JqYfC971RLiGMEmjEwjRRAD9F3H1JOivfvVhTe1Rlw7zmBsLHg+6p0MIuo6A43+ZL/IG
-         b/hZDP92t4ovC/MNjyPForhgWCO8gUbg7xuUeBPYAW2VkaoXR+EPvbmfvnOwbqZAzknU
-         /m9g==
-X-Gm-Message-State: AOAM5309HoI8WHsN+fKOlWxFlsVYN2tKcSJfOll5bjHZl8EYj9aIeCnM
-	DFEQ9drEPqE2XSFAlR/ccGweDlhGcttdAVUJq5Hr1Q==
-X-Google-Smtp-Source: ABdhPJx9djh5UK94YTs7qIZSavO2XdRcrvfXbsB4LAmgsBoYZiKUtnMkkshqkI8XQt3MgM0613Kp90uRRXwlkrIE9/c=
-X-Received: by 2002:a2e:9210:: with SMTP id k16mr11837465ljg.438.1625529082404;
- Mon, 05 Jul 2021 16:51:22 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6008672
+	for <ksummit@lists.linux.dev>; Tue,  6 Jul 2021 04:30:33 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4B4696198B;
+	Tue,  6 Jul 2021 04:30:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1625545833;
+	bh=2NO1WfoVivIMAfrb5WiyMxTGfdnKlNkebHK4Iufbc4A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Zu6jKwJcPiJRkA3ubr2yXgzQEPW9sNSAvTWECqM4i5IUVCjQyreE8YpZLliPIplMc
+	 WITqBLAmnxSwzdoXtbQX8TpMTJptZeILc1JMtwiec0ZJCIrCODudA7F4t9lQ/HUXfo
+	 3bFi1L5wpCh+5VdgHqU40ViFzpzvq6o98njSNJ8MH5axDkl8kYjSz1oA5x8/jNBWVK
+	 XAEpT7SI+SUutVW82ZnCXiSfDsdeme3Y5NP86G4BsGQAtqt3alKOtJtD4qpSvLz74m
+	 WlR4VYNeVkDSaBDbV7LVgpuwzpx86pLX9d/+rAutdvYt0m7LQBoHk4yzXe32qMyDfs
+	 9JyIyqbmGay6Q==
+Date: Tue, 6 Jul 2021 07:30:28 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Linus Walleij <linus.walleij@linaro.org>,
+	"a. Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+Cc: ksummit@lists.linux.dev
+Subject: Re: [TECH TOPIC] Rust for Linux
+Message-ID: <YOPcZE+WjlwNueTa@unreal>
+References: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
+ <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
-In-Reply-To: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 6 Jul 2021 01:51:11 +0200
-Message-ID: <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com>
-Subject: Re: [TECH TOPIC] Rust for Linux
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com>
 
-On Sat, Jun 26, 2021 at 12:09 AM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Tue, Jul 06, 2021 at 01:51:11AM +0200, Linus Walleij wrote:
+> On Sat, Jun 26, 2021 at 12:09 AM Miguel Ojeda
+> <miguel.ojeda.sandonis@gmail.com> wrote:
+> 
+> > The Rust for Linux project is adding support for the Rust language to
+> > the Linux kernel. This talk describes the work done so far and also
+> > serves as an introduction for other kernel developers interested in
+> > using Rust in the kernel.
+> 
+> I think this is a good tech topic.
 
-> The Rust for Linux project is adding support for the Rust language to
-> the Linux kernel. This talk describes the work done so far and also
-> serves as an introduction for other kernel developers interested in
-> using Rust in the kernel.
+<...>
 
-I think this is a good tech topic.
+> Demonstrate how the Rust code now elegantly avoid
+> ever seeing problems A,B,C again.
+> 
+> From this it is very easy for the kernel community to deduce that
+> introducing Rust as an implementation language is worth it.
 
-I think one thing that need discussing around this is implementation
-language fragmentation and brainshare: kernel developers are all
-assumed to grasp C, assembly, Make, KConfig, bash and some
-YAML, perl and python here and there. I bet there is some sed
-and awk in there and possibly more.
+I don't know about advantages of Rust, but from what I see there are
+some disadvantages that no one talks about them.
 
-So, admitting how lazily we sometimes learn languages, which is
-by copying, pasting and tweaking, then when that doesn't work
-actually looking at the language spec (or StackOverflow) how hard
-is that going to be with Rust? We get the hang of it quickly, yes?
+1. The addition of another language to the mix will hurt a lot our
+ability to refactor code for cross-subsystem changes.
 
-I also repeat my challenge from the mailing list, which is that
-while I understand that leaf drivers is a convenient place to start
-doing Rust code, the question is if that is where Rust as a language
-will pay off. My suggestion is to investigate git logs for the kind of
-problems that Rust solves best and then introduce Rust where
-those problems are. I believe that this would make be the
-Perfect(TM) selling point for the language in the strict
-hypothetico-deductive sense:
+Just as an example, there are many changes in DMA/SG areas that are
+applicable for many drivers. Even simple grep->replace pattern will
+be harder and longer if it is needed for the drivers that are written
+in different languages.
 
-Hypothesis: Rust solves kernel problems A,B,C.
+2. Testing matrix will be duplicated, both in compilation tests and in
+verification coverage. Even now, there are some kernel subsystems that 
+so much in-love with CONFIG_* options that their combination is slightly
+tested or not tested at all. So imagine, we will need to recompile
+everything with Rust too and execute same coverage tests again.
 
-Collect occurrence data about problems A,B,C from git logs.
+And yes, proper testing costs a lot of money, which IMHO better to
+invest in improving coverage/fixing bugs/tooling instead of adding
+new language to the pack.
 
-Identify code sites often exposing problems A,B,C.
+Thanks
 
-Rewrite those in Rust.
-
-Demonstrate how the Rust code now elegantly avoid
-ever seeing problems A,B,C again.
-
-From this it is very easy for the kernel community to deduce that
-introducing Rust as an implementation language is worth it.
-
-Yours,
-Linus Walleij
+> 
+> Yours,
+> Linus Walleij
+> 
 
