@@ -1,52 +1,52 @@
-Return-Path: <ksummit+bounces-253-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-254-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
-	by mail.lfdr.de (Postfix) with ESMTPS id 190263BDC95
-	for <lists@lfdr.de>; Tue,  6 Jul 2021 20:00:12 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 986463BDCB3
+	for <lists@lfdr.de>; Tue,  6 Jul 2021 20:09:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id A10903E10EA
-	for <lists@lfdr.de>; Tue,  6 Jul 2021 18:00:10 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 3A5F83E10E1
+	for <lists@lfdr.de>; Tue,  6 Jul 2021 18:09:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA012F80;
-	Tue,  6 Jul 2021 18:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40E62F80;
+	Tue,  6 Jul 2021 18:09:15 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637DC72
-	for <ksummit@lists.linux.dev>; Tue,  6 Jul 2021 18:00:02 +0000 (UTC)
-Received: by mail-lf1-f41.google.com with SMTP id r26so22258766lfp.2
-        for <ksummit@lists.linux.dev>; Tue, 06 Jul 2021 11:00:02 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A61772
+	for <ksummit@lists.linux.dev>; Tue,  6 Jul 2021 18:09:14 +0000 (UTC)
+Received: by mail-lf1-f44.google.com with SMTP id n14so39862595lfu.8
+        for <ksummit@lists.linux.dev>; Tue, 06 Jul 2021 11:09:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Zd23+6Zi/aU7xu6mLwmlpUAnV3tbC6soKdtP1CwNfDE=;
-        b=sxlAjlWxNKo6iIk4zibGV1q8fqZMy61xQKPwx8l3WT1MTA7jdZVwXABBhMKAb28UKG
-         dLSLIumXn0ZDbKggVe+iGfaA8jmdvQMeltlFdkoX8qSwCmMOW/y+4vEXVYxgeMhmyZZC
-         jCT9/I52fhFJrme2Eg4nmS5SIYdbWYsm+IjV5gUCpOd1CTIGjwid3umqekMr03Nnouoj
-         CaUybnWHk6uelCWDOHBSnfmqzH6Uv7D5d07MbrdagC86KlToaKVbW+gjAwBnr2Wp5Cpq
-         g+PZ1mKPkPV0A8B0CM9HLKjwHsLPGGykWo2QtWV5E/Mj4UXwcdA4u0HTIUbPa9vjnT2s
-         wCAA==
+        bh=O6rAeDSPFllCcuoeipogSy52xSeUY26YtkQRKOO+L6E=;
+        b=tRcLELR+cpKTXxjjR2bVHhPcCFYxlILPfNQyz8Lb7RWSMDUYLi1LxQXJu4+Pyhm4df
+         hEcH15UzKP+Vvn2Ul2KKT6XM6Nq2aJH3uTpFBNi6A3+vfvbcvHxUzAETE4Rm/QcmSN7a
+         x3+mbEYGgTFDTpDmc0PGQKGx2zcuHEulbj44xwBFn5nfUjDC/FG1G8Qdhh0spw98HS5l
+         q62z3KOgyghu9U7TV12BChhJqGc8hbJM39RO138vHNVNJU9xqlfU56OsiuswOs98BdVX
+         JiT8ifk5PXEMXidmsecEQy6WKXzxVfBH6iUjKjiAcBFE2wVkD+XJYUaXV9mGzrMChk9D
+         LrpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Zd23+6Zi/aU7xu6mLwmlpUAnV3tbC6soKdtP1CwNfDE=;
-        b=LyS8WKZk6VUD4/L4cA5ZhYN+spyyuOCLVtewn7Qb0lkakBul2QYSYFYRrYvSY4igBP
-         V5QkKM/Cs8bWfhrFA8EEU1m5GTo+yJ3aN3brp1rDVS8kaEuJ/quT3Jr37bOIqCzLUE2e
-         j50PW2JugQpnFK6NXBwL4u01Hy808mVPPYewhrcz4GwwcTDYXwpe+jQ9MD4JRdy1t4rt
-         r/6ZjHWgDtz63Onh0/ZMklVQ2JY8AlRvFK4NovbtZHKo5UWan5J8mWOA9ywvL47vPBLp
-         avQ9P3i/aSU66/JHCMIhFt97IceMKc8Hh4iKNjEElf8L+0F2MF85pxvryeJcYWm0A25e
-         WxbQ==
-X-Gm-Message-State: AOAM530eR7YeGhR7JdunVxoQh0pjuzsf0NE9HlWfFyB6Rxe0smBNuXn3
-	PCydjf4Fu71VQVqMd2DEitUDMB9xTquQvXwMyr7ftw==
-X-Google-Smtp-Source: ABdhPJywlK4O45mp455/aKf2VjKSEVRsXT+3mnlZ38LyZ3sIFQaNo4Q5JzDggbi8DWBuXguFnr01GC2pC36L4Mxkeok=
-X-Received: by 2002:a19:c141:: with SMTP id r62mr15318089lff.157.1625594400367;
- Tue, 06 Jul 2021 11:00:00 -0700 (PDT)
+        bh=O6rAeDSPFllCcuoeipogSy52xSeUY26YtkQRKOO+L6E=;
+        b=e+CqCPzEHKJpgGDlJMfgpr8QGyYInE+M7EinKWT4PN07l5zS5NEDHK8U10qaKQZOOw
+         AMmZ+Quo1dmrye/KrMhVerutB85ceSGHta5CsmMGvSx1vo2ZmDkLU5i71B25CPvUdxmx
+         VbxRbyaIDVIMYzesM7DFYi7TV98oT0IHkNmgyTnXxjIvpEO71q8JmS7rDIEtV0sgLeR/
+         zRrKTqncPoSWa8AUZBmPOPAyRQ3r+jSba5Gz2B8CqoqyZwuK7L8iVlWXLSK3O8RKu6NW
+         ebv0kw2lePm5eVsCWrSYzwgRKeSz8sl2H5B//DXMEDhARFI6rPo8yXvKcSPNjs4APgJF
+         UJWg==
+X-Gm-Message-State: AOAM5325K/shFbdT2I0Zb2m5aM/L6qR7RH+M8ZnXe8CrIU4ReXk6rs6m
+	j+p833qlFIpgn+2JENVDx3WOuMjiNbC8RS4fGVLuIMnnBh0=
+X-Google-Smtp-Source: ABdhPJwg1p/wNXRzNEtnme9kcZsDPtoOBMXRqr5lm4gDDKPENIqPkdj7ysj1jdyDKikbh3bUkLwLqVybPKyrgiqltrY=
+X-Received: by 2002:a05:6512:1508:: with SMTP id bq8mr16103111lfb.529.1625594952455;
+ Tue, 06 Jul 2021 11:09:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -55,31 +55,44 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
  <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com>
- <YOPcZE+WjlwNueTa@unreal> <CACRpkdYDF-7=O1gc=Fh_mywtAgAtEVZhvoZXDFsAHMZe4FPGHQ@mail.gmail.com>
- <CAMuHMdU5FOdSj+-d38t3BuPrZsYF0YT-Ff1efYLS3W7yNN_Y6Q@mail.gmail.com>
-In-Reply-To: <CAMuHMdU5FOdSj+-d38t3BuPrZsYF0YT-Ff1efYLS3W7yNN_Y6Q@mail.gmail.com>
+ <YOPcZE+WjlwNueTa@unreal> <19e0f737a3e58ed32758fb4758393c197437e8de.camel@HansenPartnership.com>
+In-Reply-To: <19e0f737a3e58ed32758fb4758393c197437e8de.camel@HansenPartnership.com>
 From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 6 Jul 2021 19:59:49 +0200
-Message-ID: <CACRpkdbr9orKFfDmwZDz1wPHZvUfSaDVJtJB1uz+2Ho=QZFGiQ@mail.gmail.com>
+Date: Tue, 6 Jul 2021 20:09:01 +0200
+Message-ID: <CACRpkdaoGEVwjh902_r=KA=dnPu-vdbKe-xXiLbdjLR1-DqQ0w@mail.gmail.com>
 Subject: Re: [TECH TOPIC] Rust for Linux
-To: Geert Uytterhoeven <geert@linux-m68k.org>
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
 Cc: Leon Romanovsky <leon@kernel.org>, "a. Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, 
 	ksummit@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Jul 6, 2021 at 12:16 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> On Tue, Jul 6, 2021 at 11:56 AM Linus Walleij <linus.walleij@linaro.org> wrote:
-> > I.e. you have to compile some pieces of the kernel written in
-> > Rust to even get to a working kernel.
->
-> So this would break all architectures not yet supported by Rust?
+On Tue, Jul 6, 2021 at 12:20 PM James Bottomley
+<James.Bottomley@hansenpartnership.com> wrote:
 
-I brought this up for discussion with Miguel et al and it turns out
-the project to develop a GCC front-end for Rust is now well under
-way and there is already a frankencompiler using LLVM first
-and then feeding that into GCC IIUC.
+> 3. Less review: The lack of kernel programmers understanding rust
+> hampers reviewing.  Since most of our CVE type problems are usually
+> programming mistakes nowadays, the lack of review could contribute to
+> an increase in programming fault type bugs which aren't forbidden by
+> the safer memory model.
 
-I.e. support for m68k is on the way.
+The rationale not stated explicitly by the Rust enthusiasts is based
+on the assumption that the language has a broad uptake and that
+the crowd of developers embracing Rust will increase over time,
+and especially that new young, fresh developers will know Rust
+better than C.
+
+If over time this becomes (by assumption) an increasing crowd of
+Rust-interested developers who think C is primitive and last years
+news and do not want to work with it, then the assumption is true.
+
+This has limited evidence but is I think based on StackOverflow
+surveys of "most loved language" and such. Overall the people
+promoting Rust believe in this and they also apparently feel a strong
+sense of belonging wrt the language.
+
+I think it is a fair reason. Any push into any new technology needs to
+be driven by belief and enthusiasm, i.e. emotions. That's fine. Such
+was Unix and C, and such was Linux, too. Not everything is rational.
 
 Yours,
 Linus Walleij
