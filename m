@@ -1,97 +1,125 @@
-Return-Path: <ksummit+bounces-322-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-323-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E86CD3BF238
-	for <lists@lfdr.de>; Thu,  8 Jul 2021 00:45:04 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F5E43BF24F
+	for <lists@lfdr.de>; Thu,  8 Jul 2021 01:09:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 975813E0FA1
-	for <lists@lfdr.de>; Wed,  7 Jul 2021 22:45:03 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id BAFAE3E100D
+	for <lists@lfdr.de>; Wed,  7 Jul 2021 23:09:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC7A82FAE;
-	Wed,  7 Jul 2021 22:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02BB62FAD;
+	Wed,  7 Jul 2021 23:09:24 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-io1-f49.google.com (mail-io1-f49.google.com [209.85.166.49])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0BC370
-	for <ksummit@lists.linux.dev>; Wed,  7 Jul 2021 22:44:55 +0000 (UTC)
-Received: by mail-io1-f49.google.com with SMTP id k11so5746565ioa.5
-        for <ksummit@lists.linux.dev>; Wed, 07 Jul 2021 15:44:55 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AFD70
+	for <ksummit@lists.linux.dev>; Wed,  7 Jul 2021 23:09:22 +0000 (UTC)
+Received: by mail-wr1-f45.google.com with SMTP id v5so4993486wrt.3
+        for <ksummit@lists.linux.dev>; Wed, 07 Jul 2021 16:09:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=kCtrbBa69drlyv6TSCClf1YMJ1KNeD2XJHE1lIbUEic=;
-        b=tHvCNl97CzjBm01BsoTP58kEaNC6gAPdYsMXw3MXfD6J3CwWGJCHPu+s/UothwyZdI
-         QBI9HoV0oVFWPvbfkoneAeXOHwnTCfuZLBnx6sCYm4GP5oDdg1heZVIT3A7ST89i0kZP
-         N7N2hcjn6JaZAAZo8DQuHRIx64JpM0cXVm6MOvLUp9q99/7YH6QyCTFBBROUhOzLMJl/
-         wiJXsZ6sjm9XUtPx7O4mPbr3umevS/c9jNb+GDnw089kkKu3EvqnXUmddcq2QR9LcYvD
-         /PQHwGSgln9jaYPiD5Xz6RvGREi96tmgGQIpkyaKkVAFSZeg/rlpARlbBNuddfo2kbgq
-         1A3A==
+        d=google.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=edNJUKuxK53C9T7wBT/Lo+yiMssFyJBu7uIcvjykS1w=;
+        b=fKWwhsoStUAoBvOVEQh7ISGWwvbjiViVCUcUPw5xakpZJ7pzDCh6iCqnyVmQoB0L0V
+         D/G8PH07fFHkM5GFR2HjcNOhn8umO0CxbNm+a+aXirPfFgmFE2U4o1UjlC2CVhb0zZJ9
+         ufDA1G59Tg+vS2+/nCon4NTaoGlfFN+PYx80x0+CPXX69uhq83B3g0m5QqhQLa8pmaej
+         a5ERC2WfXPKvVkrxyc9Y6KZkRB1k+KKSkCHou5hq/4SOjViWYH+G1qaOYSeim26MW5LH
+         HzxKBWpmttLn3LPjET0Fs9c8iZpI/a/4tT4HzIwCuNWXbJ8avqr7YyC65j0IbCT+kqRx
+         VFXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=kCtrbBa69drlyv6TSCClf1YMJ1KNeD2XJHE1lIbUEic=;
-        b=tSTGjAxLS7UW4+WN2VqdK8bHHNXGa/iMVHh883ZyrQHbDMzejOyVJFn1z2OxDx4Hbk
-         8VqcjWhx0RplLvBS+OZ1+tBNG6YmK8PD8Ovr8YelhIoX0T8yETNv17Mgsm4eBcAppvxP
-         dt9EfU42HCc9fm9o32XALKyOc7Oc5R3cdyv2Rqun+7p85ai6B1JpkmNaOMyAR4dz1Ayg
-         hOjFV/rn9cuqYCgedbLR4e6Ii67hM0MK+fToYqzqKg+j6z5yXlErffaCV8TDnmp4ZH/K
-         Sw5p8NKNZ7WAVgjQvQu08BSxMKn8dGAQoY1GTmmq8vEuugZd8VG5/MBnP7GBRlrtOBiN
-         hp2Q==
-X-Gm-Message-State: AOAM5313lk9ZKk7lM3/mh1etjKp6jM08QszdZmfqbCq/pgRbVkiJ0iq7
-	89mAdiJ2NAEH9gE2M96SuN61MdcG+yy7EqGWuRs=
-X-Google-Smtp-Source: ABdhPJxO6AKVmiXnv4ORaB7WLEIySLl7Qby8PtoqBZ7yJJmag0asGxMESOAL3YwQBglxuN4vDkyMDgikuYo98WpCfeA=
-X-Received: by 2002:a6b:185:: with SMTP id 127mr14349707iob.64.1625697895117;
- Wed, 07 Jul 2021 15:44:55 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=edNJUKuxK53C9T7wBT/Lo+yiMssFyJBu7uIcvjykS1w=;
+        b=f16ciPd79fPW2BvnKiacWpluLLjQ2WaT/xH1f1H3H6GttUdJLsMhDsE9t7NtNoXetc
+         FJ/d6ijKm6VLapLEq+hyqLpRK3GqweDLIR23oVPD2+3X2FBAb9oWeuvpTahd4Y7KdeAY
+         nGd//fC5HTFh6++kEGLTf+1M8RDlPwUzOcN19Vkt6+yGvLBH//TqYwwvNCmlkBOIyRvQ
+         rEMNuhgtJv3dTK8GNbHK6XiUsiIdZ3Z2IPvI3/YQa155NmGeX0NDNnJE8m2YsE82Ylkn
+         FJhqsUhEQ75wIvBMSoVsQ9iHUBTUmFd8AOhiDFUr8fptV5J61VHEj5052uQNYew2fS9K
+         alWA==
+X-Gm-Message-State: AOAM5306G9h1ZRGuDDeIbVPKLwCybpMyeGA9NxCrLD2uVID8ISg/oao6
+	Ffd9jCs0/sXbjcyucRUETYsO
+X-Google-Smtp-Source: ABdhPJwVQJ8Ty3Ie351Y5eFudvUbKiJaBKhBoQtzARr2p/AzARlwaDWjprTx0MzvLSJSqp91EkliEQ==
+X-Received: by 2002:adf:e607:: with SMTP id p7mr30470147wrm.80.1625699361003;
+        Wed, 07 Jul 2021 16:09:21 -0700 (PDT)
+Received: from google.com ([2a00:79e0:d:209:860d:625a:fd59:d699])
+        by smtp.gmail.com with ESMTPSA id c12sm340033wrr.90.2021.07.07.16.09.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Jul 2021 16:09:20 -0700 (PDT)
+Date: Thu, 8 Jul 2021 00:09:16 +0100
+From: Wedson Almeida Filho <wedsonaf@google.com>
+To: Jan Kara <jack@suse.cz>
+Cc: Greg KH <greg@kroah.com>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Julia Lawall <julia.lawall@inria.fr>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Roland Dreier <roland@kernel.org>, ksummit@lists.linux.dev
+Subject: Re: [TECH TOPIC] Rust for Linux
+Message-ID: <YOY0HLj5ld6zHJHU@google.com>
+References: <YOVbsS9evoCx0isz@kroah.com>
+ <20ad13eb229b15fd14d870832d43a1605ba5c24a.camel@HansenPartnership.com>
+ <CANiq72n=8Do_9suDeJdwoF_8ZR-uLEj2r9cRSB_k=yTk_q0FHw@mail.gmail.com>
+ <1f2a62c19845e4602817c2130d47bbea02d04d1d.camel@HansenPartnership.com>
+ <CANiq72=qa2jMUKyfPmH1q1jr8n_Tm7FMy0QyWRhhpinUrvMiNA@mail.gmail.com>
+ <YOXL6Th+pot9+Fp3@kroah.com>
+ <YOXd9WoafgBr1Nkv@google.com>
+ <YOXibDV8mHT1e6ec@kroah.com>
+ <YOX+N1D7AqmrY+Oa@google.com>
+ <20210707203827.GI18396@quack2.suse.cz>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <alpine.DEB.2.22.394.2107070926370.6285@hadrien>
- <YOVbsS9evoCx0isz@kroah.com> <20ad13eb229b15fd14d870832d43a1605ba5c24a.camel@HansenPartnership.com>
- <CANiq72n=8Do_9suDeJdwoF_8ZR-uLEj2r9cRSB_k=yTk_q0FHw@mail.gmail.com>
- <1f2a62c19845e4602817c2130d47bbea02d04d1d.camel@HansenPartnership.com>
- <CANiq72=qa2jMUKyfPmH1q1jr8n_Tm7FMy0QyWRhhpinUrvMiNA@mail.gmail.com>
- <YOXL6Th+pot9+Fp3@kroah.com> <YOXd9WoafgBr1Nkv@google.com>
- <YOXibDV8mHT1e6ec@kroah.com> <CANiq72mWvniSwhEKLqkfRboFr4=r8k3pSAXg5-SyW45e4Ch27g@mail.gmail.com>
- <YOYg1ZQXx9ceYfBX@pendragon.ideasonboard.com>
-In-Reply-To: <YOYg1ZQXx9ceYfBX@pendragon.ideasonboard.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 8 Jul 2021 00:44:43 +0200
-Message-ID: <CANiq72mqF1hKj6wN59A1yn9NQ_zXPAXdkFDSstw9BY_P4sTapA@mail.gmail.com>
-Subject: Re: [TECH TOPIC] Rust for Linux
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Greg KH <greg@kroah.com>, Wedson Almeida Filho <wedsonaf@google.com>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Julia Lawall <julia.lawall@inria.fr>, Linus Walleij <linus.walleij@linaro.org>, 
-	Roland Dreier <roland@kernel.org>, ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210707203827.GI18396@quack2.suse.cz>
 
-On Wed, Jul 7, 2021 at 11:47 PM Laurent Pinchart
-<laurent.pinchart@ideasonboard.com> wrote:
->
-> Out of curiosity: we have in the kernel objects shared between multiple
-> threads that require locking, but in some contexts taking the lock isn't
-> required. I'm thinking in particular about initialization time when you
-> create the object, before it is made visible to other users, or
-> destruction time, when you nobody else can have a reference to the
-> object anymore. Avoiding lock operations in those cases can be an
-> optimization. Cn rust handle that ?
+On Wed, Jul 07, 2021 at 10:38:27PM +0200, Jan Kara wrote:
+> On Wed 07-07-21 20:19:19, Wedson Almeida Filho wrote:
+> > Where would a lock be needed in the examples above?
+> 
+> So I think Greg speaks about a situation where you have multiple threads
+> and the refcounted object can be looked up through some structure all the
+> threads see. And the problem is that the shared data structure cannot hold
+> ref to the object it points to because you want to detect the situation
+> where the data structure is the only place pointing to the object and
+> reclaim the object in that case. Currently I don't see how to model this
+> idiom with Rust refs.
 
-Yes, you could provide e.g. an `unsafe fn` for users to access the
-underlying data if the users know that such a thing is sound (by other
-means that the compiler cannot verify).
+The normal idiom in Rust for this is "weak" pointers. With it, each
+reference-counted object has two counts: strong and weak refs. Objects are
+"destroyed" when the strong count goes to zero and "freed" when the weak count
+goes to zero.
 
-To use it, users will, of course, need an `unsafe` block to make the
-call compile; and a `SAFETY` comment on top of it explaining why it is
-actually sound to make such a call (we require these).
+Weak references need to upgraded to strong references before the underlying
+objects can be accessed; upgrading may fail if the strong count has gone to
+zero. It is, naturally, implemented as an increment that avoids going from 0 to
+1. It is safe to try to do it because the memory is kept alive while there are
+weak references.
 
-Cheers,
-Miguel
+For the case you mention, the list would be based on weak references. If the
+object's destructor also removes the object from the list, both counts will go
+to zero and the object will be freed as well. (If it fails to do so, the
+*memory* will linger allocated until someone removes the object from the list,
+but all attempts to upgrade the weak reference to a strong one will fail.)
+
+The obvious cost is that we need an extra 32-bit number per reference-counted
+allocation. But if we have specialized cases, like the underlying object always
+being in some data structure until the ref count goes to zero, then we can build
+a zero-cost abstraction for such a scenario.
+
+We can also build specialised zero-cost abstractions for the case when we want
+to avoid the 1 -> 0 transition unless we're holding some lock to prevent others
+observing the object-with-zero-ref. For this I'd have to spend more time to see
+if we can do safely (i.e., with compile-time guarantees that the object was
+actually removed from the data structure).
 
