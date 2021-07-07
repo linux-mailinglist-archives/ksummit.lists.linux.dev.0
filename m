@@ -1,122 +1,115 @@
-Return-Path: <ksummit+bounces-310-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-311-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
-	by mail.lfdr.de (Postfix) with ESMTPS id B73163BF0D0
-	for <lists@lfdr.de>; Wed,  7 Jul 2021 22:38:44 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C523BF0D1
+	for <lists@lfdr.de>; Wed,  7 Jul 2021 22:39:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id 028511C0ECB
-	for <lists@lfdr.de>; Wed,  7 Jul 2021 20:38:44 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id DA15C1C0DD4
+	for <lists@lfdr.de>; Wed,  7 Jul 2021 20:39:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C8A2F80;
-	Wed,  7 Jul 2021 20:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D8B2F80;
+	Wed,  7 Jul 2021 20:39:43 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C71168
-	for <ksummit@lists.linux.dev>; Wed,  7 Jul 2021 20:38:35 +0000 (UTC)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out2.suse.de (Postfix) with ESMTP id 65C4A20111;
-	Wed,  7 Jul 2021 20:38:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1625690308; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lnQPbZ/eKrxrkclH/ZdkAYezGxt4Fz50+ivhmM6TEQM=;
-	b=lab8I7UysT59TvAe3lk+GdHv7NJrN3QfxSd5DAXOYm2ZqjqVlMxemQPuVsS1T2Diwu3D0D
-	L/bz4rhgbtCgt6ppnfbFFEvbYdWe4994prOPnClfv6OTRPViL0O0PoBwHdVB/37bueHaGq
-	4CN8zdKCwCpQXLZRNWhnWlkia8U8lZI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1625690308;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lnQPbZ/eKrxrkclH/ZdkAYezGxt4Fz50+ivhmM6TEQM=;
-	b=DEb/u96TYrXwoIGPq9MbSlg+2u7nDny4XzbjoYNEtQtfYdvAYGsvZgy0eJQg1/KnlS3EiU
-	tWM4axSCaEF+xUCQ==
-Received: from quack2.suse.cz (unknown [10.163.43.118])
-	by relay2.suse.de (Postfix) with ESMTP id 1264AA3BA5;
-	Wed,  7 Jul 2021 20:38:28 +0000 (UTC)
-Received: by quack2.suse.cz (Postfix, from userid 1000)
-	id C10661F2CD7; Wed,  7 Jul 2021 22:38:27 +0200 (CEST)
-Date: Wed, 7 Jul 2021 22:38:27 +0200
-From: Jan Kara <jack@suse.cz>
-To: Wedson Almeida Filho <wedsonaf@google.com>
-Cc: Greg KH <greg@kroah.com>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Julia Lawall <julia.lawall@inria.fr>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Roland Dreier <roland@kernel.org>, ksummit@lists.linux.dev
-Subject: Re: [TECH TOPIC] Rust for Linux
-Message-ID: <20210707203827.GI18396@quack2.suse.cz>
-References: <alpine.DEB.2.22.394.2107070926370.6285@hadrien>
- <YOVbsS9evoCx0isz@kroah.com>
- <20ad13eb229b15fd14d870832d43a1605ba5c24a.camel@HansenPartnership.com>
- <CANiq72n=8Do_9suDeJdwoF_8ZR-uLEj2r9cRSB_k=yTk_q0FHw@mail.gmail.com>
- <1f2a62c19845e4602817c2130d47bbea02d04d1d.camel@HansenPartnership.com>
- <CANiq72=qa2jMUKyfPmH1q1jr8n_Tm7FMy0QyWRhhpinUrvMiNA@mail.gmail.com>
- <YOXL6Th+pot9+Fp3@kroah.com>
- <YOXd9WoafgBr1Nkv@google.com>
- <YOXibDV8mHT1e6ec@kroah.com>
- <YOX+N1D7AqmrY+Oa@google.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F97168
+	for <ksummit@lists.linux.dev>; Wed,  7 Jul 2021 20:39:41 +0000 (UTC)
+Received: by mail-lf1-f44.google.com with SMTP id u18so7601495lff.9
+        for <ksummit@lists.linux.dev>; Wed, 07 Jul 2021 13:39:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=CxhEcHoe5y03vDGBPIiOnnYyJm4uZQ5HD72NGyAkxq4=;
+        b=LE0+eqZW51pO3x3Zfv+VVLvQDvyrgz7XPH4ZfkD/W+P9qIyIlcgv/JFyGtVMuTPs8B
+         tCAzDibJUhz9y/anVEiw4ZBO0veUoWEH7KvEBoiFO8i8A9TJ2OB3PFrBT3MYNMFYmwXd
+         P5USDrJ5eCgIgdJC46KVb4ZGuNklhe++Sc1b4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=CxhEcHoe5y03vDGBPIiOnnYyJm4uZQ5HD72NGyAkxq4=;
+        b=jHmFQ1sqAuBc+i/B7uQOsCfmzhyfveLotnNJXYmfFSzc6tB7FGZ6jktl5J4vcOF2nF
+         YkX/OOlYIVDLpjmdXtJqJk0USs12VILWu8nqkyvGZInibgfA6Gp5D/dDOFnKmcbcz8gI
+         79QPZjycJF0e0JEXARycGS9XUyNspwzdOioShb2SbZUgub2VRkLHJP2JuCAk1POWoa3g
+         SBReatQiHqZORZWFZWmROVdtpoPkhxC95IpqaLA/nzVGmIjrm0yN2pnPwS0SQJA51rQk
+         jOTBGD94xa04uVhAmHw3DSqboWU9uA5AJ225m1uBg5pZt1lGOPkGiEN1g6UrYXo/49io
+         DhPw==
+X-Gm-Message-State: AOAM533TlN/2VeSWr6l1QZBY+WtGb5SlW2VUT5+jcvLzl0OzC9/8jgxA
+	4IS7eVRdIm565IDGkvKgILgewvr5YoiJA1QKJv0=
+X-Google-Smtp-Source: ABdhPJyvxAW/zP5qqPM8IQzyLStsy4zFcrRysSsodjXkepiLB9X2IHOTnenxIpq4RZ/uTfGrU40Btw==
+X-Received: by 2002:a2e:9d59:: with SMTP id y25mr20662414ljj.399.1625690379481;
+        Wed, 07 Jul 2021 13:39:39 -0700 (PDT)
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com. [209.85.167.45])
+        by smtp.gmail.com with ESMTPSA id r11sm5435ljp.9.2021.07.07.13.39.38
+        for <ksummit@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 Jul 2021 13:39:38 -0700 (PDT)
+Received: by mail-lf1-f45.google.com with SMTP id a18so7558262lfs.10
+        for <ksummit@lists.linux.dev>; Wed, 07 Jul 2021 13:39:38 -0700 (PDT)
+X-Received: by 2002:a05:6512:3f82:: with SMTP id x2mr19914126lfa.421.1625690378222;
+ Wed, 07 Jul 2021 13:39:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YOX+N1D7AqmrY+Oa@google.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
+ <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com>
+ <CAG4TOxMzf1Wn6PcWk=XfB+SV+MHwbxUq8t1RNswie5e3=Y+OXQ@mail.gmail.com>
+ <64de6a11-5ff0-9931-d09b-2246cb37b284@acm.org> <20210706160857.6d4c63aa@hermes.local>
+ <f391c00d-7f4f-a60c-0230-4aca5ea2d4ed@acm.org> <CAHk-=wiwZWAo_Ki587FD2BrAQVK71TBN=uKimdBf1Pxg3=+nTw@mail.gmail.com>
+ <22460501-fe09-f8e7-1051-b6b692500859@acm.org>
+In-Reply-To: <22460501-fe09-f8e7-1051-b6b692500859@acm.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Wed, 7 Jul 2021 13:39:22 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjYGDtLafGB6wabjZCyPUiTJSda0c8h5+_8BeFNdCdrNg@mail.gmail.com>
+Message-ID: <CAHk-=wjYGDtLafGB6wabjZCyPUiTJSda0c8h5+_8BeFNdCdrNg@mail.gmail.com>
+Subject: Re: [TECH TOPIC] Rust for Linux
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: Stephen Hemminger <stephen@networkplumber.org>, Roland Dreier <roland@kernel.org>, 
+	Linus Walleij <linus.walleij@linaro.org>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+	ksummit@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed 07-07-21 20:19:19, Wedson Almeida Filho wrote:
-<snip good explanations how refs work>
+On Wed, Jul 7, 2021 at 1:32 PM Bart Van Assche <bvanassche@acm.org> wrote:
+>
+> Thank you for having shared your opinion. You may want to know that
+> every C++ project I have worked on so far enabled at least the following
+> compiler flags: -fno-exceptions and -fno-rtti.
+>
+> What the C++ operator new does if not enough memory is available depends
+> on the implementation of that operator.
 
-> There are real cases when you can't guarantee that lifetimes line up as required
-> by the compiler to guarantee safety. In such cases, you can "clone" ptr (which
-> increments the refcount, again from n to n+1, where n > 0), then you end up with
-> your own reference to the underlying `X`, for example:
-> 
-> fn main() {
->     let ptr_clone;
->     {
->         let ptr = Ref::new(X { a: 10, b: 20 });
->         ptr_clone = ptr.clone();
->     }
->     println!("{}", ptr_clone.a);
-> }
-> 
-> (Note that the reference owned by `ptr` has been destroyed by the time
-> `ptr_clone.a` is used in `println`, but `ptr_clone` has its own reference due to
-> the clone call.)
-> 
-> The ideas above apply equally well if instead of thinking in terms of scope, you
-> think in terms of threads/CPUs. If a thread needs a refcounted object to
-> potentially outlive the borrow keeping it alive, then it needs to increment
-> the refcount: if you can't prove the lifetime rules, then you must clone the
-> reference.
-> 
-> Given that by construction the refcount starts at 1, there is no path to go from
-> 0 to 1. Ever.
-> 
-> Where would a lock be needed in the examples above?
+The point is, C++ really has some fundamental problems. Yes, you can
+work around them, but it doesn't change the fact that it doesn't
+actually *fix* any of the issues that make C problematic.
 
-So I think Greg speaks about a situation where you have multiple threads
-and the refcounted object can be looked up through some structure all the
-threads see. And the problem is that the shared data structure cannot hold
-ref to the object it points to because you want to detect the situation
-where the data structure is the only place pointing to the object and
-reclaim the object in that case. Currently I don't see how to model this
-idiom with Rust refs.
+For example, do you go as far as to disallow classes because member
+functions are horrible garbage? Maybe newer versions of C++ fixed it,
+but it used to be the case that you couldn't sanely even split a
+member function into multiple functions to make it easier to read,
+because every single helper function that worked on that class then
+had to be declared in the class definition.
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Which makes simple things like just re-organizing code to be legible a
+huge pain.
+
+At the same time, C++ offer no real new type or runtime safety, and
+makes the problem space just bigger. It forces you to use _more_
+casts, which then just make for more problems when it turns out the
+casts were incorrect and hid the real problem.
+
+So no. We're not switching to a new language that causes pain and
+offers no actual upsides.
+
+At least the argument is that Rust _fixes_ some of the C safety
+issues. C++ would not.
+
+            Linus
 
