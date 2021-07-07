@@ -1,103 +1,126 @@
-Return-Path: <ksummit+bounces-294-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-295-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F15D3BEA8A
-	for <lists@lfdr.de>; Wed,  7 Jul 2021 17:18:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FC153BEAAC
+	for <lists@lfdr.de>; Wed,  7 Jul 2021 17:28:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id A8FA63E106B
-	for <lists@lfdr.de>; Wed,  7 Jul 2021 15:18:07 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 7BBC53E0F3D
+	for <lists@lfdr.de>; Wed,  7 Jul 2021 15:28:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9AB2F80;
-	Wed,  7 Jul 2021 15:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3BA82F80;
+	Wed,  7 Jul 2021 15:28:47 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f172.google.com (mail-il1-f172.google.com [209.85.166.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15211168
-	for <ksummit@lists.linux.dev>; Wed,  7 Jul 2021 15:18:00 +0000 (UTC)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2BEB261CA2;
-	Wed,  7 Jul 2021 15:17:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1625671079;
-	bh=sT1sdu9CBxe57KkwD8JzCCiNy6IEERM7Vc7RYj0Y5L4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=grqvRE74J1jVMII/1xyYZbBRaNf+UUPOGBr9C7KYmlslSzsYY+Y1JCF1foRbP0ebf
-	 ZPcrHoo/ayUAWeUL1LBm3/TpOKY2lq5jGzG0SBBpZDo0LkLkWqGrPGd6c96oDcf9Dw
-	 uz1ZryUZTc60jZfDsI9qyojASKSkfWZ+EdlsbMe7OdK58NXKvWOimKrQOCUkSJWUQr
-	 ZotIBokSuxC6yOyZ9PfifhSzA4SOrhv32TXk57l0/mBdzwTsw9wPQscEQfZWjcZ1ec
-	 P/Myvtsv48M2elQ19MGJIvHOg5zbYQMwuiaJTOfih8rLZGBtVn7vLO9zifBy3HLAqX
-	 ic20/lj2rC4xw==
-Date: Wed, 7 Jul 2021 16:17:27 +0100
-From: Mark Brown <broonie@kernel.org>
-To: James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Roland Dreier <roland@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	ksummit@lists.linux.dev
-Subject: Re: [TECH TOPIC] Rust for Linux
-Message-ID: <20210707151727.GC4394@sirena.org.uk>
-References: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
- <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com>
- <CAG4TOxMzf1Wn6PcWk=XfB+SV+MHwbxUq8t1RNswie5e3=Y+OXQ@mail.gmail.com>
- <CACRpkdZyJd0TW5aVRfxSSWknzCyVhjMwQuAj9i9iuQ6pW9vftQ@mail.gmail.com>
- <20210707105000.GA4394@sirena.org.uk>
- <c24c61f498f43f589eafd423e51f997134d198b7.camel@HansenPartnership.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D84CA168
+	for <ksummit@lists.linux.dev>; Wed,  7 Jul 2021 15:28:46 +0000 (UTC)
+Received: by mail-il1-f172.google.com with SMTP id k6so3205434ilo.3
+        for <ksummit@lists.linux.dev>; Wed, 07 Jul 2021 08:28:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=zTqWx2UkqBrA+bKoh6XI7nocDFPqJq3Sq4oeEsMYWoA=;
+        b=YLs9DJdo5LffFUuKOYHtOKtp3itjhPLDo2DbmqYw8YOUT/XTyK4xeneXk5Dy5P5Abu
+         IK8Fgq4NNivBw9ZR9wxghgjXa9BaTDkYm/ZKeGazb9mGzesDVbzkDuckYXRe92b4nGy7
+         LWUIqXHAX6Gp1wPPbcWHY01M0xQOcfEGSAGqdyEdg8ta2dNtBgb0XSgqwtHRRcMOyAx7
+         YvJbE2YUrtcuIdey604HrcSVnRH1i6bnbAu/FKqCxbRsbiWcQBnw0dOHgLhkE05lFFYx
+         e2B7G5q/mSY4FSpmHG5OtzyBgQhZjX7GJjH7e3Qi3NJjUsh1qPokpmvv2l8I6aE37XAG
+         oRDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=zTqWx2UkqBrA+bKoh6XI7nocDFPqJq3Sq4oeEsMYWoA=;
+        b=JCVzooYa99dNQpWUTDj/DeTbCpAGSNOEyCzbusXRbNByKVG5S+ryVJM63pyZ4AYSzM
+         pJMhJcOoCf16XCqT/CzSPJ0HtKjiCKmQ4f2iGWfCKAdzpqHLwtlsNyf8gTUJaP7V+RBU
+         /8SlUB4bbYN/WFIZ5q9l7iEygTBxanmTuWPp9y803C6mGdvT+j2ELMI8LXnh4fC3PRHS
+         zdv2UJJOy3UFIOjZh1YfRwLUMlm4XRa1ru2jmZo+RDTPuPMg1nqV7Ws8Lnw35Z0RELze
+         4DVMv11bBBtf4Xh/xXtTJxw+SguT1DOjZgQ3ZdUmeXTB7Ja/fci0ewZb379dUt4DWT5B
+         LWAQ==
+X-Gm-Message-State: AOAM5310B5UovqMzjRA9uOYudWqqhAGJZVCuobn5lwTVTAdPcSadBhLg
+	UkWH2y0Vr7JrUHbuAo+lSuJBhS/xQsWtcN9efpY6T4B90vmJzA==
+X-Google-Smtp-Source: ABdhPJxOuL5gPJKXVW1rm1iW8KNNUFHxUsWjNzlLwVl9apG9RrVGwB6slUa0nJ9fAGFNmHogNnCi8lhLKiujpREoflg=
+X-Received: by 2002:a05:6e02:ea2:: with SMTP id u2mr18259721ilj.247.1625671726013;
+ Wed, 07 Jul 2021 08:28:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="eheScQNz3K90DVRs"
-Content-Disposition: inline
-In-Reply-To: <c24c61f498f43f589eafd423e51f997134d198b7.camel@HansenPartnership.com>
-X-Cookie: I will never lie to you.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
+ <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com>
+ <YOPcZE+WjlwNueTa@unreal> <CACRpkdYDF-7=O1gc=Fh_mywtAgAtEVZhvoZXDFsAHMZe4FPGHQ@mail.gmail.com>
+ <CAMuHMdU5FOdSj+-d38t3BuPrZsYF0YT-Ff1efYLS3W7yNN_Y6Q@mail.gmail.com>
+ <CACRpkdbr9orKFfDmwZDz1wPHZvUfSaDVJtJB1uz+2Ho=QZFGiQ@mail.gmail.com>
+ <CANiq72no33T6RXMyZ18bS_nVaUcOpWEmu15Bs=+zJPnnhrnYRA@mail.gmail.com> <CAK8P3a1UZ9kdyokJWYxdsn-3doO6gVw9Saivm2Adv6P_=xS8jg@mail.gmail.com>
+In-Reply-To: <CAK8P3a1UZ9kdyokJWYxdsn-3doO6gVw9Saivm2Adv6P_=xS8jg@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 7 Jul 2021 17:28:34 +0200
+Message-ID: <CANiq72n0AHks543X7U58Rmtujptcj5TxjNYq4=9Hs6bGmTAZSg@mail.gmail.com>
+Subject: Re: [TECH TOPIC] Rust for Linux
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Leon Romanovsky <leon@kernel.org>, ksummit@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
+On Wed, Jul 7, 2021 at 4:32 PM Arnd Bergmann <arnd@arndb.de> wrote:
+>
+> I suppose using this for building kernels is actually easier than doing
+> an architecture port for user space, because it does not have to
+> wrap the syscall interface, right?
 
---eheScQNz3K90DVRs
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+What do you mean by architecture port? Do you mean native vs. cross-compiling?
 
-On Wed, Jul 07, 2021 at 12:34:31PM +0100, James Bottomley wrote:
-> On Wed, 2021-07-07 at 11:50 +0100, Mark Brown wrote:
+> I've had a quick look at what it would take to integrate this into the prebuilt
+> toolchains on kernel.org to give developers the chance to try their rust
+> code across architectures. I've managed to cross-build the patched
+> gcc sources for rustc_codegen_gcc, but haven't actually figured out how
+> to build rustc_codegen_gcc itself.
 
-> > There *are* issues with people adopting it too enthusiastically - as
-> > well as the memory lifetime issues that Laurent mentioned it's easy
-> > for it to cause problems with interrupt handlers that are left live
-> > longer than they should be and try to use things that were already
-> > deallocated.
+I discussed with Konstantin a while back about having the Rust
+toolchain in kernel.org too -- so I am glad you are looking into this.
 
-> Fixing this should not be beyond the wit of humankind, though.  If we
-> delayed deallocation to module release, that would fix the interrupt
-> issue, wouldn't it?  Perhaps all devres memory for devices should live
+On `rustc_codegen_gcc`, it is early days -- I think all these projects
+just got accelerated a lot thanks to the possibility of Rust being in
+the kernel. But you can find information on this Compiler Explorer
+issue because they are also trying to set it up [1]. The author looks
+quite open to help us, so you may want to contact him too.
 
-No, that's half the problem - as Greg says there's the issue of module
-vs device lifespans, and you sometimes also have to take care with the
-ordering of your allocations and unwindings within device startup and
-teardown so you don't end up trying to do something like deliver an
-interrupt to the subsystem core after having told the subsystem the
-device was gone, or trying to process a final subsystem call that needs
-interrupts after you've freed interrupts.
+[1] https://github.com/compiler-explorer/compiler-explorer/issues/2683
 
---eheScQNz3K90DVRs
-Content-Type: application/pgp-signature; name="signature.asc"
+> Before I look at this further, can you clarify what the version dependencies
+> are? I.e. if I want to build this for five gcc versions, 27 target
+> architectures,
+> and seven versions of rustc as shipped by the most common distros, can
+> I do this with a single rustc_codegen_gcc binary, or do I need to build
+> 5*27*7=945 versions of the binary, or something inbetween?
 
------BEGIN PGP SIGNATURE-----
+I have not yet used `rustc_codegen_gcc` since it is not ready for our
+purposes. But:
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmDlxYYACgkQJNaLcl1U
-h9AIDQf9EmpmuwUMtQw7x5l+Q2L494ywj3hmBMDHF4WYF8x6tTXd/Of8WPTy5A2I
-XiS/LGhQk7UEkCk3dbJDRThPEUUDcqu+ZpotvXRrAE15/CsfW+n0xsw/2lriNfvg
-Ndcngn1792ih2ZDCBlvC/Kk/4ZS945VwZqZTTpvEWpq3CeGS9ujNihETxKg8mqWq
-ys+9K7U0/vq+Q5dHyihhrFtQ0sef/jEm9gjFyQhysj+yFxjHp1avCkVSS0MAyGjn
-BPSIhSaMYMusbY4P2B8cALqc/Iulh5JM3slvEXxEXGN9hif0q/qUEJR5M94EiYvo
-Z5MNhwwY9a5dMeELE4p4qkcLSVQ4WA==
-=8oxa
------END PGP SIGNATURE-----
+  - Only a single version of `rustc` is supported per kernel release
+(until we stop using unstable features), so that at the very least
+would cut down things by 7.
 
---eheScQNz3K90DVRs--
+  - I would imagine the patched GCC of `rustc_codegen_gcc` only
+supports the latest GCC release, do we really want to try to use it in
+all GCC versions supported by the kernel? Of course, it would be great
+if that means we can support Rust everywhere, do not get me wrong!
+
+  - I don't know how stable the `libgccjit` interface is -- if it is,
+then we only need a single one, as you say. I would ask the author.
+
+  - We could try to get upstream GCC to accept the patches needed to
+make `rustc_codegen_gcc` work, though I am not sure how well they
+would be received, since they are working on their GCC Rust frontend
+too.
+
+Cheers,
+Miguel
 
