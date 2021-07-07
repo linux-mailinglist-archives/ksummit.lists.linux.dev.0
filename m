@@ -1,109 +1,111 @@
-Return-Path: <ksummit+bounces-291-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-292-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A506B3BE967
-	for <lists@lfdr.de>; Wed,  7 Jul 2021 16:08:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 493873BE971
+	for <lists@lfdr.de>; Wed,  7 Jul 2021 16:10:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 58F0D3E1004
-	for <lists@lfdr.de>; Wed,  7 Jul 2021 14:08:26 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 0F8203E1066
+	for <lists@lfdr.de>; Wed,  7 Jul 2021 14:10:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B532F80;
-	Wed,  7 Jul 2021 14:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A06C2F80;
+	Wed,  7 Jul 2021 14:10:51 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D78C70
-	for <ksummit@lists.linux.dev>; Wed,  7 Jul 2021 14:08:18 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id ACACB1280FF8;
-	Wed,  7 Jul 2021 07:08:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1625666897;
-	bh=/FBhhyz5uzv/rjZ2b2WuP4ouPWtpujhQfM7a1ddDG1c=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=Gm13JVr+/R7L+tWuYOt6NoyP5FZhYZeQFM6LU3Jp2c2B3gexemGOM76r/WIIhSDxM
-	 Gl4b5eZ1kDbzbm/dOilLVHQGgwvuy6Whp/0DkDP/ofBjKVxBVkaKZ/3RRorY7OB4Xo
-	 3cHez/Fs+nXplOuXnY7Gu17ebBrV19NpgyuYptyg=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-	by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id cJPam2If0m4g; Wed,  7 Jul 2021 07:08:17 -0700 (PDT)
-Received: from [192.168.0.73] (cpc1-seac25-2-0-cust181.7-2.cable.virginm.net [82.8.18.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 006E41280FF7;
-	Wed,  7 Jul 2021 07:08:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1625666897;
-	bh=/FBhhyz5uzv/rjZ2b2WuP4ouPWtpujhQfM7a1ddDG1c=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=Gm13JVr+/R7L+tWuYOt6NoyP5FZhYZeQFM6LU3Jp2c2B3gexemGOM76r/WIIhSDxM
-	 Gl4b5eZ1kDbzbm/dOilLVHQGgwvuy6Whp/0DkDP/ofBjKVxBVkaKZ/3RRorY7OB4Xo
-	 3cHez/Fs+nXplOuXnY7Gu17ebBrV19NpgyuYptyg=
-Message-ID: <1f2a62c19845e4602817c2130d47bbea02d04d1d.camel@HansenPartnership.com>
-Subject: Re: [TECH TOPIC] Rust for Linux
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Greg KH <greg@kroah.com>, Julia Lawall <julia.lawall@inria.fr>, Laurent
- Pinchart <laurent.pinchart@ideasonboard.com>, Linus Walleij
- <linus.walleij@linaro.org>, Roland Dreier <roland@kernel.org>,
- ksummit@lists.linux.dev
-Date: Wed, 07 Jul 2021 15:08:10 +0100
-In-Reply-To: <CANiq72n=8Do_9suDeJdwoF_8ZR-uLEj2r9cRSB_k=yTk_q0FHw@mail.gmail.com>
-References: 
-	<CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
-	 <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com>
-	 <CAG4TOxMzf1Wn6PcWk=XfB+SV+MHwbxUq8t1RNswie5e3=Y+OXQ@mail.gmail.com>
-	 <CACRpkdZyJd0TW5aVRfxSSWknzCyVhjMwQuAj9i9iuQ6pW9vftQ@mail.gmail.com>
-	 <YOTSYy2J2COzOY9l@pendragon.ideasonboard.com>
-	 <alpine.DEB.2.22.394.2107070926370.6285@hadrien>
-	 <YOVbsS9evoCx0isz@kroah.com>
-	 <20ad13eb229b15fd14d870832d43a1605ba5c24a.camel@HansenPartnership.com>
-	 <CANiq72n=8Do_9suDeJdwoF_8ZR-uLEj2r9cRSB_k=yTk_q0FHw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9B770
+	for <ksummit@lists.linux.dev>; Wed,  7 Jul 2021 14:10:49 +0000 (UTC)
+Received: from mail-wm1-f52.google.com ([209.85.128.52]) by
+ mrelayeu.kundenserver.de (mreue009 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MS3r9-1ldFiG1l2x-00TRpO for <ksummit@lists.linux.dev>; Wed, 07 Jul 2021
+ 16:10:47 +0200
+Received: by mail-wm1-f52.google.com with SMTP id u8-20020a7bcb080000b02901e44e9caa2aso1795689wmj.4
+        for <ksummit@lists.linux.dev>; Wed, 07 Jul 2021 07:10:47 -0700 (PDT)
+X-Gm-Message-State: AOAM531b4/jGD+gefJktYeRR39DqwccyTvcUNoBT2qD1PlfogVgBDT+b
+	SbkLAUaPwGJSxEogTdfcCcfzal/NIQFDRgNTpao=
+X-Google-Smtp-Source: ABdhPJyza9Z2dQj7FlDd8a3xG+uMzs59V/QkESaq+k9aWY92TPGP1l0r4+X+Gcgk1o1+zm0BZqy1qV899XM6TcW9p44=
+X-Received: by 2002:a1c:c90f:: with SMTP id f15mr7105697wmb.142.1625667046924;
+ Wed, 07 Jul 2021 07:10:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
+ <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com>
+ <YOPcZE+WjlwNueTa@unreal> <CACRpkdYDF-7=O1gc=Fh_mywtAgAtEVZhvoZXDFsAHMZe4FPGHQ@mail.gmail.com>
+ <CAMuHMdU5FOdSj+-d38t3BuPrZsYF0YT-Ff1efYLS3W7yNN_Y6Q@mail.gmail.com>
+ <CACRpkdbr9orKFfDmwZDz1wPHZvUfSaDVJtJB1uz+2Ho=QZFGiQ@mail.gmail.com> <CANiq72no33T6RXMyZ18bS_nVaUcOpWEmu15Bs=+zJPnnhrnYRA@mail.gmail.com>
+In-Reply-To: <CANiq72no33T6RXMyZ18bS_nVaUcOpWEmu15Bs=+zJPnnhrnYRA@mail.gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Wed, 7 Jul 2021 16:10:30 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a1UZ9kdyokJWYxdsn-3doO6gVw9Saivm2Adv6P_=xS8jg@mail.gmail.com>
+Message-ID: <CAK8P3a1UZ9kdyokJWYxdsn-3doO6gVw9Saivm2Adv6P_=xS8jg@mail.gmail.com>
+Subject: Re: [TECH TOPIC] Rust for Linux
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Leon Romanovsky <leon@kernel.org>, ksummit@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:GH2cLtsJxLEa1MGjBWeZHaLK4u3lOtb5QJyRHFtQcMAr9T2YS7v
+ k30fj4liTTdMm81B5Bow7PERkepOOK4Z+56jOSh0MHX5V2ek9rT3XrCY3P/mA/Zdbf2udix
+ WTqcVzXXX7oiTCoqNmFjlXhygKvPrfxKUg8syvFhlPjDsNtwZt6ngAhjYxGp0zJOhD1iu58
+ icfhaQWocSPq0O85hvQ6A==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:k5ZjVlor3to=:vPQj2G9QUq8zo6ZdPig7kD
+ 1l9otDHXF2c9dhPn+3LQoGGK9smy27jg4CAGG/DNgg3pDT981gZjWfFZ67+SZXEYCwl6W6KtZ
+ yDWYNQj64ZY3TpuW16i036EpUMjGaOL75Bgi+FJKyFcdFT5EijqIL7AbY2eUxYJzi+/g2GGbt
+ TNZeUvV77A90I6oVGlm8NvySt9SzFkeEj8y6Qmj8VCmuF69BcmXmHME+dyuCK7CFO2XK6kOC4
+ XexhaNb6kcbcKyA7PfWl8bs9AGrCMZvzXXEr+Ue8/x0hT7XRwbAW64LygA+m+BzEZtOSoRbuN
+ 7uT9IY1eXKmlNTOZXMfPEzB3zNyILOFHSqYgYPI8v+cjvVRMWCPklwiSLHZ0s0Ig9xP7h7JeN
+ zpGUPWKpPQ7Bfi/1O8Fttp0z8AYqbzq+2P84m2cr7ed/GulHRnHE5YKozm+7Hww/bnmrivNqy
+ /IHgE/R69+Ku3/NV2voQivVl5EiA450Bn+rvMbbCJbdX6alrGu9Afl6kSv9uVUx9m3xQfAAGc
+ V1g+eFe+QXL+xqSypiyPYpapn2j3m7/jWt6xu1GhXeDaAnD+MRBPi/a4xDLyRBM8xBTP137tV
+ jvGtCtCjP8J8qlgAG08CuR85zmgx5x+FaaAtWLTkdI++YckU+eZSP9+59FByg5mhMkYNn4XBp
+ XkusyLnPD1hEZbomld8yJaOOUOC0ORTbdoroRmrVK8czOUF2BB2aKy/nfoar4+xvey+ILYh1W
+ PQknJatigAYtG5AyUjQVdXKs4MLmwYNj7jE2YidSapTwKvpQ1rgnmtz4WAkw7SRrhy79+EgHv
+ PBJeJPcjQ4bHcNA21NPfJeO+rjqHbbInc3FOl4JqxH02saEyv/ycj6OuId6YgkN+PvUV7Gm
 
-On Wed, 2021-07-07 at 15:49 +0200, Miguel Ojeda wrote:
-> On Wed, Jul 7, 2021 at 9:52 AM James Bottomley
-> <James.Bottomley@hansenpartnership.com> wrote:
-> > Rust has a reference counted pointer: Rc<T>.  However the problem
-> > is the rust memory model is via strict accounting, so once you
-> > start using refcounts, which need shared accounting, you can then
-> > get memory leaks and it's unclear if rust actually buys you
-> > anything over C for this use case.
-> 
-> Even if you are using `Rc<T>`, Rust buys you a *lot*. For starters,
-> it still prevents UB
+On Tue, Jul 6, 2021 at 8:36 PM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Tue, Jul 6, 2021 at 8:00 PM Linus Walleij <linus.walleij@linaro.org> wrote:
+> >
+> > I brought this up for discussion with Miguel et al and it turns out
+> > the project to develop a GCC front-end for Rust is now well under
+> > way and there is already a frankencompiler using LLVM first
+> > and then feeding that into GCC IIUC.
+>
+> By the latter, I think you are referring to `rustc_codegen_gcc` -- in
+> that case, a quick note: it does not involve LLVM. `rustc` has its own
+> set of IRs which then gets translated into LLVM IR (in the most common
+> backend), but in the case of `rustc_codegen_gcc` it gets translated
+> into something libgccjit can consume. There is also a third backend in
+> the works, called cranelift, for different use cases.
+>
+> So `rustc_codegen_gcc` is basically a very quick way of supporting the
+> entirety of the Rust language (exactly as `rustc` supports it) but
+> having a GCC codegen path.
 
-UB is Undefined Behaviour, right?  C plus the memory model should mean
-we don't have that in the kernel, although that's enforced by
-inspection and checking rather than the compiler.
+I suppose using this for building kernels is actually easier than doing
+an architecture port for user space, because it does not have to
+wrap the syscall interface, right?
 
->  and data races -- e.g. it prevents mistakenly sharing the `Rc` with
-> other threads.
+I've had a quick look at what it would take to integrate this into the prebuilt
+toolchains on kernel.org to give developers the chance to try their rust
+code across architectures. I've managed to cross-build the patched
+gcc sources for rustc_codegen_gcc, but haven't actually figured out how
+to build rustc_codegen_gcc itself.
 
-I'm not sure I get the point here: all the kernel refcount models are
-explicitly multi-threaded, because we usually expect multiple CPU
-threads to be using objects simultaneously ... it's why the base
-implementation, kref, uses atomics.  That's not to say we don't have
-single threaded use cases ... it's just that's not what's commonly
-used.
+Before I look at this further, can you clarify what the version dependencies
+are? I.e. if I want to build this for five gcc versions, 27 target
+architectures,
+and seven versions of rustc as shipped by the most common distros, can
+I do this with a single rustc_codegen_gcc binary, or do I need to build
+5*27*7=945 versions of the binary, or something inbetween?
 
-That does beg another question which I couldn't find the answer to in
-the base docs: the Rust Rc<T> is saturation protected, isn't it? or
-would the rust implementation inherit that from the kernel?
-
-James
-
-
+       Arnd
 
