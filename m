@@ -1,161 +1,122 @@
-Return-Path: <ksummit+bounces-309-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-310-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18EB83BF0C6
-	for <lists@lfdr.de>; Wed,  7 Jul 2021 22:32:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B73163BF0D0
+	for <lists@lfdr.de>; Wed,  7 Jul 2021 22:38:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id 0EF631C0DC8
-	for <lists@lfdr.de>; Wed,  7 Jul 2021 20:32:49 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id 028511C0ECB
+	for <lists@lfdr.de>; Wed,  7 Jul 2021 20:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05CA2F80;
-	Wed,  7 Jul 2021 20:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C8A2F80;
+	Wed,  7 Jul 2021 20:38:37 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC392168
-	for <ksummit@lists.linux.dev>; Wed,  7 Jul 2021 20:32:40 +0000 (UTC)
-Received: by mail-pl1-f182.google.com with SMTP id i13so1721424plb.10
-        for <ksummit@lists.linux.dev>; Wed, 07 Jul 2021 13:32:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=4MkTE9OXWGuKJ84ETtP0raqn82PJQUW56FSyszJ7ucY=;
-        b=EZjqMFRl5lGD3y5vP01J6REbtqOBG5HasASa1STrkVAh4lxRn5FGRNPIsAi3g3Q9hZ
-         Ea39RHZKzvgCHh65SJlKqqk7YUVXqui/S6aJsmHjPB2yF/X1gnjxWw/Uze0r1K83ceC2
-         knVP+2qQJ/KN1vK4kRknsyNhopXjvi3NgomvdvcIdnfgWPzVQQQurtK5iaz5cJ4MvTCE
-         3B/Ln+CvLPYuraDLmkZP3V7zM0r/SgOrzUInsFNcDyuv5U8EIvYVlIfd7O6h36I1eqhk
-         ORl1oRVFT0dafwdXnt6XgOW8eRTVWSl0lc8doyDxHLX8hQCxlooRdREMCG3F0zFngCOQ
-         tQJw==
-X-Gm-Message-State: AOAM531Swc0GhmEOBn/RpBf2OMBvid1NB2DT2qCKg0OGTGfZ41/DKBj1
-	NMnYWAYvBQGjUFaeggpAQhqIiAQXtBQ=
-X-Google-Smtp-Source: ABdhPJzZ931l+OUSZqVorjG8r4tNh7j9ZP6oXEEP4UtPOZImrRajLUeY+p3tsihkWdPWIsQGx8GRyg==
-X-Received: by 2002:a17:902:c404:b029:129:339e:741a with SMTP id k4-20020a170902c404b0290129339e741amr22714973plk.24.1625689959356;
-        Wed, 07 Jul 2021 13:32:39 -0700 (PDT)
-Received: from ?IPv6:2601:647:4000:d7:6679:27d9:f7a8:3b7e? ([2601:647:4000:d7:6679:27d9:f7a8:3b7e])
-        by smtp.gmail.com with ESMTPSA id t2sm68205pfg.73.2021.07.07.13.32.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Jul 2021 13:32:38 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C71168
+	for <ksummit@lists.linux.dev>; Wed,  7 Jul 2021 20:38:35 +0000 (UTC)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out2.suse.de (Postfix) with ESMTP id 65C4A20111;
+	Wed,  7 Jul 2021 20:38:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1625690308; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lnQPbZ/eKrxrkclH/ZdkAYezGxt4Fz50+ivhmM6TEQM=;
+	b=lab8I7UysT59TvAe3lk+GdHv7NJrN3QfxSd5DAXOYm2ZqjqVlMxemQPuVsS1T2Diwu3D0D
+	L/bz4rhgbtCgt6ppnfbFFEvbYdWe4994prOPnClfv6OTRPViL0O0PoBwHdVB/37bueHaGq
+	4CN8zdKCwCpQXLZRNWhnWlkia8U8lZI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1625690308;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lnQPbZ/eKrxrkclH/ZdkAYezGxt4Fz50+ivhmM6TEQM=;
+	b=DEb/u96TYrXwoIGPq9MbSlg+2u7nDny4XzbjoYNEtQtfYdvAYGsvZgy0eJQg1/KnlS3EiU
+	tWM4axSCaEF+xUCQ==
+Received: from quack2.suse.cz (unknown [10.163.43.118])
+	by relay2.suse.de (Postfix) with ESMTP id 1264AA3BA5;
+	Wed,  7 Jul 2021 20:38:28 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+	id C10661F2CD7; Wed,  7 Jul 2021 22:38:27 +0200 (CEST)
+Date: Wed, 7 Jul 2021 22:38:27 +0200
+From: Jan Kara <jack@suse.cz>
+To: Wedson Almeida Filho <wedsonaf@google.com>
+Cc: Greg KH <greg@kroah.com>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Julia Lawall <julia.lawall@inria.fr>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Roland Dreier <roland@kernel.org>, ksummit@lists.linux.dev
 Subject: Re: [TECH TOPIC] Rust for Linux
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Stephen Hemminger <stephen@networkplumber.org>,
- Roland Dreier <roland@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, ksummit@lists.linux.dev
-References: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
- <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com>
- <CAG4TOxMzf1Wn6PcWk=XfB+SV+MHwbxUq8t1RNswie5e3=Y+OXQ@mail.gmail.com>
- <64de6a11-5ff0-9931-d09b-2246cb37b284@acm.org>
- <20210706160857.6d4c63aa@hermes.local>
- <f391c00d-7f4f-a60c-0230-4aca5ea2d4ed@acm.org>
- <CAHk-=wiwZWAo_Ki587FD2BrAQVK71TBN=uKimdBf1Pxg3=+nTw@mail.gmail.com>
-From: Bart Van Assche <bvanassche@acm.org>
-Message-ID: <22460501-fe09-f8e7-1051-b6b692500859@acm.org>
-Date: Wed, 7 Jul 2021 13:32:36 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+Message-ID: <20210707203827.GI18396@quack2.suse.cz>
+References: <alpine.DEB.2.22.394.2107070926370.6285@hadrien>
+ <YOVbsS9evoCx0isz@kroah.com>
+ <20ad13eb229b15fd14d870832d43a1605ba5c24a.camel@HansenPartnership.com>
+ <CANiq72n=8Do_9suDeJdwoF_8ZR-uLEj2r9cRSB_k=yTk_q0FHw@mail.gmail.com>
+ <1f2a62c19845e4602817c2130d47bbea02d04d1d.camel@HansenPartnership.com>
+ <CANiq72=qa2jMUKyfPmH1q1jr8n_Tm7FMy0QyWRhhpinUrvMiNA@mail.gmail.com>
+ <YOXL6Th+pot9+Fp3@kroah.com>
+ <YOXd9WoafgBr1Nkv@google.com>
+ <YOXibDV8mHT1e6ec@kroah.com>
+ <YOX+N1D7AqmrY+Oa@google.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <CAHk-=wiwZWAo_Ki587FD2BrAQVK71TBN=uKimdBf1Pxg3=+nTw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YOX+N1D7AqmrY+Oa@google.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On 7/7/21 11:57 AM, Linus Torvalds wrote:
-> On Tue, Jul 6, 2021 at 7:41 PM Bart Van Assche <bvanassche@acm.org> wrote:
->> As a sidenote, I'm surprised that C++ is not supported for Linux kernel
->> code since C++ supports multiple mechanisms [..]
+On Wed 07-07-21 20:19:19, Wedson Almeida Filho wrote:
+<snip good explanations how refs work>
+
+> There are real cases when you can't guarantee that lifetimes line up as required
+> by the compiler to guarantee safety. In such cases, you can "clone" ptr (which
+> increments the refcount, again from n to n+1, where n > 0), then you end up with
+> your own reference to the underlying `X`, for example:
 > 
-> You'd have to get rid of some of the complete garbage from C++ for it
-> to be usable.
+> fn main() {
+>     let ptr_clone;
+>     {
+>         let ptr = Ref::new(X { a: 10, b: 20 });
+>         ptr_clone = ptr.clone();
+>     }
+>     println!("{}", ptr_clone.a);
+> }
 > 
-> One of the trivial ones is "new" - not only is it a horribly stupid
-> namespace violation, but it depends on exception handling that isn't
-> viable for the kernel, so it's a namespace violation that has no
-> upsides, only downsides.
+> (Note that the reference owned by `ptr` has been destroyed by the time
+> `ptr_clone.a` is used in `println`, but `ptr_clone` has its own reference due to
+> the clone call.)
 > 
-> Could we fix it with some kind of "-Dnew=New" trickery? Yes, but
-> considering all the other issues, it's just not worth the pain. C++ is
-> simply not a good language. It doesn't fix any of the fundamental
-> issues in C (ie no actual safety), and instead it introduces a lot of
-> new problems due to bad designs.
+> The ideas above apply equally well if instead of thinking in terms of scope, you
+> think in terms of threads/CPUs. If a thread needs a refcounted object to
+> potentially outlive the borrow keeping it alive, then it needs to increment
+> the refcount: if you can't prove the lifetime rules, then you must clone the
+> reference.
+> 
+> Given that by construction the refcount starts at 1, there is no path to go from
+> 0 to 1. Ever.
+> 
+> Where would a lock be needed in the examples above?
 
-Hi Linus,
+So I think Greg speaks about a situation where you have multiple threads
+and the refcounted object can be looked up through some structure all the
+threads see. And the problem is that the shared data structure cannot hold
+ref to the object it points to because you want to detect the situation
+where the data structure is the only place pointing to the object and
+reclaim the object in that case. Currently I don't see how to model this
+idiom with Rust refs.
 
-Thank you for having shared your opinion. You may want to know that
-every C++ project I have worked on so far enabled at least the following
-compiler flags: -fno-exceptions and -fno-rtti.
-
-What the C++ operator new does if not enough memory is available depends
-on the implementation of that operator. We could e.g. modify the
-behavior of operator new as follows:
-- Add -fno-builtin-new to the compiler flags.
-- Define a custom version of operator new.
-
-An example (user space code):
-
-include <stdlib.h>
-#include <stdio.h>
-
-void *operator new(size_t size)
-{
-  printf("%s\n", __func__);
-  return malloc(size);
-}
-
-void operator delete(void *p)
-{
-  printf("%s\n", __func__);
-  free(p);
-}
-
-void operator delete(void *p, size_t size)
-{
-  printf("%s\n", __func__);
-  free(p);
-}
-
-void *operator new[](size_t size)
-{
-  printf("%s\n", __func__);
-  return malloc(size);
-}
-
-void operator delete[](void *p)
-{
-  printf("%s\n", __func__);
-  free(p);
-}
-
-void operator delete[](void *p, size_t size)
-{
-  printf("%s\n", __func__);
-  free(p);
-}
-
-int main(int, char **)
-{
-  int *intp = new int;
-  long *arrayp = new long[37];
-  delete[] arrayp;
-  delete intp;
-  return 0;
-}
-
-The output of the above code:
-
-operator new
-operator new []
-operator delete []
-operator delete
-
-Bart.
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
