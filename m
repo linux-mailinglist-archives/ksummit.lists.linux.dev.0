@@ -1,88 +1,134 @@
-Return-Path: <ksummit+bounces-277-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-278-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD50B3BE243
-	for <lists@lfdr.de>; Wed,  7 Jul 2021 06:57:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94AC93BE38F
+	for <lists@lfdr.de>; Wed,  7 Jul 2021 09:28:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 5C4F23E0F9A
-	for <lists@lfdr.de>; Wed,  7 Jul 2021 04:57:54 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 4ADEB3E1094
+	for <lists@lfdr.de>; Wed,  7 Jul 2021 07:28:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D66E82FAD;
-	Wed,  7 Jul 2021 04:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE56E2FAD;
+	Wed,  7 Jul 2021 07:28:46 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Received: from mail2-relais-roc.national.inria.fr (mail2-relais-roc.national.inria.fr [192.134.164.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0416372
-	for <ksummit@lists.linux.dev>; Wed,  7 Jul 2021 04:57:46 +0000 (UTC)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E146A619A9;
-	Wed,  7 Jul 2021 04:57:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1625633866;
-	bh=LBlvCHdnlFfoln54uOR10DgIIG+ZQ00jDNN2AkKZ+PY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pCkZxyu7eqd+JncTVf27N3XR+Tn72p+iDGbLN/LV2Pt3XnMDO3A5jCHLWF4q/sEL5
-	 qxDI8QDmfwWsU8/uaEMdcSatBwVOI6OiARdgySC8V3lFwUw2j0iuq9RH7ixGGtE6cK
-	 3LyJ+jn8XQ768rqb7XLDSOdrOazBg2o+EdREf6OOrYp1RWPocHG7NY/hcSvXSv21fO
-	 x6Ai45TWjt/jvAwaIU67/R52XxkY2O44vfbG/v/h8bi71xkVyV1SigOYbpgrf573i1
-	 HRXAklOUsU+XVSkZv245mSCQx8jlI3CsK9sgssIPa8x310TlHGKOhyDQLgdYLEs4fY
-	 OpXetDrUNactg==
-Date: Wed, 7 Jul 2021 07:57:42 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Sasha Levin <sashal@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>, ksummit@lists.linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9930C70
+	for <ksummit@lists.linux.dev>; Wed,  7 Jul 2021 07:28:44 +0000 (UTC)
+IronPort-HdrOrdr: =?us-ascii?q?A9a23=3A7DzLsaDh8pUH7rvlHemo55DYdb4zR+YMi2TD?=
+ =?us-ascii?q?sHocdfU1SKOlfqWV98jzuiWbtN98YhAdcLK7Scq9qALnlaKdiLN5Vd3OYOCMgh?=
+ =?us-ascii?q?rLEGgN1/qH/xTQXwH46+5BxeNBXsFFebrN5IFB/KPH3DU=3D?=
+X-IronPort-AV: E=Sophos;i="5.83,331,1616454000"; 
+   d="scan'208";a="518702531"
+Received: from 173.121.68.85.rev.sfr.net (HELO hadrien) ([85.68.121.173])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Jul 2021 09:27:32 +0200
+Date: Wed, 7 Jul 2021 09:27:32 +0200 (CEST)
+From: Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+cc: Linus Walleij <linus.walleij@linaro.org>, 
+    Roland Dreier <roland@kernel.org>, 
+    Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, ksummit@lists.linux.dev
 Subject: Re: [TECH TOPIC] Rust for Linux
-Message-ID: <YOU0Rqoty8ycRhQT@unreal>
-References: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
- <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com>
- <YOPcZE+WjlwNueTa@unreal>
- <CACRpkdYDF-7=O1gc=Fh_mywtAgAtEVZhvoZXDFsAHMZe4FPGHQ@mail.gmail.com>
- <CANiq72m3dkUOoAfQz8vY2UR3uaUkFD8rs=95k7sEm0KEqU8Zxw@mail.gmail.com>
- <YORwwQJfrpNQsGT4@sashalap>
- <CANiq72n=_LG3z8-JYVSiNeM8PgxauPh5_xjfY1hY_gnJaGsYng@mail.gmail.com>
- <YOSmkgFpSUWtf2ue@sashalap>
- <CANiq72keYwLBY7_nRUN5RTxhQATgsi=LpYsCb59Zv+D4sg=iDg@mail.gmail.com>
+In-Reply-To: <YOTSYy2J2COzOY9l@pendragon.ideasonboard.com>
+Message-ID: <alpine.DEB.2.22.394.2107070926370.6285@hadrien>
+References: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com> <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com> <CAG4TOxMzf1Wn6PcWk=XfB+SV+MHwbxUq8t1RNswie5e3=Y+OXQ@mail.gmail.com> <CACRpkdZyJd0TW5aVRfxSSWknzCyVhjMwQuAj9i9iuQ6pW9vftQ@mail.gmail.com>
+ <YOTSYy2J2COzOY9l@pendragon.ideasonboard.com>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANiq72keYwLBY7_nRUN5RTxhQATgsi=LpYsCb59Zv+D4sg=iDg@mail.gmail.com>
+Content-Type: text/plain; charset=US-ASCII
 
-On Tue, Jul 06, 2021 at 11:50:51PM +0200, Miguel Ojeda wrote:
-> On Tue, Jul 6, 2021 at 10:47 PM Sasha Levin <sashal@kernel.org> wrote:
 
-<...>
 
-> > That's quite an ask. If the driver work goes in and I want to touch the
-> > driver API, I need to get Greg KH to write code for me?
-> 
-> I have not said that, and that obviously that does not scale. I am
-> just stating what I think could help everyone during the transition
-> period, assuming we share a common goal and accept Rust into the
-> kernel.
+On Wed, 7 Jul 2021, Laurent Pinchart wrote:
 
-I suggest to go one step further and loose expectation/requirement of
-"you break, you fix" rule for the Rust code.
+> On Tue, Jul 06, 2021 at 10:36:14PM +0200, Linus Walleij wrote:
+> > On Tue, Jul 6, 2021 at 10:00 PM Roland Dreier wrote:
+> >
+> > > One area I see where Rust could make a big improvement for drivers is
+> > > in using RAII for error paths.  Drivers often have a lot of code like
+> > >
+> > >     if (something())
+> > >         return err;
+> > >
+> > >     if (something_else())
+> > >         goto undo_something;
+> > >
+> > >     if (a_third_thing())
+> > >         goto undo_two_things;
+> > >
+> > > and so on, which is difficult to get right in the first place and even
+> > > harder to keep correct in the face of changes.
+> >
+> > Yes.
+> >
+> > > "devres" / devm_xxx was an attempt to deal with this in C, but it only
+> > > solves some cases of this and has not received a lot of adoption (we
+> > > can argue about the reasons).
+> >
+> > Really? From my point of view that is adopted all over the map.
+> > I add new users all the time and use it as much as I can when
+> > writing new drivers.
+> >
+> > $ git grep devm_  | wc -l
+> > 26112
+> >
+> > Dmitry in the input subsystem even insist to use it for e.g. powering
+> > down and disabling regulators on remove(), like recently in
+> > drivers/input/touchscreen/cy8ctma140.c
+> >
+> > /* Called from the registered devm action */
+> > static void cy8ctma140_power_off_action(void *d)
+> > {
+> >         struct cy8ctma140 *ts = d;
+> >
+> >         cy8ctma140_power_down(ts);
+> > }
+> > (...)
+> > error = devm_add_action_or_reset(dev, cy8ctma140_power_off_action, ts);
+> > if (error) {
+> >         dev_err(dev, "failed to install power off handler\n");
+> >         return error;
+> > }
+> >
+> > I think it's a formidable success, people just need to learn to do it more.
+>
+> devres is interesting and has good use cases, but the devm_k*alloc() are
+> a nightmare. They're used through drivers without any consideration of
+> life time management of the allocated memory, to allocate data
+> structures that can be accessed in userspace-controlled code paths.
+> Open a device node, keep it open, unplug the device, close the device
+> node, and in many cases you'll find that the kernel can crash :-( When
+> the first line of the probe function of a driver that exposes a chardev
+> if a devm_kzalloc(), it's usually a sign that something is wrong.
 
-Any developer who does refactoring outside of the Rust-enabled subsystem
-can simply leave that subsystem broken and relevant maintainers will fix
-it later if they want.
+Where should the free have been?  Will Rust help in this case?  Will it
+result in a memory leak?
 
-We did it with staging in the fun days when Lustre was in the tree.
-https://lore.kernel.org/linux-rdma/20150813055450.GA19344@infradead.org/
-https://lore.kernel.org/linux-rdma/20150807141929.GA12442@infradead.org/
+julia
 
-Thanks
-
-> 
-> Cheers,
-> Miguel
+>
+> I wonder if we could also benefit from the gcc cleanup attribute
+> (https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-cleanup-variable-attribute).
+> I don't know if it's supported by the other compilers we care about
+> though.
+>
+> > But if an easier path to learn better behaviours is to shuffle the whole
+> > chessboard and replace it with drivers written in Rust, I don't know?
+> > Maybe?
+>
+> --
+> Regards,
+>
+> Laurent Pinchart
+>
+>
 
