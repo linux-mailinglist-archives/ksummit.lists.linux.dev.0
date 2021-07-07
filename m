@@ -1,111 +1,116 @@
-Return-Path: <ksummit+bounces-318-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-319-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A904F3BF1DE
-	for <lists@lfdr.de>; Thu,  8 Jul 2021 00:11:38 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C838B3BF215
+	for <lists@lfdr.de>; Thu,  8 Jul 2021 00:27:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 16F963E1042
-	for <lists@lfdr.de>; Wed,  7 Jul 2021 22:11:37 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id B79EE1C0DF6
+	for <lists@lfdr.de>; Wed,  7 Jul 2021 22:27:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A345C2F80;
-	Wed,  7 Jul 2021 22:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A03F2F80;
+	Wed,  7 Jul 2021 22:27:36 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9442C168
-	for <ksummit@lists.linux.dev>; Wed,  7 Jul 2021 22:11:29 +0000 (UTC)
-Received: by mail-io1-f52.google.com with SMTP id l18so683373iow.4
-        for <ksummit@lists.linux.dev>; Wed, 07 Jul 2021 15:11:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=MBV5G0gKZERUzhHQRzGmtW0/FmOQXXSCnJhcUYHbhAs=;
-        b=Xu1wFmYGxEY0rwAk99XTu+gQ98wweogZEp2VWVz4Y3XVd+HmCcX1Z+QRmsEWGyaEFv
-         vanc9dtGYIgz82vzYg6hr4Hkl2MzYCBtUysCZs+n/tgkSIHAxQFJldyBdBi3q8AGQnxZ
-         DL7WKySYTJJ4wAaezg1lK/Wwgh0h6Z4ysMvS+4f5a5Mf7re0hoU7MDw+my4ZQfQRS51v
-         ssxHbu6ROpQ0j5V8G+1v9Ro++GWMbbPMUp4Ws5NMNLDMFQ2Z96Bt2HIs3MR6n1n5fCRD
-         3aVXHHkurAP3xECF9egeIWbYsp28GUAlX2JRWBrJQmaQv7Cx5kSZRnJaqGHHN6WmLLq1
-         hhjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MBV5G0gKZERUzhHQRzGmtW0/FmOQXXSCnJhcUYHbhAs=;
-        b=T0kiEIWmuzaYa9H5RzZKk1eUuFaiVSIrwZRF+kFdEpKH4DNrEsjkxzDNxQkoiMSk1f
-         IfvVLYUktj1gPRo2y2TiWljL865ibHELnA9cTUgtSmijvqPzce3+SPobJWIowianUpRH
-         OCPworQUNOMj5G4Wn3sZP2NInro39VPKATH6VOmp7B8I7NTYoOg21GOBQYo7D85oLHeE
-         G9f7DlZscFxGhmLj3VbqJQP9swcCX915hWg2xdETFkwiZed6NcMN2nkwAlL9Vbutnz6K
-         ACJqKdJrUhNZrb071jye9MiEdWyx4J6AImDOsgmB85gyRXDIBYp6Cc0WrJSjCkx2tLbR
-         F7ng==
-X-Gm-Message-State: AOAM533MeOS5JGm4EJEbYX9QuYBOhES8aQnVz4kHTWyEPIS4I+4W1ZC8
-	p7kIku37MD5+Hmhat8LEpoJG+8B4RUycT8cqBhs=
-X-Google-Smtp-Source: ABdhPJxw1Gv/kA29ECewMiinFunmao46k3pk35eenuKneSYthZtAPyy40Fvkvr9Z+900Hi41yUs36QP68EyTuezv9VU=
-X-Received: by 2002:a02:a48d:: with SMTP id d13mr14894476jam.28.1625695888818;
- Wed, 07 Jul 2021 15:11:28 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7300168
+	for <ksummit@lists.linux.dev>; Wed,  7 Jul 2021 22:27:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1625696853;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C7QC1fHRuWkpZ9DA/0nbCXb+Qw0d0gJe+Y29saBUi14=;
+	b=gQDb4grYaeOzBf74R3g80lnWtKz2CU+epNhl2GWsy+k8KjzBY7LCg9CJMoM++9Kokz1juA
+	RfS3BRZ01oNefG9jytVQv9n2eu6X0pWWEdDP70PcFlmtdttlNE20RNcwldIVKTB37hZdBi
+	TKTwcNBWA8eC4C+WltGmZsapdVIb7+w=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-532-aDOoSGCrN3q275is67mTMw-1; Wed, 07 Jul 2021 18:27:32 -0400
+X-MC-Unique: aDOoSGCrN3q275is67mTMw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E7733100C610;
+	Wed,  7 Jul 2021 22:27:30 +0000 (UTC)
+Received: from redhat.com (ovpn-116-226.rdu2.redhat.com [10.10.116.226])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 8977B19C45;
+	Wed,  7 Jul 2021 22:27:30 +0000 (UTC)
+Date: Wed, 7 Jul 2021 18:27:28 -0400
+From: Don Zickus <dzickus@redhat.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: ksummit@lists.linux.dev
+Subject: Re: [Tech Topic] Integrating GitLab into the Red Hat kernel workflow
+Message-ID: <20210707222728.jocrxvqogwjd5ozx@redhat.com>
+References: <20210707211951.fyiflsp75i7spcha@redhat.com>
+ <YOYf3c5UPMG4yBVP@pendragon.ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
- <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com>
- <CAG4TOxMzf1Wn6PcWk=XfB+SV+MHwbxUq8t1RNswie5e3=Y+OXQ@mail.gmail.com>
- <64de6a11-5ff0-9931-d09b-2246cb37b284@acm.org> <20210706160857.6d4c63aa@hermes.local>
- <f391c00d-7f4f-a60c-0230-4aca5ea2d4ed@acm.org> <CAHk-=wiwZWAo_Ki587FD2BrAQVK71TBN=uKimdBf1Pxg3=+nTw@mail.gmail.com>
- <22460501-fe09-f8e7-1051-b6b692500859@acm.org>
-In-Reply-To: <22460501-fe09-f8e7-1051-b6b692500859@acm.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 8 Jul 2021 00:11:16 +0200
-Message-ID: <CANiq72nKao=rz89yajChtsM8Nvv2LM-xZfX+iwk686SDMhv5iw@mail.gmail.com>
-Subject: Re: [TECH TOPIC] Rust for Linux
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
-	Stephen Hemminger <stephen@networkplumber.org>, Roland Dreier <roland@kernel.org>, 
-	Linus Walleij <linus.walleij@linaro.org>, ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <YOYf3c5UPMG4yBVP@pendragon.ideasonboard.com>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=dzickus@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Wed, Jul 7, 2021 at 10:32 PM Bart Van Assche <bvanassche@acm.org> wrote:
->
-> Thank you for having shared your opinion. You may want to know that
-> every C++ project I have worked on so far enabled at least the following
-> compiler flags: -fno-exceptions and -fno-rtti.
->
-> What the C++ operator new does if not enough memory is available depends
-> on the implementation of that operator. We could e.g. modify the
-> behavior of operator new as follows:
-> - Add -fno-builtin-new to the compiler flags.
-> - Define a custom version of operator new.
+On Thu, Jul 08, 2021 at 12:42:53AM +0300, Laurent Pinchart wrote:
+> Hi Don,
+> 
+> On Wed, Jul 07, 2021 at 05:19:51PM -0400, Don Zickus wrote:
+> > Submission #89:
+> > 
+> > The Red Hat kernel team recently converted their RHEL workflow from
+> > PatchWork to GitLab. This talk will discuss what the new workflow looks like
+> > with integrated CI and reduced emails. New tooling had to be created to
+> > assist the developer and reviewer. Webhooks were utilized to autoamte as
+> > much of the process as possible making it easy for a maintainer to track
+> > progress of each submitted change. Finally using CKI, every submitted change
+> > has to pass CI checks before it can be merged.
+> > 
+> > We faced many challenges especially around reviewing changes. Resolving
+> > those led to a reduction of email usage and an increase in cli tools. Demos
+> > of those tools will be included.
+> 
+> If gitlab is used in this context (I'm talking about reviews here, not
+> CI) as a transport mechanism for structured data handled by CLI tools,
+> what would prevent us from developing similar tools on top of less
+> centralized and proprietary transport mechanism ?
 
-The issue is that, even if people liked C++ a lot, there is little
-point in using C++ once Rust is an option.
+Nothing I think.  It is just api calls around abstract pieces of a review
+process.
 
-Even if you discuss "modern C++" (i.e. post-C++11, and even
-post-C++17), there is really no comparison.
+If as a reviewer you want to see:
+* all patches that touch files/directories X, Y, Z
+* all discussions around those patches
+* who has approved the patch
+* who is blocking the patch
+* has it passed CI
+* other details
 
-For instance, you mentioned `std::span` from the very latest C++20
-standard; let's build one:
+then the tool just calls whatever api to whatever tool to put all that
+together and present it to you.  GitLab structured data in a way to allow us
+to rethink things and we built a tool around this new approach.  I am sure
+it can't be that hard to abstract further and extend it to other tools if
+that is interesting.
 
-    std::span<int> f() {
-        int a[] = { foo() };
-        std::span<int> s(a);
-        return s;
-    }
+Email workflow works great.  But as PatchWork showed us, there are some
+extra details or tracking that is interesting to some folks.  With GitLab we
+extend this a little further.
 
-Now anybody that accesses the returned `std::span` has just introduced
-UB. From a quick test, neither Clang nor GCC warn about it. Even if
-they end up detecting such a simple case, it is impossible to do so in
-the general case.
+It really depends on what you want to see when you review a patch.
 
-Yes, it is a stupid mistake, we should not do that, and the usual
-arguments. But the point is UB is still as easy as has always been to
-introduce in both C and C++. In Rust, that mistake does not happen.
+Thanks for the interest!
 
 Cheers,
-Miguel
+Don
+
 
