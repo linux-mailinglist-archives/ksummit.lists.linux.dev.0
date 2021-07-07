@@ -1,160 +1,103 @@
-Return-Path: <ksummit+bounces-293-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-294-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CEBC3BEA7E
-	for <lists@lfdr.de>; Wed,  7 Jul 2021 17:15:23 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F15D3BEA8A
+	for <lists@lfdr.de>; Wed,  7 Jul 2021 17:18:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id A4D073E1078
-	for <lists@lfdr.de>; Wed,  7 Jul 2021 15:15:21 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id A8FA63E106B
+	for <lists@lfdr.de>; Wed,  7 Jul 2021 15:18:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D352E2F80;
-	Wed,  7 Jul 2021 15:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9AB2F80;
+	Wed,  7 Jul 2021 15:18:00 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-il1-f172.google.com (mail-il1-f172.google.com [209.85.166.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B079C168
-	for <ksummit@lists.linux.dev>; Wed,  7 Jul 2021 15:15:13 +0000 (UTC)
-Received: by mail-il1-f172.google.com with SMTP id b18so3131077ilf.8
-        for <ksummit@lists.linux.dev>; Wed, 07 Jul 2021 08:15:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=01/B7JoDyHB17dvcj1Ui1DR2xrrRWPUM15JDbksqujU=;
-        b=S/PnEWMk4krO7SNgoxkJuHpDCUz9kk1IamScOVwyR6wX4sz7D4BOtSsi4fh1+RtvMq
-         BGZFGp5d63rM2yNouPG3UYa0XBLVMP76zReMva7Q9AgS7u0pKozC55QymBqqpwHsE+I4
-         FQXioruSQS/bwAGYgc0jrqnox00cII8NbdXyZ7nhsxW76FEOaZ9c0O6+7mmlvUBWwhm5
-         dzKuUC1WD1zdB0SAHdvnSluMYgTqAI++YpGUjip4GESJV/cU1j/3zPzNaDOKoJJQ1Oko
-         Ww8WJizfTBzwWfrc1uYIu1BNsU0Jv2YPFy8JF/Jx1Rg3oSwJgH5soeDzefuyekn2q6HK
-         TcOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=01/B7JoDyHB17dvcj1Ui1DR2xrrRWPUM15JDbksqujU=;
-        b=Gr6PvOKBqSefTrvyatCJUVFYeLRnV34n0/jwb88vK8eLNuka5HYz+99rb7DsmbEy/4
-         7/JWS6zsRMqtv6QhAfCa6ilTZP3efpfABAoyOk3tN/AozSsgBERXkDPI0A/dLyE4Ax76
-         BgqUmIonSG4tW20SR9Pe3Bz703PUHsiGVhbFg40NAMSKUZ0ej031qbkUjRt4yGWA0KmL
-         4R2VaMty0XzeNgvtXjvS7JW9DwctanUiB/JlaoyKeWPbTQxA6Wr4rgxmDeEHr2Kufq3I
-         rpPN+W+CYqZTqnidllSYzoCSiZPbAlk6kjxTe7cR1ELMLQjZJvRGgaF7sHB7Uh9r/1Jw
-         0Tlg==
-X-Gm-Message-State: AOAM533DeN05PoWLM53fOPy7r5X2KeB7zteQjvnPzL8GgKj0HWJmeZW3
-	thi4egW2xNqE2GbnB/Hnd412GFEyHQV2plY4ios=
-X-Google-Smtp-Source: ABdhPJyXaInLqGUDRA/apWPNvtVAds2cfELjSAYiaZqMU5Lcit8ClqYgGFjgjWi2wIsD88x8K4sCxAYZnI/EFgAacjE=
-X-Received: by 2002:a05:6e02:b46:: with SMTP id f6mr19433084ilu.94.1625670912854;
- Wed, 07 Jul 2021 08:15:12 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15211168
+	for <ksummit@lists.linux.dev>; Wed,  7 Jul 2021 15:18:00 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2BEB261CA2;
+	Wed,  7 Jul 2021 15:17:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1625671079;
+	bh=sT1sdu9CBxe57KkwD8JzCCiNy6IEERM7Vc7RYj0Y5L4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=grqvRE74J1jVMII/1xyYZbBRaNf+UUPOGBr9C7KYmlslSzsYY+Y1JCF1foRbP0ebf
+	 ZPcrHoo/ayUAWeUL1LBm3/TpOKY2lq5jGzG0SBBpZDo0LkLkWqGrPGd6c96oDcf9Dw
+	 uz1ZryUZTc60jZfDsI9qyojASKSkfWZ+EdlsbMe7OdK58NXKvWOimKrQOCUkSJWUQr
+	 ZotIBokSuxC6yOyZ9PfifhSzA4SOrhv32TXk57l0/mBdzwTsw9wPQscEQfZWjcZ1ec
+	 P/Myvtsv48M2elQ19MGJIvHOg5zbYQMwuiaJTOfih8rLZGBtVn7vLO9zifBy3HLAqX
+	 ic20/lj2rC4xw==
+Date: Wed, 7 Jul 2021 16:17:27 +0100
+From: Mark Brown <broonie@kernel.org>
+To: James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Roland Dreier <roland@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	ksummit@lists.linux.dev
+Subject: Re: [TECH TOPIC] Rust for Linux
+Message-ID: <20210707151727.GC4394@sirena.org.uk>
+References: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
+ <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com>
+ <CAG4TOxMzf1Wn6PcWk=XfB+SV+MHwbxUq8t1RNswie5e3=Y+OXQ@mail.gmail.com>
+ <CACRpkdZyJd0TW5aVRfxSSWknzCyVhjMwQuAj9i9iuQ6pW9vftQ@mail.gmail.com>
+ <20210707105000.GA4394@sirena.org.uk>
+ <c24c61f498f43f589eafd423e51f997134d198b7.camel@HansenPartnership.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
- <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com>
- <CAG4TOxMzf1Wn6PcWk=XfB+SV+MHwbxUq8t1RNswie5e3=Y+OXQ@mail.gmail.com>
- <CACRpkdZyJd0TW5aVRfxSSWknzCyVhjMwQuAj9i9iuQ6pW9vftQ@mail.gmail.com>
- <YOTSYy2J2COzOY9l@pendragon.ideasonboard.com> <alpine.DEB.2.22.394.2107070926370.6285@hadrien>
- <YOVbsS9evoCx0isz@kroah.com> <20ad13eb229b15fd14d870832d43a1605ba5c24a.camel@HansenPartnership.com>
- <CANiq72n=8Do_9suDeJdwoF_8ZR-uLEj2r9cRSB_k=yTk_q0FHw@mail.gmail.com> <1f2a62c19845e4602817c2130d47bbea02d04d1d.camel@HansenPartnership.com>
-In-Reply-To: <1f2a62c19845e4602817c2130d47bbea02d04d1d.camel@HansenPartnership.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 7 Jul 2021 17:15:01 +0200
-Message-ID: <CANiq72=qa2jMUKyfPmH1q1jr8n_Tm7FMy0QyWRhhpinUrvMiNA@mail.gmail.com>
-Subject: Re: [TECH TOPIC] Rust for Linux
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Greg KH <greg@kroah.com>, Julia Lawall <julia.lawall@inria.fr>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Roland Dreier <roland@kernel.org>, ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="eheScQNz3K90DVRs"
+Content-Disposition: inline
+In-Reply-To: <c24c61f498f43f589eafd423e51f997134d198b7.camel@HansenPartnership.com>
+X-Cookie: I will never lie to you.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Wed, Jul 7, 2021 at 4:08 PM James Bottomley
-<James.Bottomley@hansenpartnership.com> wrote:
->
-> UB is Undefined Behaviour, right?  C plus the memory model should mean
-> we don't have that in the kernel, although that's enforced by
-> inspection and checking rather than the compiler.
 
-Yes, it is Undefined Behavior. I am sure you know, but just in case:
-it covers things like the usual out-of-bounds accesses, using objects
-after their lifetime has ended, data races, etc., plus quite a few
-other things.
+--eheScQNz3K90DVRs
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-There are 200+ instances of UB listed in the Annex J.2 list of the C
-standard [1]. SEI CERT also has a nice list [2].
+On Wed, Jul 07, 2021 at 12:34:31PM +0100, James Bottomley wrote:
+> On Wed, 2021-07-07 at 11:50 +0100, Mark Brown wrote:
 
-On its own, UB is not bad. Nowadays, some instances of UB are used by
-optimizers to give us the performance we all love.
+> > There *are* issues with people adopting it too enthusiastically - as
+> > well as the memory lifetime issues that Laurent mentioned it's easy
+> > for it to cause problems with interrupt handlers that are left live
+> > longer than they should be and try to use things that were already
+> > deallocated.
 
-However, the problem comes when we, as humans, mistakenly introduce
-UB. Even someone that is very knowledgeable about C introduces UB from
-time to time. We all do. The reason is simple: reasoning about UB is
-typically non-local, e.g. we may be doing a change in some function
-that changes a pointer, and that change on its own may be fine, but we
-did not account for some invariant in another function that uses the
-pointer.
+> Fixing this should not be beyond the wit of humankind, though.  If we
+> delayed deallocation to module release, that would fix the interrupt
+> issue, wouldn't it?  Perhaps all devres memory for devices should live
 
-Other times UB appears because the optimizer had different assumptions
-than the person writing the code / project / environment, e.g. the
-`-fno-delete-null-pointer-checks` issue we had in the kernel a decade
-ago, where the optimizer removes a branch because you already accessed
-a pointer.
+No, that's half the problem - as Greg says there's the issue of module
+vs device lifespans, and you sometimes also have to take care with the
+ordering of your allocations and unwindings within device startup and
+teardown so you don't end up trying to do something like deliver an
+interrupt to the subsystem core after having told the subsystem the
+device was gone, or trying to process a final subsystem call that needs
+interrupts after you've freed interrupts.
 
-In summary, relying on inspection to avoid UB is a losing battle. That
-is why many tools appeared throughout the decades to attack different
-parts: Valgrind (Memcheck, Helgrind, DRD...), ASAN, UBSAN, Miri, etc.
+--eheScQNz3K90DVRs
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Rust, like C, has UB. The difference is that Rust has a safe subset
-where UB is statically guaranteed to not occur (as long as the unsafe
-code is sound). This is key: you "only" need to make sure the unsafe
-parts are not breaking the rules, and if that is true, Rust guarantees
-the safe code does not break them either.
+-----BEGIN PGP SIGNATURE-----
 
-This means the work of inspection / checking / running UBSAN and
-friends, etc. can be focused on the unsafe bits.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmDlxYYACgkQJNaLcl1U
+h9AIDQf9EmpmuwUMtQw7x5l+Q2L494ywj3hmBMDHF4WYF8x6tTXd/Of8WPTy5A2I
+XiS/LGhQk7UEkCk3dbJDRThPEUUDcqu+ZpotvXRrAE15/CsfW+n0xsw/2lriNfvg
+Ndcngn1792ih2ZDCBlvC/Kk/4ZS945VwZqZTTpvEWpq3CeGS9ujNihETxKg8mqWq
+ys+9K7U0/vq+Q5dHyihhrFtQ0sef/jEm9gjFyQhysj+yFxjHp1avCkVSS0MAyGjn
+BPSIhSaMYMusbY4P2B8cALqc/Iulh5JM3slvEXxEXGN9hif0q/qUEJR5M94EiYvo
+Z5MNhwwY9a5dMeELE4p4qkcLSVQ4WA==
+=8oxa
+-----END PGP SIGNATURE-----
 
-[1] http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2596.pdf
-[2] https://wiki.sei.cmu.edu/confluence/display/c/CC.+Undefined+Behavior.
-
-> I'm not sure I get the point here: all the kernel refcount models are
-> explicitly multi-threaded, because we usually expect multiple CPU
-> threads to be using objects simultaneously ... it's why the base
-> implementation, kref, uses atomics.  That's not to say we don't have
-> single threaded use cases ... it's just that's not what's commonly
-> used.
-
-Yes, `Rc` is a type meant for single-threaded reference-counting
-scenarios. For multi-threaded scenarios, Rust provides `Arc` instead.
-It still guarantees no UB and no data races.
-
-This is actually a good example of another benefit. `Rc` is there
-because there is a performance advantage when you do not need to share
-it among threads (you do not need to use atomics) -- and Rust checks
-you do not do so. In C, you can still have an `Rc`, but you would not
-have a compile-time guarantee that it is not shared. So in C you may
-decide to avoid your single-threaded `Rc` and use `Arc` "just in case"
--- and, in fact, this is the only one C++ has (`std::shared_ptr`), and
-even then, it does not statically prevent UB.
-
-> That does beg another question which I couldn't find the answer to in
-> the base docs: the Rust Rc<T> is saturation protected, isn't it? or
-> would the rust implementation inherit that from the kernel?
-
-We can do both: we can introduce new types with the precise semantics
-we need in pure Rust, but we can also "abstract" C facilities.
-
-For instance, we have a `Ref` type that is similar to `Arc` but reuses
-the `refcount_t` from C and introduces saturation instead of aborting
-[3]
-
-Another example are the red-black trees that abstract the C implementation [4].
-
-[3] https://github.com/Rust-for-Linux/linux/blob/rust/rust/kernel/sync/arc.rs
-[4] https://github.com/Rust-for-Linux/linux/blob/rust/rust/kernel/rbtree.rs
-
-Cheers,
-Miguel
+--eheScQNz3K90DVRs--
 
