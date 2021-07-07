@@ -1,77 +1,119 @@
-Return-Path: <ksummit+bounces-314-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-315-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B69F3BF150
-	for <lists@lfdr.de>; Wed,  7 Jul 2021 23:20:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57CA23BF17A
+	for <lists@lfdr.de>; Wed,  7 Jul 2021 23:41:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 813CD3E1011
-	for <lists@lfdr.de>; Wed,  7 Jul 2021 21:20:05 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id CB2303E1036
+	for <lists@lfdr.de>; Wed,  7 Jul 2021 21:41:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73022F80;
-	Wed,  7 Jul 2021 21:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 250122F80;
+	Wed,  7 Jul 2021 21:41:02 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04501168
-	for <ksummit@lists.linux.dev>; Wed,  7 Jul 2021 21:19:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1625692795;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type;
-	bh=IhtCfp6YoXhrb6Weh3uSeVvZXCP/xZIfp/J3kNWJjzk=;
-	b=gIQIqugSQUJzQkhET1PtkcS/r28i8czm1/aCmf15HprDGkv9C6n70493DuynnF5PVf4ode
-	uRdZkZJH3pwYlI6HqMivTdkf5zevzGjjjGYAusZMDjtuTWxs1O9GOEXg05V4PjufpUGhdv
-	vHzmaWk+aoA244Bw48ufhikRweCJ7Xc=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-273-PQwDFq56OvO_yqaY0GvaEQ-1; Wed, 07 Jul 2021 17:19:54 -0400
-X-MC-Unique: PQwDFq56OvO_yqaY0GvaEQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 717611084F40
-	for <ksummit@lists.linux.dev>; Wed,  7 Jul 2021 21:19:53 +0000 (UTC)
-Received: from redhat.com (ovpn-116-226.rdu2.redhat.com [10.10.116.226])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 3303860843
-	for <ksummit@lists.linux.dev>; Wed,  7 Jul 2021 21:19:53 +0000 (UTC)
-Date: Wed, 7 Jul 2021 17:19:51 -0400
-From: Don Zickus <dzickus@redhat.com>
-To: ksummit@lists.linux.dev
-Subject: [Tech Topic] Integrating GitLab into the Red Hat kernel workflow
-Message-ID: <20210707211951.fyiflsp75i7spcha@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C84C168
+	for <ksummit@lists.linux.dev>; Wed,  7 Jul 2021 21:41:00 +0000 (UTC)
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 4E4D5E7;
+	Wed,  7 Jul 2021 23:40:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1625694058;
+	bh=1p0RUZTlqTCTLlQli3MGNEvqPkJjJ142JlDgw0KqnXA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rc/FEttPyuCqc5QmGPvIgviLg8sAegYXp9LoHQopRUftQagvPbsIn0jMl+zHzBiwp
+	 TI5G24BXwfD/l75efaT+injtDSPRmlbSFaKAp7ZKlTDRzt1UoBnR1KrMpiIlNJIXan
+	 KevpECNCylzAOi0rRheAY940pbvoT352g3bkhgYA=
+Date: Thu, 8 Jul 2021 00:40:13 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Bart Van Assche <bvanassche@acm.org>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Roland Dreier <roland@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	ksummit@lists.linux.dev
+Subject: Re: [TECH TOPIC] Rust for Linux
+Message-ID: <YOYfPWW1zgrL4DiQ@pendragon.ideasonboard.com>
+References: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
+ <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com>
+ <CAG4TOxMzf1Wn6PcWk=XfB+SV+MHwbxUq8t1RNswie5e3=Y+OXQ@mail.gmail.com>
+ <64de6a11-5ff0-9931-d09b-2246cb37b284@acm.org>
+ <20210706160857.6d4c63aa@hermes.local>
+ <f391c00d-7f4f-a60c-0230-4aca5ea2d4ed@acm.org>
+ <CAHk-=wiwZWAo_Ki587FD2BrAQVK71TBN=uKimdBf1Pxg3=+nTw@mail.gmail.com>
+ <22460501-fe09-f8e7-1051-b6b692500859@acm.org>
+ <CAHk-=wjYGDtLafGB6wabjZCyPUiTJSda0c8h5+_8BeFNdCdrNg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=dzickus@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+In-Reply-To: <CAHk-=wjYGDtLafGB6wabjZCyPUiTJSda0c8h5+_8BeFNdCdrNg@mail.gmail.com>
 
-Submission #89:
+Hi Linus,
 
-The Red Hat kernel team recently converted their RHEL workflow from
-PatchWork to GitLab. This talk will discuss what the new workflow looks like
-with integrated CI and reduced emails. New tooling had to be created to
-assist the developer and reviewer. Webhooks were utilized to autoamte as
-much of the process as possible making it easy for a maintainer to track
-progress of each submitted change. Finally using CKI, every submitted change
-has to pass CI checks before it can be merged.
+On Wed, Jul 07, 2021 at 01:39:22PM -0700, Linus Torvalds wrote:
+> On Wed, Jul 7, 2021 at 1:32 PM Bart Van Assche wrote:
+> >
+> > Thank you for having shared your opinion. You may want to know that
+> > every C++ project I have worked on so far enabled at least the following
+> > compiler flags: -fno-exceptions and -fno-rtti.
+> >
+> > What the C++ operator new does if not enough memory is available depends
+> > on the implementation of that operator.
+> 
+> The point is, C++ really has some fundamental problems. Yes, you can
+> work around them, but it doesn't change the fact that it doesn't
+> actually *fix* any of the issues that make C problematic.
+> 
+> For example, do you go as far as to disallow classes because member
+> functions are horrible garbage? Maybe newer versions of C++ fixed it,
+> but it used to be the case that you couldn't sanely even split a
+> member function into multiple functions to make it easier to read,
+> because every single helper function that worked on that class then
+> had to be declared in the class definition.
 
-We faced many challenges especially around reviewing changes. Resolving
-those led to a reduction of email usage and an increase in cli tools. Demos
-of those tools will be included.
+That's still the case today.
 
-Attendees will leave with an understanding how to convert or supplement
-their workflow with GitLab.
+> Which makes simple things like just re-organizing code to be legible a
+> huge pain.
+> 
+> At the same time, C++ offer no real new type or runtime safety, and
+> makes the problem space just bigger. It forces you to use _more_
+> casts, which then just make for more problems when it turns out the
+> casts were incorrect and hid the real problem.
 
+I beg to differ on that one. There are features of C++ that would be
+very helpful for kernel development. Among them is native support for
+destructors, which allow implementing RAII idioms. Unique pointers would
+also be very helpful to explicitly expose object ownership rules (shared
+pointers are a different story though, it's very easy to use them
+incorrectly and infect the whole code base as a result). Templates are
+another feature that is widely criticized (and often for good reasons),
+but when seen as a type-safe implementation of macros, they can bring
+increased safety to the code base.
+
+C++ has upsides and fixes real issues. It also causes pain, and it's not
+the only language to provide the above features, so I wouldn't call for
+its usage in the kernel. I just wish we had objects with destructors in
+plain C.
+
+> So no. We're not switching to a new language that causes pain and
+> offers no actual upsides.
+> 
+> At least the argument is that Rust _fixes_ some of the C safety
+> issues. C++ would not.
+
+-- 
+Regards,
+
+Laurent Pinchart
 
