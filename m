@@ -1,128 +1,157 @@
-Return-Path: <ksummit+bounces-327-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-328-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
-	by mail.lfdr.de (Postfix) with ESMTPS id E80523BF328
-	for <lists@lfdr.de>; Thu,  8 Jul 2021 02:56:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68B133BF566
+	for <lists@lfdr.de>; Thu,  8 Jul 2021 08:11:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 548653E108C
-	for <lists@lfdr.de>; Thu,  8 Jul 2021 00:56:57 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 0E9C53E1005
+	for <lists@lfdr.de>; Thu,  8 Jul 2021 06:11:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4CF2F80;
-	Thu,  8 Jul 2021 00:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB1DB2F80;
+	Thu,  8 Jul 2021 06:11:16 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com [66.111.4.229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C22173
-	for <ksummit@lists.linux.dev>; Thu,  8 Jul 2021 00:56:49 +0000 (UTC)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 7399DE7;
-	Thu,  8 Jul 2021 02:56:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1625705806;
-	bh=660DfIQs9fPLTpCpbVmySPOnDB5citEYt+flNL8eQdU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cHcjKWwXCsvfVBvmu1pfDi/x31DXsScyY3W3LuwVet7c3Rmr6YSOXmvBDX6mdt1DV
-	 kfgIKpSth3/q4mNJXKNPapZlqrdD5tCqDfif2NO99qJIvCuAmfwWrE3J9HbgEthu31
-	 Ep4bIrG5r6k+wvCw1QVvUFGAy8/ZZU0uQk3AD+94=
-Date: Thu, 8 Jul 2021 03:56:02 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Bart Van Assche <bvanassche@acm.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Roland Dreier <roland@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>, ksummit@lists.linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7A370
+	for <ksummit@lists.linux.dev>; Thu,  8 Jul 2021 06:11:15 +0000 (UTC)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+	by mailnew.nyi.internal (Postfix) with ESMTP id 90BDF580403;
+	Thu,  8 Jul 2021 02:11:14 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute1.internal (MEProxy); Thu, 08 Jul 2021 02:11:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
+	date:from:to:cc:subject:message-id:references:mime-version
+	:content-type:in-reply-to; s=fm1; bh=ODB7IpOMMFOTfqZRBkthwiAAL51
+	1YtGNBDx7+8bSodg=; b=F2/gDXsVQU8eACDSGxfMD5blpPalbqdsa+yYWw1Lvjq
+	5HirBBdCknSPq3IWus2rpsFm4LFT5AdS2DS0owxV+n/OK/z69vmcxZ+Mpn6+TPG8
+	9vGJ3ZVzw0OcppKMiaQ29WdRj3IL7ZxC2Zv0ER+Jt+/B5lgBcD5Du8u6P2oCv7Nt
+	cDUYzrZ1hZR99Kuie+1hviEpCEz6Cgb/kHCrCz4HWgj4RSViezkA0ZCJmaiJpaDZ
+	Ve2c4xFjWhE6wOyqwMlG9wZtouuOGM7rJmtHAy2ZENu9s1FvDC47PKU5kEFPyZSc
+	Go1g12Ua9/gbk3RFuv5pFke9DwicC57owBIW/pCMufg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to:x-me-proxy
+	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=ODB7Ip
+	OMMFOTfqZRBkthwiAAL511YtGNBDx7+8bSodg=; b=g0zV14uQ1PQzUOgTt+zazT
+	FTu2f9IyBhAs0M7nnVkNyGmkgRuTfnl0Pfwvin48XYfcN4JOcXuMaBjTMekrNQJj
+	eQUTdqN1Onwy6KFR/g/iOAjjvdNshEMxr+MKszx6LNEKWvDxoghU7PZaZ2Utvgv6
+	5Se530yaiMzBxfLAID9F5N+RcTENopT1VnSQcO0ZyhGM6GWKu6Xwii3pZXNJc84R
+	HTXDFiXe85U8Nub3OHHhwdJfcvOt4+8ChxfLF0ben/CDZ2nhnuKJLjPi3xXz9pt/
+	vQDyX50DVgCljqGHS3zpmGp2LY2YM1v/VWt0e2Kipd3InXuTD7MqZzPifAhOOR1w
+	==
+X-ME-Sender: <xms:AZfmYGe4Zv4iwnrBofe0iLTsh9bfI5JZyMjYv0gNErG8Es8eQxjDqg>
+    <xme:AZfmYAMqUzRhq0qwwc-8acXbDg1WXBWESkR8AEEGZna1sbPhub8OShwEarr5MfyKH
+    qwNFhpcGVfqZw>
+X-ME-Received: <xmr:AZfmYHjtS0vNqv5PP_h5eewyH0nkDEwKJQjFbwNAjk8A4nAjekyzjiGib5TJd9QNcFn2aBB3MswPqM3wanBhrLCtrQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrtdefgdeltdcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
+    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepveeuheejgf
+    ffgfeivddukedvkedtleelleeghfeljeeiueeggeevueduudekvdetnecuvehluhhsthgv
+    rhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrd
+    gtohhm
+X-ME-Proxy: <xmx:AZfmYD9YMYbxuhbn1kNoKg1AhgDysm2lUuCRGMJuyQfe0ukrAxIztw>
+    <xmx:AZfmYCvxorA5mHDtIhB4qZaDqRvDqZ2Zl5TDX-OmkfohYvQwTubZvQ>
+    <xmx:AZfmYKHtl7jw-seJY5zQyA68FWQZlGnt-rHcSdDYU2tD-Pl-Qx6IDQ>
+    <xmx:ApfmYD8OWKnpzrKW7hDrj45WIOtMO_51Q70awirqRv8wm2tTm4w_8w>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 8 Jul 2021 02:11:13 -0400 (EDT)
+Date: Thu, 8 Jul 2021 08:11:10 +0200
+From: Greg KH <greg@kroah.com>
+To: Wedson Almeida Filho <wedsonaf@google.com>
+Cc: Jan Kara <jack@suse.cz>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Julia Lawall <julia.lawall@inria.fr>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Roland Dreier <roland@kernel.org>, ksummit@lists.linux.dev
 Subject: Re: [TECH TOPIC] Rust for Linux
-Message-ID: <YOZNIu1vPF1G/QyT@pendragon.ideasonboard.com>
-References: <64de6a11-5ff0-9931-d09b-2246cb37b284@acm.org>
- <20210706160857.6d4c63aa@hermes.local>
- <f391c00d-7f4f-a60c-0230-4aca5ea2d4ed@acm.org>
- <CAHk-=wiwZWAo_Ki587FD2BrAQVK71TBN=uKimdBf1Pxg3=+nTw@mail.gmail.com>
- <22460501-fe09-f8e7-1051-b6b692500859@acm.org>
- <CANiq72nKao=rz89yajChtsM8Nvv2LM-xZfX+iwk686SDMhv5iw@mail.gmail.com>
- <YOYuCXKm3g1elu0t@pendragon.ideasonboard.com>
- <CANiq72=o5hKZyFqnGvd-3LeqjbR+JDsWhf=rJkimTKQSqf45pg@mail.gmail.com>
- <YOY7bJ2n67XVo5cG@pendragon.ideasonboard.com>
- <CANiq72kD7BqTgzOdHALDjMDzBXpz56n13+=rDCzs5RuSnLWpcg@mail.gmail.com>
+Message-ID: <YOaW/pR0na5N9GiT@kroah.com>
+References: <20ad13eb229b15fd14d870832d43a1605ba5c24a.camel@HansenPartnership.com>
+ <CANiq72n=8Do_9suDeJdwoF_8ZR-uLEj2r9cRSB_k=yTk_q0FHw@mail.gmail.com>
+ <1f2a62c19845e4602817c2130d47bbea02d04d1d.camel@HansenPartnership.com>
+ <CANiq72=qa2jMUKyfPmH1q1jr8n_Tm7FMy0QyWRhhpinUrvMiNA@mail.gmail.com>
+ <YOXL6Th+pot9+Fp3@kroah.com>
+ <YOXd9WoafgBr1Nkv@google.com>
+ <YOXibDV8mHT1e6ec@kroah.com>
+ <YOX+N1D7AqmrY+Oa@google.com>
+ <20210707203827.GI18396@quack2.suse.cz>
+ <YOY0HLj5ld6zHJHU@google.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CANiq72kD7BqTgzOdHALDjMDzBXpz56n13+=rDCzs5RuSnLWpcg@mail.gmail.com>
+In-Reply-To: <YOY0HLj5ld6zHJHU@google.com>
 
-Hi Miguel,
+On Thu, Jul 08, 2021 at 12:09:16AM +0100, Wedson Almeida Filho wrote:
+> On Wed, Jul 07, 2021 at 10:38:27PM +0200, Jan Kara wrote:
+> > On Wed 07-07-21 20:19:19, Wedson Almeida Filho wrote:
+> > > Where would a lock be needed in the examples above?
+> > 
+> > So I think Greg speaks about a situation where you have multiple threads
+> > and the refcounted object can be looked up through some structure all the
+> > threads see. And the problem is that the shared data structure cannot hold
+> > ref to the object it points to because you want to detect the situation
+> > where the data structure is the only place pointing to the object and
+> > reclaim the object in that case. Currently I don't see how to model this
+> > idiom with Rust refs.
+> 
+> The normal idiom in Rust for this is "weak" pointers. With it, each
+> reference-counted object has two counts: strong and weak refs. Objects are
+> "destroyed" when the strong count goes to zero and "freed" when the weak count
+> goes to zero.
+> 
+> Weak references need to upgraded to strong references before the underlying
+> objects can be accessed; upgrading may fail if the strong count has gone to
+> zero. It is, naturally, implemented as an increment that avoids going from 0 to
+> 1. It is safe to try to do it because the memory is kept alive while there are
+> weak references.
+> 
+> For the case you mention, the list would be based on weak references. If the
+> object's destructor also removes the object from the list, both counts will go
+> to zero and the object will be freed as well. (If it fails to do so, the
+> *memory* will linger allocated until someone removes the object from the list,
+> but all attempts to upgrade the weak reference to a strong one will fail.)
+> 
+> The obvious cost is that we need an extra 32-bit number per reference-counted
+> allocation. But if we have specialized cases, like the underlying object always
+> being in some data structure until the ref count goes to zero, then we can build
+> a zero-cost abstraction for such a scenario.
+> 
+> We can also build specialised zero-cost abstractions for the case when we want
+> to avoid the 1 -> 0 transition unless we're holding some lock to prevent others
+> observing the object-with-zero-ref. For this I'd have to spend more time to see
+> if we can do safely (i.e., with compile-time guarantees that the object was
+> actually removed from the data structure).
 
-On Thu, Jul 08, 2021 at 02:27:47AM +0200, Miguel Ojeda wrote:
-> On Thu, Jul 8, 2021 at 1:41 AM Laurent Pinchart wrote:
-> >
-> > I don't think anyone ever claimed that C++ offers the same kind of
-> > compile-type checks that rust does, so there's no disagreement there.
-> 
-> My apologies if I have misinterpreted your claims (or those of Bart).
-> 
-> The thing is, claims such as "C++ is as safe as Rust, you just need to
-> use modern C++ properly!" are still way too common online, and many
-> developers are unfamiliar with Rust, thus I feel we need to be crystal
-> clear (in a thread about Rust support) that it is a strict improvement
-> over C++, and not a small one at that.
-> 
-> In any case, please note that I am not a Rust "fan" or "believer"
-> (somebody mentioned that word) -- if the C committee opens up to add
-> these kind of things, I will gladly work on that as my free time
-> permits. But Rust works, and it works today, and the language brings
-> many other things too in a fairly well-designed package (though it is
-> not perfect either).
-> 
-> > The discussion has drifted from rust in the kernel to features that C is
-> > missing and that make our life painful when it shouldn't be. Some of
-> > those features are fairly basic (such as features that would allow
-> > implementing RAII idioms with a syntax that wouldn't make all developers
-> > want to jump through the window), and available in multiple languages,
-> 
-> The C committee is looking into adding `defer`, so you may actually
-> get RAII in C ;)
+Thanks for the detailed explainations, it seems rust can "get away" with
+some things with regards to reference counts that the kernel can not.
+Userspace has it easy, but note that now that rust is not in userspace,
+dealing with multiple cpus/threads is going to be interesting for the
+language.
 
-That would be nice.
+So, along those lines, how are you going to tie rust's reference count
+logic in with the kernel's reference count logic?  How are you going to
+handle dentries, inodes, kobjects, devices and the like?  That's the
+real question that I don't seem to see anyone even starting to answer
+just yet.
 
-> They are also looking into adding lambdas (with a similar syntax to C++'s).
-> 
-> > This being said, I don't think C++ would be a particularly good
-> > alternative even for that limited goal, as there could be more drawbacks
-> > than advantages. Furthermore, if we're considering supporting a second
-> > language in the kernel, it would likely be best to pick a language to
-> > would bring us as many benefits as possible. Rust is a good candidate,
-> > even if I'm not convinced at this point that the gains outweight the
-> > costs (especially when it comes to the disturbance to the development
-> > flow, see the discussion in this mail thread about subsystem-wide or
-> > kernel-wide changes). Time (and discussions) will tell.
-> 
-> This is fair, thank you.
-> 
-> > Speaking of sweeter syntax, in the "if only I had a time machine"
-> > category, I wish rust would have picked a syntax closer to C when
-> > departing from it wasn't strictly necessary :-(
-> 
-> Interesting -- in which regard? i.e. it is actually quite close, their
-> designers were clearly going for something relatively familiar to
-> C/C++ programmers (at least in its current state, not the very early
-> design iterations of Rust).
+And that's the reason some of us are asking to see a "real" driver, as
+those have to deal with these kernel-controlled-reference-counted
+objects properly (as well as hardware control).  Seeing how that is
+going to work in this language is going to be the real sign of if this
+is even going to be possible or not.
 
-One particular point that comes to my mind is function parameters,
-declared as "variable_name: type" instead of "type variable_name", or
-the need to prefix functions with "fn". It's not a huge deal, but if
-small things like that could have been kept closer to C, it would have
-been nice.
+thanks,
 
--- 
-Regards,
-
-Laurent Pinchart
+greg k-h
 
