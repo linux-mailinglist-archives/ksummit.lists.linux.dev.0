@@ -1,90 +1,108 @@
-Return-Path: <ksummit+bounces-340-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-341-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8862B3C14D7
-	for <lists@lfdr.de>; Thu,  8 Jul 2021 16:04:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D48E93C14FC
+	for <lists@lfdr.de>; Thu,  8 Jul 2021 16:17:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id 8B32B1C0F0F
-	for <lists@lfdr.de>; Thu,  8 Jul 2021 14:04:49 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id CF1B91C0EEB
+	for <lists@lfdr.de>; Thu,  8 Jul 2021 14:17:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B363B2F80;
-	Thu,  8 Jul 2021 14:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7932F80;
+	Thu,  8 Jul 2021 14:17:08 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-io1-f43.google.com (mail-io1-f43.google.com [209.85.166.43])
+Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA682168
-	for <ksummit@lists.linux.dev>; Thu,  8 Jul 2021 14:04:41 +0000 (UTC)
-Received: by mail-io1-f43.google.com with SMTP id b1so8316339ioz.8
-        for <ksummit@lists.linux.dev>; Thu, 08 Jul 2021 07:04:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=I/S3NRH5MvOzKioZ525TdAlWqDf4xIm20TU+2IYUniI=;
-        b=YlR/OFtau6mE3/kTCNTafHQCSiQBQCcWM5nH7l8q7bIBYbYX4ugvPpmJ8U4G68phBA
-         +Z0v7Bldyz6R3oJRUx4R5HvEqzkI0HqrZIWZ1Gikcz2E60lIoc76XiXnttgJ07gEamHX
-         iEkJn3i7wSZj7MASa6K3/rFsjiOsp/Q3XImEDeT3hRYu/pySWDvz24EnoeiGFLuR5iSS
-         dB+UgGuick8D7ltUERwDbOxRBadc5rmkcJQNzmOHH2ga9H1Bx/QPtXPzJ1vL9JF9PMYj
-         cQTcucFCXeK3orbBExAm4/t6jeJTBXMLy6JOjicDRnoNXr7ttqLNCOpmU1Xz29vqPFXu
-         KFaA==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D6E168
+	for <ksummit@lists.linux.dev>; Thu,  8 Jul 2021 14:17:06 +0000 (UTC)
+Received: by mail-ua1-f42.google.com with SMTP id y47so2260696uad.6
+        for <ksummit@lists.linux.dev>; Thu, 08 Jul 2021 07:17:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=I/S3NRH5MvOzKioZ525TdAlWqDf4xIm20TU+2IYUniI=;
-        b=gZ7y/ucLx9knOOEGoTEyOl7eeiXsflVSz/ha5gDZZeb/0FrlhfTAbfS+HeJWDnSDAh
-         kjKySv/iPYQZOHiuPZmy+hHwA5JpyZrOS2a7yPvHGsYZt2VK4qsd0+Eq+4yLFXCZyNqB
-         w/NwbeSpI77DXLP9f3WunRKwyPU3MlkvBTO6XLwoi/GWy+fiFw9xlj7JfymhoBfgx9h6
-         0uCSCi75g77IE80U7IoZKyme38R8+imTO4BZTmC3LGqeNUZzdZ9Z4laFD4Sn8TAeAwZA
-         w6M7veShzPj79jIjG3Jrfs4ofUjxFDVBUYyul4cXbuHbQf/BX5OwLNQwWK9bKGvQPxTV
-         WugA==
-X-Gm-Message-State: AOAM532MYmDDSFB0sZsvOfwakTLv/CeBeJxg/HcDpTKnPQkUxVvgJmnK
-	SM6/AcPRIJJlgO6usxeFStAmeq4i3xAMC3uRxZE=
-X-Google-Smtp-Source: ABdhPJxEc7cffCmw5hcxTbfVbyWm/1xYKRn134eW8kaTerVnMSpMonmNNYepuSPLoOpTc/q3Rd7oVDA6AyoyDIfPbWg=
-X-Received: by 2002:a02:a48d:: with SMTP id d13mr18109536jam.28.1625753080998;
- Thu, 08 Jul 2021 07:04:40 -0700 (PDT)
+        bh=m84hQBBNf6mlTv8M7yN1cjTJyCobxw6wgvLqvXoKPOg=;
+        b=pVetg7nEBtpvwJSGzGG+q3XkBS5vCnFmtEwqsc4Z4E5Dy2tTxhC8SOTm6y3GmbyKo8
+         SW2iDgekILmWs773YSC4unbyno3Jezd6vg09Ni6stjdUMn/uXGKqFytRvqDE/S650Z96
+         Zgt0GLBF3nWoqfw7MnrrAddMJYNM2IRPFTWmTXjUaBIioH0BBR1vN7kzBz3Ig5dZXvh4
+         fjhDf4SOwrBafBbAMKNmZp+gVHuQmxVjbnlDTgzFxkB44CUndisRug2QeXTob1zy6Miz
+         RVLo5Kfhj25vstMKYmIHLYu49QZaWwEeRepleWZP20bAqrJr+YGTuOvSxNcYoBLoS2bz
+         mpzQ==
+X-Gm-Message-State: AOAM533WuOysmUKBgAamwB7wR1SG6H2WlCoRDLhxa4Q2ay7j/YLp5uuF
+	0Se4lPqh+O77phg/lsUBJk++L3hoRnIZpcebO3o=
+X-Google-Smtp-Source: ABdhPJz+ejugGuUnWDkR5dm3/vXjxtNYZBS22eE7uFri+B+n9M4c+FotvxUOyk+Z9GpMoG9Aa5khqOm0OrSHNKokpmg=
+X-Received: by 2002:a9f:3f0d:: with SMTP id h13mr26245587uaj.100.1625753825867;
+ Thu, 08 Jul 2021 07:17:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CANiq72n=8Do_9suDeJdwoF_8ZR-uLEj2r9cRSB_k=yTk_q0FHw@mail.gmail.com>
- <1f2a62c19845e4602817c2130d47bbea02d04d1d.camel@HansenPartnership.com>
- <CANiq72=qa2jMUKyfPmH1q1jr8n_Tm7FMy0QyWRhhpinUrvMiNA@mail.gmail.com>
+References: <CANiq72=qa2jMUKyfPmH1q1jr8n_Tm7FMy0QyWRhhpinUrvMiNA@mail.gmail.com>
  <YOXL6Th+pot9+Fp3@kroah.com> <YOXd9WoafgBr1Nkv@google.com>
  <YOXibDV8mHT1e6ec@kroah.com> <YOX+N1D7AqmrY+Oa@google.com>
  <20210707203827.GI18396@quack2.suse.cz> <YOY0HLj5ld6zHJHU@google.com>
  <CAMuHMdWtRzoj9Evk2Eke08vjhySfYRXE1Uj7ZqXTZt-tuExXKQ@mail.gmail.com>
  <YOcApBj/puXe3Yig@google.com> <CAMuHMdW+zSO25vAriii0hAkvt_SkMhNxvundhAXsgFdmyZ-4oA@mail.gmail.com>
-In-Reply-To: <CAMuHMdW+zSO25vAriii0hAkvt_SkMhNxvundhAXsgFdmyZ-4oA@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 8 Jul 2021 16:04:29 +0200
-Message-ID: <CANiq72mquf7oVc8hYntYvksuiLDwqUJKvtx7sri6XXgqAAVAsA@mail.gmail.com>
+ <YOcDnczZnF4helYJ@google.com>
+In-Reply-To: <YOcDnczZnF4helYJ@google.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 8 Jul 2021 16:16:54 +0200
+Message-ID: <CAMuHMdULCT3P6emoD08pEAt8ZZz0-FFwEOEuYXhcstisM==ZLQ@mail.gmail.com>
 Subject: Re: [TECH TOPIC] Rust for Linux
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Wedson Almeida Filho <wedsonaf@google.com>, Jan Kara <jack@suse.cz>, Greg KH <greg@kroah.com>, 
+To: Wedson Almeida Filho <wedsonaf@google.com>
+Cc: Jan Kara <jack@suse.cz>, Greg KH <greg@kroah.com>, 
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
 	James Bottomley <James.Bottomley@hansenpartnership.com>, 
 	Julia Lawall <julia.lawall@inria.fr>, 
 	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
 	Linus Walleij <linus.walleij@linaro.org>, Roland Dreier <roland@kernel.org>, ksummit@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Jul 8, 2021 at 3:43 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+Hi Wedson,
+
+On Thu, Jul 8, 2021 at 3:54 PM Wedson Almeida Filho <wedsonaf@google.com> wrote:
+> On Thu, Jul 08, 2021 at 03:43:28PM +0200, Geert Uytterhoeven wrote:
+> > On Thu, Jul 8, 2021 at 3:42 PM Wedson Almeida Filho <wedsonaf@google.com> wrote:
+> > > On Thu, Jul 08, 2021 at 09:20:25AM +0200, Geert Uytterhoeven wrote:
+> > > > > Weak references need to upgraded to strong references before the underlying
+> > > > > objects can be accessed; upgrading may fail if the strong count has gone to
+> > > > > zero. It is, naturally, implemented as an increment that avoids going from 0 to
+> > > > > 1. It is safe to try to do it because the memory is kept alive while there are
+> > > > > weak references.
+> > > >
+> > > > What does "may fail" imply?
+> > >
+> > > Upgrading is essentially calling `refcount_inc_not_zero` on the strong count.
+> > > It succeeds when the count is already non-zero, it fails when the count is zero.
+> > >
+> > > So "may fail" here means "your attempt to upgrade came too late, the object is
+> > > gone". (The memory is still around so that attempts to upgrade don't cause UAF,
+> > > but the object is gone.)
+> >
+> > So what happens if this fails?
 >
-> So what happens if this fails?
+> You move on the next element in your data structure. This one doesn't really
+> exist anymore; once you release it lock, the cleanup code will likely come and
+> remove it.
 
-Just in case: are you asking out of concern for "Rust panics" etc.?
-The upgrade call does not need to panic, they can be fallible; e.g.
-the `Weak` types in the Rust standard library return an `Option`.
+I'm confused. Which next element?
+What happens if I have a weak reference to an object that cannot be
+upgraded to a strong reference, and I try to access the object?
+E.g. read from or write to a member of the object?
 
-Now, what the caller does if the upgrading fails depends on who the
-caller is, as usual.
+Gr{oetje,eeting}s,
 
-Cheers,
-Miguel
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
