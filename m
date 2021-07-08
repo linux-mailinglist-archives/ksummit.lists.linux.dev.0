@@ -1,125 +1,143 @@
-Return-Path: <ksummit+bounces-351-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-352-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
-	by mail.lfdr.de (Postfix) with ESMTPS id 462163C18CD
-	for <lists@lfdr.de>; Thu,  8 Jul 2021 20:00:37 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67FA33C18D5
+	for <lists@lfdr.de>; Thu,  8 Jul 2021 20:02:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 75CD53E10DE
-	for <lists@lfdr.de>; Thu,  8 Jul 2021 18:00:35 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id 30A181C0F10
+	for <lists@lfdr.de>; Thu,  8 Jul 2021 18:02:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCAA12F80;
-	Thu,  8 Jul 2021 18:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 653D32F80;
+	Thu,  8 Jul 2021 18:01:59 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-io1-f43.google.com (mail-io1-f43.google.com [209.85.166.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com [66.111.4.229])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C705670
-	for <ksummit@lists.linux.dev>; Thu,  8 Jul 2021 18:00:27 +0000 (UTC)
-Received: by mail-io1-f43.google.com with SMTP id k16so9234032ios.10
-        for <ksummit@lists.linux.dev>; Thu, 08 Jul 2021 11:00:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=e+v9Kvl8er8AkJfBFUHJP3m1/Mzyd4q/kYM+1Wlmn0c=;
-        b=ttP9kHyMWNCpLeLwITDVkMKD7BJ/82j+WTEMU48+7FqyQQyW4692VDEVty7Lye7DEG
-         KqpFTqtjuh2ih634grP5VwnEM2pFLup0HagTf9fjHm8DG9E5ZSORZ/sm2qcjhEMDg+SR
-         HVdFJ7vdH/LD24lmJNuV2mHn8/fmi54C7HTxIKmOTEhTB6qKri0qtw35JTq+IQH4CNfd
-         hWBGSCWzEjy4vdD/XYzl+dzNwcbj10xVc66oxEf1Xc8cfFBml2402J308CjR+WlfdkBg
-         x/8PmORijOIM7bp0PI93QEOMwC5V3hi9zVe2lz+l/rO2SRbQfrsHyXSUh3YB8OWUJIUD
-         hIzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=e+v9Kvl8er8AkJfBFUHJP3m1/Mzyd4q/kYM+1Wlmn0c=;
-        b=XztQrDusw07KrdnW7jAg8sfpPXtewfdmR/I7J8y5M71saErspdBXA156xLIDjXBB/a
-         YDWiJ+PKfQF4+xu1nU5VTyGCtilI0eDSEd95M+cknggE/dud6lq0P2tZFZze1En8idlO
-         imEqpzfLE+wDNny3PNcfs9W91m0uzIQ1rOeWtAmppAr2ryq2wXdhmA+ftnHUlZaZNEKq
-         po6It9DMJm3PgMDdQ3uKG7fLhGLZjVjFzgFcYunqV+FWdoTeiTlBP7PXjlKvAA+VIFPL
-         WFUM6c6EMGyV8x3LApvZUe690gydzMSgIS8AvyuJwBFqDspFFv6yG7g2YDjHlsuPwlEt
-         ixsg==
-X-Gm-Message-State: AOAM531MX9xgiX1h3oZ4uHZIQTxoanMHp3RSFy7LTdZUIlyiIWzNKY8T
-	AZ2McyvVRMO4HFNzMqnYEx1OwJainBMIF/y+TO8=
-X-Google-Smtp-Source: ABdhPJy2fm3oIGss6XFP3opjTuexqZ/tkw6Re/02C9CPm508jCOnod54YebGWbG5Pbb9SgLaF4OjsMTENfGT3t/Ctsg=
-X-Received: by 2002:a5e:d512:: with SMTP id e18mr24923319iom.149.1625767226997;
- Thu, 08 Jul 2021 11:00:26 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47EEA70
+	for <ksummit@lists.linux.dev>; Thu,  8 Jul 2021 18:01:58 +0000 (UTC)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+	by mailnew.nyi.internal (Postfix) with ESMTP id 247B758034B;
+	Thu,  8 Jul 2021 14:01:57 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute1.internal (MEProxy); Thu, 08 Jul 2021 14:01:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
+	date:from:to:cc:subject:message-id:references:mime-version
+	:content-type:in-reply-to; s=fm1; bh=tQsnC8f4RCma0d34nYIoAZ3m3VM
+	Al6Zmw1kpuLuKwAc=; b=GTIpRgFbWPSp12QsE929C8cIOWdRQ2S8bXOoVCiGBwy
+	tDwPMq7k3zwM4FuA+nfMu6D3SRgwqjHdTaQIinyJRQRk33VFQmBIyIJmgpue0rpU
+	1uvvu3oEsBobk9enU1K6YWU5L2OoCoFnf/KXC/pEz2rhfSzRZD7tI4uS7WDRBBIn
+	UHZvwL/5DwwLRGih2NhrlQhCHwfOhhxSff05pO6LZUXquJWWK91qG8XauBifCV0T
+	oiaagWDL71Z9VrCOHVt5RdaVA+bBiZQ2ilWToXhYBpQ9o7w2KCtWtaxq51F3HXAx
+	32vfNMZFQoM/1gQXO4eZHUal/WV8JAiWDM7ENTkJSdA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to:x-me-proxy
+	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=tQsnC8
+	f4RCma0d34nYIoAZ3m3VMAl6Zmw1kpuLuKwAc=; b=bXCdXcAAapj8e5ucHymtVK
+	oeQqxxvYV556FLQfHxhOptwMXr/DJ3hU9Afs2xEXA637/DTfNPuAvHlHqLyRaoq5
+	AfqWiSuJoxy8Vi9va3fwzoIVKJJkYa5wFdr3qI36jc833p7i20iu55FWk2HtCg06
+	zn6/gwyMjJyahO7bQxDcgD9iX83RzNzftkSS0l2VgQ03/jo/KbqOz8TDBtt1nF2j
+	7+P2hCKuYoOZnrpmF503UzYMS/yin9Vc6LDaijqTnO7rTQD8KRXmctzyKVhfmXD3
+	6UCn0n8/YOle74e85gNYl55N4R+KmGRhf1Bmroy8O/X9tpAgFeyniobqTQECp/nw
+	==
+X-ME-Sender: <xms:lD3nYNi9PTLTfgTX6PmwtXRsXDwqeU-ApSzSK3ofukST40O4p_kKRw>
+    <xme:lD3nYCAB8HcclyVJ-RSuaBJ-nxZc9Zwz9pJOVhsN2udapbznphnYetkVsBPT37Vvf
+    fgZVxeUQgcNtg>
+X-ME-Received: <xmr:lD3nYNGSE3MVY3GK4Hw8NjoCWRvXj-5d1KJc0KEGtQL4Kd0lg5vPEGMyRjcLNl3JIT7_ZjSwYGBWq5Nf3NzVOtCQ4Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrtdeggdduudeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeevueehje
+    fgfffgiedvudekvdektdelleelgefhleejieeugeegveeuuddukedvteenucevlhhushht
+    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhh
+    drtghomh
+X-ME-Proxy: <xmx:lD3nYCS1zHBhEMHJV0jmqkrq-m6UkGdMjs-e7CkOeBn5IGmlBNgDew>
+    <xmx:lD3nYKw8W2OI0ZWC0YCkjp9qkcrrQHcstUB4JGycKinbqz_pKoOT4Q>
+    <xmx:lD3nYI750d2EnRBeVTnoE6EUk9UoDKWrT6R1HFh65yFm9gqoEAnhfw>
+    <xmx:lT3nYLrIFVdjbORc4d-6Y4GBHSutbRJoMufaep5zBPUoQ49xU9mLcA>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 8 Jul 2021 14:01:55 -0400 (EDT)
+Date: Thu, 8 Jul 2021 20:01:53 +0200
+From: Greg KH <greg@kroah.com>
+To: Andy Lutomirski <luto@kernel.org>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@google.com>, Jan Kara <jack@suse.cz>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Julia Lawall <julia.lawall@inria.fr>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Roland Dreier <roland@kernel.org>, ksummit@lists.linux.dev
+Subject: Re: [TECH TOPIC] Rust for Linux
+Message-ID: <YOc9kUCpcQboxxre@kroah.com>
+References: <YOXL6Th+pot9+Fp3@kroah.com>
+ <YOXd9WoafgBr1Nkv@google.com>
+ <YOXibDV8mHT1e6ec@kroah.com>
+ <YOX+N1D7AqmrY+Oa@google.com>
+ <20210707203827.GI18396@quack2.suse.cz>
+ <YOY0HLj5ld6zHJHU@google.com>
+ <YOaW/pR0na5N9GiT@kroah.com>
+ <CANiq72kEfZ1NxSNrcDpavkq256YsiZSLkV_EABPZPQAE=VkaVg@mail.gmail.com>
+ <YOcSo3ilu+ACDnBJ@kroah.com>
+ <CALCETrUo5iLqOqd25xaDWa22ohxW5MZAOU5G=-Cu+OGy0534Ew@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <1f2a62c19845e4602817c2130d47bbea02d04d1d.camel@HansenPartnership.com>
- <CANiq72=qa2jMUKyfPmH1q1jr8n_Tm7FMy0QyWRhhpinUrvMiNA@mail.gmail.com>
- <YOXL6Th+pot9+Fp3@kroah.com> <YOXd9WoafgBr1Nkv@google.com>
- <YOXibDV8mHT1e6ec@kroah.com> <YOX+N1D7AqmrY+Oa@google.com>
- <20210707203827.GI18396@quack2.suse.cz> <YOY0HLj5ld6zHJHU@google.com>
- <YOaW/pR0na5N9GiT@kroah.com> <CANiq72kEfZ1NxSNrcDpavkq256YsiZSLkV_EABPZPQAE=VkaVg@mail.gmail.com>
- <YOcSo3ilu+ACDnBJ@kroah.com>
-In-Reply-To: <YOcSo3ilu+ACDnBJ@kroah.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 8 Jul 2021 20:00:15 +0200
-Message-ID: <CANiq72mGRPqZEB2vTPxP4L5nNc-_0s2d=zCMi1BiVZHjPkeBnA@mail.gmail.com>
-Subject: Re: [TECH TOPIC] Rust for Linux
-To: Greg KH <greg@kroah.com>
-Cc: Wedson Almeida Filho <wedsonaf@google.com>, Jan Kara <jack@suse.cz>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Julia Lawall <julia.lawall@inria.fr>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Roland Dreier <roland@kernel.org>, ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CALCETrUo5iLqOqd25xaDWa22ohxW5MZAOU5G=-Cu+OGy0534Ew@mail.gmail.com>
 
-On Thu, Jul 8, 2021 at 4:58 PM Greg KH <greg@kroah.com> wrote:
->
-> Ok, great, then how would you handle the kref issue where you need an
-> external lock to properly handle the reference counting logic in Rust?
-> Why is C so "bad" here that we require a lock but Rust would not?
+On Thu, Jul 08, 2021 at 09:38:01AM -0700, Andy Lutomirski wrote:
+> On Thu, Jul 8, 2021 at 7:58 AM Greg KH <greg@kroah.com> wrote:
+> >
+> > On Thu, Jul 08, 2021 at 03:55:31PM +0200, Miguel Ojeda wrote:
+> > >     On Thu, Jul 8, 2021 at 8:11 AM Greg KH <greg@kroah.com> wrote:
+> > > >
+> > > > Thanks for the detailed explainations, it seems rust can "get away" with
+> > > > some things with regards to reference counts that the kernel can not.
+> > > > Userspace has it easy, but note that now that rust is not in userspace,
+> > > > dealing with multiple cpus/threads is going to be interesting for the
+> > > > language.
+> > >
+> > > Regarding parallelism, userspace deals with the same problems, so I do
+> > > not see fundamental issues coming up there. The language was designed
+> > > with parallelism in mind and is a definite improvement over both C and
+> > > C++ in that regard.
+> >
+> > Ok, great, then how would you handle the kref issue where you need an
+> > external lock to properly handle the reference counting logic in Rust?
+> > Why is C so "bad" here that we require a lock but Rust would not?
+> 
+> Can you point at a specific example in the kernel tree?
 
-That's the thing: neither C nor Rust need a lock to handle the
-refcount itself, i.e. `kref` does not contain a lock, neither `Ref<T>`
-does.
+Easy ones to see are any callers of kref_put_mutex() and
+kref_put_lock().  There's also the klist.h usage that removes the need
+for using those calls as there is a different lock involved, and other
+"bigger" locks that the driver core holds when dealing with kobjects so
+it "knows" it can just call kref_put().
 
-A lock is needed when you actually interact with the contents that are
-refcounted (see my previous message about `Ref<T>`) -- and this
-applies the same way to Rust and C.
+> The
+> lock-and-then-put model is, at the very least, unusual, and the kref
+> docs talk about it like it's common and self-explanatory as to when
+> it's needed.  I have personally never encountered a need for this, and
+> I'd like to know exactly what type of use case you're thinking of.
 
-What Rust is buying is, though, and this is the critical point, is
-that we cannot make a mistake forgetting that we need to have some
-form of lock to concurrently mutate things nor forgetting we need to
-actually lock it.
+Look at the above examples for details, I can't remember them all at the
+moment.  Last time I looked into it, it took me and two graduate
+students with a whiteboard an hour to verify if we needed the lock or
+not.  I was wrong and it turns out we did :)
 
-Thus, in a way, you could think that the rules in `Doc/kref.txt` would
-be now enforced statically -- that is the difference.
+It mostly is needed when you need to return a pointer to a reference
+counted object from some sort of lookup as it was stored in a list or
+something.  Which for kernel objects, is quite common.
 
-> Ok, what "model" would be better?  We need a "base object" that has
-> solid lifecycle rules.  Right now we do have that, but it's just not the
-> easiest to use for complex objects where we have multiple objects with
-> different lifecycles that all interact together.  The v4l example is the
-> best, but the input layer also has this type of issue.
+thanks,
 
-The model can be very similar conceptually, but if we can take the
-freedom to manage the objects in the Rust side instead of forcing
-ourselves to go through C APIs (e.g. `devm_*`, dealing with
-self-referential structs, etc.), then things can be way simpler.
-
-Which is why I am asking: so far we have tried hard to reuse the C
-APIs and types, but if we can relax that constraint and come up with
-our own model (where the Rust side keeps ownership of objects), then
-we will likely end up with something better (for the Rust side).
-
-Basically, the idea is doing things in a way that is amenable to
-Rust's strengths, so that modules written in Rust are easier to write
-and so that we minimize even further the need for `unsafe`.
-
-To be extra clear: it is not that Rust cannot use/express/wrap those C
-patterns -- the key is that some of those C patterns cannot be
-statically proven to be correct by the Rust compiler (and thus require
-trusting ourselves to get them right, like in C).
-
-Cheers,
-Miguel
+greg k-h
 
