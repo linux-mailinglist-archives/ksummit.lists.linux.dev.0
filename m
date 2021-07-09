@@ -1,96 +1,114 @@
-Return-Path: <ksummit+bounces-369-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-370-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1843D3C2331
-	for <lists@lfdr.de>; Fri,  9 Jul 2021 13:56:15 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D50583C267B
+	for <lists@lfdr.de>; Fri,  9 Jul 2021 17:00:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id C53FC3E107E
-	for <lists@lfdr.de>; Fri,  9 Jul 2021 11:56:13 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id E0F821C0F23
+	for <lists@lfdr.de>; Fri,  9 Jul 2021 15:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 427E92F80;
-	Fri,  9 Jul 2021 11:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314402F80;
+	Fri,  9 Jul 2021 14:59:59 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D29D72
-	for <ksummit@lists.linux.dev>; Fri,  9 Jul 2021 11:56:05 +0000 (UTC)
-Received: by mail-vk1-f176.google.com with SMTP id i14so2122286vkd.1
-        for <ksummit@lists.linux.dev>; Fri, 09 Jul 2021 04:56:05 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A542168
+	for <ksummit@lists.linux.dev>; Fri,  9 Jul 2021 14:59:58 +0000 (UTC)
+Received: by mail-qv1-f50.google.com with SMTP id i11so739915qvv.12
+        for <ksummit@lists.linux.dev>; Fri, 09 Jul 2021 07:59:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :user-agent:mime-version:content-transfer-encoding;
+        bh=UPxJ3gYPn6Q/BkBy1PpY1LALUkWpF3gkP0nnoV3uPGQ=;
+        b=sQ/zcNfhLOGPWOi3TiY5yEMU5K/qwA7H6E+H/lCUkctIbiDGlpudmV63Xs2PkSsIIf
+         UMZxkFGXMJjV7J/jM0OmkyKVdU0fbZoz5i1QUQxJu0ecy71XyhERWgcV55DJVDbCn649
+         Z1Ze7y6TcIClrNrycyBL4SlDOSSQws4/9hswzxTwgK3ezHJ5CKlrSNJnpEHJbYOtuPzq
+         +BcHA1oBsXebq747aq4K2QBIAA/tE71JFVKjaAV51dD5LSS4Te6xi6QeE9pDhm9ZjOeq
+         dTLw/VxCoT+GmkSElTvvwYTKcnSUHpAZyXs9AGu2YIyU/0oJ/3j8AVeK278BYwBjr/nX
+         paXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=h6xFKCBJoaT/N6NByIjkVWeOrXn8HKosHhJ/fhRBKVc=;
-        b=pNNnycleBc65YA1xWEcI1qQSnq5UGCYeZ3s+iLxh11adfUnEY6v0SBMHXq4y0LAiM5
-         Oxm1jv0VSaAqj49ve5YPoAXMGFZYikv4L0+m+KPdWWRTnhLvhWR+rCyVbHq2PRE4RPSC
-         6Q+Y9eZGSeoVN6vpyp0zqnGKjbs88m08Rj4W6mWGCw5ZsLtAaijv5tzHzUOP5usVq4GQ
-         ZGxk6YDR0QZP/BpcJaD04OiXJHp/iUZA7VPmfEQ4bBIrv9OqEN3cQM0BzXw7IUVM9NwF
-         Y6S/gjx2su6JD1gmsvHhiSOltcab+EFdmdzqWzGhRcU47W68aJYva1CR1EqB36Z34s17
-         esPw==
-X-Gm-Message-State: AOAM530Ed4SM7cbXezh4yt6NOJnVHbRIKkdK2QbWXESr3Qm1toP1rBYV
-	Jy2q1weuHaJuHPzq6jnVQrsL5lF9fNKq2Tn3SeY=
-X-Google-Smtp-Source: ABdhPJxAfwYqQPRJ15s3VBDum2pGL/2wTEY26/yOUxPAhDKDVYmxXTwQEMkZ+kLvTqJ2ntwkTVNxUCQxUgCj2l1iZNM=
-X-Received: by 2002:a1f:1207:: with SMTP id 7mr14807241vks.1.1625831764920;
- Fri, 09 Jul 2021 04:56:04 -0700 (PDT)
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=UPxJ3gYPn6Q/BkBy1PpY1LALUkWpF3gkP0nnoV3uPGQ=;
+        b=UMZdUdI5g+vNUGCtiS08Y/tbvl4a9+fD6OiEaclNWGHjzpHJRrUXuKyV6pBxBqWuls
+         AO9iiLwKOy3UbVanlyUhAkVwNyI2BvH2HmT68cCc1vMK6hfi28GaQI4uOVCPNwleYfpz
+         vXbaLJOm+ELstHzVLKmmVjSLEyiIlbzt70nWHpo0eX4nZcF/TqPUirxTtI/HlrI0n18e
+         2+UewmTSEUJq+RLLv7V5+Z0fdDTURisk2SKuxbFI64TClYYh+mstlFGvn+DwhuzrijWf
+         PEa9ufR2PwS1zMz3r0OkG7Njoqj32ftCzjHsUS1VbydV/PQaYqDn0vFdD1EDHRJ2v4p/
+         mIHg==
+X-Gm-Message-State: AOAM532L6M6xAxv81YBpVNcRMhZwulV7aJ4aB7S5thDCmlKvBpcyOUTR
+	h264wke5GXZlqFOp9dJ5sxY=
+X-Google-Smtp-Source: ABdhPJyX/Un68bKHWzwTyzU6rTsHzpzbGPSq410/qcZfd+mZ3ZqbPXCLb9IbA6KxuEndO7ZuGXI1GA==
+X-Received: by 2002:a0c:f7ca:: with SMTP id f10mr12099461qvo.1.1625842796251;
+        Fri, 09 Jul 2021 07:59:56 -0700 (PDT)
+Received: from [192.168.86.57] ([130.44.160.152])
+        by smtp.gmail.com with ESMTPSA id g19sm2355477qtg.36.2021.07.09.07.59.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Jul 2021 07:59:55 -0700 (PDT)
+Message-ID: <22d1051d4aa1e3db742349ab213485fe3429feec.camel@gmail.com>
+Subject: Re: [Tech Topic] Integrating GitLab into the Red Hat kernel workflow
+From: ketuzsezr@gmail.com
+To: Don Zickus <dzickus@redhat.com>, ksummit@lists.linux.dev
+Cc: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+Date: Fri, 09 Jul 2021 10:59:55 -0400
+In-Reply-To: <20210707211951.fyiflsp75i7spcha@redhat.com>
+References: <20210707211951.fyiflsp75i7spcha@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CANiq72n=8Do_9suDeJdwoF_8ZR-uLEj2r9cRSB_k=yTk_q0FHw@mail.gmail.com>
- <1f2a62c19845e4602817c2130d47bbea02d04d1d.camel@HansenPartnership.com>
- <CANiq72=qa2jMUKyfPmH1q1jr8n_Tm7FMy0QyWRhhpinUrvMiNA@mail.gmail.com>
- <YOXL6Th+pot9+Fp3@kroah.com> <YOXd9WoafgBr1Nkv@google.com>
- <YOXibDV8mHT1e6ec@kroah.com> <YOX+N1D7AqmrY+Oa@google.com>
- <20210707203827.GI18396@quack2.suse.cz> <YOY0HLj5ld6zHJHU@google.com>
- <CAMuHMdWtRzoj9Evk2Eke08vjhySfYRXE1Uj7ZqXTZt-tuExXKQ@mail.gmail.com>
- <YOcApBj/puXe3Yig@google.com> <CAMuHMdW+zSO25vAriii0hAkvt_SkMhNxvundhAXsgFdmyZ-4oA@mail.gmail.com>
- <CANiq72mquf7oVc8hYntYvksuiLDwqUJKvtx7sri6XXgqAAVAsA@mail.gmail.com>
- <CAMuHMdXcL6iYzcL+W9NLkhk+bHXddHna6XYE_Wu6Wun9XKxm2A@mail.gmail.com>
- <CANiq72kGBz=ohqS_YbTGc_CuRGxd-xmim-RT=pHHjMzi=39gSw@mail.gmail.com>
- <CAMuHMdVeFtRp5tUbErqqyUXz2Mrz8kCc7XbYs4Y6vr8n50A_jA@mail.gmail.com> <CANiq72mG42G1n7TB+FWyxFxQPaoKWZOq-uXQcLz_CRwny0Ho+g@mail.gmail.com>
-In-Reply-To: <CANiq72mG42G1n7TB+FWyxFxQPaoKWZOq-uXQcLz_CRwny0Ho+g@mail.gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 9 Jul 2021 13:55:53 +0200
-Message-ID: <CAMuHMdUfX9tzUO9GGy4tFBkx1b1vfF0RQrm0PDyYdPkD=zqgyA@mail.gmail.com>
-Subject: Re: [TECH TOPIC] Rust for Linux
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Wedson Almeida Filho <wedsonaf@google.com>, Jan Kara <jack@suse.cz>, Greg KH <greg@kroah.com>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Julia Lawall <julia.lawall@inria.fr>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Roland Dreier <roland@kernel.org>, ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 
-Hi Miguel,
+On Wed, 2021-07-07 at 17:19 -0400, Don Zickus wrote:
+> Submission #89:
+> 
+> The Red Hat kernel team recently converted their RHEL workflow from
+> PatchWork to GitLab. This talk will discuss what the new workflow
+> looks like
+> with integrated CI and reduced emails. New tooling had to be created
+> to
+> assist the developer and reviewer. Webhooks were utilized to autoamte
+> as
+> much of the process as possible making it easy for a maintainer to
+> track
+> progress of each submitted change. Finally using CKI, every submitted
+> change
+> has to pass CI checks before it can be merged.
+> 
+> We faced many challenges especially around reviewing changes.
+> Resolving
+> those led to a reduction of email usage and an increase in cli tools.
+> Demos
+> of those tools will be included.
+> 
+> Attendees will leave with an understanding how to convert or
+> supplement
+> their workflow with GitLab.
+> 
 
-On Thu, Jul 8, 2021 at 4:36 PM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
-> On Thu, Jul 8, 2021 at 4:33 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > What if I would ignore that? I.e.
-> >
-> >     let Some(content) = strong;
-> >     println!("{}", content);
-> >
-> > ?
->
-> It does not compile :-)
+Hey Don!
 
-Oh, so it's like __must_check and -Werrror on steroids ;-)
+This sounds quite interesting to not just folks who are invited to the
+kernel summit but also those who work on distro kernels day-to-day.
 
-Gr{oetje,eeting}s,
+Would it perhaps be worth doing this on also on a venue that is more
+open to distro kernel engineers (who aren't neccesarily invited to the
+kernel summit)?
 
-                        Geert
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Thanks!
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+> 
+
+
 
