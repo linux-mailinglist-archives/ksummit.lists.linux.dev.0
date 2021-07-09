@@ -1,152 +1,118 @@
-Return-Path: <ksummit+bounces-371-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-372-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
-	by mail.lfdr.de (Postfix) with ESMTPS id E46C73C273F
-	for <lists@lfdr.de>; Fri,  9 Jul 2021 18:03:01 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B86893C27CD
+	for <lists@lfdr.de>; Fri,  9 Jul 2021 18:54:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 9CF873E10D5
-	for <lists@lfdr.de>; Fri,  9 Jul 2021 16:03:00 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 511D83E10AC
+	for <lists@lfdr.de>; Fri,  9 Jul 2021 16:54:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55042F80;
-	Fri,  9 Jul 2021 16:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3F82FAE;
+	Fri,  9 Jul 2021 16:54:03 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-il1-f170.google.com (mail-il1-f170.google.com [209.85.166.170])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6240168
-	for <ksummit@lists.linux.dev>; Fri,  9 Jul 2021 16:02:52 +0000 (UTC)
-Received: by mail-il1-f170.google.com with SMTP id g3so10840582ilj.7
-        for <ksummit@lists.linux.dev>; Fri, 09 Jul 2021 09:02:52 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1368177
+	for <ksummit@lists.linux.dev>; Fri,  9 Jul 2021 16:54:02 +0000 (UTC)
+Received: by mail-wm1-f46.google.com with SMTP id k16-20020a05600c1c90b02901f4ed0fcfe7so6698188wms.5
+        for <ksummit@lists.linux.dev>; Fri, 09 Jul 2021 09:54:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Sej+T/bePMdoiBqNeQkF4QPgZxgyOdE8cD4ihrSSbfI=;
-        b=qgCxE7WwyvZytoJlXsAY5bBBpYItZp90AEBkhxuSs33FpgAyimh3HbH8LJskkyVTKH
-         F6N5MA3gEc8KegVs3Qewi0aXgVwHUyZ4fPfQJdDNShozPPlB5T/Y7u5czlSkEJqmDbNL
-         YKXb9cDQFTXs2PHfcgfqcm0nn1+sMqtwiRx1cRWmxzqEemA7tArMyI83cta/LmzmjJQG
-         KttSvA+SX6m0ZSIq7DjlwVqZuVz9mixK0sGtk9ZbKABB5TL7RYCue6XjPU7KBJ+KVm3r
-         VrZiFVQzxGTkl2LmIKNinptE5JwfgIfzsmhHOymT8XxfayTaJ0aQ+ViYvAVzaMNRR+tv
-         kG0A==
+        d=google.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=tGx/Hhtktq5XL21G9CR+S7THOHzE1gtry7WRR08sgJc=;
+        b=cupw7tryTd77+XT+VaH1nBrMlM+Rn0FAThJffHxhuOX82g6T4MKr0cZ1YEaQzquOJo
+         tu9zFcF3Z/s1n/EKJCL0Y3D8nsaoIF4GlbqueUcIUh/0fNo8l3GNJ4ZvTBP70WL7FIkU
+         ElI17lrunxvGCYwNyfuRWN7sYRNChrOSuU0so6gvBMSF26ujWgMfM1xLPhtoMoIy7hFS
+         Z3mAfRlaODgwf45Gs3s+24cWK9yD9gahAYJnBOHXBpzFQk/JL6wuCQ4MffgQT4OAOLXz
+         fFt04ejJnPiuB5fRo7DpKLtPqKm8Oq+/lNETgMntNyLNkklGcZOKW/l49cL4tQFKCdKg
+         V5OA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Sej+T/bePMdoiBqNeQkF4QPgZxgyOdE8cD4ihrSSbfI=;
-        b=bA3dDiTsKvLZL5XP0drsPCZnnBQV0d56BS9O/ikDdv5TTlmR1puWT+DZkZ4FttxK31
-         clyOGD+EtHkzSkaXsVXAeKIQdrMaCVSSzQkC22oXJ2lXxzVvMr6BXYqFvKgQt/AcdUv/
-         BS52CSDMTHKGQdCgQ33hwseT1N7V9oIqlmaAtfn3P4M3FA3GPX/dw2fGOQgabUxitgsp
-         CuI70ok/QeE0XCw/nptHOc6MVwhso71rxYr78E51BEfph3x/yWnGjt3PLW1bpd+XRLrK
-         X3VYUZ2EJkJ7l9Su8Ta9P7tQY85/zkMFi4TnYiJdq6TrCpGta5PyJnjxa+NRkcIeKyBG
-         cvng==
-X-Gm-Message-State: AOAM530qs3tXSIVtbkYsVjVHQZUh7dQ4rFYdba8TReUHfshHSJNfJS/h
-	5Xn3fsXkmisE+DqMHxGvtr6r4H6xcyNyExYe7t4=
-X-Google-Smtp-Source: ABdhPJwibvdrh9O1bbHdASJ40CoPB4/vsE9e/JLYAGsZJatgzdR603+P/fyHkS/RflB8mqWgdw+KNkqGyKvESWziVt8=
-X-Received: by 2002:a05:6e02:1d04:: with SMTP id i4mr27150441ila.149.1625846571843;
- Fri, 09 Jul 2021 09:02:51 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=tGx/Hhtktq5XL21G9CR+S7THOHzE1gtry7WRR08sgJc=;
+        b=irB6c4AEeamGJwqwsUMF+DK1acO8oEq2WO+LwLtmsybj+7/9fMgRuMRsIWfEns6wzQ
+         hz/liipledKvm+TZrblcnXKa/JE9M6Ml91PQ9wzV1euwAPyT9iwSEIW3oNPxkfRX37Pk
+         Lk3XUxX0EhO1HrDJb6LDpA1HBrONyMpbCyy5kU5xWyISz/whApi15expVLzT/HKrtwxe
+         Y8KE2LE67CMwRRLa/g2zSNir058NDB/NmRi+UycXYs8SWE+0aqeKyPFJaT1fdQV0u9r4
+         jpw/I34Bwcq53SrxQZogpoQALP5fblD99G0fqraQiKYRl232kYOV6iakqiPbHkf6ceBJ
+         dfKw==
+X-Gm-Message-State: AOAM533RcMaq0vSnrC7K5hGmRsMmM3zf3NmR6NrJd0AZaiywdxJktUZt
+	2mxQ6hhe6k51t0/sU8zhaAF1
+X-Google-Smtp-Source: ABdhPJyN6b073f0q0LgsmJVvz2pDE4XdUYJjS1IVJEOdz5cXGAkwwL4/qDxt/jU51wQJgOC1Yg3VpA==
+X-Received: by 2002:a7b:c247:: with SMTP id b7mr40475720wmj.44.1625849640931;
+        Fri, 09 Jul 2021 09:54:00 -0700 (PDT)
+Received: from google.com ([2a00:79e0:d:209:8574:f6d5:2ca2:8ba3])
+        by smtp.gmail.com with ESMTPSA id p2sm1639906wmg.6.2021.07.09.09.54.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Jul 2021 09:54:00 -0700 (PDT)
+Date: Fri, 9 Jul 2021 17:53:56 +0100
+From: Wedson Almeida Filho <wedsonaf@google.com>
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Greg KH <greg@kroah.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Mark Brown <broonie@kernel.org>, Roland Dreier <roland@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	ksummit@lists.linux.dev, Daniel Vetter <daniel@ffwll.ch>,
+	Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: Re: cdev/devm_* issues (was Re: [TECH TOPIC] Rust for Linux)
+Message-ID: <YOh/JC//dotfm5J9@google.com>
+References: <CAG4TOxMzf1Wn6PcWk=XfB+SV+MHwbxUq8t1RNswie5e3=Y+OXQ@mail.gmail.com>
+ <CACRpkdZyJd0TW5aVRfxSSWknzCyVhjMwQuAj9i9iuQ6pW9vftQ@mail.gmail.com>
+ <20210707105000.GA4394@sirena.org.uk>
+ <c24c61f498f43f589eafd423e51f997134d198b7.camel@HansenPartnership.com>
+ <YOWcCG9Pm/S+EXFw@kroah.com>
+ <11c07bc291b443c2683a2baff5b180ff5b0729a5.camel@HansenPartnership.com>
+ <YOWh0Dq+2v+wH3B4@kroah.com>
+ <YOXhlDsMAZUn1EBg@pendragon.ideasonboard.com>
+ <YOagA4bgdGYos5aa@kroah.com>
+ <CACRpkdasOaNgBAZVx5qpKJdU7h41jHDG2jWi2+pi9a1JBh7RTQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
- <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com>
- <YOPcZE+WjlwNueTa@unreal> <19e0f737a3e58ed32758fb4758393c197437e8de.camel@HansenPartnership.com>
- <CANiq72mPMa9CwprrkL7QsEChQPMNtC61kJgaM4Rx0EyuQmvs2g@mail.gmail.com> <YOgesjNqpsZNK5Gf@elver.google.com>
-In-Reply-To: <YOgesjNqpsZNK5Gf@elver.google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 9 Jul 2021 18:02:40 +0200
-Message-ID: <CANiq72n8fJ8S5R4YKZBDuNFMCN3cDOUmk+6Rtp-ikNVwceX-Ng@mail.gmail.com>
-Subject: Re: [TECH TOPIC] Rust for Linux
-To: Marco Elver <elver@google.com>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Leon Romanovsky <leon@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, ksummit@lists.linux.dev, 
-	kasan-dev <kasan-dev@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACRpkdasOaNgBAZVx5qpKJdU7h41jHDG2jWi2+pi9a1JBh7RTQ@mail.gmail.com>
 
-On Fri, Jul 9, 2021 at 12:02 PM Marco Elver <elver@google.com> wrote:
->
-> I think the main point was about the combination of sanitizers paired
-> with fuzzers like syzkaller.
+On Fri, Jul 09, 2021 at 01:06:22AM +0200, Linus Walleij wrote:
+> The crucial part is what happens when a device with GPIOs
+> disappears, if e.g. the USB device is unplugged or the driver
+> is rmmod:ed by force from the command line. We then unregister
+> the struct gpio_chip and drop all devm_*  resources taken by the
+> driver (referencing the struct dev in the USB device or so) so these
+> go away, but the struct gpio_device stays around
+> until the last reference from userspace is dropped.
+> 
+> In order to not crash calls from the character device the device is
+> "numbed", so any calls will just return "OK" but nothing happens.
+> We then hope userspace will be so nice to terminate once it realizes
+> that it is no longer needed, closing the chardev and releasing the
+> resources held.
 
-Yes, and my reply was that compile-time detection of bugs is way, way
-better than runtime detection + relying on being lucky enough to hit
-the bug via testing and/or fuzzing.
+In preparation for writing the abstractions to implement a gpio driver in Rust,
+I was reading through some of the code you describe above.
 
-> I sincerely hope that not too much trust will be put into Rust-only
-> dynamic analysis via something like Miri (for the unsafe parts). For the
-> (...)
+Unless I'm missing something (very much possible!), this "numbing" seems to not
+be synchronised, that is, there are still race windows when userspace may cause
+UAFs in the kernel.
 
-I never claimed that we should blindly trust unsafe code written in
-Rust, nor that we should only perform Rust-only dynamic analysis.
-Quite the opposite: I mentioned there is already tooling around it
-precisely because we need as much of it as possible.
+For example, gpiochip_remove sets gdev->chip to NULL; gpio_ioctl returns -ENODEV
+if gdev->chip is NULL, which I believe is an instance of what you describe
+above. However, what ensures that it remains non-null? I see that in functions
+called by gpio_ioctl (e.g., lineinfo_get), gdev->chip is used as if it were
+guaranteed to be valid.
 
-Put another way: the topic is "what Rust buys us", not "what unsafe
-Rust buys us". That is, the goal is writing abstractions in a way that
-we maximize the amount of safe Rust code for modules etc. But,
-obviously, the Rust abstractions that deal with unsafe code (e.g.
-calling C) need to be as carefully reviewed and analyzed as C code is
--- nobody claimed otherwise.
+Is my reading correct or is there some synchronisation that I'm missing?
 
-> It is very likely that if the Rust portion is analyzed alone, be it
-> statically or dynamically, that there will remain undiscovered bugs due
-> to improper abstractions between C and Rust. While I fully see that
-
-Definitely, but there are some things that are amenable to be analyzed
-on their own. For instance, for data structures written in pure Rust,
-Miri is a powerful tool we should be using right away.
-
-> Rust's static guarantees are strong for safe code, I'm pragmatic and
-
-Note that even within the unsafe subset there are some benefits over
-C, such as the borrow checker (it is still enabled in unsafe code),
-pattern matching and type system in general (e.g. like the
-`Option`/`Result` example a few emails above about being unable to
-mistakenly use its contents if there are none; that you can create
-types that enforce invariants, that it is stronger overall than
-C's...), etc.
-
-It also has some downsides, though: the rules one needs to abide by in
-unsafe code are different than C's (e.g. due to new concepts like
-references), and thus one should be careful about conflating
-assumptions.
-
-Side-note: our coding guidelines enforce that every `unsafe` block
-must be documented with a proof of why such block is sound. Same for
-invariants that a type holds. Moreover, we require all public APIs to
-be documented, etc. This is a way of saying that, even for unsafe
-code, we are trying to be stricter than the C side.
-
-> just do not believe those building the safe abstractions from unsafe
-> code will not make mistakes nor will those abstractions shield from
-> changed behaviour on the C side that directly affects safety of the Rust
-> abstraction.
-
-Again, please note we never claimed anything like that.
-
-It is the opposite: we want to use Rust precisely because we want to
-be able to statically enforce as much as we can -- that is, maximizing
-the amount of safe code.
-
-> Not only will Rust integration with K*SANs be required to catch early
-> bugs in the abstractions, but also be necessary to catch e.g.
-> use-after-frees in Rust code where C code freed the memory erroneously,
-> or data races between Rust and C code.
-
-It might be possible to eliminate some classes of bugs if we avoid
-mixing C and Rust too much.
-
-For instance, if we have a model where we allow the Rust side to
-manage ownership of some objects (instead of being forced to always go
-through the C APIs), then we may be able to statically guarantee more
-things and further maximize the amount of safe code, in particular in
-modules -- which is why I raised the question earlier.
-
-Cheers,
-Miguel
+Thanks,
+-Wedson
 
