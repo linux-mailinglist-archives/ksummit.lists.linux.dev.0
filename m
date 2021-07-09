@@ -1,135 +1,133 @@
-Return-Path: <ksummit+bounces-367-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-368-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66C5B3C1FFC
-	for <lists@lfdr.de>; Fri,  9 Jul 2021 09:24:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B34AF3C220A
+	for <lists@lfdr.de>; Fri,  9 Jul 2021 12:02:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id 74E351C0F17
-	for <lists@lfdr.de>; Fri,  9 Jul 2021 07:24:37 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id AEA041C0F27
+	for <lists@lfdr.de>; Fri,  9 Jul 2021 10:02:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939312F80;
-	Fri,  9 Jul 2021 07:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 241A22F80;
+	Fri,  9 Jul 2021 10:02:35 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FAEF70
-	for <ksummit@lists.linux.dev>; Fri,  9 Jul 2021 07:24:29 +0000 (UTC)
-Received: by mail-vk1-f175.google.com with SMTP id x20so1973317vkd.5
-        for <ksummit@lists.linux.dev>; Fri, 09 Jul 2021 00:24:29 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E532C168
+	for <ksummit@lists.linux.dev>; Fri,  9 Jul 2021 10:02:33 +0000 (UTC)
+Received: by mail-wr1-f51.google.com with SMTP id k4so5086687wrc.8
+        for <ksummit@lists.linux.dev>; Fri, 09 Jul 2021 03:02:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=pMpdjHLOcFTwAYrNYMAV3UZbyINNRc9Ym5LX3jQiX7o=;
+        b=aADWTyMAEm9ko2w6Z2B0cHVLoitEzLkHNI0vhcbNbZuYxKrBjehaGju9eEazVHID8q
+         5tQAXrVE1E7LrIgdCXFfjsmAaTACA+QOAwl+cpUKoOlhFblXYDwKSZUma4ezSjsTo54S
+         qI9t55qZc9CWD91Nnz+/ahZdm8cDdxp7eFXMdT7qaxq3niAzuETmCjkkab9GNKPowwBA
+         i/t2+PlfQwqFgUdSnN/O85f57aYULPQcwGjR+CiUO68hQ3R8P0CouKjd84kwMzeyx1zv
+         UaY4C5ZZj+zVTbms4G9tLVk1aWGH0I+W1R+yxM1rYHl52BVOsoePW8iZkSjbbMi2wL31
+         zSQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=tCqEXFc24XvKiFkOa/fiWYH4DXDnsx7wiFTJWpA4rKI=;
-        b=H8cuodBlZ2FXS4YssEWaz4u93myVh6hKFlvtMFuc6iWxFYsdZR7HFuVi4Stc5G4x3H
-         5nX1PklUlf16zcR0Eyk7HEPjVK2ZCUzxGxR2uk6m+sGBZL4M1m41CogKSx78gwCcqwPt
-         ndMaQDoYcmcrzKL9v5ce1uH0kA12/85oNO+bLSkc2Nd0FETddlxwus8wxxT3mEZq4fOi
-         QnbfmH5IZjVeGpfYmWb/9cd836HZ70PmmoF7IY1u0brGljkTCgmQlODFpbZb6+fOKDWZ
-         ceGwyhPIG8yZxUNuvY+2f1dQECBIh6gThgkTaa5B/m3QkqovLCuRmtQnujVsqgphFA9A
-         lQLQ==
-X-Gm-Message-State: AOAM5319S9FOdFUT9j9Jdsa+gqyw8nDt7AaP8Ai/HTLQn9xmX1gN0w+4
-	whKwiR5qJMr/pL2r2O/5aTYKYFIWHs/rFntsvVE=
-X-Google-Smtp-Source: ABdhPJzaU3neZsjAhS7cWSCC1o70unv3wmChdBVMX3/5A9qT8J51Jrwi7Kv5qaEnjJut5BNeb//U+yH5eyrgGtV9a04=
-X-Received: by 2002:a1f:1a41:: with SMTP id a62mr30561501vka.5.1625815468163;
- Fri, 09 Jul 2021 00:24:28 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=pMpdjHLOcFTwAYrNYMAV3UZbyINNRc9Ym5LX3jQiX7o=;
+        b=Vp1yJmOeI9EfkSveXH5Y3Srfq0v8mhHxDjB6eBvJw2+Iw7GwcOWxQeM72jx14gB/w1
+         L2u1TbOT4HDfhOML2TrQj24d0z6RJIP9edz6qJa0g99Sdq/lXvzC4IDd57dIUwyb6Ih7
+         JIyTxe97EVHwYnXaxfL7DwakIpxteoMxfEF7m8JKuVfnZhHnQj4nP+P+ruOb05d1u8lK
+         r7EdoSJcOHp83RmAulyqbPowaOvcW20Fupz7FD9+987CV37OFZTVio1MYSrEgXAbrP3x
+         L8JiEJOy7FDJvnDLV9l8C5On6XJ+OLJRxxekGFbURQr1DnCmU6wBFCblKuGzQ4VydUdG
+         fXBw==
+X-Gm-Message-State: AOAM531CguqnvZd1iXv2/P6016Ti6F7zvLjequ8VLf+BxPHuwyJnJ2cy
+	2zEwDPVUAw8OC2Cxjr0br31s7w==
+X-Google-Smtp-Source: ABdhPJxAmOJs+uxEXwn6DlroBn0emCenwLGwjVq+d4CqxGHhQelOK9B1ktdb79/O97Jb8GqOgchOlw==
+X-Received: by 2002:a05:6000:551:: with SMTP id b17mr39732334wrf.32.1625824952017;
+        Fri, 09 Jul 2021 03:02:32 -0700 (PDT)
+Received: from elver.google.com ([2a00:79e0:15:13:8f0a:b44a:3744:8a04])
+        by smtp.gmail.com with ESMTPSA id x4sm11724356wmi.22.2021.07.09.03.02.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Jul 2021 03:02:31 -0700 (PDT)
+Date: Fri, 9 Jul 2021 12:02:26 +0200
+From: Marco Elver <elver@google.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>, ksummit@lists.linux.dev,
+	kasan-dev@googlegroups.com
+Subject: Re: [TECH TOPIC] Rust for Linux
+Message-ID: <YOgesjNqpsZNK5Gf@elver.google.com>
+References: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
+ <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com>
+ <YOPcZE+WjlwNueTa@unreal>
+ <19e0f737a3e58ed32758fb4758393c197437e8de.camel@HansenPartnership.com>
+ <CANiq72mPMa9CwprrkL7QsEChQPMNtC61kJgaM4Rx0EyuQmvs2g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <1f2a62c19845e4602817c2130d47bbea02d04d1d.camel@HansenPartnership.com>
- <CANiq72=qa2jMUKyfPmH1q1jr8n_Tm7FMy0QyWRhhpinUrvMiNA@mail.gmail.com>
- <YOXL6Th+pot9+Fp3@kroah.com> <YOXd9WoafgBr1Nkv@google.com>
- <YOXibDV8mHT1e6ec@kroah.com> <YOX+N1D7AqmrY+Oa@google.com>
- <20210707203827.GI18396@quack2.suse.cz> <YOY0HLj5ld6zHJHU@google.com>
- <YOaW/pR0na5N9GiT@kroah.com> <YOb/aJC2VuOcz3YY@google.com>
- <YOdJLYmUkoMyszO7@kroah.com> <CACRpkdaMZQSQQu_w76S6DBhQ2_ah4Lfz==NdNDBMsSXuW8m-rw@mail.gmail.com>
- <CANiq72ntKzqBWFP-dTKAmsmwfshQa3fc+jm6m4mns4TdRgcCiA@mail.gmail.com> <CACRpkdZkWQ=dWieyRch7aFuLOJ+WB_he_Bb_A2z_zJw+BZrQJA@mail.gmail.com>
-In-Reply-To: <CACRpkdZkWQ=dWieyRch7aFuLOJ+WB_he_Bb_A2z_zJw+BZrQJA@mail.gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 9 Jul 2021 09:24:16 +0200
-Message-ID: <CAMuHMdWvXsBCyJcKjOQUKyQtwcnW0PPW+xYUA-eujbxCbWht4A@mail.gmail.com>
-Subject: Re: [TECH TOPIC] Rust for Linux
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Greg KH <greg@kroah.com>, 
-	Bartosz Golaszewski <bgolaszewski@baylibre.com>, Kees Cook <keescook@chromium.org>, 
-	Wedson Almeida Filho <wedsonaf@google.com>, Jan Kara <jack@suse.cz>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Julia Lawall <julia.lawall@inria.fr>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Roland Dreier <roland@kernel.org>, 
-	ksummit@lists.linux.dev, Viresh Kumar <viresh.kumar@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72mPMa9CwprrkL7QsEChQPMNtC61kJgaM4Rx0EyuQmvs2g@mail.gmail.com>
+User-Agent: Mutt/2.0.5 (2021-01-21)
 
-Hi Linus,
-
-On Fri, Jul 9, 2021 at 12:13 AM Linus Walleij <linus.walleij@linaro.org> wrote:
-> On Thu, Jul 8, 2021 at 10:34 PM Miguel Ojeda
-> <miguel.ojeda.sandonis@gmail.com> wrote:
-> > On Thu, Jul 8, 2021 at 9:49 PM Linus Walleij <linus.walleij@linaro.org> wrote:
-> > > With my GPIO maintainer hat on I'd say a GPIO driver would be quite
-> > > interesting to look at. We are two GPIO maintainers and Bartosz is
-> > > doing the heavy lifting for the moment so I'm connecting Bartosz to this
-> > > discussion. (Now he has to read through the whole backlog,
-> > > sorry Bart!)
-> > >
-> > > This is not to say I promise we will merge it or so, but I just generically
-> > > like new approaches to old problems so I like this whole thing
-> > > overall, despite being critical to some details.
-> > >
-> > > I am also trying to learn Rust. Baby steps.
+On Tue, Jul 06, 2021 at 04:55PM +0200, Miguel Ojeda wrote:
+> On Tue, Jul 6, 2021 at 12:20 PM James Bottomley
+> <James.Bottomley@hansenpartnership.com> wrote:
 > >
-> > Thanks a lot for this offer Linus.
+> > The main advantage is supposed to be "memory safety":
 > >
-> > Do you have a particular one in mind? Ideally, it would be one that
-> > has QEMU support or a test suite of some kind, or at least one that
-> > you can easily test for us etc.
->
-> I don't use QEMU for GPIO development, we are so close to the
-> real hardware that it's often not appropriate. We have a testing
-> module but that is not a real world driver and would not meet the
-> expectations set here of creating real hardware drivers.
->
-> I have seen that QEMU has a piece of code for the Arm PrimeCell
-> PL061 GPIO block which corresponds to drivers/gpio/gpio-pl061.c
-> Note that this hardware apart from being used in all Arm reference
-> designs is used on ARMv4T systems that are not supported by
-> LLVM but only GCC, which might complicate things.
+> > https://en.wikipedia.org/wiki/Memory_safety
+[...]
+> > The other thing that makes comparison with C hard is the fact that
+> > compilers and fuzzers are pretty good at detecting memory problems in
+> > the existing code, so it's unclear what memory safety ab initio
+> > actually buys for the kernel.
+> 
+> Compilers definitely do not detect all memory safety issues -- not
+> even close. They cannot anyway, in the general case. Not even in C++
+> with `std::unique_ptr`, `std::vector`, etc. Rust can do so because it
+> places extra restrictions in the modeling capabilities (in the safe
+> subset only).
 
-Still, the PL061 emulation may be incomplete.  It also doesn't do that
-much yet, i.e. you cannot use it to blink a virtual LED.
+I think the main point was about the combination of sanitizers paired
+with fuzzers like syzkaller.
 
-> I am a bit oldschool in that I think real hardware is awesome to test
-> on. GPIO drivers exist in many shapes and sizes, some are directly
-> memory-mapped to hardware registers, some are I2C or SPI.
-> Most Raspberry Pis and Beagle Boards have them, albeit the
-> on-chip GPIOs are often also pin controllers which complicates
-> things. Expanders on I2C and SPI will be simpler. Maybe look
-> for an I2C or SPI expander that has no existing kernel support and
-> implement it in Rust?
+> Runtime detection of UB in C is, of course, possible, but the idea is
+> to have static guarantees vs. runtime-checked ones. There is also
+> runtime detection of UB in Rust for unsafe code with tooling like
+> Miri. plus all the language-independent tooling, of course.
 
-That still requires an I2C or SPI bus, which may not be that easy
-to find for people who don't have embedded boards on their desk...
-Do you know of any unsupported expanders that connect to USB?
-Something like an MCP2210 dev board[1], but that one is mainly
-intended for SPI, although some pins can be used as GPIOs.  There
-is no upstream driver yet, but there is an out-of-tree driver and a
-FOSDEM presentation.
+I sincerely hope that not too much trust will be put into Rust-only
+dynamic analysis via something like Miri (for the unsafe parts). For the
+kernel, first and foremost, the Rust integration will require proper
+integration with existing sanitizers (with `rustc -Zsanitizer=`??):
+KASAN, KCSAN (possibly KMSAN which is still out-of-tree).
 
-[1] E.g. https://www.digikey.be/product-detail/en/microchip-technology/ADM00419/ADM00419-ND/3046570
+We have years of experience with kernel dynamic analysis, and discover
+over and over that bugs are missed due to uninstrumented code paths
+(including inline asm and such), and put in a lot of effort to
+instrument as much as possible.
 
-Gr{oetje,eeting}s,
+It is very likely that if the Rust portion is analyzed alone, be it
+statically or dynamically, that there will remain undiscovered bugs due
+to improper abstractions between C and Rust. While I fully see that
+Rust's static guarantees are strong for safe code, I'm pragmatic and
+just do not believe those building the safe abstractions from unsafe
+code will not make mistakes nor will those abstractions shield from
+changed behaviour on the C side that directly affects safety of the Rust
+abstraction.
 
-                        Geert
+Not only will Rust integration with K*SANs be required to catch early
+bugs in the abstractions, but also be necessary to catch e.g.
+use-after-frees in Rust code where C code freed the memory erroneously,
+or data races between Rust and C code.
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+But it will ultimately also prove that the main proposition of Rust in
+the kernel holds: less bugs in the Rust parts over time.
 
