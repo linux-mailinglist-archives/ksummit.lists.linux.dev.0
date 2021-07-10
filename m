@@ -1,87 +1,170 @@
-Return-Path: <ksummit+bounces-376-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-377-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
-	by mail.lfdr.de (Postfix) with ESMTPS id E56A83C3409
-	for <lists@lfdr.de>; Sat, 10 Jul 2021 12:01:46 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB2A23C3590
+	for <lists@lfdr.de>; Sat, 10 Jul 2021 18:43:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id EFAE01C0EF1
-	for <lists@lfdr.de>; Sat, 10 Jul 2021 10:01:45 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 6F0C13E110B
+	for <lists@lfdr.de>; Sat, 10 Jul 2021 16:43:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2931E2F80;
-	Sat, 10 Jul 2021 10:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82052F80;
+	Sat, 10 Jul 2021 16:43:10 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from haggis.mythic-beasts.com (haggis.mythic-beasts.com [46.235.224.141])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B412168
-	for <ksummit@lists.linux.dev>; Sat, 10 Jul 2021 10:01:37 +0000 (UTC)
-Received: from [81.101.6.87] (port=55660 helo=[192.168.0.8])
-	by haggis.mythic-beasts.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92.3)
-	(envelope-from <jic23@jic23.retrosnub.co.uk>)
-	id 1m29fh-0007AB-4X; Sat, 10 Jul 2021 10:53:17 +0100
-Date: Sat, 10 Jul 2021 10:53:07 +0100
-User-Agent: K-9 Mail for Android
-In-Reply-To: <CANiq72=gjOZsy8NMw-tUSjhfeAnBTot59d0NoCO7sY3h=YTRrQ@mail.gmail.com>
-References: <YOXL6Th+pot9+Fp3@kroah.com> <YOXd9WoafgBr1Nkv@google.com> <YOXibDV8mHT1e6ec@kroah.com> <YOX+N1D7AqmrY+Oa@google.com> <20210707203827.GI18396@quack2.suse.cz> <YOY0HLj5ld6zHJHU@google.com> <YOaW/pR0na5N9GiT@kroah.com> <YOb/aJC2VuOcz3YY@google.com> <YOdJLYmUkoMyszO7@kroah.com> <CACRpkdaMZQSQQu_w76S6DBhQ2_ah4Lfz==NdNDBMsSXuW8m-rw@mail.gmail.com> <20210709170649.GD4112@sirena.org.uk> <CANiq72=gjOZsy8NMw-tUSjhfeAnBTot59d0NoCO7sY3h=YTRrQ@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F325972
+	for <ksummit@lists.linux.dev>; Sat, 10 Jul 2021 16:43:08 +0000 (UTC)
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 99AAD255;
+	Sat, 10 Jul 2021 18:43:00 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1625935380;
+	bh=mAz8CrdM1na+5AUGde+IAGw4mPiUSkYw7fw0RfkIkkY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qP9+rm0WegTXFqkqYG7gvWhLd6zOFp/+HTjZtNnqRetjtNp9hL3ad3U8o1NiftiEa
+	 z1HWr37Vj2qn7PYCx5R0tmAaGh6IgIItUj1l7SnMSvHd9QEWWnr0SBIdl0T8vyjBSS
+	 4Ay+e32fpf0nJRyRKDU+aJmxOLxbr1wGcYVzbicM=
+Date: Sat, 10 Jul 2021 19:42:14 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Greg KH <greg@kroah.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Mark Brown <broonie@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Roland Dreier <roland@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	ksummit@lists.linux.dev, Daniel Vetter <daniel@ffwll.ch>
+Subject: Re: [TECH TOPIC] Rust for Linux
+Message-ID: <YOnN5qTtauUEf+XX@pendragon.ideasonboard.com>
+References: <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com>
+ <CAG4TOxMzf1Wn6PcWk=XfB+SV+MHwbxUq8t1RNswie5e3=Y+OXQ@mail.gmail.com>
+ <CACRpkdZyJd0TW5aVRfxSSWknzCyVhjMwQuAj9i9iuQ6pW9vftQ@mail.gmail.com>
+ <20210707105000.GA4394@sirena.org.uk>
+ <c24c61f498f43f589eafd423e51f997134d198b7.camel@HansenPartnership.com>
+ <YOWcCG9Pm/S+EXFw@kroah.com>
+ <11c07bc291b443c2683a2baff5b180ff5b0729a5.camel@HansenPartnership.com>
+ <YOWh0Dq+2v+wH3B4@kroah.com>
+ <YOXhlDsMAZUn1EBg@pendragon.ideasonboard.com>
+ <20210708110852.1c4f8148@coco.lan>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [TECH TOPIC] Rust for Linux
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,Mark Brown <broonie@kernel.org>
-CC: Linus Walleij <linus.walleij@linaro.org>,Greg KH <greg@kroah.com>,Bartosz Golaszewski <bgolaszewski@baylibre.com>,Kees Cook <keescook@chromium.org>,Wedson Almeida Filho <wedsonaf@google.com>,Jan Kara <jack@suse.cz>,James Bottomley <James.Bottomley@hansenpartnership.com>,Julia Lawall <julia.lawall@inria.fr>,Laurent Pinchart <laurent.pinchart@ideasonboard.com>,Roland Dreier <roland@kernel.org>,ksummit@lists.linux.dev,Viresh Kumar <viresh.kumar@linaro.org>,esteban.blanc@epita.fr,martin.schmidt@epita.fr,"cohenarthur.dev" <cohenarthur.dev@gmail.com>
-From: Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-Message-ID: <102752B7-A1A2-4036-84DC-5C4E1052FDB9@jic23.retrosnub.co.uk>
-X-BlackCat-Spam-Score: 0
-X-Spam-Status: No, score=-0.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210708110852.1c4f8148@coco.lan>
 
-
-
-On 9 July 2021 18:43:09 BST, Miguel Ojeda <miguel=2Eojeda=2Esandonis@gmail=
-=2Ecom> wrote:
->On Fri, Jul 9, 2021 at 7:07 PM Mark Brown <broonie@kernel=2Eorg> wrote:
->>
->> SPI might also be interesting here and I think there's some SPI
->> controllers emulated in qemu, though no idea how well or specific
->> instructions for any boards=2E  There's a bit more concurrency and so
->on
->> stuff going on in the framework=2E
+On Thu, Jul 08, 2021 at 11:08:52AM +0200, Mauro Carvalho Chehab wrote:
+> Em Wed, 7 Jul 2021 20:17:08 +0300 Laurent Pinchart escreveu:
+> > On Wed, Jul 07, 2021 at 02:45:04PM +0200, Greg KH wrote:
+> > > On Wed, Jul 07, 2021 at 01:38:44PM +0100, James Bottomley wrote:  
+> > > > On Wed, 2021-07-07 at 14:20 +0200, Greg KH wrote:  
+> > > > > On Wed, Jul 07, 2021 at 12:34:31PM +0100, James Bottomley wrote:  
+> > > > > > On Wed, 2021-07-07 at 11:50 +0100, Mark Brown wrote:  
+> > > > > > > On Tue, Jul 06, 2021 at 10:36:14PM +0200, Linus Walleij wrote:  
+> > > > > > > > On Tue, Jul 6, 2021 at 10:00 PM Roland Dreier wrote:  
+> > > > > > > > > "devres" / devm_xxx was an attempt to deal with this in C,
+> > > > > > > > > but it only solves some cases of this and has not received a
+> > > > > > > > > lot of adoption (we can argue about the reasons).  
+> > > > > > > >  
+> > > > > > > > Really? From my point of view that is adopted all over the map.
+> > > > > > > > I add new users all the time and use it as much as I can when
+> > > > > > > > writing new drivers.  
+> > > > > > > 
+> > > > > > > Yes, it's *super* widely used in most of the kernel.  Perhaps
+> > > > > > > there's some subsystems that reject it for some reason.
+> > > > > > >   
+> > > > > > > > I think it's a formidable success, people just need to learn to
+> > > > > > > > do it more.  
+> > > > > > > 
+> > > > > > > There *are* issues with people adopting it too enthusiastically -
+> > > > > > > as well as the memory lifetime issues that Laurent mentioned it's
+> > > > > > > easy for it to cause problems with interrupt handlers that are
+> > > > > > > left live longer than they should be and try to use things that
+> > > > > > > were already deallocated.  
+> > 
+> > (CC'ing Daniel Vetter as the author of the DRM devres-based resource
+> > management)
+> > 
+> > I've given this lots of thoughts lately, in the context of V4L2, but it
+> > should be roughly the same for character devices in general. Here's what
+> > I think should be done for drivers that expose character devices.
+> > 
+> > - Drivers must stop allocating their internal data structure (the one
+> >   they set as device data with dev_set_drvdata()) with devm_kzalloc().
+> >   The data structure must instead be allocated with a plain kzalloc()
+> >   and reference-counted.
+> > 
+> >   Most drivers will register a single character device using a
+> >   subsystem-specific API (e.g. video_register_device() in V4L2). The
+> >   subsystem needs to provide a .release() callback, called when the
+> >   last reference to the character device is released. Drivers must
+> >   implement this, and can simply free their internal data structure at
+> >   this point.
+> > 
+> >   For drivers that register multiple character devices, or in general
+> >   expose multiple interfaces to userspace or other parts of the kernel,
+> >   the internal data structure must be properly reference-counted, with a
+> >   reference released in each .release() callback. There may be ways to
+> >   simplify this.
+> 
+> Good point. Yeah, indeed some work seems to be required on that area.
+> 
+> Yet, V4L2 is somewhat different here, as most (if not all) devices 
+> expose multiple cdevs. 
 >
->[Cc'ing Arthur, Esteban and Martin since they have been working on SPI]
+> Also, in the case of V4L2 USB and PCI devices, their "dev->parent" is 
+> usually a PCI bridge, or an USB device with multiple functions on it,
+> as those hardware contain both audio and video and sometimes input
+> (either buttons or remote controllers), typically using different 
+> drivers. So, when the hardware is hot-unplugged or unbind, several 
+> drivers and multiple cdevs will be released. Ensuring that those will
+> happen at the right time can be a challenge, specially if there are
+> pending syscalls and/or threads by the time the device is unbound.
+> 
+> The DRM subsystem likely fits on the same case, as drivers also 
+> usually create multiple cdevs, and there are DMABUF objects shared
+> between different struct devices.
 
-I use qemu with both spi and gpio for testing IIO drivers=2E=2E  Not bothe=
-red upstreaming
-the IIO device emulation as generally throw away quality code to ensure I =
-don't
-break things when doing nasty driver reactors=2E  I have a request that I =
-need to
-respond to though to share one particular setup used for the ad7280a=2E  S=
-hould get
- to that this weekend=2E=20
+The main difference is that DRM/KMS handles this inside the subsystem
+core, instead of leaving it up to the drivers as in V4L2. We have to
+live with historical mistakes, but I wish they could retire.
 
-https://lore=2Ekernel=2Eorg/linux-iio/YNIfkaRZtWIXPbAj@marsc=2E168=2E1=2E7=
-/
+> So, yeah, using devm_* for V4L2 and DRM can indeed bring troubles.
+> I can't see a solution there currently but to avoid using devm*,
+> handling it using an approach similar to the one you described.
 
-Some devices are too much a pain to deal with in real hardware and the qem=
-u route
-gives very fast development cycles even if you plan to do final tests on r=
-eal devices=2E=20
+I want to emphasize that it's not all devm_* calls that are problematic.
+The ioremap family of devm functions are perfectly fine, as memory
+mapped I/O must not be accessed after a driver's .remove() function
+returns.
 
-Jonathan
+> -
+> 
+> I'm not so sure if using devm_* is a problem on several cases, though.
+> I mean, when the hardware is not hot-pluggable, the data lifetime
+> is a lot simpler.
 
->
->Cheers,
->Miguel
+You can unbind a device from its driver through sysfs, and that brings
+the exact same issues as hardware unplug.
 
---=20
-Sent from my Android device with K-9 Mail=2E Please excuse my brevity=2E
+> So, for instance, a regulator driver probably can use devm_* without
+> any issues, as it doesn't seem to make much sense to unbind a regulator
+> once the device was probed. On drivers like that, not using devm_*
+> would just make the probing part of the driver more complex, without
+> bringing any real benefit.
+
+Don't forget that regulators, GPIO controllers and other such core
+resources can be part of unpluggable devices.
+
+-- 
+Regards,
+
+Laurent Pinchart
 
