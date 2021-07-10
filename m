@@ -1,120 +1,146 @@
-Return-Path: <ksummit+bounces-379-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-380-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7244F3C36BC
-	for <lists@lfdr.de>; Sat, 10 Jul 2021 22:09:16 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54D7F3C3728
+	for <lists@lfdr.de>; Sun, 11 Jul 2021 00:39:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id 63B171C0F3C
-	for <lists@lfdr.de>; Sat, 10 Jul 2021 20:09:15 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id 7C75F1C0F41
+	for <lists@lfdr.de>; Sat, 10 Jul 2021 22:39:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A528D2F80;
-	Sat, 10 Jul 2021 20:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4FEE2F80;
+	Sat, 10 Jul 2021 22:39:23 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1AC70
-	for <ksummit@lists.linux.dev>; Sat, 10 Jul 2021 20:09:07 +0000 (UTC)
-Received: by mail-pg1-f170.google.com with SMTP id d12so13680435pgd.9
-        for <ksummit@lists.linux.dev>; Sat, 10 Jul 2021 13:09:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=pzNN+Uxlfe070ef6HWggh0SuVl0/DIF+UqV9DkmFEmQ=;
-        b=ZUX2eS1+aQgRoyNVuJRTJ8VS+7ET/dn1Cc8Xre0Tl9O4pzESyvOHN6TwL2dBY5+R3N
-         lTs96U6N6aGYRA8X0jO1ASb5aXVey2BR++uiCXbInZQ8aS8vQTZo+O35ISZLlIDvMYtn
-         CuE/e5TSjv5hRf65lxrJzCBoRJr2YxoXHpfWk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=pzNN+Uxlfe070ef6HWggh0SuVl0/DIF+UqV9DkmFEmQ=;
-        b=XHRHDBH79QbrqGfhwHTTkDFGX6GaEO8GPVbDAK4NCeTLNbrVImMCk13g44evMzJkgv
-         s8pv/yMnrkfKbFzvU+XJ3FiJoCrEC6EGdog1+yOQSwLla0p3fpD2a/Z0MCUZre74HBWI
-         k6lsYiPS4hbY6l7qGJhVhYDSaFjElJiZ9JlRawYKOlHaM4q8eqfG3cHq2AH0o+kL+xFM
-         4YZ080ZnJukHZPPWE0dwV4HEmMeoPEZewaGESu8zPko7Ox+r0OKW2Mgp3E+BL9ZyHbcs
-         /oPzWnFDC4j4iMGtkDf2g//4zfj2tyF8al8wTHAbtGy/G3Lpmm3nKz6d6A0+ffiOBxG9
-         8bhw==
-X-Gm-Message-State: AOAM530d19vGTOD2pM9kI1X0BM6ZyCNG5QtjUNiQLOhmG87Jcps6bPwU
-	CrTg9moRjeyBE3ccgtrZFmArBQ==
-X-Google-Smtp-Source: ABdhPJxRZ01cBptxDhXP5i4MHQvre+d+8hL+NtZH4Ibe36CaKj0ZLpiziUiFGb1wXfwA7uYPCO3Udw==
-X-Received: by 2002:aa7:8f28:0:b029:312:3176:13fa with SMTP id y8-20020aa78f280000b0290312317613famr44922336pfr.53.1625947747108;
-        Sat, 10 Jul 2021 13:09:07 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id m13sm10173278pfc.119.2021.07.10.13.09.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Jul 2021 13:09:06 -0700 (PDT)
-Date: Sat, 10 Jul 2021 13:09:05 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Greg KH <greg@kroah.com>,
-	Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-	Wedson Almeida Filho <wedsonaf@google.com>, Jan Kara <jack@suse.cz>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Julia Lawall <julia.lawall@inria.fr>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Roland Dreier <roland@kernel.org>, ksummit@lists.linux.dev,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: Re: [TECH TOPIC] Rust for Linux
-Message-ID: <202107101258.6EB4115D6B@keescook>
-References: <YOXL6Th+pot9+Fp3@kroah.com>
- <YOXd9WoafgBr1Nkv@google.com>
- <YOXibDV8mHT1e6ec@kroah.com>
- <YOX+N1D7AqmrY+Oa@google.com>
- <20210707203827.GI18396@quack2.suse.cz>
- <YOY0HLj5ld6zHJHU@google.com>
- <YOaW/pR0na5N9GiT@kroah.com>
- <YOb/aJC2VuOcz3YY@google.com>
- <YOdJLYmUkoMyszO7@kroah.com>
- <CACRpkdaMZQSQQu_w76S6DBhQ2_ah4Lfz==NdNDBMsSXuW8m-rw@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581D772
+	for <ksummit@lists.linux.dev>; Sat, 10 Jul 2021 22:39:22 +0000 (UTC)
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id A71A8255;
+	Sun, 11 Jul 2021 00:39:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1625956759;
+	bh=61Ml/TU1lnftvB4KyY6S9Cn4Wt9p5S198duyhxrr+oM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oPMmmnITmXlDSPXGYe2GeET72hezOW2bKVV4OluEM3ySU9vPvFFuCFJM/hXYXfw3g
+	 tHdApHLNbLeWQn2gxu8rO6HmSG4wjYt1JKYbVkO+rQu8T3AGItAK00IN2i0iANXpsp
+	 vUsRt2JSktTuSH5qGpk08ItYvii2RrKGUjQK2lYo=
+Date: Sun, 11 Jul 2021 01:38:33 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Don Zickus <dzickus@redhat.com>
+Cc: ksummit@lists.linux.dev
+Subject: Re: [Tech Topic] Integrating GitLab into the Red Hat kernel workflow
+Message-ID: <YOohaRa7OWO88Mub@pendragon.ideasonboard.com>
+References: <20210707211951.fyiflsp75i7spcha@redhat.com>
+ <YOYf3c5UPMG4yBVP@pendragon.ideasonboard.com>
+ <20210707222728.jocrxvqogwjd5ozx@redhat.com>
+ <YOYtURGM6VDnOrH9@pendragon.ideasonboard.com>
+ <20210708210436.apvu2isib67cmuee@redhat.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CACRpkdaMZQSQQu_w76S6DBhQ2_ah4Lfz==NdNDBMsSXuW8m-rw@mail.gmail.com>
+In-Reply-To: <20210708210436.apvu2isib67cmuee@redhat.com>
 
-On Thu, Jul 08, 2021 at 09:49:15PM +0200, Linus Walleij wrote:
-> My concern is still whether this really brings Rust closer to the actual
-> problems we have and that Rust can solve. If the problem is really
-> about real world security issues, I would ask Kees where the actual
-> attack surface of the kernel is. He knows.
+Hi Don,
 
-Oh yes indeed! Two big classes of flaws the kernel suffers from due
-to being written in C are buffer overflows and use after free. Both
-of these are strongly mitigated by Rust's borrow checking. The other
-class I've been concerned with is arithmetic overflow (which usually
-precedes a buffer overflow), and that's why I've been pushing for the
-kernel's Rust to operate in Rust's "trap on overflow" mode by default,
-where the exceptions that expect a wrap-around use a distinct API.
+On Thu, Jul 08, 2021 at 05:04:36PM -0400, Don Zickus wrote:
+> On Thu, Jul 08, 2021 at 01:40:17AM +0300, Laurent Pinchart wrote:
+> > > If as a reviewer you want to see:
+> > > * all patches that touch files/directories X, Y, Z
+> > > * all discussions around those patches
+> > > * who has approved the patch
+> > > * who is blocking the patch
+> > > * has it passed CI
+> > > * other details
+> > > 
+> > > then the tool just calls whatever api to whatever tool to put all that
+> > > together and present it to you.  GitLab structured data in a way to allow us
+> > > to rethink things and we built a tool around this new approach.  I am sure
+> > > it can't be that hard to abstract further and extend it to other tools if
+> > > that is interesting.
+> > 
+> > In that workflow, how does a reviewer enter review data ? Does it have
+> > to go through the gitlab web UI, or do you have alternate means through
+> > CLI tools and/or e-mail bridges ?
+> 
+> Currently we are using an email bridge as the tool stabilizes and GitLab
+> resolves some of the quirks we have identified.  But our email bridge stats
+> show very few developers are using email as most have migrated to the cli
+> tools.
+> 
+> > One particular shortcoming of gitlab that I've noticed is that it
+> > doesn't seem to be possible to comment inline on a commit message. I
+> > don't know if it's a limitation of the UI only, or if the protocol and
+> > data formats also don't support that. Good commit messages are very
+> > important, and I believe a tool that doesn't let me comment on how to
+> > improve a commit message could cause the overall quality of the
+> > development to decrease over time. Have you noticed the same
+> > shortcoming, and if so, have you found ways to address it ?
+> 
+> Yes and we raised it with GitLab.  We will work with them to see if it is
+> possible to fix this year.
+> 
+> > > Email workflow works great.  But as PatchWork showed us, there are some
+> > > extra details or tracking that is interesting to some folks.  With GitLab we
+> > > extend this a little further.
+> > > 
+> > > It really depends on what you want to see when you review a patch.
+> > 
+> > E-mail is very limited by itself when it comes to tracking information.
+> > Services like patchwork help there, but they're limited by the fact that
+> > data isn't structured. Services such as git..b have an advantage in that
+> > front. When it comes to doing the actual review, however, I believe the
+> > situation is the opposite. I'm dreaming of a way to move our e-mail
+> > workflow from unstructured to structured data in order to get the best
+> > of both worlds, with services that can then subscribe to the mailing
+> > lists (which are really transport mechanisms) to gather data and expose
+> > it in useful ways. I have high hopes that the work done by Konstantin
+> > and others will bring us in that direction.
+> 
+> Yes, we are still tweaking our workflow too, to find that balance for
+> collaboration between ease-of-use (email) and structured data (gitlab).
 
-> It kind of matters. EternalBlue (WannaCry) was a horrific Windows
-> exploit in that it shows us pretty well what kind of cyberweapons the
-> intelligence agencies of the world have been constructing and
-> stockpiling, and probably also used. We need to put countermeasures
-> where such exploits are likely to hit, yesterday. Intuitively I would
-> say any in-kernel network daemons, anything complex that
-> responds directly to network traffic, is a good thing to fix. I do not
+I'd put this slightly differently. E-mail doesn't bring ease of use by
+itself. What I really want to keep from the e-mail workflow is the
+following features.
 
-FWIW, wireless drivers have been a persistent source of buffer overflows.
+- A single client where I can do all my review. With web-based UIs for
+  forges, you have to log in every forge for every project you work on.
+  That's one for github, one for gitlab, one for each self-hosted github
+  or gitlab instance (fd.o has a self-hosted public gitlab instance,
+  it's also common for large companies to have self-hosted private
+  instances), and I'm not counting gerrit instances or other forges.
+  It's painful, I want not only to get all the notifications in a single
+  client (that's already possible with e-mail notifications) but handle
+  review in a single client too.
 
-I've been working on some changes to our memcpy() use in the kernel to
-help address this, but it's not quite finished yet. Very soon, I hope!
-But even these changes are just dealing with the "easy" cases where
-the code is luckily enough arranged in a way that the compiler can do
-the bounds checking. (The same goes for CONFIG_UBSAN_BOUNDS.) Rust just
-makes the whole class of problem go away because of its borrow semantics.
+- The ability to easily extend and customize my workflow. With web-based
+  UIs, flexibility is very limited (there are APIs that allow developing
+  applications to perform customization, but that's a heavy process).
+  With e-mail clients, developers can pick their own clients and
+  customize the workflow as they want.
 
--Kees
+Furthermore, I don't think structured data needs to be limited to
+forges. Structured data can be transported over e-mail, or other
+transport protocols, what we're missing is clients that could interpret
+them correctly.
+
+> We even have a public-inbox prototype that connects with the GitLab API and
+> allows you to reply with some mutt hacking.  Not sure if that is a useful
+> direction for you.
+> 
+> But yes, internally, patch review has been our most discussed topic.
 
 -- 
-Kees Cook
+Regards,
+
+Laurent Pinchart
 
