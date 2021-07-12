@@ -1,143 +1,141 @@
-Return-Path: <ksummit+bounces-382-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-383-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF4383C5D8B
-	for <lists@lfdr.de>; Mon, 12 Jul 2021 15:42:45 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 540C13C5DDB
+	for <lists@lfdr.de>; Mon, 12 Jul 2021 15:58:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id DE4241C0D41
-	for <lists@lfdr.de>; Mon, 12 Jul 2021 13:42:44 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id 41C591C0E58
+	for <lists@lfdr.de>; Mon, 12 Jul 2021 13:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD96C2F80;
-	Mon, 12 Jul 2021 13:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 455F22F80;
+	Mon, 12 Jul 2021 13:58:43 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559F970
-	for <ksummit@lists.linux.dev>; Mon, 12 Jul 2021 13:42:36 +0000 (UTC)
-Received: by mail-qv1-f50.google.com with SMTP id o9so2300509qvu.5
-        for <ksummit@lists.linux.dev>; Mon, 12 Jul 2021 06:42:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Zp8nbS2AyIHaB04zlsGr68CnlSFaavA8JVVuJQmoP40=;
-        b=UjPn/QsE8GHiecs55UnVDc1Fq14J4hfP2I1krOnQQK5hUcYtE2M3heed8fOBDU2t57
-         5Rv8cUt05WG6Sw27cDdr0wdZqXwf33vIbXAsVeaK1tW4oAwhJ5PaSFHIjgM2TsXs0GzI
-         kX/qpREPQ84JPv8pRFnmez9OR6y2u8879XRNOH0W60kfNp5deU4oB4y28stvQAmxJdah
-         5/q9ehribi6KSHG+Z/zgbKE4ojhCi/9U9386tD4bP5/e528Xsubw+b/ZjY2DRMpSqQMg
-         AZ7irmovuqGGkmb9uj8DPdLGpOwmzZNRKDELz/6mpEQBZTr0lE1XEdSg7ifFtgFZO9nY
-         IwmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Zp8nbS2AyIHaB04zlsGr68CnlSFaavA8JVVuJQmoP40=;
-        b=s68Fb1yV1fhwMsBEgTo0r4EUvbD4YCBYegY62N8DCwpQsFHtw6+FruXXtT8TxJMqC0
-         jJKtEnbo6FaWbg0npiLIBg4hZx3dDRb5fim+Q5yLSO+OhrOfxxSg7Sj1PFIdm9bs+Dun
-         wpWiN4kOWQKRy1kVErbfgVPEGYIkj0EbXE8PzYDYJ4WKtk0O8/R6dnY/i7Det0pmKfOz
-         6XgK1RzB6kpN2PMFORM4XLQq4ARNtxX0Cp7P4I2jrjCGOSqolg1uVgm510CbL0+alycS
-         LPTbAxQ5zZ2X1qQI0s+B2a9SV77yqiv2wjGDy+9h0NRwi5JmzFcbi1LrMLMN097agl76
-         6tbg==
-X-Gm-Message-State: AOAM532//J3RWiUyLfgiWwnLDB8OfPbpa+gqYP2kNwLtZoTYmdvT1oT2
-	S8bqRAIL5qAMgI/OZadHjwSbkQ==
-X-Google-Smtp-Source: ABdhPJxu3W44btFwmiz684JV4KQJ5fLofjDhv4nxi5JnvIp2tE7kWfH/+fpWTk0Ta0CXcIkRmcJ80Q==
-X-Received: by 2002:a05:6214:1d29:: with SMTP id f9mr5235161qvd.8.1626097355202;
-        Mon, 12 Jul 2021 06:42:35 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-162-113-129.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.113.129])
-        by smtp.gmail.com with ESMTPSA id c13sm5312592qtb.6.2021.07.12.06.42.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jul 2021 06:42:34 -0700 (PDT)
-Received: from jgg by mlx with local (Exim 4.94)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1m2wCf-00106W-ER; Mon, 12 Jul 2021 10:42:33 -0300
-Date: Mon, 12 Jul 2021 10:42:33 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Dan Carpenter <dan.carpenter@oracle.com>
-Cc: Greg KH <greg@kroah.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Mark Brown <broonie@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Roland Dreier <roland@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	ksummit@lists.linux.dev, Daniel Vetter <daniel@ffwll.ch>
-Subject: Re: cdev/devm_* issues (was Re: [TECH TOPIC] Rust for Linux)
-Message-ID: <20210712134233.GA141137@ziepe.ca>
-References: <CAG4TOxMzf1Wn6PcWk=XfB+SV+MHwbxUq8t1RNswie5e3=Y+OXQ@mail.gmail.com>
- <CACRpkdZyJd0TW5aVRfxSSWknzCyVhjMwQuAj9i9iuQ6pW9vftQ@mail.gmail.com>
- <20210707105000.GA4394@sirena.org.uk>
- <c24c61f498f43f589eafd423e51f997134d198b7.camel@HansenPartnership.com>
- <YOWcCG9Pm/S+EXFw@kroah.com>
- <11c07bc291b443c2683a2baff5b180ff5b0729a5.camel@HansenPartnership.com>
- <YOWh0Dq+2v+wH3B4@kroah.com>
- <YOXhlDsMAZUn1EBg@pendragon.ideasonboard.com>
- <YOagA4bgdGYos5aa@kroah.com>
- <20210710070910.GA2190@kadam>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C235070
+	for <ksummit@lists.linux.dev>; Mon, 12 Jul 2021 13:58:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1626098320;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gl79Dkn8BvS0qoOTpLktI9m5dyh33jrvac8vje0emCo=;
+	b=QQvQAti2SGUUTKmNGAxR2cn3ZJI0vxCTG/WOkOVyA4Synw1EoDJc2JofZnet34AGzEQzQh
+	Qu3A7szPu2BZtvF9gK0jY2Y+RYvk7C7dMqV+fC213jsSq10JAgwkgd4lVdtGK89Y3MAewh
+	ATKxtgTqLLIS3tBH+hSESQ/Fxcc/TYE=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-315-_BkKE6phPhm0GPsGDSDtLA-1; Mon, 12 Jul 2021 09:58:39 -0400
+X-MC-Unique: _BkKE6phPhm0GPsGDSDtLA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3779C362F8;
+	Mon, 12 Jul 2021 13:58:38 +0000 (UTC)
+Received: from redhat.com (ovpn-117-23.rdu2.redhat.com [10.10.117.23])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id C124A60C9D;
+	Mon, 12 Jul 2021 13:58:37 +0000 (UTC)
+Date: Mon, 12 Jul 2021 09:58:35 -0400
+From: Don Zickus <dzickus@redhat.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: ksummit@lists.linux.dev
+Subject: Re: [Tech Topic] Integrating GitLab into the Red Hat kernel workflow
+Message-ID: <20210712135835.qgh7u5f7p2oy7cp5@redhat.com>
+References: <20210707211951.fyiflsp75i7spcha@redhat.com>
+ <YOYf3c5UPMG4yBVP@pendragon.ideasonboard.com>
+ <20210707222728.jocrxvqogwjd5ozx@redhat.com>
+ <YOYtURGM6VDnOrH9@pendragon.ideasonboard.com>
+ <20210708210436.apvu2isib67cmuee@redhat.com>
+ <YOohaRa7OWO88Mub@pendragon.ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+In-Reply-To: <YOohaRa7OWO88Mub@pendragon.ideasonboard.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=dzickus@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210710070910.GA2190@kadam>
 
-On Sat, Jul 10, 2021 at 10:09:10AM +0300, Dan Carpenter wrote:
-> The other thing which is quite tricky to get right is kobj releases.  I
-> have a bunch of these static checker warning but they're annoying
-> because they're not something which really affects real life so I can't
-> be bothered to fix or report them.
+On Sun, Jul 11, 2021 at 01:38:33AM +0300, Laurent Pinchart wrote:
+> Hi Don,
+> 
+> > Yes, we are still tweaking our workflow too, to find that balance for
+> > collaboration between ease-of-use (email) and structured data (gitlab).
+> 
+> I'd put this slightly differently. E-mail doesn't bring ease of use by
+> itself. What I really want to keep from the e-mail workflow is the
+> following features.
+> 
+> - A single client where I can do all my review. With web-based UIs for
+>   forges, you have to log in every forge for every project you work on.
+>   That's one for github, one for gitlab, one for each self-hosted github
+>   or gitlab instance (fd.o has a self-hosted public gitlab instance,
+>   it's also common for large companies to have self-hosted private
+>   instances), and I'm not counting gerrit instances or other forges.
+>   It's painful, I want not only to get all the notifications in a single
+>   client (that's already possible with e-mail notifications) but handle
+>   review in a single client too.
 
-I'm not a security researcher, but I often wonder if there are ways
-root could exploit these kinds of error unwind bugs during module
-loading to exploit the kernel? That is a relevant concern in the
-higher integrity modes.
+The biggest hurdle for reviews I see is un-authenticated email sent to an
+autenticated forge.  Currently we have an email-bridge bot that copies
+comments from a trusted mailing list to the forge but it is clear that the
+comment is using the authenticated bot.
 
->   1045          if (nr != -1 && nr != vdev->num && warn_if_nr_in_use)
->   1046                  pr_warn("%s: requested %s%d, got %s\n", __func__,
->   1047                          name_base, nr, video_device_node_name(vdev));
->   1048  
->   1049          /* Increase v4l2_device refcount */
->   1050          v4l2_device_get(vdev->v4l2_dev);
->   1051  
->   1052          /* Part 5: Register the entity. */
->   1053          ret = video_register_media_controller(vdev);
->                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> But then there is no way to clean up from this is
-> video_register_media_controller() fails.  If we call put_device() it
-> would lead to use after frees in the callers.  We just have to ignore
-> the error.
+Some forges use an embedded personal token in the reply-to field to work
+around this.  But it restricts collaboration in my opinion.
 
-Eg if we ignore these errors and keep going is the kernel object in a
-bad state that userspace can exploit?
+But I agree with your perspective.
 
-The solution here is the same as the other cases, use device_add() not
-device_register(), put a device_initialize() immediately after the
-allocation of vdev and audit/fix the release so it can work on
-partially initialized objects.
+> 
+> - The ability to easily extend and customize my workflow. With web-based
+>   UIs, flexibility is very limited (there are APIs that allow developing
+>   applications to perform customization, but that's a heavy process).
+>   With e-mail clients, developers can pick their own clients and
+>   customize the workflow as they want.
 
-The idea of a video_register_device() is just not right in a subsystem
-so complicated the 'init & register' pattern is a shortcut to save a
-few lines in simple drivers. It should never be baked into a subsystem
-like this and it certainly shouldn't work the opposide of how
-device_register() works: "if video_register_device fails, the
-release() callback of &struct video_device structure is *not* called"
+Internally for reviewers, there are two popular use-cases.  The traditional
+collaboration about the patches as you suggested and the
+what-patches-need-my-attention.  As RHEL is more backport heavy (leaving
+technical collaboration for upstream), we have focused more on the latter
+use case, hence our tooling effort.
 
-Which is why the release function assignment is out of order, and it
-is forced to print a warning in a certain error flow :\
+The former use-case is still a concern and various developers are working on
+ideas to make it easier.  Suggestions like yours are welcomed.
 
-> It's a minor thing, but it's so frustrating.
+> 
+> Furthermore, I don't think structured data needs to be limited to
+> forges. Structured data can be transported over e-mail, or other
+> transport protocols, what we're missing is clients that could interpret
+> them correctly.
 
-Yes :(
+Ok.  Let's say I have a couple of developers that can tweak gitlab emails to
+try new ideas.  I assume X-labels only go so far.  What other thoughts do
+you have that we might play around with?
 
-And as others mentioned devm has its own set of bug classes - I've
-seen issues with the sequencing of the devm unloads.. Especially when
-work queues get involved.
+Cheers,
+Don
 
-Jason
+> 
+> > We even have a public-inbox prototype that connects with the GitLab API and
+> > allows you to reply with some mutt hacking.  Not sure if that is a useful
+> > direction for you.
+> > 
+> > But yes, internally, patch review has been our most discussed topic.
+> 
+> -- 
+> Regards,
+> 
+> Laurent Pinchart
+> 
+
 
