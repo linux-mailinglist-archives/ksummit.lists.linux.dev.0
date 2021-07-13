@@ -1,112 +1,122 @@
-Return-Path: <ksummit+bounces-384-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-385-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
-	by mail.lfdr.de (Postfix) with ESMTPS id F098A3C6335
-	for <lists@lfdr.de>; Mon, 12 Jul 2021 21:07:28 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5933C3C6CC7
+	for <lists@lfdr.de>; Tue, 13 Jul 2021 11:00:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id ABB5F1C0EA3
-	for <lists@lfdr.de>; Mon, 12 Jul 2021 19:07:27 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 1E1E93E0FA1
+	for <lists@lfdr.de>; Tue, 13 Jul 2021 09:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E6C2F80;
-	Mon, 12 Jul 2021 19:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2EC2FAE;
+	Tue, 13 Jul 2021 09:00:08 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B183F70
-	for <ksummit@lists.linux.dev>; Mon, 12 Jul 2021 19:07:19 +0000 (UTC)
-Received: by mail-qt1-f181.google.com with SMTP id g8so2839322qtj.1
-        for <ksummit@lists.linux.dev>; Mon, 12 Jul 2021 12:07:19 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2290972
+	for <ksummit@lists.linux.dev>; Tue, 13 Jul 2021 09:00:07 +0000 (UTC)
+Received: by mail-lf1-f53.google.com with SMTP id a12so3902782lfb.7
+        for <ksummit@lists.linux.dev>; Tue, 13 Jul 2021 02:00:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=RN8waCCZ2nk1UbmpMwM3s+SZwoVuOsk3UfEwrxnWEqg=;
-        b=ethYm/7au7Ee7Hu7tIdWAbMZvrtwHRFRa/QH8EyrdV6JKsOWLMxMYva3mJhbnav4Aq
-         dwOHo5jkOFuASvDIV71tN3GIBNdsHmRZ6Fj9Ff16zCH33Pb9EZKY0mmosX9tZlIF9vZk
-         ikKfFfUymqq6DjxcdyuDIjiwoUdi+LVA0cN38=
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=auooqGend/MpgDzrAxPulB+LTrlAKF1M6jC9r1DHfm4=;
+        b=YewyrC2cjM63ymEp0Y0p663ELwRfw/RHQwzpyR0GigFKynIrn8GTs3GlKlRv+BQZjh
+         g23GoCFQEYrTIJWAsb+qPxppLienpkZgWOKqoGv6APbWQ/9tyPQbd7+r0FS4TO6lyY39
+         ruA3lQyrz15qRLLqrYcqFJWgJYupBQsgTprw+WTn8+QDJ9SaceCUvtyy7KKrfgaaZURE
+         a1yQAKmq2gcz1nH4B7/0DXtqG/aDPpw4kNsdrQraLIBeYQeACZRTuWmFrlu6LVcpPbfJ
+         pNMDj2gmz4l7ZRWVo9IbrZdTpG9G14YjauihkYxtUXsFD/DREw2bZoSXNQ9L30zSpO6U
+         SW4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=RN8waCCZ2nk1UbmpMwM3s+SZwoVuOsk3UfEwrxnWEqg=;
-        b=GeHhu/CeX4Dea02GqeHdoffuEuWBpQQ0YJBponW6XxYwfrrbzCjacs2/9ptKehCNe1
-         fTjI/s8p3+pMHRx4H6FrxCbEPQoyin2uaQcqWpEk4D17wWTkyKNZQJPCe7cwk2X6eDwb
-         c6AN+15pfMLzfj0y7UwHK36NP1XSjBWE7DzSv/hjWZxnktGXrwAwjpNK9pjXRQ6zh/Ac
-         PWq2LPXLyayXXGMSiyt0KB5ml4T3JRrAN7+WNEcqsP4Z9UjohmixTytFturYfUvZmyiz
-         ZbXQMdkAKwHMZgXhaob+X0XePRLrp6EFswssmWGA/Sr7VQTN4MGKFk82T36c7vC6jU0L
-         dC9Q==
-X-Gm-Message-State: AOAM533LhV90GcHHGBcSIAXs3c1SzQH0M2k1azcBNuWvltQrMHJ7LSHJ
-	om39QOYet3p1QUHORGBVCaGm+w==
-X-Google-Smtp-Source: ABdhPJxjox2h2Mv68oM9POO1zjPFIC9K0gxFVmoH6lWUTRRq0whx+zDYrQVDneNE+MbEGQNia3xjqw==
-X-Received: by 2002:ac8:47d9:: with SMTP id d25mr316496qtr.277.1626116838187;
-        Mon, 12 Jul 2021 12:07:18 -0700 (PDT)
-Received: from nitro.local ([89.36.78.230])
-        by smtp.gmail.com with ESMTPSA id f12sm5920195qtv.52.2021.07.12.12.07.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jul 2021 12:07:17 -0700 (PDT)
-Date: Mon, 12 Jul 2021 15:07:16 -0400
-From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-To: Don Zickus <dzickus@redhat.com>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	ksummit@lists.linux.dev
-Subject: Re: [Tech Topic] Integrating GitLab into the Red Hat kernel workflow
-Message-ID: <20210712190716.sbhboki2bms7dx5b@nitro.local>
-References: <20210707211951.fyiflsp75i7spcha@redhat.com>
- <YOYf3c5UPMG4yBVP@pendragon.ideasonboard.com>
- <20210707222728.jocrxvqogwjd5ozx@redhat.com>
- <YOYtURGM6VDnOrH9@pendragon.ideasonboard.com>
- <20210708210436.apvu2isib67cmuee@redhat.com>
- <YOohaRa7OWO88Mub@pendragon.ideasonboard.com>
- <20210712135835.qgh7u5f7p2oy7cp5@redhat.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=auooqGend/MpgDzrAxPulB+LTrlAKF1M6jC9r1DHfm4=;
+        b=WmMv+iHZfQRSyLUP+9jaGYauJJod+7xy3XeaG5Klz4mtWVY/KJMIqpRyK/YjgtfjD4
+         Eaw1KwDFHNGSzogstKPCpUrTtYzpeIdSaAQH5wlLbefD8puIuDqO8NHu9JeslcFr4b/S
+         t4HGNlFE36fvWMYexERO0Jyim3zu9Bt1OpsPPv91y2oGzAXyi0hPqt1I4jo3YDsjyUcC
+         3hkpfPLQ07N8rTC5mGEJx8dtLyg5ntCqfqYb0oVn4BEI8ICknWzYAbgGVHp5Q2XXl9xy
+         zDFzPk5dgn3jvHoYM2VssxDimC5x7wuDtlGBOMQtWk4nbr/ih/670BCGbgCaM56+0nsk
+         yhVw==
+X-Gm-Message-State: AOAM533oxI/oFbuxbSY3A6MJuyKOZqsmLsqz73Yaaug9Xp5sSCQoZFf9
+	ihPxQwqc9CAMkKdcxVa7tuiq3CE3P4pPjOVuY1mzNA==
+X-Google-Smtp-Source: ABdhPJz5BHsQ1V41B0ZOTtW9XeAJmBUmOzSB8o4bj4ZLB02n7lL8RL7XfT5Kjqw569hfnGdCOJXWkoXLP8XavixQNaY=
+X-Received: by 2002:a19:5018:: with SMTP id e24mr2816820lfb.29.1626166805038;
+ Tue, 13 Jul 2021 02:00:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210712135835.qgh7u5f7p2oy7cp5@redhat.com>
+References: <CAG4TOxMzf1Wn6PcWk=XfB+SV+MHwbxUq8t1RNswie5e3=Y+OXQ@mail.gmail.com>
+ <CACRpkdZyJd0TW5aVRfxSSWknzCyVhjMwQuAj9i9iuQ6pW9vftQ@mail.gmail.com>
+ <20210707105000.GA4394@sirena.org.uk> <c24c61f498f43f589eafd423e51f997134d198b7.camel@HansenPartnership.com>
+ <YOWcCG9Pm/S+EXFw@kroah.com> <11c07bc291b443c2683a2baff5b180ff5b0729a5.camel@HansenPartnership.com>
+ <YOWh0Dq+2v+wH3B4@kroah.com> <YOXhlDsMAZUn1EBg@pendragon.ideasonboard.com>
+ <YOagA4bgdGYos5aa@kroah.com> <CACRpkdasOaNgBAZVx5qpKJdU7h41jHDG2jWi2+pi9a1JBh7RTQ@mail.gmail.com>
+ <YOh/JC//dotfm5J9@google.com>
+In-Reply-To: <YOh/JC//dotfm5J9@google.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Tue, 13 Jul 2021 10:59:53 +0200
+Message-ID: <CACRpkdb1W=M5EJkGbSS4QxObU-Gd5yZ1qE439k_D4K=jevgcrQ@mail.gmail.com>
+Subject: Re: cdev/devm_* issues (was Re: [TECH TOPIC] Rust for Linux)
+To: Wedson Almeida Filho <wedsonaf@google.com>
+Cc: Greg KH <greg@kroah.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, Mark Brown <broonie@kernel.org>, 
+	Roland Dreier <roland@kernel.org>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+	ksummit@lists.linux.dev, Daniel Vetter <daniel@ffwll.ch>, 
+	Bartosz Golaszewski <bgolaszewski@baylibre.com>, 
+	"open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Jul 12, 2021 at 09:58:35AM -0400, Don Zickus wrote:
-> > - A single client where I can do all my review. With web-based UIs for
-> >   forges, you have to log in every forge for every project you work on.
-> >   That's one for github, one for gitlab, one for each self-hosted github
-> >   or gitlab instance (fd.o has a self-hosted public gitlab instance,
-> >   it's also common for large companies to have self-hosted private
-> >   instances), and I'm not counting gerrit instances or other forges.
-> >   It's painful, I want not only to get all the notifications in a single
-> >   client (that's already possible with e-mail notifications) but handle
-> >   review in a single client too.
-> 
-> The biggest hurdle for reviews I see is un-authenticated email sent to an
-> autenticated forge. 
+On Fri, Jul 9, 2021 at 6:54 PM Wedson Almeida Filho <wedsonaf@google.com> wrote:
 
-I'd be interested in exploring how this can be addressed. We can already do a
-lot of it by relying on DKIM signatures, which should give you a significant
-level of assurance that messages aren't forged (with caveats). If you create
-the initial Message-Id with strong randomness on your end, then you could use
-that together with the DKIM signature as a fairly reliable authentication
-token. When receiving a follow-up message, you can check that:
+> In preparation for writing the abstractions to implement a gpio driver in Rust,
+> I was reading through some of the code you describe above.
 
-1. the DKIM signature is valid
-2. the References: header is included in signed headers (it almost always is)
-3. the message-id in the References: field matches what you have on record
+Nice, bonus review :)
 
-This should give you a pretty strong assurance that messages you receive are
-valid and the From: field can be trusted.
+> Unless I'm missing something (very much possible!), this "numbing" seems to not
+> be synchronised, that is, there are still race windows when userspace may cause
+> UAFs in the kernel.
 
-Part of my end-to-end attestation work was to introduce the
-X-Developer-Signature header that uses the DKIM standard with developers'
-personal keys (https://pypi.org/project/patatt/). The biggest obstacle to
-adoption with this scheme is making it possible to use it with regular mail
-clients and not just git-send-email (especially the web clients), so I'm not
-sure whether we can easily use this approach for more generic message
-authentication.
+That's possible.
 
--K
+> For example, gpiochip_remove sets gdev->chip to NULL; gpio_ioctl returns -ENODEV
+> if gdev->chip is NULL, which I believe is an instance of what you describe
+> above.
+
+Yes.
+
+> However, what ensures that it remains non-null?
+(...)
+> I see that in functions
+> called by gpio_ioctl (e.g., lineinfo_get), gdev->chip is used as if it were
+> guaranteed to be valid.
+(...)
+> Is my reading correct or is there some synchronisation that I'm missing?
+
+No there are definately possible synchronization bugs there.
+
+We probably need a few more
+if (!gdev->chip) return -ENODEV;
+in some of these callbacks for example.
+There are probably also more narrow possible sync bugs.
+
+They are a bit hard to reproduce in practice because people do not
+unplug their GPIO devices so much, the one case that is used a bit
+would be USB-based GPIO expanders which happens on e.g.
+serial dongles (FTDI with additional GPIO is the most common).
+These are used in practice for controlling lab boards and stuff
+but when people unplug them it is usually part of tearing down an
+entire setup so the circumstances are a bit chaotic and subtle
+bugs are not noticed.
+
+Yours,
+Linus Walleij
 
