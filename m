@@ -1,339 +1,150 @@
-Return-Path: <ksummit+bounces-388-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-389-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31AFB3C9C37
-	for <lists@lfdr.de>; Thu, 15 Jul 2021 11:54:47 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 386723CD4B1
+	for <lists@lfdr.de>; Mon, 19 Jul 2021 14:25:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id CF6203E1093
-	for <lists@lfdr.de>; Thu, 15 Jul 2021 09:54:45 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id A3F253E10E0
+	for <lists@lfdr.de>; Mon, 19 Jul 2021 12:25:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73DEF2F80;
-	Thu, 15 Jul 2021 09:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44AE12FB3;
+	Mon, 19 Jul 2021 12:24:57 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C0670
-	for <ksummit@lists.linux.dev>; Thu, 15 Jul 2021 09:54:36 +0000 (UTC)
-Received: by mail-oi1-f171.google.com with SMTP id s23so5963683oij.0
-        for <ksummit@lists.linux.dev>; Thu, 15 Jul 2021 02:54:36 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5AF168
+	for <ksummit@lists.linux.dev>; Mon, 19 Jul 2021 12:24:55 +0000 (UTC)
+Received: by mail-wr1-f53.google.com with SMTP id g16so21804433wrw.5
+        for <ksummit@lists.linux.dev>; Mon, 19 Jul 2021 05:24:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=GrTCppHlbei+a/VW0bHtaACp0ht2/RmYjyXWNlkBXL8=;
-        b=dzCGJQWGZKU22rGYHPQ8B7OxRfO3QrVZRCiG06PBhlQQ3Vw5+5c5lhmS1lDnV1gdfh
-         lxawLzhkTdQof6zXGoOgAVPqx1o1NJqa7gaqXzOi/p8n0yyuD1I4mwGpw/TTxU1k0TEt
-         6pko+1VVq1Lo/3kMPttKsdCw7wcKPUKu6AXk8=
+        d=google.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=CO0BGs7i04miJJIV41Jc23ouoOzoJEMJ4gF1ns0qQMo=;
+        b=ga1QEA7fiMk+4AC31qDYcvEKlTIjjau26PEsKSzBBk+8st+BpIOjL1xEWO5R/q8Lgv
+         stABmynq3kaLwal9DL2yNBxkYdDCvMBf7Ri1OA6DRMdNkHbgjRXSPXkj1zBiV95/JCBM
+         ZzoLTQ27PkqK6/ytlwoeWpGmUkS60pHf/FIEa286SL0r9fJfRcjD2UPqCyoWCrvgIWd5
+         L8pjqxV1Eez8JPtMfznJklXtwrk0RHipRU/L1iJkiXK+J5j8WCLD6YB8RBCdo0iI3/PW
+         jxjlystHsEbj747yq6GZsFQlFtncApcfwFy9/XVUEF0xNu29Uy2WfP7Lt92VEbwt/M4k
+         5+6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=GrTCppHlbei+a/VW0bHtaACp0ht2/RmYjyXWNlkBXL8=;
-        b=Q3a0hsGUkyIiPztBT541Tk4qyxASc7iHl/UQac52GfhonIXsDdT+zb7efG4OImHxFO
-         vFXE2+PRWRdqc3rrioPxSjD++RTCV+r/tR+g78t+WHw5s3abTRvgq4IapTPyke56aA5k
-         nMUJftGplgi3qDhkEX52TN8If81m9C5eusF0VrbdEWunWYbU0kzn3Lpey4CbUwikkQzV
-         C8p9tVnCb3hnx8AiHMl8t7PWYKByKK7l7yL7rMmivytXg4ZE+z6ILTY4atIU0EezNBes
-         VZ9UL3T/eaxfYMWQPIbQYikUD7rlrW9Hco6ydSfuE20JsuHZ0PcSArLYxL/Z42AS33X8
-         3sEQ==
-X-Gm-Message-State: AOAM530vrJRHerDgzMxuj/Apvc0mdswh6aTjJCMP3hhmP/0j0jqrO9Uk
-	hQDa/yb5jQAkw/u331H/J+UtTUJl6y9wyZEBTSWmOw==
-X-Google-Smtp-Source: ABdhPJwZ5fJnrNc5myIFA/LF30lDyu4Jj2A+wnh2gcUYlTWRy0RILcvAXQ698duQHG0hgJTnEEGH8YBvcl07X9PsqsM=
-X-Received: by 2002:aca:3085:: with SMTP id w127mr7115352oiw.101.1626342873704;
- Thu, 15 Jul 2021 02:54:33 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=CO0BGs7i04miJJIV41Jc23ouoOzoJEMJ4gF1ns0qQMo=;
+        b=MUCVgNlDt4t0UZQOCt82d8VlmAow8s5v/gx+mC9Ui8OA3hvWGGzz1xeCDmYxgFwOvC
+         pK3DrEZEm6o9EYoIRtm5+66UtDNvhGqm4Bs0hvhyIQgl1/TC69s0LbToQWqo2BIjEO6E
+         Sjs4H94RtpVfVI4F8MVv7eJBUs162VGze1o84NXLJCH9qA0dZO9Xlo/JvIZ9V622R2lb
+         l+ZrPq5yTAM9hGB89rH7+Pjf6ttcHM0jPqZOg0y09u8bg/rQlk6aB+9tOT7zverfL6h5
+         LQKRtQr19ud193TEDV6SbRu7XQaUnl50jt+9fTVWzDW++sHDjqDStbPP7SzgtQT1UhcH
+         SDiA==
+X-Gm-Message-State: AOAM532mcy4RtrHYAlUkh/Ck16eKdmZwWX2DXCvNvqXNUcdlCwhkQMO7
+	yU9Q/eVxnCPjqQ3ApHnEZ6nL
+X-Google-Smtp-Source: ABdhPJy7PMc0PfmTZZ6NCk2wjsI8c5Yb8fbBXQ+8KhKg3KMZg5UVswGuIfq17usTT6XLmjE5Nmu+EQ==
+X-Received: by 2002:adf:82f1:: with SMTP id 104mr29491338wrc.306.1626697494190;
+        Mon, 19 Jul 2021 05:24:54 -0700 (PDT)
+Received: from google.com ([2a00:79e0:d:209:7317:9289:34f3:7374])
+        by smtp.gmail.com with ESMTPSA id y197sm19485774wmc.7.2021.07.19.05.24.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Jul 2021 05:24:53 -0700 (PDT)
+Date: Mon, 19 Jul 2021 13:24:49 +0100
+From: Wedson Almeida Filho <wedsonaf@google.com>
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Greg KH <greg@kroah.com>,
+	Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+	Kees Cook <keescook@chromium.org>, Jan Kara <jack@suse.cz>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Julia Lawall <julia.lawall@inria.fr>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Roland Dreier <roland@kernel.org>, ksummit@lists.linux.dev,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Subject: Re: [TECH TOPIC] Rust for Linux
+Message-ID: <YPVvEZgcP1LMGjcy@google.com>
+References: <YOXibDV8mHT1e6ec@kroah.com>
+ <YOX+N1D7AqmrY+Oa@google.com>
+ <20210707203827.GI18396@quack2.suse.cz>
+ <YOY0HLj5ld6zHJHU@google.com>
+ <YOaW/pR0na5N9GiT@kroah.com>
+ <YOb/aJC2VuOcz3YY@google.com>
+ <YOdJLYmUkoMyszO7@kroah.com>
+ <CACRpkdaMZQSQQu_w76S6DBhQ2_ah4Lfz==NdNDBMsSXuW8m-rw@mail.gmail.com>
+ <CANiq72ntKzqBWFP-dTKAmsmwfshQa3fc+jm6m4mns4TdRgcCiA@mail.gmail.com>
+ <CACRpkdZkWQ=dWieyRch7aFuLOJ+WB_he_Bb_A2z_zJw+BZrQJA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CANiq72kF7AbiJCTHca4A0CxDDJU90j89uh80S3pDqDt7-jthOg@mail.gmail.com>
- <CACRpkdbbPEnNTLYSP-YP+hTnqhUGQ8FjJLNY_fpSNWWd8tCFTQ@mail.gmail.com>
- <CAG4TOxMzf1Wn6PcWk=XfB+SV+MHwbxUq8t1RNswie5e3=Y+OXQ@mail.gmail.com>
- <CACRpkdZyJd0TW5aVRfxSSWknzCyVhjMwQuAj9i9iuQ6pW9vftQ@mail.gmail.com>
- <20210707105000.GA4394@sirena.org.uk> <c24c61f498f43f589eafd423e51f997134d198b7.camel@HansenPartnership.com>
- <YOWcCG9Pm/S+EXFw@kroah.com> <11c07bc291b443c2683a2baff5b180ff5b0729a5.camel@HansenPartnership.com>
- <YOWh0Dq+2v+wH3B4@kroah.com> <YOXhlDsMAZUn1EBg@pendragon.ideasonboard.com> <YOagA4bgdGYos5aa@kroah.com>
-In-Reply-To: <YOagA4bgdGYos5aa@kroah.com>
-From: Daniel Vetter <daniel@ffwll.ch>
-Date: Thu, 15 Jul 2021 11:54:22 +0200
-Message-ID: <CAKMK7uHgtGc9ncD3LjHzWxF1eOJ5-M+u=45ZG8-vDtgEAHVJ4Q@mail.gmail.com>
-Subject: Re: cdev/devm_* issues (was Re: [TECH TOPIC] Rust for Linux)
-To: Greg KH <greg@kroah.com>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, Mark Brown <broonie@kernel.org>, 
-	Linus Walleij <linus.walleij@linaro.org>, Roland Dreier <roland@kernel.org>, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACRpkdZkWQ=dWieyRch7aFuLOJ+WB_he_Bb_A2z_zJw+BZrQJA@mail.gmail.com>
 
-On Thu, Jul 8, 2021 at 8:49 AM Greg KH <greg@kroah.com> wrote:
-> On Wed, Jul 07, 2021 at 08:17:08PM +0300, Laurent Pinchart wrote:
-> > On Wed, Jul 07, 2021 at 02:45:04PM +0200, Greg KH wrote:
-> > > On Wed, Jul 07, 2021 at 01:38:44PM +0100, James Bottomley wrote:
-> > > > On Wed, 2021-07-07 at 14:20 +0200, Greg KH wrote:
-> > > > > On Wed, Jul 07, 2021 at 12:34:31PM +0100, James Bottomley wrote:
-> > > > > > On Wed, 2021-07-07 at 11:50 +0100, Mark Brown wrote:
-> > > > > > > On Tue, Jul 06, 2021 at 10:36:14PM +0200, Linus Walleij wrote:
-> > > > > > > > On Tue, Jul 6, 2021 at 10:00 PM Roland Dreier wrote:
-> > > > > > > > > "devres" / devm_xxx was an attempt to deal with this in C,
-> > > > > > > > > but it only solves some cases of this and has not received a
-> > > > > > > > > lot of adoption (we can argue about the reasons).
-> > > > > > > >
-> > > > > > > > Really? From my point of view that is adopted all over the map.
-> > > > > > > > I add new users all the time and use it as much as I can when
-> > > > > > > > writing new drivers.
-> > > > > > >
-> > > > > > > Yes, it's *super* widely used in most of the kernel.  Perhaps
-> > > > > > > there's some subsystems that reject it for some reason.
-> > > > > > >
-> > > > > > > > I think it's a formidable success, people just need to learn to
-> > > > > > > > do it more.
-> > > > > > >
-> > > > > > > There *are* issues with people adopting it too enthusiastically -
-> > > > > > > as well as the memory lifetime issues that Laurent mentioned it's
-> > > > > > > easy for it to cause problems with interrupt handlers that are
-> > > > > > > left live longer than they should be and try to use things that
-> > > > > > > were already deallocated.
-> >
-> > (CC'ing Daniel Vetter as the author of the DRM devres-based resource
-> > management)
-> >
-> > I've given this lots of thoughts lately, in the context of V4L2, but it
-> > should be roughly the same for character devices in general. Here's what
-> > I think should be done for drivers that expose character devices.
-> >
-> > - Drivers must stop allocating their internal data structure (the one
-> >   they set as device data with dev_set_drvdata()) with devm_kzalloc().
-> >   The data structure must instead be allocated with a plain kzalloc()
-> >   and reference-counted.
-> >
-> >   Most drivers will register a single character device using a
-> >   subsystem-specific API (e.g. video_register_device() in V4L2). The
-> >   subsystem needs to provide a .release() callback, called when the
-> >   last reference to the character device is released. Drivers must
-> >   implement this, and can simply free their internal data structure at
-> >   this point.
-> >
-> >   For drivers that register multiple character devices, or in general
-> >   expose multiple interfaces to userspace or other parts of the kernel,
-> >   the internal data structure must be properly reference-counted, with a
-> >   reference released in each .release() callback. There may be ways to
-> >   simplify this.
-> >
-> >   This can be seen as going back to the pre-devm_kzalloc() era, but it's
-> >   only about undoing a mistake that was done way too often (to be fair,
-> >   many drivers used to just kfree() the data in the driver's .remove()
-> >   operation, so it wasn't always a regression, only enshrining a
-> >   preexisting bad practice).
-> >
-> >   This is only part of the puzzle though. There's a remove/use race that
-> >   still needs to be solved.
-> >
-> > - In .remove(), drivers must inform the character device that new access
-> >   from userspace are not allowed anymore. This would set a flag in
-> >   struct cdev that would result in all new calls from userspace through
-> >   file operations to be rejected (with -ENXIO for instance). This should
-> >   be wrapped in subsystem-specific functions (e.g.
-> >   video_device_disconnect() wrapping cdev_disconnect()). From now on, no
-> >   new calls are possible, but existing calls may be in progress.
-> >
-> > - Drivers then need to cancel all pending I/O and wait for completion.
-> >   I/O (either direct memory-mapped I/O or through bus APIs, such as I2C
-> >   or USB transactions) are not allowed anymore after .remove() returns.
-> >   This will have the side effect of waking up userspace contexts that
-> >   are waiting for I/O completion (through a blocking file I/O operation
-> >   for instance). Existing calls from userspace will start completing.
-> >
-> >   This is also a good place to start shutting down the device, for
-> >   instance disabling interrupts.
-> >
-> > - The next step is for drivers to wait until all calls from userspace
-> >   complete. This should be done with a call count in struct cdev that is
-> >   updated upon entry and exit of calls from userspace, and a wait queue
-> >   to wait for that count to go to 0. This should be wrapped in
-> >   subsystem-specific APIs. As the flag that indicates device removal is
-> >   set, no new calls are allowed so the counter can only decrease, and as
-> >   all pending I/O have terminated or have been cancelled, no pending
-> >   calls should be blocked.
-> >
-> > - Finally, drivers should unregister the character device, through the
-> >   appropriate subsystem API.
-> >
-> >   At this point, memory mappings and file handles referencing the device
-> >   may still exist, but no file operation is in progress. The device is
-> >   quiescent.
-> >
-> >   Care needs to be taken in drivers and subsystems to not start any I/O
-> >   operation when handling the file .release() operation or the
-> >   destruction of memory mappings. Overall I don't expect much issues,
-> >   but I'm sure some drivers do strange things in those code paths.
-> >
-> > - When the least memory mapping is gone and the last file handle is
-> >   closed, the subsystem will call the driver's .release() callback. At
-> >   this point, the driver will perform the operations listed in the first
-> >   item of this list.
-> >
-> >
-> > The challenge here will be to make this as easy as possible for drivers,
-> > to avoid risk of drivers getting it wrong. The DRM/KMS subsystem has
-> > created a devres-based system to handle this, with the devres associated
-> > with the drm_device (the abstraction of the cdevs exposed by DRM to
-> > userspace), *not* the physical device. It has a drawback though, it
-> > assumes that a DRM driver will only ever want to register a drm_device
-> > and nothing else, and hardcodes that assumption in the way it releases
-> > resources. That's fine for most DRM drivers, but if a driver was to
-> > register a drm_device and something else (such as a V4L2 video_device,
-> > an input device, ...), the DRM subsystem will get in the way.
-> >
-> > I have two questions:
-> >
-> > - Does the above make sense ?
->
-> Yes, totally, thank you for taking the time to write this all out.  It's
-> been in the back of my mind for over a decade that we need to work on
-> these issues, but have not had any time to sit down and write it all
-> down like you have.
->
-> > - Assuming it does, how do we get from the current mess to a situation
-> >   where writing a driver will be a pleasure, not a punishment ? :-)
->
-> That's the real question.  Thanks to a lot of cleanups that Christoph
-> has recently done to the lower-level cdev code, the lower levels are now
-> in a shape where we can work on them better.  I'm going to try to carve
-> out some time in the next few months to start to work on these things.
-> I think that once we get the ideas of what needs to be done, and a
-> working core change, I can unleash some interns on doing tree-wide
-> cleanups/changes to help bring everything into alignment.
->
-> I'm going to save this email off for reference for later.  But of
-> course, if others want to start to attack this earlier, all the better :)
+On Fri, Jul 09, 2021 at 12:13:25AM +0200, Linus Walleij wrote:
+> I have seen that QEMU has a piece of code for the Arm PrimeCell
+> PL061 GPIO block which corresponds to drivers/gpio/gpio-pl061.c
+> Note that this hardware apart from being used in all Arm reference
+> designs is used on ARMv4T systems that are not supported by
+> LLVM but only GCC, which might complicate things.
 
-Since we're dropping notes, a few of my thoughts:
+Here is a working PL061 driver in Rust (converted form the C one):
+https://raw.githubusercontent.com/wedsonaf/linux/pl061/drivers/gpio/gpio_pl061_rust.rs
 
-- Personally I think an uapi resource cleanup system needs a different
-namespace, so that you don't mix these up. Hence drmm_ vs devres_ for
-drm, and maybe the generic version could be called uapires or ures or
-whatever. It needs to stick out.
+(I tested it on QEMU through the sysfs interface and also gpio-keys as QEMU
+uses one of the PL061 pins as the power button.)
 
-- I'm wondering whether we could enlist checkers (maybe a runtime one)
-to scream anytime we do an unprotected dereference from ures memory to
-devres memory. This would help in subsystem where this problem is
-solved by trying to decouple the uapi side from the device side (like
-gpio and other subsystem with simpler interfaces). We have undefined
-behaviour and data race checkers already, this should be doable. But I
-have no idea how :-)
+I have a long list of ways in which Rust affords us extra guarantees but in the
+interest of brevity I will try to describe how Rust helps us address the two (or
+more) lifetime issues Greg mentioned the other day.
 
-- Core infrastructure like cdev_disconnect sounds really good.
-Especially if someone figures out how to punch out mmap without races
-in a generic way.
+Rust allows us to build abstractions that guarantee safety. Here are the ones I
+used/built for this:
 
-- Many drivers are perfectly ok with their ures on the single cdev
-they expose, but like Laurent points out, there's plenty where you
-need to group them. We need some way to merge ures groups together so
-a driver can say "only release ures for _any_ of these cdev if _all_
-of them are released". I'm not sure how to do that, but can also be
-done as an additional later on. Maybe an explicit struct ures_group
-that complex drivers (or complex subsystems like drm/v4l) can
-optionally pass to subordinate uapi interfaces like cdev could make
-this work.
+1. State created on `probe` is ref-counted.
+2. Hardware resources (device mem and irq in this case) are "revocable".
+3. On `remove`, we automatically revoke access to hardware resources, then free
+them.
 
-- Another good reason for a commont struct to manage uapi resources is
-to that we don't need a per-subsystem dupe for everything. Once your
-driver is more than a few lines you need more than just drmm_kzalloc,
-you might have you own slab, other allocater, a few workqueues,
-whatever else there is ....
+What this gives us:
+1. With ref-counted objects Rust allows us to avoid dangling pointers. No more
+UAF because memory was freed when the device was removed. (C can also do this,
+of course, but the compiler doesn't help us if/when we forget to
+increment/decrement the ref count.)
+2. Given that references to device state may outlive the device, revocable hw
+resources allows us to prevent the use of these resources after the device is
+gone. Rust ensures that such access is only allowed before resources are
+revoked. (In C we can also do something similar, but the compiler won't enforce
+this invariant for us, i.e., we can make mistakes where we forget to check if
+something was revoked, or forget to hold locks keeping resources alive, etc.)
+3. After revoking access, we need to ensure that existing concurrent users
+finish before we can free resources. In this implementation, we use RCU so that
+resource users need to hold an RCU read lock and we ensure that they've also
+completed their use before freeing the resources (synchronize_rcu between
+revoking & freeing). Locking/unlocking happens automatically.
 
-- Automagic cleanup is great for small drivers, but is hitting a bit a
-scaling wall for big drivers. The trouble there is the unwind code to
-quiescent the driver with all it's kthread, work queues, workers and
-everything else. That needs to happen in a very careful order (if you
-flush the work before you disable the interrupt that schedules it,
-it's no good) and is an absolute pain to validate. There's a few
-reasons why we have barriers here:
-* often the same or similar quiescent code is needed for
-suspend/resume, so you're not gaining anything if the module unload is
-automatic
-* unwind as you create/init it not always the right thing to do, or at
-least not obviously so, e.g. in i915 we have on interrupt handler, but
-it's hiearchical internally, and we arm new subsystems irq sources as
-we initialize these parts of the driver
-* as soon as you hit something where there's not yet a devres/uapi
-wrapper available it gets annoying and giving up is easier :-)
+This, naturally, doesn't solve any problems with the existing C code. However, I
+think it addresses things on the Rust side. For example, suppose that in
+addition to registering with gpio, we also wanted to expose the device as a
+miscdev (I use this as an example because we have miscdevs in Rust). The
+refcounted device state can be stored in the miscdev registration, and each
+opened file can also have a reference to it (device state). We don't control
+when the latter gets released, but it's ok for them to hold on to state because
+they won't be able to use hw resources after the device is removed; once all
+file descriptors are closed, the refcount goes to zero and the memory is freed.
 
-- the real cool stuff starts to happen if you combine devres with
-ures, e.g. see devm_drm_dev_alloc(). With that you can achieve drivers
-with no ->remove callback that actually get all the lifetime right,
-unfortunately we're not there yet, we're missing a
-devm_drm_dev_register (to call drm_dev_unplug() outmatically on
-remove) and a devm_drm_atomic_reset (which calls drm_atomic_shutdown
-on remove) so that for simplest drivers the ->remove hook becomes
-empty (e.g. hx8357d_remove()). But you really need the ures side fully
-rolled out first or things just go very wrong on hotunplug :-)
+Any thoughts on this?
 
-Anyway I'm very much interested in this topic and seeing some kind of
-solution lifted to core code.
+(A quick disclaimer: I'm sure there are scenarios that don't fit exactly with
+this, but the intent ATM is not to cover all scenarios, it's just to show a
+working example of what Rust enables. Eventually we want to generalise these
+ideas in cooperation with maintainers, who know about all scenarios and subtle
+issues.)
 
-Cheers, Daniel
-
-> thanks,
->
-> greg k-h
->
->
->
-> >
-> > > > > > Fixing this should not be beyond the wit of humankind, though.  If
-> > > > > > we delayed deallocation to module release, that would fix the
-> > > > > > interrupt issue, wouldn't it?  Perhaps all devres memory for
-> > > > > > devices should live until then anyway and thus be automatically
-> > > > > > deallocated instead of needing an explicit free ... the problem
-> > > > > > with that being compiled in devices currently optimize away the
-> > > > > > module refcounting, but that should be fixable.
-> > > > >
-> > > > > module code lifespans are different than device structure lifespans,
-> > > > > it's when people get them confused, as here, that we have problems.
-> > > >
-> > > > I'm not claiming they are.  What I am claiming is that module lifetime
-> > > > must always encompass the device lifetimes.  Therefore, you can never
-> > > > be incorrect by using a module lifetime for anything attached to a
-> > > > device, just inefficient for using memory longer than potentially
-> > > > needed.  However, in a lot of use cases, the device is created on
-> > > > module init and destroyed on module exit, so the inefficiency is barely
-> > > > noticeable.
-> > >
-> > > In almost no use case is the device created on module init of a driver.
-> > > devices are created by busses, look at the USB code as an example.  The
-> > > usb bus creates the devices and then individual modules bind to that
-> > > device as needed.  If the device is removed from the system, wonderful,
-> > > the device is unbound, but the module is still loaded.  So if you really
-> > > wanted to, with your change, just do a insert/remove of a USB device a
-> > > few zillion times and then memory is all gone :(
-> > >
-> > > > The question I'm asking is shouldn't we optimize for this?
-> > >
-> > > No.
-> > >
-> > > > so let people allocate devm memory safe in the knowledge it will be
-> > > > freed on module release?
-> > >
-> > > No, see above.  Modules are never removed in a normal system.  devices
-> > > are.
-> > >
-> > > And the drm developers have done great work in unwinding some of these
-> > > types of mistakes in their drivers, let's not go backwards please.
-> >
-> > --
-> > Regards,
-> >
-> > Laurent Pinchart
-
-
-
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Cheers,
+-Wedson
 
