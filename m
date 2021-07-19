@@ -1,52 +1,52 @@
-Return-Path: <ksummit+bounces-403-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-404-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F405B3CE8F2
-	for <lists@lfdr.de>; Mon, 19 Jul 2021 19:45:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB5F23CEA2D
+	for <lists@lfdr.de>; Mon, 19 Jul 2021 19:55:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id B3A133E11CD
-	for <lists@lfdr.de>; Mon, 19 Jul 2021 17:45:30 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 528463E1199
+	for <lists@lfdr.de>; Mon, 19 Jul 2021 17:55:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1502FB6;
-	Mon, 19 Jul 2021 17:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2912FB6;
+	Mon, 19 Jul 2021 17:55:08 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-il1-f177.google.com (mail-il1-f177.google.com [209.85.166.177])
+Received: from mail-io1-f48.google.com (mail-io1-f48.google.com [209.85.166.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D3F2FB0
-	for <ksummit@lists.linux.dev>; Mon, 19 Jul 2021 17:45:23 +0000 (UTC)
-Received: by mail-il1-f177.google.com with SMTP id a7so16757792iln.6
-        for <ksummit@lists.linux.dev>; Mon, 19 Jul 2021 10:45:23 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0A0173
+	for <ksummit@lists.linux.dev>; Mon, 19 Jul 2021 17:55:07 +0000 (UTC)
+Received: by mail-io1-f48.google.com with SMTP id p186so20956905iod.13
+        for <ksummit@lists.linux.dev>; Mon, 19 Jul 2021 10:55:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=oZ4nZ5Zya196ZiwJ1O1F435vpqontSNb8dQ0kD07LgU=;
-        b=BCDnVnHjW2hOb4oO0AcWsXWL0x2A8OBDKweWeqIHhWhf1aDfoei56mDHJ2XMYsJK+d
-         3VbyrhGEE2DNSP5ZEENaBHLpFVbbwlWdmzNpkuNQkbmGshMLw/BHJHCT0VV55quljSwj
-         w1jxw5IGduwc4qywGaEgVCBis00rXlnESnSx69FloB6V3T4U+1XaZEEJjxAh8shHqO94
-         xREjpisHO+j9j1yFUuDpfMEq8fUwqu0qK6tC1wMEQgvpEyV2n5SQBMySXtDSthgeSa2n
-         /PPDMvWcqQopxZqgFpuF6zNMT5T+IwivOGz0qqut4IYAhzkMdVK3NK8wTnrmTmUZTcIf
-         ClKg==
+        bh=0ZjMO+W4wuo+djUT9uwnrCr5tvNqbyTwVgrD5Xsdzs8=;
+        b=fmZvaL6sHrwkDXPqqmYX28Pz8ngsOvsV7Ko50ioRL7WiaBazi2DfOKxPklq48fOv1H
+         xabbtaeUc2RiobhCnfrQ7mPzL+DGqi4bilNwaTMfsqRKrZE+L1No5W/BSuGIIKiNIU/S
+         rGLLnthr72A+uDbaWKfb651DEPsdp3YWhpziyKAYV9QC2GZWs1JJ0HU9WT1BeLo2b/Hx
+         vV2fkYeqs5EihUW5Ewbz84YUUogz9bUoEvxNsjE77VzpoB0rOXrLOmvQtoACTHZCEJ/g
+         baK/FhpeY53iIFPrFKMyfLuMBgguMFHC09mE1hfuYpLjeOIDDsJz4M/5fCdmQadM5IAP
+         wVTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=oZ4nZ5Zya196ZiwJ1O1F435vpqontSNb8dQ0kD07LgU=;
-        b=jLx6jxaLm8M9bTH1AhhLHJGJ+Bm7qmo7NKsVlgfaIrOK8UZEGstoZ+67LCU2qxPeB/
-         CGudJ+T1x8cQi6uNlCeh/HueKnSmF+yHtixOIJMXMlMjYRDLV3aGZaXVp15ujcR1UeWc
-         /XEFnUzX3GSOoTD+FIpA0OJR92+VEIVW7mena6w4yhtPukuEWpdaEAn9UcKMv0A2WdzQ
-         V5lvpVbgVpC+XcJC+B9fjT/kJnoKt5fiuzRpHeIK56a7a7rQXc+UBV8LBzNI4L48tx7C
-         d+jzE565btgiRvYI2w27z4JCuAqdQKQ5l1Uuo93//HwCJZ26OmcWsvYhwbfYjpY+deZv
-         Xigg==
-X-Gm-Message-State: AOAM531W+1i5VvZaDeBm2+ez7GeE7HHrb+JVD5EG83wCdFxsN4jjCfou
-	sw/ElhIl+SdGil4z1iRANLtQP7Zla2ohw76KaC8=
-X-Google-Smtp-Source: ABdhPJybU3cqpG3wFN7It6Iq5nNfrPmMzCMul6s+AWChrY80PMoaJ+5/Yq8WZr5afEW/cxXNGPlVUZkHxbq/S5RZ8uw=
-X-Received: by 2002:a05:6e02:de6:: with SMTP id m6mr17921524ilj.203.1626716722378;
- Mon, 19 Jul 2021 10:45:22 -0700 (PDT)
+        bh=0ZjMO+W4wuo+djUT9uwnrCr5tvNqbyTwVgrD5Xsdzs8=;
+        b=YYTd3IiwJ9W6McUkXHYGK8onrjobKtRLnrU9ZK54gDaFR0qSUuWQf1EcebJXNXreeU
+         2XQI+K7Ug0Gz+evJ55GNJqLFYFrR/Y7ZOGAomWrXjSe/8prhZjZUPK7TWQfByyyceVRY
+         E7jbsyGsJ5CIVwOY93U7Dggo7FF8APs8G/RZGUbYteQO8imS1uEV/cx4TuuH/8BUH4zt
+         TN8Ar481dM6kfXWA2/X+0Gkfm+zBKaBY4On6MaweJR/0G0XusQYtH/Qk66BaYwMW8X22
+         gSUPxGQATW2ilpf1cASe6UYCMQT/FzW28PDTHXi/ZB5MXclCK50SOrveDnobPfdbgDFM
+         Xk2g==
+X-Gm-Message-State: AOAM531nBLUtCePJSo83dRnULiy3x+5lQPU2pTHsTqsw8PaJ1Ys1cFUD
+	pkWra/GJZlEyxno7NYCyb6Jb1Q//d90eyAnIUYs=
+X-Google-Smtp-Source: ABdhPJx39JplDuGf6LMG1lIRryK4Xkdt7SWvnXkv7G90X6HU5SExYRljlLlqyhbOO4t2a0re/AM8IKAD1cPPStplO1s=
+X-Received: by 2002:a02:2b21:: with SMTP id h33mr22379567jaa.31.1626717306958;
+ Mon, 19 Jul 2021 10:55:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -59,11 +59,12 @@ References: <YOX+N1D7AqmrY+Oa@google.com> <20210707203827.GI18396@quack2.suse.cz
  <CACRpkdaMZQSQQu_w76S6DBhQ2_ah4Lfz==NdNDBMsSXuW8m-rw@mail.gmail.com>
  <CANiq72ntKzqBWFP-dTKAmsmwfshQa3fc+jm6m4mns4TdRgcCiA@mail.gmail.com>
  <CACRpkdZkWQ=dWieyRch7aFuLOJ+WB_he_Bb_A2z_zJw+BZrQJA@mail.gmail.com>
- <YPVvEZgcP1LMGjcy@google.com> <YPV7DTFBRN4UFMH1@google.com> <26cd8155-a85c-01e9-bfac-af4bbd15f273@oracle.com>
-In-Reply-To: <26cd8155-a85c-01e9-bfac-af4bbd15f273@oracle.com>
+ <YPVvEZgcP1LMGjcy@google.com> <YPV7DTFBRN4UFMH1@google.com>
+ <26cd8155-a85c-01e9-bfac-af4bbd15f273@oracle.com> <CANiq72ntf=Jf=pRNbHEAt27D744Ew9+-EgqoRt+mXYxB5ohD4w@mail.gmail.com>
+In-Reply-To: <CANiq72ntf=Jf=pRNbHEAt27D744Ew9+-EgqoRt+mXYxB5ohD4w@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 19 Jul 2021 19:45:11 +0200
-Message-ID: <CANiq72ntf=Jf=pRNbHEAt27D744Ew9+-EgqoRt+mXYxB5ohD4w@mail.gmail.com>
+Date: Mon, 19 Jul 2021 19:54:55 +0200
+Message-ID: <CANiq72kpLY=OfEiDYp6seSS4Dbcn2Af6sVhhYYBE1=-bxWpGSw@mail.gmail.com>
 Subject: Re: [TECH TOPIC] Rust for Linux
 To: Vegard Nossum <vegard.nossum@oracle.com>
 Cc: Wedson Almeida Filho <wedsonaf@google.com>, Linus Walleij <linus.walleij@linaro.org>, 
@@ -75,39 +76,32 @@ Cc: Wedson Almeida Filho <wedsonaf@google.com>, Linus Walleij <linus.walleij@lin
 	ksummit@lists.linux.dev, Viresh Kumar <viresh.kumar@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Jul 19, 2021 at 6:02 PM Vegard Nossum <vegard.nossum@oracle.com> wrote:
+On Mon, Jul 19, 2021 at 7:45 PM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> Here you have try_writeb() (and error return) where there was just a
-> writeb() without any error handling in the C version. Is this what
-> Miguel was answering a bit down the thread where the address is computed
-> ((value as u8) << offset) so it _needs_ to use the try_() version?
+> However, the offset given is not a compile-time constant here, thus
+> the runtime-check is used. Or we could provide an `unsafe fn` which
+> means the caller would be responsible to guarantee the precondition.
+> But see next point.
 
-Not exactly: `((value as u8) << offset)` is the value -- the address
-is still controlled by the `try_()` version.
+To clarify, by offset here I mean the actual offset passed to the
+function, i.e. the second parameter `woffset` (notice the `w`), not
+`offset` in the value parameter:
 
-However, the offset given is not a compile-time constant here, thus
-the runtime-check is used. Or we could provide an `unsafe fn` which
-means the caller would be responsible to guarantee the precondition.
-But see next point.
+    pl061.base.try_writeb((value as u8) << offset, woffset)?;
 
-(Actually, from a quick look, there are 3 or so `try_*()` that could
-be using the non-`try_*()` version)
+> (Actually, from a quick look, there are 3 or so `try_*()` that could
+> be using the non-`try_*()` version)
 
-> If offset can be anything but a "correct" value here, should there be a
-> check for that somewhere else and then the computed value can be
-> subsequently treated as safe (i.e. there's a second try_writeb() in the
-> function that now presumably does the runtime check a second time,
-> redundantly)?
+e.g.
 
-Indeed, that is a pattern that we use all the time to make things
-safe, i.e. we create types that hold invariants.
+    let _ = pl061.base.try_writeb(gpioie, GPIOIE);
 
-Here, we could definitely keep the information that a given `offset`
-is safe and then reuse that knowledge statically.
+could be:
 
-Ideally, Rust would allow using the loop variable as a compile-time
-value if the range is statically known (without unrolling the loop
-manually and without a macro).
+    pl061.base.writeb(gpioie, GPIOIE);
+
+because `GPIOIE` is known at compile-time (vs. the ones with `woffset`).
 
 Cheers,
 Miguel
