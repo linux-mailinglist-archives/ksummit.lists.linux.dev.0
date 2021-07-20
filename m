@@ -1,132 +1,104 @@
-Return-Path: <ksummit+bounces-421-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-422-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79B933CF962
-	for <lists@lfdr.de>; Tue, 20 Jul 2021 14:11:10 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
+	by mail.lfdr.de (Postfix) with ESMTPS id 868363CFA72
+	for <lists@lfdr.de>; Tue, 20 Jul 2021 15:21:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id 4D1931C0F0F
-	for <lists@lfdr.de>; Tue, 20 Jul 2021 12:11:09 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id C1F143E1071
+	for <lists@lfdr.de>; Tue, 20 Jul 2021 13:21:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A59482FB6;
-	Tue, 20 Jul 2021 12:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC652FB6;
+	Tue, 20 Jul 2021 13:21:49 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [185.16.172.187])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D130168
-	for <ksummit@lists.linux.dev>; Tue, 20 Jul 2021 12:11:01 +0000 (UTC)
-Received: by mail-il1-f182.google.com with SMTP id p3so18910542ilg.8
-        for <ksummit@lists.linux.dev>; Tue, 20 Jul 2021 05:11:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=I5gQtoc7NXSvKEpNsEyz31agb+4fpYD8fN/uh4Mq3b4=;
-        b=YfswUSYDKjVn7LdAaEc4RDSJfOK2555404ULO2eQJtePTzgPlVThlCYSXkqNyRPnFp
-         1fzKTs/TRBEvOcUuPk3jnqSDstNVdN8raJp4jy4sFPa/mDr0JSJqQL//yd958CSOHVRF
-         qCkDtit0H4L7HfOk4EDOi2LywoXs8LzKJQomoLxvXs86HbeatYLUUz1+tBeiGotoa5Fv
-         O+2TRGxJq4yjnRpDoyU0sMhnusi/sWBvMs8UEMgIpkFZT5+Y4xrpJ53goXtBZRMkTAdm
-         CEkiwX6Tg5x5K4KDjuAJlTxfVY1m+rsDMwTfeYdm8eMhF70FJIdJuNSmoN88dgDrWuIU
-         vKeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=I5gQtoc7NXSvKEpNsEyz31agb+4fpYD8fN/uh4Mq3b4=;
-        b=dsgBMa2jbWjiHWMRizgk0poDvfY++cd6kVmJ18jLFkqMwe5vqBPRcQWziPoLHLPjDD
-         UMcIEwUV0/Y8LLdImNYs9hqlhQvUCcqH5h0BSaJ483ZS1+tRE9cj3mmeI5AsPZW5/TqQ
-         H4ksiuUrJUWvwN9tmlESIe8CmrNcdC9HkSvgKNryb67/exSj1jeZXvxL7J1oJaI5lf6o
-         uoBA4lRYjNvi555NTe0GZyOuD4csbNTaPdQxxCN9XZUmpNEyPNNwphjolmXJdTGy87mJ
-         dE0dakkTp0enjL4c2fFsDlIJkZjjhZvKOw4YUW/SbAmVxoIh9KDFI6BnjIOTCpW27Vme
-         wNdw==
-X-Gm-Message-State: AOAM531UJQZCAQuDZ1OOwSRAQ3DVg2vCjp8D2+B6LfrirvCn0g6tvBw/
-	0NVrxyVr+aFBjyG+WcYzFWpqUqMjYx9yj4rGw7o=
-X-Google-Smtp-Source: ABdhPJzazYa2q5J0O5KddYyCLsExnKttTTsNsykiUvWj5cHY9paMOZhbhaTgpyMH1QBedsrrCTtPxYIGVLXDWbyiWec=
-X-Received: by 2002:a92:b74d:: with SMTP id c13mr20286830ilm.176.1626783060413;
- Tue, 20 Jul 2021 05:11:00 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F49272
+	for <ksummit@lists.linux.dev>; Tue, 20 Jul 2021 13:21:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=yzYqI5fPyt9Uopnm9h328lSxRcBF9m2iX9L41EB/KoQ=; b=DpN5NdPsHN0phHtr+3iKBzgXb+
+	P3yWi33mD/S1rm6D2Eh3I6pDT0N47DCVRmUYuQQxe8iW5AZMuFPYfkmWpAd1La2hFFOyUK/w+XW1d
+	M178VMhB7K2xVAb/vEFQZv0HFbDDwHyB7Vbfuoh+nbyo3nK8z9Sl4D1/ervxDmLhgrfM=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1m5pgi-00E3So-SJ; Tue, 20 Jul 2021 15:21:32 +0200
+Date: Tue, 20 Jul 2021 15:21:32 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Wedson Almeida Filho <wedsonaf@google.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Greg KH <greg@kroah.com>,
+	Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+	Kees Cook <keescook@chromium.org>, Jan Kara <jack@suse.cz>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Julia Lawall <julia.lawall@inria.fr>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Roland Dreier <roland@kernel.org>, ksummit@lists.linux.dev,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Subject: Re: [TECH TOPIC] Rust for Linux
+Message-ID: <YPbN3G6qgaeABWEW@lunn.ch>
+References: <YOb/aJC2VuOcz3YY@google.com>
+ <YOdJLYmUkoMyszO7@kroah.com>
+ <CACRpkdaMZQSQQu_w76S6DBhQ2_ah4Lfz==NdNDBMsSXuW8m-rw@mail.gmail.com>
+ <CANiq72ntKzqBWFP-dTKAmsmwfshQa3fc+jm6m4mns4TdRgcCiA@mail.gmail.com>
+ <CACRpkdZkWQ=dWieyRch7aFuLOJ+WB_he_Bb_A2z_zJw+BZrQJA@mail.gmail.com>
+ <YPVvEZgcP1LMGjcy@google.com>
+ <CACRpkdZE+tnS1qV3xC0tDV1aSxBtfJq81+eBtkrovCgOOUimwA@mail.gmail.com>
+ <YPWPbbqdG3aFCmAZ@google.com>
+ <CACRpkdYqfYrhWT2kZ0uy8hS__EfVmQdq8X5ev6Oke+WQWfiDSg@mail.gmail.com>
+ <YPYk4gSGJrGvg+M+@google.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <YOaW/pR0na5N9GiT@kroah.com> <YOb/aJC2VuOcz3YY@google.com>
- <YOdJLYmUkoMyszO7@kroah.com> <CACRpkdaMZQSQQu_w76S6DBhQ2_ah4Lfz==NdNDBMsSXuW8m-rw@mail.gmail.com>
- <CANiq72ntKzqBWFP-dTKAmsmwfshQa3fc+jm6m4mns4TdRgcCiA@mail.gmail.com>
- <CACRpkdZkWQ=dWieyRch7aFuLOJ+WB_he_Bb_A2z_zJw+BZrQJA@mail.gmail.com>
- <YPVvEZgcP1LMGjcy@google.com> <YPV7DTFBRN4UFMH1@google.com>
- <YPYDb0Z19qohUjua@piout.net> <CANiq72mpCysR3B=sLBWOi4PGSZf9B5e1bXQJaGQ5MkknKfixhg@mail.gmail.com>
- <YPaZ4zTZHOQfBhOk@piout.net>
-In-Reply-To: <YPaZ4zTZHOQfBhOk@piout.net>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 20 Jul 2021 14:10:48 +0200
-Message-ID: <CANiq72kcuXYrUt4SoCmWmbbiRzuPHCmFt0es2Z67bWsAoCgGew@mail.gmail.com>
-Subject: Re: [TECH TOPIC] Rust for Linux
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Wedson Almeida Filho <wedsonaf@google.com>, Linus Walleij <linus.walleij@linaro.org>, 
-	Greg KH <greg@kroah.com>, Bartosz Golaszewski <bgolaszewski@baylibre.com>, 
-	Kees Cook <keescook@chromium.org>, Jan Kara <jack@suse.cz>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Julia Lawall <julia.lawall@inria.fr>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Roland Dreier <roland@kernel.org>, 
-	ksummit@lists.linux.dev, Viresh Kumar <viresh.kumar@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YPYk4gSGJrGvg+M+@google.com>
 
-On Tue, Jul 20, 2021 at 11:39 AM Alexandre Belloni
-<alexandre.belloni@bootlin.com> wrote:
->
-> Well, the point is exactly to have a look at that extra work.
+On Tue, Jul 20, 2021 at 02:20:34AM +0100, Wedson Almeida Filho wrote:
+> On Tue, Jul 20, 2021 at 12:16:32AM +0200, Linus Walleij wrote:
+> > On Mon, Jul 19, 2021 at 4:42 PM Wedson Almeida Filho
+> > <wedsonaf@google.com> wrote:
+> > 
+> > > > I think people want to see the code inside these classes as well,
+> > > > can we browse it?
+> > >
+> > > The whole tree is available here: https://github.com/wedsonaf/linux/tree/pl061
+> > > -- I should caution you that the two most recent commits are not merged into the
+> > > rust tree yet because they're WIP. (I'll clean them up and eventually merge
+> > > after the feedback from you all.)
+> > 
+> > I found that the gpio_chip C wrappers lives here:
+> > https://github.com/wedsonaf/linux/blob/pl061/rust/kernel/gpio.rs
+> > 
+> > This file is very interesting!
+> > 
+> > I think it's not a good idea to keep these wrappers in their own
+> > rust directory, they need to be distributed out into the kernel
+> > everywhere they are used. We have made this mistake before
+> > with OF (device tree) that started exactly like this in
+> > drivers/of/*, and now I have part of the OF GPIO handling
+> > and tests inside files in that directory as a consequence.
+> 
+> That's great feedback. Our plan was to have the core parts in `rust/kernel`, but
+> once maintainers got involved, we would place things where it made more sense.
+> Since we have no maintainers involved in development yet, everything is in rust/
+> for now.
 
-That is fine, but you did not say so :) I interpreted you wanted to
-compare the codegen quality, rather than take a look at the extra
-features.
+Part of the issue here is -stable and back porting fixes. If files
+move around within the tree, it makes this back porting harder. git
+cherry-pick is a lot less likely to work, it needs more manual
+intervention. I expect it will make the stable teams job much easier
+if these files are in the right place from day 1 and never move.
 
-> I was under the impression that you would compile the kernel with
-> overflow checks enabled, why would you disable them here?
-
-Please see the previous point: it is not that useful to compare object
-files that do different things (if checking codegen quality), thus I
-removed some of the differences, including the overflow checks.
-
-The extra work can be done in both C and Rust (or in neither), so it
-is not related to the language choice.
-
-> But do we care about very simple test cases? The pl061 driver is already
-> simple and this would be an example of what to expect for most of the
-> simple drivers that would get converted.
-
-Ditto.
-
-> This is a function call, I would not call that closer to the C
-
-I explained this in the beginning of the message: `bindgen` cannot
-convert C macros, thus we use a helper function, and since
-cross-language LTO is not yet supported, LLVM cannot inline the call.
-
-Of course, we could do inline assembly in the Rust side too, but I
-would say it is best to work on cross-language LTO and see if that is
-good enough before duplicating code.
-
-We could also do it here for demonstration purposes, if you want.
-
-> version. Can we see rust_helper_readb?
-
-Of course:
-
-    00000000000004d8 <rust_helper_readb>:
-        4d8:    39400000    ldrb    w0, [x0]
-        4dc:    d50331bf    dmb     oshld
-        4e0:    92401c08    and     x8, x0, #0xff
-        4e4:    ca080108    eor     x8, x8, x8
-        4e8:    b5000008    cbnz    x8, 4e8 <rust_helper_readb+0x10>
-        4ec:    d65f03c0    ret
-
-As you can see, it is just the inline assembly generated by the arm64
-arch macros.
-
-Cheers,
-Miguel
+   Andrew
 
