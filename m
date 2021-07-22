@@ -1,52 +1,49 @@
-Return-Path: <ksummit+bounces-439-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-440-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADAC73D12D0
-	for <lists@lfdr.de>; Wed, 21 Jul 2021 17:50:06 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39BA53D2155
+	for <lists@lfdr.de>; Thu, 22 Jul 2021 11:56:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 48C463E105E
-	for <lists@lfdr.de>; Wed, 21 Jul 2021 15:50:05 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id 053721C0F05
+	for <lists@lfdr.de>; Thu, 22 Jul 2021 09:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C6F72FB6;
-	Wed, 21 Jul 2021 15:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0720D2FB6;
+	Thu, 22 Jul 2021 09:56:44 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9452470
-	for <ksummit@lists.linux.dev>; Wed, 21 Jul 2021 15:49:57 +0000 (UTC)
-Received: by mail-pl1-f173.google.com with SMTP id b2so1167373plx.1
-        for <ksummit@lists.linux.dev>; Wed, 21 Jul 2021 08:49:57 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73031168
+	for <ksummit@lists.linux.dev>; Thu, 22 Jul 2021 09:56:42 +0000 (UTC)
+Received: by mail-oi1-f178.google.com with SMTP id c197so5933946oib.11
+        for <ksummit@lists.linux.dev>; Thu, 22 Jul 2021 02:56:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=ffwll.ch; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=inBYu5ag7c45MW8HDl2wJjLOE4iuBAdb1D4julHQh2I=;
-        b=JoYCQOT90yZYg68ABYw09NUwlkvhYWyLIYIuvV9ipOkP0s5IMJzBj6Y4eWj31EP2Pj
-         YURwAVn4LFLGmPWOH2vgvHU0VZkz5Hkb1A0c6Aw7gfCGoGDGIrZQWP9fMMSQkAQ42o/4
-         QUKM37vhm8hVlZ+CCg3uLAfP96bmynoBUTlPjBHECASSdEB8VZ5rJC4ElQPIlJqMEaU4
-         Gd9bIqliavPLOCz5lnQ0tZqQ0Z3P5gREfEUGime2KX1aUctMEb6qdkF7V2Fxe/uO6eIU
-         sRgNrCWjgD3ZbHRvHMt81AtI8dNKiummeY/rh6pkE01/c5pW2sChVlYgTN4kwHUbqR25
-         l3cg==
+         :cc;
+        bh=YR1QprgrY16a+8y3JexsV6B8Rz5MQoZY3EWxYKUMXNM=;
+        b=W3OHSwntvrzae0sULjZHKV0PgFTypuJL7Ep6uULr3dgoj7MMNC2kBmRfn1quGuKW/7
+         lKIaIb5NsPJMe29Z3cVsLSG/CkfpHAEV2bAl2Ofp3EWKD2rVqJrh6Q87ieXEHvSW8IoD
+         IzXaxu2rc2uTFGw/z0bsntVnK3TGO90FnNZ0Y=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=inBYu5ag7c45MW8HDl2wJjLOE4iuBAdb1D4julHQh2I=;
-        b=sjdgr6s4SblGgxlywE4VpS6cUJHt3UndQI4Us7bLU52w61eUr3MfSnjqatE0x7TeuU
-         ziWsdrer+ZQgQGJyPSauj/+J1uOoVHHrJN6pBjIbnxPH9iww9ijXd6Z7tbF4PCs3oDzw
-         1AuvnpzCi5vdBkMKiyJ4d2AT1lJ3BcniyRex47VTWWRHscKwuNikWcbtd8ay8mKqmYTx
-         osphK5eeJjCR7x//C9HrQELHMVaTGisP7sD5NXHMSDnVHwSFxQ3WBKrt1v34WD07+y9C
-         4pCiwbBNE8zWgMgxka8fCwj2EOgbCtpyNk0vCXqnR/xnock3VqxjumUjwFil1DNbXgNp
-         sh8w==
-X-Gm-Message-State: AOAM531nEC/HMW/8lSAFIv0slnEa1stAsMv8K2iztPjepWuDmqIvwBJv
-	Avo7674kXRIQ5CKt60KTpcONCg9DA4MNxnnQHu4=
-X-Google-Smtp-Source: ABdhPJwtxXMeUt1ckwjLUEFJWmO5RZqlQfn6S4KZp6SzUCFHTOMZdyZ2jJ5TYjZwgNfAJEpk2VN3WDR6FtGvKnLyL8E=
-X-Received: by 2002:a17:90b:3647:: with SMTP id nh7mr36027626pjb.228.1626882597112;
- Wed, 21 Jul 2021 08:49:57 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=YR1QprgrY16a+8y3JexsV6B8Rz5MQoZY3EWxYKUMXNM=;
+        b=nfLFhDPQymEKGogGNGI90A6mE5CnvBVn8L9ttA6NVKluOtlOHh1Kb1PFpRRy/Z8pLY
+         KH7UW3ute72dAJzZjeLe1ybSRZXfIs0K90V0nVFRZ/BmTq8STMi5oPg1S/uqTkYoqyjq
+         trjYB/eVxAYsMTAmcmErCFCFSE/tje6aOIZK+uXFIGshQutc5NW7k8Pbe7ZFlRuLoSCP
+         T3jNUvtqMttBu9cZqkJRHykxE04ZFIiYl65Z2Vu+flgm3oKw77TDbLFFewGcozU4gbRU
+         ESYxBrGEuuakUznVLzamIdznT/xY7LjX9DBGrg7+GZNN+9vhDl/D0/4fCaPGVL344B3r
+         J0yQ==
+X-Gm-Message-State: AOAM533doCJLGrFaTlPOAm2ojfIz9+OWiVuL9IwMIq7mNgxEYfOAhL2d
+	d+YHJZWkUTWAcTiZagxHwCoE/y00G8nc/TrNrf4tRA==
+X-Google-Smtp-Source: ABdhPJxLx0ytvONlnHXS0ZPWlAPGr2/0aSruvx1tonFO65CHDFSWcwRCscUjtZ8ExhPnuFIXdir1Rc+9YE7ROlh90q0=
+X-Received: by 2002:aca:d682:: with SMTP id n124mr133393oig.128.1626947801258;
+ Thu, 22 Jul 2021 02:56:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -58,51 +55,90 @@ References: <CAG4TOxMzf1Wn6PcWk=XfB+SV+MHwbxUq8t1RNswie5e3=Y+OXQ@mail.gmail.com>
  <20210707105000.GA4394@sirena.org.uk> <c24c61f498f43f589eafd423e51f997134d198b7.camel@HansenPartnership.com>
  <YOWcCG9Pm/S+EXFw@kroah.com> <11c07bc291b443c2683a2baff5b180ff5b0729a5.camel@HansenPartnership.com>
  <YOWh0Dq+2v+wH3B4@kroah.com> <YOXhlDsMAZUn1EBg@pendragon.ideasonboard.com>
- <YOagA4bgdGYos5aa@kroah.com> <CACRpkdasOaNgBAZVx5qpKJdU7h41jHDG2jWi2+pi9a1JBh7RTQ@mail.gmail.com>
- <YOh/JC//dotfm5J9@google.com> <CACRpkdb1W=M5EJkGbSS4QxObU-Gd5yZ1qE439k_D4K=jevgcrQ@mail.gmail.com>
- <CAHp75VfW7PxAyU=eYPNWFU_oUY=aStz-4W5gX87KSo402YhMXQ@mail.gmail.com> <CACRpkdbzAzwrSJmoiO8w5KPV2dL-qxgaeD+gSzL-Gg+cmajsOQ@mail.gmail.com>
-In-Reply-To: <CACRpkdbzAzwrSJmoiO8w5KPV2dL-qxgaeD+gSzL-Gg+cmajsOQ@mail.gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 21 Jul 2021 18:49:17 +0300
-Message-ID: <CAHp75Vc9E3D4+roG6Hpv1TDffpy+7=kP0zwMuwy3FFghL=pTpQ@mail.gmail.com>
+ <YOagA4bgdGYos5aa@kroah.com> <CAKMK7uHgtGc9ncD3LjHzWxF1eOJ5-M+u=45ZG8-vDtgEAHVJ4Q@mail.gmail.com>
+ <20210721090841.GW1931@kadam>
+In-Reply-To: <20210721090841.GW1931@kadam>
+From: Daniel Vetter <daniel@ffwll.ch>
+Date: Thu, 22 Jul 2021 11:56:30 +0200
+Message-ID: <CAKMK7uEJjx5kLMcAPOnnu=SamwwikEyO5fMirS0rAxGwxrLwmA@mail.gmail.com>
 Subject: Re: cdev/devm_* issues (was Re: [TECH TOPIC] Rust for Linux)
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Wedson Almeida Filho <wedsonaf@google.com>, Greg KH <greg@kroah.com>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+To: Dan Carpenter <dan.carpenter@oracle.com>
+Cc: Greg KH <greg@kroah.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
 	James Bottomley <James.Bottomley@hansenpartnership.com>, Mark Brown <broonie@kernel.org>, 
-	Roland Dreier <roland@kernel.org>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
-	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>, Daniel Vetter <daniel@ffwll.ch>, 
-	Bartosz Golaszewski <bgolaszewski@baylibre.com>, 
-	"open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>
+	Linus Walleij <linus.walleij@linaro.org>, Roland Dreier <roland@kernel.org>, 
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, ksummit@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 21, 2021 at 4:46 PM Linus Walleij <linus.walleij@linaro.org> wr=
-ote:
-> On Wed, Jul 14, 2021 at 12:35 AM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
+On Wed, Jul 21, 2021 at 11:09 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> On Thu, Jul 15, 2021 at 11:54:22AM +0200, Daniel Vetter wrote:
+> > Since we're dropping notes, a few of my thoughts:
+> >
+> > - Personally I think an uapi resource cleanup system needs a different
+> > namespace, so that you don't mix these up. Hence drmm_ vs devres_ for
+> > drm, and maybe the generic version could be called uapires or ures or
+> > whatever. It needs to stick out.
+> >
+> > - I'm wondering whether we could enlist checkers (maybe a runtime one)
+> > to scream anytime we do an unprotected dereference from ures memory to
+> > devres memory. This would help in subsystem where this problem is
+> > solved by trying to decouple the uapi side from the device side (like
+> > gpio and other subsystem with simpler interfaces). We have undefined
+> > behaviour and data race checkers already, this should be doable. But I
+> > have no idea how :-)
 >
-> > To me described scenario sounds rather like an object lifetime possible=
- issue.
-> > In any case, shouldn=E2=80=99t VFS guarantee by a reference counting th=
-at
-> > gpiochip_remove() wouldn=E2=80=99t be called while file descriptor is i=
-n use?
-> > Or am I looking from the wrong end here?
+> So you want a warning with code like:
 >
-> What happens is that the GPIO device disappears (such as unplugging
-> a USB GPIO expander) while a multithreaded userspace is hammering
-> exotic ioctl() commands to the same device like crazy.
+>         p->foo = bar;
 >
-> Under these circumstances (which should be rare, but you know,
-> developers) it could happen that an ioctl() sneak in before the
-> gpio_chip pointer is NULL if I read the code right.
+> Where "p" is devres memory and "bar" is ures?  There are a couple
+> approaches you could take and I would advise to implement both.
 
-So, gpio_chip is NULL but gpiodev is not NULL, correct?
-If so, it means that the above mentioned scenario applies to the
-latter one and I understand the checks.
+Pointing from devres to ures is totally normal, otherwise how can you
+unregister your interface (drm_device for gpus), which is ures, if you
+don't have a pointer that you can access from your hotunplug code,
+which leaves in the devres world. Or when you're called in any other
+hook from the device side of things (callbacks, interrupts, whatever
+really). The usual approach is to clear these out on hotunplug, which
+doesn't need locks because you're guaranteed that nothing from the
+devres world can use them anymore since the device is gone. But ofc
+you can screw this up easily.
 
---=20
-With Best Regards,
-Andy Shevchenko
+Also, you need to have pointers from ures to devres world too, because
+without those it's pretty hard to access your actual hw and make it do
+things, which is the entire point of exposing a uapi interface (which
+is in the ures world). The trouble is this access isn't protected
+against the devres side disappearing in a hotunplug with a lock or
+barrier or similar.
+
+E.g. in drm we have this drm_dev_enter/exit stuff, and within that it
+should be save to deref from ures to devres, but outside it's not.
+
+> The first approach is to just check directly for if p is devres and bar
+> is ures.  The problem is that sometimes you won't know if p is devres so
+> some bugs will be missed.
+>
+> The second approach is to say something like if we find one type "p"
+> that is devres, then let's assume they all are.  Same for ures.  Then
+> based on our assumptions about types, print a warning if they don't
+> match.  Then go through the warnings and make a list of types which lead
+> to false positives and add it to smatch_data/kernel.ignore_devres_types.
+> This is a bit hand wavey but that's basically the approach.
+>
+> A third approach would be to do something with manual annotations.  You
+> could probably make Sparse work for something like that.
+
+Yeah I think a classifier like that makes sense, but I'm not sure we
+can get at the information about how it's protected statically.
+-Daniel
+
+>
+> regards,
+> dan carpenter
+>
+
+
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
 
