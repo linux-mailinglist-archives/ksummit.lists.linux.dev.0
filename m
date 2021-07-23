@@ -1,314 +1,220 @@
-Return-Path: <ksummit+bounces-445-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-446-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D9B53D3121
-	for <lists@lfdr.de>; Fri, 23 Jul 2021 03:13:18 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1F7F3D4092
+	for <lists@lfdr.de>; Fri, 23 Jul 2021 21:11:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id AC7333E0F4C
-	for <lists@lfdr.de>; Fri, 23 Jul 2021 01:13:16 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id 5075F1C0A0E
+	for <lists@lfdr.de>; Fri, 23 Jul 2021 19:11:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C5E2FB6;
-	Fri, 23 Jul 2021 01:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B5F2FB6;
+	Fri, 23 Jul 2021 19:11:00 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61756168
-	for <ksummit@lists.linux.dev>; Fri, 23 Jul 2021 01:13:07 +0000 (UTC)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 3D55D255;
-	Fri, 23 Jul 2021 03:13:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1627002785;
-	bh=s+4qJP6p0Qtxd5qMS73nlBcZekuUWhqpLiplAXdpKxI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=v40w/vBgDnIhtmSMbB649v0SEFss3FPrvZ70DGKtTrdsL+5InNUiL8DdzgwX7aqpF
-	 Y/VuWkBVigmKD14rXNq2Uy82NlcIPH2kIKNqjeDvqtVM79czdQ1ZzSkeyLuyxwdJz0
-	 KrQ23oWu0GD0RZV9xH5fiWoSptDjc/avPSg02bgg=
-Date: Fri, 23 Jul 2021 04:13:04 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Wedson Almeida Filho <wedsonaf@google.com>
-Cc: Vegard Nossum <vegard.nossum@oracle.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Greg KH <greg@kroah.com>,
-	Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-	Kees Cook <keescook@chromium.org>, Jan Kara <jack@suse.cz>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Julia Lawall <julia.lawall@inria.fr>,
-	Roland Dreier <roland@kernel.org>, ksummit@lists.linux.dev,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: Re: [TECH TOPIC] Rust for Linux
-Message-ID: <YPoXoEm335lC3qcX@pendragon.ideasonboard.com>
-References: <CANiq72ntKzqBWFP-dTKAmsmwfshQa3fc+jm6m4mns4TdRgcCiA@mail.gmail.com>
- <CACRpkdZkWQ=dWieyRch7aFuLOJ+WB_he_Bb_A2z_zJw+BZrQJA@mail.gmail.com>
- <YPVvEZgcP1LMGjcy@google.com>
- <YPV7DTFBRN4UFMH1@google.com>
- <26cd8155-a85c-01e9-bfac-af4bbd15f273@oracle.com>
- <YPW/LNwxwEW4h0GM@google.com>
- <YPXUkKVL+/bw/7QD@pendragon.ideasonboard.com>
- <YPXqGoTWprjpslbP@google.com>
- <YPdiMHr/t5K6RJck@pendragon.ideasonboard.com>
- <YPehT6++bnrnG+WK@google.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2B972
+	for <ksummit@lists.linux.dev>; Fri, 23 Jul 2021 19:10:58 +0000 (UTC)
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 16NJ17oL007235;
+	Fri, 23 Jul 2021 19:10:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : content-type : mime-version; s=corp-2021-07-09;
+ bh=6rdcpNHaK0JvtRbfqQe8PI+N5XVeArccf0iFameialM=;
+ b=YJr5o9EUBfDU+Liaehbg2pkvodNXJ+HNWIRXWigdVE9MWZEMu7LpzW4lbXXB+0hPh1KQ
+ iEIzirzPmfZC2Jq65Z9bV5LJZWjEUC5mmiOQqDNOhyW9S2d39q5pTy8aTxtJKlV9o158
+ kPoqTa2XKapNogIvJgYhPcsVTW8BduwngQ3dIUalyUgOKLaNB+Mdhkf5X0MefvnersmN
+ Cm8/UjIMiC5+GbEeLcdl+rwkP678GGd/9bWo0oZLx3+yMafIwAry9SrKAP1IK7vhrHQb
+ bbvfDHOifU6k/RccqQKSqvGG/CbiK2eTpqtemQqXQ82e4IfQ+DzdWmW93eoMMEpadGqC +Q== 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : content-type : mime-version; s=corp-2020-01-29;
+ bh=6rdcpNHaK0JvtRbfqQe8PI+N5XVeArccf0iFameialM=;
+ b=ZT+k9LUT8+NvGKbjWX/ZOMqwOudT3I7YpkPb4j4YeKhNHOu4HXUhrOIGSFm4c/9O0drt
+ lBm7IspIiUfChuNoyI26Y3254ocQJ3/0Y7/BX2c1ynq3eplDZijAEJYg18f5VCER+OCp
+ go8zFt0QeyggXohQVUmxUzpSicVmDIxA0F2iX/LCCUx7aEHffq9+cJAiSw7M2OhmfrJQ
+ hT2j4rnxyMAPquQvuavKutmX7f0ZeSM9f69q9Tj6zmsy6z4n2KMs3ns2js3yc5rJmzsk
+ cG1knnYlf1U13hSxiSJwO2qMsOnia9x3JC+kfEMFC3M1Y04OqGMn2OKH3w6GXCVoiC/w QA== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+	by mx0b-00069f02.pphosted.com with ESMTP id 39y04dvadn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 23 Jul 2021 19:10:48 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+	by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 16NJ1TOr149302;
+	Fri, 23 Jul 2021 19:10:47 GMT
+Received: from nam04-mw2-obe.outbound.protection.outlook.com (mail-mw2nam08lp2175.outbound.protection.outlook.com [104.47.73.175])
+	by aserp3030.oracle.com with ESMTP id 39wunre3dc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 23 Jul 2021 19:10:47 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=X0C6h/V1l3PYgsewOrECSSWLCnTimtmcouW8r9QzI5zCLRyp+SEIkAEY4J4ERQQ7wU+MeW/UTsTNmSjMJbO4ZEqaKkpJ5IgaVQx07QhmeSpTpev8fLGUH6OwImnG+bSZxuBGS0+iNzUO6fJrpb8NkmN5IKAzPpj4z/Fecr++/XK+qwrSLsV2yaQm8K5P/GHpG626AADBxYxZwTtgiKHSQuTpfOq/ZdBetSz3DoXaMiA4VDeBQFvpFVqE0aT5wGmb4WTKnAkrlAWz1O79jidTnFv5rT37iTEI+VxCt17qLw79iL5Qb/d5EV7r6gFI2QEwoCXP/3FHjC34WTHolEaBqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6rdcpNHaK0JvtRbfqQe8PI+N5XVeArccf0iFameialM=;
+ b=HWe3/EaoRUW+9j5DqLKgz6WTcEzKOWynZI82uHL5vg9G2kkGwwTCtyuylcIkPTShvYQKYI4g6elyJFEX+VqEq4bvFHudfJqWpw/e0BCRY/V8hygy6E1J3Rj+v1Ylm1ttqDo+cJlZZAB+thPANgvNhxR0ZGScdUlm8F2Tz0h0m4gBS8K3ewtXKFJ6L2pOOZ6YPAnQYLl1kMDQ1DUYQWz/5T7F8PwmiQ92Po9p/LKYVzg7Kaa7PzRuVsmdx/zGPm/3Fjd76A/A2GFByhlIKi8zXzFLyYHgi3YO/nyIGOOQTGevJ6j/S+FdgNnRo97Qpii/rwTr0zV3fNVEa99NB8pGFA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6rdcpNHaK0JvtRbfqQe8PI+N5XVeArccf0iFameialM=;
+ b=Xqcv4GA7Ax78NTt25C4ZHyTBktT2lBo5T//SchYrrz3OdmNx5x1QCbWaMspvDcNf8/mwB5J65a7pL1q6tcNpOrJN2ckusZwAbRhcpCBd86WZ7nqC52DEC0gczOIdI5H3igIjkMfgrp2/hO/67PKoX+B2aN2gqC/ikPOf0eFFz3c=
+Authentication-Results: lists.linux.dev; dkim=none (message not signed)
+ header.d=none;lists.linux.dev; dmarc=none action=none header.from=oracle.com;
+Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
+ (2603:10b6:301:2d::28) by CO1PR10MB4721.namprd10.prod.outlook.com
+ (2603:10b6:303:9b::7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4352.26; Fri, 23 Jul
+ 2021 19:10:45 +0000
+Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
+ ([fe80::5820:e42b:73d7:4268]) by MWHPR1001MB2365.namprd10.prod.outlook.com
+ ([fe80::5820:e42b:73d7:4268%7]) with mapi id 15.20.4331.034; Fri, 23 Jul 2021
+ 19:10:45 +0000
+Date: Fri, 23 Jul 2021 22:10:23 +0300
+From: Dan Carpenter <dan.carpenter@oracle.com>
+To: ksummit@lists.linux.dev
+Cc: Julia Lawall <julia.lawall@inria.fr>
+Subject: Potential static analysis ideas
+Message-ID: <20210723191023.GG25548@kadam>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-ClientProxiedBy: JNAP275CA0039.ZAFP275.PROD.OUTLOOK.COM (2603:1086:0:4e::6)
+ To MWHPR1001MB2365.namprd10.prod.outlook.com (2603:10b6:301:2d::28)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <YPehT6++bnrnG+WK@google.com>
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from kadam (102.222.70.252) by JNAP275CA0039.ZAFP275.PROD.OUTLOOK.COM (2603:1086:0:4e::6) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4352.29 via Frontend Transport; Fri, 23 Jul 2021 19:10:41 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 0c643bd0-fae6-4edf-11a3-08d94e0d928b
+X-MS-TrafficTypeDiagnostic: CO1PR10MB4721:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: 
+	<CO1PR10MB47213D8571A2817F745894808EE59@CO1PR10MB4721.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 
+	81kOR1Rv3xJowF7qIbjWVwgWRy8c7SrEDFAEHCVYKNOtg6lxW9IkdlQG8BglWQ4tg9nxOllXuX/WwdhA3/IkAc8ovkYtj8j64CcetBo6hmrxoYbKlnQ0aMx6ftlYF8IUdrTDIHchD92UQFP4YW67NmPiDX+DtDWz4Pb770P3SIavrFyimaK6cSZ3biIAUWcHHL9dGoS2NrX8WrfoeI3npN71YidMkENa6sVSgDeO7opiFf+hq/aj99tAIArcXp70US0mg1g+++KRnrAmuJTpqgHmkc133W+2mxWGGHDwd7gwtb6j63ex6qBh2R9uduMobrffC9T/HJDptJBpD016y1BDhBqccy4/+1N2Pz+OpaEW2B4bRH5irme2QneoIqhUppKjU62L/LAVNqdOCIgVrPk2TSHyGPRCrUwa2QjdBIQSbbWiL30OwhwVgyd98M8sNgguoyS8Hn/dem+3/uMud/a70U4/7FJm+Iuw66FCtM2hFtlrkVfSoUu2DM1hU+Vkw6vpiDXPTqFvvvd62BZkyJgA19pS5ypk8r9fVAJf4Wi7tqv/T+C76ESDzbmAG+g9zmjmOix5CSkdGc32w7XaQHV7VIIxWNmf8UsyKkBfTErW5xU3I3KatmA3MPT2+O+V4SLaSHt1cCBGq0cgY8hEIyhEavpQW0baTh8wZgZgqLuX99150PmVAllA3KrhQ9r5L3F7iBTXKXG0BvdxxubUHg==
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR1001MB2365.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(346002)(396003)(366004)(39860400002)(376002)(136003)(38100700002)(38350700002)(55016002)(4326008)(33656002)(186003)(3480700007)(2906002)(66556008)(33716001)(478600001)(5660300002)(1076003)(86362001)(316002)(8936002)(26005)(6666004)(44832011)(66946007)(6496006)(83380400001)(6916009)(956004)(52116002)(9576002)(66476007)(8676002)(9686003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?us-ascii?Q?nHnLP3jIBZn99Ieft2DwnEvv3yrrQqE68CRIszlWfkypd2o7RxM2TdqjAJWq?=
+ =?us-ascii?Q?TrikPjCrDt65qZF8UVy47Gkr3jmVusJZXAjOq1kNhJ7QAEcq5xK6I5yE/dBh?=
+ =?us-ascii?Q?EnmUPI0Q4qgtZ9qOVpsI4fgEX7ZpwydCFGxjEWlUrY3uDSn2mq5L5BOSSIsk?=
+ =?us-ascii?Q?DwQiJF6QXcfiDF1Wh22e7NA3GCLtVNly2frqpRXlLAmw8MRVobgEGazogLhq?=
+ =?us-ascii?Q?WHiC1/Rk/HtAI+Caolo8xd7Hu7CD3O4oOCHV1Ebk8qFUPktaCGjdJXYI8oCE?=
+ =?us-ascii?Q?mptjX2rBbdZsjSoP3fp+nIsA65q2BGTR27bZZFijHoDwsBj+prXNpsOaZuzV?=
+ =?us-ascii?Q?8xdjF0X4Z91DcbMYgcDK7XOaY06mnyB89ZJ+5+1tLr5zgy1Why5oHcroCmKF?=
+ =?us-ascii?Q?UwsBP1fT0ZVHbWz071BxFRRWxYEWIp2QJN4emn6nYMVJLQJ6q7+OIjKcLLfu?=
+ =?us-ascii?Q?JsHvVfTHoHh70qYaHKoEmB9NCbRX3fmlCuih0lgrDrcfgn2tJPpmHg0FqRAY?=
+ =?us-ascii?Q?TTNXIqdovzdMGs6B8q3g9fdeBIMuhQ+0CbL/x6kLDQFTmojgI/l0Qjm5yhlc?=
+ =?us-ascii?Q?/oaqZOai7D29bm/IemzoU/GWYu7qQAYVKrQgEQYzgXpmJek2Td2ESxBe9sYN?=
+ =?us-ascii?Q?cSbWZ8UHTGW2/UEZnLKKF13r2qxTlI7cqJrNCESOKwu7/8eXQopnzcJ9j5c8?=
+ =?us-ascii?Q?sstzKw/bevegTNOSZK7ampXSH0Na8TKrHJ+iXo1blM4TSuwVJy8EAMGa7ExQ?=
+ =?us-ascii?Q?Pzvo3hBxpq75hdC0KldEQnybRyqI+OlvvvjxgYoBwCuPo/eheLQ1GQRxAe37?=
+ =?us-ascii?Q?CklvpLCYZvzi4TEkD5IVkCsDL3nAcURoJiN22OZOD+H1mhJ2O4eHOF/fjD1b?=
+ =?us-ascii?Q?oRaYG6iN+GX+hsoc/+sIOjqCipWTXyp7zh/9dp9BANuGlKQpy86tWREo8BDY?=
+ =?us-ascii?Q?x7rKMG2A4NSYUDN41ZHlgbSKG1qrLdNnr5A5fYkVJWcFewQX0Qg1bSYXn43Y?=
+ =?us-ascii?Q?xsiqVNdDAsKaVgAJXWvAohYTYGibIoP3/e/zf3ZcBwJjDJG2J/YeHQut2pb6?=
+ =?us-ascii?Q?V/FwosA5o/AGJA0aG1ouptD1y6apLBTV1kTm7Rf+C9McfeqQO1Mefs4e5WuE?=
+ =?us-ascii?Q?7zcF7pEij3/IFlDltKSm82CN3ThaD/qhDEKipsfpNUvc5GPkYFBluMfvf6Pi?=
+ =?us-ascii?Q?/352r0tzqzID8y6WJZs4W8GG25QOG+UpsJUZBNOwW5OxCvj+xIaDOTawKf8Q?=
+ =?us-ascii?Q?xO/w9R++qeOszGFjGn7lmDN6as2qemwjF6FemiCwq2Sf53+PHbgmvssOza5/?=
+ =?us-ascii?Q?5C9Dfm/uLFX/1TKzOkcheNwW?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0c643bd0-fae6-4edf-11a3-08d94e0d928b
+X-MS-Exchange-CrossTenant-AuthSource: MWHPR1001MB2365.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2021 19:10:45.5101
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3e/X785BB65FltqxKpoDfRBxeKnwKXE6imazJSTinU+ExKmxA8RPi7SpAcI81zvsxMxj5zoVemMkcuf0924bZ0Py4Qxdeit4ampYhLqMvpc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR10MB4721
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=10054 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 phishscore=0 spamscore=0
+ bulkscore=0 mlxlogscore=999 adultscore=0 malwarescore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
+ definitions=main-2107230116
+X-Proofpoint-GUID: 03YOaGMzLDMlvm8SCKVI6RppSDf6GD_I
+X-Proofpoint-ORIG-GUID: 03YOaGMzLDMlvm8SCKVI6RppSDf6GD_I
 
-Hi Wedson,
+Rust has many good static analysis features but if we wanted we could
+implement a number of stricter rules in C.  With Smatch I have tried to
+focus on exclusively on finding bugs because everyone can agree that
+bugs are bad.  But if some subsystems wanted to implement stricter rules
+just as a hardenning measure then that's a doable thing.
 
-On Wed, Jul 21, 2021 at 05:23:43AM +0100, Wedson Almeida Filho wrote:
-> On Wed, Jul 21, 2021 at 02:54:24AM +0300, Laurent Pinchart wrote:
-> > On Mon, Jul 19, 2021 at 10:09:46PM +0100, Wedson Almeida Filho wrote:
-> > > On Mon, Jul 19, 2021 at 10:37:52PM +0300, Laurent Pinchart wrote:
-> > > > On Mon, Jul 19, 2021 at 07:06:36PM +0100, Wedson Almeida Filho wrote:
-> > > > > On Mon, Jul 19, 2021 at 06:02:06PM +0200, Vegard Nossum wrote:
-> > > > > > On 7/19/21 3:15 PM, Wedson Almeida Filho wrote:
-> > > > > > > On Mon, Jul 19, 2021 at 01:24:49PM +0100, Wedson Almeida Filho wrote:
-> > > > > > >> On Fri, Jul 09, 2021 at 12:13:25AM +0200, Linus Walleij wrote:
-> > > > > > >>> I have seen that QEMU has a piece of code for the Arm PrimeCell
-> > > > > > >>> PL061 GPIO block which corresponds to drivers/gpio/gpio-pl061.c
-> > > > > > >>> Note that this hardware apart from being used in all Arm reference
-> > > > > > >>> designs is used on ARMv4T systems that are not supported by
-> > > > > > >>> LLVM but only GCC, which might complicate things.
-> > > > > > >>
-> > > > > > >> Here is a working PL061 driver in Rust (converted form the C one):
-> > > > > > >> https://raw.githubusercontent.com/wedsonaf/linux/pl061/drivers/gpio/gpio_pl061_rust.rs
-> > > > > > > 
-> > > > > > > I'm also attaching an html rending of the C and Rust versions side by side where
-> > > > > > > I try to line the definitions up to make it easier to contrast the two
-> > > > > > > implementations.
-> > > > > > 
-> > > > > > This is really cool :-) As a Rust noob, I have a few questions:
-> > > > > > 
-> > > > > > 1. I'm curious about some of the writeb() vs. try_writeb() calls:
-> > > > > > 
-> > > > > > fn direction_output(data: &Ref<DeviceData>, offset: u32, value: bool) ->
-> > > > > > Result {
-> > > > > >         let woffset = bit(offset + 2).into();
-> > > > > >         let _guard = data.lock();
-> > > > > >         let pl061 = data.resources().ok_or(Error::ENXIO)?;
-> > > > > >         pl061.base.try_writeb((value as u8) << offset, woffset)?;
-> > > > > >         let mut gpiodir = pl061.base.readb(GPIODIR);
-> > > > > >         gpiodir |= bit(offset);
-> > > > > >         pl061.base.writeb(gpiodir, GPIODIR);
-> > > > > > 
-> > > > > >         // gpio value is set again, because pl061 doesn't allow to set
-> > > > > > value of a gpio pin before
-> > > > > >         // configuring it in OUT mode.
-> > > > > >         pl061.base.try_writeb((value as u8) << offset, woffset)?;
-> > > > > >         Ok(())
-> > > > > >     }
-> > > > > > 
-> > > > > > Here you have try_writeb() (and error return) where there was just a
-> > > > > > writeb() without any error handling in the C version. Is this what
-> > > > > > Miguel was answering a bit down the thread where the address is computed
-> > > > > > ((value as u8) << offset) so it _needs_ to use the try_() version?
-> > > > > 
-> > > > > The `writeb` variant only works when we know at compile-time that the offset is
-> > > > > within bounds (the compiler will reject the code otherwise). When the value is
-> > > > > computed at runtime we use a `try` version that checks before performing the
-> > > > > write. We need this to guarantee memory safety.
-> > > > > 
-> > > > > > If offset can be anything but a "correct" value here, should there be a
-> > > > > > check for that somewhere else and then the computed value can be
-> > > > > > subsequently treated as safe (i.e. there's a second try_writeb() in the
-> > > > > > function that now presumably does the runtime check a second time,
-> > > > > > redundantly)?
-> > > > > 
-> > > > > Oh, that's a neat idea. We can certainly implement something like this:
-> > > > > 
-> > > > > let woffset = pl061.base.vet_offsetb(bit(offset + 2))?;
-> > > > > 
-> > > > > Then woffset would be passed to writeb variants that are guaranteed to succeed.
-> > > > > (Rust helps us ensure that woffset cannot change without checks, which would be
-> > > > > harder to do in C.)
-> > > > > 
-> > > > > > 2. In many places you have the C code:
-> > > > > > 
-> > > > > > struct pl061 *pl061 = dev_get_drvdata(dev);
-> > > > > > 
-> > > > > > with the equivalent Rust code as:
-> > > > > > 
-> > > > > > let pl061 = data.resources().ok_or(Error::ENXIO)?;
-> > > > > > 
-> > > > > > Why doesn't the C code need to check for errors here? Or put
-> > > > > > differently, why can the Rust version fail?
-> > > > > 
-> > > > > There are two aspecs worth noting here:
-> > > > > 1. In C there is cast from void * to struct pl061 * without really knowing if
-> > > > > the stored pointer is of the right type. For example, if I simply change the
-> > > > > struct type to say `struct mutex` in the code above, it will still compile,
-> > > > > though it will be clearly wrong. In Rust we prevent this by not exposing drvdata
-> > > > > directly to drivers, and using type-specialised functions to set/get drvdata, so
-> > > > > it *knows* that the type is right. So in this sense Rust is better because it
-> > > > > offers type guarantees without additional runtime cost. (In Rust, if you change
-> > > > > the type of the function to say `&Mutex`, it won't compile.
-> > > > > 
-> > > > > 2. The extra check we have here is because of a feature that the C code doesn't
-> > > > > have: revocable resources. If we didn't want to have this, we could do say
-> > > > > `data.base.writeb(...)` directly, but then we could have situations where `base`
-> > > > > is used after the device was removed. By having these checks we guarantee that
-> > > > > anyone can hold a reference to device state, but they can no longer use hw
-> > > > > resources after the device is removed.
-> > > > 
-> > > > If the driver reached a code path with an I/O write after .remove()
-> > > > returns, the game is likely over already. It would be more interesting
-> > > > to see how we could prevent that from happening in the first place.
-> > > > Checking individual I/O writes at runtime will not only add additional
-> > > > CPU costs, but will also produce code paths that are not well tested.
-> > > 
-> > > You may be conflating checking offsets in individual writes/reads with accessing
-> > > hw resources. Note that these are different things.
-> > 
-> > Yes, it's the data.resources().ok_or() that I was talking about, not the
-> > I/O writes, sorry.
-> > 
-> > > > It
-> > > > feels that we're inventing a problem just to be able to showcase the
-> > > > solution :-)
-> > > 
-> > > Thanks for taking a look. I beg to differ though, as this solves (on the Rust
-> > > side) a problem you described the other day on this very thread. The solution is
-> > > different from what you propose though :)
-> > > 
-> > > - The internal data structures of drivers are refcounted. Drivers then share
-> > >   this internal representation with other subsystems (e.g., cdev).
-> > 
-> > Refcounting the driver-specific structure is good, that matches what I
-> > proposed (it's of course implemented differently in C and rust, but
-> > that's expected).
-> 
-> The refcounting business is indeed different at the moment because it's easier
-> to implement it this way, but it doesn't have to be. (The `Ref` struct we use in
-> Rust is actually based on the kernel's `refcount_t`.)
-> 
-> > > - On `remove`, the registrations with other subsystems are removed (so no
-> > >   additional sharing of internal data should happen), but existing calls and
-> > >   references to internal data structures continue to exist. This part is
-> > >   important: we don't "revoke" the references, but we do revoke the hw resources
-> > >   part of the internal state.
-> > 
-> > No issue here either. The handling of the internal data structure (the
-> > "non-revoke" part to be precise) matches my proposal too I believe.
-> > Revoking the I/O memory is of course rust-specific.
-> > 
-> > > - Attempts to access hardware resources freed during `remove` *must* be
-> > >   prevented, that's where the calls to `resources()` are relevant -- if a
-> > >   subsystem calls into the driver with one of the references it held on to, they
-> > >   won't be able to access the (already released) hw resources.
-> > 
-> > That's where our opinions differ. Yes, those accesses must be prevented,
-> > but I don't think the right way to do so is to check if the I/O memory
-> > resource is still valid. We should instead prevent reaching driver code
-> > paths that make those I/O accesses, by waiting for all calls in progress
-> > to return, and preventing new calls from being made. This is a more
-> > generic solution in the sense that it doesn't prevent accessing I/O
-> > memory only, but avoids any operation that is not supposed to take
-> > place.
-> 
-> I like the idea of blocking functions.
-> 
-> What lead me to a resource-based approach was the following: we have to block
-> .remove() until ongoing calls complete; how do we do that? Let's take the cdev
-> example, if we take your approach, we may have to wait arbitrarily long for
-> say read() to complete because drivers can sleep and not implement cancellation
-> properly. What happens then? .remove() is stuck.
+For example, I've tried a bunch of approaches to warning about when the
+user can trigger an integer overflow.  The challenge is that most
+integer overflows are harmless and do not cause a real life bug.
 
-Correct.
+I've also written some checks for locking bugs where the warning is
+"expected lock 'foo' held when accessing struct member 'bar'".  The
+problem is that I'm not a locking expert.  My process is 1) Infer the
+pairing between this lock protect this pointer.  2)  Make list of places
+where the pointer holds a function pointer and we free it under lock
+(I still need to add the locking part).  3) Make a list of places where
+we access the data without holding the lock and the attacker can control
+the timing with userfaultd or whatever.
 
-> With a resource-approach, .remove() needs to wait on RCU only, so there are no
-> arbitrarily long waits. Bugs in drivers where they take too long in their calls
-> won't affect .remove().
+This sort of locking check which finds real life exploitable bugs is
+much more complicated to write.  If there were subsystems which had
+simpler, hardenned rules then that would be easier.
 
-If an operation is still in progress and you complete .remove(), all
-bets are off regarding what can happen next. This is a bug in the
-driver, it needs to ensure that all operations will complete in a
-reasonable amount of time. That reasonable amount of time may be long,
-maybe the hardware is performing DMA and can't be stopped until it
-completes, and maybe the DMA will take a few seconds to complete. That
-would arguably be a badly designed piece of hardware, but it can happen,
-and we need to ensure that the DMA completes before we shut down the
-device in that case.
+Another idea is that if I were a subsystem maintainer, I think I would
+enforce my prefered error handling rules.  1) Every allocation function
+must have exactly one free function.  2) Every function should clean up
+after itself on failure. 3) Never free things that aren't allocated.
+4) The frees must happen in reverse order from how they were allocated.
 
-> > My reasoning is that drivers will be written with the assumption
-> > that, for instance, nobody will try to set the GPIO direction once
-> > .remove() returns. Even if the direction_output() function correctly
-> > checks if the I/O memory is available and returns an error if it isn't,
-> > it may also contain other logic that will not work correctly after
-> > .remove() as the developer will not have considered that case.
-> 
-> I agree the extra error paths are a disadvantage of what I implemented.
-> 
-> > This
-> > uncorrect logic may or may not lead to bugs, and some categories of bugs
-> > may be prevented by rust (such as accessing I/O memory after .remove()),
-> > but I don't think that's relevant. The subsystem, with minimal help from
-> > the driver's implementation of the .remove() function if necessary,
-> > should prevent operations from being called when they shouldn't, and
-> > especially when the driver's author will not expect them to be called.
-> > That way we'll address whole classes of issues in one go. And if we do
-> > so, checking if I/O memory access has been revoked isn't required
-> > anymore, as we guarantee if isn't.
-> > 
-> > True, this won't prevent I/O memory from being accessed after .remove()
-> > in other contexts, for instance in a timer handler that the driver would
-> > have registered and forgotten to cancel in .remove(). And maybe the I/O
-> > memory revoking mechanism runtime overhead may be a reasonable price to
-> > pay for avoiding this, I don't know. I however believe that regardless
-> > of whether I/O memory is revoked or not, implementing a mechanism in the
-> > subsytem to avoid erroneous conditions from happening in the first place
-> > is where we'll get the largest benefit with a (hopefully) reasonable
-> > effort.
-> > 
-> > > We have this problem specifically in gpio: as Linus explained, they created an
-> > > indirection via a pointer which is checked in most entry points, but there is no
-> > > synchronisation that guarantees that the pointer will remain valid during a
-> > > call, and nothing forces uses of the pointer to be checked (so as Linus points
-> > > out, they may need more checks).
-> > > 
-> > > For Rust drivers, if the registration with other subsystems were done by doing
-> > > references to driver data in Rust, this extra "protection" (that has race
-> > > conditions that, timed correctly, lead to use-after-free vulnerabilities) would
-> > > be obviated; all would be handled safely on the Rust side (e.g., all accesses
-> > > must be checked, there is no way to get to resources without a check, and use of
-> > > the resources is guarded by a guard that uses RCU read-side lock).
-> > > 
-> > > Do you still think we don't have a problem?
-> > 
-> > We do have a problem, we just try to address it in different ways. And
-> > of course mine is better, and I don't expect you to agree with this
-> > statement right away ;-) Jokes aside, this has little to do with C vs.
-> > rust in this case though, it's about how to model APIs between drivers
-> > and subsystems.
-> 
-> I'm glad we agree we have a problem, that's the first step :)
-> 
-> I also agree that the problem exists regardless of the language. I do think that
-> the C side of the solution relies more on developer discipline (explicitly
-> checking for certain conditions, remembering to inc/dec counts, etc.) whereas
-> the compiler helps enforce such disciplines on the Rust side. IOW, it's just a
-> tool to catch possible violations at compile time.
+These days we have disabled GCC's uninitialized warnings so it falls
+to static analysis devs to review all the new warnings.  I sometimes
+ignore warnings if they look like probably they aren't a bug.  Does this
+function allow zero size writes?  Does this switch statement really need
+a default case?  Maybe sometimes I miss bugs.
 
-Sure, rust clearly brings more compile-time checks, nobody can claim
-otherwise :-) C will always rely more on the developer getting it right.
-I however believe that we can lower the chance of developers getting it
-wrong by improving the APIs between subsystems and drivers, regardless
-of the language. That's applicable to rust too, as the compiler won't
-catch all possible errors (a programming language where a developer
-wouldn't be able to get anything wrong would be an interesting concept
-:-)), and good API design will always help.
+Here is another example of something which I have a check for but I
+haven't pushed.
 
--- 
-Regards,
+	ret = frob();
+	if (!ret)
+		return ret;
 
-Laurent Pinchart
+This code is normally correct but sometimes it means the if statement is
+reversed and it should be "if (ret) return ret;".  To me returning a
+literal is always more clear but but clearly the original author felt
+"ret" was more clear...  It's only a few bugs per year so it's not a big
+deal either way.
+
+A sort of related example that I have pushed is this:
+
+	int ret = 0;
+
+	/* 20 lines of code */
+
+	if (condition)
+		goto cleanup;
+
+These trigger a published Smatch warning for missing error codes but I
+only email people when I can't understand the code.  Please, put the
+"ret = 0;" within 4 lines of the goto.
+
+Those are just some ideas of things we could do if we wanted to use
+static analysis for hardenning instead of for fixing bugs.
+
+regards,
+dan carpenter
 
