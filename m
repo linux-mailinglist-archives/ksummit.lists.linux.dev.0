@@ -1,71 +1,84 @@
-Return-Path: <ksummit+bounces-485-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-486-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B2953F9A87
-	for <lists@lfdr.de>; Fri, 27 Aug 2021 15:57:32 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
+	by mail.lfdr.de (Postfix) with ESMTPS id 450E93FA083
+	for <lists@lfdr.de>; Fri, 27 Aug 2021 22:22:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 032ED3E1443
-	for <lists@lfdr.de>; Fri, 27 Aug 2021 13:57:25 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id 5E1A61C107C
+	for <lists@lfdr.de>; Fri, 27 Aug 2021 20:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32FB53FCE;
-	Fri, 27 Aug 2021 13:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4B53FCE;
+	Fri, 27 Aug 2021 20:22:30 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail.hallyn.com (mail.hallyn.com [178.63.66.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844263FC6
-	for <ksummit@lists.linux.dev>; Fri, 27 Aug 2021 13:57:16 +0000 (UTC)
-Received: by mail.hallyn.com (Postfix, from userid 1001)
-	id 1DECC245; Fri, 27 Aug 2021 08:50:23 -0500 (CDT)
-Date: Fri, 27 Aug 2021 08:50:23 -0500
-From: "Serge E. Hallyn" <serge@hallyn.com>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Alex Levin <levinale@google.com>, ksummit@lists.linux.dev,
-	Jesse Barnes <jsbarnes@google.com>
-Subject: Re: kSummit proposal - The Linux kernel in ChromeOS
-Message-ID: <20210827135023.GA3439@mail.hallyn.com>
-References: <CAEeCyJZas4LCnMWYTo9Wh49N9DoBChzG869x41BpUoZ+1JmCGQ@mail.gmail.com>
- <CACRpkdYaRALXisvqhF8VyK-m0fz9aUFrurH2u5m=9DS4L3FHXg@mail.gmail.com>
- <YSgVPi9H4oBt5uy8@pendragon.ideasonboard.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB423FC1
+	for <ksummit@lists.linux.dev>; Fri, 27 Aug 2021 20:22:29 +0000 (UTC)
+Received: by mail-lj1-f174.google.com with SMTP id j12so13451255ljg.10
+        for <ksummit@lists.linux.dev>; Fri, 27 Aug 2021 13:22:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=aSFzQmaEBCemUJGClUhvpAG5aG1koPpzDGAIPbkvarM=;
+        b=UACWa+lGhq80lKwnwVJuWAWCYwr8YDmdppE9ssyHe51qdm0rE0h+yHKj/QLEOPx+mc
+         m9x8WOPXoXiJGULs4KBUJ743XRktdeIj5Zvgd7Po76lGcnKSpcTmqDd8MahIgkxhmwyU
+         dstBq1UYiGt0Vbsx6yuc8N5kFQMx3ktdgQMuyHsOyDBOFwahgrjTuB62UxHO+UIiteeY
+         xU05vXal2dMyJ2ey77VgxDthcAFKTREGqAKBpu0OYMUIQX7UCgBr+LePVwtStZJFjI0y
+         bQCYbGNaSzHDQjoD+Xze76FSmvrIg5YpROpBvsOF8Y8FYFxrAs+8WxQOZAy6da5RfoqE
+         Ig9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=aSFzQmaEBCemUJGClUhvpAG5aG1koPpzDGAIPbkvarM=;
+        b=moHymLNs/Yxuf+77C35u1xb4hCqvuRW4wBPIo9cSTtAtJz4KG1/djI/VvKhjvfTJF6
+         AgPQH3dY4L9Lh6ux2jrhetnb7E0m4wPcZvn/DdPURcmFrSnIquXn1st0LBL0mFJxroL0
+         wDO8pKaWJGTWQv0cxL7w6uiE2QKqQmAAVpDa9eiSS2S+r9+AyAuf+jeaW893FYacaFtV
+         QClHULtzmxDBp2F3iF1rEic3dzQoRe1k+ocJ85+S0Xgj8n7vOvcgpF08/kvj7rSlXj3i
+         BDaj9a2Af9CRrLBFmTa7BX4ZtRauQndbYvHB1U8qCF9d0NcP618cAvrDLXdTQKIRa7FK
+         KPHw==
+X-Gm-Message-State: AOAM530wbvdwg8kqSFArtZtd6hhYt49hBKdUNxWtfDb4J7dVtUto83Ci
+	FJ+ppDy8LjQIxi2HRuP/zXxF1golwp/2i1YdLdQJ1w==
+X-Google-Smtp-Source: ABdhPJwmVTLKtydpOswwxf5+w+SayoCRnFM1NF4N6K09P/C4GfDwuNoEfl0lnRvWLVEbMPTR+Cx9QJmgdcYhZvc+Xb8=
+X-Received: by 2002:a2e:54f:: with SMTP id 76mr9265934ljf.326.1630095747228;
+ Fri, 27 Aug 2021 13:22:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <YSgVPi9H4oBt5uy8@pendragon.ideasonboard.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <CAEeCyJZas4LCnMWYTo9Wh49N9DoBChzG869x41BpUoZ+1JmCGQ@mail.gmail.com>
+ <CACRpkdYaRALXisvqhF8VyK-m0fz9aUFrurH2u5m=9DS4L3FHXg@mail.gmail.com>
+ <YSgVPi9H4oBt5uy8@pendragon.ideasonboard.com> <CAEeCyJY8bXNQHL-kSbxrGcVwQ45kTaR9pW4eOm=ZShEwE5hFiQ@mail.gmail.com>
+In-Reply-To: <CAEeCyJY8bXNQHL-kSbxrGcVwQ45kTaR9pW4eOm=ZShEwE5hFiQ@mail.gmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Fri, 27 Aug 2021 22:22:15 +0200
+Message-ID: <CACRpkdaaTXH8GMz2GrYoQOLDcTjaHSeGv8-mM96q63c5Nbx=8w@mail.gmail.com>
+Subject: Re: kSummit proposal - The Linux kernel in ChromeOS
+To: Alex Levin <levinale@google.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, ksummit@lists.linux.dev, 
+	Jesse Barnes <jsbarnes@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Aug 27, 2021 at 01:27:10AM +0300, Laurent Pinchart wrote:
-> On Fri, Aug 27, 2021 at 12:07:56AM +0200, Linus Walleij wrote:
-> > On Tue, Aug 24, 2021 at 3:06 AM Alex Levin wrote:
-> > 
-> > > - Testing the upstream RC on as many platforms as we can as early as we can.
-> > > - Updating the Linux kernel on existing platforms (millions of users at a time).
-> > > - Managing technical “debt” and keeping the ChromeOS kernel as close
-> > > as possible to the upstream kernel.
-> > > - Current pain points in dealing with upstream.
-> > >
-> > > We feel 45-60 minutes would be enough and will allow a discussion.
-> > 
-> > I think this is really interesting.
-> > 
-> > Also explain what this stuff is: drivers/platform/chrome/* and why it is
-> > so necessarily different and can't live in existing subsystems?
-> > 
+On Fri, Aug 27, 2021 at 3:01 AM Alex Levin <levinale@google.com> wrote:
+
 > > Also: your experience with using ACPI and when firmware can be
 > > fixed and when it can not, and when/if the kernel has to accommodate
 > > quirks rather than fixing the firmware.
-> 
-> Could this also include lessons learnt related to convincing and helping
-> SoC vendors to upstream drivers ?
+>
+> We can definitely touch on this topic. It might be too narrow of a
+> topic to discuss widely (I would gladly have a virtual cup of coffee),
 
-That sounds awesome.
+This has been and remains a really big and recurring problem
+for drivers across the whole board of devices using ACPI, so I bet
+more people are interested.
+
+Yours,
+Linus Walleij
 
