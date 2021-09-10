@@ -1,124 +1,111 @@
-Return-Path: <ksummit+bounces-499-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-500-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FEA9407369
-	for <lists@lfdr.de>; Sat, 11 Sep 2021 00:35:20 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9863040739B
+	for <lists@lfdr.de>; Sat, 11 Sep 2021 00:52:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id 27C2A1C0FD8
-	for <lists@lfdr.de>; Fri, 10 Sep 2021 22:35:18 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id AAC571C0F69
+	for <lists@lfdr.de>; Fri, 10 Sep 2021 22:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945B22FB6;
-	Fri, 10 Sep 2021 22:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82A8C2FB6;
+	Fri, 10 Sep 2021 22:52:19 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF3F3FC3
-	for <ksummit@lists.linux.dev>; Fri, 10 Sep 2021 22:35:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1631313307;
-	bh=eklkYygKMokH82RLWIYjIh+0kuzW+3q0HI1nt2T0xMc=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=Y8ZDFqqJkKAGA3ARfiatc3ByDn8x6hq38JK2czKT8EkKx24Pa0XodagB+hwdEvjAz
-	 FJjsISqmrMOfGuYRszAXr1c95aMVINszVWb+I5o6S2IRUbzT9ZThmLE+Wl+4ov5T5y
-	 Wvluw4N+u5zOrJ6Za7f+DDbzS8qqzE5+eOGd8mN0=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id B2AB61280E85;
-	Fri, 10 Sep 2021 15:35:07 -0700 (PDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-	by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id hwJi_vrbPdt5; Fri, 10 Sep 2021 15:35:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1631313307;
-	bh=eklkYygKMokH82RLWIYjIh+0kuzW+3q0HI1nt2T0xMc=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=Y8ZDFqqJkKAGA3ARfiatc3ByDn8x6hq38JK2czKT8EkKx24Pa0XodagB+hwdEvjAz
-	 FJjsISqmrMOfGuYRszAXr1c95aMVINszVWb+I5o6S2IRUbzT9ZThmLE+Wl+4ov5T5y
-	 Wvluw4N+u5zOrJ6Za7f+DDbzS8qqzE5+eOGd8mN0=
-Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:600:8280:66d1::527])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 62BC51280E79;
-	Fri, 10 Sep 2021 15:35:07 -0700 (PDT)
-Message-ID: <05c1591b0e3744233e78ae35ba66d2721ee6af5e.camel@HansenPartnership.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4853FC3
+	for <ksummit@lists.linux.dev>; Fri, 10 Sep 2021 22:52:18 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 81A72611AD;
+	Fri, 10 Sep 2021 22:52:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1631314338;
+	bh=s2beiB98r7q0H6aOHNISH7QyS3NuThbp8bjx2KJjrf4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=sk5hrgO+aV+vWbQaS4HhfnQonNSKQbvyTUV80rnoZFkuWrr9VgZWO13r+DJhRVDwi
+	 tHk6ZEhOgfsGWMIwc5Dvl/DTAKXfSNBnzYPfSt5Ia8O8VZaWkeaQk7FHNggtGtCu0n
+	 ypSd8PbWHnsW7T44/sZTECjx3EG2GGeQFpxDBCr+5UFUKXxzFeyJsCKDgWj1t/gS+M
+	 4Wn1JgEqWsGPARpI/zhxEk/ORkXn9tXo2mQCmUWxWDJrY/waL5uA/uG8Gr4lpVbH66
+	 jR5X93H1S/zrlNNsE5eI1ciYzAxjXoZnNOmLzV+huc97MEK67rJatJ2qkTeRuWGUr+
+	 s+IjAcup6Ox1A==
+Date: Sat, 11 Sep 2021 00:52:14 +0200
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
+To: Jonathan Corbet <corbet@lwn.net>
+Cc: ksummit@lists.linux.dev
 Subject: Re: [MAINTAINER SUMMIT] User-space requirements for accelerator
  drivers
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, ksummit@lists.linux.dev
-Date: Fri, 10 Sep 2021 15:35:06 -0700
-In-Reply-To: <YTvVKrfyMc7fKsZx@piout.net>
+Message-ID: <20210911005214.71b55ac6@coco.lan>
+In-Reply-To: <877dfop2lx.fsf@meer.lwn.net>
 References: <877dfop2lx.fsf@meer.lwn.net>
-	 <9f380f6b8efecb4bfe39a3d520ff74d8ab07b9c5.camel@HansenPartnership.com>
-	 <YTvVKrfyMc7fKsZx@piout.net>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 2021-09-10 at 23:59 +0200, Alexandre Belloni wrote:
-> On 10/09/2021 14:51:43-0700, James Bottomley wrote:
-> > On Fri, 2021-09-10 at 15:00 -0600, Jonathan Corbet wrote:
-> > >  - Are there internal kernel interfaces, such as DMA-BUF or
-> > > P2PDMA, that are only available to drivers with a free user-space
-> > > implementation? Do we need an EXPORT_SYMBOL_USERSPACE_GPL()?
-> > 
-> > I don't think reasonably we can do this.  The kernel GPLv2 licence
-> > includes this system exception:
-> > 
-> >       NOTE! This copyright does *not* cover user programs that use
-> >    kernel services by normal system calls - this is merely
-> > considered
-> >    normal use of the kernel, and does *not* fall under the heading
-> > of
-> >    "derived work". Also note that the GPL below is copyrighted by
-> > the
-> >    Free Software Foundation, but the instance of code that it
-> > refers to
-> >    (the Linux kernel) is copyrighted by me and others who actually
-> >    wrote it.
-> > 
-> >     Also note that the only valid version of the GPL as far as the
-> >    kernel is concerned is _this_ particular version of the license
-> > (ie
-> >    v2, not v2.2 or v3.x or whatever), unless explicitly otherwise
-> >    stated.
-> > 
-> > This means currently that once an API is exposed to user space,
-> > we've given up control of the type of programme (proprietary or
-> > open source) that may use it.
-> > 
-> > It might be possible legally to try and take back that control by
-> > modifying the system exception (what is a "normal" system call),
-> > but I personally think that would be unwise and create a raft of
-> > other problems for other proprietary user space code running on
-> > Linux, which I really think we don't want to do.
-> > 
-> > I think our only recourse for user space accelerators is not to
-> > export the interface if we think it would only be used for evil
-> > purposes.
-> > 
+Em Fri, 10 Sep 2021 15:00:58 -0600
+Jonathan Corbet <corbet@lwn.net> escreveu:
+
+> There has been a regular disagreement in recent years about whether
+> drivers for accelerators (such as for the Habana Gaudi device) should be
+> subject to the same requirements as GPU drivers when it comes to the
+> availability of a free implementation of the user-space side.  It flared
+> up again recently:
 > 
-> I think the question is not whether we want to forbid proprietary
-> user space using an API but whether we want to merge said API so the
-> license on the kernel doesn't matter much.
+>    https://lwn.net/Articles/867168/
+> 
+> Happily, the Habana situation in particular seems to be resolving
+> itself:
+> 
+>    https://lwn.net/ml/linux-kernel/CAFCwf119s7iXk+qpwoVPnRtOGcxeuZb3rnihf6NWWoVT-4ODHA@mail.gmail.com/
+> 
+> But even there it is clear that the fundamental question has not yet
+> been resolved.
+> 
+> This seems like the sort of question that the maintainer summit exists
+> to address.  Specifically, we could discuss:
+> 
+>  - Under which circumstances should the kernel community require the
+>    existence of freely licensed user-space code that exercises all
+>    functionalities of a proposed kernel driver or feature?
+> 
+>  - Are there internal kernel interfaces, such as DMA-BUF or P2PDMA, that
+>    are only available to drivers with a free user-space implementation?
+>    Do we need an EXPORT_SYMBOL_USERSPACE_GPL()?
+> 
+>  - What constitutes an acceptable user-space implementation in cases
+>    where these restrictions apply?
+> 
+> I suspect that more clarity (and fewer arguments) on these questions
+> would be welcome both within and beyond the development community.
 
-I thought that *was* the statement I made in the last paragraph: we can
-choose whether or not to merge the enabling API into the kernel. 
-However, if we merge it we can't choose whether a proprietary user
-space takes advantage of the API.  My original reply was to the notion
-of EXPORT_USERSPACE_GPL, which I think we have no legal basis for
-enforcing without modifying the system exception.
+The media subsystem also has this sort of issues: there are several
+drivers there to support hardware accelerators for video encoders and 
+decoders. In the case of media, usually devices with such hardware have
+an Image Signal Processor, where the codec runs on some firmware.
 
-James
+On media, enforcing userspace to always be open source would
+have been very bad, as it would prevent several videoconferencing 
+software to exist on Linux.
 
+Also, there are several such codec hardware that only exists on 
+embedded hardware that already depends on proprietary software 
+to run.
 
+So, a policy like that would make more damage than good.
+
+What we do, instead, is to try to enforce that the userspace API to
+be fully documented in a way that open source software can exist.
+
+This is easier said than done, but we have some compliance tools
+that we use, in order to help to validate the uAPI implementations.
+
+Thanks,
+Mauro
 
