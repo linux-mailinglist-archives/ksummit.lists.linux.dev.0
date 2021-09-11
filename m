@@ -1,42 +1,46 @@
-Return-Path: <ksummit+bounces-505-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-506-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49400407423
-	for <lists@lfdr.de>; Sat, 11 Sep 2021 02:08:54 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B666940742B
+	for <lists@lfdr.de>; Sat, 11 Sep 2021 02:14:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id 45F031C0AF4
-	for <lists@lfdr.de>; Sat, 11 Sep 2021 00:08:53 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 560443E109F
+	for <lists@lfdr.de>; Sat, 11 Sep 2021 00:14:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 318C43FC3;
-	Sat, 11 Sep 2021 00:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83DF2FB6;
+	Sat, 11 Sep 2021 00:14:24 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC532F80
-	for <ksummit@lists.linux.dev>; Sat, 11 Sep 2021 00:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE80B3FC3
+	for <ksummit@lists.linux.dev>; Sat, 11 Sep 2021 00:14:22 +0000 (UTC)
 Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id B09FF510;
-	Sat, 11 Sep 2021 02:08:42 +0200 (CEST)
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id B2F3A510;
+	Sat, 11 Sep 2021 02:14:20 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1631318922;
-	bh=fR8lSBvYov47a4NY7X8GDU11A9yzEvR2buFle5vlUpo=;
+	s=mail; t=1631319260;
+	bh=4UpZGtktZRzJjnFPrG8SMaKKV2PjRQ+J43145cpnXI4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IbJ99Yd84uLctq2t6/q7sgMo51xysvxeaOgUZDLYaRj01tVJKWV6uqy/NpotZz681
-	 +R3JxCUPYpsb/U/55FxmSr/RX3YY+DnEUE8eoazwb74M0Hn3ALUSQaF1/ruaXR1CHP
-	 V3HDyTPT5aNunxqjMSUAjvO/6p/dtA+9mJQdN1Yg=
-Date: Sat, 11 Sep 2021 03:08:20 +0300
+	b=FN/h8o16ZRu/MdS33K7rxY8LPi6K8xTDkcVJnP0tKzjqcmp+1inGCm2evGXO1KhPf
+	 AwPc0jeq3/RzqiziMLzZENtju80hZGCY93+aL8HRv8HTsBGXexplSI5lKtNsozwtR+
+	 WdZNBS5CC7LZDWCtWAAuJbzMSmWOBsuYor54oPwo=
+Date: Sat, 11 Sep 2021 03:13:58 +0300
 From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, ksummit@lists.linux.dev
+To: Dave Hansen <dave@sr71.net>
+Cc: Josh Triplett <josh@joshtriplett.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, ksummit@lists.linux.dev
 Subject: Re: [MAINTAINER SUMMIT] User-space requirements for accelerator
  drivers
-Message-ID: <YTvzdKupt62yOchg@pendragon.ideasonboard.com>
+Message-ID: <YTv0xmC4N9eIU1RZ@pendragon.ideasonboard.com>
 References: <877dfop2lx.fsf@meer.lwn.net>
- <9f380f6b8efecb4bfe39a3d520ff74d8ab07b9c5.camel@HansenPartnership.com>
+ <20210911005214.71b55ac6@coco.lan>
+ <YTvuDsrUNhg/VXD0@localhost>
+ <eab61abc-c481-7d0d-834e-7e5904d9cfc8@sr71.net>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -45,67 +49,33 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <9f380f6b8efecb4bfe39a3d520ff74d8ab07b9c5.camel@HansenPartnership.com>
+In-Reply-To: <eab61abc-c481-7d0d-834e-7e5904d9cfc8@sr71.net>
 
-Hi James,
+Hi Dave,
 
-On Fri, Sep 10, 2021 at 02:51:43PM -0700, James Bottomley wrote:
-> On Fri, 2021-09-10 at 15:00 -0600, Jonathan Corbet wrote:
-> >  - Are there internal kernel interfaces, such as DMA-BUF or P2PDMA,
-> > that are only available to drivers with a free user-space
-> > implementation? Do we need an EXPORT_SYMBOL_USERSPACE_GPL()?
+On Fri, Sep 10, 2021 at 04:48:37PM -0700, Dave Hansen wrote:
+> On 9/10/21 4:45 PM, Josh Triplett wrote:
+> > On Sat, Sep 11, 2021 at 12:52:14AM +0200, Mauro Carvalho Chehab wrote:
+> >> On media, enforcing userspace to always be open source would
+> >> have been very bad, as it would prevent several videoconferencing 
+> >> software to exist on Linux.
+> >
+> > I don't think we should enforce that all userspace users of an interface
+> > be Open Source. I do think we should enforce that *some* userspace user
+> > of an interface be Open Source before we add the interface.
 > 
-> I don't think reasonably we can do this.  The kernel GPLv2 licence
-> includes this system exception:
+> Right, if there's *no* open userspace, we can't meaningfully test or
+> debug the thing.
 > 
->       NOTE! This copyright does *not* cover user programs that use
->    kernel services by normal system calls - this is merely considered
->    normal use of the kernel, and does *not* fall under the heading of
->    "derived work". Also note that the GPL below is copyrighted by the
->    Free Software Foundation, but the instance of code that it refers to
->    (the Linux kernel) is copyrighted by me and others who actually
->    wrote it.
-> 
->     Also note that the only valid version of the GPL as far as the
->    kernel is concerned is _this_ particular version of the license (ie
->    v2, not v2.2 or v3.x or whatever), unless explicitly otherwise
->    stated.
-> 
-> This means currently that once an API is exposed to user space, we've
-> given up control of the type of programme (proprietary or open source)
-> that may use it.
-> 
-> It might be possible legally to try and take back that control by
-> modifying the system exception (what is a "normal" system call), but I
-> personally think that would be unwise and create a raft of other
-> problems for other proprietary user space code running on Linux, which
-> I really think we don't want to do.
+> Maybe we don't need a whole userspace stack for every last interface,
+> but if folks can't even offer up a selftest, it's not a good sign.
 
-I overall agree that forbidding APIs from being used by closed-source
-userspace is likely a no-go from a license point of view, and that it
-would create a dangerous precedent and convey a bad message.
-
-> I think our only recourse for user space accelerators is not to export
-> the interface if we think it would only be used for evil purposes.
-
-In my opinion the issue at hand isn't so much that the interface can be
-used for evil purpose, but that drivers can reap the benefits of being
-included in mainline while ignoring (in good faith or not) the
-counterpart of allowing all userspace, open or not, to use the device.
-The problematic part is usually not the internal kernel interfaces that
-those drivers use, but the fact that they expose vendor-specific API
-elements to userspace without documenting them.
-
-One obvious option, *if* we decide that this isn't an acceptable
-behaviour, is to refuse merging such drivers. DMA-BUF or P2PDMA are not
-in themselves problematic, but in the case that Jon mentioned, they
-indicate that the device is expected to inter-operate with other devices
-by sharing data either through system memory or with direct DMA between
-the devices. This makes the absence of an open userspace more
-problematic as it may also affect the ability to use other devices in
-the system. It could thus be considered as a criteria to decide which
-drivers would require at one open userspace, should we decide that not
-all drivers would.
+It really depends on the type of driver and device. For GPUs or camera
+ISPs, for instance, a selftest is pointless, a full stack is required to
+be able to meaningfully test the driver and use the device as those
+expose a very large custom API to userspace (usually in the form of
+command buffers that contain device-specific instructions or register
+values).
 
 -- 
 Regards,
