@@ -1,48 +1,50 @@
-Return-Path: <ksummit+bounces-516-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-517-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A3A9407A90
-	for <lists@lfdr.de>; Sat, 11 Sep 2021 23:52:51 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B990B407A9A
+	for <lists@lfdr.de>; Sun, 12 Sep 2021 00:04:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id 6B1D21C0FA9
-	for <lists@lfdr.de>; Sat, 11 Sep 2021 21:52:50 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 36C783E1096
+	for <lists@lfdr.de>; Sat, 11 Sep 2021 22:04:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E67F73FDA;
-	Sat, 11 Sep 2021 21:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57EC33FDA;
+	Sat, 11 Sep 2021 22:04:27 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 145463FC3
-	for <ksummit@lists.linux.dev>; Sat, 11 Sep 2021 21:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF70A3FC3
+	for <ksummit@lists.linux.dev>; Sat, 11 Sep 2021 22:04:25 +0000 (UTC)
 Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 7D2F0DD;
-	Sat, 11 Sep 2021 23:52:38 +0200 (CEST)
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id E2D3DDD;
+	Sun, 12 Sep 2021 00:04:23 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1631397158;
-	bh=eS1HEQSenO6i9egwvYXnLomeoaTrwRQnGWP39px1J2s=;
+	s=mail; t=1631397864;
+	bh=1CTKbdjImjT6FQYL9XtqYf26DWwzDVgzXzUx2BYvANA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V/muAxgwolAxHunMxUSv2ZZXk263atjvJeo7/4hbC3Ec47kUhHErvV0MM/J3EIUl+
-	 zQthLvRtEN8Cga0bXx677KY5AQpT3NZ3AgUzQRxmyBzFOU69MQYrpyB/OlRcbbTHV2
-	 eJdJU1aeZ8yp2yBZx1lY8pNxj7W24CnDzpKr6ECc=
-Date: Sun, 12 Sep 2021 00:52:15 +0300
+	b=vT12FWi8EJvjn3ct6/aysHLQgNkvWG0sl1JB9YWX6bY5u6+edDoBrHMy5MJU79M0K
+	 Ca8bc77DLLCLpzE078JjDv88MJ+V0ow7gplAJjZ9aEUygwT3l8GewOsXmtJsQajw6J
+	 oP1rRIlgObR7ekgBaUOHv1q/9mzl/lHXTkEVaqnE=
+Date: Sun, 12 Sep 2021 01:04:01 +0300
 From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Jonathan Corbet <corbet@lwn.net>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	ksummit@lists.linux.dev
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, ksummit@lists.linux.dev
 Subject: Re: [MAINTAINER SUMMIT] User-space requirements for accelerator
  drivers
-Message-ID: <YT0lDyMMSRSmhD95@pendragon.ideasonboard.com>
+Message-ID: <YT0n0SaWnM8aVr/S@pendragon.ideasonboard.com>
 References: <877dfop2lx.fsf@meer.lwn.net>
- <9f380f6b8efecb4bfe39a3d520ff74d8ab07b9c5.camel@HansenPartnership.com>
- <YTvVKrfyMc7fKsZx@piout.net>
- <05c1591b0e3744233e78ae35ba66d2721ee6af5e.camel@HansenPartnership.com>
- <87y283np2i.fsf@meer.lwn.net>
- <9bbe54192d9b4807422941bccfd2f0e48a5525ff.camel@HansenPartnership.com>
+ <20210911005214.71b55ac6@coco.lan>
+ <YTvuDsrUNhg/VXD0@localhost>
+ <87ilz8c7ff.ffs@tglx>
+ <YTyFZufZHu9BSFxk@unreal>
+ <YTyWANV/mSkQbYhj@pendragon.ideasonboard.com>
+ <YTybN5QwAnLfSBZC@unreal>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -51,88 +53,94 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <9bbe54192d9b4807422941bccfd2f0e48a5525ff.camel@HansenPartnership.com>
+In-Reply-To: <YTybN5QwAnLfSBZC@unreal>
 
-Hi James,
+Hi Leon,
 
-On Sat, Sep 11, 2021 at 08:24:38AM -0700, James Bottomley wrote:
-> On Sat, 2021-09-11 at 08:51 -0600, Jonathan Corbet wrote:
-> > James Bottomley <James.Bottomley@HansenPartnership.com> writes:
-> > 
-> > > On Fri, 2021-09-10 at 23:59 +0200, Alexandre Belloni wrote:
-> > > > I think the question is not whether we want to forbid proprietary
-> > > > user space using an API but whether we want to merge said API so
-> > > > the license on the kernel doesn't matter much.
+On Sat, Sep 11, 2021 at 03:04:07PM +0300, Leon Romanovsky wrote:
+> On Sat, Sep 11, 2021 at 02:41:52PM +0300, Laurent Pinchart wrote:
+> > On Sat, Sep 11, 2021 at 01:31:02PM +0300, Leon Romanovsky wrote:
+> > > On Sat, Sep 11, 2021 at 01:55:16AM +0200, Thomas Gleixner wrote:
+> > > > On Fri, Sep 10 2021 at 16:45, Josh Triplett wrote:
+> > > > 
+> > > > > On Sat, Sep 11, 2021 at 12:52:14AM +0200, Mauro Carvalho Chehab wrote:
+> > > > >> On media, enforcing userspace to always be open source would
+> > > > >> have been very bad, as it would prevent several videoconferencing 
+> > > > >> software to exist on Linux.
+> > > > >
+> > > > > I don't think we should enforce that all userspace users of an interface
+> > > > > be Open Source. I do think we should enforce that *some* userspace user
+> > > > > of an interface be Open Source before we add the interface.
+> > > > 
+> > > > The real question is whether the interface is documented in a way that
+> > > > an Open Source implementation is possible. It does not matter whether it
+> > > > exists at that point in time or not. Even if it exists there is no
+> > > > guarantee that it is feature complete.
+> > > > 
+> > > > Freely accessible documentation is really the key.
 > > > 
-> > > I thought that *was* the statement I made in the last paragraph: we
-> > > can choose whether or not to merge the enabling API into the
-> > > kernel. However, if we merge it we can't choose whether a
-> > > proprietary user space takes advantage of the API.  My original
-> > > reply was to the notion of EXPORT_USERSPACE_GPL, which I think we
-> > > have no legal basis for enforcing without modifying the system
-> > > exception.
+> > > I have more radical view than you and think that documentation is far
+> > > from being enough. I would like to see any userspace API used (or to be
+> > > used) in any package which exists in Debiam/Fedora/SuSE.
 > > 
-> > That wasn't thinking when I pulled the idea of EXPORT_USERSPACE_GPL
-> > out of whatever dark place it was lurking in.
+> > We probably need to add Android AOSP to that list, as we have
+> > Android-specific APIs (not that I believe we *should* have
+> > Android-specific APIs, there's been lots of efforts over the past years
+> > to develop standard APIs for use cases that stem from Android, slowly
+> > replacing Android-specific APIs in some area, but I don't believe we can
+> > realisticly bridge that gap completely overnight, if ever).
 > 
-> OK, but you can see how that thought is arrived at since
-> EXPORT_SYMBOL_GPL is a technically enforced licensing permission tag. 
-> However, I was seriously pushing back against the *idea* of such a tag
-> because once it crosses the kernel to user boundary it would cause huge
-> confusion of our current licensing positions ... regardless of what it
-> actually means.
+> Maybe.
 > 
-> >   The idea was, instead, to document that if your driver is using
-> > that interface, it won't be considered for merging into the kernel in
-> > the absence of a working, free, user-space implementation -- should
-> > we choose to adopt such a policy, of course.
+> > > Only this will give us some sort of confidence that API and device are usable
+> > > to some level. As a side note, we will be able to estimate possible API
+> > > deprecation/fix/extension based on simple search in package databases.
+> > 
+> > Linux supports devices from very diverse markets, from very tiny
+> > embedded devices to supercomputers. We have drivers for devices that
+> > exist in data centres of a single company only, or for which only a
+> > handful of units exist through the world. The set of rules that we'll
+> > decide on, if any, should take this into account.
 > 
-> Right, and if you have a driver with an internal API that's used for
-> communication with a userspace blob, we can evaluate that, as we have
-> done before, on a case by case basis.  It's not a new thing, because
-> we're both old enough to remember "my wireless driver has to have a
-> proprietary component for regulatory reasons".
-> 
-> We've made decisions both for and against such drivers in the past, but
-> I think the issues are too nuanced to make a general rule.  If you do
-> have a general rule, what other things, like firmware, would get caught
-> by it and so on ...
-> 
-> > Nobody is trying to prohibit proprietary user space, that's not the
-> > point.
-> 
-> I didn't think you were in general, but requiring a free userspace
-> driver implementation is prohibiting a proprietary one and so then you
-> get into questions of how wide the reach is and what the knock on
-> effects are if you try to craft a general policy around this ...
-> especially if it has technical enforcement measures.
+> I'm part of that group (RDMA) who cares about enterprise, cloud and supercomputers. :)
+> So for us, working out-of-the box (distro packages and not github code drops) is
+> the key to the scalability.
 
-Requiring the existence of one open userspace implementation doesn't
-preclude the ability for vendors to develop and ship closed
-implementations in parallel, at least in the general case. For instance,
-with GPUs or cameras, an open implementation could be developed (in Mesa
-and libcamera respectively) to exercise the device features (such as the
-GPU shader instruction set, or the camera ISP processing parameters),
-but wouldn't be required to include all the tuning and optimizations
-that a closed implementation would typically have. A vendor could thus
-ship a closed-source shader compiler in its OpenGL/Vulkan userspace
-driver, protecting the R&D investment to implement those optimizations
-(this would most likely also include lots of hacks to please
-benchmarks), and the community would be able to use the GPU and improve
-the open implementation.
+What if we're dealing with a device that only exists in a handful of
+machines though ? Would distributions accept the burden of packaging
+corresponding userspace code, and maintaining the packages, when only a
+handful of people in the world will use it ? It's a genuine question.
 
-For GPUs, the situation has been quite clear for years: if a vendor
-wants an upstream driver, with all the benefits this brings, they have
-to also provide a (mostly?) feature-complete (in the sense of hardware
-features) but not necessarily optimized open-source counterpart. We're
-exploring here whether or not the same deal should cover camera ISPs and
-ML/AI accelerators (and possibly other devices that I'm less familiar
-with).
+> Regarding "embedded devices", I remind that we are talking about
+> userspace API and most likely busybox will be used for them, which is
+> also part of larger distro anyway, so fails under category "exists in
+> Debian/Fedora/SuSE".
 
-For a wireless driver the situation is possibly different, I suppose
-that if the closed-source userspace blob is there only for regulatory
-reasons, then there would be very little point in having a closed-source
-implementation with a parallel one.
+We're talking about APIs exposed by drivers, for devices such as GPUs,
+cameras or AI/ML accelerators. I don't think busybox will exercise those
+:-) We have Masa for GPUs, libcamera for cameras, and other frameworks
+I'm less familiar with for AI/ML accelerators, and I expect those to be
+packaged by distributions. There are however other kind of devices that
+don't fall in existing well-defined categories.
+
+I'm thinking, for instance, about dewarp engines that are used to create
+3D surround view for cars. In a nutshell, those devices take a set of
+texture and a list of triangles, and perform texture mapping. They're a
+bit like GPUs but without 3D, so APIs such as OpenGL or Vulkan don't
+apply. There's no standard API for such devices, and no existing
+userspace framework similar to Mesa in which a vendor could upstream the
+open userspace driver code. I believe that requiring an open userspace
+to merge such drivers in the kernel would make sense, but I also don't
+think it would be reasonable to ask the first vendor who wants to do so
+to create a complete userspace framework with a standard API. The bar to
+entry would be too high. An open implementation specific to that device,
+with a custom application API, would be a good first step, and it could
+serve as a basis to create a framework once a second vendor wants to do
+the same. We have to set the end goal, but also consider how it can be
+reached.
+
+> > > IMHO, github projects to show API usage are the worst possible way to
+> > > allow acceptance for new userspace API.
 
 -- 
 Regards,
