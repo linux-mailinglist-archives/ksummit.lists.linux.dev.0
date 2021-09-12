@@ -1,255 +1,142 @@
-Return-Path: <ksummit+bounces-531-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-532-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7221F407DCA
-	for <lists@lfdr.de>; Sun, 12 Sep 2021 16:35:04 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A7E407DD7
+	for <lists@lfdr.de>; Sun, 12 Sep 2021 16:54:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id 5E65B1C0F99
-	for <lists@lfdr.de>; Sun, 12 Sep 2021 14:35:03 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id B2FBC3E1028
+	for <lists@lfdr.de>; Sun, 12 Sep 2021 14:54:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320B63FD8;
-	Sun, 12 Sep 2021 14:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3E633FD8;
+	Sun, 12 Sep 2021 14:54:25 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from wnew2-smtp.messagingengine.com (wnew2-smtp.messagingengine.com [64.147.123.27])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942BC3FC5
-	for <ksummit@lists.linux.dev>; Sun, 12 Sep 2021 14:34:54 +0000 (UTC)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailnew.west.internal (Postfix) with ESMTP id 2ABBB2B00620;
-	Sun, 12 Sep 2021 10:34:53 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Sun, 12 Sep 2021 10:34:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
-	date:from:to:cc:subject:message-id:references:mime-version
-	:content-type:in-reply-to; s=fm1; bh=IqJ64hlJq/2UkMqUjhWeKBan15g
-	1RzhHKay4ELPrOgE=; b=xZ0vynrsilbR//MyxBj60JGUMUhNz3RDThS4EoWGfAe
-	K9gUFeNiIvr9tuUPs1uhijhHsw4TApdxgQPO9qZnWbWzr9kQOPpJLb7DRBl5v4e8
-	0kv681otHRXIObwNXmjGlvSeqkKQqDtsAhAoYFNT7yslfGbU7PadoH80cvqNlGE7
-	bQRIsI5MXGZDZTHS+/+NeZDVmHeVIwzYx/4FOqoqXg9piaMkYSxejbjJVRSrnMqh
-	5mY1d2wRTUY1kUG65pg1v0NnavgB9HNMq1fjTXtXvdkFIBg+WtuAgEmIiO2xYzMI
-	UZRqfmZDxLl8wADbAZHn9k+i4RZtGEB3drgrfw2IUtg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to:x-me-proxy
-	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=IqJ64h
-	lJq/2UkMqUjhWeKBan15g1RzhHKay4ELPrOgE=; b=vUQiHJEoA/jnNvmdplbOj2
-	CYXKnlwbL+nqeX5JNOKMucMPiVUSulKhgz7LQyAA5cZeXaoQtmSWn6tkAG8k+bNF
-	QjAGot32YGg3fxJG8joN9uuhPvME9Tzbi+eTL74HfyLKc3FHaepJ1AFuDixO8dHf
-	Z8sjAsTSpJW08tUDJOtaUrGbdmadVWFed2Dy5LA4b5G870OTDYRZiHSCz/t2TrLu
-	zM1meNEJjSXMQ/nUN+BADNmzyrVviN7co/N1c7Ivmq9APT29mds7YVhnZcYKcMXB
-	IW6v1QEGySifGI65ypTnUpDAR4qZwO+cLpdy9Um4medAyfHX41q9cKqF6XHlrpjA
-	==
-X-ME-Sender: <xms:CxA-YcRDGzKxpbRVZ4M7rTLkn7tMAIXwZYGsKWGLM7sd5uB5GBnppg>
-    <xme:CxA-YZwOJI0zbomP3kM6iWA_rLdBd0hP46Zok4aH0E-vzbWF6o5s2O-0gfjPS3Q9O
-    TmjU22PIEB-uQ>
-X-ME-Received: <xmr:CxA-YZ24qjQtzXZY--MXzLQVivInE6h97uULfyF__Um5e0VVzAhxRvc958WETSsgt6i1xvqqQKATCnyqH9L2b7YtH-w8323R>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrudeghedgjeehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
-    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeeuleeltd
-    ehkeeltefhleduuddvhfffuedvffduveegheekgeeiffevheegfeetgfenucffohhmrghi
-    nhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
-X-ME-Proxy: <xmx:DBA-YQAVLWoi7-B_YNwfhaN19TnjBWUL-rTUGtFpuwU5KlsWtU73vg>
-    <xmx:DBA-YVi1U07O_FT_Qe6dj0TiAUbRM3of-Ep3s4rJX8QX2nMasnhwpQ>
-    <xmx:DBA-Ycril4xCfBf6qxe3X-PQO1gS3_dRmidHgocv4wCdGJcj4d7CWg>
-    <xmx:DBA-YeYPcWGtnPy2DN5QIiLIByPY0y-Z6uT27JEaJGwGNuqZxvD878y2rG8>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 12 Sep 2021 10:34:51 -0400 (EDT)
-Date: Sun, 12 Sep 2021 16:34:48 +0200
-From: Greg KH <greg@kroah.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90643FC5
+	for <ksummit@lists.linux.dev>; Sun, 12 Sep 2021 14:54:23 +0000 (UTC)
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 4E32C9E;
+	Sun, 12 Sep 2021 16:54:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1631458455;
+	bh=h3OG9Z1wMLzLZrG70bw0I+UpwSX8wvRn1OukPfoXZn0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=riqQQE1lfnnQs295niWlcRUK/QKl4+7q/swbEh+BUY2zD4VM1quJTaVWKyXWF+9Bw
+	 QMISyD2QUMKKiBG/pc71chTEeEFdFnxbVJqX2Je+1vNFUsvST4iU5TAPRPZwSBCZRV
+	 CesnuN/Fe8+zWub3GqQkBAsS5rQC1xra2wGXtsec=
+Date: Sun, 12 Sep 2021 17:53:51 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 To: Leon Romanovsky <leon@kernel.org>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Josh Triplett <josh@joshtriplett.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Jonathan Corbet <corbet@lwn.net>, ksummit@lists.linux.dev
 Subject: Re: [MAINTAINER SUMMIT] User-space requirements for accelerator
  drivers
-Message-ID: <YT4QCHwnqZL/rl0z@kroah.com>
-References: <87ilz8c7ff.ffs@tglx>
+Message-ID: <YT4Uf0GOwLDxDX5C@pendragon.ideasonboard.com>
+References: <20210911005214.71b55ac6@coco.lan>
+ <YTvuDsrUNhg/VXD0@localhost>
+ <87ilz8c7ff.ffs@tglx>
  <YTyFZufZHu9BSFxk@unreal>
  <YTyWANV/mSkQbYhj@pendragon.ideasonboard.com>
  <YTybN5QwAnLfSBZC@unreal>
  <YT0n0SaWnM8aVr/S@pendragon.ideasonboard.com>
  <YT2By1+yuo7rcu2D@unreal>
- <YT2rwbBR6ilHmwSZ@kroah.com>
- <YT26ebT6xXWsnVMw@unreal>
- <YT3/5kJuhw/QVqrw@kroah.com>
- <YT4LgkK+ejUWljEh@unreal>
+ <20210912094648.3296acfe@coco.lan>
+ <YT2zryAKHc/5R2IH@unreal>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <YT4LgkK+ejUWljEh@unreal>
+In-Reply-To: <YT2zryAKHc/5R2IH@unreal>
 
-On Sun, Sep 12, 2021 at 05:15:30PM +0300, Leon Romanovsky wrote:
-> On Sun, Sep 12, 2021 at 03:25:58PM +0200, Greg KH wrote:
-> > > The main idea that I want to see working userspace stack, and being in
-> > > distro sets a certain quality level, am I asking too much?
+Hello,
+
+On Sun, Sep 12, 2021 at 11:00:47AM +0300, Leon Romanovsky wrote:
+> On Sun, Sep 12, 2021 at 09:46:48AM +0200, Mauro Carvalho Chehab wrote:
+> > Em Sun, 12 Sep 2021 07:27:55 +0300 Leon Romanovsky escreveu:
 > > 
-> > Define "working userspace stack" and "distro" please.  Like others have
-> > said, many distros will not take userspace code unless it's already in
-> > the kernel tree first, as that ensures that the abi will not break.
+> > > > What if we're dealing with a device that only exists in a handful of
+> > > > machines though ? Would distributions accept the burden of packaging
+> > > > corresponding userspace code, and maintaining the packages, when only a
+> > > > handful of people in the world will use it ? It's a genuine question.  
+> > > 
+> > > Fedora, Debian and OpenSuSE are volunteer based distributions, they
+> > > accept new packages, which need to be prepared (or asked to be
+> > > prepared) by such vendors.
+> > > 
+> > > There is no "accept the burden of packaging corresponding userspace code,
+> > > and maintaining the packages", it is on package maintainer who can or
+> > > can't be associated with distribution.
+> > 
+> > There is a dead lock issue, though: if we're willing to have a policy
+> > of only accepting a new Kernel API after Fedora/Debian/openSuse accepts
+> > its userspace counterpart, it would mean, in practice, that no new
+> > APIs will ever be added, as I'm pretty sure most Fedora/Debian/openSuse
+> > maintainers will refuse an application that depends on a non-accepted
+> > Kernel API.
 > 
-> Like I already answered
-> https://lore.kernel.org/all/YT2zryAKHc%2F5R2IH@unreal/
+> I said something different - "I would like to see any userspace API used (or to be
+> used)". 
+> https://lore.kernel.org/ksummit/20210912003349.6d2cacb1@coco.lan/T/#m3b7fbbe0959f1b59288dec9afd39f7cda0eeefe9
+> 
 > "To be used" means some open PR to existing package or request for
 > inclusion for new packages.
 
-But again, distros will not take things that are not already in the
-kernel.
+Requiring userspace support to be merged in the appropriate framework or
+accepted as a package by distributions can result in deadlocks, but
+requiring only aa upstream pre-approval is I think a good way to deal
+with the issue. That's what DRM/KMS does, there's no hard requirement
+(as far as I can tell) to have code merged in Mesa before the kernel,
+only a requirement of getting the Mesa code reviewed and acked.
 
-> > > > > 2. Devices that hits the certain level of adoption - need to be
-> > > > > integrated into certain userspace stack, which needs to be part of
-> > > > > distro.
-> > > > 
-> > > > Distros are a very odd rule to rely on given that they are by far the
-> > > > minority of the usage in raw numbers for Linux in the world.
-> > > 
-> > > You can count Android as another distro, it is just semantics.
+> > As a maintainer of several Fedora packages myself, I would refuse
+> > any attempts of adding support for a non-accepted kernel API on
+> > the packages I maintain.
 > > 
-> > But how do you define Android's userspace?  Just one vendor?  2 vendors?
-> > 10 vendors?  There is major userspace fragmentation in Android userspace
-> > in many places, the user/kernel boundry being one of the big ones as
-> > many of us have found out over the past years.  And many of us are
-> > working to resolve this, but it's not so simple at times, and I have
-> > many examples if you want specifics.
-> 
-> Lauerent suggested AOSP
-> https://lore.kernel.org/all/YTyWANV%2FmSkQbYhj@pendragon.ideasonboard.com/
-
-Vendors can not get code into AOSP for various reasons that only Google
-understands.  There are many millions, if not billions of Android
-devices out there with user/kernel apis that are not upstream nor in
-AOSP because Google doesn't want to take them, or because the vendor can
-not go through those hoops (international law is tricky at times...)
-
-So are we to just not be able to take drivers that add those new apis if
-AOSP can not take the userspace side, yet the userspace side is
-published somewhere else?
-
-> > > > > And AI/ML is no different here, someone just need to start build such
-> > > > > stack. Otherwise, we will continue to see more free riders like HabanaLabs
-> > > > > which don't have any real benefit to the community.
-> > > > 
-> > > > Everyone contributes to Linux in a selfish manner, that's just how the
-> > > > community works.  The work that companies like habanalabs is NOT being a
-> > > > "free rider" at all, they have worked with us and done the hard work of
-> > > > actually getting their code merged into the tree.
-> > > 
-> > > I perfectly remember them trying to bypass netdev and RDMA communities
-> > > by pretending "misc" device.
-> > > 
-> > > https://lore.kernel.org/linux-rdma/20200915133556.21268811@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com/
-> > > https://lore.kernel.org/linux-rdma/20200917171833.GJ8409@ziepe.ca/
-> > > 
-> > > Or DRM
-> > > https://lore.kernel.org/linux-rdma/CAKMK7uFOfoxbD2Z5mb-qHFnUe5rObGKQ6Ygh--HSH9M=9bziGg@mail.gmail.com/
-> > > 
-> > > So I can agree with the statement "worked hard", but not with the
-> > > relevant communities.
+> > -
 > > 
-> > I point at these as doing exactly what we want vendors to be doing!
-> > Thank you for finding the good examples.  This is a vendor submitting
-> > patches and saying, "here is what we want to do, with a first cut at
-> > doing it."  It's up to us as a community to tell them if they are doing
-> > it the right way or not.
+> > Also, it makes no sense to add support on such general-purpose
+> > distros for some hardware that will never be supported by it.
 > > 
-> > If we just let them all go their own ways, they will come up with
-> > horrible apis and interfaces, we have all seen that before.
-> > 
-> > So by working together, we both can learn from, and work together to
-> > solve the issue.  And that is what these driver authors and company has
-> > been doing!  They are part of our community, why are you saying they
-> > should now just go do their own thing away from us?
+> > See, there are, for instance, some types of hardware that are
+> > specific for some industry, like for instance, the CAN bus.
+> > While CAN buses remain restricted to vehicles, it won't make any 
+> > sense to crowd a general purpose distro with support for such
+> > hardware. Such distros are not certified with ASIL. So, they
+> > aren't allowed by law to be used inside vehicles.
+
+I'm not sure that's the best example, CAN has uses in other types of
+devices, some of which may run a general-purpose distribution.
+
+> And github pile of ... is certified?
 > 
-> This is not what I said. I don't see Intel (habanalabs) as a company
-> that can't create proper AI stack and think that this is our
-> responsibility to provide them enough incentive to do it.
+> In attempt to find general solution for all types of APIs and devices,
+> we won't solve anything.
 
-So should we be forcing everyone to follow the IBM standard for
-accelerator drivers because they were in the kernel first all those
-years ago?  Or what other standard do we pick?
+That I agree with.
 
-And why are we dictating new industry standards here?  Who are we to do
-that?  Who is going to take that responsibility on?
+> So I suggest to return and talk about AI/ML devices and APIs that
+> targeted for enterprise/cloud and needs to be supported by major
+> distros.
 
-> > And as for "bypassing", that feels very mean.  We have had accelerator
-> > code in the char/misc and other parts of the kernel tree since at least
-> > 2018 if not earlier (I didn't look all that hard.)  Just because someone
-> > wanted to use the in-kernel apis that are there (why is dma-buf some
-> > magic thing?) does not mean that they suddenly need to move to a
-> > different subsystem.
-> 
-> Because dma-buf API has specific semantics and was designed with very
-> specific usage model in mind.
+And that I don't :-) I think the issue is the same for at least GPUs and
+AI/ML accelerators, and quite possible camera ISPs too. I'd like to try
+and define clear sets of criteria to address the problem, and that can
+include different alternatives (just as an example, not necessarily
+something I'd advocate for, open userspace vs. documentation) that
+subsystems can then select based on their specific situation.
 
-So will the IB patches usage be re-reviewed?
+-- 
+Regards,
 
-Anyway, we have apis that are used throughout the kernel all the time
-that don't end up on the various subsystem mailing list because people
-forget, or just do not know.  That's normal and something we have dealt
-with for forever.  As an example, I didn't realise that just using the
-dma-buf api required such a review.
-
-Can we put that in the MAINTAINERS file somehow for apis?
-
-> > We get at least 1-2 new subsystems and major drivers that get added to
-> > the kernel tree that do things that have never been done before with
-> > custom user/kernel apis every kernel release.  Not everything can be a
-> > standard api no matter how much I, and others, wish it were.
-> 
-> So when will you draw a line and ask to create proper susbsystem
-> with standard APIs? After 2, 3 ... 100 similar (from our point of view)
-> and different (from vendor point of view) devices with custom API?
-
-That is a great question and I do not have the answer to that.  Should
-we have done that after the first one went into the kernel all those
-years ago?  Maybe, but I seem to recal the answer being "our hardware
-works much differently, so our user api will be much different", and
-that's a valid answer.
-
-If your standard can not handle new usage models and a way to handle
-that, then it isn't a good standard that companies will follow for new
-types of devices.
-
-We have loads of char drivers with odd ioctl apis because we have loads
-of odd hardware devices out in the world.  We have been treating these
-accelerators like that for a long time now, except when they try to
-duplicate existing in-kernel code (like crypto or networking).
-
-> > As examples, what about the hyperv blob api that was submitted recently
-> > going around the block layer?  What about the new Intel accelerator that
-> > added yet-another-set-of-custom-ioctls?  What about the rpi drivers?
-> > What about the virtualbox drivers?  Should all of those just live
-> > outside of the kernel for forever?
-> > 
-> > Of course not.
-> 
-> So what is your bar? Accept everything?
-
-It's a hard line to draw, and for some reason, I seem to be the one
-having to review these types of drivers every kernel release.  If people
-wish to help me out, please do so, all the patches are on the lists.
-
-Right now I push back where I can and try to get semi-sane apis created
-that are "obviously not wrong" where I notice.  After that, I just need
-to trust that the maintainer of the driver knows what they are doing and
-will maintain the code going forward.  So far, it's worked out.
-
-Do you have a better idea of what to do instead?
-
-thanks,
-
-greg k-h
+Laurent Pinchart
 
