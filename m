@@ -1,122 +1,152 @@
-Return-Path: <ksummit+bounces-538-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-539-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C67E4407EDB
-	for <lists@lfdr.de>; Sun, 12 Sep 2021 19:09:09 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A17E407F9D
+	for <lists@lfdr.de>; Sun, 12 Sep 2021 21:13:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 54A463E10A4
-	for <lists@lfdr.de>; Sun, 12 Sep 2021 17:09:08 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 19BBC3E1092
+	for <lists@lfdr.de>; Sun, 12 Sep 2021 19:13:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA7C3FD8;
-	Sun, 12 Sep 2021 17:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F7C13FD8;
+	Sun, 12 Sep 2021 19:13:21 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC743FCF
-	for <ksummit@lists.linux.dev>; Sun, 12 Sep 2021 17:09:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1631466539;
-	bh=aOK6G+jheVTLxhSCMa15jncvQTa7X7vOAj/CEbCFYxk=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=IpXoPTF+KeM/uVlBiWCYxMYGfSQZoUerxS7HMw7PPeUIRwRJDuQkNZfrYvp3v8RQr
-	 4TdN/xR+eCSI+hbSif4V6dWlGdFPt614yMvuJF6POT+mlO/FwC6UpwYSB9z933A8aE
-	 JEgsPN39Cjis+PCy8I+qsdQ3UKjIj+oGtpGjCFf0=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id B3B1B128065E;
-	Sun, 12 Sep 2021 10:08:59 -0700 (PDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-	by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id IZKZcbiP_FU2; Sun, 12 Sep 2021 10:08:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1631466539;
-	bh=aOK6G+jheVTLxhSCMa15jncvQTa7X7vOAj/CEbCFYxk=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=IpXoPTF+KeM/uVlBiWCYxMYGfSQZoUerxS7HMw7PPeUIRwRJDuQkNZfrYvp3v8RQr
-	 4TdN/xR+eCSI+hbSif4V6dWlGdFPt614yMvuJF6POT+mlO/FwC6UpwYSB9z933A8aE
-	 JEgsPN39Cjis+PCy8I+qsdQ3UKjIj+oGtpGjCFf0=
-Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:600:8280:66d1::527])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 2AB081280659;
-	Sun, 12 Sep 2021 10:08:59 -0700 (PDT)
-Message-ID: <c6a1b1bc5a82cd95a0a3af7cf6e823a6da5c3c67.camel@HansenPartnership.com>
-Subject: Re: [MAINTAINER SUMMIT] User-space requirements for accelerator
- drivers
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Greg KH <greg@kroah.com>, Leon Romanovsky <leon@kernel.org>, Thomas
- Gleixner <tglx@linutronix.de>, Josh Triplett <josh@joshtriplett.org>, Mauro
- Carvalho Chehab <mchehab@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- ksummit@lists.linux.dev
-Date: Sun, 12 Sep 2021 10:08:58 -0700
-In-Reply-To: <YT4xpX4khqr3zQ6m@pendragon.ideasonboard.com>
-References: <YTyFZufZHu9BSFxk@unreal>
-	 <YTyWANV/mSkQbYhj@pendragon.ideasonboard.com> <YTybN5QwAnLfSBZC@unreal>
-	 <YT0n0SaWnM8aVr/S@pendragon.ideasonboard.com> <YT2By1+yuo7rcu2D@unreal>
-	 <YT2rwbBR6ilHmwSZ@kroah.com> <YT26ebT6xXWsnVMw@unreal>
-	 <YT3/5kJuhw/QVqrw@kroah.com> <YT4i4cN4ScWY8Ikf@pendragon.ideasonboard.com>
-	 <680a7c9767eb0ddf8035bc90ba1d144fe1f7b4cd.camel@HansenPartnership.com>
-	 <YT4xpX4khqr3zQ6m@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DFC3FC3
+	for <ksummit@lists.linux.dev>; Sun, 12 Sep 2021 19:13:19 +0000 (UTC)
+Received: by mail-ej1-f51.google.com with SMTP id jg16so16145266ejc.1
+        for <ksummit@lists.linux.dev>; Sun, 12 Sep 2021 12:13:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=RnKo3lCtvR6/P0hDTm/ufYiHwfJxgTpVAbk333jpL10=;
+        b=ELnfraDpw57gLekgBUTfUKj/IFauhkoZiFtq0w639YG7pgodArCOJgIpNxkzW5iKuj
+         DTpd0OR2ooHgcPGNQN4axJmsI6K42jbccTJIFBSR+H+qzGTHULaM2GSNvGSgJHIQ47TB
+         gR6d62pdCxL6t8M57nJkzNrNGQU/1bT+evXaDIVvBOC+orciEpqaA/6I/X2jIovoOvJz
+         Rd0hzKu2fiHzUxVhZAJm9kzKNE3NXb5py/N+JF7R/KLG7gvaVkQdstkE4iPhWat9VeYl
+         DX8JmrNStw/b5FJAMvXyYzFMZROJ/Chp8d1JChRK+ZAuhzSR7SkV8nrije80GTHASS33
+         reIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=RnKo3lCtvR6/P0hDTm/ufYiHwfJxgTpVAbk333jpL10=;
+        b=obBrWRBbfS7rn6a1erS8IZkCfyL8hIldlCpIMVVTXKncpW6zDNo9sMJyJj2qjaL9KK
+         srVxuQJuzr+r/EKVtlzPncgUJ5tgLwsx5ggUjZW2dVxXMpA/UxLm9JLs6uFpUceqOlsx
+         jIxhufn+IGM5rZTdZwdygI6s7zpjDqOTUVCKw/QHnCa4cGlKRiRV8j755rMl594L/sOn
+         dUAtPb8TNwIm+bB+VP+90VDMWdZ/b7tU8DdtmgOEcXKXeAkFDmwtwlVV9+PJ5bmU4cyv
+         4Rj9PIhyTIFJsx7R67XJtFDCpSfVI35Z+JWRmWc52Qps78pI8RdoBRYnsvkHubfqlSTJ
+         KzrQ==
+X-Gm-Message-State: AOAM531jDxWFthR6x1X4shnqHEOQbGdopON9EEWRJlZiWUwxeweIhd3c
+	5kS92Ausogblnz8CBXdvNNDsKmTksBkILwOSGbKtv8+Ia5I=
+X-Google-Smtp-Source: ABdhPJzR/0rdhCdfVymGU2haY01ecpPt/q6BODwl7obWbSOAQJQMEWxUVCFShQcCtxmtIVjGEGteWyLsACVzGY2oUYU=
+X-Received: by 2002:a17:906:6d55:: with SMTP id a21mr8802539ejt.509.1631473997962;
+ Sun, 12 Sep 2021 12:13:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <877dfop2lx.fsf@meer.lwn.net>
+In-Reply-To: <877dfop2lx.fsf@meer.lwn.net>
+From: Dave Airlie <airlied@gmail.com>
+Date: Mon, 13 Sep 2021 05:13:05 +1000
+Message-ID: <CAPM=9tx+wAUSuYm+8eyGX2Y7+J5qY9hZHB7JY_XO_TYEQYJk8g@mail.gmail.com>
+Subject: Re: [MAINTAINER SUMMIT] User-space requirements for accelerator drivers
+To: Jonathan Corbet <corbet@lwn.net>
+Cc: ksummit@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Sun, 2021-09-12 at 19:58 +0300, Laurent Pinchart wrote:
-> On Sun, Sep 12, 2021 at 09:43:39AM -0700, James Bottomley wrote:
-> > On Sun, 2021-09-12 at 18:55 +0300, Laurent Pinchart wrote:
-> > > As mentioned in another part of the mail thread, requiring code
-> > > being merged in upstream userspace projects and/or packaged by
-> > > distributions will cause deadlocks, but requiring code to be
-> > > submitted and (pre-)approved is workable. That's what DRM/KMS
-> > > does. To upstream a new KMS property for instance, you need to
-> > > show how it's going to be used in Weston/Xorg/Android/... by
-> > > submitting patches, and have the overall architecture approved by
-> > > the corresponding maintainers.
-> > 
-> > This is no different from interlocks required in pretty much every
-> > other project crossing open source feature, so it seems like the
-> > right approach to me.  We already use this for confidential
-> > computing, which often requires interlocking changes to QEMU, edk2
-> > and other tools.  Usually, for confidential computing, the
-> > evaluation is on either the QEMU or edk2 list which then accepts
-> > the patch and the rest of the projects follow.  We do,
-> > occasionally, get a late objection to the API from one of the other
-> > projects after part of the enabling code has gone upstream in the
-> > others, but we handle this like a bug fix.
-> 
-> On the DRM/KMS side that's also handled fine as far as I know, as
-> mentioned above. For cameras, libcamera is becoming the de facto
-> standard userspace stack, so we'll have a solution too. The harder
-> question is what to do when no standard userspace stack exists. The
-> answer obviously is to create one (or possibly multiple
-> alternatives), but we'll need more than wishful thinking to make that
-> happened. I can tell it took lots of work for libcamera to see the
-> light of the day, including on the business side of it, not just the
-> technical side.
+On Sat, 11 Sept 2021 at 07:10, Jonathan Corbet <corbet@lwn.net> wrote:
+>
+> There has been a regular disagreement in recent years about whether
+> drivers for accelerators (such as for the Habana Gaudi device) should be
+> subject to the same requirements as GPU drivers when it comes to the
+> availability of a free implementation of the user-space side.  It flared
+> up again recently:
+>
+>    https://lwn.net/Articles/867168/
+>
+> Happily, the Habana situation in particular seems to be resolving
+> itself:
+>
+>    https://lwn.net/ml/linux-kernel/CAFCwf119s7iXk+qpwoVPnRtOGcxeuZb3rnihf6NWWoVT-4ODHA@mail.gmail.com/
+>
+> But even there it is clear that the fundamental question has not yet
+> been resolved.
+>
+> This seems like the sort of question that the maintainer summit exists
+> to address.  Specifically, we could discuss:
+>
+>  - Under which circumstances should the kernel community require the
+>    existence of freely licensed user-space code that exercises all
+>    functionalities of a proposed kernel driver or feature?
+>
+>  - Are there internal kernel interfaces, such as DMA-BUF or P2PDMA, that
+>    are only available to drivers with a free user-space implementation?
+>    Do we need an EXPORT_SYMBOL_USERSPACE_GPL()?
+>
+>  - What constitutes an acceptable user-space implementation in cases
+>    where these restrictions apply?
+>
+> I suspect that more clarity (and fewer arguments) on these questions
+> would be welcome both within and beyond the development community.
+>
+> Thanks,
 
-Well, you know, this is where Open Source as a Standard comes from.  We
-see the same in Confidential Computing.  There are several
-manufacturers and they always specify how they think their stuff should
-work in their standards or code drops, but rarely get beyond a proof of
-concept in their own labs.  Once we start moving it upstream, we find
-points of similarity between the different chip vendors, or sometimes
-specified implementations which plain don't work, and start modifying
-the APIs to take this into account.  What we eventually end up with
-often doesn't mirror what the manufacturer standard says but it ends up
-being the actual standard for current and future confidential computing
-chips.
+Can everyone take a read of:
 
-James
+https://dri.freedesktop.org/docs/drm/gpu/drm-uapi.html#open-source-userspace-requirements
 
+I think in order to clean the signal/noise ratio up in here, some
+education effort might help people realise how non-trivial these
+things are.
 
+1. These drivers are not one or two ioctls that a few selftests and a
+small test app can cover. It's like saying LTP is all we need to
+define the uAPI for the kernel and if anyone does something LTP
+doesn't cover the app is broken. These systems are generally complex,
+multithreaded and multiuser uAPIs, involving command streams recorded
+in userspace being submitted to the devices. They interact with memory
+management and can cause unfindable deadlocks across the system if
+designed incorrectly. Documentation or kselftests aren't going to cut
+it here.
+
+2. In my experience we don't build communities by merging everything,
+we build them by saying No more and pushing back on companies with
+education and cross-vendor cooperation. Responsible kernel maintenance
+shouldn't end at the kernel boundaries. If you aren't the person to
+help enforce a userspace for a driver you are being asked to merge,
+then don't merge it, but try and engage the vendor with the
+communities of interest in the kernel who already deal in those areas.
+
+3. The pressures on these companies to merge things into Linux isn't
+altruistic or even that they necessarily want to be in the Linux
+kernel upstream. They are being told by Red Hat, Facebook, Google or
+someone else that they need an upstream driver. They will generally
+engage at a minimal level to get past that blockage and then
+disengage. Having a clear set of rules (or a place to discuss those
+rules, for new subsystems) and a gentle pushback helps develop
+communities by unlocking funding within those larger areas. As Laurent
+has said this isn't free, but just putting things into the kernel and
+not caring about userspace hasn't built any Linux communities in the
+accelerator areas.
+
+That said I started writing a cleaned up version of the above document
+which is more generic that other subsystems could sign on to. I was
+going to engage with a coalition of like-minded maintainers rather
+than trying to gain consensus among a herd of cats to see if we can
+draw clearer lines in the sand that cross more subsystems so the
+experience of drivers/gpu doesn't go unwasted but also isn't just
+bypassed by subsystem hunting.
+
+https://cgit.freedesktop.org/~airlied/linux/log/?h=wip-open-source-userspace
+
+Dave.
 
