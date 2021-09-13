@@ -1,150 +1,176 @@
-Return-Path: <ksummit+bounces-547-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-548-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69386408248
-	for <lists@lfdr.de>; Mon, 13 Sep 2021 01:15:28 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 838CB4082D6
+	for <lists@lfdr.de>; Mon, 13 Sep 2021 04:27:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id 8794A1C0FAE
-	for <lists@lfdr.de>; Sun, 12 Sep 2021 23:15:27 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id F41EE3E102E
+	for <lists@lfdr.de>; Mon, 13 Sep 2021 02:27:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 850A43FD7;
-	Sun, 12 Sep 2021 23:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5853FD8;
+	Mon, 13 Sep 2021 02:27:14 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27473FC4
-	for <ksummit@lists.linux.dev>; Sun, 12 Sep 2021 23:15:18 +0000 (UTC)
-Received: by mail-ej1-f43.google.com with SMTP id h9so16935303ejs.4
-        for <ksummit@lists.linux.dev>; Sun, 12 Sep 2021 16:15:18 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E693FD3
+	for <ksummit@lists.linux.dev>; Mon, 13 Sep 2021 02:27:13 +0000 (UTC)
+Received: by mail-ed1-f46.google.com with SMTP id t6so10546558edi.9
+        for <ksummit@lists.linux.dev>; Sun, 12 Sep 2021 19:27:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=2N2k1ZowX0tTAsEZqcGRXPJ3pZWCVHPMWLioSri6Z4U=;
-        b=QReNiXa0zoiQXttcIDAjAcWAOgq1oIpNKICUZBCsr1kpr1/G9DGJBGEkgK4T98B1WZ
-         Wt4yVvyw5xt7a8VLW3nVGWc/ZPIxaVeRVNjm0pjQ4+ChC9qQ8sizHb3ODxluIP5jpQMf
-         YMl1iFzKb3FuroE0H+rCamXx4WfnHVGhbXkb5gaQm5CrjOpy+hqbtgG1sX4hIYyPTXWd
-         0z9Y3UzDT6HliSegoFZ26NQwtEVhG6kLL/jEMiZCEWAvNZg/yu1R144gtpQZ7ylZP4Tf
-         XmrSSxHL4rdgA/yhSFKD6PkAKznueVGoStcdijDecOxR6Nzc/lvLnzy5dWYtF+vXjuSd
-         Zy3g==
+        bh=rwHuCkIobuWTd1ONStmrBaL+cVlW7AePd85FeK3wFrM=;
+        b=mG4Gtv2UKV37rvYHLPCk9NjmFmjbiyPW6G5GRcF4MdyrhA3zb8zU8B/Voc8FGr/fpZ
+         eRWmyyfXcmmZnEqroRlmWZbLzICHO0Lzhp06MIfMJeAHrqs1HfurWCwtOVQHMgMThey9
+         ZHwOSltTRfyEVU0I+y1ZcEw71qvbV59i2kZTzMC1yc7yR9KijSG7gjl9Kdt8SkDmKZbp
+         1iiai68jJoOwJ+npLs55BvdPzUr8XqJO722tyWLzeP1Iq4YS23qrT5JveAgPc5clQArS
+         gMCfdKOogprABkMOYMBdtJJvlRqVrlSNgFUrRmKl+m8+4T2KTtQhByVRx+55wMw6/DRs
+         Zwcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=2N2k1ZowX0tTAsEZqcGRXPJ3pZWCVHPMWLioSri6Z4U=;
-        b=tbGVsg+JWoDroy7ATobTVAvdIXl8EATc/DpyjG84+cnjxlUSJyQkzvOfJNfqnf52A5
-         3z1/TYfilti/+YWeG0AmJlRbtTHTkJKuOni15Ull+JTpdnsPftVtkwUWJUXqkxr6pqR4
-         sDieXb9z1JECfkRBkYlI5KaQEupTJH27ts2Ru555C2/po7IFTWFl52Bs8O/DYyH5SAxD
-         H3uOA7HSIGmw1HyKbu8dy81GRpNi0+97lbFFSthhYC7gsS/Gn2fuM9WpJQapu7JIH666
-         H8DVu9gxWL07mwSYM+jtJC972EgD+QDgFyNu3f0hIk/kDYFarnV6XsRM2yM2T6/fGBuC
-         8M1Q==
-X-Gm-Message-State: AOAM533gntYuyMTMpzrpHHnUaoEAPT7xyW6Ip64ZyY6R+FyJHk2hZc3h
-	eCF4OUJaAyF72zfK11HQZaoHYMukHmLAYuKamhg=
-X-Google-Smtp-Source: ABdhPJzLmY22ZVVj15QmenTCSReVNAFGQG4MWqqLUKbKkhfYZZTtct59Mk3dtmeuTGANOe2fGFcaf/C8zlEuBOVOQfk=
-X-Received: by 2002:a17:906:31d7:: with SMTP id f23mr9402781ejf.190.1631488517270;
- Sun, 12 Sep 2021 16:15:17 -0700 (PDT)
+        bh=rwHuCkIobuWTd1ONStmrBaL+cVlW7AePd85FeK3wFrM=;
+        b=UZ355at3CamfLkhHfmcItRrduNGyR1H/+kmtTpnfYoPoWUrts9uMi6fYkFBlqQxsrm
+         M+ruPLsl4VXLzHj6C3EfZc6hiL+xwB+w+xci2TsZ1nQ8A0iDYuMzA8enCGG6olfmKOAO
+         qFQIeCCGDEwnymKOagexIQoUfNz0+8SFKMxRLeGatLLihRbdUzpvmjgbh7/iREChq0cM
+         LY+iEzOxMQPfxf5LkQl7r5ULNuDk4ioEpd3zVu1OqUurShL8OZ/oZBUx2qmENvRME+QH
+         Wc0lXkYw3jancUO3hZM552sM7TDwtIgKLVX981jn5ThsiEujNZvHMrryIvB2vmTOxqHw
+         mhTw==
+X-Gm-Message-State: AOAM533Rhhta2L7TUOJP/8WpL6QvLOHygBfRnag9iLSLehXXtE6Z3hdm
+	uAM/sfN8F9c3H6CfY0x8AaHGfORcn/ulmnMXHdubBM5c+cI=
+X-Google-Smtp-Source: ABdhPJxbS8OXCp7RXDsihWrgZDGyCJ0MnRCfQHQdqZqSlyG8QX+0/0E8Ze0e/NMnbHOO3TcqLGOPNwRWUgWra+da0pM=
+X-Received: by 2002:a05:6402:2919:: with SMTP id ee25mr4997493edb.395.1631500031298;
+ Sun, 12 Sep 2021 19:27:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <87ilz8c7ff.ffs@tglx> <YTyFZufZHu9BSFxk@unreal>
- <YTyWANV/mSkQbYhj@pendragon.ideasonboard.com> <YTybN5QwAnLfSBZC@unreal>
- <YT0n0SaWnM8aVr/S@pendragon.ideasonboard.com> <YT2By1+yuo7rcu2D@unreal>
- <YT2rwbBR6ilHmwSZ@kroah.com> <YT26ebT6xXWsnVMw@unreal> <YT3/5kJuhw/QVqrw@kroah.com>
- <YT4LgkK+ejUWljEh@unreal> <YT4QCHwnqZL/rl0z@kroah.com> <CAPM=9twpxAP13fEv8BxsSkd4Xcqxu989F3biiPFFDgKRADL0KQ@mail.gmail.com>
- <CAKMK7uHQw8=GKpayxzOJUs4BnwoVDS08Y9bynp6=VH+eW35Pgw@mail.gmail.com>
- <CAPM=9txdCs-pXfw1Q=o_tMcmPafHcwV6_K5Sh=Vnj6d=G-tm_A@mail.gmail.com> <CACRpkdZRy8b3B8chCnpEHV3_qfBS6kCqMNmCPy4MV0vf0-AsAw@mail.gmail.com>
-In-Reply-To: <CACRpkdZRy8b3B8chCnpEHV3_qfBS6kCqMNmCPy4MV0vf0-AsAw@mail.gmail.com>
+References: <877dfop2lx.fsf@meer.lwn.net> <CAPM=9tx+wAUSuYm+8eyGX2Y7+J5qY9hZHB7JY_XO_TYEQYJk8g@mail.gmail.com>
+ <YT5Zf/nq5WobZLyI@pendragon.ideasonboard.com>
+In-Reply-To: <YT5Zf/nq5WobZLyI@pendragon.ideasonboard.com>
 From: Dave Airlie <airlied@gmail.com>
-Date: Mon, 13 Sep 2021 09:15:05 +1000
-Message-ID: <CAPM=9txX_f2iRPTGEeqbHqbPxZ2X-e4RStGXO-rz3KC2n4yyiw@mail.gmail.com>
+Date: Mon, 13 Sep 2021 12:26:59 +1000
+Message-ID: <CAPM=9ty7qa3+Sd4GUb2GRbUHef406FCgvezvry+g-KqTT01QfA@mail.gmail.com>
 Subject: Re: [MAINTAINER SUMMIT] User-space requirements for accelerator drivers
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>, Greg KH <greg@kroah.com>, 
-	Leon Romanovsky <leon@kernel.org>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Josh Triplett <josh@joshtriplett.org>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Jonathan Corbet <corbet@lwn.net>, ksummit@lists.linux.dev, 
-	dev@tvm.apache.org
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, ksummit@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 13 Sept 2021 at 08:52, Linus Walleij <linus.walleij@linaro.org> wrote:
+On Mon, 13 Sept 2021 at 05:48, Laurent Pinchart
+<laurent.pinchart@ideasonboard.com> wrote:
 >
-> On Sun, Sep 12, 2021 at 11:13 PM Dave Airlie <airlied@gmail.com> wrote:
+> Hi Dave,
 >
-> > For userspace components as well these communities of experts need to
-> > exist for each domain, and we need to encourage upstream first
-> > processes across the board for these split kernel/userspace stacks.
+> On Mon, Sep 13, 2021 at 05:13:05AM +1000, Dave Airlie wrote:
+> > On Sat, 11 Sept 2021 at 07:10, Jonathan Corbet <corbet@lwn.net> wrote:
+> > >
+> > > There has been a regular disagreement in recent years about whether
+> > > drivers for accelerators (such as for the Habana Gaudi device) should be
+> > > subject to the same requirements as GPU drivers when it comes to the
+> > > availability of a free implementation of the user-space side.  It flared
+> > > up again recently:
+> > >
+> > >    https://lwn.net/Articles/867168/
+> > >
+> > > Happily, the Habana situation in particular seems to be resolving
+> > > itself:
+> > >
+> > >    https://lwn.net/ml/linux-kernel/CAFCwf119s7iXk+qpwoVPnRtOGcxeuZb3rnihf6NWWoVT-4ODHA@mail.gmail.com/
+> > >
+> > > But even there it is clear that the fundamental question has not yet
+> > > been resolved.
+> > >
+> > > This seems like the sort of question that the maintainer summit exists
+> > > to address.  Specifically, we could discuss:
+> > >
+> > >  - Under which circumstances should the kernel community require the
+> > >    existence of freely licensed user-space code that exercises all
+> > >    functionalities of a proposed kernel driver or feature?
+> > >
+> > >  - Are there internal kernel interfaces, such as DMA-BUF or P2PDMA, that
+> > >    are only available to drivers with a free user-space implementation?
+> > >    Do we need an EXPORT_SYMBOL_USERSPACE_GPL()?
+> > >
+> > >  - What constitutes an acceptable user-space implementation in cases
+> > >    where these restrictions apply?
+> > >
+> > > I suspect that more clarity (and fewer arguments) on these questions
+> > > would be welcome both within and beyond the development community.
+> > >
+> > > Thanks,
 > >
-> > The habanalabs compiler backend is an LLVM fork, I'd like to see the
-> > effort to upstream that LLVM backend into LLVM proper.
+> > Can everyone take a read of:
+> >
+> > https://dri.freedesktop.org/docs/drm/gpu/drm-uapi.html#open-source-userspace-requirements
+> >
+> > I think in order to clean the signal/noise ratio up in here, some
+> > education effort might help people realise how non-trivial these
+> > things are.
+> >
+> > 1. These drivers are not one or two ioctls that a few selftests and a
+> > small test app can cover. It's like saying LTP is all we need to
+> > define the uAPI for the kernel and if anyone does something LTP
+> > doesn't cover the app is broken. These systems are generally complex,
+> > multithreaded and multiuser uAPIs, involving command streams recorded
+> > in userspace being submitted to the devices. They interact with memory
+> > management and can cause unfindable deadlocks across the system if
+> > designed incorrectly. Documentation or kselftests aren't going to cut
+> > it here.
+> >
+> > 2. In my experience we don't build communities by merging everything,
+> > we build them by saying No more and pushing back on companies with
+> > education and cross-vendor cooperation. Responsible kernel maintenance
+> > shouldn't end at the kernel boundaries. If you aren't the person to
+> > help enforce a userspace for a driver you are being asked to merge,
+> > then don't merge it, but try and engage the vendor with the
+> > communities of interest in the kernel who already deal in those areas.
+> >
+> > 3. The pressures on these companies to merge things into Linux isn't
+> > altruistic or even that they necessarily want to be in the Linux
+> > kernel upstream. They are being told by Red Hat, Facebook, Google or
+> > someone else that they need an upstream driver. They will generally
+> > engage at a minimal level to get past that blockage and then
+> > disengage. Having a clear set of rules (or a place to discuss those
+> > rules, for new subsystems) and a gentle pushback helps develop
+> > communities by unlocking funding within those larger areas. As Laurent
+> > has said this isn't free, but just putting things into the kernel and
+> > not caring about userspace hasn't built any Linux communities in the
+> > accelerator areas.
+> >
+> > That said I started writing a cleaned up version of the above document
+> > which is more generic that other subsystems could sign on to. I was
+> > going to engage with a coalition of like-minded maintainers rather
+> > than trying to gain consensus among a herd of cats to see if we can
+> > draw clearer lines in the sand that cross more subsystems so the
+> > experience of drivers/gpu doesn't go unwasted but also isn't just
+> > bypassed by subsystem hunting.
+> >
+> > https://cgit.freedesktop.org/~airlied/linux/log/?h=wip-open-source-userspace
 >
-> I couldn't agree more.
->
-> A big part of the problem with inference engines / NPU:s is that of no
-> standardized userspace. Several of the machine learning initiatives
-> from some years back now have stale git repositories and are
-> visibly unmaintained, c.f. Caffe https://github.com/BVLC/caffe
-> last commit 2 years ago.
->
-> In a discussion thread at LWN I raised Apache TVM as a currently
-> quite obviously alive and kicking community, and these people have
-> the ambition to provide "an open source machine learning compiler
-> framework for CPUs, GPUs, and machine learning accelerators".
-> https://tvm.apache.org/
-> At least they have all relevant companies logotypes on their homepage,
-> so there is some kind of commitment.
-> You can find for example from Arm an RFC for real HW accelerator code
-> support using (out of tree) Linux kernel drivers with Apache TVM:
-> https://discuss.tvm.apache.org/t/rfc-ethosn-arm-ethos-n-integration/6680
->
-> Then there is Google's TensorFlow. How open is that for a random
-> HW vendor who want to integrate their accelerator and how open is
-> it to working with the kernel community? Then there is PyTorch.
-> All of these apparently active. Well CPU vendors often support
-> two different compilers so I guess they could very well support
-> three machine learning userspaces, why not.
->
-> What confuses me is what kind of time horizon and longevity these
-> projects have, and what level of commitment is involved and
-> what ambition. Especially to what extent they would care about
-> working with the Linux kernel community. (TVM have a mail
-> address so I added them on CC.)
->
-> Habanalabs propose an LLVM fork as compiler, yet the Intel
-> logo is on the Apache TVM website, and no sign of integrating with
-> that project. They claim to support also TensorFlow.
->
-> The way I percieve it is that there simply isn't any GCC/LLVM or
-> Gallium 3D of NPU:s, these people haven't yet decided that "here
-> is that userspace we are all going to use". Or have they?
->
-> LLVM? TVM? TensorFlow? PyTorch? Some other one?
+> Thank you for that effort. Could you add camera ISPs to the list with
+> FPGAs, DSPs and ML accelerators ?
 
-Yeah I've been doing the same research, and there is also the Glow
-project I think to add to the list.
+I'll add that to the next iteration, thanks.
 
-The thing is control, everyone wants to run it, when it comes to Linux
-nearly all the vendors have realised they've lost their control and
-learned to live with it, but the second they are into userspace, it's
-like hey we need to be in charge of every single piece of this, thus
-losing the Linux kernel advantage of pooling engineering expertise
-cross-vendor.
+>
+> You mention Level0 in that document. I assume you don't mean the
+> OpenStreetMap editor ?
 
-I certainly don't want to be the distro packager having to package 30
-forks of LLVM for 20 different vendor accelerators with 20 runtime
-APIs and 20 forks of TVM/Tensorflow/pytorch.
+https://spec.oneapi.io/level-zero/latest/core/INTRO.html
 
-Enabling that behaviour by just merging kernel drivers and washing our
-hands to me seems like a large misstep for the future of
-maintainability of the kernel, esp as these devices start interacting
-with GPUs or RDMA and we get locked into unmovable interfaces that we
-can't even analyse for deadlocks etc.
+It's like a vulkan for OpenCL effort, they've already managed to put
+things in the API that are close to impossible to make work on the
+Linux kernel properly, again because Intel internally thought they had
+better experts than the kernel, but we are trying to get that all
+fixed up.
 
 Dave.
 
