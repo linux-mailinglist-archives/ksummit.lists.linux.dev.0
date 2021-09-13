@@ -1,133 +1,125 @@
-Return-Path: <ksummit+bounces-554-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-555-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
-	by mail.lfdr.de (Postfix) with ESMTPS id 683C340911D
-	for <lists@lfdr.de>; Mon, 13 Sep 2021 15:57:47 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E0474091B7
+	for <lists@lfdr.de>; Mon, 13 Sep 2021 16:04:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id 72FC01C0F4F
-	for <lists@lfdr.de>; Mon, 13 Sep 2021 13:57:46 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id 388801C0AD1
+	for <lists@lfdr.de>; Mon, 13 Sep 2021 14:04:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF22D3FDA;
-	Mon, 13 Sep 2021 13:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A51453FDA;
+	Mon, 13 Sep 2021 14:04:05 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776023FC4
-	for <ksummit@lists.linux.dev>; Mon, 13 Sep 2021 13:57:37 +0000 (UTC)
-Received: by mail-ot1-f47.google.com with SMTP id c42-20020a05683034aa00b0051f4b99c40cso13421852otu.0
-        for <ksummit@lists.linux.dev>; Mon, 13 Sep 2021 06:57:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=q1gKaB1lBw/hHmnDxx2OAjAQfJZc8FXFBR2odacBPvI=;
-        b=bR/GtL2Kx4fRKncM4+4DS4XMX14akxSbnuGjXjiT16pxeuYbYMwUImUgfnWcUDs8Mz
-         JxKXVN0ag27AFPGgpARO65ylGXkQXw5q6oIoU6Via8sEfsiNzMbrbTpydRm0jV9pm6Xi
-         Lp/YmvjaRLRsi+eKzPMIrAzgAOlVf9SHapNgE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=q1gKaB1lBw/hHmnDxx2OAjAQfJZc8FXFBR2odacBPvI=;
-        b=DHzd8YPOk+m9zIQzDHRnc0A6uli7a4MFt4MkDXa2pZ/AkcOQmYn8so9nFWSeKhLDXQ
-         /QlmzIL5JbTGaJGHdcUB+rIk3+vuRzkcJr09nDt8cy/3DkhFmH5Xh4lkIwAPOBWHUYUN
-         avgdpN/AoPRo+AoH8Oz9I8vlC1Xi6gm25UFWJY7TjsvRtKn752AVL7slcHWnHbPA11q/
-         VnKGXb6oIyAg/URsFpUcUIQ33g6pbSVUQQ5uE4uK9+cVpt8KkZyzSMLA+8o5+i1PrmM7
-         MtcbvM93gmp+mYMAi8m23etuAp+SuiZoAGrz613mQVhmninWBWqGVPpaQxz4iGJYlifj
-         uSjg==
-X-Gm-Message-State: AOAM531ggyyOWNpoeYGhAwC/91mIqODUXA40dCNmvhzgadFHXRb4griG
-	t2icd8UM6o2v6AJ/i7aoKh88u3GWYDQs/fbnsGkeGOokMPY=
-X-Google-Smtp-Source: ABdhPJw6dJ+ZOfR4IuSuhnDOwI7KxOsJtWqa2XtmiHNWVvR6r4ZwG7Sp3aqYyQDS38kdTQidyOey3JOZWn8Y5bYBQh4=
-X-Received: by 2002:a9d:67c1:: with SMTP id c1mr9689586otn.239.1631541456626;
- Mon, 13 Sep 2021 06:57:36 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812A03FC4
+	for <ksummit@lists.linux.dev>; Mon, 13 Sep 2021 14:04:04 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B312C610A3;
+	Mon, 13 Sep 2021 14:04:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1631541844;
+	bh=UM3kudsLrUUqZ26cGXw59E1idWgweEauRPzL0/9xxPA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Xl5h2TK3so3mPfdWmVoxRcO5+upZgUw9fDuCIxPh1tFnJEjrClGlSPBTst9aZIGj2
+	 nbUdzyZKVrz0LooJnuAYNQl8Vdq+voBggXX5efLaqpBR3aSgdewWIIJlzrpwnxpGlu
+	 QkLiICNGwzW991+YXw8y7yx40oU20CHHc1cqvUuXxLNjlZA8o0Sbj4x8wzSA3PY5JU
+	 0vvIaINs4JqFOqBhwL7ihkAQSh9keGztxvoAhUBLUVIHqoPZim9+cO4Trhajavw5qh
+	 N6nYIzI7BztPDIwBiOG5sTb0umE0fj+8KIv1CJuJYdn93HUNq99it+/oGUiuWP6Q9U
+	 JijyhgjYjXhkw==
+Date: Mon, 13 Sep 2021 15:03:25 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg KH <greg@kroah.com>
+Cc: Leon Romanovsky <leon@kernel.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, ksummit@lists.linux.dev
+Subject: Re: [MAINTAINER SUMMIT] User-space requirements for accelerator
+ drivers
+Message-ID: <20210913140324.GE4283@sirena.org.uk>
+References: <YTyFZufZHu9BSFxk@unreal>
+ <YTyWANV/mSkQbYhj@pendragon.ideasonboard.com>
+ <YTybN5QwAnLfSBZC@unreal>
+ <YT0n0SaWnM8aVr/S@pendragon.ideasonboard.com>
+ <YT2By1+yuo7rcu2D@unreal>
+ <YT2rwbBR6ilHmwSZ@kroah.com>
+ <YT26ebT6xXWsnVMw@unreal>
+ <YT3/5kJuhw/QVqrw@kroah.com>
+ <YT4LgkK+ejUWljEh@unreal>
+ <YT4QCHwnqZL/rl0z@kroah.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <877dfop2lx.fsf@meer.lwn.net> <YTvPAMT9FRCUeWjR@localhost> <20210913135014.ydhk42ncnzakvvii@wittgenstein>
-In-Reply-To: <20210913135014.ydhk42ncnzakvvii@wittgenstein>
-From: Daniel Vetter <daniel.vetter@ffwll.ch>
-Date: Mon, 13 Sep 2021 15:57:25 +0200
-Message-ID: <CAKMK7uFPxVosEvdwSOrfUvq7+W-dUo39ktEm2Yag_wvJ5YvZNg@mail.gmail.com>
-Subject: Re: [MAINTAINER SUMMIT] User-space requirements for accelerator drivers
-To: Christian Brauner <christian.brauner@ubuntu.com>
-Cc: Josh Triplett <josh@joshtriplett.org>, Jonathan Corbet <corbet@lwn.net>, ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ffoCPvUAPMgSXi6H"
+Content-Disposition: inline
+In-Reply-To: <YT4QCHwnqZL/rl0z@kroah.com>
+X-Cookie: Above all else -- sky.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Mon, Sep 13, 2021 at 3:50 PM Christian Brauner
-<christian.brauner@ubuntu.com> wrote:
-> On Fri, Sep 10, 2021 at 02:32:48PM -0700, Josh Triplett wrote:
-> > On Fri, Sep 10, 2021 at 03:00:58PM -0600, Jonathan Corbet wrote:
-> > > There has been a regular disagreement in recent years about whether
-> > > drivers for accelerators (such as for the Habana Gaudi device) should be
-> > > subject to the same requirements as GPU drivers when it comes to the
-> > > availability of a free implementation of the user-space side.  It flared
-> > > up again recently:
-> > >
-> > >    https://lwn.net/Articles/867168/
-> > >
-> > > Happily, the Habana situation in particular seems to be resolving
-> > > itself:
-> > >
-> > >    https://lwn.net/ml/linux-kernel/CAFCwf119s7iXk+qpwoVPnRtOGcxeuZb3rnihf6NWWoVT-4ODHA@mail.gmail.com/
-> > >
-> > > But even there it is clear that the fundamental question has not yet
-> > > been resolved.
-> > >
-> > > This seems like the sort of question that the maintainer summit exists
-> > > to address.  Specifically, we could discuss:
-> > >
-> > >  - Under which circumstances should the kernel community require the
-> > >    existence of freely licensed user-space code that exercises all
-> > >    functionalities of a proposed kernel driver or feature?
-> >
-> > I think it'd be reasonable to ask, as well: if we required this for
-> > *all* kernel functionality, such that we never add any userspace
-> > interface to the kernel unless there's *some* Open Source userspace that
-> > needs/wants it, what problems would that cause if any?
-> >
-> > It appears that in this case the kernel pushing back has influenced the
-> > release of Open Source userspace code. Having a kernel-wide policy here
-> > seems like it'll *help* people within many companies to push for such
-> > changes: "We're never going to be able to get our changes into the
-> > upstream kernel if there's no userspace to drive them."
->
-> I can certainly see why that discussion is needed for features that deal
-> with hardware which requires an elaborate userspace component in order
-> to work.
-> But I'm not convinced this policy makes sense for all kernel features.
-> For example, when we introduce a new general api in kernel core it will
-> often be driven by requirements of other well-known open source
-> projects. If such projects state that they will add support for it once
-> a kernel supporting this feature is released that expression of their
-> intent is often sufficient. We usually don't make such projects jump
-> through the hoops of implementing the userspace side upfront to proof
-> that they would use it. Although to the credit of a few open source
-> projects that does also happen. But I'm hesitant to make this a general
-> rule.
 
-I agree it's an orthogonal discussion, but I think we've also had our
-fair share of fully generic interface that turned out to miss the mark
-in real-world usage. This is why the generic kernel
-modesetting/display interface for drivers in drivers/gpu also needs
-fully open implementation. Not because we really need that for
-long-term maintainability - the interfaces are generally well-defined
-enough that testcases + docs are sufficient for that, but because in
-practices it just catches so many small gotchas that are otherwise
-overlooked in good generic uapi design.
+--ffoCPvUAPMgSXi6H
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-But I do think we should keep this apart from the discussions for hw
-drivers, where 80+% of the driver that's absolutely needed to drive
-the hardware is in userspace.
--Daniel
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+On Sun, Sep 12, 2021 at 04:34:48PM +0200, Greg KH wrote:
+> On Sun, Sep 12, 2021 at 05:15:30PM +0300, Leon Romanovsky wrote:
+
+> > https://lore.kernel.org/all/YT2zryAKHc%2F5R2IH@unreal/
+> > "To be used" means some open PR to existing package or request for
+> > inclusion for new packages.
+
+> But again, distros will not take things that are not already in the
+> kernel.
+
+Or, mainly for the community distros which are open to people
+volunteering to package things, can't be relied on to do validation
+beyond checking that the package is distributable and that the installed
+files integrate into the distro in roughly the right form.  That's not
+really a meaningful form of back pressure from our point of view.
+
+> > > But how do you define Android's userspace?  Just one vendor?  2 vendors?
+> > > 10 vendors?  There is major userspace fragmentation in Android userspace
+> > > in many places, the user/kernel boundry being one of the big ones as
+> > > many of us have found out over the past years.  And many of us are
+> > > working to resolve this, but it's not so simple at times, and I have
+> > > many examples if you want specifics.
+
+> > Lauerent suggested AOSP
+> > https://lore.kernel.org/all/YTyWANV%2FmSkQbYhj@pendragon.ideasonboard.com/
+
+> Vendors can not get code into AOSP for various reasons that only Google
+> understands.  There are many millions, if not billions of Android
+> devices out there with user/kernel apis that are not upstream nor in
+> AOSP because Google doesn't want to take them, or because the vendor can
+> not go through those hoops (international law is tricky at times...)
+
+Right, if you're not one of the main SoC vendors working on something
+that's a main application of Android it can be very hard to get anyone
+to give you the time of day.
+
+--ffoCPvUAPMgSXi6H
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmE/WiwACgkQJNaLcl1U
+h9ALvwf/eqn+G/taK/yp4Z6fVENHgUC3pcoxF0UctcziSMQI8dsF4sSONtT8CaTl
+S7XoBXXiSQyQmlxvkxoh14R4OFdFQMBrNcYgZs39+hdj5siiiOGvfwmb8KNfkIcA
+Kp0gHhxXN4tDWUpmnYynB5sV1I3dqQ8QZDWYlyO9bclxDuUnTi4XYdrNlzQugqB8
+rCsRumA1vdVckImCooyPiXsrI30eUqywrBq8WK8wUfDNqsLGDH4knK9YDzW4g/H5
+yeVDQrgznX5eUV+y9M3EKeUFQgumoCUx0+lvNncGmOXVMj0RTQ87t/+vfc8DvA7e
+phAso5PuCpH2wD4C/6JbLJ86UgWz0A==
+=9Pa4
+-----END PGP SIGNATURE-----
+
+--ffoCPvUAPMgSXi6H--
 
