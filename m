@@ -1,151 +1,133 @@
-Return-Path: <ksummit+bounces-558-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-559-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0129D40A196
-	for <lists@lfdr.de>; Tue, 14 Sep 2021 01:33:40 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2669E40A30E
+	for <lists@lfdr.de>; Tue, 14 Sep 2021 04:08:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id CCF681C0F92
-	for <lists@lfdr.de>; Mon, 13 Sep 2021 23:33:39 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id E20911C0D50
+	for <lists@lfdr.de>; Tue, 14 Sep 2021 02:08:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567143FD9;
-	Mon, 13 Sep 2021 23:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE11B3FD3;
+	Tue, 14 Sep 2021 02:08:12 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE813FD0
-	for <ksummit@lists.linux.dev>; Mon, 13 Sep 2021 23:33:30 +0000 (UTC)
-Received: by mail-ej1-f47.google.com with SMTP id qq21so18704868ejb.10
-        for <ksummit@lists.linux.dev>; Mon, 13 Sep 2021 16:33:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=j1DDr75YwCef8eajaG5ePyRugpvYv9BdgiIh9Sjm3L4=;
-        b=BSq26z4USkf8xMMNCKkZTK5W8pX/lw3xwSUzk78A+7VeiKy0kstYITo+a/lsJ0HuAa
-         ivtN6l7O8QJb0C9QA/kPGaVG66qRm3AjTgzjkm4Z/V2aYAm44Wb7/PZpJw+y/bP2bH3H
-         1RicPIxBMZQghDpPHJorjyMfiAFV59N0hF2ZV2OpOz50QLlnJbXgo99YFy1t0J9JDm5u
-         jCkYnbhVWje6eu7a0hoa8ObIZIMRXOWXAmqZa1MnNn66P+1SygSVlLW7vk9LLksm34o9
-         NF7/UQstLPj8RVuP0KYDj55co89p2BuG8gcwANCaY34XQxO4rO+f1PeZ5vv5cqMkHb48
-         M89w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=j1DDr75YwCef8eajaG5ePyRugpvYv9BdgiIh9Sjm3L4=;
-        b=1URIGDAfRd2zc47hP7BJyG6TGEjLpw2sFW2VSetziwBO8vU0DPV0feK2UYLnWAkAfu
-         FnbS1bUmAiXfgEW1uuR233/fYqCgj4MObHBA8RbW+EFQlTlKl31jnxmkkLbPhQAlq6JB
-         mmqs/ZSEQUSzDY6TXXYb8rWcHYSnv5CwPAjBZQW+zQCw4XDS2jsUW8tnHb6F8Akr3VUQ
-         r2FqvW/DVvOg9Fyvg7cBhvDMqmu1T6m6KtjOB0V3rRDoMFK7s/qz/Eqf2Z/QIXnfty6P
-         389E/LBPo+svFlsgXht6p5lBklRxPL0eOeHRR9kPm1n8R/87auFeyFKkHBjSV0J2pfMP
-         DGZQ==
-X-Gm-Message-State: AOAM532WT1X2HkpOqBpRjqOoGebxsF/jqri1Uwr1/lIV0nhHmo+kTh3d
-	4h2cIF7HHo6iIF2lkVH1NMxsGDChSsWv7TqQtEM=
-X-Google-Smtp-Source: ABdhPJw2CzgnxXa1Eljha7gHCmeKUR44oWZS5HLLAwA6zPffl8qh4w8vDkAKB/0bX1pcK8gnyj8HCkJQ9mAuwMsqaTw=
-X-Received: by 2002:a17:906:6d55:: with SMTP id a21mr15524783ejt.509.1631576008905;
- Mon, 13 Sep 2021 16:33:28 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04942FAE
+	for <ksummit@lists.linux.dev>; Tue, 14 Sep 2021 02:08:10 +0000 (UTC)
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 501C52A5;
+	Tue, 14 Sep 2021 04:08:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1631585283;
+	bh=ZlWL6oYrxuAzE1gNVo1Ft1g91PMjQ7EE3AH+OsFRNuo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FE5g1bdi2+ciS3ii9j6/hVz372M2eAnTEOv2rS2TqVdyXzFy61GvFArHgzfZYBo5j
+	 6ucztG69jp+LHL/WFbZoKJDk0o/3WoSh+y6BDXeIFPpzBB7VDcvetlg6Ql+7JPL3iM
+	 RgDPjKmeirDGWo+568qf3XURW74dNyNdrH+Oi2T0=
+Date: Tue, 14 Sep 2021 05:07:39 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Christian Brauner <christian.brauner@ubuntu.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Jonathan Corbet <corbet@lwn.net>, ksummit@lists.linux.dev
+Subject: Re: [MAINTAINER SUMMIT] User-space requirements for accelerator
+ drivers
+Message-ID: <YUAD6+fel9roitEF@pendragon.ideasonboard.com>
+References: <877dfop2lx.fsf@meer.lwn.net>
+ <YTvPAMT9FRCUeWjR@localhost>
+ <20210913135014.ydhk42ncnzakvvii@wittgenstein>
+ <CAKMK7uFPxVosEvdwSOrfUvq7+W-dUo39ktEm2Yag_wvJ5YvZNg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <87ilz8c7ff.ffs@tglx> <YTyFZufZHu9BSFxk@unreal>
- <YTyWANV/mSkQbYhj@pendragon.ideasonboard.com> <YTybN5QwAnLfSBZC@unreal>
- <YT0n0SaWnM8aVr/S@pendragon.ideasonboard.com> <YT2By1+yuo7rcu2D@unreal>
- <YT2rwbBR6ilHmwSZ@kroah.com> <YT26ebT6xXWsnVMw@unreal> <YT3/5kJuhw/QVqrw@kroah.com>
- <YT4LgkK+ejUWljEh@unreal> <YT4QCHwnqZL/rl0z@kroah.com> <CAPM=9twpxAP13fEv8BxsSkd4Xcqxu989F3biiPFFDgKRADL0KQ@mail.gmail.com>
- <CAKMK7uHQw8=GKpayxzOJUs4BnwoVDS08Y9bynp6=VH+eW35Pgw@mail.gmail.com>
- <CAPM=9txdCs-pXfw1Q=o_tMcmPafHcwV6_K5Sh=Vnj6d=G-tm_A@mail.gmail.com>
- <CACRpkdZRy8b3B8chCnpEHV3_qfBS6kCqMNmCPy4MV0vf0-AsAw@mail.gmail.com>
- <CAK8P3a2Fo=O3tM2vrFzbifc9rkmz9b3homwitTg5WNJrpDcLxA@mail.gmail.com>
- <CAKMK7uFrOpH9NG3XB1dT889r4HrUHaotte1D4Nh2=5tjD9VEpg@mail.gmail.com> <CAK8P3a2pvCwuSic9yevW0xmMy0-F1FEgfQ-_Rc7wWDs7PJEf_w@mail.gmail.com>
-In-Reply-To: <CAK8P3a2pvCwuSic9yevW0xmMy0-F1FEgfQ-_Rc7wWDs7PJEf_w@mail.gmail.com>
-From: Dave Airlie <airlied@gmail.com>
-Date: Tue, 14 Sep 2021 09:33:17 +1000
-Message-ID: <CAPM=9tw3WTUb6R5VaDR002P0QYbcZ0uPETC4r0MPBBqySLe09Q@mail.gmail.com>
-Subject: Re: [MAINTAINER SUMMIT] User-space requirements for accelerator drivers
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>, Linus Walleij <linus.walleij@linaro.org>, 
-	Greg KH <greg@kroah.com>, Leon Romanovsky <leon@kernel.org>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Josh Triplett <josh@joshtriplett.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, ksummit@lists.linux.dev, dev@tvm.apache.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAKMK7uFPxVosEvdwSOrfUvq7+W-dUo39ktEm2Yag_wvJ5YvZNg@mail.gmail.com>
 
-On Tue, 14 Sept 2021 at 08:05, Arnd Bergmann <arnd@arndb.de> wrote:
->
-> >n Mon, Sep 13, 2021 at 3:54 PM Daniel Vetter <daniel.vetter@ffwll.ch> wrote:
->
-> > > One straightforward hardware independent low-level API would
-> > > be the traditional BLAS GEMM call[1] for matrix multiplication
-> > > and its variants (integer, float, bfloat16, ...).  Most of the frameworks
-> > > are able to use SGEMM to do the actual calculation since that
-> > > has optimized versions for most CPUs and GPUs, and most
-> > > hardware accelerators should be able to provide an
-> > > implementation of this that doesn't completely suck. This
-> > > can be used for both inferencing and training.
+Hi Daniel,
+
+On Mon, Sep 13, 2021 at 03:57:25PM +0200, Daniel Vetter wrote:
+> On Mon, Sep 13, 2021 at 3:50 PM Christian Brauner wrote:
+> > On Fri, Sep 10, 2021 at 02:32:48PM -0700, Josh Triplett wrote:
+> > > On Fri, Sep 10, 2021 at 03:00:58PM -0600, Jonathan Corbet wrote:
+> > > > There has been a regular disagreement in recent years about whether
+> > > > drivers for accelerators (such as for the Habana Gaudi device) should be
+> > > > subject to the same requirements as GPU drivers when it comes to the
+> > > > availability of a free implementation of the user-space side.  It flared
+> > > > up again recently:
+> > > >
+> > > >    https://lwn.net/Articles/867168/
+> > > >
+> > > > Happily, the Habana situation in particular seems to be resolving
+> > > > itself:
+> > > >
+> > > >    https://lwn.net/ml/linux-kernel/CAFCwf119s7iXk+qpwoVPnRtOGcxeuZb3rnihf6NWWoVT-4ODHA@mail.gmail.com/
+> > > >
+> > > > But even there it is clear that the fundamental question has not yet
+> > > > been resolved.
+> > > >
+> > > > This seems like the sort of question that the maintainer summit exists
+> > > > to address.  Specifically, we could discuss:
+> > > >
+> > > >  - Under which circumstances should the kernel community require the
+> > > >    existence of freely licensed user-space code that exercises all
+> > > >    functionalities of a proposed kernel driver or feature?
+> > >
+> > > I think it'd be reasonable to ask, as well: if we required this for
+> > > *all* kernel functionality, such that we never add any userspace
+> > > interface to the kernel unless there's *some* Open Source userspace that
+> > > needs/wants it, what problems would that cause if any?
+> > >
+> > > It appears that in this case the kernel pushing back has influenced the
+> > > release of Open Source userspace code. Having a kernel-wide policy here
+> > > seems like it'll *help* people within many companies to push for such
+> > > changes: "We're never going to be able to get our changes into the
+> > > upstream kernel if there's no userspace to drive them."
 > >
-> > I think BLAS are too high-level for these. Sure fore perfect speed the
-> > vendor probably wants to have their own BLAS thing, their own NN
-> > optmizer and a heap of other things, but for the low-level userspace
-> > we're talking about here that pretty much doesn't matter.
->
-> I suppose high-level vs low-level is not the correct distinction here,
-> it's more like fixed-function vs programmable.
->
-> As a fixed-function interface, something like GEMM is probably as
-> low-level as you would want to get, as it's big enough to make sense
-> as a single atomic command, but small enough to be able to build on
-> top of it.
+> > I can certainly see why that discussion is needed for features that deal
+> > with hardware which requires an elaborate userspace component in order
+> > to work.
+> > But I'm not convinced this policy makes sense for all kernel features.
+> > For example, when we introduce a new general api in kernel core it will
+> > often be driven by requirements of other well-known open source
+> > projects. If such projects state that they will add support for it once
+> > a kernel supporting this feature is released that expression of their
+> > intent is often sufficient. We usually don't make such projects jump
+> > through the hoops of implementing the userspace side upfront to proof
+> > that they would use it. Although to the credit of a few open source
+> > projects that does also happen. But I'm hesitant to make this a general
+> > rule.
+> 
+> I agree it's an orthogonal discussion, but I think we've also had our
+> fair share of fully generic interface that turned out to miss the mark
+> in real-world usage. This is why the generic kernel
+> modesetting/display interface for drivers in drivers/gpu also needs
+> fully open implementation. Not because we really need that for
+> long-term maintainability - the interfaces are generally well-defined
+> enough that testcases + docs are sufficient for that, but because in
+> practices it just catches so many small gotchas that are otherwise
+> overlooked in good generic uapi design.
 
-The distinctions is more programming model than fixed vs programmable
-in rough order of complexity
+I concur here. I've spent the past 3 years working on libcamera in
+userspace after a decade of experience in the kernel side of V4L2. It
+was an enlightening (and embarassing) moment to realize that some kernel
+APIs that I had designed myself didn't stand the test of being used for
+real. A test application written to test an API in the way the API was
+designed will generally not be good at finding design flaws.
 
-a) device is MMIO programmed and can process one thing, kernel needs
-to mediate between exclusive users (big lock, initial drm subsystem)
-b) device has a queue that can process untrusted userspace command
-with no memory safety (old drm drivers, in-kernel command stream
-parsing)
-c) device has queues, contexts, memory safety, virtual address space
-(newer drm drivers)
-d) device has full preempt on all hw blocks, is fully coherent, can
-trigger paging sanely, userspace can submit directly (pipe dream).
+> But I do think we should keep this apart from the discussions for hw
+> drivers, where 80+% of the driver that's absolutely needed to drive
+> the hardware is in userspace.
 
-What the device processes is of little consequence to the kernel
-driver model. the uAPI of course needs to reflect the above along with
-what the device can program. Since there could be a queue for a DMA
-device that isn't specificed but can be programmed to DMA random
-system memory.
+-- 
+Regards,
 
-Devices in category (a) are the sort of things that can need kernel
-interfaces like a GEMM or BLAS level, however there is no point having
-an interface at that level for any of the b/c/d device. That interface
-needs to be in userspace somewhere, level0 or something like is
-probably where things will end up, and the type (a) devices will die
-out.
-
-> I realize that fixed-function is not fashionable on GPUs, but they
-> are widely used in other areas (video codecs, crypto, ...) even when
-> you are running precompiled code on the accelerator hardware.
-> This would of course replace the question of open source user space
-> with the question of open-source firmware, as the user side would
-> become mostly while the accelerator goes from dynamically created
-> to a firmware blob.
-
-We have lots of fixed function on GPUs, video codecs are on most x86
-GPUs. It's how you program them that matters, most of them are behind
-queues similar to the 3D engine, so you program them the same way.
-
-What isn't fashionable on GPUs is programmable blocks that are single
-user that only the kernel can program one user on at a time, since hw
-has long since left that model as desirable. There are some AI
-accelerators going doing the same path, but eventually they'll have to
-be shareable and catch up with GPU programming models to remain
-competitive.
-
-Dave.
+Laurent Pinchart
 
