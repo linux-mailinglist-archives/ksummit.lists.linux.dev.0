@@ -1,127 +1,78 @@
-Return-Path: <ksummit+bounces-578-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-579-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E628440C7B2
-	for <lists@lfdr.de>; Wed, 15 Sep 2021 16:47:00 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
+	by mail.lfdr.de (Postfix) with ESMTPS id 112CF40C8B1
+	for <lists@lfdr.de>; Wed, 15 Sep 2021 17:49:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 605113E1015
-	for <lists@lfdr.de>; Wed, 15 Sep 2021 14:46:59 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id 399561C0D52
+	for <lists@lfdr.de>; Wed, 15 Sep 2021 15:49:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C4D43FD8;
-	Wed, 15 Sep 2021 14:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C99A3FD9;
+	Wed, 15 Sep 2021 15:49:45 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from sipsolutions.net (s3.sipsolutions.net [144.76.43.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEEEF3FC5
-	for <ksummit@lists.linux.dev>; Wed, 15 Sep 2021 14:46:50 +0000 (UTC)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id D3A8E24F;
-	Wed, 15 Sep 2021 16:46:48 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1631717209;
-	bh=46F++gdkPlx/R10zNjLX5pBVRZscGmUglN85U3UDHwg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L37BIZdizrHVSS6xY65LJrXXkJVnaDbWV1ZXGO7xAFi4SdCUYiLq+vBposwS4f5HY
-	 9faziAC36VW78YMv9BRAPObgFYfiEbjF5uYBb16D00jFHEO6r7Gy+tc/M533xkL4Q2
-	 L+YgTPG+yOqWXS19yzs1CV2Yv9gJpMjHIYKG75/I=
-Date: Wed, 15 Sep 2021 17:46:22 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Laura Abbott <laura@labbott.name>
-Cc: ksummit@lists.linux.dev,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"tech-board-discuss@lists.linuxfoundation.org" <tech-board-discuss@lists.linuxfoundation.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724C429CA
+	for <ksummit@lists.linux.dev>; Wed, 15 Sep 2021 15:49:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=Wh5enwv0q3T6plDf5AFiVoXl9LkOcmja36omfE/zBKQ=;
+	t=1631720983; x=1632930583; b=Gt4/yTewa7OQs7Q1f0+BQTJ6PA0VzGuuhU9pa9ynOAsHxB4
+	kBIDoSv8sQ2q/P7ubKP2x2gKv/sOagqifMlukIj95w5go+E52JXdylzPsKSF67GlJXsWYo8tZBIb+
+	xzUeFUDTUuhSNxentdTkEaG4sdIGZ7Y4ChHHtUmRPQ/7qCQBIfypR3Pf7HDRCkXE5sTmBa9KK9s0Y
+	UJYwX3TefbPGPXA/Qs7MEUS+cFaZ217Mll2bJ8gL+7Xq4u/V2FvjaV6c6FwRlZjeNqVTtLlTJw6Cd
+	XM70l2SyTZ7B2jHitZK7YFsdaF4nUiH/V8ebzr1dKowy2Qwg60DWKiitZW1iAY+w==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.95-RC2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1mQXAD-007MvQ-HC;
+	Wed, 15 Sep 2021 17:49:33 +0200
+Message-ID: <6db59b8a4874b60cab7069fd06d180c2601bb427.camel@sipsolutions.net>
 Subject: Re: Reminder: Voting procedures for the Linux Foundation Technical
  Advisory Board
-Message-ID: <YUIHPv3uvAZjJxfB@pendragon.ideasonboard.com>
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Laura Abbott <laura@labbott.name>, Laurent Pinchart
+	 <laurent.pinchart@ideasonboard.com>
+Cc: ksummit@lists.linux.dev, "linux-kernel@vger.kernel.org"
+	 <linux-kernel@vger.kernel.org>, 
+	"tech-board-discuss@lists.linuxfoundation.org"
+	 <tech-board-discuss@lists.linuxfoundation.org>
+Date: Wed, 15 Sep 2021 17:49:32 +0200
+In-Reply-To: <dc45975a-86df-a70d-ff15-58a3bdcf09ee@labbott.name>
 References: <fccbdadc-a57a-f6fe-68d2-0fbac2fd6b81@labbott.name>
- <b90db9e7-9b6b-c415-d087-3505ba0be0d6@labbott.name>
- <YUH+DO5aHWGVdNb7@pendragon.ideasonboard.com>
- <dc45975a-86df-a70d-ff15-58a3bdcf09ee@labbott.name>
+	 <b90db9e7-9b6b-c415-d087-3505ba0be0d6@labbott.name>
+	 <YUH+DO5aHWGVdNb7@pendragon.ideasonboard.com>
+	 <dc45975a-86df-a70d-ff15-58a3bdcf09ee@labbott.name>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <dc45975a-86df-a70d-ff15-58a3bdcf09ee@labbott.name>
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 
-Hi Laura,
-
-On Wed, Sep 15, 2021 at 10:36:45AM -0400, Laura Abbott wrote:
-> On 9/15/21 10:07, Laurent Pinchart wrote:
-> > On Wed, Sep 15, 2021 at 09:58:32AM -0400, Laura Abbott wrote:
-> >> On 9/9/21 12:49, Laura Abbott wrote:
-> >>> Hi,
-> >>>
-> >>> Reminder that the Linux Foundation Technical Advisory Board (TAB) annual
-> >>> election will be held virtually during the 2021 Kernel Summit and Linux
-> >>> Plumbers Conference. Voting will run from September 20th to September
-> >>> 23rd 16:00 GMT-4 (US/Eastern). The voting criteria for the 2021 election
-> >>> are:
-> >>>
-> >>> There exist three kernel commits in a mainline or stable released
-> >>> kernel that both
-> >>> - Have a commit date in the year 2020 or 2021
-> >>> - Contain an e-mail address in one of the following tags or merged
-> >>> tags (e.g. Reviewed-and-tested-by)
-> >>> -- Signed-off-by
-> >>> -- Tested-by
-> >>> -- Reported-by
-> >>> -- Reviewed-by
-> >>> -- Acked-by
-> >>>
-> >>> If you have more than 50 commits that meet this requirement you will
-> >>> receive a ballot automatically.
-> >>>
-> >>> If you have between 3 and 49 commits that meet this requirement please
-> >>> e-mail tab-elections@lists.linuxfoundation.org to request your ballot.
-> >>> We strongly encourage everyone who meets this criteria to request a
-> >>> ballot.
-> >>>
-> >>> We will be using Condorcet Internet Voting
-> >>> Service (CIVS) https://civs1.civs.us/ . This is a voting service
-> >>> focused on security and privacy. There are sample polls on the
-> >>> website if you would like to see what a ballot will look like.
-> >>>
-> >>> If you have any questions please e-mail
-> >>> tab-elections@lists.linuxfoundation.org.
-> >>>
-> >>> Thanks,
-> >>> Laura
-> >>>
-> >>> P.S. Please also consider this another reminder to consider running for
-> >>> the TAB as well
-> >>
-> >> Final reminder: please remember to request your ballot for the TAB
-> >> elections. If you know others who are eligible please encourage
-> >> them to request a ballot as well.
-> > 
-> > When are the ballots supposed to be sent ? It would be nice to avoid
-> > requiring everybody to check whether they're below or above the 50
-> > commits threshold manually :-)
-> 
-> The ballots will be sent sometime after Monday September 20th
-> 9:00am GMT-4 (US/Eastern).
+On Wed, 2021-09-15 at 10:36 -0400, Laura Abbott wrote:
 > 
 > I did make an attempt to send e-mails to the > 50 commits individuals
-> but there is a chance my e-mail got eaten by spam filters or just
-> didn't get sent out. I discovered Google Apps' e-mail limits and
-> that you should not attempt to bcc too many people. This is something
-> I'd like to handle in a more automated fashion next year to make
-> it easier for both voters and those running the elections.
 
-Does it mean I should ask for a ballot after the 20th if I don't get
-one, or request one *before* ? I meet the above criteria but haven't
-received any ballot yet, so I was unsure whether I should ask or wait.
+So if we got the "look for your ballot" email from you, that means we're
+on the list?
 
--- 
-Regards,
+I agree with Laurent, it's a bit confusing now to figure out whether we
+should request or not, and if we have to request before the automated
+ones are sent out, we can't wait for that either.
 
-Laurent Pinchart
+I'm sure I'm on the list, but I guess others aren't quite so sure.
+
+johannes
+
 
