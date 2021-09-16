@@ -1,118 +1,203 @@
-Return-Path: <ksummit+bounces-603-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-604-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7DCD40EBEA
-	for <lists@lfdr.de>; Thu, 16 Sep 2021 23:00:59 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19B0440ED56
+	for <lists@lfdr.de>; Fri, 17 Sep 2021 00:28:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 2E5B53E1081
-	for <lists@lfdr.de>; Thu, 16 Sep 2021 21:00:58 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id 97C453E1094
+	for <lists@lfdr.de>; Thu, 16 Sep 2021 22:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619CA3FFF;
-	Thu, 16 Sep 2021 21:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D6C43FFF;
+	Thu, 16 Sep 2021 22:28:04 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4DE3FC3
-	for <ksummit@lists.linux.dev>; Thu, 16 Sep 2021 21:00:49 +0000 (UTC)
-Received: by mail-qv1-f48.google.com with SMTP id di6so5114244qvb.1
-        for <ksummit@lists.linux.dev>; Thu, 16 Sep 2021 14:00:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=XY/Teazy9P6tj5jZnNzs42oJHvS9/ClFdNvyApSBfaA=;
-        b=U76FJWxjXsR695AetexNJ0nBBpXVRjEd0L4R7nWQP/RfLbvpin08Q3KIXYpJ7uou8O
-         zjlSd3sK+gPDjhw6w3aUnoT7llrTAZMoOY8EAF1vCaSf3Uxu09AQ4aWoALh3GSxL8EJg
-         n8XW7nHbac/RQ4q44GppxRT3Xx5Gkfb+vuVXQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=XY/Teazy9P6tj5jZnNzs42oJHvS9/ClFdNvyApSBfaA=;
-        b=R5CCq9yb1CCfx9R70MS7uaq7PA65x/9cpldevnMzVYkaea84kLKYrzQGh+UffRfE2R
-         IKsOmHROJNN96S/bGOh1cDDfpHGvlQJOdpb5uCvvYQp8j9aEltIHhwkWiybU8aGzEYQl
-         RuQY7AAntKLbGOo4LGcrodJ3xKkwhsg6FPWda3bSy4vHbclCCzBNWkkiv7cZVYUZTiHg
-         6Tu5tOihPf4p1DHhWdnCLZDAsIOkk1nCVkXn5sAJtd9h+jwWht/SqXwQ2LyDj0pp9EKr
-         3ILWJpRJ6h2vFmPuEzSg9jk1FtccMp0x+q6qR9cfPqeIeb6D0e5so2RLOvB4IlY+Pygr
-         bI9Q==
-X-Gm-Message-State: AOAM532T6qlRxk6kLk8LRscCM8WN6eC5eqSHg/rOpKpiHfPblS0/zRW2
-	xZsaRAC9VOBBjuFUsSYqr4CpBw==
-X-Google-Smtp-Source: ABdhPJzRSpC3A1mfWFQOft5OaD6EocQHYKzpJtVtwwvnabXpR06y6FFlIZ7jN6kNWp6GC8NHVKCdWw==
-X-Received: by 2002:a05:6214:2ec:: with SMTP id h12mr7450962qvu.1.1631826048795;
-        Thu, 16 Sep 2021 14:00:48 -0700 (PDT)
-Received: from meerkat.local (bras-base-mtrlpq5031w-grc-32-216-209-220-181.dsl.bell.ca. [216.209.220.181])
-        by smtp.gmail.com with ESMTPSA id b13sm2674731qtb.13.2021.09.16.14.00.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Sep 2021 14:00:48 -0700 (PDT)
-Date: Thu, 16 Sep 2021 17:00:46 -0400
-From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-To: Chris Mason <clm@fb.com>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Theodore Ts'o <tytso@mit.edu>, Johannes Weiner <hannes@cmpxchg.org>,
-	Kent Overstreet <kent.overstreet@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	David Howells <dhowells@redhat.com>,
-	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ADEB3FC3
+	for <ksummit@lists.linux.dev>; Thu, 16 Sep 2021 22:28:02 +0000 (UTC)
+Received: from pps.filterd (m0044012.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18GFh7dd015043;
+	Thu, 16 Sep 2021 15:27:53 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=from : to : cc : subject
+ : date : message-id : references : in-reply-to : content-type : content-id
+ : content-transfer-encoding : mime-version; s=facebook;
+ bh=7eHpl89jvD/S6Hp6hMAvaPtM4gLswSfr3/5rneveB64=;
+ b=PCsocNG4DNRYNFdjzfXZRmSPuHOOQ2Xy05ePbJ27JdcdAxADxiLMcZ1fSkmv8XFrr6tP
+ 1vrxC5RXmtl9oeAyBGF3stnoI+taHhWNsmo4Z3kl12PBkeZpNaKqzZAMjImY61wI617g
+ 1dD8HraTJz35qwIUKaPxR5hRk7Q8NFEh0yQ= 
+Received: from maileast.thefacebook.com ([163.114.130.16])
+	by mx0a-00082601.pphosted.com with ESMTP id 3b47j438c5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Thu, 16 Sep 2021 15:27:53 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (100.104.31.183)
+ by o365-in.thefacebook.com (100.104.36.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Thu, 16 Sep 2021 15:27:51 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ia/zvp+o/d84KdU+noqxYiqzpfPb40Z3dG1EXI0wUrNKxURt1hjqWhaJ0eQXxxOGXSNPkgTakSSPOCV1uLJRoIo6aDWqJPrDbHw1ST2kBJlyKaqbL6OPAynYBhujA8J0bexReNMi2rUZoqDn4HfSTbXpn9Krn41WKOb0dEYvcbFGR083qUWl2VlbhwvYAx2c+fXf+ROs8uG2pNl7fo2ihrwhA1IdaFM6m01D8vUCuUuK8A9sHVjvw49jR4XYjqZQVcaXbF6Cuf4HNxtx3uVIEWK2K6dJHLXqcuI0FJvvz4+HgUHaQlIoaKsV/CnMgpaCdrutVrBM9VsDovMewPBI/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=7eHpl89jvD/S6Hp6hMAvaPtM4gLswSfr3/5rneveB64=;
+ b=finMb/XDhh/Y1xiD2owrnu3vEEa7NLbcNQtR+jGIo/4cKLdMu2EdE8GjxppjhP8nxZSFM+s6QVWzS/unJWLZThXDWwSnLB/A+iNkAZCHho+i4tBuCDd1TxIQfiRa1AtZKc7kb+Ll2XzfNuQqB6Fh/Rc7tbY5LJo9eYV+smAxsn44YWmUSlEMN+uM8PrCkzSWtNr1akpbIYrRY1J9g1DOyRURxk6QnODqC3ymkCOtP3fezh3jPO+oJyrXjkxeW0hYA2RncZb3ZSqBXVMyVbRFsQOIWK/Dy4dZbXU6gK5JUZeVtVhTSEqa0UGEE7iPiVHo3cn0kScGu616fJ7dMBMMrA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=fb.com; dmarc=pass action=none header.from=fb.com; dkim=pass
+ header.d=fb.com; arc=none
+Received: from CO1PR15MB4924.namprd15.prod.outlook.com (2603:10b6:303:e3::16)
+ by MW2PR1501MB2187.namprd15.prod.outlook.com (2603:10b6:302:8::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4523.16; Thu, 16 Sep
+ 2021 22:27:50 +0000
+Received: from CO1PR15MB4924.namprd15.prod.outlook.com
+ ([fe80::409a:5252:df3c:dabb]) by CO1PR15MB4924.namprd15.prod.outlook.com
+ ([fe80::409a:5252:df3c:dabb%5]) with mapi id 15.20.4523.016; Thu, 16 Sep 2021
+ 22:27:50 +0000
+From: Chris Mason <clm@fb.com>
+To: Kent Overstreet <kent.overstreet@gmail.com>
+CC: James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Theodore Ts'o
+	<tytso@mit.edu>, Johannes Weiner <hannes@cmpxchg.org>,
+        Matthew Wilcox
+	<willy@infradead.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        linux-fsdevel
+	<linux-fsdevel@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Darrick J. Wong" <djwong@kernel.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        David Howells <dhowells@redhat.com>,
+        "ksummit@lists.linux.dev"
+	<ksummit@lists.linux.dev>
 Subject: Re: [MAINTAINER SUMMIT] Folios as a potential Kernel/Maintainers
  Summit topic?
-Message-ID: <20210916210046.ourwrk6uqeisi555@meerkat.local>
+Thread-Topic: [MAINTAINER SUMMIT] Folios as a potential Kernel/Maintainers
+ Summit topic?
+Thread-Index: AQHXqlkZYMl5M/taiEScAPg40L4dIqulY1sAgAAErQCAAAXjAIAACWeAgAFowYCAAAgOAIAAV1WA
+Date: Thu, 16 Sep 2021 22:27:50 +0000
+Message-ID: <89EE9625-7BE3-49B5-B18E-F10D0A495947@fb.com>
 References: <YUIwgGzBqX6ZiGgk@mit.edu>
  <f7b70227bac9a684320068b362d28fcade6b65b9.camel@HansenPartnership.com>
- <YUI5bk/94yHPZIqJ@mit.edu>
- <17242A0C-3613-41BB-84E4-2617A182216E@fb.com>
+ <YUI5bk/94yHPZIqJ@mit.edu> <17242A0C-3613-41BB-84E4-2617A182216E@fb.com>
  <f066615c0e2c6fe990fa5c19dd1c17d649bcb03a.camel@HansenPartnership.com>
  <E655F510-14EB-4F40-BCF8-C5266C07443F@fb.com>
- <33a2000f56d51284e2df0cfcd704e93977684b59.camel@HansenPartnership.com>
- <261D65D8-7273-4884-BD01-2BF8331F4034@fb.com>
+ <YUN7oiFs5JHgQNop@moria.home.lan>
+In-Reply-To: <YUN7oiFs5JHgQNop@moria.home.lan>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-mailer: Apple Mail (2.3654.120.0.1.13)
+authentication-results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=fb.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: e8620c12-c4fa-4904-381d-08d9796137e9
+x-ms-traffictypediagnostic: MW2PR1501MB2187:
+x-microsoft-antispam-prvs: <MW2PR1501MB218708CDD83932236A90D933D3DC9@MW2PR1501MB2187.namprd15.prod.outlook.com>
+x-fb-source: Internal
+x-ms-oob-tlc-oobclassifiers: OLM:4502;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: q88J8Zlyv1gZ56W15bthXPFIiexVsB/qStM1bXherPslAt+mzxxgpcBIfGgIqUz2cTL4lR3/gifavfGgZlTsApDrE9R4BnaSW9keagjSp1siwoX5f6biueIuMUkgz38L06DMOCIS2t2FdtQJxBf5eUXwHg0GYri3Z2eFq7URWsJi6ifTRul7Mqu28zxhpPWPKimz3lI5l+9XrYnFwSW/W9EuPh5xq4ooBT4sGcyZFEQfu/UTctZKsU0Y8oTxlEEaQYJJ55cCRGRtmFaIjsb5H6aYtM+9le6AA32k+u3gIK7Erq/mQ87adMx0ZCveUTXk7YK+p3v/aIJYLwnlZsZF8M+v0frDfMSEFkxstDqp15lL+c+LEV41n9REEuv08UkYOoalGdxFl+Gtsa/nnlZZL1mo6kJ2hGfWbiyfWZltmQVm5wMVj93h+ldvTAQZI4cntfnNszpPMZvLVsvErm6B+RGollgKUFnTvtJUJPRF5CthdjgZq1LVBmJx8Wi7yMHY6XQZgJswVTPKHr1Tmk8OB9tJc7hD2ItkD4m4mp3lReBE19UhhI+e/y9N14DfN1LISPLsoStsg1YwVDc19a0i2EDKtOotcyiu0JyQrh3wWZX0o2QXTE3Uq+Jm/O0qAOWkXcyU4ROcEXHxPXo1Au/KJwvAf5Tb8bfGny1XmJBo7nOeCTzs2u2gtfbrbpr61Pc6Scy5URanih9GJVByd5s1rjaju6oN01awEnqXF1pm+ufuzCR1FbKTUDwFV56JwYjA
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR15MB4924.namprd15.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(38100700002)(6916009)(86362001)(122000001)(66556008)(64756008)(38070700005)(186003)(508600001)(66476007)(66446008)(8676002)(36756003)(33656002)(8936002)(6486002)(5660300002)(54906003)(7416002)(83380400001)(6506007)(4326008)(53546011)(6512007)(2906002)(76116006)(2616005)(66946007)(316002)(91956017)(71200400001)(45980500001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dkpPYlZ2eEtlcitGTXBVUmRkVkl6MzdCYnkya0JsVE1JTGVHMDZLSlBEYU5p?=
+ =?utf-8?B?dC9zcnNXL0lrMUorcXdobzRsUTNvdEZQSzE4a0wzVGdyN0VReFQ0R2xaK21o?=
+ =?utf-8?B?NTUycjJiRnRhZHM2ZFhNWFBaVzJkSGh5Qm1tWVZWSDBpWUFrUG93bmNMSnJQ?=
+ =?utf-8?B?ZEtOTFd1MTYrUVhJQ2VpMXY0R2lrWWg0dml6cHc1cUlEZ1F5ekpIT1V1OG1V?=
+ =?utf-8?B?ZHdaZU55Q1J1am9tdnAxaVNvSllhdXJxMG5JVHJWTHEycThNSndrNlVJQ3FP?=
+ =?utf-8?B?akhtZFcrYjlVbW42TDAySTk4YlFlWjFCQkhHYmFCT3BVQVdFaTl2UlNSNHZ2?=
+ =?utf-8?B?Smh3MEg3WGdwODdRQnpaSjdSSjBGUlY3N2hHdFhleGNqMUE5YzQvblVKclp6?=
+ =?utf-8?B?ZHcxY2hhd0ZHSUppeTdXRDI3R25zekc0eUIxNHV6aGN4bmtvYTBwQmZkMjVm?=
+ =?utf-8?B?d0swYXNCeDgzeUhpS3lOdDFqVFBRVGNNY1c4Z29KR1k4bmoyMG53a0MzdXVW?=
+ =?utf-8?B?blNoRURWUnlYRGZZWDh3aWhQTVFBam5wdW1YRVVtc2IzdUxxbDJqdTZvVE5p?=
+ =?utf-8?B?b1JpdzBWQTQ1TWVjSXM2NHFhK1FwaENZSVRYcHo2VnpXSG4vUU5jM3ArMUNM?=
+ =?utf-8?B?eWI1d3dadENKN2JCelZrclZCR01YMXlVU3RwQi94dDhHcDk3N0JGdWZWYXp5?=
+ =?utf-8?B?MEIyTVp3SGJmRjFJL1AwVi9KSDVucEQ1ZWgrcVdlWmZIeU9ldVltN3lqUmpF?=
+ =?utf-8?B?eUdDMXFjRWRpeThpK3FSMlJDWENpYVlETFZtNm4veklmTjQ2T2wydStEMUZu?=
+ =?utf-8?B?aVdQVWt0N1hmd29LWjg0Vi8wZDk3MUorRCtRaU9leHIxbThmazZLSFVSelhH?=
+ =?utf-8?B?YkcrYmgrell4TGViV1JqREJRYU05MlZxOHlVVFIzWGhPeTlqK3RZOFhkQUpP?=
+ =?utf-8?B?aVVlUlJDSlZMYk51OWIyZVBhN0Y2bWo4UnRDaldXTjFpWWxWN2JKR09HbjY2?=
+ =?utf-8?B?dGR4SytZbnNtOFl1SmsySXFPNWJTRUR3QlJMTGU5d1FvblY3elpSbFpEQ1pY?=
+ =?utf-8?B?TVRudWxoVE4vVFZ6Rmg0UnJlVVJLdWQ3dWx2NERWRmNTdFNrS2grR2d2L3RW?=
+ =?utf-8?B?SDdmMXAwK0o0clNXNURodFpFRHMybU1MRy93aGxKTStxSi9mTW5nUFRJamNL?=
+ =?utf-8?B?c1gvSTVCekF1TzQ3VWh0c2xqMlk3QUhVdTUvOE9aTGJmN3ExWmZPVit3NEVx?=
+ =?utf-8?B?OUpTdHVPckFEMVdlWndhbm8wQUtLMGZ3ZCsxM3JwR2hSWS9XaCt1MEJtTGpO?=
+ =?utf-8?B?ZzBFN2dRTmJlTzlBUFF0dkhnZ2NkV0VITWVONDJtVnE5UXp3R0pSRGJteHJt?=
+ =?utf-8?B?Z0loeit4d0UwVVRqWlpKTGR4dVZHd3grWkpIWjNjc3N4YmdqN29mdmlQQW93?=
+ =?utf-8?B?MUFlY21tNmp6cDlvLytDSDNsUDFMU3ByNmE3ZVZYc1NCOHVIMkZ0cWgzSSt1?=
+ =?utf-8?B?bFc3dG04eHQ5bjZ4SFNSeEpteFlTTE54NkwzYjZmMDRxeDNxdWI0V0gyc3FE?=
+ =?utf-8?B?bWs3QXN4VXk5NUlaZTVkNDJzdXQwUURvNkZoVXNQWFpXa1c1K1YyeWRlZWZR?=
+ =?utf-8?B?QkU3VDd4bmhjaUg1bFYwUFpiM1ZaS1BIOGUwa0tQNEdDRUVhZ3RzOXhmaXlw?=
+ =?utf-8?B?NWxHWGs5NWFtcXlDY21ockU0bjRieXhFazdaMDBqT01Wb2VlbXhRRjZ0Z1R1?=
+ =?utf-8?B?d0k4Wkc3bm9lemh6SHMrUmpVeUVkeVRCMEhyUHlpbEFUQ1BmdFRHTW1jd2l1?=
+ =?utf-8?Q?0+UpyRW9t3V44ZD2lEcjYT/M+6v4BWWfWlPzw=3D?=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <6AC8DE65116DE74CA22BF4E6A2A4663A@namprd15.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <261D65D8-7273-4884-BD01-2BF8331F4034@fb.com>
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR15MB4924.namprd15.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e8620c12-c4fa-4904-381d-08d9796137e9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Sep 2021 22:27:50.5221
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 8ae927fe-1255-47a7-a2af-5f3a069daaa2
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 7r2X83eCeQJL8Zl+ZWdW8sHj+ltocnsfsRq4xWa8WWPtMQvOOtJ3iWjAAjEg1NqV
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW2PR1501MB2187
+X-OriginatorOrg: fb.com
+X-Proofpoint-ORIG-GUID: l4rAZ7k2Er0QMU7lzDsAWSSZBtG04xXn
+X-Proofpoint-GUID: l4rAZ7k2Er0QMU7lzDsAWSSZBtG04xXn
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
+ definitions=2021-09-16_07,2021-09-16_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=fb_default_notspam policy=fb_default score=0 phishscore=0 adultscore=0
+ mlxlogscore=999 bulkscore=0 malwarescore=0 suspectscore=0 mlxscore=0
+ spamscore=0 priorityscore=1501 clxscore=1015 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109030001 definitions=main-2109160128
+X-FB-Internal: deliver
 
-On Thu, Sep 16, 2021 at 08:38:13PM +0000, Chris Mason wrote:
-> Agree here.  Mailing lists make it really hard to figure out when these
-> conflicts are resolved, which is why I love using google docs for that part.
-
-I would caution that Google docs aren't universally accessible. China blocks
-access to many Google resources, and now Russia purportedly does the same.
-Perhaps a similar effect can be reached with a git repository with limited
-commit access? At least then commits can be attested to individual authors.
-
-> A living document with a single source of truth on key design points, work
-> remaining, and stakeholders who are responsible for ack/nack decisions.
-> Basically if you don’t have edit permissions on the document, you’re not one
-> of the people that can say no.
-> 
-> If you do have edit permissions, you’re expected to be on board with the
-> overall goal and help work through the design/validation/code/etc until
-> you’re ready to ack it, or until it’s clear the whole thing isn’t going to
-> work.  If you feel you need to have edit permissions, you’ve got a defined
-> set of people to talk with about it.
-> 
-> It can’t completely replace the mailing lists, but it can take a lot of the
-> archeology out of understanding a given patch series and figuring out if
-> it’s actually ready to go.
-
-You can combine the two and use mailing lists as the source of truth by using
-Link: tags in commits to make it easy to verify history and provenance.
-
--K
+DQo+IE9uIFNlcCAxNiwgMjAyMSwgYXQgMToxNSBQTSwgS2VudCBPdmVyc3RyZWV0IDxrZW50Lm92
+ZXJzdHJlZXRAZ21haWwuY29tPiB3cm90ZToNCj4gDQoNClsgZ2VuZXJhbCBhZ3JlZW1lbnQgXQ0K
+DQo+IEJ1dCBtb3JlIHRoYW4gdGhlIHF1ZXN0aW9uIG9mIHdoZXRoZXIgd2Ugd3JpdGUgZGVzaWdu
+IGRvY3MgdXAgZnJvbnQsIEkgZnJhbmtseQ0KPiB0aGluayB3ZSBoYXZlIGEgX2Jyb2tlbl8gY3Vs
+dHVyZSB3aXRoIHJlc3BlY3QgdG8gc3VwcG9ydGluZyBhbmQgZW5hYmxpbmcgY3Jvc3MNCj4gc3Vi
+c3lzdGVtIHJlZmFjdG9yaW5ncyBhbmQgaW1wcm92ZW1lbnRzLiBJbnN0ZWFkIG9mIGNvbGxlY3Rp
+dmVseSBjb21pbmcgdXAgd2l0aA0KPiBpZGVhcyBmb3IgaW1wcm92ZW1lbnRzLCBhIGxvdCBvZiB0
+aGUgZGlzY3Vzc2lvbnMgSSBzZWUgZW5kIHVwIGZlZWxpbmcgbGlrZSB0dXJmDQo+IHdhcnMgYW5k
+IGJpa2VzaGVkZGluZyB3aGVyZSBldmVyeW9uZSBoYXMgdGhlaXIgcGV0IGlkZWEgdGhleSB3YW50
+IHRoZSB0aGluZyB0bw0KPiBiZSBhbmQgbm8gb25lIGlzIHRha2luZyBhIHN0ZXAgYmFjayBhbmQg
+c2F5aW5nICJsb29rIGF0IHRoaXMgbWVzcyB3ZSBjcmVhdGVkLA0KPiBob3cgYXJlIHdlIGdvaW5n
+IHRvIHNpbXBsaWZ5IGFuZCBjbGVhbiBpdCB1cC4iDQo+IA0KPiBBbmQgd2UgaGF2ZSBjcmVhdGVk
+IHNvbWUgdW5ob2x5IG1lc3NlcywgZXNwZWNpYWxseSBpbiBNTSBsYW5kLg0KPiANCg0KWyDigKYg
+XQ0KDQo+IEl0J3MgbGlrZSAtIHNlcmlvdXNseSBwZW9wbGUsIGl0J3Mgb2sgdG8gY3JlYXRlIG1l
+c3NlcyB3aGVuIHdlJ3JlIGRvaW5nIG5ldw0KPiB0aGluZ3MgYW5kIGZpZ3VyaW5nIHRoZW0gb3V0
+IGZvciB0aGUgZmlyc3QgdGltZSwgYnV0IHdlIGhhdmUgdG8gZ28gYmFjayBhbmQNCj4gY2xlYW4g
+dXAgb3VyIG1lc3NlcyBvciB3ZSBlbmQgdXAgd2l0aCBhbiB1bm1haW50YWluYWJsZSBDdGh1bGlh
+biBob3Jyb3Igbm8gb25lDQo+IGNhbiB1bnRhbmdsZSwgYW5kIGEgbG90IG9mIHRoZSBNTSBjb2Rl
+IGlzIGp1c3QgYWJvdXQgdGhhdCBwb2ludC4NCj4gDQoNCllvdeKAmXZlIGJlZW4gZG9pbmcgYSBs
+b3Qgb2YgYnJpZGdlIGJ1aWxkaW5nIHJlY2VudGx5LCBzbyBwbGVhc2UgZG9u4oCZdCB0YWtlIHRo
+aXMgdGhlIHdyb25nIHdheS4gIEkgdGhpbmsgYSBrZXkgY29tcG9uZW50IG9mIGF2b2lkaW5nIHRo
+ZSB0dXJmIHdhcnMgaXMgcmVjb2duaXppbmcgdGhhdCB3ZSBkb27igJl0IG5lZWQgdG8gbWFrZSBw
+ZW9wbGUgZmVlbCBzaGl0dHkgYWJvdXQgdGhlaXIgc3Vic3lzdGVtIGJlZm9yZSB3ZSBjYW4gY29u
+dmluY2UgdGhlbSB0byBpbXByb3ZlIGl0LiAgV2UgYWxsIGhhdmUgZGlmZmVyZW50IHByaW9yaXRp
+ZXMgYXJvdW5kIHdoYXQgdG8gaW1wcm92ZSwgYW5kIHdl4oCZdmUgYWxsIG1hZGUgY29tcHJvbWlz
+ZXMgb3ZlciB0aGUgeWVhcnMuICBJdOKAmXMgZW5vdWdoIHRvIGp1c3QgYmUgZXhjaXRlZCBhYm91
+dCBob3cgdGhpbmdzIGNhbiBiZSBiZXR0ZXIuDQoNClRoaXMgZW1haWwgaXMgaGFyZCB0byB3cml0
+ZSBiZWNhdXNlIEnigJltIGhvcGluZyBteSBvd24gbWVzc2FnZXMgZnJvbSBlYXJsaWVyIHRvZGF5
+IGZhbGwgaW50byB0aGUgY2F0ZWdvcnkgb2YgYmVpbmcgZXhjaXRlZCBmb3IgaW1wcm92ZW1lbnRz
+LCBidXQgaGVyZSB3ZSBhcmUuDQoNCi1jaHJpcw==
 
