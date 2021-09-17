@@ -1,132 +1,102 @@
-Return-Path: <ksummit+bounces-606-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-607-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D3E440F184
-	for <lists@lfdr.de>; Fri, 17 Sep 2021 06:59:02 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7442540F699
+	for <lists@lfdr.de>; Fri, 17 Sep 2021 13:14:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id 87B5A1C0F89
-	for <lists@lfdr.de>; Fri, 17 Sep 2021 04:59:01 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id 9CB9F1C0F84
+	for <lists@lfdr.de>; Fri, 17 Sep 2021 11:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B0C83FCF;
-	Fri, 17 Sep 2021 04:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE6F2FB6;
+	Fri, 17 Sep 2021 11:14:16 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDFE13FC0
-	for <ksummit@lists.linux.dev>; Fri, 17 Sep 2021 04:58:52 +0000 (UTC)
-Received: by mail-qt1-f174.google.com with SMTP id c19so7749470qte.7
-        for <ksummit@lists.linux.dev>; Thu, 16 Sep 2021 21:58:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=RSETynYAaWok9lyPkYvwwM94kyTjrnU1juJzOUQ8/Ug=;
-        b=NunvM/6Wbbyifoo1x2DoS8ywUoYMV7Ef2gqEsZwJpIrZliHOL7Ch7d3hhu3RKN2htf
-         ErJmoucdcDqIUBkfqQ5q8335G40t7FCKEGMKvv0OpiQrbAtTXmVQ+LNvDFL1kAg4xHUU
-         F3PHosOc7kxFEyl+fJZvEAzUcbDADZs2EbcAXu5bgkEHccQzlYCEK3OVRu1emmHyZmnT
-         /LtFHPdg1p/st0PUObAgAWOe3G9GKpLZ1yA7OjRvizom+rL441NTW0a+w+TCh9gv8qnW
-         mfRrvLZGtXfro1jUlztAJY4Bnj+zhtha8z71CHUCfcstfujQ5BzLKy64xBkAvM3cPXYA
-         GPGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=RSETynYAaWok9lyPkYvwwM94kyTjrnU1juJzOUQ8/Ug=;
-        b=xZ0ZkwPSJEjk/PQTkQjvd4Ifd7MSh67IoI/vtq6JhtA31DyZG/YuFBd5OO9V/5Er+q
-         HfX1BH4praZzXp1bdh6SyI4VeoSXXKcJ9ooRyhiK9NtdCBF3qk8yNSAtEoJsGmwTOUwr
-         VBMI2bMhH36TMhV73Q1ZAAS4FZ+f2lqobSQqJLniIcXhVkyvVx3rBHN9/oOlHEsgDtRG
-         l5Fv39sZe18avcmO8Yt2iJbRv9B4kp6LZFpmCFNSBvhIFFHwMVs/RCXxWZNhN/We5h1k
-         ojYsqTiExN2xvKr1sPS0sEUFAm0mgYI63XhMSZFOiRpGJjZFUCqfhHB1Mxo2Zc/hmwPe
-         wuSA==
-X-Gm-Message-State: AOAM532IaXVsVxS0YVEqtb8iBBNNxIiFMBr3elYpimnNqwOSSLOn6LTt
-	+scKonthOTl7jsCogMYbDQ==
-X-Google-Smtp-Source: ABdhPJw6JWEXhbwhWdB/W/tXio2pi7htD4NuLH/7NvepOVgP4ZPM+X79LJn2/sc8YA3yBZAHB2arxg==
-X-Received: by 2002:ac8:5710:: with SMTP id 16mr8329969qtw.393.1631854731874;
-        Thu, 16 Sep 2021 21:58:51 -0700 (PDT)
-Received: from moria.home.lan (c-73-219-103-14.hsd1.vt.comcast.net. [73.219.103.14])
-        by smtp.gmail.com with ESMTPSA id x9sm4059552qko.125.2021.09.16.21.58.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Sep 2021 21:58:50 -0700 (PDT)
-Date: Fri, 17 Sep 2021 00:58:48 -0400
-From: Kent Overstreet <kent.overstreet@gmail.com>
-To: Theodore Ts'o <tytso@mit.edu>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Chris Mason <clm@fb.com>, Johannes Weiner <hannes@cmpxchg.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	David Howells <dhowells@redhat.com>,
-	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFA03FC5
+	for <ksummit@lists.linux.dev>; Fri, 17 Sep 2021 11:14:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1631877253;
+	bh=kOSJlytOKArtchcqsw0mkjWJteCtj8u7OX0jv2Vu1lU=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=ANH3VOqgwioVEKItkM+3IR7tNfwOi4OyeVJE+KryLKowID2uuEMtpCrB5Bv40xofo
+	 XUZJsvKB3tfQ/9eMUGZB9xBYTd7rwAm2J6xl26qVcGUKQCtGl6dDMOr6XzYedr720I
+	 0wOGpenriHMIOAlLuLID1mkEYl8Djp2xdRoMQoLU=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id A7CC3128046C;
+	Fri, 17 Sep 2021 04:14:13 -0700 (PDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+	by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id WxlMDOf_mUhM; Fri, 17 Sep 2021 04:14:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1631877253;
+	bh=kOSJlytOKArtchcqsw0mkjWJteCtj8u7OX0jv2Vu1lU=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=ANH3VOqgwioVEKItkM+3IR7tNfwOi4OyeVJE+KryLKowID2uuEMtpCrB5Bv40xofo
+	 XUZJsvKB3tfQ/9eMUGZB9xBYTd7rwAm2J6xl26qVcGUKQCtGl6dDMOr6XzYedr720I
+	 0wOGpenriHMIOAlLuLID1mkEYl8Djp2xdRoMQoLU=
+Received: from jarvis.lan (c-67-166-170-96.hsd1.va.comcast.net [67.166.170.96])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 4EDF11280420;
+	Fri, 17 Sep 2021 04:14:12 -0700 (PDT)
+Message-ID: <f8561816ab06cedf86138a4ad64e7ff7b33e2c07.camel@HansenPartnership.com>
 Subject: Re: [MAINTAINER SUMMIT] Folios as a potential Kernel/Maintainers
  Summit topic?
-Message-ID: <YUQgiLD5axq4CTEp@moria.home.lan>
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>, Chris Mason
+	 <clm@fb.com>
+Cc: Theodore Ts'o <tytso@mit.edu>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Kent Overstreet <kent.overstreet@gmail.com>, Matthew Wilcox
+ <willy@infradead.org>, Linus Torvalds <torvalds@linux-foundation.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,  linux-fsdevel
+ <linux-fsdevel@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>,  Andrew Morton <akpm@linux-foundation.org>,
+ "Darrick J. Wong" <djwong@kernel.org>, Christoph Hellwig
+ <hch@infradead.org>, David Howells <dhowells@redhat.com>, 
+ "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
+Date: Fri, 17 Sep 2021 07:14:11 -0400
+In-Reply-To: <20210916210046.ourwrk6uqeisi555@meerkat.local>
 References: <YUIwgGzBqX6ZiGgk@mit.edu>
- <f7b70227bac9a684320068b362d28fcade6b65b9.camel@HansenPartnership.com>
- <YUI5bk/94yHPZIqJ@mit.edu>
- <17242A0C-3613-41BB-84E4-2617A182216E@fb.com>
- <f066615c0e2c6fe990fa5c19dd1c17d649bcb03a.camel@HansenPartnership.com>
- <E655F510-14EB-4F40-BCF8-C5266C07443F@fb.com>
- <33a2000f56d51284e2df0cfcd704e93977684b59.camel@HansenPartnership.com>
- <YUOX0VxkO+/1kT7u@mit.edu>
- <YUOmG+qNxAxI9Kyn@moria.home.lan>
- <YUPyfWKG3CG8+zkn@mit.edu>
+	 <f7b70227bac9a684320068b362d28fcade6b65b9.camel@HansenPartnership.com>
+	 <YUI5bk/94yHPZIqJ@mit.edu> <17242A0C-3613-41BB-84E4-2617A182216E@fb.com>
+	 <f066615c0e2c6fe990fa5c19dd1c17d649bcb03a.camel@HansenPartnership.com>
+	 <E655F510-14EB-4F40-BCF8-C5266C07443F@fb.com>
+	 <33a2000f56d51284e2df0cfcd704e93977684b59.camel@HansenPartnership.com>
+	 <261D65D8-7273-4884-BD01-2BF8331F4034@fb.com>
+	 <20210916210046.ourwrk6uqeisi555@meerkat.local>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YUPyfWKG3CG8+zkn@mit.edu>
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 16, 2021 at 09:42:21PM -0400, Theodore Ts'o wrote:
-> On Thu, Sep 16, 2021 at 04:16:27PM -0400, Kent Overstreet wrote:
-> > So I think we're still trying to answer the "what exactly is a folio"
-> > question....
+On Thu, 2021-09-16 at 17:00 -0400, Konstantin Ryabitsev wrote:
+> On Thu, Sep 16, 2021 at 08:38:13PM +0000, Chris Mason wrote:
+> > Agree here.  Mailing lists make it really hard to figure out when
+> > these conflicts are resolved, which is why I love using google docs
+> > for that part.
 > 
-> > However, Johannes has been pointing out that it's a real open
-> > question as to whether anonymous pages should be folios! Willy's
-> > current code seems to leave things in a somewhat intermediate state
-> > - some mm/ code treats anonymous pages as folios, but it's not clear
-> > to me how much....
-> 
-> Kent, you raise some good questions, and good points.  However, it
-> seems to me that one of the other sources of the disagreement is the
-> question of whether this question needs to be answered at all before
-> the Folios patch can get merged.
+> I would caution that Google docs aren't universally accessible. China
+> blocks access to many Google resources, and now Russia purportedly
+> does the same. Perhaps a similar effect can be reached with a git
+> repository with limited commit access? At least then commits can be
+> attested to individual authors.
 
-...
+In days of old, when knights were bold and cloud silos weren't
+invented, we had an ancient magic handed down by the old gods who spoke
+non type safe languages.  They called it wiki and etherpad ... could we
+make use of such tools today without committing heresy against our
+cloud overlords?
 
-> It seems that part of the frustration is that people seem to agree
-> that Folios does make things better, and yet they *still* are NACK'ing
-> the patch series.  The argument for why it should not be merged yet
-> seems to be that it should be doing *more* --- that it doesn't go far
-> enough.
+James
 
-Yeah, I agree 100%, and I've expressed my own frustrations with how the folios
-discussions have been going (and I could, and will, express some more of those
-frustrations - later).
 
-But, that's water under the bridge. For now, I'm really just trying to drive the
-technical discussion. I'm not Andrew or Linus, it's not my say whether folios
-get merged, I'm just trying to dig to figure out what the _actual_ technical
-points of contention are (and it's taken some real digging...)
-
-And having done so, I think the question of whether or not anonymous pages are
-becoming folios actually is extremely cogent - I think there's a lot of meat to
-that discussion, and it definitely impacts _squarely_ in MM internals land.
-
-So, let's just try to be more forward looking, try to forget the acrimony, and
-get into that discussion, and remember that we'll all be having beers with each
-other whenever the fsck LSF actually happens again.
 
