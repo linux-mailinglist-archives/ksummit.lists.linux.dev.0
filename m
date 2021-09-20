@@ -1,90 +1,99 @@
-Return-Path: <ksummit+bounces-611-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-612-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EABA41162B
-	for <lists@lfdr.de>; Mon, 20 Sep 2021 15:57:18 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29EBD4117FA
+	for <lists@lfdr.de>; Mon, 20 Sep 2021 17:17:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id A3CC91C0445
-	for <lists@lfdr.de>; Mon, 20 Sep 2021 13:57:17 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id 12BE01C0782
+	for <lists@lfdr.de>; Mon, 20 Sep 2021 15:17:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A183FC9;
-	Mon, 20 Sep 2021 13:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1196E3FC9;
+	Mon, 20 Sep 2021 15:17:03 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3357E3FC5
-	for <ksummit@lists.linux.dev>; Mon, 20 Sep 2021 13:57:09 +0000 (UTC)
-Received: by mail-qv1-f52.google.com with SMTP id r18so11165025qvy.8
-        for <ksummit@lists.linux.dev>; Mon, 20 Sep 2021 06:57:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oxidecomputer.com; s=google;
-        h=message-id:date:mime-version:user-agent:content-language:to:cc:from
-         :subject:content-transfer-encoding;
-        bh=ixZsglSnnYNu74IDkiQfs+ZYBeCsWtXcrporrs7/SeM=;
-        b=LcXgEutnZZsUMddw6zMlMkkyFElxHwQdd4kdkA2r8fYQgiBTfRcSDivn+yJJcTKVpP
-         dyL1uP1LS0jP71ax77Hdw4AmNyAJ14G3OgJ4CHWyjnP8xt5PeLJEuo+s+6lJLkikCC2b
-         gXpzvFWSSWOHkUa1LmC1mywcWdHEFnfAnsZ6sebDfXH0cX/BzrzIQyvhVajOkjihrpOU
-         c5f/tt46ThS1Qr2FIx3uEUJ3PQhR2bGV8CsBwNfAa3P53G3hD1gQDaPJ8b8PqeWxhXI0
-         MrBIBhZelx4yo3/6Vx+0G0A696rWB36qQQRxA/Nj0ihUvmJaRYJpElamnEqg+nXCOzEg
-         WAgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent
-         :content-language:to:cc:from:subject:content-transfer-encoding;
-        bh=ixZsglSnnYNu74IDkiQfs+ZYBeCsWtXcrporrs7/SeM=;
-        b=1AUq5Eg9qBVYrARKltGjz0GTnWkcqP3qxYCCD+40i1HttuhklsgqxmB+LwvAiuM/Ja
-         r+vuLOvDD8o7gxzDeeIYUT7cYC1hDX02/gTFJDjqXRkG3k7GrOuaIa5ICwV/EqsT2Cxw
-         MP+M4DnqnTvjhL49UzKCKITjyg2+P5kV3CwquZ55HSkOxfepgqv2b/LxOb9pXWSidAXr
-         moMs1nXxySrnr5mhQGu/ftq49yhKCPbf+S5kk1ULwT69fhe4awTOhyXkzovrdKrSqQ5o
-         aKlYiaQQOtCd/WGDkSJ4/t5bGJHNFKQEgut3u9t6RlzWzOlLFhfPeV7XowRRN7wunOIB
-         9coA==
-X-Gm-Message-State: AOAM530DJfWjIRmH62oAxCjT/trh7ss7h+VEorfJS3kPirj6HfNj+vMG
-	bCH/TsBqrcAXT5ZNXh6b4GhTAsD91ICQX2cz
-X-Google-Smtp-Source: ABdhPJyhKSVZyvN6bYMYr94Ja8VU5RrQx6X6PnbykN1riYPslBcV6O6Nin9/igPtsrTiFBChMwN6xA==
-X-Received: by 2002:ad4:4765:: with SMTP id d5mr16092538qvx.51.1632146227568;
-        Mon, 20 Sep 2021 06:57:07 -0700 (PDT)
-Received: from [192.168.1.168] (pool-74-109-246-95.pitbpa.fios.verizon.net. [74.109.246.95])
-        by smtp.gmail.com with ESMTPSA id bi10sm7048934qkb.36.2021.09.20.06.57.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Sep 2021 06:57:06 -0700 (PDT)
-Message-ID: <44ee2bfe-e4bc-b918-b908-7352ea012524@oxidecomputer.com>
-Date: Mon, 20 Sep 2021 09:57:05 -0400
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911F772
+	for <ksummit@lists.linux.dev>; Mon, 20 Sep 2021 15:17:01 +0000 (UTC)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id DFC3A200E4;
+	Mon, 20 Sep 2021 15:16:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1632151013; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Uly+9NTflkmoprkKo6i7pBrEopNdwo0bo3c7NejzLUg=;
+	b=sEn+W73WHTARPT0WrT3kvF1iO4FiNAqLaZQcfDnHYTpuWZs6EO0KCE43AJE31kVq5FZOOs
+	74jB/l+CUFYQh/7sCr8NgGGjaDFwTjJWAZ6VpWLhYxtJscV8o8pmEGQ4befzOjkzUbgSc7
+	16zxKOvGcb7tIFzV3Mt2+8+2uMFJrvI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1632151013;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Uly+9NTflkmoprkKo6i7pBrEopNdwo0bo3c7NejzLUg=;
+	b=WRPCl7pnU2YMFygVZVOnA2SAjrOBxcU0HjiG2gyQBqDYodmyv/jSZmPbSzZZ0KK9FLzeSH
+	N6jqRQVOnN10gXAQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C2B1613A61;
+	Mon, 20 Sep 2021 15:16:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id PH/ZLuWlSGGOHQAAMHmgww
+	(envelope-from <vbabka@suse.cz>); Mon, 20 Sep 2021 15:16:53 +0000
+Subject: Re: IMPORTANT: CIVS opt-in for Technical Advisory Board voting
+To: Laura Abbott <laura@oxidecomputer.com>, ksummit@lists.linux.dev,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "tech-board-discuss@lists.linuxfoundation.org"
+ <tech-board-discuss@lists.linuxfoundation.org>
+Cc: "tab-elections@lists.linuxfoundation.org"
+ <tab-elections@lists.linuxfoundation.org>
+References: <44ee2bfe-e4bc-b918-b908-7352ea012524@oxidecomputer.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Message-ID: <bfff8674-a3b1-3f4c-f926-70a66422fd03@suse.cz>
+Date: Mon, 20 Sep 2021 17:16:07 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.1.0
+In-Reply-To: <44ee2bfe-e4bc-b918-b908-7352ea012524@oxidecomputer.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-To: ksummit@lists.linux.dev,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "tech-board-discuss@lists.linuxfoundation.org"
- <tech-board-discuss@lists.linuxfoundation.org>
-Cc: "tab-elections@lists.linuxfoundation.org"
- <tab-elections@lists.linuxfoundation.org>
-From: Laura Abbott <laura@oxidecomputer.com>
-Subject: IMPORTANT: CIVS opt-in for Technical Advisory Board voting
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Hello,
+On 9/20/21 3:57 PM, Laura Abbott wrote:
+> Hello,
+> 
+> As in the past we are using CIVS (https://civs1.civs.us/) for voting.
+> This year you need to explicitly opt-in to vote in a private poll. This
+> is a change on the CIVS end and was probably added due to concerns about
+> spam/abuse of the service.
+> 
+> Please opt-in at https://civs1.civs.us/cgi-bin/opt_in.pl
 
-As in the past we are using CIVS (https://civs1.civs.us/) for voting.
-This year you need to explicitly opt-in to vote in a private poll. This
-is a change on the CIVS end and was probably added due to concerns about
-spam/abuse of the service.
+Hi, did that and it appears that afterwards I could be voting right
+away. But there's no link to the candidate statements yet, or did I miss it?
 
-Please opt-in at https://civs1.civs.us/cgi-bin/opt_in.pl
+> If you have any questions please feel free to e-mail
+> tab-elections@lists.linuxfoundation.org
+> 
+> Thanks,
+> Laura
+> 
 
-If you have any questions please feel free to e-mail
-tab-elections@lists.linuxfoundation.org
-
-Thanks,
-Laura
 
