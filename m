@@ -1,107 +1,151 @@
-Return-Path: <ksummit+bounces-628-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-629-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03C7D414A0E
-	for <lists@lfdr.de>; Wed, 22 Sep 2021 15:03:12 +0200 (CEST)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2039A4157CD
+	for <lists@lfdr.de>; Thu, 23 Sep 2021 07:18:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id D63E21C0F1F
-	for <lists@lfdr.de>; Wed, 22 Sep 2021 13:03:10 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id 1A7F21C0F49
+	for <lists@lfdr.de>; Thu, 23 Sep 2021 05:18:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F183FCC;
-	Wed, 22 Sep 2021 13:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05CB93FCC;
+	Thu, 23 Sep 2021 05:18:21 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41B672
-	for <ksummit@lists.linux.dev>; Wed, 22 Sep 2021 13:03:01 +0000 (UTC)
-Received: by mail-qk1-f171.google.com with SMTP id a10so8952148qka.12
-        for <ksummit@lists.linux.dev>; Wed, 22 Sep 2021 06:03:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=labbott.name; s=google;
-        h=message-id:date:mime-version:user-agent:content-language:to:cc:from
-         :subject:content-transfer-encoding;
-        bh=Mzti7OcQhNV5Y7jNBpCwNPoM5QFEKkHFwpOXiZ924fc=;
-        b=kXJ70SnnTkMcZ3kA/YBszIZENe7dzrkdheh0c8M5ORy+56Hu38qdXncuv0FI9RAejb
-         XQ0TWhSZbJEv0LBsxPk4s9yUfk8FtZYLYb/CllmXeqpKaBYJNoDi5zwTrcWKrI82+P2j
-         6MOI1FXElrpMc1sxkqKdScJkUoPSIY3uDhToA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent
-         :content-language:to:cc:from:subject:content-transfer-encoding;
-        bh=Mzti7OcQhNV5Y7jNBpCwNPoM5QFEKkHFwpOXiZ924fc=;
-        b=VbY8uYBZIHh5hHb0ztBIDPmZpROCASABnK5kTYOBR/ivbQM8rSoN+SR38AiNpGwYp4
-         oGhlWaCDNzAGm5xf1Mibt1uHIKGW9s8XS/4UlN5hNjdB000bIiT8BjXbOwobQ36pfrWs
-         x1rIVfq7VLAgWmxqL6dMTLRgFUanNt4m1LDe3UE4fX8eeVd3qSy3XXEOngXpukv/K86D
-         btgLP7jhex7YORGh1nwb/b3qKN1H9K8QLJlnsc+0Jzr2IXniBIjL/ddJx+O3YGkpQ5Ce
-         atW+ugVT5qZ2acohxwN2lGT63PqVNKPl0CwLIfJlt8uWF2SAWn8cnBMsI2zVe9iv1Wbd
-         0oew==
-X-Gm-Message-State: AOAM531vCgnWOPSQqTj8fPaQmQzpON6KpEUtVAVnuaB6bxv70dxEiOVB
-	4r3jSwT3pn8H3B77WaeK6fAYlX4CfDAhzA==
-X-Google-Smtp-Source: ABdhPJyLiBDotfHrhGzTOmGecvtOi21xcOHtpAybjkI6xzcfTjZ2UDI0x8MRc8PbCu1YM4sMiybqcQ==
-X-Received: by 2002:a05:620a:5b7:: with SMTP id q23mr17001937qkq.59.1632315780497;
-        Wed, 22 Sep 2021 06:03:00 -0700 (PDT)
-Received: from [192.168.1.168] (pool-74-109-246-95.pitbpa.fios.verizon.net. [74.109.246.95])
-        by smtp.gmail.com with ESMTPSA id a9sm1693583qko.27.2021.09.22.06.02.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Sep 2021 06:03:00 -0700 (PDT)
-Message-ID: <d9b328d6-7e99-f0ba-2376-72829c28cff4@labbott.name>
-Date: Wed, 22 Sep 2021 09:02:59 -0400
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E443FC7
+	for <ksummit@lists.linux.dev>; Thu, 23 Sep 2021 05:18:19 +0000 (UTC)
+Received: from cwcc.thunk.org (pool-72-74-133-215.bstnma.fios.verizon.net [72.74.133.215])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 18N5IBIu025776
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Sep 2021 01:18:12 -0400
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+	id A7F8C15C375F; Thu, 23 Sep 2021 01:18:11 -0400 (EDT)
+Date: Thu, 23 Sep 2021 01:18:11 -0400
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: ksummit@lists.linux.dev
+Subject: Potential topics for the 2021 Maintainer's Summit
+Message-ID: <YUwOE5ExtvMye2t/@mit.edu>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.1.0
-Content-Language: en-US
-To: ksummit@lists.linux.dev,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "ksummit-discuss@lists.linuxfoundation.org"
- <ksummit-discuss@lists.linuxfoundation.org>
-Cc: "tab-elections@lists.linuxfoundation.org"
- <tab-elections@lists.linuxfoundation.org>
-From: Laura Abbott <laura@labbott.name>
-Subject: Reminder: Technical Advisory Board elections end September 23rd 16:00
- GMT-4 (US/Eastern)
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Hi,
 
-Thank you everyone who has voted so far in the 2021 Technical Advisory
-Board elections. Voting will run through September 23rd 16:00 GMT-4
-(US/Eastern).
+After discussions amongst the program committee, and looking at some
+of the discussions to date at the LPC and the Kernel Summit, we've
+come up with the following potential topics for the Maintainer's
+Summit.
 
-If you cannot find your ballot in your e-mail, please e-mail
-tab-elections@lists.linuxfoundation.org.
+This is not the final agenda.  We are soliciting suggestions and
+comments about these topics.  Is there anything we are missing?  Is
+there something you think wouldn't be productive for us to discuss?
 
-If you thought you should have gotten a ballot but did not see one
-please fill out the CIVS opt-in form
-https://civs1.civs.us/cgi-bin/opt_in.pl
-and e-mail tab-elections@lists.linuxfoundation.org
 
-If you did not yet request a ballot but are eligible under the following
-criteria please contact tab-elections@lists.linuxfoundation.org
+		  Potential Maintainer Summit topics
 
-There exist three kernel commits in a mainline or stable released
-kernel that both
-- Have a commit date in the year 2020 or 2021
-- Contain an e-mail address in one of the following tags or merged
-tags (e.g. Reviewed-and-tested-by)
--- Signed-off-by
--- Tested-by
--- Reported-by
--- Reviewed-by
--- Acked-by
+* Reviewing how we reacted to the University of Minnesota issue
+    After Greg K-H gives a non-technical summary of what
+    happened, and we would have a discussion about what should be
+    done differently next time.
 
-If you have any other feedback, please e-mail
-tab-elections@lists.linuxfoundation.org
+* User-space requirementrs for accelerator drivers
+    There was some good discussion on the ksummit list, but there still isn't
+    a clear consensus of what the policy should be.  From Jon's message
+    kicking off that thread:
 
-Thanks,
-Laura
+    - Under which circumstances should the kernel community require the
+      existence of freely licensed user-space code that exercises all
+      functionalities of a proposed kernel driver or feature?
+
+    - Are there internal kernel interfaces, such as DMA-BUF or P2PDMA, that
+      are only available to drivers with a free user-space implementation?
+      Do we need an EXPORT_SYMBOL_USERSPACE_GPL()?
+
+    - What constitutes an acceptable user-space implementation in cases
+      where these restrictions apply?
+
+* Acceptance criteria of patch sets
+    The discussion over the folio patch set seems to be making forward
+    progress, but it's not the only case where we've had some disagreements
+    over large code contribuions: ntfs3 and ksmbd come to mind.
+    Also from the kernel summit, see slide 10 ("Upstreaming Agony) at: 
+    https://linuxplumbersconf.org/event/11/contributions/964/attachments/802/1511/Ksummit%20%283%29.pdf
+
+    "We want to upstream everything. It makes Linux better and our lives easier.
+    However:
+    * High variability in maintainer responsiveness
+    	 * Some subsystems are really great
+    	 * Some armitecture maintainers are not as easy to work with
+    	 * Some subsystems are just stuck (e.g. memory management)
+    * Replies often come with “helpful” suggestions of radical product redesign
+         * E.g. preempt count passthrough for VMs to improve scheduling of
+	   guests
+    * Plus usual stuff, e.g. “oh sure we can apply this two liner… *after*
+       you rewrite the subsystem”
+    Wishlist:
+    * Consistent maintainer responsiveness and acceptance criteria
+        * A maintainer CoC or expectations doc?
+    * More data driven decision making (e.g. which benchmarks are generally
+      agreed to be important for each subsystem)
+    * More openness to experimentation
+        * How can we enable this?"
+
+* Rust in the Kernel
+    We could potentially invite Miguel so we can give him feedback, concerns,
+    etc. regarding Rust in the kernel.  In particular, Miguel asked
+    some questions at the end of his talk at the Kernel Summit:
+    https://youtu.be/mF10hgVIx9o?t=15245
+    for which feedback from the maintainers might be helpful --- if
+    we are ready to give an opinion, which is not clear.
+
+* Is Linus happy/unhappy with the development process of Linux?
+    Anything else we need to discuss or address?
+
+
+Also, this is the current list of invitees to the Maintainer's Summit
+(including sponsored attendees).  As we finalize the topics, there may
+be one or two additional invites.  (For example, if we do decide to
+pursue the Rust in the kernel topic, we would need to invite Miguel,
+assuming he would be available on Friday.)
+
+Al Viro
+Alex Deucher
+Alexei Starovoitov
+Andrew Morton
+Arnd Bergmann
+Bjorn Helgaas
+Borislav Petkov
+Chris Mason
+Christoph Hellwig
+Damien Le Moal
+Dave Airlie
+David S. Miller
+Greg Kroah-Hartman
+Ingo Molnar
+Jakub Kicinski
+Jens Axboe
+Jon Corbet
+Kees Cook
+Linus Torvalds
+Mark Brown
+Martin K. Petersen
+Michael Ellerman
+Rafael J. Wysocki
+Sasha Levin
+Stephen Rothwell
+Theodore Ts'o
+Thomas Gleixner
+Vasily Gorbik
+Will Deacon
 
