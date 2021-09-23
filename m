@@ -1,170 +1,138 @@
-Return-Path: <ksummit+bounces-630-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-631-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B7B1415B9B
-	for <lists@lfdr.de>; Thu, 23 Sep 2021 11:59:09 +0200 (CEST)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E828415C8B
+	for <lists@lfdr.de>; Thu, 23 Sep 2021 13:09:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id 688EE3E1041
-	for <lists@lfdr.de>; Thu, 23 Sep 2021 09:59:07 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id D65263E0E75
+	for <lists@lfdr.de>; Thu, 23 Sep 2021 11:09:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1286F3FD4;
-	Thu, 23 Sep 2021 09:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8073FCF;
+	Thu, 23 Sep 2021 11:09:36 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6180B3FC8
-	for <ksummit@lists.linux.dev>; Thu, 23 Sep 2021 09:58:59 +0000 (UTC)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 8860645E;
-	Thu, 23 Sep 2021 11:49:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1632390567;
-	bh=41s0n6AK6hKATBOE3PdExCNGGwDnKkbOWPPK1wH+Ul4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=O5qaSpQ3gSPaANy6Pe/MST1aOBp5XFVaZ/7QaTH6TbsI628boUc6oCsh/IuE7SDPm
-	 HA6ovvmLzB1t+cqV6KBaIyZqprDmSN+ADXccZP9YkiegPyZ/uKKRk+tXcde0eLXXPQ
-	 /2077yuMzy/qRusc6CTBMgHhjtvG7YxFj3c82+98=
-Date: Thu, 23 Sep 2021 12:49:25 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Theodore Ts'o <tytso@mit.edu>
-Cc: ksummit@lists.linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0006E3FC7
+	for <ksummit@lists.linux.dev>; Thu, 23 Sep 2021 11:09:34 +0000 (UTC)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailout.nyi.internal (Postfix) with ESMTP id 319975C0139;
+	Thu, 23 Sep 2021 07:09:34 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute5.internal (MEProxy); Thu, 23 Sep 2021 07:09:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
+	date:from:to:cc:subject:message-id:references:mime-version
+	:content-type:in-reply-to; s=fm1; bh=/hOwP9XKbPzjW6cQ+cj2UG1X3ic
+	R+CDzrCXfBg9OKKw=; b=RiFt+ibZhZMN/Z1F8OzL7XLEHG4VFi4y2rRPZHdRuoB
+	L8tyjgJeMPyf0ONSVzzEhOAtljC+eDj7BPy/gchW0ZSD13rBhc80KuqoZ41uaFBc
+	uuccAt3fJHLJExODfk6KPSZb9OX1JlbRQxIiaccmCMiPbPtLw8nw5bf59fk7koG2
+	g8oBp3u4rd14yhuzAGDKEZhp18/B5+GF8k0v8tFZm9PRNaZ48tFx2CDp1rgVO93J
+	X96NyaCyM50FA15hhWuQOfL7l4EzFb02jmbJQQG1zhzbFE2W/IJD83HtjdFSH1gW
+	ijm9F9eFxugjD6Hn96A6k5JzbO+G58KDLhQ9P7rh5hA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to:x-me-proxy
+	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=/hOwP9
+	XKbPzjW6cQ+cj2UG1X3icR+CDzrCXfBg9OKKw=; b=RZTd18I56RP/7Tj6nVzYJg
+	MNnjd7QfzpashA+wbp4Nw0Xy8FNkfKm1FNwVKDUCd01YBck6vlPOiwDnVCvs80hO
+	w/+Tah2XWLOk3OAw42JvVfwyS9y//56NtmMILrLuJNdt46WT5erQWFWZm7tgHciy
+	0S0xbr1MtCtrp+9rR0BoSqY2OJxdkNu1hXWjTb3tPLW+DsuoqRpttiPKEN1pec1v
+	kPj1lsK8pQybjCKtu5hRct1Rkz5GD49YCDxwEoSrM6F/EIHxplX3IxNMOcHHj6bA
+	gJ2aS3HV6y9HUvgvaCDGKrPcmEg6vs9ysmcSxPrn+Z1E9Yn42e6PytzApu+bl9+A
+	==
+X-ME-Sender: <xms:bmBMYV_F2ilwy9CsDQnHFFqB56MotBtLnOwhDB1V_U9wCuVw_xWuyQ>
+    <xme:bmBMYZt_A_1PhFXa-w24jChgVl9v9-92lW1qNZzn3MsG6AAXR_-6fSmGqLPY2gecw
+    6uukW0VgWRx3w>
+X-ME-Received: <xmr:bmBMYTDvZuM1ep5IDGB2wz4CLwlnPeI-cnko5H8LdDGF4sWgYl7wr33OYfZSEQRNB7jVTkWb7WEMOuTqb6Dak5ISVxhc_tO2>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrudeiledgfeeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeevueehje
+    fgfffgiedvudekvdektdelleelgefhleejieeugeegveeuuddukedvteenucevlhhushht
+    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhh
+    drtghomh
+X-ME-Proxy: <xmx:bmBMYZdj3LIl5uBCr1rxiH1ANDacSc17FFDJ8DBFCv2IFmXE76KpNg>
+    <xmx:bmBMYaPVxybjVWO1qcojJTn4ekWEmtmmtzqP7SXTvWtPnu7KSYjGog>
+    <xmx:bmBMYbkEMdq2zxV0PMSFhXEkksvsljXK6jvmyrGFmavh0aMVm33piA>
+    <xmx:bmBMYXo3jdOVJIyj-jYqF3E6wHLjE0AkeGzsB2HjINp5ClL_LQ6CbQ>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 23 Sep 2021 07:09:33 -0400 (EDT)
+Date: Thu, 23 Sep 2021 13:09:31 +0200
+From: Greg KH <greg@kroah.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Theodore Ts'o <tytso@mit.edu>, ksummit@lists.linux.dev
 Subject: Re: Potential topics for the 2021 Maintainer's Summit
-Message-ID: <YUxNpVkO68dllK/N@pendragon.ideasonboard.com>
+Message-ID: <YUxga4g1puy68oVv@kroah.com>
 References: <YUwOE5ExtvMye2t/@mit.edu>
+ <YUxNpVkO68dllK/N@pendragon.ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <YUwOE5ExtvMye2t/@mit.edu>
+In-Reply-To: <YUxNpVkO68dllK/N@pendragon.ideasonboard.com>
 
-Hi Ted,
+On Thu, Sep 23, 2021 at 12:49:25PM +0300, Laurent Pinchart wrote:
+> Hi Ted,
+> 
+> On Thu, Sep 23, 2021 at 01:18:11AM -0400, Theodore Ts'o wrote:
+> > 
+> > After discussions amongst the program committee, and looking at some
+> > of the discussions to date at the LPC and the Kernel Summit, we've
+> > come up with the following potential topics for the Maintainer's
+> > Summit.
+> > 
+> > This is not the final agenda.  We are soliciting suggestions and
+> > comments about these topics.  Is there anything we are missing?  Is
+> > there something you think wouldn't be productive for us to discuss?
+> > 
+> > 
+> > 		  Potential Maintainer Summit topics
+> > 
+> > * Reviewing how we reacted to the University of Minnesota issue
+> >     After Greg K-H gives a non-technical summary of what
+> >     happened, and we would have a discussion about what should be
+> >     done differently next time.
+> > 
+> > * User-space requirementrs for accelerator drivers
+> >     There was some good discussion on the ksummit list, but there still isn't
+> >     a clear consensus of what the policy should be.  From Jon's message
+> >     kicking off that thread:
+> > 
+> >     - Under which circumstances should the kernel community require the
+> >       existence of freely licensed user-space code that exercises all
+> >       functionalities of a proposed kernel driver or feature?
+> > 
+> >     - Are there internal kernel interfaces, such as DMA-BUF or P2PDMA, that
+> >       are only available to drivers with a free user-space implementation?
+> >       Do we need an EXPORT_SYMBOL_USERSPACE_GPL()?
+> > 
+> >     - What constitutes an acceptable user-space implementation in cases
+> >       where these restrictions apply?
+> 
+> Just a quick comment on this. if it can be useful information, I'd be
+> happy to briefly explain and answer questions about the ongoing effort
+> to build a camera stack for Linux. We're running into the exact same
+> issues, and have been trying to build bridges with SoC vendors over the
+> past few years (with various levels of success).
 
-On Thu, Sep 23, 2021 at 01:18:11AM -0400, Theodore Ts'o wrote:
-> 
-> After discussions amongst the program committee, and looking at some
-> of the discussions to date at the LPC and the Kernel Summit, we've
-> come up with the following potential topics for the Maintainer's
-> Summit.
-> 
-> This is not the final agenda.  We are soliciting suggestions and
-> comments about these topics.  Is there anything we are missing?  Is
-> there something you think wouldn't be productive for us to discuss?
-> 
-> 
-> 		  Potential Maintainer Summit topics
-> 
-> * Reviewing how we reacted to the University of Minnesota issue
->     After Greg K-H gives a non-technical summary of what
->     happened, and we would have a discussion about what should be
->     done differently next time.
-> 
-> * User-space requirementrs for accelerator drivers
->     There was some good discussion on the ksummit list, but there still isn't
->     a clear consensus of what the policy should be.  From Jon's message
->     kicking off that thread:
-> 
->     - Under which circumstances should the kernel community require the
->       existence of freely licensed user-space code that exercises all
->       functionalities of a proposed kernel driver or feature?
-> 
->     - Are there internal kernel interfaces, such as DMA-BUF or P2PDMA, that
->       are only available to drivers with a free user-space implementation?
->       Do we need an EXPORT_SYMBOL_USERSPACE_GPL()?
-> 
->     - What constitutes an acceptable user-space implementation in cases
->       where these restrictions apply?
+I think there's two different main topics here:
+	- where to move the existing accelerator drivers to in the tree
+	  and who should maintain them
+	- requirements for accepting kernel code that has new
+	  user/kernel apis
 
-Just a quick comment on this. if it can be useful information, I'd be
-happy to briefly explain and answer questions about the ongoing effort
-to build a camera stack for Linux. We're running into the exact same
-issues, and have been trying to build bridges with SoC vendors over the
-past few years (with various levels of success).
+The first topic doesn't really pertain to v4l and libcamera, but the
+second topic would :)
 
-> * Acceptance criteria of patch sets
->     The discussion over the folio patch set seems to be making forward
->     progress, but it's not the only case where we've had some disagreements
->     over large code contribuions: ntfs3 and ksmbd come to mind.
->     Also from the kernel summit, see slide 10 ("Upstreaming Agony) at: 
->     https://linuxplumbersconf.org/event/11/contributions/964/attachments/802/1511/Ksummit%20%283%29.pdf
-> 
->     "We want to upstream everything. It makes Linux better and our lives easier.
->     However:
->     * High variability in maintainer responsiveness
->     	 * Some subsystems are really great
->     	 * Some armitecture maintainers are not as easy to work with
->     	 * Some subsystems are just stuck (e.g. memory management)
->     * Replies often come with “helpful” suggestions of radical product redesign
->          * E.g. preempt count passthrough for VMs to improve scheduling of
-> 	   guests
->     * Plus usual stuff, e.g. “oh sure we can apply this two liner… *after*
->        you rewrite the subsystem”
->     Wishlist:
->     * Consistent maintainer responsiveness and acceptance criteria
->         * A maintainer CoC or expectations doc?
->     * More data driven decision making (e.g. which benchmarks are generally
->       agreed to be important for each subsystem)
->     * More openness to experimentation
->         * How can we enable this?"
-> 
-> * Rust in the Kernel
->     We could potentially invite Miguel so we can give him feedback, concerns,
->     etc. regarding Rust in the kernel.  In particular, Miguel asked
->     some questions at the end of his talk at the Kernel Summit:
->     https://youtu.be/mF10hgVIx9o?t=15245
->     for which feedback from the maintainers might be helpful --- if
->     we are ready to give an opinion, which is not clear.
-> 
-> * Is Linus happy/unhappy with the development process of Linux?
->     Anything else we need to discuss or address?
-> 
-> 
-> Also, this is the current list of invitees to the Maintainer's Summit
-> (including sponsored attendees).  As we finalize the topics, there may
-> be one or two additional invites.  (For example, if we do decide to
-> pursue the Rust in the kernel topic, we would need to invite Miguel,
-> assuming he would be available on Friday.)
-> 
-> Al Viro
-> Alex Deucher
-> Alexei Starovoitov
-> Andrew Morton
-> Arnd Bergmann
-> Bjorn Helgaas
-> Borislav Petkov
-> Chris Mason
-> Christoph Hellwig
-> Damien Le Moal
-> Dave Airlie
-> David S. Miller
-> Greg Kroah-Hartman
-> Ingo Molnar
-> Jakub Kicinski
-> Jens Axboe
-> Jon Corbet
-> Kees Cook
-> Linus Torvalds
-> Mark Brown
-> Martin K. Petersen
-> Michael Ellerman
-> Rafael J. Wysocki
-> Sasha Levin
-> Stephen Rothwell
-> Theodore Ts'o
-> Thomas Gleixner
-> Vasily Gorbik
-> Will Deacon
+thanks,
 
--- 
-Regards,
-
-Laurent Pinchart
+greg k-h
 
