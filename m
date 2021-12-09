@@ -1,180 +1,166 @@
-Return-Path: <ksummit+bounces-638-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-639-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [IPv6:2604:1380:1000:8100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 947F846E5FA
-	for <lists@lfdr.de>; Thu,  9 Dec 2021 10:52:50 +0100 (CET)
+Received: from sjc.edge.kernel.org (sjc.edge.kernel.org [147.75.69.165])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52DE746E790
+	for <lists@lfdr.de>; Thu,  9 Dec 2021 12:26:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sjc.edge.kernel.org (Postfix) with ESMTPS id D12303E0F67
-	for <lists@lfdr.de>; Thu,  9 Dec 2021 09:52:48 +0000 (UTC)
+	by sjc.edge.kernel.org (Postfix) with ESMTPS id B02E13E0EBF
+	for <lists@lfdr.de>; Thu,  9 Dec 2021 11:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B3B2CBF;
-	Thu,  9 Dec 2021 09:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82F82CB6;
+	Thu,  9 Dec 2021 11:26:33 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
 Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9D22CB3
-	for <ksummit@lists.linux.dev>; Thu,  9 Dec 2021 09:52:26 +0000 (UTC)
-Received: from ip4d173d4a.dynamic.kabel-deutschland.de ([77.23.61.74] helo=truhe.fritz.box); authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	id 1mvG66-0008GF-FE; Thu, 09 Dec 2021 10:52:18 +0100
-From: Thorsten Leemhuis <linux@leemhuis.info>
-To: workflows@vger.kernel.org,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Cc: ksummit@lists.linux.dev,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
-	Jonathan Corbet <corbet@lwn.net>
-Subject: [RFC PATCH v2 2/2] docs: introduce the commit message tags 'Reported:' and 'Posted:'
-Date: Thu,  9 Dec 2021 10:52:17 +0100
-Message-Id: <c6724c7fb534a46e095e6aef13d996ed9589e578.1639042966.git.linux@leemhuis.info>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <cover.1639042966.git.linux@leemhuis.info>
-References: <cover.1639042966.git.linux@leemhuis.info>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A982C9E
+	for <ksummit@lists.linux.dev>; Thu,  9 Dec 2021 11:26:31 +0000 (UTC)
+Received: from ip4d173d4a.dynamic.kabel-deutschland.de ([77.23.61.74] helo=[192.168.66.200]); authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1mvHZF-0007qf-9q; Thu, 09 Dec 2021 12:26:29 +0100
+Message-ID: <4c3d2b66-2941-bac3-ee9f-d573912ee2aa@leemhuis.info>
+Date: Thu, 9 Dec 2021 12:26:28 +0100
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Content-Language: en-BS
+From: Thorsten Leemhuis <linux@leemhuis.info>
+To: workflows@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>
+Cc: ksummit@lists.linux.dev,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
+ Jonathan Corbet <corbet@lwn.net>
+References: <cover.1639042966.git.linux@leemhuis.info>
+Subject: Re: [RFC PATCH v2 0/2] Create 'Posted:' and 'Reported:' tags for
+ links in commit messages
+In-Reply-To: <cover.1639042966.git.linux@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1639043546;63f7d031;
-X-HE-SMSGID: 1mvG66-0008GF-FE
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1639049191;a9551039;
+X-HE-SMSGID: 1mvHZF-0007qf-9q
 
-Add the tags 'Posted:' and 'Reported:'. They supplement 'Link:', which
-historically is used to point to different things without indicating at
-all what the provided URL is about. Users and scripts analyzing commits
-thus have to guess from the URLs or follow each one to find out, which
-might be hard for a script.
+/me grumbles
 
-Documenting these tag also provides clarity for developers, as some
-didn't link to bug reports at all. Some developers did, but used
-'References:' for this. Nevertheless 'Reported:' was chosen for this
-purpose, as it better matches up with the 'Reported-by:' tag commonly
-used and already needed in this situation anyway.
+Stupid me mixed up the the subject when editing, which should read
+'Posted:' and 'Reported:', as can be seen from the body of the cover
+letter and the subject of v2. Sorry.
 
-Signed-off-by: Thorsten Leemhuis <linux@leemhuis.info>
-To: workflows@vger.kernel.org
----
-Note: during review of v1 it was pointed out the perl regex modified in
-'configure-git.rst' need to be case-insensitive; I will propose this
-with a patch submitted separately once the best approach for that
-problem was finally agreed on.
+/me wanders off to find a place to hide in shame
 
----
- Documentation/maintainer/configure-git.rst   |  8 +++----
- Documentation/process/5.Posting.rst          | 24 +++++++++++++-------
- Documentation/process/submitting-patches.rst | 22 ++++++++++--------
- 3 files changed, 32 insertions(+), 22 deletions(-)
-
-diff --git a/Documentation/maintainer/configure-git.rst b/Documentation/maintainer/configure-git.rst
-index 80ae5030a590..e33e4121cf21 100644
---- a/Documentation/maintainer/configure-git.rst
-+++ b/Documentation/maintainer/configure-git.rst
-@@ -40,12 +40,12 @@ Creating commit links to lore.kernel.org
- The web site http://lore.kernel.org is meant as a grand archive of all mail
- list traffic concerning or influencing the kernel development. Storing archives
- of patches here is a recommended practice, and when a maintainer applies a
--patch to a subsystem tree, it is a good idea to provide a Link: tag with a
-+patch to a subsystem tree, it is a good idea to provide a Posted: tag with a
- reference back to the lore archive so that people that browse the commit
- history can find related discussions and rationale behind a certain change.
--The link tag will look like this:
-+The tag will look like this:
- 
--    Link: https://lore.kernel.org/r/<message-id>
-+    Posted: https://lore.kernel.org/r/<message-id>
- 
- This can be configured to happen automatically any time you issue ``git am``
- by adding the following hook into your git:
-@@ -56,7 +56,7 @@ by adding the following hook into your git:
- 	$ cat >.git/hooks/applypatch-msg <<'EOF'
- 	#!/bin/sh
- 	. git-sh-setup
--	perl -pi -e 's|^Message-Id:\s*<?([^>]+)>?$|Link: https://lore.kernel.org/r/$1|g;' "$1"
-+	perl -pi -e 's|^Message-Id:\s*<?([^>]+)>?$|Posted: https://lore.kernel.org/r/$1|g;' "$1"
- 	test -x "$GIT_DIR/hooks/commit-msg" &&
- 		exec "$GIT_DIR/hooks/commit-msg" ${1+"$@"}
- 	:
-diff --git a/Documentation/process/5.Posting.rst b/Documentation/process/5.Posting.rst
-index 46635310c7c5..1aa4167d54ea 100644
---- a/Documentation/process/5.Posting.rst
-+++ b/Documentation/process/5.Posting.rst
-@@ -207,16 +207,24 @@ the patch::
- 
- 	Fixes: 1f2e3d4c5b6a ("The first line of the commit specified by the first 12 characters of its SHA-1 ID")
- 
--Another tag is used for linking web pages with additional backgrounds or
--details, for example a report about a bug fixed by the patch or a document
--with a specification implemented by the patch::
-+A second kind of tags is used for linking web pages with additional details.
-+There are three different tags of this sort which all use the following
-+format::
- 
--	Link: https://example.com/somewhere.html  optional-other-stuff
-+	tag: <url>  optional-other-stuff
- 
--Many maintainers when applying a patch also add this tag to link to the
--latest public review posting of the patch; often this is automatically done
--by tools like b4 or a git hook like the one described in
--'Documentation/maintainer/configure-git.rst'.
-+The tags in common use are:
-+
-+ - ``Reported:`` points to a report of a problem fixed by this patch. The
-+   provided URL thus might point to a entry in a bug tracker or a mail in a
-+   mailing list archive. Typically this tag is followed by a "Reported-by:"
-+   tag (see below).
-+
-+ - ``Link:`` points to websites providing additional backgrounds or details,
-+   for example an earlier discussion that let to the development of the patch.
-+
-+ - ``Posted:`` this is a tag many maintainers add when applying a patch, to
-+   make the commit point to the latest public review posting of the patch.
- 
- A third kind of tags are used to document which developers were involved in
- the development of the patch. Each of these uses this format::
-diff --git a/Documentation/process/submitting-patches.rst b/Documentation/process/submitting-patches.rst
-index 6b3aaed66fba..658581be5fa0 100644
---- a/Documentation/process/submitting-patches.rst
-+++ b/Documentation/process/submitting-patches.rst
-@@ -113,20 +113,22 @@ collisions with shorter IDs a real possibility.  Bear in mind that, even if
- there is no collision with your six-character ID now, that condition may
- change five years from now.
- 
--If related discussions or any other background information behind the change
--can be found on the web, add 'Link:' tags pointing to it. In case your patch
--fixes a bug, for example, add a tag with a URL referencing the report in the
--mailing list archives or a bug tracker; if the patch is a result of some
--earlier mailing list discussion or something documented on the web, point to
--it.
-+Add tags linking to any related discussions or background information behind
-+the change on the web. For example, if your patch fixes a bug, add a
-+`Reported:` tag pointing to the report in the mailing list archives or a bug
-+tracker::
- 
--When linking to mailing list archives, preferably use the lore.kernel.org
--message archiver service. To create the link URL, use the contents of the
--``Message-Id`` header of the message without the surrounding angle brackets.
--For example::
-+    Reported: https://lore.kernel.org/r/30th.anniversary.repost@klaava.Helsinki.FI/
-+
-+If the patch is a related to some earlier mailing list discussion or something
-+documented on the web, point to it using a `Link:` tag::
- 
-     Link: https://lore.kernel.org/r/30th.anniversary.repost@klaava.Helsinki.FI/
- 
-+When linking to mailing list archives, preferably use the lore.kernel.org
-+message archiver service. To create the link URL, use the contents of the
-+``Message-Id`` header of the message without the surrounding angle brackets,
-+e.g. "30th.anniversary.repost@klaava.Helsinki.FI" in the two examples above.
- Please check the link to make sure that it is actually working and points
- to the relevant message.
- 
--- 
-2.31.1
-
+On 09.12.21 10:52, Thorsten Leemhuis wrote:
+> [Preface: sorry, this likely will cause some bikeshedding; but I got the feeling
+> I should bring this up, as my Regression tracking bot relies on the Link: tag
+> and thus making its ambiguity worse]
+> 
+> The following patch proposes to create two new tags for stating URLs in commit
+> messages. They are meant to make it obvious what provided links are about. This
+> is useful for both users and scripts analyzing commits, as right now they have
+> no simple way to see what a provided URL is about – they thus have to guess from
+> the URLs or follow each one to check.
+> 
+> The proposed tag 'Posted:' should point to the last public review posting of the
+> patch in question, while 'Reported:' is meant to be used for linking to bug
+> reports. The 'Link:' tag, which until now covered these two aspects, stays
+> around for other kind of links, for example for links to PDFs or webpages with
+> background information relevant for the patch.
+> 
+> This submission partly is triggered by regzbot, my Linux kernel regression
+> tracking bot (https://linux-regtracking.leemhuis.info/regzbot/ ). It
+> automatically marks a tracked regression as resolved when it notices a commit
+> with a 'Link:' pointing to the report of the tracked regression; it also uses
+> this to detect when a proposed fix is posted for review. In preparation for this
+> I recently improved the kernel's documentation on 'Link:' to the best of my
+> understanding in commit 1f57bd42b77c ("docs: submitting-patches: make
+> section about the Link: tag more explicit"). I also started pointing out that
+> usage to various people when I noticed it was missing. Quite a few developers
+> didn't know that 'Link:' was supposed to be like this or completely unaware they
+> were supposed to links bug reports. Developers from the DRM subsystem were using
+> 'References:' instead; some developer also simply used footnotes.
+> 
+> Regzbot doesn't need a 'Reported:' and could continue to work as it does right
+> now -- with me continuing to educate developers, no big deal. But I wondered if
+> I was making the "Link: is ambiguous" problem worse. This lead to this
+> submissions, as I always found it a bit confusing that 'Link:' is used for
+> different purposes – and hence felt like I should bring this up now, as I then
+> can sleep well even if this bolt proposal is rejected. :-D
+> 
+> Obviously two new tags will force developers and maintainers to adjust habits
+> and scripts, so it's nothing that should be done lighthearted. But sticking with
+> an ambiguous Link: tag for the foreseeable future might not be the best idea
+> anyway, as we live in times where people analyze commits with scripts for
+> studies and statistics on reviews and bug reporting.
+> 
+> For 'Posted:' the change hopefully shouldn't be much work for people anyway, as
+> many just need to update their `git am` hook or switch to a hypothetical new
+> version of `b4` that was adjusted to place 'Reviewed:' tags instead of 'Link:'.
+> It's a bit more of a hassle when it comes to 'Reported:', as some people will
+> need to update their muscle memory. But the similarity to the 'Reported-by:' tag
+> (to be used in the same situation) should help here; and quite a bit of
+> education in this area is needed anyway (see above). And 'Link:' stays around,
+> so there is no harm done if it takes the world a while to adapt.
+> 
+> FWIW, this is already v2, as I sent v1/RFC to workflows list and LKML only to
+> test the waters and get some feedback. Due to that I chose to switched from the
+> "Reviewed:" tag I proposed in v1 to the "Posted:" in v2.
+> 
+> Among the feedback I got was also a suggestion from Konstantin, who proposed to
+> continue with the Link: tag, but add hashtags after the URL to specify what it's
+> about:
+> 
+>     Link: https://bugzilla.kernel.org/show_bug.cgi?id=215101   #report
+>     Link: https://lore.kernel.org/r/fobarbaz.5551212@localhost #review
+> 
+> This shouldn't break existing scripts, as that is already allowed -- but it was
+> hardly used, hence some scripts nevertheless might break. Downsides of this
+> approach IMHO are: is easy to forget these hashtags when they have to be placed
+> manually (e.g., in the Reported: case), require people to type more, and make a
+> line that often is quite long already even longer. But FWIW, it's totally fine
+> for me if it's decided to go down that route, then I'll adjust the patch
+> accordingly.
+> 
+> There were also a few suggestions to use tags closer to what users of Git forges
+> are used to, but I didn't see anything that would be a good fit. If you know
+> something (instead of "Posted:" maybe "MergeRequest:"?), let me know.
+> 
+> Furthermore, the question came up if we still need the "Reported:" tag if we
+> link to the report, as the information is available from the link. I left it, as
+> show gratitude to the reporter, which motivates people.
+> 
+> FWIW, If this bold proposal gets rejected, I'll simply submit the first patch of
+> this series to improve the documentation of the status quo.
+> 
+> Ciao, Thorsten
+> 
+> ---
+> v2/RFC: (this version)
+> - split the non-controversial parts out into a preparatory patch
+> - s/Reviewed:/Posted:/
+> - a few minor changes due to review feedback from various people
+> - mention some of the feedback from v1 in the cover letter
+> 
+> v1/RFC: https://lore.kernel.org/lkml/cover.1637566224.git.linux@leemhuis.info/
+> - first, *rough version* to see how this idea is received in the
+>   community
+> 
+> Thorsten Leemhuis (2):
+>   docs: 5.Posting.rst: describe Fixes: and Link: tags
+>   docs: introduce the commit message tags 'Reported:' and 'Posted:'
+> 
+>  Documentation/maintainer/configure-git.rst   |  8 ++---
+>  Documentation/process/5.Posting.rst          | 37 ++++++++++++++++----
+>  Documentation/process/submitting-patches.rst | 22 ++++++------
+>  3 files changed, 46 insertions(+), 21 deletions(-)
+> 
+> 
+> base-commit: 065db2d90c6b8384c9072fe55f01c3eeda16c3c0
+> 
 
