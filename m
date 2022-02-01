@@ -1,18 +1,18 @@
-Return-Path: <ksummit+bounces-641-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-642-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [147.75.197.195])
-	by mail.lfdr.de (Postfix) with ESMTPS id 162A84A605B
-	for <lists@lfdr.de>; Tue,  1 Feb 2022 16:44:45 +0100 (CET)
+Received: from ewr.edge.kernel.org (ewr.edge.kernel.org [IPv6:2604:1380:1:3600::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD01F4A605C
+	for <lists@lfdr.de>; Tue,  1 Feb 2022 16:44:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ewr.edge.kernel.org (Postfix) with ESMTPS id 3F2D11C0EA4
-	for <lists@lfdr.de>; Tue,  1 Feb 2022 15:44:44 +0000 (UTC)
+	by ewr.edge.kernel.org (Postfix) with ESMTPS id 0EF7F1C0F0B
+	for <lists@lfdr.de>; Tue,  1 Feb 2022 15:44:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F4C2F33;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14E72F35;
 	Tue,  1 Feb 2022 15:44:05 +0000 (UTC)
-X-Original-To: ksummit+subscribe@lists.linux.dev
+X-Original-To: ksummit@lists.linux.dev
 Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
