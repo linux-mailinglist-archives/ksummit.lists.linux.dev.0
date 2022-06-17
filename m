@@ -1,84 +1,70 @@
-Return-Path: <ksummit+bounces-647-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-648-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFC7C54ED79
-	for <lists@lfdr.de>; Fri, 17 Jun 2022 00:43:19 +0200 (CEST)
+Received: from da.mirrors.kernel.org (da.mirrors.kernel.org [139.178.84.19])
+	by mail.lfdr.de (Postfix) with ESMTPS id 028A254FE96
+	for <lists@lfdr.de>; Fri, 17 Jun 2022 22:57:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AAAC280C02
-	for <lists@lfdr.de>; Thu, 16 Jun 2022 22:43:18 +0000 (UTC)
+	by da.mirrors.kernel.org (Postfix) with ESMTPS id 51CA62E09EC
+	for <lists@lfdr.de>; Fri, 17 Jun 2022 20:57:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A2BD6AC2;
-	Thu, 16 Jun 2022 22:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E374A4C8B;
+	Fri, 17 Jun 2022 20:57:18 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E7C2F42;
-	Thu, 16 Jun 2022 22:43:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DCAAC34114;
-	Thu, 16 Jun 2022 22:43:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1655419389;
-	bh=kfQarxH/56UT/XY118hOydrKuncAQiLkLupR53PFGck=;
-	h=From:To:Cc:Subject:Date:From;
-	b=XM/dze1GtQVrVsN2MD2FyK3sEW3Qv6oy6PvPJPdBbvr+LtmbHCSrKJpYygpMWrPeS
-	 VWLtmU/OnSSAUz2TBfyUjnYc/Q4VQqH71CvMbuCYiOuJRVDVh9TqXQ8aXcBIv50kLq
-	 aCr5xISTdd+sSKQqRDKIRXn88yxHBdbHT1lDuXocYR4vRkQdmv1PsQwZ9XfnicEy9y
-	 CEoUyN+aYUlivl5+eX5TK/ZDjNAIhe4e9d5pQRXaPHn3oDrYEJP0Wt30D4f+LRwMbO
-	 Umba7WGdoI0gqaF10PJ5EE/2s4F9vImCJvhLMCW6DaVhyMYXXfrkpK8d6yHCSkG3vH
-	 fjet+FLpzz/iQ==
-From: SeongJae Park <sj@kernel.org>
-To: ksummit-discuss@lists.linuxfoundation.org,
-	ksummit@lists.linux.dev
-Cc: linux-mm@kvack.org,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [TECH TOPIC] Current Status and Future Plans of DAMON
-Date: Thu, 16 Jun 2022 22:43:06 +0000
-Message-Id: <20220616224306.92076-1-sj@kernel.org>
-X-Mailer: git-send-email 2.25.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A7D4C84
+	for <ksummit@lists.linux.dev>; Fri, 17 Jun 2022 20:57:17 +0000 (UTC)
+Received: from localhost (unknown [IPv6:2601:281:8300:73::5f6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id 9AD2E380;
+	Fri, 17 Jun 2022 20:57:11 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 9AD2E380
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1655499431; bh=QHrwIn58SgXl8Bet1v2+WpPM77eMl/K5oLiuEM/QJYI=;
+	h=From:To:Subject:Date:From;
+	b=o2DZ88UA3mBD8QWmyxSsUoOyzZgCaihw4FaHxyh1E+YJnHM/AQgxeVmj8hvkQkNKe
+	 RzNXmDzN0XRPKPuqBdub0n4lQIIYZO1Wc9aW+i+naSRObD0rkvNxQXYXyGnX43XSWx
+	 oOb8qfjSO2cFa/qynDLwae/3Pe8nxokzXLyLCBqUxk5A7cILb77FHWlVxCicMQASvB
+	 dSxIROlT7UrwEl0hh88nVczHF7VOtAqxeKmSs8iSaXgPJ8c8205jEOnPCGt2O+DnKi
+	 DmSVSefZ7DulhMR/7ENjj/ianFH1e8TwFiCqwNMbiDMteGUY+lgDgFuczZ1tZoJzio
+	 lTx+m3gz6P0dQ==
+From: Jonathan Corbet <corbet@lwn.net>
+To: ksummit-discuss@lists.linuxfoundation.org, ksummit@lists.linux.dev
+Subject: [TECH TOPIC] What kernel documentation could be
+Date: Fri, 17 Jun 2022 14:57:10 -0600
+Message-ID: <87sfo3nh3t.fsf@meer.lwn.net>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Hello all,
+The development community has put a lot of work into the kernel's
+documentation directory in recent years, with visible results. But the
+kernel's documentation still falls far short of the standard set by many
+other projects, and there is a great deal of "tribal knowledge" in our
+community that is not set down. I'd like to look at the successes and
+failures of the work so far, but intent to focus on a discussion of what
+our documentation should be and what we can do to get it there.
 
+Questions to discuss include:
 
-I'm posing my Kernel Summit topic suggestion as below.  I will also submit it
-on LPC site.
+ - Bringing an coherent overall structure to Documentation/
 
+ - Making it easier for developers to improve the documentation.
 
-DAMON[1] is Linux kernel's data access monitoring framework that provides
-best-effort accuracy under user-specified overhead range.  It has been about
-one year after it has been merged in the mainline.  Meanwhile, we received a
-number of new voices for DAMON from users and made efforts for answering to
-those.  Nevertheless, many things to do for that are remaining.
+ - What we would like from Sphinx and what we can do to make it happen
 
-This talk will share what such voices we received, what patches are developed
-or under development for those, what requests are still under plan only, and
-what the plans are.  With that, hopefully we will have discussions that will be
-helpful for improving and prioritizing the plans and specific tasks, and
-finding new requirements.
+ - Making the docs build system less ugly and more maintainable
 
-Specific sub-topics will include, but not limited to:
+ - Integrating rustdoc documentation
 
-- Making DAMON ABI more stable and flexibile
-- Extending DAMON for more usages
-- Improving DAMON accuracy
-- DAMON-based kernel/user space optimization policies
-- Making user space DAMON policies more efficient
-- Making kernel space DAMON policies just work (auto-tuning)
-
-[1] https://damonitor.github.io
-
-
-Thanks,
-SJ
+jon
 
