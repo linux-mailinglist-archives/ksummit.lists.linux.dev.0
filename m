@@ -1,70 +1,89 @@
-Return-Path: <ksummit+bounces-648-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-649-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from da.mirrors.kernel.org (da.mirrors.kernel.org [139.178.84.19])
-	by mail.lfdr.de (Postfix) with ESMTPS id 028A254FE96
-	for <lists@lfdr.de>; Fri, 17 Jun 2022 22:57:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9D1054FF8C
+	for <lists@lfdr.de>; Fri, 17 Jun 2022 23:55:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by da.mirrors.kernel.org (Postfix) with ESMTPS id 51CA62E09EC
-	for <lists@lfdr.de>; Fri, 17 Jun 2022 20:57:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFC1F280BED
+	for <lists@lfdr.de>; Fri, 17 Jun 2022 21:55:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E374A4C8B;
-	Fri, 17 Jun 2022 20:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77814C90;
+	Fri, 17 Jun 2022 21:55:26 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A7D4C84
-	for <ksummit@lists.linux.dev>; Fri, 17 Jun 2022 20:57:17 +0000 (UTC)
-Received: from localhost (unknown [IPv6:2601:281:8300:73::5f6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 9AD2E380;
-	Fri, 17 Jun 2022 20:57:11 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 9AD2E380
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1655499431; bh=QHrwIn58SgXl8Bet1v2+WpPM77eMl/K5oLiuEM/QJYI=;
-	h=From:To:Subject:Date:From;
-	b=o2DZ88UA3mBD8QWmyxSsUoOyzZgCaihw4FaHxyh1E+YJnHM/AQgxeVmj8hvkQkNKe
-	 RzNXmDzN0XRPKPuqBdub0n4lQIIYZO1Wc9aW+i+naSRObD0rkvNxQXYXyGnX43XSWx
-	 oOb8qfjSO2cFa/qynDLwae/3Pe8nxokzXLyLCBqUxk5A7cILb77FHWlVxCicMQASvB
-	 dSxIROlT7UrwEl0hh88nVczHF7VOtAqxeKmSs8iSaXgPJ8c8205jEOnPCGt2O+DnKi
-	 DmSVSefZ7DulhMR/7ENjj/ianFH1e8TwFiCqwNMbiDMteGUY+lgDgFuczZ1tZoJzio
-	 lTx+m3gz6P0dQ==
-From: Jonathan Corbet <corbet@lwn.net>
-To: ksummit-discuss@lists.linuxfoundation.org, ksummit@lists.linux.dev
-Subject: [TECH TOPIC] What kernel documentation could be
-Date: Fri, 17 Jun 2022 14:57:10 -0600
-Message-ID: <87sfo3nh3t.fsf@meer.lwn.net>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182234C8D
+	for <ksummit@lists.linux.dev>; Fri, 17 Jun 2022 21:55:24 +0000 (UTC)
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 10695268;
+	Fri, 17 Jun 2022 23:48:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1655502513;
+	bh=wbFHPE42g5rhlpBgzr7YD2oFPGVyJO9plnlU5qXeqG4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WQfHFSdSwSpAyNMXXle4LVrCwQxP9pos+2a5k6+0BSEx1OIHST9nlgnJZ+LmZkt/z
+	 cCt94XkA3P98EvMksGtyNJ+NRHt8PCoHSoRNIfavuvrcPxWcxI44FoC/q6Qkpiin/K
+	 EXzKc6cPyrJmxo5M3RvBGzTil5r9lrKiFfLx/jhE=
+Date: Sat, 18 Jun 2022 00:48:21 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Jonathan Corbet <corbet@lwn.net>
+Cc: ksummit-discuss@lists.linuxfoundation.org, ksummit@lists.linux.dev
+Subject: Re: [Ksummit-discuss] [TECH TOPIC] What kernel documentation could be
+Message-ID: <Yqz2pVwvyo4MFJYO@pendragon.ideasonboard.com>
+References: <87sfo3nh3t.fsf@meer.lwn.net>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87sfo3nh3t.fsf@meer.lwn.net>
 
-The development community has put a lot of work into the kernel's
-documentation directory in recent years, with visible results. But the
-kernel's documentation still falls far short of the standard set by many
-other projects, and there is a great deal of "tribal knowledge" in our
-community that is not set down. I'd like to look at the successes and
-failures of the work so far, but intent to focus on a discussion of what
-our documentation should be and what we can do to get it there.
+Hi Jon,
 
-Questions to discuss include:
+On Fri, Jun 17, 2022 at 02:57:10PM -0600, Jonathan Corbet wrote:
+> The development community has put a lot of work into the kernel's
+> documentation directory in recent years, with visible results. But the
+> kernel's documentation still falls far short of the standard set by many
+> other projects, and there is a great deal of "tribal knowledge" in our
+> community that is not set down. I'd like to look at the successes and
+> failures of the work so far, but intent to focus on a discussion of what
+> our documentation should be and what we can do to get it there.
+> 
+> Questions to discuss include:
+> 
+>  - Bringing an coherent overall structure to Documentation/
+> 
+>  - Making it easier for developers to improve the documentation.
 
- - Bringing an coherent overall structure to Documentation/
+I've been wondering recently if it would help to have a place where we
+can record documentation wishes.
 
- - Making it easier for developers to improve the documentation.
+It has happened quite a few times that my searches for particular pieces
+of documentation in the kernel were unfruitful, or that the related
+documentation left me none the wiser (one example, which is just an
+example and not finger-pointing, is the runtime PM documentation in
+Documentation/power/runtime_pm.rst that feels like reading a
+calculus-related PHD thesis when all you want is to understand how to
+add two numbers). I rarely had time to write documentation patches as a
+result, and my pains were thus left unnoticed by maintainers and
+developers, who may be willing to improve the documentation if they knew
+that users were struggling.
 
- - What we would like from Sphinx and what we can do to make it happen
+>  - What we would like from Sphinx and what we can do to make it happen
+> 
+>  - Making the docs build system less ugly and more maintainable
+> 
+>  - Integrating rustdoc documentation
 
- - Making the docs build system less ugly and more maintainable
+-- 
+Regards,
 
- - Integrating rustdoc documentation
-
-jon
+Laurent Pinchart
 
