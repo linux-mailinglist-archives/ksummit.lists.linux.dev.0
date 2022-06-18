@@ -1,94 +1,82 @@
-Return-Path: <ksummit+bounces-657-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-658-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from da.mirrors.kernel.org (da.mirrors.kernel.org [139.178.84.19])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D4E35506B7
-	for <lists@lfdr.de>; Sat, 18 Jun 2022 22:44:30 +0200 (CEST)
+Received: from da.mirrors.kernel.org (da.mirrors.kernel.org [IPv6:2604:1380:4040:4f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EE565506B9
+	for <lists@lfdr.de>; Sat, 18 Jun 2022 22:50:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by da.mirrors.kernel.org (Postfix) with ESMTPS id 764FC2E0A2C
-	for <lists@lfdr.de>; Sat, 18 Jun 2022 20:44:28 +0000 (UTC)
+	by da.mirrors.kernel.org (Postfix) with ESMTPS id 5893C2E0A10
+	for <lists@lfdr.de>; Sat, 18 Jun 2022 20:50:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192D433FB;
-	Sat, 18 Jun 2022 20:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A8633FB;
+	Sat, 18 Jun 2022 20:50:08 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A017B
-	for <ksummit@lists.linux.dev>; Sat, 18 Jun 2022 20:44:19 +0000 (UTC)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id AA8C7383;
-	Sat, 18 Jun 2022 22:44:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1655585057;
-	bh=K4u8WFor8vX7uohoYj54m59JD2L0GY80nCd8/aH0raA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NacexL0xdyCInKa2+JWKOYxig7D/YWC6TSSgY936rsTFafzAUPgbZejuNTmBJJoie
-	 Phz1w6aW02cjVUu3bCkpZoknEl6RMJD7A8x4+sAYUmsTmSbdW7IUc5SyfJLtXOPqeg
-	 QQPENjN2pP3pqEuY5xzIvu/MhIvHFuoBPqQ1N2m4=
-Date: Sat, 18 Jun 2022 23:44:03 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: ksummit <ksummit-discuss@lists.linuxfoundation.org>,
-	ksummit@lists.linux.dev
-Subject: Re: [TECH TOPIC] Rust
-Message-ID: <Yq45E0yUEypGPhzi@pendragon.ideasonboard.com>
-References: <CANiq72nNKvFqQs9Euy=_McfcHf0-dC_oPB3r8ZJii2L3sfVjaw@mail.gmail.com>
- <Yq44nyu7P1uhBVGi@pendragon.ideasonboard.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB8F7B
+	for <ksummit@lists.linux.dev>; Sat, 18 Jun 2022 20:50:07 +0000 (UTC)
+Received: by mail-io1-f41.google.com with SMTP id i16so7682146ioa.6
+        for <ksummit@lists.linux.dev>; Sat, 18 Jun 2022 13:50:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=tIVdK19t4eJQh7CQN2pc8WigupI3MA12KWuy+DN1SRc=;
+        b=KBi2zwtyOD3vONe63EF6Jlq+EjHvA9YEIkaIE4pHLbF5lrPZRgMm8YlZbV1wYRpSLs
+         WUtnzpI85xDCQ2LR15kJO2jrsWaH/1q6Sa6d4W+Tt139smOmNNj9XM0ZwGPZcITKaCJP
+         NhJ9sB+B6PGipTcPNshWWq/z/T3ePYGhdS72Hxh2bCBWzu17BWHGBY7prp9ZIgSE4aX3
+         6CzojZzNJafjtXUjIk5WwgasfwSR7tJHpUs0D3vLbsWJhmnceV98ZC1fEINL9OlcA9vw
+         FNeNiY3vRilVTH8GemP1u6im4KgUi5ZP9Dj/HcQQBr72OeZYROkEH/9KALUTxYCFGLm7
+         SqWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=tIVdK19t4eJQh7CQN2pc8WigupI3MA12KWuy+DN1SRc=;
+        b=YQEdyY+HS4BU6vdKpxBTWP4gGp8i7uXyftUuCYZiVat7wsY+0F/C6oUtQ35ShCGEP3
+         4MmbhsN3VQ/IzG3Cw+oXI5gFKzuf9tKUQLXp0HScq1tvD2WjrSw1aFVFJTvmIfuvLG42
+         KYcscHQOFBowfXut5ettAGZtsofQBpmZjTKv05jT7s1xsuOGD6t4mzTVu1AgbYo2WqE+
+         yu+sHALS3wn5I9uk9tt5J+Cgn/qYJna2wq/Z16F+ZC7rQlemEKGhc7GFPhOQ1chMvfqJ
+         oP9qkDeew3cUaQaQD8hBdkJFHJ6mOo66WXlBxj2znd8jrXLFc5ZFOh8zeDlJe9D1GWkZ
+         3sew==
+X-Gm-Message-State: AJIora9OQpqNUW+M8t4N6kxMKfhtEownDQVDlvwEfQ53fTnOSv7WV3Vv
+	zsHVUMXudOZcc7qLtgIdul2DXhFrMGBWiiIp8gvSzBJS
+X-Google-Smtp-Source: AGRyM1uoicwIA0LT3O3Jy3uVR7O70hqWHFB3HzJrHFXNstbsnDC9GvmWPhcdGl+yaPRAKOZCAfBALAcYLUQ9tfhe/Lo=
+X-Received: by 2002:a6b:2a42:0:b0:66a:3a6f:9c29 with SMTP id
+ q63-20020a6b2a42000000b0066a3a6f9c29mr7994396ioq.177.1655585406200; Sat, 18
+ Jun 2022 13:50:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+References: <CANiq72nNKvFqQs9Euy=_McfcHf0-dC_oPB3r8ZJii2L3sfVjaw@mail.gmail.com>
+ <Yq44nyu7P1uhBVGi@pendragon.ideasonboard.com>
 In-Reply-To: <Yq44nyu7P1uhBVGi@pendragon.ideasonboard.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 18 Jun 2022 22:49:55 +0200
+Message-ID: <CANiq72mBWUidZwM1da2a-+30r0i0JmEX8eupXp2Hs7npi4zytg@mail.gmail.com>
+Subject: Re: [TECH TOPIC] Rust
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: ksummit <ksummit-discuss@lists.linuxfoundation.org>, ksummit@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Sat, Jun 18, 2022 at 11:42:09PM +0300, Laurent Pinchart wrote:
-> Hi Miguel,
-> 
-> On Sat, Jun 18, 2022 at 10:33:01PM +0200, Miguel Ojeda wrote:
-> > The effort to add Rust support to the kernel is ongoing. There has
-> > been progress in different areas during the last year, and there are
-> > several topics that could benefit from discussion:
-> > 
-> >   - Dividing the `kernel` crate into pieces, dependency management
-> > between internal crates, writing crates in the rest of the kernel
-> > tree, etc.
-> > 
-> >   - Whether to allow dependencies on external crates and vendoring of
-> > useful third-party crates.
-> > 
-> >   - Toolchain requirements in the future and status of Rust unstable features.
-> > 
-> >   - The future of GCC builds: upcoming compilers, their status and
-> > ETAs, adding the kernel as a testing case for them...
-> > 
-> >   - Steps needed for further integration in the different kernel CIs,
-> > running tests, etc.
-> > 
-> >   - Documentation setup on kernel.org and integration between
-> > Sphinx/kernel-doc and rustdoc (this can be part of the documentation
-> > tech topic submitted earlier by Jon).
-> > 
-> >   - Discussion with prospective maintainers that want to use Rust for
-> > their subsystem.
-> 
+On Sat, Jun 18, 2022 at 10:42 PM Laurent Pinchart
+<laurent.pinchart@ideasonboard.com> wrote:
+>
 > All previous topics but this one are technical. To restore the balance a
 > bit (and also because I believe it's important to the success of this
 > project :-)), I'd like to also discuss the impact on the kernel
 > maintenance at large, beyond just the maintainers who opt in to be early
 > adopters of rust in their subsystem.
 
-This may be better addressed as part of the maintainers summit (I've
-just seen your proposal for that event), but I'm concerned that the
-audience there will be very restricted due to the size of the event.
+Definitely, I think it is a fair topic (there was some discussion on
+this last year, but it may be good to revisit it).
 
--- 
-Regards,
-
-Laurent Pinchart
+Cheers,
+Miguel
 
