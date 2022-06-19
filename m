@@ -1,59 +1,60 @@
-Return-Path: <ksummit+bounces-665-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-666-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from da.mirrors.kernel.org (da.mirrors.kernel.org [IPv6:2604:1380:4040:4f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE3C6550B31
-	for <lists@lfdr.de>; Sun, 19 Jun 2022 16:27:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CEA5550B3A
+	for <lists@lfdr.de>; Sun, 19 Jun 2022 16:45:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by da.mirrors.kernel.org (Postfix) with ESMTPS id 67AC32E0A2B
-	for <lists@lfdr.de>; Sun, 19 Jun 2022 14:27:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47A4D280ABC
+	for <lists@lfdr.de>; Sun, 19 Jun 2022 14:45:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43A282580;
-	Sun, 19 Jun 2022 14:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E9B92583;
+	Sun, 19 Jun 2022 14:45:04 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
 Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB487B
-	for <ksummit@lists.linux.dev>; Sun, 19 Jun 2022 14:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41957B
+	for <ksummit@lists.linux.dev>; Sun, 19 Jun 2022 14:45:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1655648833;
-	bh=YwT+Y37kVtHvsCsmrguvX/nPJUqqzvkGyEYKNfbiMfk=;
+	d=hansenpartnership.com; s=20151216; t=1655649902;
+	bh=fJPkA62fgfmVs/hnWivoF8CBXeslkpEcdFD+ZdmddaQ=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=nt4IwgcHTwsdDZkOKIr9tAEey+lYugk28l43Gi+QaWNHmMEjvGR/vwE1CSwsv4X1t
-	 qyVzvXih419qx1pK85jlQ2d/WHa300UlveFLwj+ExyOpTQIBp07V2PHPPX+1M+ZcES
-	 hwLI+nWafqrRmKNeBWw32/sbWUsD+IWykJ8NDs8A=
+	b=mMBxgGQmsvYHNWd4cVgKSkFpJ1z/PVH1OyirYT/gApRENG76gWVe6uSkYlmJ6oCgS
+	 nqzOSO/A9g6Yz1O7mAJrhvquOGJYy3PShnJUa4sMIbhakP2ljVPuEVB4eD1GvUcXGM
+	 smqEZQ9Sk8ink4Bd1+JdCOaoNhR7CwRA1oZUrYLY=
 Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id D48851281C3D;
-	Sun, 19 Jun 2022 10:27:13 -0400 (EDT)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 366DD128070E;
+	Sun, 19 Jun 2022 10:45:02 -0400 (EDT)
 Received: from bedivere.hansenpartnership.com ([127.0.0.1])
 	by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 3DaO7yftkk28; Sun, 19 Jun 2022 10:27:13 -0400 (EDT)
+	with ESMTP id ZLRBT9mTDAVj; Sun, 19 Jun 2022 10:45:02 -0400 (EDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1655648833;
-	bh=YwT+Y37kVtHvsCsmrguvX/nPJUqqzvkGyEYKNfbiMfk=;
+	d=hansenpartnership.com; s=20151216; t=1655649902;
+	bh=fJPkA62fgfmVs/hnWivoF8CBXeslkpEcdFD+ZdmddaQ=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=nt4IwgcHTwsdDZkOKIr9tAEey+lYugk28l43Gi+QaWNHmMEjvGR/vwE1CSwsv4X1t
-	 qyVzvXih419qx1pK85jlQ2d/WHa300UlveFLwj+ExyOpTQIBp07V2PHPPX+1M+ZcES
-	 hwLI+nWafqrRmKNeBWw32/sbWUsD+IWykJ8NDs8A=
+	b=mMBxgGQmsvYHNWd4cVgKSkFpJ1z/PVH1OyirYT/gApRENG76gWVe6uSkYlmJ6oCgS
+	 nqzOSO/A9g6Yz1O7mAJrhvquOGJYy3PShnJUa4sMIbhakP2ljVPuEVB4eD1GvUcXGM
+	 smqEZQ9Sk8ink4Bd1+JdCOaoNhR7CwRA1oZUrYLY=
 Received: from [IPv6:2601:5c4:4300:c551:a71:90ff:fec2:f05b] (unknown [IPv6:2601:5c4:4300:c551:a71:90ff:fec2:f05b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 19C541281C2B;
-	Sun, 19 Jun 2022 10:27:13 -0400 (EDT)
-Message-ID: <cefa5e41b74c96c81003cfd421cf754a03cc7f52.camel@HansenPartnership.com>
-Subject: Re: [TECH TOPIC] Rust
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 779B31280402;
+	Sun, 19 Jun 2022 10:45:01 -0400 (EDT)
+Message-ID: <ca6243160b36aa42f4d0ad23853b84e57ca366f1.camel@HansenPartnership.com>
+Subject: [MAINTAINER SUMMIT] Are we becoming too fearful? [was Re: [TECH
+ TOPIC] Rust]
 From: James Bottomley <James.Bottomley@HansenPartnership.com>
 To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Jens Axboe
 	 <axboe@kernel.dk>
 Cc: Christoph Hellwig <hch@infradead.org>, Miguel Ojeda
 	 <miguel.ojeda.sandonis@gmail.com>, ksummit
 	 <ksummit-discuss@lists.linuxfoundation.org>, ksummit@lists.linux.dev
-Date: Sun, 19 Jun 2022 10:27:08 -0400
-In-Reply-To: <Yq8qaqr673UFFG6y@pendragon.ideasonboard.com>
+Date: Sun, 19 Jun 2022 10:45:00 -0400
+In-Reply-To: <cefa5e41b74c96c81003cfd421cf754a03cc7f52.camel@HansenPartnership.com>
 References: 
 	<CANiq72nNKvFqQs9Euy=_McfcHf0-dC_oPB3r8ZJii2L3sfVjaw@mail.gmail.com>
 	 <Yq44nyu7P1uhBVGi@pendragon.ideasonboard.com>
@@ -62,6 +63,7 @@ References:
 	 <2513dc4528c71d34d400c104e91ada6517869886.camel@HansenPartnership.com>
 	 <d3ba4011-a31d-05fa-b5de-808a1a5ee56f@kernel.dk>
 	 <Yq8qaqr673UFFG6y@pendragon.ideasonboard.com>
+	 <cefa5e41b74c96c81003cfd421cf754a03cc7f52.camel@HansenPartnership.com>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.34.4 
 Precedence: bulk
@@ -72,59 +74,49 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-On Sun, 2022-06-19 at 16:53 +0300, Laurent Pinchart wrote:
-> On Sun, Jun 19, 2022 at 07:19:38AM -0600, Jens Axboe wrote:
-> > On 6/19/22 6:56 AM, James Bottomley wrote:
+On Sun, 2022-06-19 at 10:27 -0400, James Bottomley wrote:
+> On Sun, 2022-06-19 at 16:53 +0300, Laurent Pinchart wrote:
 [...]
-> > > All that said, I expect once we start getting rust based patches,
-> > > it will quickly become apparent where the rust receptive
-> > > subsystems are and I would expect reviewers in those subsystems
-> > > will quickly become rust fluent.  This doesn't answer the pain vs
-> > > gain aspect, but I suspect we won't know that until we actually
-> > > try.
-> > 
-> > FWIW, I agree with you here, James. And I have to say that the
-> > original sentiment expressed here by Laurent is weirdly elitist,
-> > and not something that seems positive if that's the case. I'd
-> > suggest re-calibrating that mindset...
+> >  Whether it's worth the gain or not is not for me to decide,
+> > but I'm certainly concerned that it could lead to a catastrophe if
+> > we don't carefully think about the issues, acknowledge them, and
+> > find ways to solve them. I don't think winging it is a real option
+> > here, but I'd be more than happy to be shown that my concerns are
+> > not founded :-)
 > 
-> I'm not sure about the elitist part, but it's certainly not a
-> positive statement. I'm concerned about the pain that rust in the
-> kernel would inflict.
+> Have more faith in the community and open source process. We've
+> screwed up many times (devfs anyone ...) learned from the mistake and
+> fixed it. I'm happy to bet that accepting Rust will be no different
+> from all the other screwups we allowed in and later fixed.  So I
+> don't think there will be a catastrophe.  Either the rust experiment
+> works or it will become fairly quickly apparent if it doesn't and it
+> will get removed.  The worst case, I suppose, is that the benefit is
+> marginal in which case there's no consensus on removal vs
+> continuation and we simply continue through inertia.  I bet in that
+> situation Rust penetration will be fairly minimal and confined to
+> enthusiastic subsystems with the rest taking steps to isolate
+> themselves from it.  What we'd need in this case is some opinionated
+> person running the tree and able to make the call for us ... now who
+> could that be?
 
-I get that, and I think it's a serious concern.  I just also think we
-would waste more time second guessing this issue that we would consume
-if we just tried it.  It's not like allowing Rust into the kernel is
-some sort of Rubicon that once crossed we can never go back.  I think
-we won't know the pain vs gain until at least a year into the
-experiment of accepting Rust.  Even at that late stage, if everyone
-agrees it caused more problems than it solves, I bet it could all be
-quickly excised.
+I think there's a growing problem in Linux which is exemplified by this
+Rust debate but which goes way beyond it: We're becoming too fearful of
+making big decisions to sustain innovation in some areas.  This really
+is a creeping cancer of inertia that has destroyed many projects before
+us and if we're not careful, we'll go the same way.
 
-So the bottom line is I think while we have a community of volunteers
-willing to try it we let them on the understanding the results will be
-evaluated at some point.
+The biggest area where we currently squelch innovation is around
+anything that touches the user space ABI.  Allegations of having to get
+everything right ab initio because we have to support it "forever" and
+all the subsequent wittering and second guessing are really stifling
+innovation in pretty much anything that could be exposed to user space.
+I really think, to counter this, we need a crash course reminder of all
+of our mistakes and how we climbed out of the hole they dug us into,
+because without that we're becoming too fearful of making mistakes.
 
->  Whether it's worth the gain or not is not for me to decide,
-> but I'm certainly concerned that it could lead to a catastrophe if we
-> don't carefully think about the issues, acknowledge them, and find
-> ways to solve them. I don't think winging it is a real option here,
-> but I'd be more than happy to be shown that my concerns are not
-> founded :-)
-
-Have more faith in the community and open source process. We've screwed
-up many times (devfs anyone ...) learned from the mistake and fixed it.
-I'm happy to bet that accepting Rust will be no different from all the
-other screwups we allowed in and later fixed.  So I don't think there
-will be a catastrophe.  Either the rust experiment works or it will
-become fairly quickly apparent if it doesn't and it will get removed. 
-The worst case, I suppose, is that the benefit is marginal in which
-case there's no consensus on removal vs continuation and we simply
-continue through inertia.  I bet in that situation Rust penetration
-will be fairly minimal and confined to enthusiastic subsystems with the
-rest taking steps to isolate themselves from it.  What we'd need in
-this case is some opinionated person running the tree and able to make
-the call for us ... now who could that be?
+The object is not to avoid mistakes at any cost, it's to be confident
+that if you make them, you're good enough to find a pathway out of them
+again.
 
 James
 
