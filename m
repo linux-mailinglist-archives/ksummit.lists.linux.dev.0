@@ -1,129 +1,202 @@
-Return-Path: <ksummit+bounces-675-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-676-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from da.mirrors.kernel.org (da.mirrors.kernel.org [IPv6:2604:1380:4040:4f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F77F551D73
-	for <lists@lfdr.de>; Mon, 20 Jun 2022 16:08:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CDD4552F24
+	for <lists@lfdr.de>; Tue, 21 Jun 2022 11:50:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by da.mirrors.kernel.org (Postfix) with ESMTPS id 0E7B92E0A52
-	for <lists@lfdr.de>; Mon, 20 Jun 2022 14:08:27 +0000 (UTC)
+	by da.mirrors.kernel.org (Postfix) with ESMTPS id 38A9E2E0A47
+	for <lists@lfdr.de>; Tue, 21 Jun 2022 09:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE062565;
-	Mon, 20 Jun 2022 14:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA580EC0;
+	Tue, 21 Jun 2022 09:50:09 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B55A57
-	for <ksummit@lists.linux.dev>; Mon, 20 Jun 2022 14:08:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1655734096;
-	bh=Fm4HoeluZwDETirmB+A1XijW3x1dmLOjz2POrJEbZlw=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=MjqoIKXeqA86iErI/CRo8MEg589bbmmEBd4zBvuf5G+ZpNMDs7Ph+wwOrOt4eI3PN
-	 JiIR4tYZtBnOXnCporEiMKkHgewhFCnp2GqZsFtmoca+HsgQamFz5PweWd2/h6PEzL
-	 fIvt+lCyst/Mzpbxczl8EU3UQJ/UfJEw6VUviWEg=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id B82B712868BB;
-	Mon, 20 Jun 2022 10:08:16 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-	by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id Yptvd-DBcGHz; Mon, 20 Jun 2022 10:08:16 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1655734096;
-	bh=Fm4HoeluZwDETirmB+A1XijW3x1dmLOjz2POrJEbZlw=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=MjqoIKXeqA86iErI/CRo8MEg589bbmmEBd4zBvuf5G+ZpNMDs7Ph+wwOrOt4eI3PN
-	 JiIR4tYZtBnOXnCporEiMKkHgewhFCnp2GqZsFtmoca+HsgQamFz5PweWd2/h6PEzL
-	 fIvt+lCyst/Mzpbxczl8EU3UQJ/UfJEw6VUviWEg=
-Received: from [IPv6:2601:5c4:4300:c551:a71:90ff:fec2:f05b] (unknown [IPv6:2601:5c4:4300:c551:a71:90ff:fec2:f05b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id D798712868B4;
-	Mon, 20 Jun 2022 10:08:15 -0400 (EDT)
-Message-ID: <c60b633ccb4e0e10d292cd8a00ef217d6a6cc5bb.camel@HansenPartnership.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F48EA4
+	for <ksummit@lists.linux.dev>; Tue, 21 Jun 2022 09:50:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=wxcLc2xA21fNz8xXsRTkYM0aU5sv+X7skVpdbQutxaU=; b=qcQtDQCBtHhxusIXYr2PUasAkE
+	6AVjLPoHZgu/kCNY3xQJnqRP3S4rQJYuRVVTLDp/VnSB3T5CPFPZ9QfTrmby1nQ6qhjvl7KiLab6H
+	HVwVZqc50A6hSr1v0VF09Re4J38p/eUfcYwzsmaSADvxt0zY+xkJhw8N3E0hQdHegpZkYzP/wEjnt
+	H8N5T0eMipz9BXYMntQnVmfp/D1F6HcDaJnVea0YM8jTo1dVmq/YjvXrpoy8ienpri1fcXr2IWfdN
+	jtzouSm576PDrb9HXIABCGdxUubJI4YoglPnKRDV249qFyPkt4gPflXt8Hktau4DKLjuZTiSNvgFb
+	735MRgKw==;
+Received: from [2001:8b0:10b:1::3ae] (helo=u3832b3a9db3152.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1o3aW6-005z8O-La; Tue, 21 Jun 2022 09:49:50 +0000
+Message-ID: <687939f307792dc894f53a1238537dc799b1e437.camel@infradead.org>
 Subject: Re: [TECH TOPIC] Rust
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>, Laurent Pinchart
-	 <laurent.pinchart@ideasonboard.com>
-Cc: Christoph Hellwig <hch@infradead.org>, Miguel Ojeda
-	 <miguel.ojeda.sandonis@gmail.com>, ksummit@lists.linux.dev
-Date: Mon, 20 Jun 2022 10:08:13 -0400
-In-Reply-To: <CAMuHMdW02U7qdvGNqijyg_5NbJ3aKyCB8j26FjeAMR-aMY_bDQ@mail.gmail.com>
+From: David Woodhouse <dwmw2@infradead.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, ksummit
+	 <ksummit-discuss@lists.linuxfoundation.org>, ksummit@lists.linux.dev
+Date: Tue, 21 Jun 2022 10:49:49 +0100
+In-Reply-To: <CANiq72nNKvFqQs9Euy=_McfcHf0-dC_oPB3r8ZJii2L3sfVjaw@mail.gmail.com>
 References: 
 	<CANiq72nNKvFqQs9Euy=_McfcHf0-dC_oPB3r8ZJii2L3sfVjaw@mail.gmail.com>
-	 <Yq44nyu7P1uhBVGi@pendragon.ideasonboard.com>
-	 <Yq6+p+aRCjeZ7QsS@infradead.org>
-	 <Yq70keAYGQQmyJLm@pendragon.ideasonboard.com>
-	 <2513dc4528c71d34d400c104e91ada6517869886.camel@HansenPartnership.com>
-	 <Yq8pXroV+23xr5w5@pendragon.ideasonboard.com>
-	 <CAMuHMdW02U7qdvGNqijyg_5NbJ3aKyCB8j26FjeAMR-aMY_bDQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-I4eqSiNW2q8z76Ba1qpq"
+User-Agent: Evolution 3.36.5-0ubuntu1 
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-On Sun, 2022-06-19 at 21:08 +0200, Geert Uytterhoeven wrote:
-> Hi Laurent,
-> 
-> On Sun, Jun 19, 2022 at 3:49 PM Laurent Pinchart
-> <laurent.pinchart@ideasonboard.com> wrote:
-> > On Sun, Jun 19, 2022 at 08:56:46AM -0400, James Bottomley wrote:
-[...]
-> > > I really doubt anyone at the maintainer or reviewer level of the 
-> > > kernel doesn't have the ability to learn rust (now whether they
-> > > have the desire to is quite another matter) and I'd be surprised
-> > > if we can find any kernel developer who only speaks C.  I think
-> > > the biggest problem with rust is that there's definitely an anti-
-> > > C bias in the language. What I mean by that is if you look at
-> > > Java they chose to be as close to C where possible to make the
-> > > language easier to learn.  Rust seems to have taken the opposite
-> > > view and picked a lot of things which could have been C like
-> > > (typing, function calls, returns, mutability, etc.) and done them
-> > > differently just because they wanted to be different from
-> > > C.  That does cause issues for C people because you tend to trip
-> > > over the anti-C biases in the language and are constantly having
-> > > to look the basic syntax up.  This really increases the learning
-> > > curve going from C to rust, which gets annoying very fast, but
-> > > it's not insurmountable.
-> > 
-> > Time to invent a C-like version of rust ? :-) Jokes aside, as far
-> > as I understand the syntax is different from C because it was
-> > inspired by other languages, not out of a desire to be anti-C. I
-> > could be wrong though, and it doesn't really matter anyway, I doubt
-> > there's anything we could do there.
-> 
-> When reading "things which could have been C like", I had the exact
-> same thought ;-)
-> 
-> In the past, many new paradigms were implemented in a variety of new
-> languages, usually inspired by other languages (e.g. some looked like
-> C, others like Pascal).
-> 
-> At the risk of sounding too procrastinating (perfect is the enemy
-> of good, and see James' thread about becoming too fearful...),
-> perhaps it is wise to question if Rust arrived too soon, and a more
-> C-like language implementing the same safety paradigms is just around
-> the corner, or already in its infancy?
 
-I'm not really sure we should wait.  The problem caused by the anti-C
-biases in Rust is merely an increase in the hump you have to climb to
-get a handle on the language.  As I said above, it's annoying, but not
-insurmountable.  I don't think we have to wait for an easier language
-for C programmers to come along to begin the Rust experiment.  Assuming
-the experiment has mixed results, and that's due to people not getting
-over the learning hump, we can always adopt a more C like memory safe
-language later, assuming one comes along.
+--=-I4eqSiNW2q8z76Ba1qpq
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-James
+On Sat, 2022-06-18 at 22:33 +0200, Miguel Ojeda wrote:
+> The effort to add Rust support to the kernel is ongoing. There has
+> been progress in different areas during the last year, and there are
+> several topics that could benefit from discussion:
+>=20
+>   - Dividing the `kernel` crate into pieces, dependency management
+> between internal crates, writing crates in the rest of the kernel
+> tree, etc.
+>=20
+>   - Whether to allow dependencies on external crates and vendoring of
+> useful third-party crates.
+>=20
+>   - Toolchain requirements in the future and status of Rust unstable feat=
+ures.
+>=20
 
+This one is a constant pain point for me in another project which
+combines C and Rust code. We are constantly being told "of *course*
+that doesn't work; you haven't updated your Rust toolchain for a whole
+week!"
+
+It also makes bisection basically impossible at times, because during
+bisection we find that older code doesn't build with the *new*
+toolchain either.
+
+I think we need to set *very* clear rules and expectations about how
+many times a decade it's permitted to require a new rust toolchain.
+
+
+--=-I4eqSiNW2q8z76Ba1qpq
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
+ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
+EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
+FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
+aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
+EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
+VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
+aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
+ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
+QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
+rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
+ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
+U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
+DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
+BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
+dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
+BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
+QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
+CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
+xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
+IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
+kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
+eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
+KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
+1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
+OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
+x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
+5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
+DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
+VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
+UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
+MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
+ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
+oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
+SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
+xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
+RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
+bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
+NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
+KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
+5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
+C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
+gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
+VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
+by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
+b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
+BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
+QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
+c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
+AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
+qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
+v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
+Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
+tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
+Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
+YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
+ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
+IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
+ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
+GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
+h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
+9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
+P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
+2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
+BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
+7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
+lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
+lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
+AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
+Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
+FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
+BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
+cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
+aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
+LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
+BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
+cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
+Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
+lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
+WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
+hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
+IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
+dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
+NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
+xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjIwNjIxMDk0OTQ5WjAvBgkqhkiG9w0BCQQxIgQgFJRKdRkP
+dvbQeuVJ9prPrVCOGJO0Cps/X+j2teOZEjswgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
+A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
+dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
+DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
+MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
+Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgA7tVds6t2ZFzE2TSoREjI37zHXC+W+ziFv
+pVsdLa/UMSYkm6aAa8GQ2BPEZCgmuWWqJx/g2yu6Tzjb5AeI28Fkb6+pD5Phibb9u/PzG3bzNewX
+q4/OLQjAvuVbAOsBSHPf6nZNZJHbdsk6FxH8HCnpd/zTRn4xX67ak4phjgy9NYFXmDdj7T31H+J1
+gyfYPTSJ2bNVz5hZuqk2aFPcxU2i4okc0SloeN7HenaHAYXvRkcOEEUy3TMQ/PZx0pBXiPraD1+v
+qAOOTBdhft2atK8ICJtZLSd5tRrk2d+2UHS0ONv5mofy3tyqjONHnEWtxbxDUXIt0FGHBQpmZJZX
+gMTU8aIB66L3X/SBFzFkFs+j7MoxX060SnEdmayIV4gpP74gmToXhvGo9NNRJarbRbAVk/ZROtRD
+4WLjN2jE+eu1ytdXUKdM+qFu+QbDLilMyeMtuEBdxus98u4Gk7H+79uJGAkoa6j6lusOpU09aY0c
+ElM0xmZgws/4wuvg0Ub0o4mS6tS8KK/i7ikYIMKBWu0trxJaFIB5BCxreejts9hTUwnXCrVTetkz
+zpKt4bVhdGuscLcosY3C9hL6CJZLOtbdEmXjYObqKFcHijc9LryosE6kTXVSTiTRV2AYk9wGGf4z
+k7H1fwdN/q33XvB2o5Zjbnnl6hVoFXG0sJdHZTpCyQAAAAAAAA==
+
+
+--=-I4eqSiNW2q8z76Ba1qpq--
 
 
