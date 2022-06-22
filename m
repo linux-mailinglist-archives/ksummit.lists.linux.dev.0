@@ -1,235 +1,117 @@
-Return-Path: <ksummit+bounces-679-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-680-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from da.mirrors.kernel.org (da.mirrors.kernel.org [139.178.84.19])
-	by mail.lfdr.de (Postfix) with ESMTPS id 288E35537D6
-	for <lists@lfdr.de>; Tue, 21 Jun 2022 18:33:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3262554501
+	for <lists@lfdr.de>; Wed, 22 Jun 2022 11:59:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by da.mirrors.kernel.org (Postfix) with ESMTPS id C73462E0A45
-	for <lists@lfdr.de>; Tue, 21 Jun 2022 16:33:30 +0000 (UTC)
+	by da.mirrors.kernel.org (Postfix) with ESMTPS id 7CDCF2E0A59
+	for <lists@lfdr.de>; Wed, 22 Jun 2022 09:59:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827B43D8B;
-	Tue, 21 Jun 2022 16:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1649C1374;
+	Wed, 22 Jun 2022 09:59:17 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4561397
-	for <ksummit@lists.linux.dev>; Tue, 21 Jun 2022 16:33:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1655829200;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f4OLfshBRWmwKPI927vgIV02KzcGCXoQq0E0W0vpN0g=;
-	b=KfBnt+gSVYhARmwlh7N6TP/2hPyJMJpu5ME9MuSjJoal3I4+RT9p4NXFb3Ma3DWDANbNOu
-	zEt63AtMNCKT9RjfuLMuKAJ5as5Il10IZxNMCylQocV+gqVuK8U6GBuwdUxAQosebvxxV0
-	glBsicce2euh8Z98oHiLrQsqDOrVypQ=
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
- [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-648-B7P6PthqMh-9USBRcZlmeg-1; Tue, 21 Jun 2022 12:33:19 -0400
-X-MC-Unique: B7P6PthqMh-9USBRcZlmeg-1
-Received: by mail-pg1-f200.google.com with SMTP id a185-20020a6390c2000000b0040cb1cddf13so3375603pge.19
-        for <ksummit@lists.linux.dev>; Tue, 21 Jun 2022 09:33:19 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B40110E8
+	for <ksummit@lists.linux.dev>; Wed, 22 Jun 2022 09:59:15 +0000 (UTC)
+Received: by mail-yb1-f177.google.com with SMTP id i15so24427011ybp.1
+        for <ksummit@lists.linux.dev>; Wed, 22 Jun 2022 02:59:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=GW05uyYtAsujO2OLvJImyaOA91Ixa0fSxw+BLWoe2kU=;
+        b=LVr7HtaLWo+wKKpgXa3oSQ5tRISdegig8ZvaooQURhakNAqFYQWdZf+bR2rjTQYt+y
+         +pQk4oH4AKgj/0pKn2q9PS4X6CFIC844H5qcZNcHVRV0fKgAt+7sqKh0ifnq+HYz6Wwj
+         p9vc25XisQvipkKxS9usAOR0sCyvjPqAPGAdJFWD8ruH94z0U3bFHc/UXllSbwpoWCxx
+         sQ02/MslD6ksRVb1RhFxv33K+ySHeR8gRtMLbc1vAhmwZXplbR67NhpLaJl2x/KvPgU1
+         JJyQVU5URycg6Q5e5joetENZlX5TKn/jlvpurfkqNzw12Q8MOTEPXXG+sgngxxeEoI9x
+         bJ9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=f4OLfshBRWmwKPI927vgIV02KzcGCXoQq0E0W0vpN0g=;
-        b=aDcSSK1FxHbpEoPzv+kALCbjBAyPY78EpMFY0Wbp7B3KiAqKuRUi0MuAJy4gmW2YTx
-         7Ygb68SmxCrRQPu67dlQ+Gt0XZiDz4dM+k7MYZI3Il6bBnRgF1C9+d1xZwCvYymjSjot
-         rjsArogbRDbHBUWK4OQXvytgbJUuTRLRi/TQwk7ik2Q1ASIGWwGSenuY0IA1wiv7Yx9D
-         fAqE7uqKgIKON5EnTqFfz/c7tbu8hOc50YRjYVJ/4Q8qDNndRAqoHgYU/Lmz2XoWtc16
-         CS77xZQF5YzNaug1vy876ieqq3jClreVVrY2abMUWoOWjwenpCO0o5aYxXLBAsTKsAB5
-         rzHw==
-X-Gm-Message-State: AJIora9EQ+GmvXibVHt8/10q9t7r/xSsbeqXFIVkHLdyrbXbxWPMZ4bb
-	bLZdocIz/Ub+Cbk5qADUDygAIrwLyLKpSFR7PDPSQVw7x+15YhAsYzZdVVo4rsa8D/3xrgPn5e2
-	ppeeqiYzuM1siHvzIUlyxyUOlotqlNiPguw==
-X-Received: by 2002:a05:6a00:2187:b0:50c:ef4d:ef3b with SMTP id h7-20020a056a00218700b0050cef4def3bmr30574430pfi.83.1655829198026;
-        Tue, 21 Jun 2022 09:33:18 -0700 (PDT)
-X-Google-Smtp-Source: AGRyM1tJ+yrIH84hMSbppJEjB/OWIdqbB3E40dp8GZVBVLHAbIu2jN4PgkX3KDK260oFjKtNUIdQ4M69MlNJsr2rueE=
-X-Received: by 2002:a05:6a00:2187:b0:50c:ef4d:ef3b with SMTP id
- h7-20020a056a00218700b0050cef4def3bmr30574400pfi.83.1655829197666; Tue, 21
- Jun 2022 09:33:17 -0700 (PDT)
+        bh=GW05uyYtAsujO2OLvJImyaOA91Ixa0fSxw+BLWoe2kU=;
+        b=YQ0JXMv7zWE2lRcOwiaqij4eg04udI+yg3qBuFGT/bi/SCHHCuwdMu72UAy2EkvEp6
+         aisGTtlxACrz563YqkXcH7YW2i04AwvApBrDKyrlK6qL/JceyDijeS6fbN0v/vfNGFXx
+         /PBm5nVnEOuIDEWk4PZd0ksWVepywmh8V5TiBsD0LKbWN43mqAvG9ySOpXypPdt09zcW
+         LpEqni+SLcbwjx6zVfxAXWrlws3gkBHETFK9xdsHM2uKLc1mXipKJSuXt8l8Ca4PywEA
+         WgyEjab/Z+b6q5DZJbl0b8lshqoqjLfodj40lm1w8HcVQmfjZWM3e4JrjFX3DBQzxa1X
+         Atuw==
+X-Gm-Message-State: AJIora8Mqx32OzgdLjaCN61v563jRZriSOiSi9lME+/mBqPK1G3FJHrU
+	vojoSgTSiOo7DK2FSD0PfbbGSnnJatV0NAa9DLO/RQ==
+X-Google-Smtp-Source: AGRyM1uaqvFVM30TKnG97vVA8KCZQk+YEuLveQ9Q7DVf1w1EDJv1IVOmVfVUOxprDSRnR95RqQHaHGDF2c4sGT3a8sU=
+X-Received: by 2002:a25:ed03:0:b0:668:b0ed:ac42 with SMTP id
+ k3-20020a25ed03000000b00668b0edac42mr2746107ybh.533.1655891954544; Wed, 22
+ Jun 2022 02:59:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <nycvar.YFH.7.76.2206151023250.14340@cbobk.fhfr.pm>
- <20220615170407.ycbkgw5rofidkh7x@quack3.lan> <87h74lvnyf.fsf@meer.lwn.net>
- <20220615174601.GX1790663@paulmck-ThinkPad-P17-Gen-1> <nycvar.YFH.7.76.2206152022550.14340@cbobk.fhfr.pm>
- <20220616122634.6e11e58c@gandalf.local.home> <bbb46f66bb8518e90030fe97a1225adf178654d1.camel@HansenPartnership.com>
- <20220616125128.68151432@gandalf.local.home> <a522bfa4241eb263e354ebbb293b0d629dd2e026.camel@HansenPartnership.com>
- <nycvar.YFH.7.76.2206170947520.14340@cbobk.fhfr.pm> <20220617103050.2almimus5hjcifxl@quack3.lan>
- <CAO-hwJJxCteD_BHZTeqQ1f7gWOHoj+05qP8bmFsRYVfMc_3FxQ@mail.gmail.com>
- <dc6ca88d-d1ef-a1ab-dbef-e9338467271d@redhat.com> <CAO-hwJ+DJGYzKeGd8q7ma3L_qfd=phxczyfPqPnoz-DV9By_Cg@mail.gmail.com>
- <20220620091344.6c6499e4@rorschach.local.home> <20220621110514.6ef174d0@rorschach.local.home>
-In-Reply-To: <20220621110514.6ef174d0@rorschach.local.home>
-From: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Date: Tue, 21 Jun 2022 18:33:06 +0200
-Message-ID: <CAO-hwJJ=9oNXA+mX9r=DwyUxbvf5-gWxAzBRCrbqdLd1LbPQdg@mail.gmail.com>
-Subject: Re: [Ksummit-discuss] [MAINTAINERS SUMMIT] How far to go with eBPF
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Hans de Goede <hdegoede@redhat.com>, ksummit@lists.linux.dev
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=btissoir@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+References: <CANiq72nNKvFqQs9Euy=_McfcHf0-dC_oPB3r8ZJii2L3sfVjaw@mail.gmail.com>
+ <Yq44nyu7P1uhBVGi@pendragon.ideasonboard.com> <Yq6+p+aRCjeZ7QsS@infradead.org>
+ <Yq70keAYGQQmyJLm@pendragon.ideasonboard.com> <2513dc4528c71d34d400c104e91ada6517869886.camel@HansenPartnership.com>
+ <d3ba4011-a31d-05fa-b5de-808a1a5ee56f@kernel.dk> <Yq8qaqr673UFFG6y@pendragon.ideasonboard.com>
+ <cefa5e41b74c96c81003cfd421cf754a03cc7f52.camel@HansenPartnership.com> <ca6243160b36aa42f4d0ad23853b84e57ca366f1.camel@HansenPartnership.com>
+In-Reply-To: <ca6243160b36aa42f4d0ad23853b84e57ca366f1.camel@HansenPartnership.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Wed, 22 Jun 2022 11:59:03 +0200
+Message-ID: <CACRpkdZ9GR=nH6QHhRC7xg1jnr1UJ1BDM+P28V2VWa+uPO0DrQ@mail.gmail.com>
+Subject: Re: [Ksummit-discuss] [MAINTAINER SUMMIT] Are we becoming too
+ fearful? [was Re: [TECH TOPIC] Rust]
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Jens Axboe <axboe@kernel.dk>, 
+	Christoph Hellwig <hch@infradead.org>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+	ksummit@lists.linux.dev, ksummit <ksummit-discuss@lists.linuxfoundation.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Jun 21, 2022 at 5:12 PM Steven Rostedt <rostedt@goodmis.org> wrote:
->
-> On Mon, 20 Jun 2022 09:13:44 -0400
-> Steven Rostedt <rostedt@goodmis.org> wrote:
->
-> > This statement is the issue. There's not a clear line of what
-> > constitutes what eBPF is being used for, and worse, what is guaranteed
-> > to work across kernel versions.
-> >
-> > My fear is that we will start having an expectation that pretty much
-> > any eBPF program will continue to work, and there's going to be a lot
-> > of disgruntled users when it doesn't.
-> >
-> > Having configuration uses is one thing, enabling full device
-> > functionality is another. And anything that touches core interfaces
-> > need to be scrutinized.
-> >
-> > If we look at where BPF came from (iptables et.al.) and having it do
-> > nothing more that that but for other parts of the system, it may be a
-> > good start. But even that could introduce dependencies of internal
-> > kernel implementations that could break over time. Basically, we can
-> > try to not break BPF programs but we really need the decree that it's
-> > not user API, and does not follow the "don't break user space" agenda,
-> > as anything that uses eBPF, is *not* user space. It's just another kind
-> > of kernel module.
-> >
-> > And if an eBPF program does break, if the source of that program is not
-> > available, then the answer to fixing it should be "tough luck". This
-> > should not be a way for proprietary code to have their kernel API.
->
-> I'm currently at the Open Source Summit, and Dirk basically asked my
-> question almost verbatim to Linus (during the "Dirk and Linus show").
+On Sun, Jun 19, 2022 at 4:45 PM James Bottomley
+<James.Bottomley@hansenpartnership.com> wrote:
 
-Heh, interesting :)
+> I think there's a growing problem in Linux which is exemplified by this
+> Rust debate but which goes way beyond it: We're becoming too fearful of
+> making big decisions to sustain innovation in some areas.
 
->
-> And Linus stated that there is no defined "API". It's just "do not
-> break user space tools", and this includes eBPF. That is, if something
-> that is useful in user space that breaks with an upgrade, what breaks
-> it either gets reverted, or a "fix" is done to make it work again.
->
-> Linus specified that when it gets to eBPF programs that do debugging or
-> tracing, or other really low level interactions with the kernel, then
-> if it breaks a user space tool that is doing this low level work, then
-> that's just part of the work flow (fix user space to match, it's
-> already dependent on the kernel implementations). He specified if you
-> break "real user space tools, that normal (non kernel developers) users
-> use" then you need to fix it, regardless if it is using eBPF or not.
+I agree.
 
-Hmm, OK, but I am not sure we are all talking about the same thing here.
+> This really
+> is a creeping cancer of inertia that has destroyed many projects before
+> us and if we're not careful, we'll go the same way.
 
-For real user space applications using eBPF, AFAICT, today we have
-cgroups and network filtering.
-And for those 2 applications, given that there is a well defined eBPF
-API, it wouldn't surprise me that maintainers should take care of the
-user space breakage.
+Strong words. This phenomenon is known from organization theory.
+Organization theory exist in dry and tasteless versions and some more
+colorful and spicy versions. Let's revisit the most spicy and colorful of
+them all, Cyril Norhcote Parkinson, a true representative of the
+atomic space age.
 
-However, if I decide to attach a random BPF program to random
-functions in the kernel without any involvement in the kernel, and use
-it to get some metrics, how can we consider this to be plain debugging
-or an actual user space application (assuming I share it with the rest
-of the world)?
+In his famous book "Parkinson's Law" from 1957 (a book passed to
+me from my great grandfather, and annoyingly relevant to this day),
+in the last chapter titled "Pension point, or the age of retirement" he
+touches on the subject. There might be an illicit copy here, page 42:
+http://sas2.elte.hu/tg/ptorv/Parkinson-s-Law.pdf
 
-So IMO, we can not assume that any user space application relying on
-eBPF should never break if that application is hooking to random
-functions in the kernel. If that user space application is using a
-well defined (not-an-)API, then yes, this is something maintainers
-should be aware of.
+Parkinson is writing satire and it is a clear hyperbole. But it isn't funny
+if it isn't relevant. He saw the same thing as you see, and just
+state (apparently based on nothing but his own experience) that a
+persons "age of wisdom" is followed by the "age of obstruction".
+Just constant risk avoidance. Blaeh. Boring.
 
-I might not win that argument with Linus, but I still prefered your
-suggestion to make eBPF for drivers similar to kernel modules.
+I don't know about eBPF, but Rust is nice. Let's merge it and see what
+happens. As one of my friends working in embedded systems said:
+"this is the only new thing I have seen in my career, the rest is just
+repetitions of the past", and I agree with that.
 
->
-> This still does not address the problem. First, where's the line where a
-> tool becomes something for normal users?
+My biggest worry is that the kernel community can become irrelevant
+for young people as a demographic. Young people like things like
+Rust and web-based merge requests on github. They are also very
+smart. So I see it as partly an inclusion problem.
 
-I thought this was the initial topic that Jiri raised, and why we need
-to have this discussion :)
-
->
-> Next, eBPF can now attach to pretty much *any* function, and modify how
-> that function operates (changing parameters, etc) Basically, eBPF can
-> do live kernel patching like changes.
-
-AFAICT, technically, when you attach an TRACING bpf program, you only
-have read-only capabilities on the arguments.
-To be able to change the return value, the kernel needs to explicitly
-export the function as such, and to change the incoming data, well,
-you need a special kfunc.
-
-
->
-> If a new feature is implemented with eBPF and that eBPF feature depends
-> on some internal kernel implementation, where the maintainer of that
-> code is unaware of this new eBPF implemented feature, if they change
-> their code and break this, then the burden is on the maintainer to fix
-> that breakage, not those that implemented the eBPF feature.
-
-I think I would need a more precise example here.
-kfuncs are by explicitly defined in the kernel, meaning that the eBPF
-program willing to use that feature needs to go through the kfunc. And
-then, I would hope that the writer of the kfunc writes selftests for
-it, and we can detect the change early enough before it gets pushed.
-So the only other part a maintainer would not be aware of is if the
-eBPF program attached a tracing program to one of the internal
-functions, and I don't have a solution for this given that it's
-already in the wild, and you already had the case once.
-
->
-> This is the worry I have. Maintainers now have no control over what is
-> exposed to users that can become 'user API", aka break normal user
-> tooling, without having a clue that something now depends on the
-> implementation of their code.
->
-> We really need to take a step back before we let eBPF become fully
-> controlling of anything in the kernel. Because that's going to add a
-> huge burden on maintainers that do not even use eBPF.
-
-We already have the painful part available to anybody.
-
-I have a simple example for the gamepads with a touchpad:
-I can easily attach a eBPF program that counts how many times a hidraw
-devnode is opened, and if the result is positive, disable another
-devnode through the sysfs (the input node of the touchpad) that should
-not be used at the same time. If I push that code to a userspace tool,
-let's say Steam or systemd, this will be considered as "application"
-and I am now preventing the maintainer of hidraw or maybe devnode to
-not do further changes regarding those functions?
-
-So I would rather have a clear definition of what is an eBPF program
-that is an extension of a driver, and how we can deal with internal
-kernel changes.
-
->
-> Exposing information for consumption only is one thing, and what I
-> would like to have more of, but once you allow non-passive interactions
-> with the tracing infrastructure, it changes things where I can see a
-> lot of maintainers will have more push back against the former (reading
-> only tracing, as there's no way to keep it from making changes).
->
-
-Again, AFAICT, non-passive interaction is opt-in only. It doesn't mean
-this won't have any side effect on other maintainers, but if one
-maintainer wants non-passive interactions, then that maintainer
-probably needs to define what is supposed to be used with (or just
-embed the source in the tree and provide selftests).
-
-Cheers,
-Benjamin
-
+Yours,
+Linus Walleij
 
