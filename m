@@ -1,96 +1,120 @@
-Return-Path: <ksummit+bounces-690-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-691-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from da.mirrors.kernel.org (da.mirrors.kernel.org [IPv6:2604:1380:4040:4f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E51E5578B9
-	for <lists@lfdr.de>; Thu, 23 Jun 2022 13:31:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 286275578D1
+	for <lists@lfdr.de>; Thu, 23 Jun 2022 13:37:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by da.mirrors.kernel.org (Postfix) with ESMTPS id 346AA2E0A7B
-	for <lists@lfdr.de>; Thu, 23 Jun 2022 11:31:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF3CA280BEB
+	for <lists@lfdr.de>; Thu, 23 Jun 2022 11:37:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1138E1C2F;
-	Thu, 23 Jun 2022 11:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C1E1C2F;
+	Thu, 23 Jun 2022 11:37:19 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1C71876
-	for <ksummit@lists.linux.dev>; Thu, 23 Jun 2022 11:31:18 +0000 (UTC)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 2E898DD;
-	Thu, 23 Jun 2022 13:31:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1655983876;
-	bh=lnlQ2sCUmhXIZJWHMy0lHgKwGGc9sHsLCnw0JWe9r7M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IutopdmiR+734WcVFq2CTbPkiM4YczcPRmhnEC0vo6+G1DcLJyjte3ib6SPZ8di5l
-	 hqc7huzSQgz591YpnMx82UpXBNX8wTDyCHZJBOZz2RGjO2YrFnc+KODKZVklCoi6Ii
-	 k9Z76JM5KIh1uQ5n9PMFvhje36sUX+CLV1gJjn+U=
-Date: Thu, 23 Jun 2022 14:31:01 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Dan Carpenter <dan.carpenter@oracle.com>
-Cc: James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	ksummit@lists.linux.dev, Daniel Vetter <daniel@ffwll.ch>
-Subject: Re: [TECH TOPIC] Why is devm_kzalloc() harmful and what can we do
- about it
-Message-ID: <YrRO9bszgBnGl/r3@pendragon.ideasonboard.com>
-References: <CANiq72nNKvFqQs9Euy=_McfcHf0-dC_oPB3r8ZJii2L3sfVjaw@mail.gmail.com>
- <Yq44nyu7P1uhBVGi@pendragon.ideasonboard.com>
- <Yq6+p+aRCjeZ7QsS@infradead.org>
- <Yq70keAYGQQmyJLm@pendragon.ideasonboard.com>
- <2513dc4528c71d34d400c104e91ada6517869886.camel@HansenPartnership.com>
- <Yq8pXroV+23xr5w5@pendragon.ideasonboard.com>
- <20220621151122.GL16517@kadam>
- <YrRHZlcwqPChB/Yt@pendragon.ideasonboard.com>
- <20220623112422.GE11460@kadam>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8411876
+	for <ksummit@lists.linux.dev>; Thu, 23 Jun 2022 11:37:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1655984236;
+	bh=Fm/Xq7PUcYvV47EkMBjFI9Iryf8cmkNxENEaod/OMHo=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=jYbIv4H3ahkBXUvXA5fL0oW/i2tRNa0YbIfDVJRP8Y51KB89CRKiI/BysCAI/K0+P
+	 MvEaWJXI9+/d6o826a+5+uVoNzmyC65+En0wUxjc+x7WvU/qkRgigDyHGO5JtswoFA
+	 bTHtGojxULUlabsn6JTVu0U5C1U9WLDeTnW8vkDc=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 785211281F13;
+	Thu, 23 Jun 2022 07:37:16 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+	by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id AlJ8YkuCV1lC; Thu, 23 Jun 2022 07:37:16 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1655984236;
+	bh=Fm/Xq7PUcYvV47EkMBjFI9Iryf8cmkNxENEaod/OMHo=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=jYbIv4H3ahkBXUvXA5fL0oW/i2tRNa0YbIfDVJRP8Y51KB89CRKiI/BysCAI/K0+P
+	 MvEaWJXI9+/d6o826a+5+uVoNzmyC65+En0wUxjc+x7WvU/qkRgigDyHGO5JtswoFA
+	 bTHtGojxULUlabsn6JTVu0U5C1U9WLDeTnW8vkDc=
+Received: from lingrow.int.hansenpartnership.com (c-67-166-174-65.hsd1.va.comcast.net [67.166.174.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 6432012819EC;
+	Thu, 23 Jun 2022 07:37:15 -0400 (EDT)
+Message-ID: <36d0b379a0050fd4d80547cfde0997f0e17ed007.camel@HansenPartnership.com>
+Subject: Re: [MAINTAINER SUMMIT] Are we becoming too fearful? [was Re: [TECH
+ TOPIC] Rust]
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: NeilBrown <nfbrown@suse.de>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Jens Axboe
+	 <axboe@kernel.dk>, Christoph Hellwig <hch@infradead.org>, Miguel Ojeda
+	 <miguel.ojeda.sandonis@gmail.com>, ksummit
+	 <ksummit-discuss@lists.linuxfoundation.org>, ksummit@lists.linux.dev
+Date: Thu, 23 Jun 2022 07:37:13 -0400
+In-Reply-To: <165593960233.4786.4776751165554098218@noble.neil.brown.name>
+References: 
+	<CANiq72nNKvFqQs9Euy=_McfcHf0-dC_oPB3r8ZJii2L3sfVjaw@mail.gmail.com>
+	, <Yq44nyu7P1uhBVGi@pendragon.ideasonboard.com>
+	, <Yq6+p+aRCjeZ7QsS@infradead.org>
+	, <Yq70keAYGQQmyJLm@pendragon.ideasonboard.com>
+	, <2513dc4528c71d34d400c104e91ada6517869886.camel@HansenPartnership.com>
+	, <d3ba4011-a31d-05fa-b5de-808a1a5ee56f@kernel.dk>
+	, <Yq8qaqr673UFFG6y@pendragon.ideasonboard.com>
+	, <cefa5e41b74c96c81003cfd421cf754a03cc7f52.camel@HansenPartnership.com>
+	, <ca6243160b36aa42f4d0ad23853b84e57ca366f1.camel@HansenPartnership.com>
+	 <165593960233.4786.4776751165554098218@noble.neil.brown.name>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220623112422.GE11460@kadam>
+Content-Transfer-Encoding: 7bit
 
-Hi Dan,
-
-On Thu, Jun 23, 2022 at 02:24:22PM +0300, Dan Carpenter wrote:
-> On Thu, Jun 23, 2022 at 01:58:46PM +0300, Laurent Pinchart wrote:
-> > The devres family of functions tie the lifetime of the resources they
-> > allocate to the lifetime of a struct device bind to a driver. This is
-> > the right thing to do for many resources, for instance MMIO or
-> > interrupts need to be released when the device is unbound from its
-> > driver at the latest, and the corresponding devm_* helpers ensure this.
-> > However, drivers that expose resources to userspace have, in many cases,
-> > to ensure that those resources can be safely accessed after the device
-> > is unbound from its driver. A particular example is character device
-> > nodes, which userspace can keep open and close after the device has been
-> > unbound from the driver. If the memory region that stores the struct
-> > cdev instance is allocated by devm_kzalloc(), it will be freed before
-> > the file release handler gets to run.
+On Thu, 2022-06-23 at 09:13 +1000, NeilBrown wrote:
+> On Mon, 20 Jun 2022, James Bottomley wrote:
+> > I think there's a growing problem in Linux which is exemplified by
+> > this Rust debate but which goes way beyond it: We're becoming too
+> > fearful of making big decisions to sustain innovation in some
+> > areas.  This really is a creeping cancer of inertia that has
+> > destroyed many projects before us and if we're not careful, we'll
+> > go the same way.
 > 
-> This is a good general description of the problem, but it's not specific
-> enough for me to write a checker rule.  What I basically need is a patch
-> I guess, and then I could try write a checker rule for that exact code.
+> Is this because Linux is just too big?
+
+I don't think so ... it is historically true that larger projects tend
+to have bigger indecision problems than smaller ones, but breaking them
+up is treating the symptom not the cause.
+
+>   Are we squeezing too much into one project, and becoming afraid to
+> push on one piece for fear of breaking another?
+
+Well, that's often the reason yes.  However it's not all "too many
+moving parts"; look at the use space ABI problem: that would exist as a
+club however large or small the project was.  The usespace ABI isn't
+totally immutable as people project, it's just that mutations have to
+be managed in a way that preserves backwards compatibility (or with the
+agreement of all the ABI users), so the fear of adding something
+because it exposes a user ABI and you don't know if its right and the
+ABI would have to be supported forever if its not is somewhat bogus. 
+We need to get the balance right in terms of giving the ABI a pathway
+to evolve rather than squelching the innovation.
+
+James
+
+> Of course, breaking Linux into separate pieces would mean we would
+> need to create APIs that were at least a little bit stable.  But it
+> might also mean that individual sub-projects could take risks and
+> either flourish or die without an undue impact on the rest of the
+> ecosystem.
 > 
-> If your RFC patch were merged then the problem would be solved?
+> NeilBrown
+> 
 
-A new version of the RFC is needed, I'll try to work on that "soon".
-Merging it will then solve part of the problem (races between userspace
-calls and device unbind), but not the full problem (lifetime of objects
-that can be accessed through the file descriptor release), and in V4L2
-only.
 
-The race condition fix should really move to the cdev level in my
-opinion. For the lifetime management issue, we will need something else.
-
--- 
-Regards,
-
-Laurent Pinchart
 
