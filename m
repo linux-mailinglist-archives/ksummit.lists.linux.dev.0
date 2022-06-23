@@ -1,84 +1,105 @@
-Return-Path: <ksummit+bounces-695-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-696-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A6A2558AD4
-	for <lists@lfdr.de>; Thu, 23 Jun 2022 23:37:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB561558B86
+	for <lists@lfdr.de>; Fri, 24 Jun 2022 01:05:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E587A280C37
-	for <lists@lfdr.de>; Thu, 23 Jun 2022 21:37:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F174B280C33
+	for <lists@lfdr.de>; Thu, 23 Jun 2022 23:05:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEDD6468F;
-	Thu, 23 Jun 2022 21:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AFA14698;
+	Thu, 23 Jun 2022 23:05:34 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7914623A8
-	for <ksummit@lists.linux.dev>; Thu, 23 Jun 2022 21:36:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEFC5C341C0;
-	Thu, 23 Jun 2022 21:36:55 +0000 (UTC)
-Date: Thu, 23 Jun 2022 17:36:54 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires
- <benjamin.tissoires@redhat.com>, Hans de Goede <hdegoede@redhat.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F771FAC
+	for <ksummit@lists.linux.dev>; Thu, 23 Jun 2022 23:05:32 +0000 (UTC)
+Received: by mail-io1-f47.google.com with SMTP id z7so992188ioe.11
+        for <ksummit@lists.linux.dev>; Thu, 23 Jun 2022 16:05:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=to:cc:from:subject:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=hk4ocVcEmV+Z8uXga+Qkz1EveSN89ToQFX212xbe7Z8=;
+        b=BsR3yK4ctIeGOn+cB9JpTStj0tYC/xa0c8BlW7uJfu0TBdsCmwY/k+SyI2x2L3pbzh
+         P74JfqZs99LybyTqRKx0c7mvXmnfTTqZ+WHTppDSRpp67g5kFkSH0joTI3CXl3wlmT2P
+         WgbK7ZRsNIigcp5e1KD+aUaGteo8MN2Om/wMk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=hk4ocVcEmV+Z8uXga+Qkz1EveSN89ToQFX212xbe7Z8=;
+        b=RXB52tzWCaBtWi4ae/OPxaD/zzBACWNLlda5reZA8hFNPQpHodJDp3eyljkWgkkveW
+         wKxFXd2JKAX4fVSBcWKzfUCJaYSyfaDgxPdhlTdbDUqQ+N53lDMtNhc45Kr2HHoySr9P
+         un8qHdVGmKZthmWeYx27wuYll22dIMr2pdkeh4LZGrthTLcbr4KrYt/MvXPnuijEKdLq
+         4tf+grP58AxmHU8agdvAqUMVNkSxPXwmUH7uZKwnWut+nFxZY5r+pxJUUnsCrbQhCUan
+         pB4+f0O3mLa11qooxGSXgqZrUfut0gcRsrI7m5fx7JA3OraRtcUSec4fsAaqYJcv8A94
+         epeQ==
+X-Gm-Message-State: AJIora/4sKDkfQFfCjreqJTpXDAxFWOLUVRlTmtWrXv1K0skSZxCP6mk
+	kWXws3SAKpSxWdBwO9NanDkrzw4LjmvKzA==
+X-Google-Smtp-Source: AGRyM1vA8nIfT23B7yWQ3J1BPQ6CqCpGBG97wnnjPB8Xu2HT3r4v+H2YQ2F7TcrK1lLZLPfq39opig==
+X-Received: by 2002:a05:6638:300f:b0:335:b12d:3126 with SMTP id r15-20020a056638300f00b00335b12d3126mr6885662jak.210.1656025531909;
+        Thu, 23 Jun 2022 16:05:31 -0700 (PDT)
+Received: from [192.168.1.128] ([38.15.45.1])
+        by smtp.gmail.com with ESMTPSA id j12-20020a6b794c000000b0067275a52928sm378772iop.9.2022.06.23.16.05.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Jun 2022 16:05:31 -0700 (PDT)
+To: ksummit <ksummit-discuss@lists.linuxfoundation.org>,
  ksummit@lists.linux.dev
-Subject: Re: [Ksummit-discuss] [MAINTAINERS SUMMIT] How far to go with eBPF
-Message-ID: <20220623173654.4517e325@rorschach.local.home>
-In-Reply-To: <CAADnVQ+4B3g9AwYp5zXXJ2c-G1L-aK69bqP8mztHGG2QgzwhaQ@mail.gmail.com>
-References: <nycvar.YFH.7.76.2206151023250.14340@cbobk.fhfr.pm>
-	<20220615174601.GX1790663@paulmck-ThinkPad-P17-Gen-1>
-	<nycvar.YFH.7.76.2206152022550.14340@cbobk.fhfr.pm>
-	<20220616122634.6e11e58c@gandalf.local.home>
-	<bbb46f66bb8518e90030fe97a1225adf178654d1.camel@HansenPartnership.com>
-	<20220616125128.68151432@gandalf.local.home>
-	<a522bfa4241eb263e354ebbb293b0d629dd2e026.camel@HansenPartnership.com>
-	<nycvar.YFH.7.76.2206170947520.14340@cbobk.fhfr.pm>
-	<20220617103050.2almimus5hjcifxl@quack3.lan>
-	<CAO-hwJJxCteD_BHZTeqQ1f7gWOHoj+05qP8bmFsRYVfMc_3FxQ@mail.gmail.com>
-	<dc6ca88d-d1ef-a1ab-dbef-e9338467271d@redhat.com>
-	<CAO-hwJ+DJGYzKeGd8q7ma3L_qfd=phxczyfPqPnoz-DV9By_Cg@mail.gmail.com>
-	<20220620091344.6c6499e4@rorschach.local.home>
-	<20220621110514.6ef174d0@rorschach.local.home>
-	<CAO-hwJJ=9oNXA+mX9r=DwyUxbvf5-gWxAzBRCrbqdLd1LbPQdg@mail.gmail.com>
-	<nycvar.YFH.7.76.2206232215020.14340@cbobk.fhfr.pm>
-	<CAADnVQ+4B3g9AwYp5zXXJ2c-G1L-aK69bqP8mztHGG2QgzwhaQ@mail.gmail.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Cc: Shuah Khan <skhan@linuxfoundation.org>
+From: Shuah Khan <skhan@linuxfoundation.org>
+Subject: [TECH TOPIC] Driver probe fails and register succeeds
+Message-ID: <d39ab7f8-db79-2f0d-9d2c-ecce42505b10@linuxfoundation.org>
+Date: Thu, 23 Jun 2022 17:05:30 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 
-On Thu, 23 Jun 2022 14:23:51 -0700
-Alexei Starovoitov <alexei.starovoitov@gmail.com> wrote:
+I have been debugging a driver probe failure and noticed that driver gets
+registered even when driver probe fails. This is not a new behavior. The
+code in question is the same since 2005.
 
-> tracepoints exposed an api through cat-able and echo-able files
-> that 'ubertrace' can use without any knowledge of the underlying kernel,
-> without access to kernel sources, etc.
-> Now please explain how bpf based tracing tools are similar?
-> What exposed api do they use?
+dmesg will say that a driver probe failed with error code and then the very
+next message from interface core that says driver is registered successfully.
+It will create sysfs interfaces.
 
-Question to you. Can eBPF provide information that normally is not
-available without the eBPF program? Could there be someone that creates
-a eBPF program based on internal information where that developer had
-to read the kernel source to implement. But then provide this program
-to other users that can now write programs based on that new
-information?
+The probe failure is propagated from the drive probe routine all the way up to
+__driver_attach(). __driver_attach() ignores the error and and returns success.
 
-Years and versions can go by, and the code that the eBPF program hasn't
-changed so this works for years, without the maintainer of the attached
-code even being aware of this use. Then one day that maintainer changes
-the code and this eBPF program breaks for the first time in years, and
-with that, it breaks all the user space applications that relied on
-this.
+         __device_driver_lock(dev, dev->parent);
+         driver_probe_device(drv, dev);
+         __device_driver_unlock(dev, dev->parent);
 
-I can see that change falling under the "broke user space" clause of
-the Linux kernel and reverted.
+         return 0;
+
+Interface driver register goes on to create sysfs entries as if driver probe
+worked. It handles errors from driver_register() and unwinds the register
+properly, however in this case it doesn't know about the failure.
+
+At this point the driver is defunct with sysfs interfaces. User has to run
+rmmod to get rid of the defunct driver.
+
+Simply returning the error from __driver_attach() didn't work as expected.
+I figured it would fail since not all interface drivers can handle errors
+from driver probe routines.
+
+I propose that we discuss the scenario to find possible solutions to avoid
+defunct drivers.
+
+thanks,
+-- Shuah
+
+
 
