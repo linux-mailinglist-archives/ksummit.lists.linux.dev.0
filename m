@@ -1,77 +1,131 @@
-Return-Path: <ksummit+bounces-713-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-714-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 208A755AAB2
-	for <lists@lfdr.de>; Sat, 25 Jun 2022 16:00:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D284A55AAC1
+	for <lists@lfdr.de>; Sat, 25 Jun 2022 16:15:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A5DE280C9D
-	for <lists@lfdr.de>; Sat, 25 Jun 2022 14:00:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9727280CB5
+	for <lists@lfdr.de>; Sat, 25 Jun 2022 14:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B45028EE;
-	Sat, 25 Jun 2022 14:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4817F28EE;
+	Sat, 25 Jun 2022 14:15:11 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D8F7C
-	for <ksummit@lists.linux.dev>; Sat, 25 Jun 2022 14:00:33 +0000 (UTC)
-Received: from localhost (unknown [IPv6:2601:281:8300:73::5f6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955597C
+	for <ksummit@lists.linux.dev>; Sat, 25 Jun 2022 14:15:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1656166508;
+	bh=eGp2hd3ilI4hghM1EzkpoV5kSHP+5nu7e9KLSlD8wOo=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=wo0CaNoIjpif30a/6gZEJm20KiFTGcQzRnpcI7VnhFYtmyMRuaxWFTt/lOKLjbIva
+	 TqO0fyQ4XpuLkqKDfTWHNpjdAj3UfoAI4+3Z97afE3ENmUnnlaFdKiiU+362AtYZBu
+	 qBGYnHx9UjDxirtJODgyh8HBzAblNlDp2gzsXPkM=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 98B2912802F8;
+	Sat, 25 Jun 2022 10:15:08 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+	by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id V2LkK4cFi461; Sat, 25 Jun 2022 10:15:08 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1656166508;
+	bh=eGp2hd3ilI4hghM1EzkpoV5kSHP+5nu7e9KLSlD8wOo=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=wo0CaNoIjpif30a/6gZEJm20KiFTGcQzRnpcI7VnhFYtmyMRuaxWFTt/lOKLjbIva
+	 TqO0fyQ4XpuLkqKDfTWHNpjdAj3UfoAI4+3Z97afE3ENmUnnlaFdKiiU+362AtYZBu
+	 qBGYnHx9UjDxirtJODgyh8HBzAblNlDp2gzsXPkM=
+Received: from [IPv6:2601:5c4:4300:c551:a71:90ff:fec2:f05b] (unknown [IPv6:2601:5c4:4300:c551:a71:90ff:fec2:f05b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id EE38C4B0;
-	Sat, 25 Jun 2022 14:00:32 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net EE38C4B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1656165633; bh=YastemKghATl8TYZkEaI6tzjMiNfaGo1mGVKRO3G9X0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=FMN/rW+BhHK7LOGOhPrXvko474r07v+rytZWFNJcONsq0lBAuVfUymrapgdF9NeUl
-	 mBWc/WuWJU+ayjasI1vtknME4qsobrqxBocmoz7uEKaAuz9g5FYMXddBwnGUIEw3Cz
-	 H9+4nbImSNFiTqjMtgjJiUOUYH9xD+yP58zyBUb9DvmAbOb6K+uWZdyLXRkMWHrUhr
-	 T2mwFQT/omSji2GhTRnVEHRmI+SWzt6ZsAOFJJFf13VW/oalhhSv5DkalhRJIDADeS
-	 MLt9qsFvHhgoGp2QPDLBzFmYBCk3AdkMFgTeNY7njsr0gql6OCm+Q21p3sQfNnpQmH
-	 aGBUxE1eRh5qw==
-From: Jonathan Corbet <corbet@lwn.net>
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id D87931280164;
+	Sat, 25 Jun 2022 10:15:07 -0400 (EDT)
+Message-ID: <79e0113a7eef81f2490e5531919fc4658a71c81a.camel@HansenPartnership.com>
+Subject: Re: [Ksummit-discuss] [TECH TOPIC] Rust
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
 To: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Jani Nikula <jani.nikula@intel.com>,
- ksummit-discuss@lists.linuxfoundation.org, ksummit@lists.linux.dev, Markus
- Heiser <markus.heiser@darmarit.de>
-Subject: Re: [Ksummit-discuss] [TECH TOPIC] What kernel documentation could be
-In-Reply-To: <20220625101029.67f14c4c@sal.lan>
-References: <87sfo3nh3t.fsf@meer.lwn.net> <20220618092447.5ebed314@sal.lan>
- <875ykrrb45.fsf@intel.com> <20220623105747.079ac92b@sal.lan>
- <87a6a38plu.fsf@meer.lwn.net> <20220624083307.159824bd@sal.lan>
- <87tu891xfv.fsf@meer.lwn.net> <20220625101029.67f14c4c@sal.lan>
-Date: Sat, 25 Jun 2022 08:00:32 -0600
-Message-ID: <87czew267z.fsf@meer.lwn.net>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Jens Axboe
+	 <axboe@kernel.dk>, Christoph Hellwig <hch@infradead.org>, Miguel Ojeda
+	 <miguel.ojeda.sandonis@gmail.com>, ksummit@lists.linux.dev, ksummit
+	 <ksummit-discuss@lists.linuxfoundation.org>
+Date: Sat, 25 Jun 2022 10:15:06 -0400
+In-Reply-To: <20220625124522.507a5b06@sal.lan>
+References: 
+	<CANiq72nNKvFqQs9Euy=_McfcHf0-dC_oPB3r8ZJii2L3sfVjaw@mail.gmail.com>
+	 <Yq44nyu7P1uhBVGi@pendragon.ideasonboard.com>
+	 <Yq6+p+aRCjeZ7QsS@infradead.org>
+	 <Yq70keAYGQQmyJLm@pendragon.ideasonboard.com>
+	 <2513dc4528c71d34d400c104e91ada6517869886.camel@HansenPartnership.com>
+	 <d3ba4011-a31d-05fa-b5de-808a1a5ee56f@kernel.dk>
+	 <Yq8qaqr673UFFG6y@pendragon.ideasonboard.com>
+	 <cefa5e41b74c96c81003cfd421cf754a03cc7f52.camel@HansenPartnership.com>
+	 <20220625124522.507a5b06@sal.lan>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Mauro Carvalho Chehab <mchehab@kernel.org> writes:
+On Sat, 2022-06-25 at 12:45 +0100, Mauro Carvalho Chehab wrote:
+[...]
+> Assuming that we get into a point were all the above happens for
+> subsystem XXX, at the Rust experiment validation point you mentioned
+> above, there will be some possible outcomes:
+> 
+> 1) Rust experiment fails. On such case, the efforts to make the
+> subsystem C code ready to run safe Rust code will be welcomed,
+> as Linux should be safer. The work on providing Rust bindings will 
+> be wasted on such case. 
 
-> Em Fri, 24 Jun 2022 16:57:56 -0600
-> Jonathan Corbet <corbet@lwn.net> escreveu:
+Not entirely ... we'll still have gone through the learning exercise of
+how do you do this.  If another language promising additional safety
+features comes along we'll be better at it next time.
 
->> I went in with a crowbar and sledgehammer and replaced some of the list
->> searches with a dict lookup, resulting in about a 20% speedup in the
->> full htmldocs build with Sphinx 5.0.2. 
->
-> Great to have a 20% speedup here! Yet, I would expect an even better
-> performance improvement by replacing 700 million calls from linear search
-> to dict, as it would change from O(n^2) to O(1) at the average case [1],
-> but the speedup gain actually depends on the actual number of symbols we
-> have defined.
+> I can't measure how much would be spent on making C code safer and 
+> how much would be on writing Rust bindings though. If such efforts 
+> would be 80%-90% for making subsystems code safer, it should 
+> worth the efforts even if Rust code ends being removed.
+> 
+> 2) Rust experiment succeeds. In long term it would mean that
+> subsystems should, at some point, stop accepting C code and start
+> using only Rust for new code, and several drivers in C would require
+> conversion to Rust or moved to staging in order to be deprecated.
 
-I said "some" - this was a proof-of-concept hack.  The complexity of
-their symbol lookup code is ... daunting ... and not something that gets
-fixed in one place.  More research is required...
+I don't think that's what success looks like.  I think we'd continue in
+dual C/Rust mode almost indefinitely.  Look how long it took the kernel
+to add enough flexibility just to compile the existing C with clang.
 
-jon
+There may be a point where we ask should we deprecate C, but that's
+independent of and probably way beyond the point where Rust is a
+success.
+
+> 3) Some maintainers would consider it a success while others would
+> consider it a failure. That's the worse case scenario. If we reach
+> that, some Kernel/Maintainers Summit hard discussions would likely 
+> be needed, in order to avoid subsystem's fragmentation with regards 
+> to accepting or not C and/or Rust code subsystem-wide.
+
+So this is where we have to ask hard questions about what does success
+(or failure) actually look like. I think success is really at least one
+subsystem demonstrates support and enthusiasm for the Rust conversion
+and it doesn't cause a huge drain on those who don't embrace it.  That
+leaves open the door for more converts but doesn't force them.  We can
+continually evaluate the maintenance burden in this mode and debate
+whether it's too great or is acceptable.  I think failure is definitely
+no subsystem wants to embrace rust.  The problem case is where a
+subsystem embraces rust has issues but doesn't want to admit failure
+because it would lead to the failure of the rust project ... this one
+we'll need to examine in detail.
+
+James
+
+
 
