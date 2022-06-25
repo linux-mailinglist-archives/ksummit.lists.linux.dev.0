@@ -1,102 +1,77 @@
-Return-Path: <ksummit+bounces-712-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-713-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from da.mirrors.kernel.org (da.mirrors.kernel.org [139.178.84.19])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7494855A9A2
-	for <lists@lfdr.de>; Sat, 25 Jun 2022 14:04:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 208A755AAB2
+	for <lists@lfdr.de>; Sat, 25 Jun 2022 16:00:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by da.mirrors.kernel.org (Postfix) with ESMTPS id C6C392E0A55
-	for <lists@lfdr.de>; Sat, 25 Jun 2022 12:04:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A5DE280C9D
+	for <lists@lfdr.de>; Sat, 25 Jun 2022 14:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23AB028E4;
-	Sat, 25 Jun 2022 12:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B45028EE;
+	Sat, 25 Jun 2022 14:00:35 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6B24A19
-	for <ksummit@lists.linux.dev>; Sat, 25 Jun 2022 12:04:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90383C3411C;
-	Sat, 25 Jun 2022 12:04:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1656158645;
-	bh=vB4In3INtqP94PXlc318Cy8TjI4qj3LdHUmD3OuHnOo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hjumWdOsKd+Mf+gD4eRsrntNAMVqpzBlB39YFRo4n4uF1IKBAd8Qf0ED5+9TOCVq5
-	 IcfW0CTTdGT2fw50Rnu817EiYcDEHmgxPp7GeZK1PxbtelWt1HgRBedw4QMghDyd9P
-	 4kFIe+S2TOvkkgPQ65gN1e1cXTC+4d67dqiYqWcK4meOhnbAtL+GO17AYH79hpjiqm
-	 QQdOKPTgugyJvHL+SsnJdFSZmYcQ5attjXb1GjgeK1Hb2GeCtU4VtGdoG636V0pRDz
-	 pRlH9fXNdohhc46tYUbqnpKILPVUJLkvBQEamvDg9z3ZzRIuHbHLmbIRG3R1Ua/KGp
-	 wtqXz6XgX6ZtA==
-Date: Sat, 25 Jun 2022 13:03:59 +0100
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
-To: James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Jens Axboe
- <axboe@kernel.dk>, Christoph Hellwig <hch@infradead.org>, Miguel Ojeda
- <miguel.ojeda.sandonis@gmail.com>, ksummit@lists.linux.dev, ksummit
- <ksummit-discuss@lists.linuxfoundation.org>
-Subject: Re: [Ksummit-discuss] [MAINTAINER SUMMIT] Are we becoming too
- fearful? [was Re: [TECH TOPIC] Rust]
-Message-ID: <20220625130353.6fbc56d2@sal.lan>
-In-Reply-To: <ca6243160b36aa42f4d0ad23853b84e57ca366f1.camel@HansenPartnership.com>
-References: <CANiq72nNKvFqQs9Euy=_McfcHf0-dC_oPB3r8ZJii2L3sfVjaw@mail.gmail.com>
-	<Yq44nyu7P1uhBVGi@pendragon.ideasonboard.com>
-	<Yq6+p+aRCjeZ7QsS@infradead.org>
-	<Yq70keAYGQQmyJLm@pendragon.ideasonboard.com>
-	<2513dc4528c71d34d400c104e91ada6517869886.camel@HansenPartnership.com>
-	<d3ba4011-a31d-05fa-b5de-808a1a5ee56f@kernel.dk>
-	<Yq8qaqr673UFFG6y@pendragon.ideasonboard.com>
-	<cefa5e41b74c96c81003cfd421cf754a03cc7f52.camel@HansenPartnership.com>
-	<ca6243160b36aa42f4d0ad23853b84e57ca366f1.camel@HansenPartnership.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-redhat-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D8F7C
+	for <ksummit@lists.linux.dev>; Sat, 25 Jun 2022 14:00:33 +0000 (UTC)
+Received: from localhost (unknown [IPv6:2601:281:8300:73::5f6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id EE38C4B0;
+	Sat, 25 Jun 2022 14:00:32 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net EE38C4B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1656165633; bh=YastemKghATl8TYZkEaI6tzjMiNfaGo1mGVKRO3G9X0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=FMN/rW+BhHK7LOGOhPrXvko474r07v+rytZWFNJcONsq0lBAuVfUymrapgdF9NeUl
+	 mBWc/WuWJU+ayjasI1vtknME4qsobrqxBocmoz7uEKaAuz9g5FYMXddBwnGUIEw3Cz
+	 H9+4nbImSNFiTqjMtgjJiUOUYH9xD+yP58zyBUb9DvmAbOb6K+uWZdyLXRkMWHrUhr
+	 T2mwFQT/omSji2GhTRnVEHRmI+SWzt6ZsAOFJJFf13VW/oalhhSv5DkalhRJIDADeS
+	 MLt9qsFvHhgoGp2QPDLBzFmYBCk3AdkMFgTeNY7njsr0gql6OCm+Q21p3sQfNnpQmH
+	 aGBUxE1eRh5qw==
+From: Jonathan Corbet <corbet@lwn.net>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Jani Nikula <jani.nikula@intel.com>,
+ ksummit-discuss@lists.linuxfoundation.org, ksummit@lists.linux.dev, Markus
+ Heiser <markus.heiser@darmarit.de>
+Subject: Re: [Ksummit-discuss] [TECH TOPIC] What kernel documentation could be
+In-Reply-To: <20220625101029.67f14c4c@sal.lan>
+References: <87sfo3nh3t.fsf@meer.lwn.net> <20220618092447.5ebed314@sal.lan>
+ <875ykrrb45.fsf@intel.com> <20220623105747.079ac92b@sal.lan>
+ <87a6a38plu.fsf@meer.lwn.net> <20220624083307.159824bd@sal.lan>
+ <87tu891xfv.fsf@meer.lwn.net> <20220625101029.67f14c4c@sal.lan>
+Date: Sat, 25 Jun 2022 08:00:32 -0600
+Message-ID: <87czew267z.fsf@meer.lwn.net>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-Em Sun, 19 Jun 2022 10:45:00 -0400
-James Bottomley <James.Bottomley@HansenPartnership.com> escreveu:
+Mauro Carvalho Chehab <mchehab@kernel.org> writes:
 
-> I think there's a growing problem in Linux which is exemplified by this
-> Rust debate but which goes way beyond it: We're becoming too fearful of
-> making big decisions to sustain innovation in some areas.
+> Em Fri, 24 Jun 2022 16:57:56 -0600
+> Jonathan Corbet <corbet@lwn.net> escreveu:
 
-I don't think so. Rust is special in the sense that, if it succeeds
-and the Kernel ends being Rewritten in Rust, it will affect everyone.
-On a huge community like the Kernel, that means that this topic will
-surely attract lots of discussions, and that decisions will be tough,
-as it is hard to reach consensus. 
+>> I went in with a crowbar and sledgehammer and replaced some of the list
+>> searches with a dict lookup, resulting in about a 20% speedup in the
+>> full htmldocs build with Sphinx 5.0.2. 
+>
+> Great to have a 20% speedup here! Yet, I would expect an even better
+> performance improvement by replacing 700 million calls from linear search
+> to dict, as it would change from O(n^2) to O(1) at the average case [1],
+> but the speedup gain actually depends on the actual number of symbols we
+> have defined.
 
-Yet, we're experimenting with it, meaning that the community is willing
-to try innovating, even when this trying something different from
-everything else already tried in the past.
+I said "some" - this was a proof-of-concept hack.  The complexity of
+their symbol lookup code is ... daunting ... and not something that gets
+fixed in one place.  More research is required...
 
-> The biggest area where we currently squelch innovation is around
-> anything that touches the user space ABI.  Allegations of having to get
-> everything right ab initio because we have to support it "forever" and
-> all the subsequent wittering and second guessing are really stifling
-> innovation in pretty much anything that could be exposed to user space.
-
-I agree with that. In the past, we have the EXPERIMENTAL kconfig where
-we did some experiments even with uAPI/uAPI. Nowadays, lots of such
-experiments are actually happening happen outside upstream, as:
-
-1) it is very hard to have maintainers accept APIs that are used only
-   by a single driver;
-
-2) nobody wants to carry the costs of adding backward-compatible
-   workarounds for APIs that ends requiring changes after new hardware
-   devices would require changes on it.
-
-Not sure how to address it without adding an "API staging" support
-somehow.
-
-Regards,
-Mauro
+jon
 
