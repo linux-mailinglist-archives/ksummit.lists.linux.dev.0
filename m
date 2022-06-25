@@ -1,119 +1,124 @@
-Return-Path: <ksummit+bounces-717-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-718-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from da.mirrors.kernel.org (da.mirrors.kernel.org [139.178.84.19])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3483A55ABD2
-	for <lists@lfdr.de>; Sat, 25 Jun 2022 19:49:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32CEF55ABE2
+	for <lists@lfdr.de>; Sat, 25 Jun 2022 20:12:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by da.mirrors.kernel.org (Postfix) with ESMTPS id B32D82E0A6A
-	for <lists@lfdr.de>; Sat, 25 Jun 2022 17:49:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66EFE280C98
+	for <lists@lfdr.de>; Sat, 25 Jun 2022 18:12:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C73A291B;
-	Sat, 25 Jun 2022 17:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8EAF29A3;
+	Sat, 25 Jun 2022 18:12:01 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392B7290B
-	for <ksummit@lists.linux.dev>; Sat, 25 Jun 2022 17:49:20 +0000 (UTC)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id EC8A131A;
-	Sat, 25 Jun 2022 19:49:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1656179353;
-	bh=PhEVFog9mljAehcUh9ztFuUtg1sTv8nY0EuiMKmssQw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=j0LIZHA8DouRHk3Yr1H+a2KpPC4TwffGUtrp72ojSZcz5tQQqNVOa9yISVQlh153I
-	 mzDVzIAwgDFBI8c3azyOhuywD5BXVb6wLswRV4btFhgJsPjledFHLfEDWZhjfGsZ97
-	 SxgxLgn7HiLHw/2sw/eaEb+8ToanutQfRRsbNcms=
-Date: Sat, 25 Jun 2022 20:48:55 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Jonathan Corbet <corbet@lwn.net>,
-	ksummit-discuss@lists.linuxfoundation.org, ksummit@lists.linux.dev
-Subject: Re: [TECH TOPIC] What kernel documentation could be
-Message-ID: <YrdKhw8gww20ODYr@pendragon.ideasonboard.com>
-References: <87sfo3nh3t.fsf@meer.lwn.net>
- <20220625134328.19b5356c@rorschach.local.home>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38905290B
+	for <ksummit@lists.linux.dev>; Sat, 25 Jun 2022 18:12:00 +0000 (UTC)
+Received: by mail-ed1-f42.google.com with SMTP id eq6so7605433edb.6
+        for <ksummit@lists.linux.dev>; Sat, 25 Jun 2022 11:12:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=OBxmCPe1a9gtBWtd2b1q/5OB2yeSPGZIj9MGnPFRNQc=;
+        b=Cz4Eh7TKwXzupbbTZnAavi86ao5N5C3UXe1drQk3qZNQtPe6JO16NwJOvyHa6bgQVi
+         Wh//+bWAlSHGwjXvCSfJcs91cbGm+tSHUKDFrv7UsgpuptvlAKhV7uYRXpBnvGgmNrEP
+         7aJBNImbkhdqdmOA+hsrtDxHDMeReL4rB+zA8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=OBxmCPe1a9gtBWtd2b1q/5OB2yeSPGZIj9MGnPFRNQc=;
+        b=5zPE+QNW+BNObGH9UTFKYjvoZBDw4pe/TGEBNd2uwZkQjVXZTdjg6jzeWcU3n07CtU
+         8OxcbSn0AotBgLEcLozyslSk3kHtVGMkM2guYXdQuB5hT2XDIoiADztOg85Ti/VXM+fE
+         OYPhjMHcVwd/07vmU3Z8Xxn3WVwcBSRlwlA5rVsJ7Gz/JD3f4J10D+lhPDzQ1OrpI4DY
+         4DD9AhSlTG5QnbPOGaehoQTcRNBLwqbq5OYBtH93Y5LEfbCm1NiOGs+DM3CJdAXFirw6
+         42BS7RjhenXKjSNN3Q9gqP1skuugilPFt1sMhjeCk8/dKIGjqzkNy6ovEi1mHo9//I+4
+         Mkdg==
+X-Gm-Message-State: AJIora9P2JmvN+JCeNViixXmsFQcU0JekgKZywlRQSo7eUKisG2ndlkS
+	Ow+7Hb8N3jcMaFygqu6RzwACnr1RmfoGBvzK
+X-Google-Smtp-Source: AGRyM1sBHJ7mRTsM8zghqvQOBx5Cv1tgRBi8sKWRAwtvfUqQW8CbdXrou8o8qN9fyYjX+A6QHkltxA==
+X-Received: by 2002:a05:6402:e07:b0:435:daf0:c8cb with SMTP id h7-20020a0564020e0700b00435daf0c8cbmr6381787edh.396.1656180718281;
+        Sat, 25 Jun 2022 11:11:58 -0700 (PDT)
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com. [209.85.221.54])
+        by smtp.gmail.com with ESMTPSA id v19-20020a170906381300b00721d8e5bf0bsm2892775ejc.6.2022.06.25.11.11.56
+        for <ksummit@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 25 Jun 2022 11:11:57 -0700 (PDT)
+Received: by mail-wr1-f54.google.com with SMTP id s1so7313611wra.9
+        for <ksummit@lists.linux.dev>; Sat, 25 Jun 2022 11:11:56 -0700 (PDT)
+X-Received: by 2002:a5d:64e7:0:b0:21b:ad72:5401 with SMTP id
+ g7-20020a5d64e7000000b0021bad725401mr4483822wri.442.1656180716537; Sat, 25
+ Jun 2022 11:11:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220625134328.19b5356c@rorschach.local.home>
+References: <87sfo3nh3t.fsf@meer.lwn.net> <20220618092447.5ebed314@sal.lan>
+ <875ykrrb45.fsf@intel.com> <20220623105747.079ac92b@sal.lan>
+ <87a6a38plu.fsf@meer.lwn.net> <20220624083307.159824bd@sal.lan>
+ <87tu891xfv.fsf@meer.lwn.net> <20220625101029.67f14c4c@sal.lan> <87czew267z.fsf@meer.lwn.net>
+In-Reply-To: <87czew267z.fsf@meer.lwn.net>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sat, 25 Jun 2022 11:11:40 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wi-NnjCMTd5aC_WLfXN02gCXFOm0dbvSPaDYDkiByfrEg@mail.gmail.com>
+Message-ID: <CAHk-=wi-NnjCMTd5aC_WLfXN02gCXFOm0dbvSPaDYDkiByfrEg@mail.gmail.com>
+Subject: Re: [Ksummit-discuss] [TECH TOPIC] What kernel documentation could be
+To: Jonathan Corbet <corbet@lwn.net>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Jani Nikula <jani.nikula@intel.com>, 
+	ksummit <ksummit-discuss@lists.linuxfoundation.org>, ksummit@lists.linux.dev, 
+	Markus Heiser <markus.heiser@darmarit.de>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Steven,
+On Sat, Jun 25, 2022 at 7:00 AM Jonathan Corbet <corbet@lwn.net> wrote:
+>
+> I said "some" - this was a proof-of-concept hack.  The complexity of
+> their symbol lookup code is ... daunting ... and not something that gets
+> fixed in one place.  More research is required...
 
-On Sat, Jun 25, 2022 at 01:43:28PM -0400, Steven Rostedt wrote:
-> On Fri, 17 Jun 2022 14:57:10 -0600 Jonathan Corbet wrote:
-> 
-> > The development community has put a lot of work into the kernel's
-> > documentation directory in recent years, with visible results. But the
-> > kernel's documentation still falls far short of the standard set by many
-> > other projects, and there is a great deal of "tribal knowledge" in our
-> > community that is not set down. I'd like to look at the successes and
-> > failures of the work so far, but intent to focus on a discussion of what
-> > our documentation should be and what we can do to get it there.
-> > 
-> > Questions to discuss include:
-> > 
-> >  - Bringing an coherent overall structure to Documentation/
-> > 
-> >  - Making it easier for developers to improve the documentation.
-> 
-> Is there a way to mark comments in the code as "design docs". And I
-> don't mean the kernel-doc that is already above functions.
-> 
-> I have lots of comments about the design of complex code just above the
-> code it is describing. Which is much more likely to get updated when
-> the design changes or gets new features.
-> 
-> I found my design documents I have under Documentation to become
-> grossly obsolete over time, where as the comments above the code I can
-> keep up with.
-> 
-> Is there already some kind of mark up that we can add to the comments to state:
-> 
->  ** .design.trace/ftrace.rst .ringbuffer. **
-> 
-> or something that can be extracted into another document? With the
-> above example, I could have in Documentatino/trace/ftrace.rst a
-> 
->  .design .ringbuffer.
-> 
-> And the comment from the code would be extracted into the html
-> documents that are created?
-> 
-> Or maybe it would be better to reference the code from the documentation?
-> 
->  .include kerne/trace/ring_buffer.c .ringbuffer.
-> 
-> That will look for a tag in kernel/trace/ring_buffer.c called
-> ".ringbuffer" and pull in the comment into the document under Documentation.
-> 
-> Thoughts?
+Note that at least for me, the issue with building docs isn't hugely
+performance related.
 
-See the "DOC: overview" block in drivers/gpu/drm/drm_atomic_helper.c,
-and how it is integrated in Documentation/gpu/drm-kms-helpers.rst with
+Yes, yes, it would be good if it was faster. But..
 
-.. kernel-doc:: drivers/gpu/drm/drm_atomic_helper.c
-   :doc: overview
+The primary problems I see with building the docs (and thus checking
+them, the same way I do an allmodconfig build test) is
 
-Is that what you're looking for ?
+ (a) it's insanely noisy, which makes and "check that it's ok" ENTIRELY USELESS.
 
-> >  - What we would like from Sphinx and what we can do to make it happen
-> > 
-> >  - Making the docs build system less ugly and more maintainable
-> > 
-> >  - Integrating rustdoc documentation
+Seriously. There's a very solid reason why I require the standard
+kernel build to be entirely warning-free. Warnings are *BAD*. Even a
+single false-positive warning invalidates all other warnings.
 
--- 
-Regards,
+And the doc build isn't about some "single warning" thing.
 
-Laurent Pinchart
+ (b) it requires some unusual build tools
+
+Now, (b) may some historical oddity, but at least if you have Fedora
+installed and it still has sphinx version 2.2.11 or something like
+that.
+
+And when you try to build docs, the makefile gives you some random pip
+install thing that is entirely bogus.
+
+The proper fix is to actually remove that old sphinx environment
+entirely, and install "python3-sphinx" instead, but that's not at all
+what the "to upgrade Sphinx" docs in the kernel say when you try to
+make the docs.
+
+Anyway, (b) is one of those "the docs about the docs are wrong" things
+and ironic - but easily fixable if you know about it.
+
+But (a) then makes it all entirely pointless as far as I'm concerned.
+The doc build could take five seconds, and I *still* wouldn't bother,
+because building docs doesn't actually do anything useful for me. It's
+just noise.
+
+                  Linus
 
