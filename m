@@ -1,124 +1,125 @@
-Return-Path: <ksummit+bounces-731-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-732-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from da.mirrors.kernel.org (da.mirrors.kernel.org [IPv6:2604:1380:4040:4f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E612755BB20
-	for <lists@lfdr.de>; Mon, 27 Jun 2022 18:27:42 +0200 (CEST)
+Received: from da.mirrors.kernel.org (da.mirrors.kernel.org [139.178.84.19])
+	by mail.lfdr.de (Postfix) with ESMTPS id E419F55BB3B
+	for <lists@lfdr.de>; Mon, 27 Jun 2022 19:08:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by da.mirrors.kernel.org (Postfix) with ESMTPS id 2778E2E0C9C
-	for <lists@lfdr.de>; Mon, 27 Jun 2022 16:27:41 +0000 (UTC)
+	by da.mirrors.kernel.org (Postfix) with ESMTPS id 757B02E0A87
+	for <lists@lfdr.de>; Mon, 27 Jun 2022 17:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC5E33FE;
-	Mon, 27 Jun 2022 16:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B1693D71;
+	Mon, 27 Jun 2022 17:08:04 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3908D33E4
-	for <ksummit@lists.linux.dev>; Mon, 27 Jun 2022 16:27:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27786C3411D;
-	Mon, 27 Jun 2022 16:27:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1656347252;
-	bh=gN+9JygFyvAalV67q62AWxWFDh4thuxWG8GMNiMDYXg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LbrGvt3WaB2jVUQ/0X1hvMw5LBioi7gjfpz+l3Ey92lrWOOUAyTGf7O1LuHY6jqZu
-	 W9wS5bfFvNwc+NFVI8zqvJrQuJD8nChKKE6jcfhgFezr3N1YoRFp6jWDvP0ALxmqJM
-	 e+0jL2NlgWj+ZUK8vZNxgWQuz4vQ6M+b+yWUJksCUt9T7gIapoUz8sbvRKiDhSC/YF
-	 haD5YNjhcqQK7ZVVlzHGO5WJSl4NWyyTMSGwRSethWu9b+c5cP3UO+qnTFkFAYT/9i
-	 ZZ8pc8NPjgHyIMjsNn1n3l0g4HOXYeS90rKIGWrdd/NcKGWZpBLrWXrlwO5vqBxdPF
-	 4XkrMmoiHeUVA==
-Date: Mon, 27 Jun 2022 17:27:27 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Liam Howlett <liam.howlett@oracle.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Jani Nikula <jani.nikula@intel.com>,
-	ksummit <ksummit-discuss@lists.linuxfoundation.org>,
-	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>,
-	Markus Heiser <markus.heiser@darmarit.de>
-Subject: Re: [Ksummit-discuss] [TECH TOPIC] What kernel documentation could be
-Message-ID: <YrnabzwutRGIooCS@sirena.org.uk>
-References: <20220623105747.079ac92b@sal.lan>
- <87a6a38plu.fsf@meer.lwn.net>
- <20220624083307.159824bd@sal.lan>
- <87tu891xfv.fsf@meer.lwn.net>
- <20220625101029.67f14c4c@sal.lan>
- <87czew267z.fsf@meer.lwn.net>
- <CAHk-=wi-NnjCMTd5aC_WLfXN02gCXFOm0dbvSPaDYDkiByfrEg@mail.gmail.com>
- <20220626085524.42ee92c0@sal.lan>
- <20220626105306.122cdeda@sal.lan>
- <20220627152832.yigreu5ztnoxfp4g@revolver>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0494A04
+	for <ksummit@lists.linux.dev>; Mon, 27 Jun 2022 17:08:02 +0000 (UTC)
+Received: by mail-ej1-f49.google.com with SMTP id q6so20431225eji.13
+        for <ksummit@lists.linux.dev>; Mon, 27 Jun 2022 10:08:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=uislP0Opcxt4TwIbUM4d3BQqW/0WOX2hRXHOwoDu6Zk=;
+        b=HUFCtlWROTkw9muBQikI5ZsErGm2vK9w50p1RTuzajYLmx6OWAuPsxBXL6rm0sTyev
+         +Gl9S7zyqFK+pP+fxdlvNuxtZMyTAsqwwp/3mRv5h4wqEyQTUYiejS0FP8CoZ/BiZqP9
+         +iF1hWcgInujZiTRbv5EkC8JXWOhnpCZxv0Jw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=uislP0Opcxt4TwIbUM4d3BQqW/0WOX2hRXHOwoDu6Zk=;
+        b=oAdN4zNY8LFgkraI+2bbfW13BF5fP6dESfIVsyAHYyFm3jhSezzjj5LMV3MH9YUiXE
+         MnpWrj14xIPmhaJlm1LRj7mgVHnagMpnD7TCp+WH42bd7IiujZGbriMiikU+Q42dTcp1
+         YXRn4vp5vknbaEf5goxPE4B8gPggLu0zRfMNoSPLFb3OE4dElxbRoogNyXtOXizwf1dF
+         s/jsSmEFoHLaOmAeeCEtiAPAKxUDVRVhwUXdvle/7FQxTJvKVY9KZUJONiqC0oBxvNpJ
+         Amb+9uEEURiswQT9ik6b2lUiy5oLMiOqMD7khJzSJdi3t5Yr6P5VuSjnSlioi6zzipcC
+         h/ew==
+X-Gm-Message-State: AJIora999zr7i/2nhxQxRmU7LJOWeQl5f84+ju4Xxc6xRK8GSI31eskv
+	Yy5VGoonIQF8dHJIYVOgVAegwmCiMZ0JeU4I
+X-Google-Smtp-Source: AGRyM1ur4rEOe/uLI+7uXtMgdyVXtv2EMeq0Cd0jp8zouVO+xuyk5nok0qIQ0/jftwPZOAOBXA6m6w==
+X-Received: by 2002:a17:906:7955:b0:726:a858:5a75 with SMTP id l21-20020a170906795500b00726a8585a75mr4754202ejo.764.1656349680381;
+        Mon, 27 Jun 2022 10:08:00 -0700 (PDT)
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com. [209.85.221.41])
+        by smtp.gmail.com with ESMTPSA id b20-20020a0564021f1400b0042e15364d14sm7941643edb.8.2022.06.27.10.07.56
+        for <ksummit@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Jun 2022 10:07:57 -0700 (PDT)
+Received: by mail-wr1-f41.google.com with SMTP id r20so14015391wra.1
+        for <ksummit@lists.linux.dev>; Mon, 27 Jun 2022 10:07:56 -0700 (PDT)
+X-Received: by 2002:a5d:64e7:0:b0:21b:ad72:5401 with SMTP id
+ g7-20020a5d64e7000000b0021bad725401mr12662500wri.442.1656349676430; Mon, 27
+ Jun 2022 10:07:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Azj2mL/uhQVuq5UT"
-Content-Disposition: inline
-In-Reply-To: <20220627152832.yigreu5ztnoxfp4g@revolver>
-X-Cookie: Your supervisor is thinking about you.
+References: <87sfo3nh3t.fsf@meer.lwn.net> <20220618092447.5ebed314@sal.lan>
+ <875ykrrb45.fsf@intel.com> <20220623105747.079ac92b@sal.lan>
+ <87a6a38plu.fsf@meer.lwn.net> <20220624083307.159824bd@sal.lan>
+ <87tu891xfv.fsf@meer.lwn.net> <20220625101029.67f14c4c@sal.lan>
+ <87czew267z.fsf@meer.lwn.net> <CAHk-=wi-NnjCMTd5aC_WLfXN02gCXFOm0dbvSPaDYDkiByfrEg@mail.gmail.com>
+ <87bkueyvbo.fsf@meer.lwn.net>
+In-Reply-To: <87bkueyvbo.fsf@meer.lwn.net>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Mon, 27 Jun 2022 10:07:40 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjYBONGGhiQu2iTP6zWu8y2a4=ii4byoomf6N77-pJNeA@mail.gmail.com>
+Message-ID: <CAHk-=wjYBONGGhiQu2iTP6zWu8y2a4=ii4byoomf6N77-pJNeA@mail.gmail.com>
+Subject: Re: [Ksummit-discuss] [TECH TOPIC] What kernel documentation could be
+To: Jonathan Corbet <corbet@lwn.net>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Jani Nikula <jani.nikula@intel.com>, 
+	ksummit <ksummit-discuss@lists.linuxfoundation.org>, ksummit@lists.linux.dev, 
+	Markus Heiser <markus.heiser@darmarit.de>
+Content-Type: text/plain; charset="UTF-8"
 
+On Mon, Jun 27, 2022 at 8:34 AM Jonathan Corbet <corbet@lwn.net> wrote:
+>
+> >  (b) it requires some unusual build tools
+> >
+> > Now, (b) may some historical oddity, but at least if you have Fedora
+> > installed and it still has sphinx version 2.2.11 or something like
+> > that.
+> >
+> > And when you try to build docs, the makefile gives you some random pip
+> > install thing that is entirely bogus.
+>
+> I'd be curious to know about how you got into that situation.  Fedora
+> handles this stuff pretty readily.  I'll take another look at what we
+> have there.
 
---Azj2mL/uhQVuq5UT
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+At some point I just did "dnf install sphinx", and it got me a sphinx install.
 
-On Mon, Jun 27, 2022 at 03:28:40PM +0000, Liam Howlett wrote:
-> * Mauro Carvalho Chehab <mchehab@kernel.org> [220626 05:53]:
+So then the kernel doc build system sees "oh, you need a newer version
+of sphinx" or whatever, and suggests you do that horrible virtual
+python sandbox thing and do a random pip install in that, which I
+really don't want to do.
 
-> > Btw, once we fix the errors from the above checks, one of the things th=
-at=20
-> > could be done in order to avoid noisy doc builds would be to run this=
-=20
-> > during normal Kernel build, if CONFIG_WERROR is set (and if .git is pre=
-sent
-> > at the source build dir):
+So I ignore it entirely, obviously.
 
-> > 	./scripts/documentation-file-ref-check --warn
-> > 	./scripts/get_abi.pl validate
-> > 	./scripts/kernel-doc --none $(git grep kernel-doc $(git ls-files Docum=
-entation/|grep -v kernel-doc.rst)|perl -ne 'print "$1\n" if (m/kernel-doc::=
-\s*(\S+)/);'|sort|uniq)=20
+End result: it took me a *loong* time to go "I wonder why modern
+Fedora ships with an ancient version of sphinx, since the modern
+version is apparently 4.x something".
 
-That last one is quite the command line...
+And only at THAT point do you realize that there are three completely
+different projects called "sphinx".
 
-> > aborting the build on such warnings.
+There's the docbuild one that comes from python, which is the sphinx I want.
 
-> > On my notebook (i5-10210U), the above takes ~8 seconds to run. So, it=
-=20
-> > won't make much difference at the build time, and doing that would have
-> > avoided ~100 warnings during htmldocs build against current linux-next.
+There's the search engine 'sphinx', which is what is packaged as
+"sphinx" in Fedora, and which the documentation code obviously refuses
+to use.
 
-> Couldn't we add this to the build bots and ask the authors to fix the
-> commits?
+There's also CMU sphinx, which is a voice recognition system.
 
-There's reports for at least some of this for -next already, at least
-for newly introduced warnings.  If we could get 0day or something else
-that picks stuff off the lists that would help a lot I think, as would
-getting it into the bots that people who like to fix up warnings tend to
-be using.
+End result: building the docs can be really confusing if you have the
+wrong sphinx installed, and the "help message" is actually misleading
+and very unhelpful.
 
---Azj2mL/uhQVuq5UT
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmK52m8ACgkQJNaLcl1U
-h9CK7wf+KaHvVNv03zatffGoulsLo7Obk5R0PCtYKx04iTuYTM4aLapE5yBSvatt
-TNpMVGRgNdonEPFSdnRJLUZAfmMXWhXbQ7o1+7gdgthEbqHoWDrfXGMdYeyhhEvD
-5s2bhmw4e7Ii4bra4+2POz+5KjWg+0nIn3i/dtw68EwXwdciZV2cKeOsKXKGseU7
-Q9FT3Jr7mg427ivnO3Ym1lVeAfl8p86n8+HRoeEJDBVd5GrhtSmQqnHKUs/ZFIOU
-yYQCJ+E79Y956xz06h/UOllr5K+Uwxx3P8bAaFFxSzPmU/DHdv/VHqKpwYvhnk+G
-OWltUVB+y2Tn2a2Ro5Wl9N2so2mPfw==
-=+s1C
------END PGP SIGNATURE-----
-
---Azj2mL/uhQVuq5UT--
+              Linus
 
