@@ -1,116 +1,160 @@
-Return-Path: <ksummit+bounces-736-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-737-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD35855C081
-	for <lists@lfdr.de>; Tue, 28 Jun 2022 13:01:57 +0200 (CEST)
+Received: from da.mirrors.kernel.org (da.mirrors.kernel.org [IPv6:2604:1380:4040:4f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1730B55E517
+	for <lists@lfdr.de>; Tue, 28 Jun 2022 15:53:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F128280CB1
-	for <lists@lfdr.de>; Tue, 28 Jun 2022 11:01:56 +0000 (UTC)
+	by da.mirrors.kernel.org (Postfix) with ESMTPS id EB82F2E0A85
+	for <lists@lfdr.de>; Tue, 28 Jun 2022 13:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E092588;
-	Tue, 28 Jun 2022 11:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA6D33E4;
+	Tue, 28 Jun 2022 13:53:44 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14391257A
-	for <ksummit@lists.linux.dev>; Tue, 28 Jun 2022 11:01:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6902C341CA;
-	Tue, 28 Jun 2022 11:01:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1656414107;
-	bh=51Hx7Rxwg1ttqY5xugIQOiYlgKFZfqgPB5EvlE4L0YE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=VzxPfxCsYZnv2/lwjXt3FmoApSpM561oGnLyk634cShq/wqfzETQzHFsglPT5pD9R
-	 kOb6oRUmAebWOO6fooW9KhpTDzATzmxhy0brHSZREU0eW3KaepOSLwHsQyFyeJ8je0
-	 /k0DLNGGfkmWprBIGXH6j+FdRbNvGPQAA8VsbkPjwePlF2RCL4XL8Se3ltPrHzmi07
-	 prbunBTw9xDZhF/xYC3N9S0AYpLR6MbA5w5g3ayZ9wK67THOO2xpxxO2XokubPwqib
-	 170c9W6qr6tfa7axtLxpFZulFQE6mVYC5q2UQTK17IL4shvp8k+AWpt2aXLdIkEsCN
-	 q8mfTu3/amurQ==
-Date: Tue, 28 Jun 2022 12:01:42 +0100
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, Markus Heiser
- <markus.heiser@darmarit.de>, Jani Nikula <jani.nikula@intel.com>, ksummit
- <ksummit-discuss@lists.linuxfoundation.org>, ksummit@lists.linux.dev
-Subject: Re: [Ksummit-discuss] [TECH TOPIC] What kernel documentation could
- be
-Message-ID: <20220628120142.4fe254f7@sal.lan>
-In-Reply-To: <CAMuHMdW_EkQ8pSgJjrZtBXXkitRv2Wq+fP4wCnPmyvaPQO-kxA@mail.gmail.com>
-References: <87sfo3nh3t.fsf@meer.lwn.net>
-	<20220618092447.5ebed314@sal.lan>
-	<875ykrrb45.fsf@intel.com>
-	<20220623105747.079ac92b@sal.lan>
-	<87a6a38plu.fsf@meer.lwn.net>
-	<20220624083307.159824bd@sal.lan>
-	<963dd061-47ba-6f96-72e2-4f34cc952b8c@darmarit.de>
-	<87fsjqyvlx.fsf@meer.lwn.net>
-	<20220628084317.2f033ad5@sal.lan>
-	<CAMuHMdW_EkQ8pSgJjrZtBXXkitRv2Wq+fP4wCnPmyvaPQO-kxA@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-redhat-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FE433D6
+	for <ksummit@lists.linux.dev>; Tue, 28 Jun 2022 13:53:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1656424422; x=1687960422;
+  h=from:to:subject:in-reply-to:references:date:message-id:
+   mime-version;
+  bh=M6uDJu2Jj+d4U7UMbeugJLGUKK0L8xsuwWnXkxLo99Q=;
+  b=dZ/BHarfr6opbxDCI9b48dEdP4WXcdUtMrrfOymYjFx3ohdhsGGGecsH
+   cxN2W6044muxaCmw0LaEaZy2CMfsr+26E2zOWEoKV2BNPRl+UvivASxwh
+   RyV3eJt/vO5irkZUzWgQDmnFECmzGQGNFiI0s+VrdWVOBnR+m8Qb2lghQ
+   GYmo2y2subtYddMPSVwQKbrz4aF17mYL57KTPIrJPYbYw8ZHBeBYNWB90
+   is0oygR6D9ex6QxbewlQetqX4UpK2aOkDiXb79WEA4FBesrmyOC5zuQJc
+   XDi6SooOjl4c3KbgRhnWutWkNS2cDP1MdahHZGBoPTfTljziCTg5xcLGG
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10391"; a="279291441"
+X-IronPort-AV: E=Sophos;i="5.92,227,1650956400"; 
+   d="scan'208";a="279291441"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jun 2022 06:53:41 -0700
+X-IronPort-AV: E=Sophos;i="5.92,227,1650956400"; 
+   d="scan'208";a="646920870"
+Received: from mwardyn-mobl2.ger.corp.intel.com (HELO localhost) ([10.252.49.11])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jun 2022 06:53:40 -0700
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Hans de Goede <hdegoede@redhat.com>, ksummit@lists.linux.dev,
+ ksummit-discuss@lists.linuxfoundation.org
+Subject: Re: [TECH TOPIC] New userspace API for display-panel brightness
+ control
+In-Reply-To: <efde4273-ae38-c050-f3ed-177e175e0007@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <efde4273-ae38-c050-f3ed-177e175e0007@redhat.com>
+Date: Tue, 28 Jun 2022 16:53:37 +0300
+Message-ID: <87k090rj1a.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-Em Tue, 28 Jun 2022 09:57:29 +0200
-Geert Uytterhoeven <geert@linux-m68k.org> escreveu:
+On Mon, 20 Jun 2022, Hans de Goede <hdegoede@redhat.com> wrote:
+> <resend to both lists, because of confusion of which list to use>
+>
+> Hi All,
+>
+> As requested here is a copy of my LPC kernel summit track submission:
+>
+> Title: New userspace API for display-panel brightness control
+>
+> The current userspace API for brightness control offered by
+> /sys/class/backlight devices has various problems:
+>
+> 1. There is no way to map the backlight device to a specific
+> display-output / panel
+>
+> 2. On x86 there can be multiple firmware + direct-hw-access
+> methods for controlling the backlight and the kernel may
+> register multiple backlight-devices based on this which are
+> all controlling the brightness for the same display-panel.
+> To make things worse sometimes only one of the registered
+> backlight devices actually works.
+>
+> 3. Controlling the brightness requires root-rights requiring
+> desktop-environments to use suid-root helpers for this.
+>
+> 4. The scale of the brightness value is unclear, the API does
+> not define if "perceived brightness" or electrical power is
+> being controlled and in practice both are used without userspace
+> knowing which is which.
+>
+> 5. The API does not define if a brightness value of 0 means off,
+> or lowest brightness at which the screen is still readable
+> (in a low lit room), again in practice both variants happen.
 
-> Hi Mauro,
-> 
-> On Tue, Jun 28, 2022 at 9:43 AM Mauro Carvalho Chehab
-> <mchehab@kernel.org> wrote:
-> > Em Mon, 27 Jun 2022 09:27:54 -0600
-> > Jonathan Corbet <corbet@lwn.net> escreveu:  
-> > > Markus Heiser <markus.heiser@darmarit.de> writes:  
-> > > > IMO It is unnecessary that the build-chain must run on all
-> > > > platforms and with all distributions.
-> > > >
-> > > > Who observes the Sphinx-doc & docutils development since (>15)
-> > > > years is aware that with various (old) Sphinx-doc & docutils
-> > > > versions no stable results can be produced, not without
-> > > > complicating the build-chain.  And this is exactly the situation
-> > > > we are facing today.
-> > > >
-> > > > The build chain of documentation has nothing to do with kernel
-> > > > development (at least in my opinion) and should be decoupled from it:
-> > > > maintaining one defined build environment is enough work ... this
-> > > > becomes especially clear if you (as Jani recommends) rely more on
-> > > > sphinx-modules and widely used tools.  
-> > >
-> > > The counterargument to this is that we want as many developers as
-> > > possible to be able to build the docs and contribute to them.  We can't
-> > > complain that developers have broken the docs build if we don't do what
-> > > we can to help them do the build themselves.  
-> >
-> > Agreed.
-> >  
-> > > One of our longstanding contributors is on Sphinx 1.8.5:
-> > >
-> > >   https://lwn.net/ml/linux-doc/4c403239-3c71-4ab9-2168-f7e9d77008b2%40infradead.org/  
-> 
-> Ubuntu 20.04 LTS also has 1.8.5.
-> Looks like I'll get 4.3.2 after upgrading to 22.04 LTS (which is only
-> about two months old).
-
-Yeah, LTS distros are the main reason why the default recommendation is to
-install Sphinx via virtualenv/venv.
-
-With RHEL9, SUSE 15 SP4 (plus CenOS and openSUSE Leap versions of them),
-plus Ubuntu 22.04, maybe we can change the default to recommend installing
-it via distro-provided packages. Yet, Debian bulseye has 2.5.0. Only
-bookworm, scheduled for mid 2023, will come with Sphinx > 2.
-
-Regards,
-Mauro
+6. It's not possible to change both the gamma and the brightness in the
+same KMS atomic commit. You'd want to be able to reduce brightness to
+conserve power, and counter the effects of that by changing gamma to
+reach a visually similar image. And you'd want to have the changes take
+effect at the same time instead of reducing brightness at some frame and
+change gamma at some other frame. This is pretty much impossible to do
+via the sysfs interface.
 
 
+BR,
+Jani.
 
+> This talk will present a proposal for a new userspace API
+> which intends to address these problems in the form of a
+> number of new properties for drm/kms properties on the
+> drm_connector object for the display-panel.
+>
+> This talk will also focus on how to implement this proposal
+> which brings several challenges with it:
+>
+> 1. The mess of having multiple interfaces to control a laptop's
+> internal-panel will have to be sorted out because with the new
+> API we can no longer just register multiple backlight devices
+> and let userspace sort things out.
+>
+> 2. In various cases the drm/kms driver driving the panel
+> does not control the brightness itself, but the brightness
+> is controlled through some (ACPI) firmware interface such
+> as the acpi_video or nvidia-wmi-ec-backlight interfaces.
+>
+> This introduces some challenging probe-ordering issues,
+> the solution for which is not entirely clear yet, so this
+> part of the talk will be actively seeking audience input
+> on this topic.
+>
+>
+> Comments:
+> This is a duplicate submission with one which I submitted for
+> the "LPC Refereed Track" before the "Kernel Summit 2022 CFP" posting.
+>
+> I recently send a RFC email about this to the relevant mailinglists:
+> https://lore.kernel.org/dri-devel/0d188965-d809-81b5-74ce-7d30c49fee2d@redhat.com/
+>
+> As well as another RFC laying out some initial backlight code
+> refactoring steps. As there is a bunch of technical debt which
+> needs to be addressed before work on a new uAPI can even begin:
+> https://lore.kernel.org/dri-devel/98519ba0-7f18-201a-ea34-652f50343158@redhat.com/
+>
+> I'm working on the refactoring now. I believe the refactoring
+> is more likely to land in 5.21 then in 5.20. Let alone that
+> the new uAPI on the kernel side + the mandatory userspace code
+> consuming the uAPI will be ready before plumbers.
+>
+> IOW I expect this to still be very much in flux during Plumbers,
+> so this won't be a presentation presenting only already finished
+> work.
+>
+> Regards,
+>
+> Hans
+>
+>
+
+-- 
+Jani Nikula, Intel Open Source Graphics Center
 
