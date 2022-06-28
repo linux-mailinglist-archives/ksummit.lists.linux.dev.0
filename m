@@ -1,119 +1,161 @@
-Return-Path: <ksummit+bounces-734-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-735-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from da.mirrors.kernel.org (da.mirrors.kernel.org [IPv6:2604:1380:4040:4f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74BC255BF49
-	for <lists@lfdr.de>; Tue, 28 Jun 2022 09:57:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80A3555C069
+	for <lists@lfdr.de>; Tue, 28 Jun 2022 12:53:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by da.mirrors.kernel.org (Postfix) with ESMTPS id 210692E0A85
-	for <lists@lfdr.de>; Tue, 28 Jun 2022 07:57:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F845280CD1
+	for <lists@lfdr.de>; Tue, 28 Jun 2022 10:53:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA0DA633;
-	Tue, 28 Jun 2022 07:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73AD12585;
+	Tue, 28 Jun 2022 10:53:25 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB97624
-	for <ksummit@lists.linux.dev>; Tue, 28 Jun 2022 07:57:45 +0000 (UTC)
-Received: by mail-qv1-f41.google.com with SMTP id y14so18857312qvs.10
-        for <ksummit@lists.linux.dev>; Tue, 28 Jun 2022 00:57:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=RZhkIcBb0UvlKui7fnJ99Jd27Cnp4VrERsVVBH/lnJ8=;
-        b=dKCL6uJ8NgPvTzsmvM0rrBkIt7U/XCu175HkdV9yL7JTwR3pBy5yuEJQh2vGD4OkH4
-         0lIgjv9skAeCkyZ5WIYm0McgGgUFgftlpTztBRgq7jQ5kakmnaXR3j7N772dpoa1EKct
-         IrDKH6C/oJ+7yMbqQwsTbzKTAY0j2Q+7Eo16k1Z/xsdqxJY+U4U6P59e7MP3a9Y+LRx2
-         Zvxf4DGStAXl4nFaasGGLGGld80Dl2n+mlMyrfAbENMQApnhhLZuFvXNWNqcq7pAjBz6
-         6D5o2yIvECZ4uvSQ0HeFz1yrckah4tt7Oj8mbRh/qJx3cLwOoENXgSEkdMFVPQyNMbCo
-         qWuA==
-X-Gm-Message-State: AJIora+IGZd4UvYfQxA+XTMg06j1Nx8Q07SQ/kN7EjeG9LGAo4nb0PtL
-	90P+gd8KwdsFOvt+zV2UdVSOJ3kPLsqZ9A==
-X-Google-Smtp-Source: AGRyM1t0Ntn/WpK/6mKIZHhXzceRsAyNuAiQBX7OisnZhgt8f5f9W/IY50d00unCQmKTHsqrWnmqew==
-X-Received: by 2002:ac8:5ac1:0:b0:304:f656:6ad5 with SMTP id d1-20020ac85ac1000000b00304f6566ad5mr12133695qtd.116.1656403063796;
-        Tue, 28 Jun 2022 00:57:43 -0700 (PDT)
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com. [209.85.128.172])
-        by smtp.gmail.com with ESMTPSA id j22-20020ac85516000000b0031778b5567asm6783422qtq.63.2022.06.28.00.57.42
-        for <ksummit@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Jun 2022 00:57:42 -0700 (PDT)
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-318889e6a2cso108087197b3.1
-        for <ksummit@lists.linux.dev>; Tue, 28 Jun 2022 00:57:42 -0700 (PDT)
-X-Received: by 2002:a81:4fc9:0:b0:318:b0ca:4b13 with SMTP id
- d192-20020a814fc9000000b00318b0ca4b13mr20028428ywb.502.1656403062312; Tue, 28
- Jun 2022 00:57:42 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584A5257A
+	for <ksummit@lists.linux.dev>; Tue, 28 Jun 2022 10:53:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05E0C341CA;
+	Tue, 28 Jun 2022 10:53:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1656413604;
+	bh=grdLRzAj6PRa0BcEmotDwSMJfsLbi3L1BBDFXLYMrBI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ecCBIvz7wRETcOutlLbSle+hI9Coh3mC8kpqqHq0Z2izkZBAHbyyz3b7kMWmgWCjM
+	 mWDQwYcsVUj3m4R8uxFvsPFyfm3RPRKIleI1XJFYF62PDt7/icOcAkzzfFoLfgZDYJ
+	 VTnbY6/cs6U/s2oC1MxjlqFXcfOmIBUhnp8w6SB/EcnGhEvfXRXYja8x4AqFocVPub
+	 /tS1qsDTW106ANi2zRgiHuTvupTaI7ku8nGG2m0P56oRMx7Gzlmg4Hrm6/yInAo4qr
+	 QDXLiZwjzp2YyU0tX1Rb0z2CnyWaoH56Qxgz1e2iJh4Xp/qVOpcgoNaWMtSy8XH7jA
+	 PPl4JbOvqRgRQ==
+Date: Tue, 28 Jun 2022 11:53:17 +0100
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>, Linus Torvalds
+ <torvalds@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, Jani
+ Nikula <jani.nikula@intel.com>, ksummit
+ <ksummit-discuss@lists.linuxfoundation.org>, "ksummit@lists.linux.dev"
+ <ksummit@lists.linux.dev>, Markus Heiser <markus.heiser@darmarit.de>
+Subject: Re: [Ksummit-discuss] [TECH TOPIC] What kernel documentation could
+ be
+Message-ID: <20220628115317.2ed84432@sal.lan>
+In-Reply-To: <YrnabzwutRGIooCS@sirena.org.uk>
+References: <20220623105747.079ac92b@sal.lan>
+	<87a6a38plu.fsf@meer.lwn.net>
+	<20220624083307.159824bd@sal.lan>
+	<87tu891xfv.fsf@meer.lwn.net>
+	<20220625101029.67f14c4c@sal.lan>
+	<87czew267z.fsf@meer.lwn.net>
+	<CAHk-=wi-NnjCMTd5aC_WLfXN02gCXFOm0dbvSPaDYDkiByfrEg@mail.gmail.com>
+	<20220626085524.42ee92c0@sal.lan>
+	<20220626105306.122cdeda@sal.lan>
+	<20220627152832.yigreu5ztnoxfp4g@revolver>
+	<YrnabzwutRGIooCS@sirena.org.uk>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <87sfo3nh3t.fsf@meer.lwn.net> <20220618092447.5ebed314@sal.lan>
- <875ykrrb45.fsf@intel.com> <20220623105747.079ac92b@sal.lan>
- <87a6a38plu.fsf@meer.lwn.net> <20220624083307.159824bd@sal.lan>
- <963dd061-47ba-6f96-72e2-4f34cc952b8c@darmarit.de> <87fsjqyvlx.fsf@meer.lwn.net>
- <20220628084317.2f033ad5@sal.lan>
-In-Reply-To: <20220628084317.2f033ad5@sal.lan>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 28 Jun 2022 09:57:29 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdW_EkQ8pSgJjrZtBXXkitRv2Wq+fP4wCnPmyvaPQO-kxA@mail.gmail.com>
-Message-ID: <CAMuHMdW_EkQ8pSgJjrZtBXXkitRv2Wq+fP4wCnPmyvaPQO-kxA@mail.gmail.com>
-Subject: Re: [Ksummit-discuss] [TECH TOPIC] What kernel documentation could be
-To: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, Markus Heiser <markus.heiser@darmarit.de>, 
-	Jani Nikula <jani.nikula@intel.com>, ksummit <ksummit-discuss@lists.linuxfoundation.org>, 
-	ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Mauro,
+Em Mon, 27 Jun 2022 17:27:27 +0100
+Mark Brown <broonie@kernel.org> escreveu:
 
-On Tue, Jun 28, 2022 at 9:43 AM Mauro Carvalho Chehab
-<mchehab@kernel.org> wrote:
-> Em Mon, 27 Jun 2022 09:27:54 -0600
-> Jonathan Corbet <corbet@lwn.net> escreveu:
-> > Markus Heiser <markus.heiser@darmarit.de> writes:
-> > > IMO It is unnecessary that the build-chain must run on all
-> > > platforms and with all distributions.
-> > >
-> > > Who observes the Sphinx-doc & docutils development since (>15)
-> > > years is aware that with various (old) Sphinx-doc & docutils
-> > > versions no stable results can be produced, not without
-> > > complicating the build-chain.  And this is exactly the situation
-> > > we are facing today.
-> > >
-> > > The build chain of documentation has nothing to do with kernel
-> > > development (at least in my opinion) and should be decoupled from it:
-> > > maintaining one defined build environment is enough work ... this
-> > > becomes especially clear if you (as Jani recommends) rely more on
-> > > sphinx-modules and widely used tools.
-> >
-> > The counterargument to this is that we want as many developers as
-> > possible to be able to build the docs and contribute to them.  We can't
-> > complain that developers have broken the docs build if we don't do what
-> > we can to help them do the build themselves.
->
-> Agreed.
->
-> > One of our longstanding contributors is on Sphinx 1.8.5:
-> >
-> >   https://lwn.net/ml/linux-doc/4c403239-3c71-4ab9-2168-f7e9d77008b2%40infradead.org/
+> On Mon, Jun 27, 2022 at 03:28:40PM +0000, Liam Howlett wrote:
+> > * Mauro Carvalho Chehab <mchehab@kernel.org> [220626 05:53]:  
+> 
+> > > Btw, once we fix the errors from the above checks, one of the things that 
+> > > could be done in order to avoid noisy doc builds would be to run this 
+> > > during normal Kernel build, if CONFIG_WERROR is set (and if .git is present
+> > > at the source build dir):  
+> 
+> > > 	./scripts/documentation-file-ref-check --warn
 
-Ubuntu 20.04 LTS also has 1.8.5.
-Looks like I'll get 4.3.2 after upgrading to 22.04 LTS (which is only
-about two months old).
+Sent a patch series addressing those at linux-next:
+	https://lore.kernel.org/linux-doc/cover.1656234456.git.mchehab@kernel.org/T/#t
 
-Gr{oetje,eeting}s,
+> > > 	./scripts/get_abi.pl validate
 
-                        Geert
+I submited a patch fixing one such issue:
+	https://lore.kernel.org/all/1e92337c1ef74f5eb9e1c1871e20b858b490d269.1656235926.git.mchehab@kernel.org/ 
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+and Jonathan Cameron submitted a series addressing those:
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+	https://lore.kernel.org/linux-iio/20220626165511.602202-1-jic23@kernel.org/T/#t 
+
+> > > 	./scripts/kernel-doc --none $(git grep kernel-doc $(git ls-files Documentation/|grep -v kernel-doc.rst)|perl -ne 'print "$1\n" if (m/kernel-doc::\s*(\S+)/);'|sort|uniq)   
+
+Sent a patch series addressing all of those, also against linux-next:
+
+	https://lore.kernel.org/linux-doc/cover.1656409369.git.mchehab@kernel.org/T/#t
+
+next-20220627 has currently:
+	32 cross broken docs cross reference warnings;
+	 4 duplicated ABI symbols;
+	60 kernel-doc warnings.
+
+After having those three series applied, the 3 above commands would
+produce just 3 warnings:
+
+	Warning: Documentation/dev-tools/kunit/run_wrapper.rst references a file that doesn't exist: Documentation/dev-tools/kunit/non_uml.rst
+	Warning: Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml references a file that doesn't exist: Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
+	Warning: drivers/acpi/device_pm.c references a file that doesn't exist: Documentation/firmware-guide/acpi/low-power-probe.rst
+
+Those 3 warnings depend on non-merged documents.
+
+After those ~100 warnings that can be quickly checked with the 3 above
+command lines in a couple of seconds, there are the Sphinx errors.
+Reducing the build time (currently at 10 mins order) to something more
+palatable could help having more people checking them before submitting
+patches and waiting for 0day results.
+
+> That last one is quite the command line...
+
+True. Yet, placing it at docs/Makefile for the "make all" target should be 
+trivial and will hopefully make more Kernel developers to check for some of 
+the documentation issues. 
+
+The other two are already called, depending on some config vars:
+
+	# Check for broken documentation file references
+	ifeq ($(CONFIG_WARN_MISSING_DOCUMENTS),y)
+	$(shell $(srctree)/scripts/documentation-file-ref-check --warn)
+	endif
+
+	# Check for broken ABI files
+	ifeq ($(CONFIG_WARN_ABI_ERRORS),y)
+	$(shell $(srctree)/scripts/get_abi.pl validate --dir $(srctree)/Documentation/ABI)
+	endif
+
+But they don't currently stop the build if CONFIG_WERROR is enabled.
+
+
+> 
+> > > aborting the build on such warnings.  
+> 
+> > > On my notebook (i5-10210U), the above takes ~8 seconds to run. So, it 
+> > > won't make much difference at the build time, and doing that would have
+> > > avoided ~100 warnings during htmldocs build against current linux-next.  
+> 
+> > Couldn't we add this to the build bots and ask the authors to fix the
+> > commits?  
+> 
+> There's reports for at least some of this for -next already, at least
+> for newly introduced warnings.  If we could get 0day or something else
+> that picks stuff off the lists that would help a lot I think, as would
+> getting it into the bots that people who like to fix up warnings tend to
+> be using.
+
+Yes, newly-introduced warnings are monitored there, but still patches
+adding new warnings keep being merged, requiring extra periodic janitorial
+work in order to reduce the build noise that would otherwise increase
+with time.
+
+Regards,
+Mauro
 
