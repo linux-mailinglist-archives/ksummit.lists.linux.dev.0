@@ -1,125 +1,126 @@
-Return-Path: <ksummit+bounces-732-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-733-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from da.mirrors.kernel.org (da.mirrors.kernel.org [139.178.84.19])
-	by mail.lfdr.de (Postfix) with ESMTPS id E419F55BB3B
-	for <lists@lfdr.de>; Mon, 27 Jun 2022 19:08:12 +0200 (CEST)
+Received: from da.mirrors.kernel.org (da.mirrors.kernel.org [IPv6:2604:1380:4040:4f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5423255BF33
+	for <lists@lfdr.de>; Tue, 28 Jun 2022 09:43:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by da.mirrors.kernel.org (Postfix) with ESMTPS id 757B02E0A87
-	for <lists@lfdr.de>; Mon, 27 Jun 2022 17:08:11 +0000 (UTC)
+	by da.mirrors.kernel.org (Postfix) with ESMTPS id 9A0DB2E0C26
+	for <lists@lfdr.de>; Tue, 28 Jun 2022 07:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B1693D71;
-	Mon, 27 Jun 2022 17:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7133D62F;
+	Tue, 28 Jun 2022 07:43:25 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0494A04
-	for <ksummit@lists.linux.dev>; Mon, 27 Jun 2022 17:08:02 +0000 (UTC)
-Received: by mail-ej1-f49.google.com with SMTP id q6so20431225eji.13
-        for <ksummit@lists.linux.dev>; Mon, 27 Jun 2022 10:08:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=uislP0Opcxt4TwIbUM4d3BQqW/0WOX2hRXHOwoDu6Zk=;
-        b=HUFCtlWROTkw9muBQikI5ZsErGm2vK9w50p1RTuzajYLmx6OWAuPsxBXL6rm0sTyev
-         +Gl9S7zyqFK+pP+fxdlvNuxtZMyTAsqwwp/3mRv5h4wqEyQTUYiejS0FP8CoZ/BiZqP9
-         +iF1hWcgInujZiTRbv5EkC8JXWOhnpCZxv0Jw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uislP0Opcxt4TwIbUM4d3BQqW/0WOX2hRXHOwoDu6Zk=;
-        b=oAdN4zNY8LFgkraI+2bbfW13BF5fP6dESfIVsyAHYyFm3jhSezzjj5LMV3MH9YUiXE
-         MnpWrj14xIPmhaJlm1LRj7mgVHnagMpnD7TCp+WH42bd7IiujZGbriMiikU+Q42dTcp1
-         YXRn4vp5vknbaEf5goxPE4B8gPggLu0zRfMNoSPLFb3OE4dElxbRoogNyXtOXizwf1dF
-         s/jsSmEFoHLaOmAeeCEtiAPAKxUDVRVhwUXdvle/7FQxTJvKVY9KZUJONiqC0oBxvNpJ
-         Amb+9uEEURiswQT9ik6b2lUiy5oLMiOqMD7khJzSJdi3t5Yr6P5VuSjnSlioi6zzipcC
-         h/ew==
-X-Gm-Message-State: AJIora999zr7i/2nhxQxRmU7LJOWeQl5f84+ju4Xxc6xRK8GSI31eskv
-	Yy5VGoonIQF8dHJIYVOgVAegwmCiMZ0JeU4I
-X-Google-Smtp-Source: AGRyM1ur4rEOe/uLI+7uXtMgdyVXtv2EMeq0Cd0jp8zouVO+xuyk5nok0qIQ0/jftwPZOAOBXA6m6w==
-X-Received: by 2002:a17:906:7955:b0:726:a858:5a75 with SMTP id l21-20020a170906795500b00726a8585a75mr4754202ejo.764.1656349680381;
-        Mon, 27 Jun 2022 10:08:00 -0700 (PDT)
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com. [209.85.221.41])
-        by smtp.gmail.com with ESMTPSA id b20-20020a0564021f1400b0042e15364d14sm7941643edb.8.2022.06.27.10.07.56
-        for <ksummit@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Jun 2022 10:07:57 -0700 (PDT)
-Received: by mail-wr1-f41.google.com with SMTP id r20so14015391wra.1
-        for <ksummit@lists.linux.dev>; Mon, 27 Jun 2022 10:07:56 -0700 (PDT)
-X-Received: by 2002:a5d:64e7:0:b0:21b:ad72:5401 with SMTP id
- g7-20020a5d64e7000000b0021bad725401mr12662500wri.442.1656349676430; Mon, 27
- Jun 2022 10:07:56 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3926624
+	for <ksummit@lists.linux.dev>; Tue, 28 Jun 2022 07:43:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5FC9C3411D;
+	Tue, 28 Jun 2022 07:43:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1656402203;
+	bh=a9/bymyLDuTAXPOi8MEQNMnobpZC924YF+DWJf9e4Ng=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=UaKr/g58oW7oGiBAxok0ntegj8vt6ri8ybbHqeCDH8DQGOIUcFPZel14aeI9R6RKf
+	 O3zFhVMl4mDfFUwAFCe3xUEV5TR3kFQLtvMMHtA6F36vh7v6W1TjqwxHHm622XsP6V
+	 CiuOxnH9zftRXSUxsPlG1nGwFFfIRqDLMtSyNWqWeXgH78wUivTt2PIp1uVMSVSCR9
+	 Wun7QwjQC3gIIThvZZXSZjpr7C9sLNe+1rr80owMEcF1Zd3krzbvdH4dJ9kO8p8mzB
+	 JIfgOL9ktRexokg8McdXymSgSWoMCJU+4v4xTiM3GPaDh4I5ymT23RcThuVIrpirsL
+	 y7c+VzlixR8AA==
+Date: Tue, 28 Jun 2022 08:43:17 +0100
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
+To: Jonathan Corbet <corbet@lwn.net>
+Cc: Markus Heiser <markus.heiser@darmarit.de>, Jani Nikula
+ <jani.nikula@intel.com>, ksummit-discuss@lists.linuxfoundation.org,
+ ksummit@lists.linux.dev
+Subject: Re: [Ksummit-discuss] [TECH TOPIC] What kernel documentation could
+ be
+Message-ID: <20220628084317.2f033ad5@sal.lan>
+In-Reply-To: <87fsjqyvlx.fsf@meer.lwn.net>
+References: <87sfo3nh3t.fsf@meer.lwn.net>
+	<20220618092447.5ebed314@sal.lan>
+	<875ykrrb45.fsf@intel.com>
+	<20220623105747.079ac92b@sal.lan>
+	<87a6a38plu.fsf@meer.lwn.net>
+	<20220624083307.159824bd@sal.lan>
+	<963dd061-47ba-6f96-72e2-4f34cc952b8c@darmarit.de>
+	<87fsjqyvlx.fsf@meer.lwn.net>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <87sfo3nh3t.fsf@meer.lwn.net> <20220618092447.5ebed314@sal.lan>
- <875ykrrb45.fsf@intel.com> <20220623105747.079ac92b@sal.lan>
- <87a6a38plu.fsf@meer.lwn.net> <20220624083307.159824bd@sal.lan>
- <87tu891xfv.fsf@meer.lwn.net> <20220625101029.67f14c4c@sal.lan>
- <87czew267z.fsf@meer.lwn.net> <CAHk-=wi-NnjCMTd5aC_WLfXN02gCXFOm0dbvSPaDYDkiByfrEg@mail.gmail.com>
- <87bkueyvbo.fsf@meer.lwn.net>
-In-Reply-To: <87bkueyvbo.fsf@meer.lwn.net>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Mon, 27 Jun 2022 10:07:40 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjYBONGGhiQu2iTP6zWu8y2a4=ii4byoomf6N77-pJNeA@mail.gmail.com>
-Message-ID: <CAHk-=wjYBONGGhiQu2iTP6zWu8y2a4=ii4byoomf6N77-pJNeA@mail.gmail.com>
-Subject: Re: [Ksummit-discuss] [TECH TOPIC] What kernel documentation could be
-To: Jonathan Corbet <corbet@lwn.net>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Jani Nikula <jani.nikula@intel.com>, 
-	ksummit <ksummit-discuss@lists.linuxfoundation.org>, ksummit@lists.linux.dev, 
-	Markus Heiser <markus.heiser@darmarit.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 27, 2022 at 8:34 AM Jonathan Corbet <corbet@lwn.net> wrote:
->
-> >  (b) it requires some unusual build tools
+Em Mon, 27 Jun 2022 09:27:54 -0600
+Jonathan Corbet <corbet@lwn.net> escreveu:
+
+> Markus Heiser <markus.heiser@darmarit.de> writes:
+> 
+> > IMO It is unnecessary that the build-chain must run on all
+> > platforms and with all distributions.
 > >
-> > Now, (b) may some historical oddity, but at least if you have Fedora
-> > installed and it still has sphinx version 2.2.11 or something like
-> > that.
+> > Who observes the Sphinx-doc & docutils development since (>15)
+> > years is aware that with various (old) Sphinx-doc & docutils
+> > versions no stable results can be produced, not without
+> > complicating the build-chain.  And this is exactly the situation
+> > we are facing today.
 > >
-> > And when you try to build docs, the makefile gives you some random pip
-> > install thing that is entirely bogus.
->
-> I'd be curious to know about how you got into that situation.  Fedora
-> handles this stuff pretty readily.  I'll take another look at what we
-> have there.
+> > The build chain of documentation has nothing to do with kernel
+> > development (at least in my opinion) and should be decoupled from it:
+> > maintaining one defined build environment is enough work ... this
+> > becomes especially clear if you (as Jani recommends) rely more on
+> > sphinx-modules and widely used tools.  
+> 
+> The counterargument to this is that we want as many developers as
+> possible to be able to build the docs and contribute to them.  We can't
+> complain that developers have broken the docs build if we don't do what
+> we can to help them do the build themselves.
 
-At some point I just did "dnf install sphinx", and it got me a sphinx install.
+Agreed.
 
-So then the kernel doc build system sees "oh, you need a newer version
-of sphinx" or whatever, and suggests you do that horrible virtual
-python sandbox thing and do a random pip install in that, which I
-really don't want to do.
+> One of our longstanding contributors is on Sphinx 1.8.5:
+> 
+>   https://lwn.net/ml/linux-doc/4c403239-3c71-4ab9-2168-f7e9d77008b2%40infradead.org/
 
-So I ignore it entirely, obviously.
+If he migrates to Leap 15.4, he'll either get 2.3.1 (default package)
+or 4.2.0 (alternative package):
 
-End result: it took me a *loong* time to go "I wonder why modern
-Fedora ships with an ancient version of sphinx, since the modern
-version is apparently 4.x something".
+	https://download.opensuse.org/distribution/leap/15.4/repo/oss/noarch/python3-Sphinx-2.3.1-150400.1.7.noarch.rpm
+	https://download.opensuse.org/distribution/leap/15.4/repo/oss/noarch/python3-Sphinx_4_2_0-4.2.0-150400.11.6.noarch.rpm
 
-And only at THAT point do you realize that there are three completely
-different projects called "sphinx".
+> I would like to narrow our range of supported versions, but I really
+> don't want to cut people out.
+> 
+> The real question, perhaps, is whether requiring people to set up a
+> virtualenv to run a supported version would be too much.  It's something
+> I worry about.
 
-There's the docbuild one that comes from python, which is the sphinx I want.
+Installing distro-specific packages likely covers a broader group of
+developers than requiring virtualenv/venv.
 
-There's the search engine 'sphinx', which is what is packaged as
-"sphinx" in Fedora, and which the documentation code obviously refuses
-to use.
+However, if we decide to move on, removing the version-dependent
+hacks from the build system, it would mean that the minimal version
+would be 3.1.0. On such case, there won't be Sphinx packages on some
+LTS distros. Developers using such distros will be forced to use 
+virtualenv/venv.
 
-There's also CMU sphinx, which is a voice recognition system.
+In any case, the script which checks if sphinx-build runs can recommend
+either way. Yet, as the current default is venv, tests are needed to check
+if it recommending python3-sphinx packages still work on all supported
+distros.
 
-End result: building the docs can be really confusing if you have the
-wrong sphinx installed, and the "help message" is actually misleading
-and very unhelpful.
+Such script could also be changed to detect if the distro has a
+native package >= 3.1.0, recommending it by default, falling back to
+virtualenv/venv otherwise.
 
-              Linus
+Regards,
+Mauro
+
 
