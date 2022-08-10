@@ -1,53 +1,53 @@
-Return-Path: <ksummit+bounces-747-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-750-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79C7C58E903
-	for <lists@lfdr.de>; Wed, 10 Aug 2022 10:47:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38AFD58E91A
+	for <lists@lfdr.de>; Wed, 10 Aug 2022 10:56:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1180E280A8D
-	for <lists@lfdr.de>; Wed, 10 Aug 2022 08:46:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50BDC1C20951
+	for <lists@lfdr.de>; Wed, 10 Aug 2022 08:56:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF36B17D4;
-	Wed, 10 Aug 2022 08:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4E217D3;
+	Wed, 10 Aug 2022 08:55:57 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2691117CE
-	for <ksummit@lists.linux.dev>; Wed, 10 Aug 2022 08:46:51 +0000 (UTC)
-Received: by mail-yb1-f179.google.com with SMTP id k12so22213561ybk.6
-        for <ksummit@lists.linux.dev>; Wed, 10 Aug 2022 01:46:50 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04B05CB5
+	for <ksummit@lists.linux.dev>; Wed, 10 Aug 2022 08:55:55 +0000 (UTC)
+Received: by mail-yb1-f170.google.com with SMTP id e127so22205491yba.12
+        for <ksummit@lists.linux.dev>; Wed, 10 Aug 2022 01:55:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=zq0Qsb90HUFM/GBOOvVH3GvSZz7eZrCdLogyIrJLYXg=;
-        b=ql8ZRsXRiYJylLPUtgU9svCppCunX2dxTm6rNlv+Mw0ZtpNo4WajXCjPsKdZDksri0
-         D5XD1bwWz6ytYdxdVpo7bQjd64lFvAM/Ir6vKxAZEU37ADiieSzZ1Sdm7K3Ta7qY4zXe
-         IEDO3xrqSdBXfTUJQcMe+bNdBNrwYE44+GWPs33KmP9GjFAbfy3QwtxDn+DZEKP+sp1M
-         PdMpdmMLfEOYT0Tc2bwm5JVbaTbGkyT5JS4zNfZXGaN5YrLS55GzpyG+WFRmRtESkPli
-         oFPfc7Sgtio0D9RFdyAxt5uDXmCnt3osqEDpeH1hsWfL8XahPqqimKZtB6YN5qt598ME
-         i0oQ==
+        bh=RYLv6XKClN5tHHI9T4MIJ7mpBoywq5nwM3Jbpfvdb3c=;
+        b=I4WVn6OQFZ1Z/XvmCeNLY1cNDxAu9i/47DZahiPbMFqPot7AKu5YtkKiywPJWiZyhi
+         tacgp0M0WJlPpjrju7NmEfFaTxrZYrKmEF8ZkyMEgYhJMySrsZdx9bNtOaIFkcpPvf90
+         hUS3UWpgWIiaET71TddttQC8xCbYLEL8AKhulOVlOfK7c1V91bKdohosHgk7epUVassP
+         7APOJHlKfIfgP70opN7MO73NG1/ARd7hM5aPnbJzBF9RyB9Wa2PY9yBbvp+G9P3YOeji
+         ufAAy32+vcWCf9ND2ZGhPEgCbPmEf85UoDN1iOjrg8WnklREwd0PE6bxFf27sNxt6Djy
+         yHMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=zq0Qsb90HUFM/GBOOvVH3GvSZz7eZrCdLogyIrJLYXg=;
-        b=nGChiMIZSrp4sbLUeEbNNGxFHaaUy+8sX1PEyeTnbw/TQtE6rutackfkAKWqnjJ6QH
-         beK/1L3ElNoRnOcoRPcrNcsdc/CIatttjdMnQnPZ1QAiwofPaqVqz8aGFWE6HUE/fE5t
-         +2xG2DVghEbqA3UKEH5RAtnvzlELWjZj+S2AlijMjCgG9xr660A/sze9/83Xh3B1UiSa
-         2cpJfOz+0DQARcXhJKJqB2UJi1/RK/568nM4kZaBztbVyuaQJp/MUYsr7BhvagZlnSSy
-         Tjo1RDr8DeIIlWYdUDFxXpI/VN/zRIDMqVUt8oB2NANet7pw1H5C+yi1YTnb13P6qHH+
-         50ZQ==
-X-Gm-Message-State: ACgBeo1AOweaZyGGVW/sxLXAPOCes0iZ2/e1crztLRPEhdwf79damsEr
-	JEDvGw+2PTjFOOTzaXHD1JLX+u1o7uibm979fEQBgA/yjCE=
-X-Google-Smtp-Source: AA6agR560H2aMcIEQ8i9l+0rUT/S0VgRNU8XVkjWf5qZQn97mmRDcg/39ARkqpQhoOKpPqW7rZfZTeqjbZTuk0SX1RA=
-X-Received: by 2002:a25:f503:0:b0:677:8006:4dc2 with SMTP id
- a3-20020a25f503000000b0067780064dc2mr24346020ybe.31.1660121209995; Wed, 10
- Aug 2022 01:46:49 -0700 (PDT)
+        bh=RYLv6XKClN5tHHI9T4MIJ7mpBoywq5nwM3Jbpfvdb3c=;
+        b=ezz72xbelrFBpxg8OK4c9SxbZQraSyMprIG0oCNx7TZB8Fq51+VU7ymnkNW291a6Hj
+         6ln9rJXB/PLqUlY/WQnDcFTWpZkgJGo/CQLpfPh+7VYU0/WUlKzctZ/+1kwUz1RI+391
+         W1XYYl2PBjy6zM+Dmx3cKxMMjFASwWBIwJ20ORCIlYOBCBmPFQgaOdtePLrx/H6Yc7iS
+         n2ntBLA2JvtPxjl8YrLCN2XBMIja0eR5DkUmVhLGHAblzEZxsMhopN7RFbkAEgRCPTLk
+         pAlGNC5mQ30vIS5dSsvbJSA0vEy5osgRvbrbGygIj53Bn6al6U7t//wMITpOANo9+Ym7
+         Qpqw==
+X-Gm-Message-State: ACgBeo282/HWsGPsO4Jc0+k3OvyTwGj+uZn55AK1Ap1yKUqyC1jDNlQI
+	yrFs+Q6M8yZ1TeTOkmP7NTbibaqj7UitjHZgQso=
+X-Google-Smtp-Source: AA6agR4CmHyaq2R/4DSj4WGMGmAk4ByOpSRTv1JKXH8u3bZXXpDwx7oiYWxwjxKhbD/8VMVVP9FqsI3PJz75v1XeSMw=
+X-Received: by 2002:a25:e6cd:0:b0:675:8f5d:60a6 with SMTP id
+ d196-20020a25e6cd000000b006758f5d60a6mr22443165ybh.389.1660121754876; Wed, 10
+ Aug 2022 01:55:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -55,35 +55,42 @@ List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20220809171316.1d6ce319@hermes.local> <20220810082640.GK3438@kadam>
-In-Reply-To: <20220810082640.GK3438@kadam>
+ <YvNuHXePj53gJPKX@kroah.com>
+In-Reply-To: <YvNuHXePj53gJPKX@kroah.com>
 From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Date: Wed, 10 Aug 2022 10:46:39 +0200
-Message-ID: <CAKXUXMwMAyc5GW-t2Xp6XPkt=AcsPZNS89RGn6oo_YH-y6HcDg@mail.gmail.com>
+Date: Wed, 10 Aug 2022 10:55:44 +0200
+Message-ID: <CAKXUXMwOAuqD=o1ryZP4oq2dLvTi+7iwQc6gfBF2DiU+_7NH9A@mail.gmail.com>
 Subject: Re: Validating MAINTAINERS entries?
-To: Dan Carpenter <dan.carpenter@oracle.com>
-Cc: Stephen Hemminger <stephen@networkplumber.org>, ksummit@lists.linux.dev
+To: Greg KH <greg@kroah.com>
+Cc: Dan Carpenter <dan.carpenter@oracle.com>, 
+	Stephen Hemminger <stephen@networkplumber.org>, ksummit@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Aug 10, 2022 at 10:27 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+On Wed, Aug 10, 2022 at 10:50 AM Greg KH <greg@kroah.com> wrote:
 >
-> On Tue, Aug 09, 2022 at 05:13:16PM -0700, Stephen Hemminger wrote:
-> > Several times in the past, when using MAINTAINERS list either automatically
-> > (or from manual entry) have found the mailing address in the file is no longer valid.
+> On Wed, Aug 10, 2022 at 11:26:40AM +0300, Dan Carpenter wrote:
+> > On Tue, Aug 09, 2022 at 05:13:16PM -0700, Stephen Hemminger wrote:
+> > > Several times in the past, when using MAINTAINERS list either automatically
+> > > (or from manual entry) have found the mailing address in the file is no longer valid.
+> > >
+> > > What about doing an annual probe mail to all maintainers and sending
+> > > a patch to prune out any addresses that auto respond as dead.
+> > > This won't catch ghost entries but would find any dead ones.
+> > >
 > >
-> > What about doing an annual probe mail to all maintainers and sending
-> > a patch to prune out any addresses that auto respond as dead.
-> > This won't catch ghost entries but would find any dead ones.
-> >
+> > Also we could add a RETIRED file or something for when people retire and
+> > don't want get_maintainer.pl hassling them.
 >
-> Also we could add a RETIRED file or something for when people retire and
-> don't want get_maintainer.pl hassling them.
+> Isn't that what CREDITS is for?
 >
 
-Dan, I believe this exists already: .get_maintainer.ignore
+I agree with Greg here.
 
-For many years, there was only one developer using this feature, now
-we have at least two developers. It seems that many others resolve
-this issue just in their local setup differently, though.
+For:
+"a RETIRED file or something for when people retire" -> CREDITS
+"don't want get_maintainer.pl hassling them" -> .get_maintainer.ignore
+
+Choose what fits for your case.
 
 Lukas
 
