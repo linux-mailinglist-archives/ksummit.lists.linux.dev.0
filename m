@@ -1,99 +1,110 @@
-Return-Path: <ksummit+bounces-749-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-746-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3C3D58E910
-	for <lists@lfdr.de>; Wed, 10 Aug 2022 10:50:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11B5158E8F9
+	for <lists@lfdr.de>; Wed, 10 Aug 2022 10:42:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2DD61C2098C
-	for <lists@lfdr.de>; Wed, 10 Aug 2022 08:50:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B410280A8A
+	for <lists@lfdr.de>; Wed, 10 Aug 2022 08:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB8F17D8;
-	Wed, 10 Aug 2022 08:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEBDC17D3;
+	Wed, 10 Aug 2022 08:42:41 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B1217CE
-	for <ksummit@lists.linux.dev>; Wed, 10 Aug 2022 08:50:32 +0000 (UTC)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailout.nyi.internal (Postfix) with ESMTP id EE9565C03FE;
-	Wed, 10 Aug 2022 04:50:31 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Wed, 10 Aug 2022 04:50:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to; s=fm1; t=1660121431; x=1660207831; bh=IeZJEFNwj/
-	VdPGU0xS4noMI2zX4SBKDyjp4Prx352+w=; b=ptKtrcorO7jPWdCnnDGAQgnPXx
-	hrXLlU1nVp1B80aLNCgV/xaVJ5CCekM5YkFp0ub09S2DH7kH2e1gfXYi/yko5Adu
-	3PBUrYZ9LgBrFlQ5yte6J+IdI8obRzphPccqIyNnAdxkGKpyy/yxdpnA1/5XM83b
-	MEC3EJ3+0heYYULyJ2/yjmaeV8T3HE4kZczWZm4TUw8lnI/CXL6IHKo6gWlAjNPA
-	0e2cTroP75ccgccWjsA2LQ69HzgkbsAAuRJEjsmosCVznkGiajfZZH3PX5I7jiIp
-	eelmOKWERkM3u4noIJabssluhDZeNFOfqkBrQViyTMAEINzBfEziZYByb+vQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-	:feedback-id:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:sender:subject:subject:to:to
-	:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1660121431; x=1660207831; bh=IeZJEFNwj/VdPGU0xS4noMI2zX4S
-	BKDyjp4Prx352+w=; b=vZ+HHeFRYWq7NAQRzXZWn7oVKJwaWifiHS5U8gfPTDEY
-	Z+OUcM5UMV5g5U9dUl1T4vWWT8lnON3Py/FpMvTyn+dJ6dgeTTdoDAhEQyHRwEX8
-	+XLMMuKLVIIoAT/57liO5PNarorddRJCDIbSi5nKMMEij0iGE6JBVBMiYzGRlrbg
-	zH+3+dlc8KLJbbMUTJcIS5ULuTH9OETQVq904tNpsy/EheSQ+DJwk7sgtIA3BCkk
-	cjarwbmxDLzc8fWc23uqJUoP+NBo+GaOBfiKOgyXOd4PdX7h5yX6fMMM6QUGAY2W
-	ebyeHQ4dzqLPyQuz0RY/udLOVmw5T13JC9C20vnPCg==
-X-ME-Sender: <xms:V3HzYjlZkIB_GvA5YcRnmStneaylXsLeWSwZOyGXNyb1maBLAR2vLg>
-    <xme:V3HzYm1PIWR3REA-FqgriflKgHd88afsf3qRWppEYJLFuh743U3WKU65iLmpHU2Qw
-    u2VO2KNhTcCJQ>
-X-ME-Received: <xmr:V3HzYpoXZ0XLvcHupepOkifozvOnNfi4dHXV8UCG33ejtfAHkhqQqvcZPauGKppwl4xkkCBU31etmdDrHXHqstEhrKtVqhKx>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdegvddgtdeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
-    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
-    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
-    hhrdgtohhm
-X-ME-Proxy: <xmx:V3HzYrnU9L5xVuISLhKm_YAmyzAl9cMVgM5SvG8zb9hxCk9X3jkRTg>
-    <xmx:V3HzYh2NLAqBexuyg7Yx7l4m03zyzDRXK7HsDmsqS6W2PAJDxFYmrw>
-    <xmx:V3HzYqu_YhmPSCTFd5upewO1zoLsi6QHU2h5FN0gmhFHqiNzWcG4sQ>
-    <xmx:V3HzYsQTm73qBiPoY4tzpYVSLDDI5vreJA8mx2vEuHtC7xmktErw1g>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 10 Aug 2022 04:50:31 -0400 (EDT)
-Date: Wed, 10 Aug 2022 10:36:45 +0200
-From: Greg KH <greg@kroah.com>
-To: Dan Carpenter <dan.carpenter@oracle.com>
-Cc: Stephen Hemminger <stephen@networkplumber.org>, ksummit@lists.linux.dev
-Subject: Re: Validating MAINTAINERS entries?
-Message-ID: <YvNuHXePj53gJPKX@kroah.com>
-References: <20220809171316.1d6ce319@hermes.local>
- <20220810082640.GK3438@kadam>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A28F15BC
+	for <ksummit@lists.linux.dev>; Wed, 10 Aug 2022 08:42:40 +0000 (UTC)
+Received: by mail-yb1-f180.google.com with SMTP id 123so22191666ybv.7
+        for <ksummit@lists.linux.dev>; Wed, 10 Aug 2022 01:42:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=SGLC/EiGSAvDsOlF3bsOZbU0/go6zOsdONN1AxUVZXI=;
+        b=KMda9gpCszlSY+8m4kVrB33+H7S6VCZwG5tpw7MDnwwsSgMUf9KUAv0MDvdBWkCxy7
+         ccDzYHUIz2upFxNaAGfx2b7sKTSaezE0KmpUq8QByi+o23epMEIDsguAY6iBoYULXgAC
+         ErEqJw/bAN9ysVLo04Q6sX7zwJ8qcUM68u+fpsA5ArDvsquteYnW+G5jH5BCyHvuub4/
+         4wbMBtksURmdsWS751C9Ga7QtUXW7JATUme+Gp7CbPU+yMehZqtd/r3B/SdSk2jv5bYp
+         ytKmD01pygyorvJonD/UCx4fSIsXQoSUzcXsKRxINaDG7zx3Dok+RA0cbaAR6pkD1Fq9
+         XjWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=SGLC/EiGSAvDsOlF3bsOZbU0/go6zOsdONN1AxUVZXI=;
+        b=hveh61eQ6nL/gvVDjSH2IA8JwFCMMqiE1lnGNMVCFPkjwpssswxDhCRbiQ1qsEJOro
+         7bcRVUoxHc3lt/fU6jyC7U4sv2r85ZyJbxnpCRbq2gd8/QBip6dTl9TfZgaELlyxMnu7
+         lJ0RABGV4zXqTt27p3fqu7vh085SbNz+Bv7VoZipcGFZg92vnqp3oZVxFNmjyaoWYVcC
+         vE/kRlUNaZnAL865ooecLFKCIJ0RhAvyAE7YgxSt/OXxZCAbwx8W2KEIh1FbatrDEJdT
+         VJWMka0ZTS4DM9on5hDsndfE6NIGxR6w7xwMlu73nce6PjLg67aSVVmCp37ob0jKbK8q
+         EGMQ==
+X-Gm-Message-State: ACgBeo1WRGVpUxLueu6YCZPcE8fgrz1OoeCaC362+4FFOJgFvwI4aeoo
+	LWkTnU3WVFp5rPT++zJ3tS10b4lnCqHY2bJ+s44HNYxO
+X-Google-Smtp-Source: AA6agR62UuaDxFxzjL9n6JvuSg5C4/sAF4+zJqv9NSZZUVUfF5REi/3cjNWwV5YC1rJ01UZ0xhikmn8xO9f0DJ5n+uY=
+X-Received: by 2002:a25:bb86:0:b0:670:ef2:7f9a with SMTP id
+ y6-20020a25bb86000000b006700ef27f9amr24473746ybg.318.1660120959033; Wed, 10
+ Aug 2022 01:42:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220810082640.GK3438@kadam>
+References: <20220809171316.1d6ce319@hermes.local>
+In-Reply-To: <20220809171316.1d6ce319@hermes.local>
+From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Date: Wed, 10 Aug 2022 10:42:28 +0200
+Message-ID: <CAKXUXMwRYy8pqLTzfFoxhfS5UvDZEgZ6WxQ_YQcjzdRGmTX3qQ@mail.gmail.com>
+Subject: Re: Validating MAINTAINERS entries?
+To: stephen@networkplumber.org
+Cc: ksummit@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Aug 10, 2022 at 11:26:40AM +0300, Dan Carpenter wrote:
-> On Tue, Aug 09, 2022 at 05:13:16PM -0700, Stephen Hemminger wrote:
-> > Several times in the past, when using MAINTAINERS list either automatically
-> > (or from manual entry) have found the mailing address in the file is no longer valid.
-> > 
-> > What about doing an annual probe mail to all maintainers and sending
-> > a patch to prune out any addresses that auto respond as dead.
-> > This won't catch ghost entries but would find any dead ones.
-> > 
-> 
-> Also we could add a RETIRED file or something for when people retire and
-> don't want get_maintainer.pl hassling them.
+On Wed, Aug 10, 2022 at 2:13 AM Stephen Hemminger
+<stephen@networkplumber.org> wrote:
+>
+> Several times in the past, when using MAINTAINERS list either automatically
+> (or from manual entry) have found the mailing address in the file is no longer valid.
+>
+> What about doing an annual probe mail to all maintainers and sending
+> a patch to prune out any addresses that auto respond as dead.
+> This won't catch ghost entries but would find any dead ones.
+>
 
-Isn't that what CREDITS is for?
+In many cases, you can avoid the noise of sending out a probe mail,
+but simply checking the lore.kernel.org archives for an email response
+from that email within the last year.
+Many maintainers are simply going to be active, so that.
+
+Then, you may consider just the remaining cases:
+
+Some maintainers use a different email for responding than for
+receiving patches. The email address for receiving patches is in
+MAINTAINERS, the email address for responding is visible on
+lore.kernel.org.
+Some maintainers do not even need to respond within the last year, as
+no patches were sent to the maintainer's area of responsibility.
+Some emails are in fact dead.
+
+Alternatively, you could just offer "a service" for kernel developers
+to forward the automated emails from servers, when an email is dead,
+to some other email, and then, you go through those and create the
+needed patches to MAINTAINERS.
+
+Anyway, creating this clean-up patch for MAINTAINERS is probably still
+some semi-automated effort and not fully automatic (as e.g., you
+probably want to split this patch going to different subsystem
+maintainers and get their acknowledgement), though.
+
+I am also aware of many other clean-up aspects in MAINTAINERS. Just
+trying to keep ./scripts/get_maintainer.pl --self-test=patterns
+without warnings is already a task that can keep you busy, which I now
+know from trying to do so for two or three years.
+
+
+Lukas
 
