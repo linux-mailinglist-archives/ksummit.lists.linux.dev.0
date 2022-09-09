@@ -1,44 +1,44 @@
-Return-Path: <ksummit+bounces-768-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-769-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98EDE5A88D0
-	for <lists@lfdr.de>; Thu,  1 Sep 2022 00:09:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8CEE5B305E
+	for <lists@lfdr.de>; Fri,  9 Sep 2022 09:42:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD47F1C20943
-	for <lists@lfdr.de>; Wed, 31 Aug 2022 22:09:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD64F1C208FC
+	for <lists@lfdr.de>; Fri,  9 Sep 2022 07:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C4F1613F;
-	Wed, 31 Aug 2022 22:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34DE67E1;
+	Fri,  9 Sep 2022 07:42:00 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
 Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23E0613B
-	for <ksummit@lists.linux.dev>; Wed, 31 Aug 2022 22:09:48 +0000 (UTC)
-Received: from localhost (unknown [IPv6:2601:281:8300:73::5f6])
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7577265A
+	for <ksummit@lists.linux.dev>; Fri,  9 Sep 2022 07:41:58 +0000 (UTC)
+Received: from localhost (unknown [151.43.89.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id B4FEB5EAF;
-	Wed, 31 Aug 2022 22:09:41 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net B4FEB5EAF
+	by ms.lwn.net (Postfix) with ESMTPSA id E8BE6732;
+	Fri,  9 Sep 2022 07:33:09 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net E8BE6732
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1661983781; bh=r5VovZqN3iVFsIULkmnuZLwO9OSFvAmCAbywePG+08U=;
+	t=1662708790; bh=aDY1iGDTSL0Bwzy+IaraNzWVFuHndNDNgskiWpwgRnw=;
 	h=From:To:Cc:Subject:Date:From;
-	b=KPnT3w5A3Y8y4x7c30NEH6tPhUyCSB3a2YbC5P3y8TwSH6ZbJ3L+Bpf87vhgtZtPc
-	 m+Gd459AfiUsX1cBp8CML/oFFeiM33I6T2UsNSe7cWRRpcecaeIunzoCfoiweWOk1S
-	 JB89ZX3saBzaXxBEsiU7hWOJJuKLco74jQutUwtHdhNK1zZdWo3+tZ859kuibO2GJ3
-	 rRt9sVraTvO13p+54EuxxGQr0uxPS/dsMMvCohkcd8n1vLRr+GCUpEShIk8qYSiv+k
-	 N76f1sODpv7kAUnsdLX53ImBF7EDjrUhmjyeAW6wtup8VDbPcf2vL1OBh/gdcxHQ20
-	 0zcng0KNfGU9w==
+	b=pdpBoolsO471g2ywCVPglMpXVYaG1TYd1AzlHCCqwZjH/tKr46wi0A9JCjU9tuyZ2
+	 GzCaoMKYq0GgNGIB7YNvlHOU761DzqYFitN5lzSIO5d1P+SKwlzvP9U5kHOBtsumzw
+	 3hglXT12VLRtsHZmxcHEuydiNy7Pk0WjE9x0ZVy/vPpB22qA6RftrK26MHjyzPffXk
+	 Qo6JRkx48guxmUUgU2J9wiv4wkqIa2qHvDwsjD9bLPLS+4cUZOD/6065sYm35sP0LF
+	 6+q6h0SLz7wRUyebH/l/WPrR59d6lJtAe2MkNCXMv6zrM+a/HXjvDWKqB78VC5I4HA
+	 /SzYG0O6/30ng==
 From: Jonathan Corbet <corbet@lwn.net>
 To: linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
 Cc: tab-elections@lists.linuxfoundation.org
-Subject: An LF TAB election update
-Date: Wed, 31 Aug 2022 16:09:39 -0600
-Message-ID: <877d2ojc9o.fsf@meer.lwn.net>
+Subject: REMINDER: LF Technical Advisory Board election
+Date: Fri, 09 Sep 2022 01:33:05 -0600
+Message-ID: <874jxh6lzi.fsf@meer.lwn.net>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -47,33 +47,13 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-I have a few updates for anybody wanting to participate in the upcoming
-Linux Foundation Technical Advisory Board election.
+As a reminder, the 2022 Linux Foundation Technical Advisory Board
+election will be happening from September 12 to 14.  The call for
+nominations is out with a deadline of September 12 - just three days.
+Now is the time to put in your nomination if you would like to run for a
+seat on the TAB.
 
-First of all: do not forget to nominate yourself if you are interested in
-serving on the TAB.  I'll append the call for nominations to this message
-for folks needing a reminder.
-
-Everybody who is eligible to receive a ballot automatically should have
-received a note from me last week indicating that fact.  If you are
-eligible for an automatic ballot and did not receive that note, please
-contact me directly; there were quite a few bounced mailings.
-
-Also remember that you must activate your email address with the CIVS
-service prior to the start of voting or you will not receive your ballot:
-
-  https://civs1.civs.us/cgi-bin/opt_in.pl
-
-Unfortunately, some of the companies employing kernel developers have
-adopted creative spam-management solutions that prevent the CIVS activation
-emails from arriving.  If that affects you, you will need to provide an
-alternative, working email address to be able to vote.  Please go ahead and
-activate your email address soon and contact us if you need to vote from a
-different address.  It will probably *not* be possible to make changes once
-the voting has begun.
-
-Feel free to email tab-elections@lists.linuxfoundation.org with any
-questions.
+Original announcement appended - procrastinate no longer!
 
 Thanks,
 
