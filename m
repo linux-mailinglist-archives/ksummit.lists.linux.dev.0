@@ -1,130 +1,112 @@
-Return-Path: <ksummit+bounces-769-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-770-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8CEE5B305E
-	for <lists@lfdr.de>; Fri,  9 Sep 2022 09:42:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0326B5B44F2
+	for <lists@lfdr.de>; Sat, 10 Sep 2022 09:49:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD64F1C208FC
-	for <lists@lfdr.de>; Fri,  9 Sep 2022 07:42:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EA441C20940
+	for <lists@lfdr.de>; Sat, 10 Sep 2022 07:49:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34DE67E1;
-	Fri,  9 Sep 2022 07:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EEF8A5B;
+	Sat, 10 Sep 2022 07:49:21 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7577265A
-	for <ksummit@lists.linux.dev>; Fri,  9 Sep 2022 07:41:58 +0000 (UTC)
-Received: from localhost (unknown [151.43.89.82])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id E8BE6732;
-	Fri,  9 Sep 2022 07:33:09 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net E8BE6732
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1662708790; bh=aDY1iGDTSL0Bwzy+IaraNzWVFuHndNDNgskiWpwgRnw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=pdpBoolsO471g2ywCVPglMpXVYaG1TYd1AzlHCCqwZjH/tKr46wi0A9JCjU9tuyZ2
-	 GzCaoMKYq0GgNGIB7YNvlHOU761DzqYFitN5lzSIO5d1P+SKwlzvP9U5kHOBtsumzw
-	 3hglXT12VLRtsHZmxcHEuydiNy7Pk0WjE9x0ZVy/vPpB22qA6RftrK26MHjyzPffXk
-	 Qo6JRkx48guxmUUgU2J9wiv4wkqIa2qHvDwsjD9bLPLS+4cUZOD/6065sYm35sP0LF
-	 6+q6h0SLz7wRUyebH/l/WPrR59d6lJtAe2MkNCXMv6zrM+a/HXjvDWKqB78VC5I4HA
-	 /SzYG0O6/30ng==
-From: Jonathan Corbet <corbet@lwn.net>
-To: linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
-Cc: tab-elections@lists.linuxfoundation.org
-Subject: REMINDER: LF Technical Advisory Board election
-Date: Fri, 09 Sep 2022 01:33:05 -0600
-Message-ID: <874jxh6lzi.fsf@meer.lwn.net>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4FFA40
+	for <ksummit@lists.linux.dev>; Sat, 10 Sep 2022 07:49:19 +0000 (UTC)
+Received: from letrec.thunk.org ([212.23.229.83])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 28A7nAKl012046
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 10 Sep 2022 03:49:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1662796152; bh=oJzXXjSFtfx1nDTsExmO5nYJZcmGObR7Cn9iCvc/kKM=;
+	h=Date:From:To:Subject;
+	b=LcB2IKad/M7RV2biUK46e2Y1klwJ/VstT1jI7R5SLITNOlf3YOCEX5QHeGpw68f25
+	 wxKcO1mIQE1fxkq0zSFv5Eu/jILYvJ0NvXJcAnuw5ubJUv4BMJScjbZCZNEtP2iaSZ
+	 PfscXhYwh8S8MVlE0BKdRG4UHfE+aekgPTanqXc02j1cXfndT4OpCos1SSuaoYPM8q
+	 JZo4nthsLez0RQsPsVDRigcaJoLAhhqSoV0W0eG5pL75LYOim4TzU5+6OEErYe9g9Q
+	 6Lop4XTyZLARu1xRe5/qG31tZzP6kLAbrZjTbiOhLB0R8tlhLOU+bpH2B29RZapaXT
+	 oT+8fSyziE+Nw==
+Received: by letrec.thunk.org (Postfix, from userid 15806)
+	id 893E58C2B3B; Sat, 10 Sep 2022 03:49:11 -0400 (EDT)
+Date: Sat, 10 Sep 2022 03:49:11 -0400
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: ksummit@lists.linux.dev
+Subject: Agenda for the Maintainer's Summit 2022
+Message-ID: <YxxBd2fO6MszBK6G@mit.edu>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-As a reminder, the 2022 Linux Foundation Technical Advisory Board
-election will be happening from September 12 to 14.  The call for
-nominations is out with a deadline of September 12 - just three days.
-Now is the time to put in your nomination if you would like to run for a
-seat on the TAB.
 
-Original announcement appended - procrastinate no longer!
+This is the planned agenda (subject to change, of course) for the
+Maintainer's Summit.
 
-Thanks,
+					- Ted
 
-jon
 
-The 2022 election for membership on the Linux Foundation Technical Advisory
-Board (TAB) will be held electronically during the 2022 Kernel Summit and
-Linux Plumbers Conference, from September 12 to 14.  This announcement
-covers both the call for candidates and the details of voting in this
-election.
+			 Maintainer's Summit
+			Clayton Hotel, Dublin
+			  September 15, 2021
 
-The TAB exists to provide advice from the kernel community to the Linux
-Foundation; it also serves to facilitate interactions both within the
-community and with outside entities.  Over the last year, the TAB has
-continued its assistance with the UMN "false commits" episode (including
-drafting a set of guidelines for researchers working with the community),
-overseen the organization of the Linux Plumbers Conference, put together
-guidelines for corporate support of kernel developers and maintainers,
-advised on code-of-conduct issues, and more.
 
-CALL FOR NOMINATIONS
+7:30  Hot breakfast and morning refreshments
+9:00  Linus Torvalds gives a keynote at OSS EU
+       (streaming available at the MS room)
+10:30 Welcome and Agenda Bashing (Ted Ts'o)
+11:30 Regression tracking & fixing: current state, problems, and next
+      steps (Thorsten Lemmhuis)
+12:00 Rust in the Kernel: Next steps (Miguel Ojeda)
+12:30 Lunch
+13:30 eBPF: how far should we go (Jiri Kosina)
+14:00 <TBD>
+14:30 Afternoon Break
+15:00 Is Linus Happy?  
+15:30 What went well, what can we do better?
+16:00 Group Photograph
+18:30 Attendee Dinner
 
-The TAB has ten members serving two-year terms; half of the board is
-elected each year.  The members whose terms are expiring this year are:
 
- - Laura Abbott
- - Christian Brauner
- - Kees Cook
- - Chris Mason
- - Dan Williams
 
-The members whose terms expire next year are:
-
- - Jonathan Corbet
- - Greg Kroah-Hartman
- - Sasha Levin
- - Steve Rostedt
- - Ted Ts'o
-
-Anybody who meets the voting criteria (described below) may self-nominate
-to run in this election.  To nominate yourself, please send an email to:
-
-  tech-board-discuss@lists.linux-foundation.org
-
-Please include a short (<= 200 words) statement describing why you are
-running and what you would like to accomplish on the TAB; these statements
-will be collected and made publicly available.
-
-The nomination deadline is 9:00AM IST (GMT+1) on September 12.
-
-VOTING IN THE TAB ELECTION
-
-The criteria for voting in this year's TAB election are unchanged from
-2021.  To be eligible to vote, you must have at least three commits in a
-released mainline or stable kernel that:
-
- - Have a commit date in 2021 or later
- - List your email in a Signed-off-by, Tested-by, Reported-by, Reviewed-by,
-   or Acked-by tag.
-
-Everybody with at least 50 commits meeting this description will receive a
-ballot automatically.  Eligible voters with less than 50 commits can
-receive a ballot by sending a request to
-tab-elections@lists.linuxfoundation.org.
-
-We will, once again, be using the Condorcet Internet Voting Service (CIVS)
-https://civs1.civs.us/ . This is a voting service focused on security and
-privacy. There are sample polls on the website if you would like to see
-what a ballot will look like.
-
-Please contact tab-elections@lists.linuxfoundation.org if you have any
-questions.
-
+Attendee List
+-------------
+Alexei Starovoitov
+Borislav Petkov
+Chris Mason
+Christian Brauner
+Cristoph Hellwig
+Dave Airlie
+Greg KH
+Guenter Roeck
+Jakub Kicinski
+James Bottomley
+Jens Axboe
+Jiri Kosina
+Jon Corbet
+Kees Cook
+Lars Eggert
+Laurent Pinchart
+Linus Torvalds
+Marc Zyngier
+Mark Brown
+Matthew Wilcox
+Miguel Ojeda
+Paolo Bonzini
+Rafael Wysocki
+Sasha Levin
+Steven Rostedt
+Ted Ts'o
+Thomas Gleixner
+Thorsten Leemhuis
 
