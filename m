@@ -1,229 +1,135 @@
-Return-Path: <ksummit+bounces-792-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-796-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E715EF766
-	for <lists@lfdr.de>; Thu, 29 Sep 2022 16:22:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1ECF5EF968
+	for <lists@lfdr.de>; Thu, 29 Sep 2022 17:47:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 872A7280D68
-	for <lists@lfdr.de>; Thu, 29 Sep 2022 14:22:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA4171C20A16
+	for <lists@lfdr.de>; Thu, 29 Sep 2022 15:47:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C051C3F;
-	Thu, 29 Sep 2022 14:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4837539D;
+	Thu, 29 Sep 2022 15:47:29 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mout-xforward.gmx.net (mout-xforward.gmx.net [82.165.159.41])
+Received: from premium237-5.web-hosting.com (premium237-5.web-hosting.com [66.29.146.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263361C13;
-	Thu, 29 Sep 2022 14:22:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-	s=badeba3b8450; t=1664461332;
-	bh=2fThASwlJVTGKS8fJvwWcsEXNvkGqFnHYBOOtapWk3I=;
-	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=JokmMOdpxN1gdLxHog2uUsCrX8W6cV/GV0lph15MwVqc46xa2FRZlwq4WoWPoNPPR
-	 zxIFDhgXNLMrlvk3zLdKpigfKQH7MQo/WaMpQhdVFd8q8Gv0lPdgdZaJl0mKDskGVb
-	 L4oFyAR80R9H2L6PAdwwvw8r+s+xqnvZFS461PXU=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [10.7.110.20] ([143.244.37.136]) by mail.gmx.net (mrgmx105
- [212.227.17.174]) with ESMTPSA (Nemesis) id 1MWzfl-1okHIz0xy5-00XLJ5; Thu, 29
- Sep 2022 16:22:12 +0200
-Message-ID: <95c3384b-53d0-fd6c-6ec5-a7e03fdeddfc@gmx.com>
-Date: Thu, 29 Sep 2022 14:22:10 +0000
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940695395;
+	Thu, 29 Sep 2022 15:47:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sladewatkins.net; s=default; h=To:References:Message-Id:
+	Content-Transfer-Encoding:Cc:Date:In-Reply-To:From:Subject:Mime-Version:
+	Content-Type:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=rOFIEq0S0Dx55y93OJZ2axvhLBMAn64hF3lTQA7ocec=; b=OGMBcdZ3MXf9Cw8Mdg/YDR00IQ
+	7Pp4sb8OLyWNcsHelI/FwskJ6Rs2fu8qN1F2U6uAqe32i+9G06XzZPraa3HtuqiDA0jY1pg7br0yT
+	zHkZV7vAbeJo/1bkiGSU0zJXH4vJ9lwuFyFaM5Mn7/bD/SA9Nnb9sopMT3A/vt8qeJ4wqek/ZMYNE
+	crO+Bq52Z38eN00KczS7AGJWWNLW5mUcFK31y1p0k7ceCR+p9nufmcfUOGXVzsrSGhH9V3lRJBRA7
+	6avKQ2qiC0NaeJlFbgxf7UPTxRyD97QUKJAkdCrZR2aoPAswodXSpPnAjqvsOkJ6iSRl6ntw/5nLt
+	h6gxyW3w==;
+Received: from pool-108-4-135-94.albyny.fios.verizon.net ([108.4.135.94]:63979 helo=smtpclient.apple)
+	by premium237.web-hosting.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <srw@sladewatkins.net>)
+	id 1oduvd-00GaOv-NC;
+	Thu, 29 Sep 2022 10:54:21 -0400
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
 Subject: Re: Planned changes for bugzilla.kernel.org to reduce the "Bugzilla
  blues"
-To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-Cc: Thorsten Leemhuis <linux@leemhuis.info>, workflows@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>, Greg KH <gregkh@linuxfoundation.org>,
+From: Slade Watkins <srw@sladewatkins.net>
+In-Reply-To: <95c3384b-53d0-fd6c-6ec5-a7e03fdeddfc@gmx.com>
+Date: Thu, 29 Sep 2022 10:54:17 -0400
+Cc: Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
+ Thorsten Leemhuis <linux@leemhuis.info>,
+ workflows@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Linus Torvalds <torvalds@linux-foundation.org>,
  "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
  ksummit@lists.linux.dev
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <F300ED64-5E8E-4060-89DC-C98BC5FF08E6@sladewatkins.net>
 References: <aa876027-1038-3e4a-b16a-c144f674c0b0@leemhuis.info>
  <05d149a0-e3de-8b09-ecc0-3ea73e080be3@leemhuis.info>
  <93a37d72-9a88-2eec-5125-9db3d67f5b65@gmx.com>
  <20220929130410.hxtmwmoogzkwcey7@meerkat.local>
  <7b427b41-9446-063d-3161-e43eb2e353f9@gmx.com>
  <20220929135325.4riz4ijva2vc7q5p@meerkat.local>
-From: "Artem S. Tashkinov" <aros@gmx.com>
-In-Reply-To: <20220929135325.4riz4ijva2vc7q5p@meerkat.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Hq6E+l7ZjZf7AgVXm4YFu2GewKGauDtFDeuZWNJqMUHf58iz2/X
- i5erProm1PF5iyzsm5F61zF+TmLGUkApj1pOLjEQUK7qULwIr6Top4qHxELTZ1+Qu7Wdh1d
- og27QLUM+uR4+s+vaM2xEh4APxhmsFEpX/9ADDhq/F+XZWtJ22M1R1+s4co319s0vTulP2M
- /nTOV2+P0Tt8+7hYtBrNQ==
-X-Spam-Flag: YES
-X-UI-Out-Filterresults: junk:10;V03:K0:floRUNFVnnQ=:kDidARWMp5cNdV7scF94BOAo
- eXtOY7uxTtc9Ive55aWRV18GG+ZDpVQ5CD9Q5FUBErdTX7CePB8M4zfTAOuo/kk3k6SpdAm+E
- W/AXPcBfwhQAOfa25sluRL6swkyHvwDxRjDo50FWzU8wKyaL224OSHrSOSssuY1BEO5TZNrIx
- 1eI4EXENz7MbNYSdo1/zO4YrEFB8/9hpbToseLvBWKvclNVHkA6dlLNcoDaxZWKkQA0XJxVB5
- Our9ToUYduZorNK/py0IftHpOVEwGjXQx1o2jiQLqAohQ5xMQeAsBZjhwAanZPPrOpqP3KVBA
- ueZy+EUxTaQuZ1R1Pmx1SFTL1eQCOJNF+mNTUS6umJrqgqwxaFQHaDHPlmXLMO+pdd8W78u2w
- I4UggSjylQmpiBjIbZwveMK0fibh2gvprU5ouLNqTS6ODffMkZ6D9IBAT8gSm+6QtcO3JoJUR
- EGxf3k1W5U/SjW4jyqwo9bHouOVxcLT1zUqqwNK1MA+sasg6g5mDYIx3YegfVizLKaOMeFiiI
- XBeQhgQK/IEu4umtbshg9dohREBp+IDVIapipbbKzxNisYckoJAdR+0xZXhoS7eZgP358D1kb
- PbkpkYlbHMh4k8r0nl5SHW/k8PU9ebOtno1OVrMHt1R1NnK04g6meCNyqa9fmkeAfKwzs48dt
- PEfC8TiA1xrx21Cio2tuSZCx3CoG6Hiai2aKPkdjTLw6uNp4I3sv3tSed+N71jQ21FFAuVvDg
- BIUw/+wK8Um3IQQu5hVMBwvl+wRKafPMFpl/IpHpqO8BXcMyory6GZoT3nRYqQ+LJpOUgOgeK
- 2VjqWeV+N76RH/ilBp0h1CMFMyKUs3Mlw9ihKExDk4EvYDkfsmajKQyhYOGNsW7Xz1FMsXzEX
- fhlJEcHQcdfKL+CuOQGDkJK03JxEsCD7MtxWn3BEJuDEKCEP1ymf7GGcQzTzAZBTj4UB7mePL
- BzcsyFvpzcPsauRHUV6pZX+7Son37rZt5y0twbM4uLYC4Tke8gJqsiREhM/GQof+/9Q7hObKP
- Lj3mz4IEYbx49yk/VLQLldrQ7op19YJaRf06fxYF+gV60otoaw+mCdHigAygi4IekS26YdZs3
- ZvhNwRGsBC28gVZ9ovEzBuyT7eskpFnkSy4Cl5e1JPaX7JGjsJzVdMrgh2NVINf8M9AttK0ew
- gigtcjB/IBOAtdORLutE9Qjyf/t22IoV/KDf2UqdY6bdMw==
+ <95c3384b-53d0-fd6c-6ec5-a7e03fdeddfc@gmx.com>
+To: "Artem S. Tashkinov" <aros@gmx.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.1)
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - premium237.web-hosting.com
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - sladewatkins.net
+X-Get-Message-Sender-Via: premium237.web-hosting.com: authenticated_id: srw@sladewatkins.net
+X-Authenticated-Sender: premium237.web-hosting.com: srw@sladewatkins.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-From-Rewrite: unmodified, already matched
 
+Hey!
 
+Jumping in here to offer my input...
 
-On 9/29/22 13:53, Konstantin Ryabitsev wrote:
-> On Thu, Sep 29, 2022 at 01:31:49PM +0000, Artem S. Tashkinov wrote:
->> To me it sounds like the best way to keep moving forward is simply
->> convert git.kernel.org + patchwork.kernel.org + bugzilla to
->> gitlab.kernel.org and that will solve all the issues immediately.
->
-> No, you will still have all the exact same problems as long as nobody is=
- in
-> charge of handling incoming bugs. There are plenty of active github/gitl=
-ab
-> projects with thousands of open issues that nobody is working on for the=
- exact
-> same reason nobody is working on bugs filed via bugzilla -- the right pe=
-ople
-> didn't see it (or are actively ignoring it, because they are working on
-> something else).
->
->> That will require of course a ton of work but:
->>
->> 1) All the commiters will be automatically present and you can easily C=
-C
->>     them
->
-> Just like with bugzilla.
->
->> 2) All the kernel directories could be split into components with the
->>     respective developers being subscribed to them automatically. There=
-'s an
->>     issue though: sometimes directories/components are rearranged. Gitl=
-ab
->>     however is quite powerful, so issues can be easily moved between
->>     components.
->
-> Just like bugzilla.
->
->> 3) It's gonna be a ton easier to keep track of commits and discuss/revi=
-ew
->>     them. AFAIK it's now done using LKML + patchwork.kernel.org and the=
-n
->>     commits are merged by maintainers. So many places to keep track of.
->
-> Now there will be a single place someone can knock out to stop all kerne=
-l
-> development and coordination, subject to countrywide IP blocks, politica=
-l
-> influence, etc.
->
-> Besides, maintainers already have a single place to keep track of things=
- --
-> their inbox. If they didn't see something in their inbox, how is it goin=
-g to
-> be different when it's a web interface?
->
->> 4) Gitlab probably can be integrated with other gitlabs (at least AMD, =
-Intel
->>     and Nouveau drivers are developed on gitlab.freedesktop.org).
->>
->> Gitlab simplifies all of that tremendously. Github will work as well bu=
-t I
->> know many people don't like it.
->
-> Gitlab is also a commercial open-core project. It is permanently in dang=
-er of
-> being swallowed by some $ENTITY_NOBODY_LIKES, who will for sure look to
-> prioritize what kinds of things go in to the "open core" part and what k=
-inds
-> of things are only available with subscription, in order to improve prof=
-it
-> margins.
->
-> -K
+> On Sep 29, 2022, at 10:22 AM, Artem S. Tashkinov <aros@gmx.com> wrote:
+>=20
+> That leaves us with Bugzilla that no one wants to touch and some =
+people
+> actively want to delete altogether. In other words, no central place =
+to
+> report bugs or keep track of them.
 
-Not going to argue about that.
+This is the current problem that seems to be appearing here. I get why =
+no one wants to touch it, but it doesn=E2=80=99t solve the problem.=20
 
-That leaves us with Bugzilla that no one wants to touch and some people
-actively want to delete altogether. In other words, no central place to
-report bugs or keep track of them.
+As you said:
 
-I've mentioned several times already that mailing lists are _even worse_
-in terms of reporting issues. Developers get emails and simply ignore
-them (for a multitude of reasons).
+> I've mentioned several times already that mailing lists are _even =
+worse_
+> in terms of reporting issues. Developers get emails and simply ignore
+> them (for a multitude of reasons).
 
-And finding and engaging with existing issues becomes near impossible.
-With Bugzilla you can easily leave a comment, attach a patch, attach
-debug files, etc. For many mailing lists following up on an old message
-is not possible unless you know the old message ID (the nature of mail
-clients). With bugzilla you can see a list of reported/open bugs. With
-bugzilla you can easily engage with other bug reporters.
+It=E2=80=99s 100% true that emails get _buried_ as waves of them come in =
+(LKML itself gets hundreds upon hundreds a day, as I=E2=80=99m sure all =
+of you know) and it just isn=E2=80=99t something I personally see as =
+viable, especially for issues that may or may not be high priority.
 
-To me it all sounds like kernel developers simply do not want any
-responsibility or any extra emails whatsoever and instead would love
-everyone to spam LKML: when you feel like it, you can check your inbox,
-maybe leave a message, maybe not. Who cares? It's LKML.
+> Getting back to my first message in this discussion,
+>=20
+> * Let's refresh all the components in Bugzilla
+> * Components may not have any people responsible for them at all. Bug
+> reporters will have to CC the people they are interested in.
+> * Let's subscribe the past six months of developers (using git commit =
+logs)
+> * Whoever wants to unsubscribe is free to do so.
 
-Getting back to my first message in this discussion,
+Not a terrible idea to me, though obviously, that=E2=80=99s up for =
+debate.
 
-* Let's refresh all the components in Bugzilla
-* Components may not have any people responsible for them at all. Bug
-reporters will have to CC the people they are interested in.
-* Let's subscribe the past six months of developers (using git commit logs=
-)
-* Whoever wants to unsubscribe is free to do so.
+>=20
+> If not for bugzilla, let's use something more modern. I don't know any
+> comparable projects however. Trac is truly horrible. You cannot even
+> unsubscribe from bug reports. Maybe I've missed something. Discourse?
+> Not a bug tracker per se but can certainly work this way.
 
-Alternatively:
+Discourse probably isn=E2=80=99t the best fit here, in my opinion. Jira =
+and YouTrack are the only ones I personally know of that are similar to =
+Bugzilla, although as far as I know, they aren=E2=80=99t open source...
 
-* Delete all the components.
-* Leave a catch-all one.
-* Let bug reports rot because no one will ever see them. Almost just
-like now. Don't remind me of mailing lists.
+Best,
+-srw
 
-If not for bugzilla, let's use something more modern. I don't know any
-comparable projects however. Trac is truly horrible. You cannot even
-unsubscribe from bug reports. Maybe I've missed something. Discourse?
-Not a bug tracker per se but can certainly work this way.
-
-To me it all sounds like the sentiment is to absolve from any and all
-responsibility and shut your ears and eyes to any reports of your code
-malfunctioning/breaking. Fine, let's do it.
-
-Sarcasm and pain aside, Linus Torvalds himself _via Bugzilla_ has helped
-me resolve critical issues on several occasions while my messages to
-LKML were simply _ignored_. Think about that.
-
-Mailing lists will not work for such a huge project. Period. In the
-early 90s they worked, but we are 25 years later with millions more
-users. With a ton more of a ton more complicated hardware.
-
-Maybe let's try Discourse with just a few "forums":
-
-* arch
-* drivers
-* fs
-* block/init/ipc/kernel/mm/crypto/virt/scripts - a single core component
-* net
-* security
-* sound
-* tools
-
-That's it. Just 8 forums, zero maintenance, no need to add/remove/manage
-anything.
-
-Best regards,
-Artem
 
