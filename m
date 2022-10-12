@@ -1,119 +1,258 @@
-Return-Path: <ksummit+bounces-931-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-932-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 166AC5F5430
-	for <lists@lfdr.de>; Wed,  5 Oct 2022 14:07:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB7475FC8F5
+	for <lists@lfdr.de>; Wed, 12 Oct 2022 18:12:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43E1E280BEA
-	for <lists@lfdr.de>; Wed,  5 Oct 2022 12:07:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3949280A90
+	for <lists@lfdr.de>; Wed, 12 Oct 2022 16:12:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC134138E;
-	Wed,  5 Oct 2022 12:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E887F28F4;
+	Wed, 12 Oct 2022 16:12:13 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from delivery29.mailspamprotection.com (delivery29.mailspamprotection.com [185.56.84.32])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16CF136B
-	for <ksummit@lists.linux.dev>; Wed,  5 Oct 2022 12:07:21 +0000 (UTC)
-Received: from 10.99.208.35.bc.googleusercontent.com ([35.208.99.10] helo=us256.siteground.us)
-	by se29.mailspamprotection.com with esmtps (TLSv1.2:AES128-GCM-SHA256:128)
-	(Exim 4.92)
-	id 1ofxGu-0006H6-92
-	for ksummit@lists.linux.dev; Wed, 05 Oct 2022 00:48:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=us256.siteground.us; s=default; h=Date:Subject:To:From:cc:list-help:
-	list-unsubscribe:list-subscribe:list-post:list-owner:list-archive;
-	bh=Z9wTC1VuunX+C6O4hDseTsA8zlsqGkBg6rGVRWmAscE=; b=Ynui14vSoM8FhC7JEwtLJOruL/
-	8MT/K2yl0d+I7/HPFIEHydmpZKvSW+Iocvyuw05px2vGUi+9E6nOh4bTi/FyOX7IGnGvz2z7oTd05
-	lw0BlWnfUumjMEO8jpvrOOyJZYR772jWQPdCXbtm6FeKa7NVhSf/6xp0tJun/d/aoqQQ=;
-Received: from mailnull by us256.siteground.us with local (Exim 4.96)
-	id 1ofxGm-000Fek-1l
-	for ksummit@lists.linux.dev;
-	Wed, 05 Oct 2022 05:48:36 +0000
-X-Failed-Recipients: kevin@salonbasinger.com
-Auto-Submitted: auto-replied
-From: Mail Delivery System <Mailer-Daemon@us256.siteground.us>
-To: ksummit@lists.linux.dev
-References: <48c97496-983b-4227-9566-2223268b51bf@lists.linux.dev>
-Content-Type: multipart/report; report-type=delivery-status; boundary=1664948916-eximdsn-1789472636
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3CF2561;
+	Wed, 12 Oct 2022 16:12:10 +0000 (UTC)
+Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1oieKx-00007h-6g; Wed, 12 Oct 2022 18:12:03 +0200
+Message-ID: <8a743f72-1b81-20c3-a2fa-8196b5278fef@leemhuis.info>
+Date: Wed, 12 Oct 2022 18:12:02 +0200
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Mail delivery failed: returning message to sender
-Message-Id: <E1ofxGm-000Fek-1l@us256.siteground.us>
-Date: Wed, 05 Oct 2022 05:48:36 +0000
-X-Originating-IP: 35.208.99.10
-X-SpamExperts-Domain: us256.siteground.us
-X-SpamExperts-Username: 35.208.99.10
-Authentication-Results: mailspamprotection.com; auth=pass smtp.auth=35.208.99.10@us256.siteground.us
-X-SpamExperts-Outgoing-Class: unsure
-X-SpamExperts-Outgoing-Evidence: Combined (0.33)
-X-Recommended-Action: accept
-X-Filter-ID: Pt3MvcO5N4iKaDQ5O6lkdGlMVN6RH8bjRMzItlySaT8FvORZ0jQqtN/PO4hhQvY1PUtbdvnXkggZ
- 3YnVId/Y5jcf0yeVQAvfjHznO7+bT5xu/SC+qem84WGG4sPRiwAH81AJ1TFUyPPWZD/fbWINKOfH
- zJ6mVE7ewsipSVIfs4aMtd7tTOsXkXWm71TPTSf0ABHVTw1lV42ob3hDgXVUNcuMbjamI4+rz6E2
- TdubE9Zd+Emcsq64gCNq47XpAhL3cYV33faV/P5H/To7cjLhqZ5GmkAVmEBl4IAc4hr7OQ+ceXZN
- G0EUbELA0uv9YhdOARsynxDH0D+SLDJWdESXzt3HlBLXAa0Td3DmRHXED0/mRtX1Hfs7Fb9Ao09H
- OUrSbsR08q9tEAjFm2byf+NztGDvwHtYdYSxhouHm79/O4W9USdBm5ThV8YJRTnQ9tGtVf1qzaRU
- c3P3olRHLamMQyb0mbZGjIHswS91OoTWbV1pLRUYE+jf+CRz1mRmvg+3ejx+ZEH83D3uT7G9vVxS
- oIOZ/FQYqPJulBW8G2/zLcvJvFCbAD7w3FUirQwmJIqD2OUMeHyTpNN0eXybX/w7/3ZCM0u5uBlK
- VwmNWN494pXjnzJ0E7sUbsO29yv2kW+YJEp91epRpOyOlAfEEMzV5UlbXBNx0O9Ko+sXNqyBsR7N
- v6gvRG8Egtsm7Ue22/SBqfTWWasexoc4PN6mlJ+taoDOcg83LXH4GksgCfTIQ56BYMnJCEa9PzH7
- xmvIXqwZuKUsHfvATIW9SGz+oZBiGAYbOCavEkmyxfJREEQggNgnxhOOC+j2bgQxjyTonusuYE8Y
- 6tTvmHqq1lZ5ceJjqjRgQDsjWEQj+NQ6d8TwUwY8CVsONrMJuGzuoGnKTKcyizE3RDE4Pahq3GMA
- M0J/vTIDpQr/7bydedH7NBRKwrV+9PpSi3mSkjIGAux8ed3jLQ3vHTwz8GATFsXv1xu/dd40eTXl
- WiUAYdLmsJdAoPIkaBAbUp9codeF+6ujzOdLvbI61upiR7NZxRlKwEUw0AsUlJr1MBGjleO80AM/
- 0JtEZn0eXdrnKqSsHZZAd8nzCl4yqVpTitwYskHwtvWeuw==
-X-Report-Abuse-To: spam@quarantine1.mailspamprotection.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.1
+Content-Language: en-US, de-DE
+To: Hans de Goede <hdegoede@redhat.com>,
+ Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Cc: "Artem S. Tashkinov" <aros@gmx.com>, ksummit <ksummit@lists.linux.dev>,
+ workflows@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Greg KH <gregkh@linuxfoundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ "regressions@lists.linux.dev" <regressions@lists.linux.dev>
+References: <aa876027-1038-3e4a-b16a-c144f674c0b0@leemhuis.info>
+ <20221004175354.bfvg3vhfqch35ib5@meerkat.local>
+ <c74d9d75-4428-e22d-1adb-334b1173d871@leemhuis.info>
+ <20221004202540.etokkm3jk6sk7z7y@meerkat.local>
+ <89926f21-e172-9f3d-d08f-8d5eef812ee1@leemhuis.info>
+ <477635db-c89b-cfd3-cd26-fea51bb094a5@redhat.com>
+From: Thorsten Leemhuis <linux@leemhuis.info>
+Subject: Re: Planned changes for bugzilla.kernel.org to reduce the "Bugzilla
+ blues"
+In-Reply-To: <477635db-c89b-cfd3-cd26-fea51bb094a5@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1665591130;ce8e9760;
+X-HE-SMSGID: 1oieKx-00007h-6g
 
---1664948916-eximdsn-1789472636
-Content-type: text/plain; charset=us-ascii
+On 05.10.22 11:57, Hans de Goede wrote:
+> On 10/5/22 11:00, Thorsten Leemhuis wrote:
+>> On 04.10.22 22:25, Konstantin Ryabitsev wrote:
+>>> On Tue, Oct 04, 2022 at 10:06:28PM +0200, Thorsten Leemhuis wrote:
+>>>> Your plan would afaics mean that we invest further into a software
+>>>> abandoned by its upstream and already becoming more and more of a
+>>>> maintenance burden. That investment would also further increase our
+>>>> dependency on that software by establishing workflows that rely on it.
+>>>> Is that really wise at this point? Wouldn't it be better to spend that
+>>>> time and effort to build something better that is more future proof?
+>>>
+>>> Unfortunately, there's no such thing. ;) And maybe we'll even help tip the
+>>> course of history into the other direction -- Red Hat uses bugzilla, and so
+>>> does OpenSuse, so there's a pretty good core of well-funded companies that
+>>> would be in a position to help keep bugzilla going if it's looking like the
+>>> platform is still alive. Or that could all be wishful thinking and they'll all
+>>> migrate to Jira or something equally horrible, who knows.
+>>
+>> Well, Red Hat apparently is already in the process of migrating to Jira
+>> in the long run:
+>> https://lists.fedoraproject.org/archives/list/epel-devel@lists.fedoraproject.org/thread/U7TZRWXVUGBCHS6EBJIBSFAVPFUHHV7J/
+>>
+>> To quote that mail from March:
+>>
+>> ```
+>> As some of you may know, Red Hat has been using both Bugzilla and Jira
+>> via issues.redhat.com for RHEL development for several years.  Our
+>> intention is to move to using issues.redhat.com only for the major
+>> RHEL releases after RHEL 9.
+>> ```
+> 
+> That is for RHEL only though I'm not sure what the plans for Fedora are.
 
-This message was created automatically by mail delivery software.
+FWIW & for completeness: at least Fedora's project leader Matthew Miller
+thinks that Fedora ```should plan to migrate [from bugzilla] to
+something else in the next three years. There are two reasons for this,
+and only one of them is that Red Hat is moving away. The second is that
+Bugzilla isn’t a great tool for what we need anyway.
 
-A message that you sent could not be delivered to one or more of its
-recipients. This is a permanent error. The following address(es) failed:
+On the first part: yes, there’s a long, slow sunset, but I think
+realistically we’re going to see business-side attention drop
+significantly, and we’ll have correspondingly worse and worse service.
+Right now, there are basically only two people keeping it all going,
+which is heroic. I don’t think it’s too much
+pulling-back-the-corporate-curtain to guess that if one or both get
+tired of that and decide to go start a yak farm, Red Hat won’t
+prioritize hiring backfill dedicated in the same way. We could ask CPE
+to keep it going, but… there’s so much more I’d like to ask CPE. (And
+non-CPE volunteers? There’s so much that’s more interesting!)
 
-  kevin@salonbasinger.com
-    No Such User Here
+So to the second part: Bugzilla isn’t what we really need anyway.[...]```
 
---1664948916-eximdsn-1789472636
-Content-type: message/delivery-status
+See his post from March here for links and the rest of his msg:
+https://discussion.fedoraproject.org/t/the-future-of-bugzilla-in-fedora/37735
+I quoted the msg fully at the end of this mail for completeness.
 
-Reporting-MTA: dns; us256.siteground.us
+Only learned about this msg now through a comment from Matthew
+(https://lwn.net/Articles/910966/ ) in an article about this thread
+(https://lwn.net/Articles/910740/ ). To quote from his lwn.net comment:
 
-Action: failed
-Final-Recipient: rfc822;kevin@salonbasinger.com
-Status: 5.0.0
+```
+Tl;dr: many similar issues as in the above conversation. Triage is a big
+deal. "Bugs" aren't really the best place to start -- it's better to
+send people to a help forum first, file bugs second. [...]
+```
 
---1664948916-eximdsn-1789472636
-Content-type: text/rfc822-headers
+Ciao, Thorsten
 
-Return-path: <ksummit@lists.linux.dev>
-Received: from [113.133.226.15] (port=59646 helo=lists.linux.dev)
-	by us256.siteground.us with esmtp (Exim 4.96)
-	(envelope-from <ksummit@lists.linux.dev>)
-	id 1ofxEn-000EK3-11
-	for kevin@salonbasinger.com;
-	Wed, 05 Oct 2022 05:48:36 +0000
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101 Thunderbird/68.2.2
-From: "5A07B0e" <ksummit@lists.linux.dev>
-Subject: 001408175866
-To: "kevin" <kevin@salonbasinger.com>
-Content-Type: multipart/mixed; charset=GB2312; boundary="------------84392CCBAC08B926331F3F4C"
-MIME-Version: 1.0
-Reply-To: gjkk1234@21cn.com
-Date: Wed, 5 Oct 2022 13:46:35 +0800
-Message-Id: <48c97496-983b-4227-9566-2223268b51bf@lists.linux.dev>
-X-Mailer: Thunderbird/68.2.2
-X-Exim-DSN-Information: Due to administrative limits only headers are returned
+P.S.: Here is the promised full quote of:
+https://discussion.fedoraproject.org/t/the-future-of-bugzilla-in-fedora/37735
 
-
---1664948916-eximdsn-1789472636--
+```
+> The Future of Bugzilla in Fedora
+> Project Discussion
+> council
+> engineering
+> quality-assurance
+> Matthew Miller
+> mattdm Fedora Council Member
+> Mar 22
+> 
+> I posted this on the Fedora Development mailing list 3, in the thread
+> RHEL moving to issues.redhat.com only long term 2, and am re-posting
+> here for broader discussion.
+> 
+> Here’s what I’m thinking: we should plan to migrate to something else
+> in the next three years. There are two reasons for this, and only one
+> of them is that Red Hat is moving away. The second is that Bugzilla
+> isn’t a great tool for what we need anyway.
+> 
+> On the first part: yes, there’s a long, slow sunset, but I think
+> realistically we’re going to see business-side attention drop
+> significantly, and we’ll have correspondingly worse and worse
+> service. Right now, there are basically only two people keeping it
+> all going, which is heroic. I don’t think it’s too much
+> pulling-back-the-corporate-curtain to guess that if one or both get
+> tired of that and decide to go start a yak farm, Red Hat won’t
+> prioritize hiring backfill dedicated in the same way. We could ask
+> CPE to keep it going, but… there’s so much more I’d like to ask CPE.
+> (And non-CPE volunteers? There’s so much that’s more interesting!)
+> 
+> So to the second part: Bugzilla isn’t what we really need anyway.
+> 
+> I’m not saying Bugzilla has been terrible — it’s served us well, in
+> fact. And I have personal fondness for it that, which I do not for,
+> say, the wiki. :classic_smiley: Buzilla is it’s deeply integrated in
+> a lot of our processes, and we’ve got a lot of automations and so on.
+> It’s important. But… there’s a lot that could be better. I think
+> specifically:
+> 
+> It doesn’t serve as a single place to track everything. We’ve got
+> stuff scattered around Bugzilla; issue trackers in Pagure GitLab, and
+> GitHub; pull requests in all of those places; and more. Not to
+> mention upstreams (and inconsistent approaches to tracking upstream
+> issues). I’m not arguing that we need ALL things in one place, but
+> it’s important that Bugzilla isn’t that now anyway.
+> 
+> Bugzilla a terrible experience for end users. Usually it’s the Wrong
+> Place. When a user has a problem, that may or may not be caused by a
+> software defect. This is a whole topic of its own, but in short, it’s
+> really better for most users to report problems at Ask Fedora, and
+> then possibly after triage a bug should be filed and tracked
+> somewhere.
+> 
+> Many of our users are advanced and recognize real defects and file
+> good reports, but this leads to even more frustration, because our
+> response is inconsistent. Maybe that report should actually be
+> upstream. Maybe it’s in a dependency package that’s really only
+> loosely maintained. For whatever reason, a lot of perfectly good
+> reports end up closed EOL, which is never a good outcome.
+> 
+> We’re inconsistent with PRs vs issues, which is confusing and makes
+> more duplication. I have seen cases where a packager complained that
+> someone filed a PR that they never noticed, saying “this should be a
+> bug so I’ll see it”, while others close bugs with “please send a PR”.
+> We could make stronger statements about policies, but as long as
+> these two things exist in separate places, that tension will keep
+> coming back.
+> 
+> Plus plenty of minor things: Our workflow still is shoehorned around
+> a bunch of RH-centric stuff (lots of fields, flags, and statuses that
+> we don’t really use or want). It’s not great for the review workflow,
+> or for some of the other things we’ve twisted it to. A
+> component-centric approach makes it hard to track larger issues. The
+> SCM workflow is … not good.
+> 
+> And I’m sure there’s more. But I’m not really here to complain about
+> Bugzilla. It’s just actually not filling our needs. I therefore think
+> that Jira / issues.redhat.com 5 wouldn’t either — although it’s got a
+> ton of features on top, it’s fundamentally the same kind of thing.
+> 
+> We need define exactly what we do need, and figure out how to get
+> that, in a sustainable way going forward. And fortunately, we DO have
+> a few years, so for once we could do this before it’s a crisis.
+> 
+> I think we should create a project to figure this out. In fact, I
+> think it should be a Fedora Objective. But, it also shouldn’t be a
+> completely blue-sky initiative — we should avoid trying to develop a
+> new gigantic piece of software that we own. (See past results on
+> that, sigh.)
+> 
+> We do have some pieces already in place that should be part of the
+> foundation (or at least other metaphorical bricks in the
+> construction):
+> 
+> Ask Fedora is the place for users to report and discuss problems.
+> This is our first-line of support, and it’s where we can do triage.
+> Then, software defects may or may not be tracked relating to those
+> conversations.
+> 
+> Package-specific issues should be next to the PRs. Let’s enable issue
+> tracking on src.fedoraproject.org (with whatever gitforge we end up
+> with that on). I think this makes sense for initial package review
+> too, although that would need some workflow changes.
+> 
+> Bodhi and the CI results system and all of that. This is
+> update-centric, but does also have a lot of issue-tracker-like
+> characteristcs in the “karma” system, and it is inherently close to
+> our release process. Maybe some of the process that currently goes
+> through Bugzilla could move here.
+> 
+> The Fedora account system and Fedora message bus, plus the packager
+> dashboard, the (under significant update!) Fedora notifications
+> system, and so on. We have a nice underlying infrastructure for tying
+> things together, and we can do more integrations. (Look at how Copr
+> uses Discourse, for example. Or the Blocker Bugs app and its
+> connections with Pagure and, um, Bugzilla.)
+> 
+> Obviously that’s not nearly sufficient. But we should look at all of
+> our needs around tracking issues, plans, projects, blockers, and
+> defects; consider different packaging cases with various
+> relationships with upstreams; and imagine ideal workflows for users,
+> packagers, project managers, spin and edition teams, QA, and all the
+> other stakeholders. The last time we did this was in 2013, so… it’s a
+> good 10-years-later exercise! (Infrastructure Fedora bug tracker -
+> Fedora Project Wiki 2)
+> 
+> Then, once we have a good shared understanding of what we want, start
+> fitting pieces like the above into that picture, define the gaps, and
+> then find exactly what we need to fill them.
+```
 
