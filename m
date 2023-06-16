@@ -1,76 +1,73 @@
-Return-Path: <ksummit+bounces-935-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-936-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25B8E6030CD
-	for <lists@lfdr.de>; Tue, 18 Oct 2022 18:31:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B7997337AB
+	for <lists@lfdr.de>; Fri, 16 Jun 2023 19:54:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7D5C280C09
-	for <lists@lfdr.de>; Tue, 18 Oct 2022 16:31:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 185191C20C77
+	for <lists@lfdr.de>; Fri, 16 Jun 2023 17:54:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD7C74C72;
-	Tue, 18 Oct 2022 16:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E021DCA0;
+	Fri, 16 Jun 2023 17:54:40 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C581102;
-	Tue, 18 Oct 2022 16:31:03 +0000 (UTC)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.0.0)
- id 9816cde6ce27baf2; Tue, 18 Oct 2022 18:24:21 +0200
-Received: from kreacher.localnet (unknown [213.134.183.104])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4566A19E69
+	for <ksummit@lists.linux.dev>; Fri, 16 Jun 2023 17:54:38 +0000 (UTC)
+Received: from localhost (unknown [IPv6:2601:281:8300:73::5f6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by v370.home.net.pl (Postfix) with ESMTPSA id 20447666963;
-	Tue, 18 Oct 2022 18:24:20 +0200 (CEST)
-From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To: Thorsten Leemhuis <linux@leemhuis.info>, Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-Cc: "Artem S. Tashkinov" <aros@gmx.com>, workflows@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, Greg KH <gregkh@linuxfoundation.org>, Linus Torvalds <torvalds@linux-foundation.org>, "regressions@lists.linux.dev" <regressions@lists.linux.dev>, "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
-Subject: Re: Planned changes for bugzilla.kernel.org to reduce the "Bugzilla blues"
-Date: Tue, 18 Oct 2022 18:24:19 +0200
-Message-ID: <4452253.LvFx2qVVIh@kreacher>
-In-Reply-To: <20221017204731.a7rixhqlqmhlntvl@nitro.local>
-References: <aa876027-1038-3e4a-b16a-c144f674c0b0@leemhuis.info> <f0412b37-fac0-c3f5-9877-0460a027e109@leemhuis.info> <20221017204731.a7rixhqlqmhlntvl@nitro.local>
+	by ms.lwn.net (Postfix) with ESMTPSA id CD4A64B0
+	for <ksummit@lists.linux.dev>; Fri, 16 Jun 2023 17:48:56 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net CD4A64B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1686937737; bh=hXML5FitnCr/YGFcE5HoFhMAxnIoSrjY1PYIRBdxrRQ=;
+	h=From:To:Subject:Date:From;
+	b=WHUrIA4C/H+3JNNaU+/dxOYv2a5z57gv9zN+7uCionydgHQjzoXkhYgk7LiCCC1eO
+	 aZniYbTVscBq/C6f0JUfEWetoAklKRXLc0ezRO1RNp5ucxRPAjyKID4vJWkkjAmuAU
+	 aGVZH2MBfKl1PMdbWZshgXlrBR8akOtXi8noQfPF0oMge+wxvIBRzreDo2ubJ+xfPw
+	 9K/biB4MN5wl90i2dl4bQo4XE9K5AhU0Sfm2j/h+FkMRWf07svZuUek/BXHHXCEctK
+	 9fvob20uDZLH8VcFpooAz6rvMi90kS+7wcee1zanosUveRfpM689P+ozHtyab9lavy
+	 uEMzL2ztwnjEA==
+From: Jonathan Corbet <corbet@lwn.net>
+To: ksummit@lists.linux.dev
+Subject: [TECH TOPIC] Kernel documentation
+Date: Fri, 16 Jun 2023 11:48:56 -0600
+Message-ID: <87fs6rxppz.fsf@meer.lwn.net>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.183.104
-X-CLIENT-HOSTNAME: 213.134.183.104
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrfeelvddgjedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepfeduudeutdeugfelffduieegiedtueefledvjeegffdttefhhffhtefhleejgfetnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvddufedrudefgedrudekfedruddtgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrddukeefrddutdegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeelpdhrtghpthhtoheplhhinhhugieslhgvvghmhhhuihhsrdhinhhfohdprhgtphhtthhopehkohhnshhtrghnthhinheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegrrhhoshesghhmgidrtghomhdprhgtphhtthhopeifohhrkhhflhhofihssehvghgvrhdrkhgvrhhnvghlrdho
- rhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepthhorhhvrghlughssehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrvghgrhgvshhsihhonhhssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepkhhsuhhmmhhitheslhhishhtshdrlhhinhhugidruggvvh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=9 Fuz1=9 Fuz2=9
+Content-Type: text/plain
 
-On Monday, October 17, 2022 10:47:31 PM CEST Konstantin Ryabitsev wrote:
-> On Mon, Oct 17, 2022 at 03:57:17PM +0200, Thorsten Leemhuis wrote:
-> > > Here's my counter-plan, which builds on top of yours.
-> > 
-> > Is this the agreed on path forward by silent agreement? And if so: who
-> > will actually shepherd this? I just wonder, as it sounded to me that
-> > Konstantin would be happy to take care of the bot-related stuff, but
-> > leave the rest to somebody else.
-> 
-> Indeed, I need to do most of the preliminary legwork. I will start by creating
-> a public-inbox feed of all bugzilla comments, which is something I was
-> planning to do for a while anyway. Once that is in place, I can build on top
-> of that to add a two-way bridge to replace bugzilla's native (and rather
-> limited, in my experience) email bridge implementation.
-> 
-> Once I have this in place, we can consider what next steps should be taken.
+The documentation discussion at past kernel summits has been lively, so
+I think we should do it again.  Some topics I would bring to a session
+this year would include:
 
-Sounds good to me.
+- The ongoing restructuring of the Documentation/ directory.  I've been
+  slowly moving the architecture docs into Documentation/arch/, but
+  would like to do more to reduce the clutter of the top-level directory
+  and make our documentation tree more closely resemble the organization
+  of the source.
 
-Cheers!
+- Structure.  We continue to collect documents, but do little to tie
+  them together into a coherent whole.  Do we want to change that and,
+  if so, how?
 
+- Support for documentation work.  There is nobody in the community who
+  is paid to put any significant time into documentation, and it shows.
+  How can we fix that?
 
+- Infrastructure.  Sphinx brings a lot but is far from perfect; what can
+  we do to improve it?
 
+Other topics will certainly arise as well.
+
+jon
 
