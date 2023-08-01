@@ -1,102 +1,96 @@
-Return-Path: <ksummit+bounces-951-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-952-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DE57763F41
-	for <lists@lfdr.de>; Wed, 26 Jul 2023 21:09:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FA1B76BC11
+	for <lists@lfdr.de>; Tue,  1 Aug 2023 20:13:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4814F281DF9
-	for <lists@lfdr.de>; Wed, 26 Jul 2023 19:09:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 090302819B9
+	for <lists@lfdr.de>; Tue,  1 Aug 2023 18:13:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101654CE8D;
-	Wed, 26 Jul 2023 19:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E578235B6;
+	Tue,  1 Aug 2023 18:13:13 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553227E1;
-	Wed, 26 Jul 2023 19:09:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 634E6C433C7;
-	Wed, 26 Jul 2023 19:09:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1690398580;
-	bh=wpXDQkyhqevpCIjGRP6IrCzl4cjAiAQRIDWv3E1gcPQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ASN2DIA0e/2uiBlXaXTYYywEIEdTTahPMEZcPJKy+c6Y6k3ypi/oH34eI0a4uuRbP
-	 xqkiRmZXVhMWozBRLAWQTQ1cVxyRj0I44uHdwgMd6tRQnOTm10wPnddAF8kvrNHEBb
-	 1/WgA65rVsjWSpPyZJtatJwkzNognv/5Jzq/Ha7DvDjp8Yw+glIAFUBaqMWY5CwHC8
-	 9dswwPCe4M+e2HWlU4A3ip0c/bFjmFeajUWye3TruhCKHZNoxDkIREnfTg8vjxOjo1
-	 mzuDJaaiyfRdUHSAvG4Ig5Xv8tbBJWq0MdaEUEGzB/D0k07xfs8ObLRcTbFT25/Zak
-	 LKCKszOSaSiZw==
-From: SeongJae Park <sj@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007F623589
+	for <ksummit@lists.linux.dev>; Tue,  1 Aug 2023 18:13:11 +0000 (UTC)
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1bb8a89b975so35736335ad.1
+        for <ksummit@lists.linux.dev>; Tue, 01 Aug 2023 11:13:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1690913591; x=1691518391;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dRmLhxWwXQg1xz/UHO46Z1b59y11aggBFDfPzRx8pds=;
+        b=Pbqse/vHlh5rPlzzVsu6+Hk4dMtTFzeT8QQ7ry5KjAx19PnQDqWozMlb8k0aDxAeN7
+         ig5ZjmH9Sr7G6igP/6ql6etpvbqo3tq8XpkQr4tylBdePhAmTbikxWwrLPNnxPyA6arW
+         hy4Dx+IaAdR220GLkyzNUe41RQDhUBUWWrV2un2bjBhLsLvweDfjeMwUjzR3y7KRf8uj
+         uUmAntbFt7PGFnvB7kWyq4QlemUZbI9fBtFqoXecGc6SoO7n3ETOOESOyJJ3gJEJOq8T
+         MzH6oG44uWVGH2CdyMM9jVCufuH743icmWF0a9BdsFQbwZe5J3/PsrFSG9BCdxP1zetb
+         J8Dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690913591; x=1691518391;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dRmLhxWwXQg1xz/UHO46Z1b59y11aggBFDfPzRx8pds=;
+        b=Irf/6f95twcxoSW3G04jWN9UehfPrQqDnVyM+JqyiV4jiV2hcK6Pvlct9+H5HFjNdb
+         g7aPL5nynhgSYgm24nOi4QJOMxT6/iKshyrydLFVKa64RxqdViL4G+l0UWF073sqxD+p
+         0YQ/t+TaqK+aCdKzmp3kXIfZXuoHrgUcuu8UvgQuczZr2zu4RoojoH38cqEV04oPF7wA
+         hozzKGg0FSlh0wJMSleHD11DENaosKihcYxcQBkg5Df0RXjfaxj64CuvUgLKh8fwZR8+
+         8/rACcnhlUDrJXljMnxOHijJcl5Baiy9qQ7UHYE3gl1GRP96sdWW+DjQS8DcJUbOuS52
+         oN0Q==
+X-Gm-Message-State: ABy/qLbR/4KPINEuLCQ+mLgCJR9b7NAjwCz7ZUFKjhh/JGA47Nma2Vs4
+	f8LA9FZkhV1/nbqBa7bvlrJo8+phEb+uDEBS
+X-Google-Smtp-Source: APBJJlHxvnIo8LXuyE6N5wAg+XrlfJVDEB9Ik+/YqqeM0ApFzuF+qkQOWH5NTnP2xSNikmh4wov0iw==
+X-Received: by 2002:a17:902:ecd2:b0:1b9:da8b:4eac with SMTP id a18-20020a170902ecd200b001b9da8b4eacmr14521447plh.56.1690913590647;
+        Tue, 01 Aug 2023 11:13:10 -0700 (PDT)
+Received: from localhost (ec2-52-8-182-0.us-west-1.compute.amazonaws.com. [52.8.182.0])
+        by smtp.gmail.com with ESMTPSA id s4-20020a170902b18400b001b8b4730355sm10767389plr.287.2023.08.01.11.13.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Aug 2023 11:13:10 -0700 (PDT)
+Date: Tue, 1 Aug 2023 07:06:28 +0000
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
 To: ksummit@lists.linux.dev
-Cc: sj@kernel.org,
-	inux-mm@kvack.org,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [TECH TOPIC] DAMON: Current Status and Future Plans
-Date: Wed, 26 Jul 2023 19:09:26 +0000
-Message-Id: <20230726190926.85121-1-sj@kernel.org>
-X-Mailer: git-send-email 2.25.1
+Cc: bobby.eshleman@bytedance.com, amery.hung@bytedance.com,
+	cong.wang@bytedance.com
+Subject: [TECH TOPIC] VSOCK: From Convenience to Performant VirtIO
+ Communication
+Message-ID: <ZMiu9Mkdg4wHtCs7@bullseye>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Hello all,
+Below is the abstract for talk we are proposing for LPC2023 about recent
+work and advancements in the VSOCK socket family.
 
+Thanks in advance!
+Bobby Eshleman
 
-I'm posting my Kernel Summit topic suggestion below.  I will also submit it to
-the LPC site.
+Abstract
 
+The VSOCK family of sockets has traditionally been embraced for its
+convenience in enabling communication between virtual machines and the
+host in virtualized environments. However, recent practical advancements
+have developed VSOCK into more than just a convenience; it has become a
+viable networking protocol even for some extremely demanding networking
+workloads across the host/VM boundary.  This talk will delve into
+virtio/vsock and its new support for datagrams, unlocking new potential
+for efficient packet exchange between VMs and the host. By comparing
+VSOCK datagrams with UDP over virtio, we showcase its practical
+performance advantages, making it a compelling choice for
+high-throughput point-to-point socket-based communication scenarios.
 
-DAMON[1,2] is a Linux kernel subsystem that provides efficient data access
-monitoring and access-aware system operations (DAMON-based Operation Schemes,
-a.k.a DAMOS).  A service provider reported that they are showing about a 16%
-reduction in memory usages with modest overhead on their products by utilizing
-a DAMON-based system operation scheme.
-
-After its initial introduction[3], it has continued to develop in response to
-the voices from the users and kernel hackers.  We also proactively tried to get
-more feedback by sharing the status and discussing future works in multiple
-venues including every kernel summits since 2019[3,4,5,6] and DAMON
-community[7,8].  As a result, DAMON made substantial improvements while the
-list for future works never emptied.
-
-This talk will aim to continue the sharing and discussion at the kernel summit
-of 2023.  We will share what feedback we received, what patches have been
-developed or are under development, what requests are still in the planning
-stage, and what the plans are.  With that, hopefully we will have discussions
-that will be helpful for improving and prioritizing the plans and specific
-tasks, and finding new requirements.
-
-Specific sub-topics would include, but are not limited to:
-
-- Efficient ABI and a convenient user-space tool
-- Fine-grained DAMOS control
-- Partial self-tuning of DAMOS
-- Extension of DAMON monitoring targets
-- Plan for collaborative memory-overcommit VM system management
-- Plan for tiered-memory management
-- Plan for DAMON accuracy improvement
-
-Based on the progress until the summit, some items can be added or dropped.
-
-[1] project homepage, https://damonitor.github.io
-[2] official doc, https://docs.kernel.org/mm/damon/index.html
-[3] ksummit 2019, https://linuxplumbersconf.org/event/4/contributions/548/
-[4] ksummit 2020, https://www.linuxplumbersconf.org/event/7/contributions/659/
-[5] ksummit 2021, https://linuxplumbersconf.org/event/11/contributions/984/
-[6] ksummit 2022, https://lpc.events/event/16/contributions/1224/
-[7] DAMON mailing list, https://lore.kernel.org/damon
-[8] DAMON meetup, https://lore.kernel.org/damon/20220810225102.124459-1-sj@kernel.org/
-
-
-Thanks,
-SJ
+Additionally, we'll explore the integration of sockmap for VSOCK,
+empowering eBPF programs to interact with VSOCK sockets within the
+kernel. This capability allows for dynamic socket management, providing
+the ability to leverage the performance advantages of both sockmap and
+VSOCK in the same practical applications.
 
