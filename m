@@ -1,117 +1,100 @@
-Return-Path: <ksummit+bounces-953-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-954-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD4A1771DB7
-	for <lists@lfdr.de>; Mon,  7 Aug 2023 12:04:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF2367766F2
+	for <lists@lfdr.de>; Wed,  9 Aug 2023 20:05:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A16528121C
-	for <lists@lfdr.de>; Mon,  7 Aug 2023 10:04:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EBD51C212BB
+	for <lists@lfdr.de>; Wed,  9 Aug 2023 18:05:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81022C8FB;
-	Mon,  7 Aug 2023 10:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B031D312;
+	Wed,  9 Aug 2023 18:04:54 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
 Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013C1C2D6
-	for <ksummit@lists.linux.dev>; Mon,  7 Aug 2023 10:03:59 +0000 (UTC)
-Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-d13e0bfbbcfso6218149276.0
-        for <ksummit@lists.linux.dev>; Mon, 07 Aug 2023 03:03:59 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B5A1D2EF
+	for <ksummit@lists.linux.dev>; Wed,  9 Aug 2023 18:04:51 +0000 (UTC)
+Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-d6349472de6so23849276.0
+        for <ksummit@lists.linux.dev>; Wed, 09 Aug 2023 11:04:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691402638; x=1692007438;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+        d=linaro.org; s=google; t=1691604290; x=1692209090;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=xRGzli2lAUffxtP9ALYDIx5sqFXQ0oqdxSDgCig8T+U=;
-        b=KqAIibmwl0yYvuW1H9sCI/ljIXbbS4KoY3ibuNKDaRqqW8x8+WUCe7LUjKogmG4sLU
-         lPvWyXDFRvQH3GhihDye6E+ZeRDzq7vZN6n0Afwf+NoioK8Hs4semAhUgoktZhc1oECt
-         LQ0Mmm+yrine7hekslKnkGGsH64n7GCeEihq/Vhusyjrhxm/aQHYwGLSJR9PzfONdwu7
-         QQmkgqf/IQ4pjjuVqw4l9uVlTva7G3HoYCMD7uKfzldM4gcBidkPywEdu7eCY/6/9UWY
-         eT2ObzrM0ZQKXNzG+t5ftxE6ENDZZeOt2AW2DaIPvHlKPtkitQkO2r5UWitY18GBY6ZX
-         8huQ==
+        bh=gFMVIlzzW0XoWS+ylAuNK31GDbJDnzbMiH4klCT/WC4=;
+        b=HQAuHPvICoO0vWRNDp2kWBS9sayxaQN7Zt2ZUIiLp4jv2bS1LzK1FL45dEr2oQ0cJ3
+         rIwp9qRKE2fCptuKEkNPJ1h3UzScQDMZifPyV7o9HJmIBQtBnZHCzOySxgsb7cSJUexu
+         zANPFuwUHlS/PIW2iFXZ3eeB0WOBANhCkJoHWY9N+UcFGSTt1mmGRSQEteqns8pansB7
+         /iedmZ3j6cBerCt63i1VSukT0JiwjqufVdJ5YicYdPZuoQZfdR8K80B3xP3UGj3BAViT
+         3udWjfdNPNmckeqamwWVLMoTmqi2bnmNN/BQKmHHF3dqrSbX+8w7inSCZZC8wphFeXzC
+         jcWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691402638; x=1692007438;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+        d=1e100.net; s=20221208; t=1691604290; x=1692209090;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=xRGzli2lAUffxtP9ALYDIx5sqFXQ0oqdxSDgCig8T+U=;
-        b=CgER9OQSC6A702xRR/f+2dbbkLnLEdLQMrDCj2arIYRLX6ZSOxzPNsSxl7E8+clhL6
-         AWQek97xnyRfgvX2jC3uaobwSXhdb08R9Nlaw0WGr/kPSipKYMccmPqQjymq+Mf0Mk3w
-         Jncznd7S4wT8XfDENnyImAQSVXpe18CDDGRDXWYaRwNTgj0DhhCPFJ7V23c8FLPr5CZt
-         dcrlM55LhPRrQvX5us3jzB0g2ASlsnu79LX3zoNntys+TRuVBlLYCiDQEFLfXIRy+9F4
-         +UyLjoMh/HURbMzWEU8kERMFz7mWTjzRI2o/SvdBAXNOwI8sTBHwGuls8liH78Wcjzfa
-         L0CA==
-X-Gm-Message-State: AOJu0Yx4S8LOJcXcmjnonf0wAnaq5YLPkHQkmHe0EZyBrbsKonGfnF8q
-	utXNWbeg/P9TiI+qKz0KeUfZ90ESMRQBFNFbA3daK7kqQAk=
-X-Google-Smtp-Source: AGHT+IG5DS1IeUCZJKFTVkoCZUuJR+sX0qdch0oAEFY01E7WVn0/GvKWy7+977Lmhm4gysYQm25nn8+cCz4eJJvIVYQ=
-X-Received: by 2002:a25:8452:0:b0:d4b:a962:76a3 with SMTP id
- r18-20020a258452000000b00d4ba96276a3mr6364367ybm.29.1691402638626; Mon, 07
- Aug 2023 03:03:58 -0700 (PDT)
+        bh=gFMVIlzzW0XoWS+ylAuNK31GDbJDnzbMiH4klCT/WC4=;
+        b=cQJiLwp9qpJ/xwozB1mTRMPR8ggoOLPF2CbEiD0fn85THBk0HOPM+cQbuoMcIkgdAC
+         Mh6W8L8TGXAYuA2NyERmPkCejDYgiyCDTXbMMimGaIboKmVVzxW0j02/NmwmUpNeQ66A
+         zgZ+saMNUuxiDzp0OIj9ui7fZAkrCaU4p2F5pg3WQn7TbhHtCqFKttOViaMx21K3epc0
+         LuOKMZEUABaE+HoWbVyxKJkVQU7u5u81wSFgMQJ5bh/Dkpluih7sZJnIQTqUFlUl+R8/
+         iKPHmH6zEjXWDFoWJzjJf+QN02ECKbbVuG8ucw7IINVCj3tl4Qsk+HQDO+pc/SJM+N0v
+         RlOw==
+X-Gm-Message-State: AOJu0YxdCK5dwM9WQpc0lLCtlzCWGPIcrBL9V0TVCJbHC1MZVwC19u7/
+	liZP2z/TWJhTOK/ISEkafV8P0TIXareM0SQ76G26g0IciFlFZwV6Sdo=
+X-Google-Smtp-Source: AGHT+IERkE/du5dzu1lwq+vtjz3ZInaFpVm9BkJsTNXXUFarJhoc6DseuuSyoQFTJHIf5jCnKx1LLf4XdIkPGZwcprs=
+X-Received: by 2002:a25:513:0:b0:d22:ab7b:94f4 with SMTP id
+ 19-20020a250513000000b00d22ab7b94f4mr215062ybf.5.1691604290521; Wed, 09 Aug
+ 2023 11:04:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 7 Aug 2023 12:03:47 +0200
-Message-ID: <CANiq72nPJVa51zv+_5tTX_jC=WGf9qmFkAHSJxkU-Y=e-5A5XQ@mail.gmail.com>
-Subject: [TECH TOPIC] Rust for Linux
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Date: Wed, 9 Aug 2023 20:04:39 +0200
+Message-ID: <CACMJSev18ZdTVDK7j3gCpzw4rAiaNMZRT4KSvLzd99H61XwMOA@mail.gmail.com>
+Subject: [TECH TOPIC] Improving resource ownership and life-time in linux
+ device drivers
 To: ksummit@lists.linux.dev
-Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Hi all,
+Hi!
 
-This is https://lpc.events/event/17/abstracts/1602/ (submitted
-yesterday, but we just recalled the mailing list requirement). This
-talk could go into either the Kernel Summit track or the Refereed
-track.
+I submitted this proposal on time using the website but forgot about
+sending it here too. Hope that's alright. The abstract follows.
 
-Rust for Linux [1] is the project adding support for the Rust language
-to the Linux kernel. Soon after LPC 2022, the initial support for Rust
-was merged into the kernel for v6.1.
+Bartosz Golaszewski
 
-Since then, there has been progress in several different areas,
-including the addition of safe abstractions around kernel
-functionality and subsystems, as well as infrastructure and tooling
-changes. The talk will give a high-level overview of some of them,
-such as:
+--
 
-  - Core: `Opaque`, `CString`, `ScopeGuard`, `concat_idents!`,
-`{static,build}_assert!`: basic functionality that is widely used in
-Rust code.
+Recently there have been several talks about issues with object
+ownership in device drivers, use-after-free bugs and problems with
+handling hot unplug events in certain subsystems.
 
-  - Kernel primitives: `Arc`, `Lock`, `Guard`, `Mutex`, `SpinLock`,
-`CondVar`, `Task`, `workqueue::Queue`: exposing existing C kernel APIs
-as zero-cost and safe Rust abstractions.
+First Laurent Pinchart revisited an older discussion about the harmful
+side-effects of devres helpers during LPC 2022[1]. I then went down
+that rabbit hole only to discover a whole suite of issues, not really
+linked to devres in any way but rather mostly caused by the way
+subsystems and drivers mix reference counted resources with regular
+ones[2]. This year Wolfram Sang continued the research and presented
+even more vulnerable subsystems as well as some potential remedies
+during his talk at the EOSS 2023 in Prague[3].
 
-  - `pinned-init` API: a solution to the safe pinned initialization problem.
+I have since experimented with several approaches and would like to
+present some updates on this subject. During this talk I plan to jump
+straight into presenting concrete ideas and timelines for improving
+the driver model and introducing some unification in the way
+subsystems handle driver data. While this is a significant effort
+spanning multiple device subsystems that will need to be carried out
+in many phases over what will most likely be years, without addressing
+the problems, we'll be left with many parts of the kernel not being
+able to correctly handle simple driver unbinds.
 
-  - KUnit integration for Rust doctests.
-
-  - `klint`: a tool to introduce extra static analysis passes,
-including an analysis that validates that Rust code follows the kernel
-locking rules by tracking the preemption count at compile-time.
-
-  - Rust generated documentation at https://rust.docs.kernel.org.
-
-Now that the project is developed in-tree, we will also explain some
-of the changes to our workflow too, such as our branch setup, the
-policy around unsoundness issues for stable kernels and the Rust
-version upgrade policy.
-
-Finally, we will switch our focus to the future, where we will briefly
-discuss what is coming up imminently and longer term, such as the
-placement of Rust code within the tree and the build system changes;
-and also try to discuss and seek input from the community on ways in
-which we can address some of the broader challenges we have been
-facing. For example, a recurring theme is how can we make adding Rust
-to a given subsystem more palatable to overburdened maintainers?
-
-[1] https://rust-for-linux.com
-
-Cheers,
-Miguel
+[1] https://lpc.events/event/16/contributions/1227/
+[2] https://fosdem.org/2023/schedule/event/devm_kzalloc/
+[3] https://eoss2023.sched.com/event/1LcPP/subsystems-with-object-lifetime-issues-in-the-embedded-case-wolfram-sang-sang-engineering-renesas
 
