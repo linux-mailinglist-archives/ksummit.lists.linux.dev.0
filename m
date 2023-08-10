@@ -1,99 +1,124 @@
-Return-Path: <ksummit+bounces-957-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-958-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEB9B7771F2
-	for <lists@lfdr.de>; Thu, 10 Aug 2023 09:56:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A992777C8C
+	for <lists@lfdr.de>; Thu, 10 Aug 2023 17:47:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2ED06281F58
-	for <lists@lfdr.de>; Thu, 10 Aug 2023 07:56:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2A8E282181
+	for <lists@lfdr.de>; Thu, 10 Aug 2023 15:47:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B37F26AB4;
-	Thu, 10 Aug 2023 07:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3678E20CA9;
+	Thu, 10 Aug 2023 15:47:10 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FFE046AB
-	for <ksummit@lists.linux.dev>; Thu, 10 Aug 2023 07:55:55 +0000 (UTC)
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-d4b74a4a6daso577993276.2
-        for <ksummit@lists.linux.dev>; Thu, 10 Aug 2023 00:55:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691654154; x=1692258954;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bzJ27RCXBhYelgMBbp5diddpk/rURIzLrWtM3cDGdaQ=;
-        b=muybhES9Q/Fs3n29wutCya0cZdf/qotUqliBZT8mGlzfSWK3Pw0M84XZlAjtZq9+SC
-         RJ42Hb9JkCYrCBL8OTrOnnUbUnYB7Ww0Z0aXqChQ7ji/9ihUS0TjHi3uSWIOqLlaAyDy
-         ChC7ao7YP5dPNlSdp/w07IHJeB908sR5lPCOgn+uGiG4N0V6lw4phKC21gNVbMBItMGh
-         RUjsBrxF1g66JrkuaQP+B91Ee8ccxgL8ioQLNXqCWTzIHOsML8HqXWVifyJx4G/Vsmv2
-         iihrHtzxJat1usxx9lTXl5J3kJHzVJFZqcX4ALJw3x8qdCMahGVd5gNs8Ph3T84l9Sfv
-         RU+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691654154; x=1692258954;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bzJ27RCXBhYelgMBbp5diddpk/rURIzLrWtM3cDGdaQ=;
-        b=LaDUWOkKNpIOTqed2O1FcWiVdpaYZdapVsaBBWF5YbjSA86RgNAZQ7pYtzodYaxHeW
-         L7vxSXXNIGLQ7TkvEy5AobkR2AbyR72nYQZmmw7SnvVndhXejI1Er3x5Pc6dWF+0R2t4
-         iPORGXxVX5gq3OV0WYpOYQhoq0d6LEr7LmFzQmVtq2x7YAJZyPKChDABJUcc1zmiciDY
-         H/ilFwsjaz+hTcnov9gHbo28ViCngGl2Noglk985QgRuzvwPKKy90UZxshomrb6QtScZ
-         CqFsIARp8hr6FzpnCAOJUQGEbDzU5LZ0yaMOUBc1XsZ7/LgQLPgZZh0iBH/1LgoNkyaU
-         LjRw==
-X-Gm-Message-State: AOJu0Yy3K7vYaH4IpwaGMO/jRGAz+tYVugYDjIG0Jl1BdYajUzF6ssqb
-	PghyC6o+elIQS6O+qGZoRoriezbDan5utkzZDrmhv/fYWakBJY6t
-X-Google-Smtp-Source: AGHT+IExLBfxUw+kNn89DFP3Dhd70VlaTnPFdiUgMAFZMQNXuLrikcO7MWg9Klq0rSv5viWTThTwFfsqkdxuwgR3ml0=
-X-Received: by 2002:a25:cad7:0:b0:c86:a5b6:cdff with SMTP id
- a206-20020a25cad7000000b00c86a5b6cdffmr2006777ybg.19.1691654154024; Thu, 10
- Aug 2023 00:55:54 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76496200BC
+	for <ksummit@lists.linux.dev>; Thu, 10 Aug 2023 15:47:08 +0000 (UTC)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+	by mailout.west.internal (Postfix) with ESMTP id 4A62B320085B;
+	Thu, 10 Aug 2023 11:47:07 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute1.internal (MEProxy); Thu, 10 Aug 2023 11:47:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:sender
+	:subject:subject:to:to; s=fm3; t=1691682426; x=1691768826; bh=u0
+	Na+s3HFCBhMXiFY6l2ucQ2gOuz/YN8Uo6nPtVtE4A=; b=QxIxbMhfa409X5Xy1l
+	pJKiASHLtQ2zp8PEsGsVJrPdq2XZgHB3t1kFkVXKaSRGEUGh0xtEpxqbESZUQe9C
+	YKZIuo/l02kaDD6SoNS9fZpislhUfSL80shBhyOZ1QX0z4Ke+hKS1UwCE7ZOUlxk
+	3/HNn7IK84+xrFH4znzo2N7rchNdkWap6lavjj3Nq15fuSP+71zznerSe+fgUWk/
+	S8855PQx325ugcHzm0VzCirkwPoGKjlflXq1CkCr6OOC7Xabc+3P3qVTdQep9FmS
+	9rSwx3/N7Qrk3+buj/yGDS83HT0uTgrn0RTtuGko7ZeeTSwq4lmnsxBut3fVrzrk
+	8neA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm3; t=1691682426; x=1691768826; bh=u0Na+s3HFCBhM
+	XiFY6l2ucQ2gOuz/YN8Uo6nPtVtE4A=; b=va6m7jYEiCXrTglso0A4srhCpornN
+	eYnL2bsTLDsfbpDG6e0NQ3ZKfJAzbbliRIWXa+pmM43ukxvoTzDchjTVTKkjqoLJ
+	UHAtlEATICv4C1XLeGj5VI4gbs4bwPUIoOVgZNvDUgEP0V4sYxFawMbuM/Hi/SKs
+	oDOpekYY6InaDV3dZIr1s04uTgcuzAjoIyJJ4043MGgywbQQqVETHFilXGGqDnuo
+	Dj+T+x/njrf4O8JZIL23monMnhJGPzdc4Hftkcxuf1uZRviL7AVTHTR+z11ZwxBh
+	zNRTB+tWb0si8ACu1T3AgidCAYGOQxOqrWKcqpABl+a37t+uELaLsvqQQ==
+X-ME-Sender: <xms:egbVZO-rokpAuow0Zd74LsbRE42e5xur9c-dzoVAqpLWr1N87YAz5g>
+    <xme:egbVZOsKBvhvW8V_CfvfwimstoaNZfu-EVHGViThSHleNVOf_-zqDcnuUj7FdZK_c
+    9D_w0j-HVYSmA>
+X-ME-Received: <xmr:egbVZEAgZtpRInfhS28Yfc2dDUkFCMgzdW1O5LJ44jGkb1U8CWGnBYNqtVW3ns9mUr9uM1IxOzTd-uOv5prUA9eRaMhV2iTncKZqoQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrleeigdelvdcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehgedvve
+    dvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhushht
+    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhh
+    drtghomh
+X-ME-Proxy: <xmx:egbVZGenWD43y6uSsygMYLSGpqec12jN9vE9AohrjKhR6Fwz_r8x3A>
+    <xmx:egbVZDOVXRMPb8T6ZXLVqvyk6mqrTojZZA3Sk78Z5LMArHaJbV4hQQ>
+    <xmx:egbVZAn1zpiJ55CQWhYYfDNzffcR73bzpvUQnCNYsQDPmQst8a_GIQ>
+    <xmx:egbVZMb15Jiknqu5sMmU2oUvX1yaVhmca9-x5vMQgdRkTcgJ6IJzAg>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 10 Aug 2023 11:47:05 -0400 (EDT)
+Date: Thu, 10 Aug 2023 17:47:02 +0200
+From: Greg KH <greg@kroah.com>
+To: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Cc: ksummit@lists.linux.dev
+Subject: Re: [TECH TOPIC] Improving resource ownership and life-time in linux
+ device drivers
+Message-ID: <2023081048-skittle-excusable-2c9f@gregkh>
+References: <CACMJSev18ZdTVDK7j3gCpzw4rAiaNMZRT4KSvLzd99H61XwMOA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CACMJSev18ZdTVDK7j3gCpzw4rAiaNMZRT4KSvLzd99H61XwMOA@mail.gmail.com>
- <CACRpkdYtoD=OyoK_hyyORmUkcKcCM3m+GO1XUHdbmaS8gW0=BA@mail.gmail.com>
-In-Reply-To: <CACRpkdYtoD=OyoK_hyyORmUkcKcCM3m+GO1XUHdbmaS8gW0=BA@mail.gmail.com>
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Date: Thu, 10 Aug 2023 09:55:43 +0200
-Message-ID: <CACMJSevjabk+HeT-797bs9kwpRA5G+SiBzbcRsavpVHXt5_JsQ@mail.gmail.com>
-Subject: Re: [TECH TOPIC] Improving resource ownership and life-time in linux
- device drivers
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Peter Zijlstra <peterz@infradead.org>, ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACMJSev18ZdTVDK7j3gCpzw4rAiaNMZRT4KSvLzd99H61XwMOA@mail.gmail.com>
 
-On Thu, 10 Aug 2023 at 00:03, Linus Walleij <linus.walleij@linaro.org> wrot=
-e:
->
-> On Wed, Aug 9, 2023 at 8:05=E2=80=AFPM Bartosz Golaszewski
-> <bartosz.golaszewski@linaro.org> wrote:
->
-> > Recently there have been several talks about issues with object
-> > ownership in device drivers, use-after-free bugs and problems with
-> > handling hot unplug events in certain subsystems.
->
-> 1. Good topic.
->
-> 2. Is this also where we discuss the use of <linux/cleanup.h>
->     commit 54da6a0924311c7cf5015533991e44fb8eb12773
->     ? Because I would certainly like to learn more about that
->     thing with an example or two.
->
+On Wed, Aug 09, 2023 at 08:04:39PM +0200, Bartosz Golaszewski wrote:
+> Hi!
+> 
+> I submitted this proposal on time using the website but forgot about
+> sending it here too. Hope that's alright. The abstract follows.
+> 
+> Bartosz Golaszewski
+> 
+> --
+> 
+> Recently there have been several talks about issues with object
+> ownership in device drivers, use-after-free bugs and problems with
+> handling hot unplug events in certain subsystems.
+> 
+> First Laurent Pinchart revisited an older discussion about the harmful
+> side-effects of devres helpers during LPC 2022[1]. I then went down
+> that rabbit hole only to discover a whole suite of issues, not really
+> linked to devres in any way but rather mostly caused by the way
+> subsystems and drivers mix reference counted resources with regular
+> ones[2]. This year Wolfram Sang continued the research and presented
+> even more vulnerable subsystems as well as some potential remedies
+> during his talk at the EOSS 2023 in Prague[3].
+> 
+> I have since experimented with several approaches and would like to
+> present some updates on this subject. During this talk I plan to jump
+> straight into presenting concrete ideas and timelines for improving
+> the driver model and introducing some unification in the way
+> subsystems handle driver data. While this is a significant effort
+> spanning multiple device subsystems that will need to be carried out
+> in many phases over what will most likely be years, without addressing
+> the problems, we'll be left with many parts of the kernel not being
+> able to correctly handle simple driver unbinds.
 
-Not really, the problem with subsystems is more about referencing
-resources that can go from under you without you knowing, but there is
-an interesting coding pattern in C with autopointers and reference
-counting that I definitely will talk about.
+I'm all for this, we need some major work in this area.
 
-Bartosz
+thanks,
 
-> Yours,
-> Linus Walleij
+greg k-h
 
