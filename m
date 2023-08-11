@@ -1,94 +1,95 @@
-Return-Path: <ksummit+bounces-960-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-961-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2615777824F
-	for <lists@lfdr.de>; Thu, 10 Aug 2023 22:47:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E64DD778600
+	for <lists@lfdr.de>; Fri, 11 Aug 2023 05:30:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4F16281E92
-	for <lists@lfdr.de>; Thu, 10 Aug 2023 20:47:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E93CA281EF1
+	for <lists@lfdr.de>; Fri, 11 Aug 2023 03:30:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D6B22EE1;
-	Thu, 10 Aug 2023 20:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15704EC5;
+	Fri, 11 Aug 2023 03:29:55 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57AAEEAD9
-	for <ksummit@lists.linux.dev>; Thu, 10 Aug 2023 20:47:15 +0000 (UTC)
-Received: from pendragon.ideasonboard.com (213-243-189-158.bb.dnainternet.fi [213.243.189.158])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 697A04DE;
-	Thu, 10 Aug 2023 22:45:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1691700357;
-	bh=kIP/cCXt0hRs4ekr3AURTvoW0gx4krzd2c52m6181n0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CKPBT5kahCb8y8EQ4JiVEotcjvPYQM40iQPCftor71PjnBWyWk/WjYCg0qDNxtmIR
-	 baIfX3OvLAxjCUmgcfunsYSd5IRqpkUUKJoURBqwbLE/i+luCsQrC7GemZRFK3yUrx
-	 5roJmu4MaR2YoF1sl1d4VMKfjYJbethVNdnMWnfc=
-Date: Thu, 10 Aug 2023 23:47:13 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Greg KH <greg@kroah.com>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	ksummit@lists.linux.dev
-Subject: Re: [TECH TOPIC] Improving resource ownership and life-time in linux
- device drivers
-Message-ID: <20230810204713.GF402@pendragon.ideasonboard.com>
-References: <CACMJSev18ZdTVDK7j3gCpzw4rAiaNMZRT4KSvLzd99H61XwMOA@mail.gmail.com>
- <2023081048-skittle-excusable-2c9f@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0B1A47
+	for <ksummit@lists.linux.dev>; Fri, 11 Aug 2023 03:29:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1691724591;
+	bh=2fFRzDcVoC64hvTY3rRVdC3UJiSoDVgzVVYzNeqa/RE=;
+	h=Message-ID:Subject:From:To:Date:From;
+	b=aPT34zDfgYkeDyFI0QdSp9kCSSkDJHvIxD/eDkZe7VSa2kgolNaNHUnWjNucLV68U
+	 wQkhMVaGcKQ8MMGxlqvxi6QQHg7A7MYoaNT52RbSHXuAyf/UYHjufogfWSEG4BdVlR
+	 CDMeBYekHjFYmmb/DLO2RKwKpvG2YEo8IkYhuhm8=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id BD97112864AB;
+	Thu, 10 Aug 2023 23:29:51 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id aCjionipzNzJ; Thu, 10 Aug 2023 23:29:51 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1691724591;
+	bh=2fFRzDcVoC64hvTY3rRVdC3UJiSoDVgzVVYzNeqa/RE=;
+	h=Message-ID:Subject:From:To:Date:From;
+	b=aPT34zDfgYkeDyFI0QdSp9kCSSkDJHvIxD/eDkZe7VSa2kgolNaNHUnWjNucLV68U
+	 wQkhMVaGcKQ8MMGxlqvxi6QQHg7A7MYoaNT52RbSHXuAyf/UYHjufogfWSEG4BdVlR
+	 CDMeBYekHjFYmmb/DLO2RKwKpvG2YEo8IkYhuhm8=
+Received: from [172.19.131.120] (unknown [216.250.210.86])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits))
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 54C1612865BD;
+	Thu, 10 Aug 2023 23:29:47 -0400 (EDT)
+Message-ID: <ab9cfd857e32635f626a906410ad95877a22f0db.camel@HansenPartnership.com>
+Subject: [MAINTAINER SUMMIT] coping with stress as a maintainer
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: ksummit@lists.linux.dev
+Date: Thu, 10 Aug 2023 22:29:37 -0500
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2023081048-skittle-excusable-2c9f@gregkh>
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 10, 2023 at 05:47:02PM +0200, Greg KH wrote:
-> On Wed, Aug 09, 2023 at 08:04:39PM +0200, Bartosz Golaszewski wrote:
-> > Hi!
-> > 
-> > I submitted this proposal on time using the website but forgot about
-> > sending it here too. Hope that's alright. The abstract follows.
-> > 
-> > Bartosz Golaszewski
-> > 
-> > --
-> > 
-> > Recently there have been several talks about issues with object
-> > ownership in device drivers, use-after-free bugs and problems with
-> > handling hot unplug events in certain subsystems.
-> > 
-> > First Laurent Pinchart revisited an older discussion about the harmful
-> > side-effects of devres helpers during LPC 2022[1]. I then went down
-> > that rabbit hole only to discover a whole suite of issues, not really
-> > linked to devres in any way but rather mostly caused by the way
-> > subsystems and drivers mix reference counted resources with regular
-> > ones[2]. This year Wolfram Sang continued the research and presented
-> > even more vulnerable subsystems as well as some potential remedies
-> > during his talk at the EOSS 2023 in Prague[3].
-> > 
-> > I have since experimented with several approaches and would like to
-> > present some updates on this subject. During this talk I plan to jump
-> > straight into presenting concrete ideas and timelines for improving
-> > the driver model and introducing some unification in the way
-> > subsystems handle driver data. While this is a significant effort
-> > spanning multiple device subsystems that will need to be carried out
-> > in many phases over what will most likely be years, without addressing
-> > the problems, we'll be left with many parts of the kernel not being
-> > able to correctly handle simple driver unbinds.
-> 
-> I'm all for this, we need some major work in this area.
+Stress has been a standard part of maintainer functions for a long time
+now.  It comes from many source: internal deadline or porductivity
+pressures, requirements to justify what you do from corporate bigwigs,
+or simply the external flood of CVEs and syszbot reports that come in
+so rapidly that you get two more before you've worked on the first one.
+All of this contributes to maintainer burn out.  Some maintainers have
+been at this longer than others and have developed effective (to then)
+strategies for coping with both internal and external stress.  The
+proposal isn't that we present one coherent solution but that the more
+experienced maintainers relate coping and influence strategies that
+have worked for them.   How do you cope with the bungee SVP who decides
+that open source isn't revenue generating enough to be considered in
+the corporate strategy and wants to proceed with the? or how do you
+avoid being up all night dealing with sysbot reports in a part of your
+code you know is never exercised.
 
-Likewise. I will however not be physically present at the kernel summit
-this year, but plan to participate remotely.
+The proposal isn't that we have one true presentation on this, but that
+we listen to stories from Maintainers who've come up against these
+situations and evolved coping strategies (which may or may not be
+correct and which might not work for you but at least it shows how they
+try).  Hopefully we can do a shared transfer of knowledge that doesn't
+result in finding the one true strategy (which likely doesn't exist),
+but which shows upcoming maintainers what we tried in the past, and
+what did and didn't work and gives them more confidence to face the
+challenges they will definitely run across as they build their external
+statue.
 
--- 
-Regards,
+The hardest part of facing most challenges like this is thinking you're
+alone in doing it.  We definitely have the experience base to refute
+that thought, so we should be deploying it.
 
-Laurent Pinchart
+James
+
 
