@@ -1,95 +1,134 @@
-Return-Path: <ksummit+bounces-964-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-965-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C43D777C713
-	for <lists@lfdr.de>; Tue, 15 Aug 2023 07:30:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BE0477CA68
+	for <lists@lfdr.de>; Tue, 15 Aug 2023 11:29:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F2581C20C46
-	for <lists@lfdr.de>; Tue, 15 Aug 2023 05:30:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AC2E281452
+	for <lists@lfdr.de>; Tue, 15 Aug 2023 09:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FE673FF5;
-	Tue, 15 Aug 2023 05:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CAFB100C6;
+	Tue, 15 Aug 2023 09:28:54 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA9623CC
+	for <ksummit@lists.linux.dev>; Tue, 15 Aug 2023 09:28:52 +0000 (UTC)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out1.suse.de (Postfix) with ESMTP id 12BEC21910
+	for <ksummit@lists.linux.dev>; Tue, 15 Aug 2023 09:28:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1692091725; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type;
+	bh=e4HLP7NT9O2AaI2Npwv5WbH6tfQlBjy5auE+70z87Pk=;
+	b=WTRzCkobZ78SKJM2ZkxdgD6tA5fPgBATX7DGMrB3JKGRhF187iTt7vEKbUGpkhta65DXLp
+	lw8Pyg/HgJe9A5T2aN1QlXe5vNKu+oSonFJ18SPe5nOE/jIDB6Uve9QyZ0ZOfvBQThFReE
+	TwMv0gY8eWg5WRx6IIsQ/jg1GcjirsQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1692091725;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type;
+	bh=e4HLP7NT9O2AaI2Npwv5WbH6tfQlBjy5auE+70z87Pk=;
+	b=EuHFl7UQ10dG9jAN652atz8/d/6iq8dx4cFRjOL9GHyZktvzLbhx8yNFkFCFE6p3Xnl+sT
+	+JyKSnZFqkcF8jDw==
+Received: from pobox.suse.cz (pobox.suse.cz [10.100.2.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719E23C25
-	for <ksummit@lists.linux.dev>; Tue, 15 Aug 2023 05:29:54 +0000 (UTC)
-Received: from cwcc.thunk.org (pool-173-48-82-92.bstnma.fios.verizon.net [173.48.82.92])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 37F5TlsN002022
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Aug 2023 01:29:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1692077390; bh=KV8dziXjkt2w+JS9iEHu4PQQdHS/0krnQy5HzZLUJaE=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=HgRUJ5nFM8FqNUDGQuMtyqAjm6sgDHSZnNCFVsd4ImQ4jD0ZEIUlFu+gyzg6L54cx
-	 bCds0BnTMCc9ptxiyfi7Xk6riBcdjE1/c+mJZXSsdP7GVti85+bylqf0oXq+vTZRZg
-	 YJdxdK05EMkk6UCDBIK7ET0jROuNqpbJd1eXbQKNcfRufMS1zSa415kZOBX3oMcprT
-	 vNmH1nfIUPUDJO6u2qKoQOSBOniUHKt5y8Fr5SSmnhKKtQYyvKFwtgw3HRlI5mrM+T
-	 XLS7ZQP2K/lwDynTBXVMAGmY72VSegtRu2imOk0c9o0fOlgobDBVg5bHt7kkqOaXx/
-	 R4NeIyGj6ArXA==
-Received: by cwcc.thunk.org (Postfix, from userid 15806)
-	id A9D0615C0292; Tue, 15 Aug 2023 01:29:47 -0400 (EDT)
-Date: Tue, 15 Aug 2023 01:29:47 -0400
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-mm@kvack.org, ksummit@lists.linux.dev
-Subject: Maintainers Summit 2023 Call for Topics
-Message-ID: <20230815052947.GA3214753@mit.edu>
+	by relay2.suse.de (Postfix) with ESMTPS id 01FE22C143
+	for <ksummit@lists.linux.dev>; Tue, 15 Aug 2023 09:28:44 +0000 (UTC)
+Date: Tue, 15 Aug 2023 11:28:44 +0200 (CEST)
+From: Jiri Kosina <jkosina@suse.cz>
+To: ksummit@lists.linux.dev
+Subject: [MAINTAINERS SUMMIT] Handling of embargoed security issues --
+ security@korg vs. linux-distros@
+Message-ID: <nycvar.YFH.7.76.2308150927190.14207@cbobk.fhfr.pm>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=US-ASCII
 
-This year, the Maintainers Summit will be held in Richmond, VA on
-November 16th, 2023, just after the Linux Plumber's Conference
-(November 13--15th).
+Hi,
 
-As in previous years, the Maintainers Summit is invite-only, where the
-primary focus will be process issues around Linux Kernel Development.
-It will be limited to 30 invitees and a handful of sponsored
-attendees.
+I believe that reporters of embargoed security issues have always been 
+confused about reporting to security@kernel.org vs. reporting to 
+linux-distros@, as those two lists have completely different ways of 
+dealing with the report (different purpose, different deadlines, different 
+obligations imposed on the reporters, etc).
 
-Linus has generated a list of people for the program committee to
-consider.  People who suggest topics that should be discussed at the
-Maintainers Summit will also be added to the list for consideration.
-To make topic suggestions for the Maintainers Summit, please send
-e-mail to the ksummit@lists.linux.dev with a subject prefix of
-[MAINTAINERS SUMMIT].
+Our documentation originally suggested reporting to both in some "hybrid" 
+mode, and the results were not great, quite often leading to confusion 
+left and right.
 
-For an examples of past Maintainers Summit topics, please see the
-these LWN articles:
+This led to a slight update to our documentation [1], where reporters are 
+discouraged from reporting kernel issues to linux-distros@ ever.
 
- * 2022 https://lwn.net/Articles/908320/
- * 2021 https://lwn.net/Articles/870415/
- * 2019 https://lwn.net/Articles/799060/
+While I generally agree with the change *now*, given the current 
+conditions, I would like to bring this up for discussion on how to deal 
+with this longer term.
 
-Invites will be sent out on a rolling basis, with the first batch
-being sent out in roughly 2 weeks or so, so if you have some topics
-which you are burning to discuss, why not wait and submit them today?  :-)
+With my distro hat on, I really want the kernel security bugs to be 
+*eventually* processed through linux-distros@ somehow, for one sole 
+reason: it means that our distro security people will be aware of it, 
+track it internally, and keep an eye on the fix being ported to all of our 
+codestreams. This is exactly how this is done for all other packages.
 
+I would be curious to hear about this from other distros, but I sort of 
+expect that they would agree.
 
-If you were not subscribed on to the kernel mailing list from
-last year (or if you had removed yourself after the kernel summit),
-you can subscribe by sending an e-mail to the address:
+If this process doesn't happen, many kernel security (with CVE potentially 
+eventually assigned retroactively) fixes will go by unnoticed, as distro 
+kernel people will never be explicitly made aware of them, and distros 
+will be missing many of the patches. Which I don't think is a desired end 
+effect.
 
-   ksummit+subscribe@lists.linux.dev
+I have been discussing this with Greg already some time ago, and I know 
+that his response to this is "then use -stable, and you'll get everything 
+automatically" (which is obviously true, because stable is represented at 
+security@kernel.org), but:
 
-The program committee this year is composed of the following people:
+- Neither us (nor RedHat, nor Ubuntu, as far as I am aware) are picking 
+  stable as a primary base for distro kernels. There are many reasons for 
+  this (lifecycles not matching, stable picking up way too many things for 
+  taste of some of us, etc), but that's probably slightly off-topic for 
+  this discussion
 
-Christian Brauner
-Jon Corbet
-Greg KH
-Ted Ts'o
-Rafael J. Wysocki
+- For several varying reasons, our security people really struggle with 
+  ensuring that whenever CVE is published, we as a distro can guarantee,
+  that fix for that particular CVE is included. linux-distros@ provides
+  that connection between bugfix and CVE report, and that is lost if the 
+  fix goes only through security@kernel.org
+
+  And yes, I hate the whole CVE thing with passion, but it unfortunately 
+  exists and is seen as an industry standard by many. And with us not 
+  being able to systematically / automatically guarantee that fix for 
+  particulart CVE is included, Linux will be not allowed into many places.
+
+I am currently not sure what exactly would be the solution to this.
+
+One thing to try would of course be to discuss with linux-distros@ people 
+whether they'd be willing to adjust their rules to fit our needs better; 
+but before that happens, we should be ourselves clear on what our needs 
+towards them actually are.
+
+Another option might be to ensure representation of distros at 
+security@kernel.org, but that would completely change the purpose of it, 
+and I don't think that's desired.
+
+... ?
+
+[1] https://git.kernel.org/linus/4fee0915e649b
+
+Thanks,
+
+-- 
+Jiri Kosina
+Director, SUSE Labs Core
 
