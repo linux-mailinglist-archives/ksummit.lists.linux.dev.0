@@ -1,47 +1,46 @@
-Return-Path: <ksummit+bounces-994-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-995-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F14077E441
-	for <lists@lfdr.de>; Wed, 16 Aug 2023 16:55:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7572277E44C
+	for <lists@lfdr.de>; Wed, 16 Aug 2023 16:57:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72CC91C2111A
-	for <lists@lfdr.de>; Wed, 16 Aug 2023 14:55:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87C5F1C210DC
+	for <lists@lfdr.de>; Wed, 16 Aug 2023 14:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D469134B1;
-	Wed, 16 Aug 2023 14:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5F9134B1;
+	Wed, 16 Aug 2023 14:57:07 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F64410957
-	for <ksummit@lists.linux.dev>; Wed, 16 Aug 2023 14:55:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A157C433C8;
-	Wed, 16 Aug 2023 14:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80F710957
+	for <ksummit@lists.linux.dev>; Wed, 16 Aug 2023 14:57:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667D5C433C7;
+	Wed, 16 Aug 2023 14:57:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1692197741;
-	bh=7NA+YI9GjTwgHI/a48nfbZSfVhpe8E7WblfjYClTu6c=;
+	s=korg; t=1692197825;
+	bh=w43yVFFAAQoSaKI3sty5WQQz1kLBbF2gNWEKwNyS0oY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Jc7NUDuUtc5rRJDv+lOds/tN3eBACqtFqoJjGUjE9CUhG645Vjo5PR1JfpI/75Tmu
-	 JHvIybECE1vwdeaEkDoBRZRo4Rqj1ewREM+g2PeENsT0zUNMqLfmdi0ROITEdFqnDy
-	 SkwVgbXAocRgkr0NXLulq117NOdpYxpj7DokHZmY=
-Date: Wed, 16 Aug 2023 16:55:39 +0200
+	b=s4A1DFSRcv3H88Ve3UPLlta/iG9qwbIs1LXq8XvrmiFiMlG8xp7ool/GPl7Z3g+Bw
+	 Y1ZQln2UkGVo9myYAOCXyTBixaBhHOnTzfVXZ12dwONL9W5GuxzR0ecV0ZAtaZ/+UT
+	 gCk3qzVpbaAPxuDW2e05j+UU+kpHZn/2GH5IUgAU=
+Date: Wed, 16 Aug 2023 16:57:03 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Jiri Kosina <jikos@kernel.org>,
+To: Jiri Kosina <jikos@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
 	Vegard Nossum <vegard.nossum@oracle.com>, ksummit@lists.linux.dev
 Subject: Re: [MAINTAINERS SUMMIT] Handling of embargoed security issues --
  security@korg vs. linux-distros@
-Message-ID: <2023081641-unstitch-kangaroo-a2c1@gregkh>
+Message-ID: <2023081645-brush-oblivion-464d@gregkh>
 References: <nycvar.YFH.7.76.2308150927190.14207@cbobk.fhfr.pm>
  <658e739b-c164-c360-d6a3-eb4fb15ae02e@oracle.com>
  <2023081515-lake-spotty-6a3a@gregkh>
  <20230815084253.7091083e@gandalf.local.home>
  <2023081540-vindicate-caterer-33c6@gregkh>
- <nycvar.YFH.7.76.2308160005300.14207@cbobk.fhfr.pm>
- <20230815183120.0c92a759@gandalf.local.home>
+ <nycvar.YFH.7.76.2308160014330.14207@cbobk.fhfr.pm>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -50,59 +49,27 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230815183120.0c92a759@gandalf.local.home>
+In-Reply-To: <nycvar.YFH.7.76.2308160014330.14207@cbobk.fhfr.pm>
 
-On Tue, Aug 15, 2023 at 06:31:20PM -0400, Steven Rostedt wrote:
-> On Wed, 16 Aug 2023 00:13:56 +0200 (CEST)
-> Jiri Kosina <jikos@kernel.org> wrote:
+On Wed, Aug 16, 2023 at 12:17:36AM +0200, Jiri Kosina wrote:
+> On Tue, 15 Aug 2023, Greg KH wrote:
 > 
-> > > The huge majority of Linux use in the world is Android, everything else
-> > > is a rounding error.   
-> > 
-> > Sorry, but in my view this is a slight oversimplification.
+> > Why are they not just doing what the huge majority of Linux users doing
+> > and taking the "feed of known issues that resolve problems before they
+> > are public knowledge" that we provide today for free to them?  Because
+> > they somehow think that knowing a specific single bugfix is more special
+> > than all of those other bugfixes, which honestly, is just loony.
 > 
-> I agree. And that's just taking in "numbers". What about impact. If there's
-> a security flaw in an android phone, it opens up each individual for an
-> attack, but it usually requires an attacker to hit them individually.
-> 
-> But if an enterprise is hit. All it takes is to go after one server, and
-> you have access to thousands of users and their private data.
-> 
-> It's not just the number of installations that count.
+> If you'd like me to turn this proposal into "What can we do to make sure 
+> that most major distros are eventually basing their kernels on -stable" 
+> discussion, I'd be happy to do that, but I believe this has been discussed 
+> quite extensively already.
 
-Very true, but as an individual, we regard the private data in our
-phones usually more important than the data stored in corporate systems :)
-
-Anyway, my whole point here is that there are huge swaths of users of
-Linux, the majority in quantity (not judging quality), that are now
-doing the right thing here by taking all known fixes into their kernel
-trees.  It's only a small (in absolute numbers, not importance, I'm not
-judging importance as everyone is more important than everyone else,
-like always), number that are not doing this and asking for us to give
-them access to a tiny feed of fixes instead so that they can have a
-false sense of security.
-
-Please, let's work on fixing that false sense of security.  It's wrong,
-and our users deserve better as we (the community) ARE doing all of the
-fixing the best we can, but not all of our users seem to be able to take
-advantage of this due to the "policy decisions" of others outside of our
-community.
-
-And note, those "policy decisions of companies" are now known by
-governments to be incorrect, and soon will be made illegal in many
-countries, so we are on the right side here.
-
-Together we were able to solve the "impossible" problem of Android
-kernel security.  Now that that windmill is semi-successfully conquered
-despite many who thought it never could be, why can't we help other
-users of our product to do the same?  If not, we run the risk of having
-Linux be blamed for bad security, when in reality, it's the policy of
-companies not taking advantage of what we are providing them, a nuance
-that Linux users will never really understand, nor should they have to.
-
-Let's fix this properly please, access to the security@k.o reports will
-do nothing to solve the root issue, and only paper it over for a few
-more years.
+It has, and note that no one in the room would be in a real position to
+solve the problem (Project Managers and VPs are not usually invited to
+the kernel summit.)  Now that many laws are being passed to mandate this
+soon, I think the governments might solve this issue for us
+automatically :)
 
 thanks,
 
