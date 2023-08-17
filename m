@@ -1,99 +1,83 @@
-Return-Path: <ksummit+bounces-1010-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1011-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98DBE77FA29
-	for <lists@lfdr.de>; Thu, 17 Aug 2023 17:03:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 848FB77FA93
+	for <lists@lfdr.de>; Thu, 17 Aug 2023 17:20:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75AFE1C21487
-	for <lists@lfdr.de>; Thu, 17 Aug 2023 15:03:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0857B28208E
+	for <lists@lfdr.de>; Thu, 17 Aug 2023 15:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2957C14F79;
-	Thu, 17 Aug 2023 15:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 289851548B;
+	Thu, 17 Aug 2023 15:20:01 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1FDE568
-	for <ksummit@lists.linux.dev>; Thu, 17 Aug 2023 15:03:31 +0000 (UTC)
-Received: from pendragon.ideasonboard.com (213-243-189-158.bb.dnainternet.fi [213.243.189.158])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 951949D5;
-	Thu, 17 Aug 2023 17:02:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1692284535;
-	bh=xLn/QRz9mBs0/hCSN2mHhPA7PPiBH2TBzejNz+XDLRA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=O/sJM1agaxphhjqTAlJIOiayHyt9++sqBZEbHNULTULLrHeewHidNcjoVFgkf5Iak
-	 904/3JVmEqGYgDl5Ab4ExHwc5outNfcewnTXsYp6+Qc72dpaNxOGK2q2BHQttjzZ3v
-	 gVuTyrQRXR380bb8WtlXjKSMxvg6F6eG8wtlhLK4=
-Date: Thu, 17 Aug 2023 18:03:36 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, Jani Nikula <jani.nikula@intel.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Josef Bacik <josef@toxicpanda.com>, ksummit@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>, Song Liu <song@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E151514F65
+	for <ksummit@lists.linux.dev>; Thu, 17 Aug 2023 15:19:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F0E2C433C7;
+	Thu, 17 Aug 2023 15:19:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1692285599;
+	bh=b/VWGqLo8QYDRFrYdio2OIsZxUNrk8jLiGtSe0bmcGs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=QQHuQtBQS1/atCJYsDYIUvd8QyRE1ScKMr1flplJpoR8k4jsp/QjSoqKENr1SVIPD
+	 LKNz8DTipHB1OGSpKeYs3HRrcpTD9zBzNykwa6qcXAMh4NAAVbLhKvBpkswFXqDyoE
+	 s28d3n7YHhBtP4/jmX+DugErYgVlaQYqKJjfvc2m3PrxZeXxDmlW+bkUPA+QfT1L3L
+	 mQJsHUs+3lZGhkFcTG+ReqTQ0555nHT7AL8bVegFevk4yzQlONdHfzYBazT8nbzMB2
+	 DfoJ70+zPU6JoM4+LkiqMma7gHH1UdDRgAS4KsPr/9NLMMHsk4cJRuam4ZYOG7UN2D
+	 1M3GXiPNA8fig==
+Date: Thu, 17 Aug 2023 08:19:57 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Luis Chamberlain
+ <mcgrof@kernel.org>, Josef Bacik <josef@toxicpanda.com>,
+ ksummit@lists.linux.dev, Jeff Layton <jlayton@kernel.org>, Song Liu
+ <song@kernel.org>
 Subject: Re: [MAINTAINERS SUMMIT] Maintainer burnout
-Message-ID: <20230817150336.GJ21668@pendragon.ideasonboard.com>
+Message-ID: <20230817081957.1287b966@kernel.org>
+In-Reply-To: <44814ed5-7bab-4e56-9ca6-189870f97f41@lunn.ch>
 References: <20230816180808.GB2919664@perftesting>
- <ZN0uNrpD8JUtihQE@bombadil.infradead.org>
- <87ttsx98ue.fsf@intel.com>
- <f7915398-b59a-4c9c-97c1-669be7471ec2@sirena.org.uk>
- <20230817124255.GI21668@pendragon.ideasonboard.com>
- <CANiq72m73vvbCLaRUkPVBfE6e+7FOYjBqd-EBJaLW-geukB2dA@mail.gmail.com>
+	<ZN0uNrpD8JUtihQE@bombadil.infradead.org>
+	<20230817093914.GE21668@pendragon.ideasonboard.com>
+	<44814ed5-7bab-4e56-9ca6-189870f97f41@lunn.ch>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72m73vvbCLaRUkPVBfE6e+7FOYjBqd-EBJaLW-geukB2dA@mail.gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 17, 2023 at 03:56:43PM +0200, Miguel Ojeda wrote:
-> On Thu, Aug 17, 2023 at 2:42 PM Laurent Pinchart wrote:
-> >
-> > I think the rules will need to be somehow flexible. As Jani mentioned,
-> > there's a genuine need to be able to discuss design questions before a
-> > patch series reaches perfection (experienced developers will usually
-> > know that they should mark their series as RFC in that case, but
-> > newcomers may not have this tribal knowledge). On the other hand, I'm
-> > not going to discuss the design behind a patch series if the code is
-> > intended with 3 spaces and uses CamelCase.
-> >
-> > Reports from automated tests, or automated reviews, should be designed
-> > to help the submitter, not to scold and discourage them. I'm pretty sure
-> > we can come up with wording that will be nicer to read than what I would
-> > write when being tired at 3:00am, repeating the same comment for the
-> > 50th time.
+On Thu, 17 Aug 2023 14:36:31 +0200 Andrew Lunn wrote:
+> > > In so far as making it possible to get b) to help, my current excitement
+> > > surrounds around what Song Liu mentioned to me at LSFMM and then
+> > > quickly demonstrated that the eBPF folks are doing with patchwork.
+> > > Get the patches to be tested automatically, and *immediately*
+> > > patch reviewers and maintainers can get feedback if something is not even
+> > > worth reviewing.  
+> > 
+> > This is interesting, do you have any link to share to related resources
+> > ?  
 > 
-> I think the bot should simply reply commenting on the issues it has
-> found, without judging whether the patch should or should not be
-> reviewed (and the bot could perhaps explicitly say so to avoid
-> submitters getting discouraged).
+> I'm guessing, but i think that is referring to the "Checks" section in
+> a patchworks status page. Picking a couple of patches at random:
 > 
-> Then, depending on what the bot finds, i.e. the amount and kind of
-> issues, reviewers can decide and reply as needed. RFC patches could be
-> skipped by the bot.
-
-This defeats a little bit the point of lowering the workload of
-reviewers though, if they have to review each bot report and reply to it
-manually :-)
-
-> This would already save a ton of time for reviewers, and it would help
-> new contributors understand the requirements.
+> https://patchwork.kernel.org/project/netdevbpf/patch/20230816210049.54733-9-saeed@kernel.org/
 > 
-> However, a worry that I have about such a system is if people start to
-> spam unprepared patches until they pass. If that becomes a problem,
-> then a possible solution could be to have a staging list for that (or
-> server or similar).
+> https://patchwork.kernel.org/project/netdevbpf/patch/20230816210049.54733-2-saeed@kernel.org/
+> 
+> Jakub can tell you more.
 
--- 
-Regards,
+FWIW BPF runs more stuff, they spin up VMs and run the actual selftests,
+so looking at a BPF patch will be more informative:
 
-Laurent Pinchart
+https://patchwork.kernel.org/project/netdevbpf/patch/20230816045959.358059-3-houtao@huaweicloud.com/
+
+Exact details are to my knowledge in flux, the system is constantly
+being improved.
 
