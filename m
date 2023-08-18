@@ -1,98 +1,104 @@
-Return-Path: <ksummit+bounces-1027-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1028-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 017957811FA
-	for <lists@lfdr.de>; Fri, 18 Aug 2023 19:30:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 724F8781281
+	for <lists@lfdr.de>; Fri, 18 Aug 2023 20:00:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE6A22824DF
-	for <lists@lfdr.de>; Fri, 18 Aug 2023 17:30:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29EA62822B4
+	for <lists@lfdr.de>; Fri, 18 Aug 2023 18:00:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C461AA77;
-	Fri, 18 Aug 2023 17:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940891AA9A;
+	Fri, 18 Aug 2023 18:00:49 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A314693
-	for <ksummit@lists.linux.dev>; Fri, 18 Aug 2023 17:26:34 +0000 (UTC)
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-99d90ffed68so480401566b.0
-        for <ksummit@lists.linux.dev>; Fri, 18 Aug 2023 10:26:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1692379592; x=1692984392;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=r9YPHO+rRGt7JCtuvWtFL8mwoltMJaRR2MGLX89JYgQ=;
-        b=U/I9ASv3eBdAwKyIn8jINyE/0Z0HpSw+bFkXWzeORxkoDtgxLzqj80D59drE4yzYa6
-         GmSfmHu9WfHtywY6naIDJ7822VQOq1vv6Y89trzpUa8MwTpH0Ely3hHk3Y/qqS6WkBCY
-         SAOyUWZBbl6jSXLE5Wxf1FPoQEHKLS4zLWQJ8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692379592; x=1692984392;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=r9YPHO+rRGt7JCtuvWtFL8mwoltMJaRR2MGLX89JYgQ=;
-        b=kRe+vP4vVOntMasxOKgpv1A9YY901vvCGHnZyAQYfJpHfplbJuuFoD/ehJzlAdXr5G
-         W1tgyzrMHdFaJlU99mhykWUs2dtL1eViZkTQBESqVLywFzirZh34PIRHVJwRxtBsD4i4
-         LtLsoDAD8d8lQbWP0eXnI5B8a4YnE0649Q+My0RXhQ55h2EDvEZsxI8OyqOIJiaMQ50K
-         S7PaS2Rx/04GtKc8M58OUKGrrsHH+z0RDlk2mjEuB2N7ivcgN7w3ardyD0GUdeBGECGX
-         JXJQNyveC6unAjReTQ6PXIzOTXEDPEXKm/UzjtNWi2QhzKeNl46yM8oucp+Eu8cWCh/v
-         /Hdg==
-X-Gm-Message-State: AOJu0Yww2hS58o+aEfAlWaPqcc8G/bElVw0KMvbPqdTBrSHPWMFcgkTD
-	j9P3Q8GA5KVhCZXSK8Gte+hp8Uq3gihAo3m8dvANfD98
-X-Google-Smtp-Source: AGHT+IFXMnwY5axB8peC9MDjIKWHloSD+AG/55l4u2vLFy9jkf1/iZ3rd8MU9wyxXME9rvbXD6x+aA==
-X-Received: by 2002:a17:907:2710:b0:98e:370c:be69 with SMTP id w16-20020a170907271000b0098e370cbe69mr3474730ejk.6.1692379592570;
-        Fri, 18 Aug 2023 10:26:32 -0700 (PDT)
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com. [209.85.218.46])
-        by smtp.gmail.com with ESMTPSA id bs9-20020a170906d1c900b0099bcd1fa5b0sm1415139ejb.192.2023.08.18.10.26.31
-        for <ksummit@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Aug 2023 10:26:31 -0700 (PDT)
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-99d90ffed68so480396166b.0
-        for <ksummit@lists.linux.dev>; Fri, 18 Aug 2023 10:26:31 -0700 (PDT)
-X-Received: by 2002:a17:907:b12:b0:99d:e417:d6fb with SMTP id
- h18-20020a1709070b1200b0099de417d6fbmr3579367ejl.25.1692379591187; Fri, 18
- Aug 2023 10:26:31 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2710C6108
+	for <ksummit@lists.linux.dev>; Fri, 18 Aug 2023 18:00:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 990F2C433CC;
+	Fri, 18 Aug 2023 18:00:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1692381647;
+	bh=JNvRqo/ftYzYJl9dlglZu20glwuRxYwXMlVcJIU1ou8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YMLtT61GjeDo690kBF/kRemv9rItGg5VJJsrgFKlENT+b5PvtpL4Ej78WlRjjTMKu
+	 9k64nK4K+kR/VSln3ShM2K8gyY8GEvRGJxrtxinnM5Akt+lUIbjYDKMr3XQO7ETNm3
+	 B8eQC4qUym66qicMdij/pkg+ezXLaOZNUmq+RdpwvSYYsAReIHfOpzAwThfMNS86qK
+	 pUYvg/sabCZggiQHprU5vKQoZJIlUPwjUhhOt6Edp4sRY5Heo54YLyhA8pn5I4n/Yj
+	 T8ZpZrCDHhjJ5POX/o/tybuKyQhqv78DaQAFJPSDA3ZWh5VNmsryd+vZSIhD58J1MK
+	 D71KgF4MhW2Ag==
+Date: Fri, 18 Aug 2023 19:00:42 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>, ksummit@lists.linux.dev,
+	Jeff Layton <jlayton@kernel.org>, Song Liu <song@kernel.org>,
+	Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: [MAINTAINERS SUMMIT] Maintainer burnout
+Message-ID: <e59e177b-b28b-4c3a-8e4c-6360ba8138b1@sirena.org.uk>
+References: <ZN0uNrpD8JUtihQE@bombadil.infradead.org>
+ <87ttsx98ue.fsf@intel.com>
+ <f7915398-b59a-4c9c-97c1-669be7471ec2@sirena.org.uk>
+ <20230817124255.GI21668@pendragon.ideasonboard.com>
+ <CANiq72m73vvbCLaRUkPVBfE6e+7FOYjBqd-EBJaLW-geukB2dA@mail.gmail.com>
+ <20230817150336.GJ21668@pendragon.ideasonboard.com>
+ <CANiq72=_4vo9eS-sdCY2vPuRN5iSrkbypU061VKN5Qx4VzPCtw@mail.gmail.com>
+ <20230818153045.GB13558@pendragon.ideasonboard.com>
+ <cb0270b1-c39a-457c-b09f-7b7756e616d5@sirena.org.uk>
+ <20230818171715.GA31744@pendragon.ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <ZN9ZfUVHrRhd+btc@shikoro>
-In-Reply-To: <ZN9ZfUVHrRhd+btc@shikoro>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Fri, 18 Aug 2023 19:26:14 +0200
-X-Gmail-Original-Message-ID: <CAHk-=wgQKBvXaSNVxy-2Q3KYeTbv-CGSTf3LSV3=O5howAPifA@mail.gmail.com>
-Message-ID: <CAHk-=wgQKBvXaSNVxy-2Q3KYeTbv-CGSTf3LSV3=O5howAPifA@mail.gmail.com>
-Subject: Re: [MAINTAINERS SUMMIT] Transparency when rejecting patches without
- technical reason
-To: Wolfram Sang <wsa@kernel.org>
-Cc: ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="4CoWzaiLP2VOOezm"
+Content-Disposition: inline
+In-Reply-To: <20230818171715.GA31744@pendragon.ideasonboard.com>
+X-Cookie: Your aim is high and to the right.
 
-On Fri, 18 Aug 2023 at 13:44, Wolfram Sang <wsa@kernel.org> wrote:
->>
-> this obviously aims at the rejection of networking patches from Baikal
-> Electronics in March. I only got to know about this yesterday when
-> reading comments about Debian now supporting the LoongArch architecture.
->
-> I admit I thought we accept / reject patches purely because of technical
-> reasons.
 
-Honestly, technical reasons are a "minimum requirement".
+--4CoWzaiLP2VOOezm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-But there are clearly other reasons, and always have been. Including
-simply the fact that we have to trust the source of the patch. Things
-like "will you support this going forward".
+On Fri, Aug 18, 2023 at 08:17:15PM +0300, Laurent Pinchart wrote:
+> On Fri, Aug 18, 2023 at 05:23:09PM +0100, Mark Brown wrote:
 
-Maintainers have to be comfortable with the source of the code. And
-not all maintainers can work with all people. That has always been
-true.
+> > I have a bunch of template mails like that too.  One of them includes a
+> > general suggestion to fix issues from existing reviews, including bot
+> > output.
 
-This wasn't even remotely a gray area.  It's not worth discussing.
+> Do you have any automated way to send some of those mails, or is it
+> always manual ?
 
-                Linus
+It's manual, but it's so quick it's not worth automating further - with
+vi it's just:
+
+	:r <template-dir>/<file>
+
+with tab completion, and I can edit if I'm so moved.
+
+--4CoWzaiLP2VOOezm
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmTfsckACgkQJNaLcl1U
+h9DiFQf+KEBsqH9uAqQhfl7+0bEP81MGUyk4gOcpDILbFtqkVWOotb6X7V0Z8aYw
+peVL9OYjpTF2QTIeoFyOse07I5QchM0q60dT4DnUG6H63322Q3E0O5IrqdpPRg0R
+8tEnkrbIH3eAp42VBtDJaeQHYYSd+avRaCFHn0fbh1X9sinCKPLT6iF73FCUzVKh
+XNB0iAfep8UczXbLa33jGWDFDgDIT6mTzlNHTeqY3C00Nyt3wwoG+QxIaCg/EhqP
+spypvx/eTW/IgYU4k+VEyzon0xwGB9dFopsTh2vZBRSDlkycON5DUcPmTSMvdBKC
+pxf9iKdmAoTY/DDFKUzwotLSi7T2nw==
+=EqXq
+-----END PGP SIGNATURE-----
+
+--4CoWzaiLP2VOOezm--
 
