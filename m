@@ -1,63 +1,85 @@
-Return-Path: <ksummit+bounces-1019-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1020-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39CFA780E9B
-	for <lists@lfdr.de>; Fri, 18 Aug 2023 17:10:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC076780F23
+	for <lists@lfdr.de>; Fri, 18 Aug 2023 17:27:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D5C71C21655
-	for <lists@lfdr.de>; Fri, 18 Aug 2023 15:09:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B71201C2165E
+	for <lists@lfdr.de>; Fri, 18 Aug 2023 15:27:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9512818C23;
-	Fri, 18 Aug 2023 15:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111BE198B1;
+	Fri, 18 Aug 2023 15:26:34 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01B3374
-	for <ksummit@lists.linux.dev>; Fri, 18 Aug 2023 15:09:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 282E9C433C9;
-	Fri, 18 Aug 2023 15:09:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1692371390;
-	bh=iOrj2eeOmyanVP59sGHS3/YUpYgbcspj3NPIvjQu9wU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bW1kkD6JuBTBXR4Ls24HBgXl/jR4ueNCk+KcTiZ6JSqvTGhc0PZsHwhZQVslDpv6b
-	 xq+X7eQs24GYg/hCh8E5W4Qdcdvwn7KPmc3OnrqS74D2NaHSgiBCZAVoysEv9E2pES
-	 D2a6yvgsxU6/VbZbR0oH6hvXHe1QEMOvhC3v2Bm0h9mjavWtkfxEdvM5m06U0/BKlc
-	 x1tOc3o4ShXZZGj6zKFJbYOI5dG/8p3aYXIomcvQ2NrLT9Cg+PIjU1aOqa36Kgrd0o
-	 o3aYLgZC4c3cpLvATNxt2khoUdjoXgYWBgXVeuNT0XpLf00Egnju3Dwa6UvBQDxqPb
-	 ckrAc6q0icVoQ==
-Date: Fri, 18 Aug 2023 08:09:49 -0700
-From: Jakub Kicinski <kuba@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A892118C36
+	for <ksummit@lists.linux.dev>; Fri, 18 Aug 2023 15:26:30 +0000 (UTC)
+Received: from pendragon.ideasonboard.com (213-243-189-158.bb.dnainternet.fi [213.243.189.158])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 38E9EC85;
+	Fri, 18 Aug 2023 17:25:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1692372308;
+	bh=JCY4SJMtKdQvUconXDpe7PhDwPTKIn5DMolxHb1teZE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dbcBjR3oIMOMN81N0KtYaG3OzvDw26Ww3BThCAZFqvxS9+MzNM72H8m/5C+m9JPHn
+	 rtV7Znv/L1PSktElAvqSlUFPE2ZR4e5FdYGisyoGLYIMwLP4FnBo+obvmaI61vzBO4
+	 0UGLmVrFex9JrXFZjYWr2WZBg5aoc5596MN3LB74=
+Date: Fri, 18 Aug 2023 18:26:29 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>, Andrew Lunn
- <andrew@lunn.ch>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Luis Chamberlain <mcgrof@kernel.org>, Josef Bacik <josef@toxicpanda.com>,
- ksummit@lists.linux.dev, Jeff Layton <jlayton@kernel.org>, Song Liu
- <song@kernel.org>
+Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>, ksummit@lists.linux.dev,
+	Jeff Layton <jlayton@kernel.org>, Song Liu <song@kernel.org>
 Subject: Re: [MAINTAINERS SUMMIT] Maintainer burnout
-Message-ID: <20230818080949.7b17b0d5@kernel.org>
-In-Reply-To: <CACRpkdbfSzNwkwnew-5YN4j4yBjgh=fCiaKdPmiRbViTdOcXkw@mail.gmail.com>
+Message-ID: <20230818152629.GA13558@pendragon.ideasonboard.com>
 References: <20230816180808.GB2919664@perftesting>
-	<ZN0uNrpD8JUtihQE@bombadil.infradead.org>
-	<20230817093914.GE21668@pendragon.ideasonboard.com>
-	<44814ed5-7bab-4e56-9ca6-189870f97f41@lunn.ch>
-	<20230817081957.1287b966@kernel.org>
-	<CAADnVQ+6=RjVziJG6rXwiC0+dEKGTGFNPUgsa4dyPP66NyTbog@mail.gmail.com>
-	<CACRpkdbfSzNwkwnew-5YN4j4yBjgh=fCiaKdPmiRbViTdOcXkw@mail.gmail.com>
+ <ZN0uNrpD8JUtihQE@bombadil.infradead.org>
+ <20230817093914.GE21668@pendragon.ideasonboard.com>
+ <44814ed5-7bab-4e56-9ca6-189870f97f41@lunn.ch>
+ <20230817081957.1287b966@kernel.org>
+ <CAADnVQ+6=RjVziJG6rXwiC0+dEKGTGFNPUgsa4dyPP66NyTbog@mail.gmail.com>
+ <CACRpkdbfSzNwkwnew-5YN4j4yBjgh=fCiaKdPmiRbViTdOcXkw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACRpkdbfSzNwkwnew-5YN4j4yBjgh=fCiaKdPmiRbViTdOcXkw@mail.gmail.com>
 
-On Fri, 18 Aug 2023 15:55:11 +0200 Linus Walleij wrote:
+On Fri, Aug 18, 2023 at 03:55:11PM +0200, Linus Walleij wrote:
+> Alexei, thanks for returning the conversation
+> to this very important topic.
+> 
+> On Fri, Aug 18, 2023 at 1:55 AM Alexei Starovoitov wrote:
+> 
+> > BPF has solid CI that helps a lot, but the maintainer burnout is acutely felt.
+> > The main reason for burnout is patch flood.
+> 
+> I agree this is an important cause.
+> Even worse is any kind of social conflict or bad mood in the community.
+> Science has studied stress, what we mostly run into is called "microstress".
+> https://en.wikipedia.org/wiki/Psychological_stress
+> 
+> > The maintainer's day looks like non-stop code review.
+> > The patch backlog just doesn't end.
+> 
+> I've been there too :(
+
+I think most of us know the feeling. Personally, if my workload reaches
+100% review for an extended period of time, without having any time for
+"fun" activities such as hacking, I'm pretty sure my review efficiency
+drops drastically. Maybe that's call burn out.
+
 > > We're trying to encourage active developers to be code reviewers as well
 > > via positive/negative scores:
 > > https://lore.kernel.org/bpf/ZJx8sBW%2FQPOBswNF@google.com/
@@ -65,7 +87,7 @@ On Fri, 18 Aug 2023 15:55:11 +0200 Linus Walleij wrote:
 > > It doesn't help much yet. All incoming kernel contributors assume
 > > that it's a maintainer's job to do code reviews.
 > > Developers just send patches and wait. It doesn't occur to them that
-> > reviewing other patches will help them land their own.  
+> > reviewing other patches will help them land their own.
 > 
 > The DRI/DRM community has group maintainership that works a little
 > bit.
@@ -79,17 +101,46 @@ On Fri, 18 Aug 2023 15:55:11 +0200 Linus Walleij wrote:
 > review and you feel like begging.
 > So different solutions for different contributors may be needed.
 
-I keep bringing this up at the TAB meetings and after the last
-maintainer summit to Linus and Ted but I feel like information 
-sharing and community building across subsystem is missing.
-I was wondering last time if we can do a run of short sessions 
-where a few volunteers talk about their subsystems? Let's say
-10min talking about
- - current process subsystem uses
- - "realities" / day to day challenges / problems
- - how the subsystem is evolving the process
+I've also experienced mixed results from "trading reviews". It's
+certainly nice on paper, and it works sometimes, especially when asking
+contributors to review patches that are directly related to their
+business interest. I remember asking a contributor from a large company
+to help me with reviews, to free some of my time to review their
+patches. The contributor helped with reviewing third-party contributions
+to the driver they're actively working on. When I asked for help
+reviewing an entirely separate driver that their employer had no
+business interest in, however, I faced the "we're busy and don't have
+time" argument.
 
-We keep trying various things in our neck of the woods, I'm can
-talk about net, anyone else thinks this would be useful and wants
-to volunteer?
+Maybe part of the solution here, to share the maintenance burden, is to
+expect contributors, especially the ones with large financial resources,
+to spent a certain percentage of their time reviewing code that is in
+their area of expertise but not in their area of business interest.
+
+> > To address maintainer burnout we need to change the culture of the community
+> > and transform active developers to active code reviewers.
+> > We're looking for ideas on how to do that.
+> 
+> I agree.
+> 
+> To deal with the symptoms (feeling stressed) when it gets too much
+> for me personally I have different coping mechanisms.
+> 
+> The basic idea is to do stuff that generate the opposite of stress.
+> This could be outside of work, but also working on stuff in the
+> kernel that gives a feeling of immediate accomplishment and
+> closure is good.
+> 
+> Such as maintaining some drivers and systems that are old,
+> so nobody is begging you to fix it now now now. Paying of some
+> old techical debt. That's nice.
+> 
+> Drilling into a specific bug that is not urgent can also be very
+> de-stressing, it's hard work but nobody is dependent on you
+> fixing it now. You don't even need to come up with a solution.
+
+-- 
+Regards,
+
+Laurent Pinchart
 
