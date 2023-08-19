@@ -1,105 +1,99 @@
-Return-Path: <ksummit+bounces-1030-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1031-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 349687817B5
-	for <lists@lfdr.de>; Sat, 19 Aug 2023 08:45:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9486781A7F
+	for <lists@lfdr.de>; Sat, 19 Aug 2023 18:22:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BB20281D3A
-	for <lists@lfdr.de>; Sat, 19 Aug 2023 06:45:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B7D21C209F4
+	for <lists@lfdr.de>; Sat, 19 Aug 2023 16:22:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D349ED2;
-	Sat, 19 Aug 2023 06:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F81819BC1;
+	Sat, 19 Aug 2023 16:22:11 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC10363A
-	for <ksummit@lists.linux.dev>; Sat, 19 Aug 2023 06:45:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE8ABC433C8;
-	Sat, 19 Aug 2023 06:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B91019BB7
+	for <ksummit@lists.linux.dev>; Sat, 19 Aug 2023 16:22:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9844BC433CD;
+	Sat, 19 Aug 2023 16:22:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1692427541;
-	bh=Tla+qVhYEd5rxxQeMFVvoBTEaHNjHghDVHL/vm1BJPo=;
+	s=k20201202; t=1692462129;
+	bh=7NftGz+RY9f9Ajl5FaqpP+570seasZAMre3cPy9w5H4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eBwIMSOPg/shuGSLtLH9I53u+Z/vGyw7Xb1Z50EoRCvOi3cDN/4xOOyDUjspEH6pY
-	 OXcwlbrhHW/hGIMPXcIUiTpfEIhkERFJ67TjmAVFIGurK2sbMhhjziLuTkIOoQiatg
-	 f2vT8lmP0hI5Wb79+4TmYwJJo5wVxm10sOUOnjwAla5nq3wtboF+nwRTkkVWHBbijZ
-	 CaeTDAOKkQDVxG08DNnPGZJfVurhHs3qz9t9lMKINY5FSOuwRqgqEeAokiuPP2u6M5
-	 Y9/tbQeB9RYA7F5dGZtSjG2bGKIafHnsW6hOzaUHlRd39XYjV3nC+ZUVJAGblpo1yn
-	 Q4iFre4afihiw==
-Date: Sat, 19 Aug 2023 09:45:37 +0300
-From: Leon Romanovsky <leon@kernel.org>
+	b=Ws+ZEVjK8UgNaooXuhguBRV7D27nM1f6GFQ9CaGJohFvBrTw8ZRFpPowjvW9oxo2m
+	 WUyafpINkL6Cx0b2KNCJbN0wvZG1lkRbExSS4FcrOpIOhUqBZdsJ2xKpcM77j3YLDq
+	 L5SgL4mG/V7rcvTborWNl/aWQvTTQEDFhKGZFxd6nWvyLZ+N7UVdyLEP/sUn99rsCf
+	 vDq5emJCGoamR6Hl9eesYGgBW/BAMZCt0q8Bn0YWsD/3Nn1EWMzaDz8tBgb6pdTLWu
+	 GNinlqbg4PrG3C14tztRoH2DifjSkE02Cf4GHbRmVawEVGf/AN3qEq1yORTyh+I/3i
+	 +kCx3S1CF+CpA==
+Date: Sat, 19 Aug 2023 18:22:02 +0200
+From: Wolfram Sang <wsa@kernel.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Josef Bacik <josef@toxicpanda.com>, ksummit@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>, Song Liu <song@kernel.org>
-Subject: Re: [MAINTAINERS SUMMIT] Maintainer burnout
-Message-ID: <20230819064537.GM22185@unreal>
-References: <20230816180808.GB2919664@perftesting>
- <ZN0uNrpD8JUtihQE@bombadil.infradead.org>
- <20230817093914.GE21668@pendragon.ideasonboard.com>
- <44814ed5-7bab-4e56-9ca6-189870f97f41@lunn.ch>
- <20230817081957.1287b966@kernel.org>
- <CAADnVQ+6=RjVziJG6rXwiC0+dEKGTGFNPUgsa4dyPP66NyTbog@mail.gmail.com>
- <CACRpkdbfSzNwkwnew-5YN4j4yBjgh=fCiaKdPmiRbViTdOcXkw@mail.gmail.com>
- <20230818080949.7b17b0d5@kernel.org>
- <CAHk-=wibRQBp3VyJrUzk4=E_ozHokOM2LsYD9P_0XSN0edD_kw@mail.gmail.com>
+Cc: ksummit@lists.linux.dev
+Subject: Re: [MAINTAINERS SUMMIT] Transparency when rejecting patches without
+ technical reason
+Message-ID: <ZODsKnm7B1Q0aPbx@shikoro>
+References: <ZN9ZfUVHrRhd+btc@shikoro>
+ <CAHk-=wgQKBvXaSNVxy-2Q3KYeTbv-CGSTf3LSV3=O5howAPifA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="aB+2iWZCVGDGbVS2"
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wgQKBvXaSNVxy-2Q3KYeTbv-CGSTf3LSV3=O5howAPifA@mail.gmail.com>
+
+
+--aB+2iWZCVGDGbVS2
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHk-=wibRQBp3VyJrUzk4=E_ozHokOM2LsYD9P_0XSN0edD_kw@mail.gmail.com>
 
-On Fri, Aug 18, 2023 at 07:07:24PM +0200, Linus Torvalds wrote:
-> On Fri, 18 Aug 2023 at 17:10, Jakub Kicinski <kuba@kernel.org> wrote:
-> >
-> > I was wondering last time if we can do a run of short sessions
-> > where a few volunteers talk about their subsystems? Let's say
-> > 10min talking about
-> >  - current process subsystem uses
-> >  - "realities" / day to day challenges / problems
-> >  - how the subsystem is evolving the process
-> 
-> I feel like we did exactly that a few years in a row, but it was
-> probably back before covid times, and probably when it was still
-> called the "kernel summit" rather than "maintainer summit".
+Hi Linus,
 
-<...>
+> This wasn't even remotely a gray area.  It's not worth discussing.
 
-> I do think the whole "how to spread the pain of being a maintainer" is
-> very much the point of the maintainer summit, though, so I do think we
-> should revisit.
+I hope you understood that my wish for transparency was not about
+discussing if the patches should have gone in or not. It is about
+discussing or at least stating which reasons we have for not accepting
+patches. From the netdev maintainers reply, I couldn't understand if
+being "uncomfortable" was because of personal or juristic reasons. As a
+result, I was unsure what to do if such patches would have landed in my
+subsystem. If it was personal, then I may or may not have a different
+opinion, OK. If it was jurisitc, then it might be wise to follow their
+expertise. Of course, I could have asked the netdev maintainers. But if
+it is written right away, it makes things easier, or so I thought...
 
-It is worth to try to get honest feedback from active developers/contributors/vendors
-what is their "real" excuse for not doing code review.
+Regards,
 
-I saw in this thread about "have no time to do code review" answers and we
-all can relate to it, but IMHO it is just an excuse and not the real reason.
-Especially for a people who are employed by big corporations to do their
-upstream work.
+   Wolfram
 
-From what I personally saw, the reasons can be different from truly
-no time upto toxic subsystem behavior with huge variety and gray areas
-in between.
 
-It is not clear to me how to get honest answers without fear of loosing
-an ability to work with that subsystems later.
+--aB+2iWZCVGDGbVS2
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Thanks
+-----BEGIN PGP SIGNATURE-----
 
-> 
->               Linus
-> 
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmTg7CQACgkQFA3kzBSg
+KbZX4xAAobjsleFaKsU1Yf20NCuSO6KxWmTOCSU5fGdg2nlHqFcGcdLF4XEOaO7n
+LmlpK8YOQngwU/MPk/H+tO0dTBs0kXxZDt5fPHUUzSIMxfWsFClb6UsIvhhP4QXm
+waOWIC3GvgihkBjIZ+CGdcIb7q0sdIZEd/fTXBJXKirsMJupfdmC8vOelGlm56nm
+gpqS+DhPd7ArV9VsUlRwxKyZ9yRngv/MA4igovXqeiXJGOVErX9x9b1ABpGwFbe+
+SqqK1+zbJjwiwSHOAf9FTMJiknXvnO7VB161h2Qp4afCm9KFuWyNl1PfHXE0Zhj2
+dhKQT5s7HGEDRhFU1s2vdnYWaYYWyiz4UL4fZs4jKfVHiAaru+U8FaayV1y6J+m5
+swX1/Xqy0VkKg8MBVdbODJbU/+KLxUkWSU8B+LSelMrLyH2OVcwQoxC5KWvaBBA4
+Q+khGKhUmxrsgfdOigJEifKCHsw/tqzQi/40La9XulkO+LK3miAHk7iFG5oEh0Xk
+jEDJ+ADS9Q8/Ly+QzKYxcTxs2mAWrxlY3RL1TAEihYVKCP9W+MYHXs3V4hv2zRXx
+HVtyqNK2X28gSDKiwREqYviCmUxaBXzk75Lut0zRITs/UilISZfSbu5IXWpbWM98
+7dumOnCiWC+Y9Vs12kmZlFSHUmtP7hzYYl6bfPG73MoezgKAy5M=
+=7KqA
+-----END PGP SIGNATURE-----
+
+--aB+2iWZCVGDGbVS2--
 
