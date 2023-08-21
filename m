@@ -1,117 +1,131 @@
-Return-Path: <ksummit+bounces-1032-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1033-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FAAC781A8F
-	for <lists@lfdr.de>; Sat, 19 Aug 2023 18:37:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E6EB7825CF
+	for <lists@lfdr.de>; Mon, 21 Aug 2023 10:50:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08EC028176A
-	for <lists@lfdr.de>; Sat, 19 Aug 2023 16:36:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6D90280E7D
+	for <lists@lfdr.de>; Mon, 21 Aug 2023 08:50:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E38417AC9;
-	Sat, 19 Aug 2023 16:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A5462113;
+	Mon, 21 Aug 2023 08:50:19 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C94B11C98
-	for <ksummit@lists.linux.dev>; Sat, 19 Aug 2023 16:36:49 +0000 (UTC)
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-523b066d7ceso2326058a12.2
-        for <ksummit@lists.linux.dev>; Sat, 19 Aug 2023 09:36:49 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654E4185B
+	for <ksummit@lists.linux.dev>; Mon, 21 Aug 2023 08:50:17 +0000 (UTC)
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-1bb3df62b34so413532fac.0
+        for <ksummit@lists.linux.dev>; Mon, 21 Aug 2023 01:50:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1692463008; x=1693067808;
+        d=ffwll.ch; s=google; t=1692607816; x=1693212616;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=xZ399YqUKXNCuUQKkIutHLFmLwZABYD5nu1OifYAj0c=;
-        b=GSxOP++BMGJk0rcnLNyDcJA7Q6+KiYTynLNbrXrqQQkP7s4vT2PsC9RsS3RkuifsoZ
-         FJWaQVwuxohvmcTM+Cxy4jXmNEVN+wWgaygfA7imrxpvZDxVYaclCxrsNkNIzhlw/SF/
-         Ja35RousEFbGkPXWa+7uGmsRBLJ9BLk/3+wWY=
+        bh=Zw3ucNFFFx+dFUDTWXFhkVtrf+x3S1lxU6Ziu0Dd2bw=;
+        b=dJ4ubT7rAL5TNRo3uOXsD8q0j+GonpP1in9II7nNrhklAiW+DBJ9sBxED0ZDCTSQeG
+         9uMtp9YOHvqlhyfYJ23BLBRS0iOPlZ2EYZOQgeyDE9vuy9vAXEm/nWrYzzFgJVCTedkv
+         CsVwpehSmgb5JEETouSB8hnAi3gcjCK6vSWWQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692463008; x=1693067808;
+        d=1e100.net; s=20221208; t=1692607816; x=1693212616;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=xZ399YqUKXNCuUQKkIutHLFmLwZABYD5nu1OifYAj0c=;
-        b=b5CiPNAMnwGBVQOcHIbWDMN+UUMd1e7pqG0fwmnstUFv36Cdr+zBZe0enPtD9+yqgr
-         /JcfrKUgEkUCiXiadl6ZGpvqUFLvRUeeKn83Sv7Ti+2VKQaFl90fHvaQqWDJNOZoancd
-         XOejlSAtbU7qAUtJL9Px01Y0A6PxBLcXBuhYLeqr1U3XrvLEr7tLa+gfCM8+dvH2y9Cf
-         mcncPNlpVuualnQKzXfdkw376pFg5CukdP8fdnkGN8M0NJ+R/tIMq8fSjCHmDt4PHo/X
-         qtVf09+kxfaZKG/QPYOLQT+qm8M/ftQdWa/y28ed8Gqwlm1S2nWo3tWt3OyPVdr4Pc+8
-         qYIA==
-X-Gm-Message-State: AOJu0Yyfe3Wv3T594adHrazi9208xkAtHD9yrtStPuBO3wWy0q6BbqpU
-	Q7Gz0ebfxU69vdU4sqEJKE0YbnA9GUQa6T0Tj/QqwJet
-X-Google-Smtp-Source: AGHT+IGjthYTPhx9JS3QOudzt3xtgp3H6e/RebbPNkJfghW8M3aq+mxg3Mwk2vNfSyASHyTdINo0qQ==
-X-Received: by 2002:aa7:d651:0:b0:525:bbc0:2a8c with SMTP id v17-20020aa7d651000000b00525bbc02a8cmr1832688edr.33.1692463007852;
-        Sat, 19 Aug 2023 09:36:47 -0700 (PDT)
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com. [209.85.218.54])
-        by smtp.gmail.com with ESMTPSA id j21-20020aa7ca55000000b0052596c88941sm2796350edt.39.2023.08.19.09.36.46
-        for <ksummit@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 19 Aug 2023 09:36:47 -0700 (PDT)
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-99bf8e5ab39so255573366b.2
-        for <ksummit@lists.linux.dev>; Sat, 19 Aug 2023 09:36:46 -0700 (PDT)
-X-Received: by 2002:a17:906:2921:b0:99c:f966:9ea2 with SMTP id
- v1-20020a170906292100b0099cf9669ea2mr1587234ejd.25.1692463006695; Sat, 19 Aug
- 2023 09:36:46 -0700 (PDT)
+        bh=Zw3ucNFFFx+dFUDTWXFhkVtrf+x3S1lxU6Ziu0Dd2bw=;
+        b=Pw52+ECG5V1VOOfISOzeAhS/ttnESJN0rzKW2wGdStPmPS4gH75+QTxUp9Ne3Pisi/
+         OV1+9X4MTBYWgXJ60CXEvQcINcANt9bSCPiOhokiIZaCKwZtCFhph/hC8ESbS7mrRS8m
+         PSuuKL9ze9FVYnt+2V+XMWQ3LTeHzkZOURveSliLOS2ZErzDbv9D+eQHbQqHLhW9kZZc
+         NnRSs7SlWUunWc9z8rk1Obulxnu7pXptVHEVuUW17pldQ2HFK+6zAJ43LUvD9AAp6VsI
+         ky1cNW1+G837rqQJ8zLvtSAb4FlUniuwFppZOsKUCJieKMhOKt6CF2H01wZXa3F3IDXV
+         gk7Q==
+X-Gm-Message-State: AOJu0YzKYA8qycJPTlw5M33BNX4AsQewZPUli71cEGbEF/CUdg5jWx5z
+	UFv5qipENt6hcDC52ij4n1qFX3I/Vs27naqIGhnCqw==
+X-Google-Smtp-Source: AGHT+IHDl5GwTdzs1UIZvp9EZiZvbMUzreg9QWV4hoe8OExme0SPlGEK6dS+uPV4WVg3jwkpeeRWVkKBbJGCJPDLDx0=
+X-Received: by 2002:a05:6870:ecab:b0:1c8:bbd0:2fd5 with SMTP id
+ eo43-20020a056870ecab00b001c8bbd02fd5mr7244312oab.4.1692607816107; Mon, 21
+ Aug 2023 01:50:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <ZN9ZfUVHrRhd+btc@shikoro> <CAHk-=wgQKBvXaSNVxy-2Q3KYeTbv-CGSTf3LSV3=O5howAPifA@mail.gmail.com>
- <ZODsKnm7B1Q0aPbx@shikoro>
-In-Reply-To: <ZODsKnm7B1Q0aPbx@shikoro>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sat, 19 Aug 2023 18:36:29 +0200
-X-Gmail-Original-Message-ID: <CAHk-=whAAQi8EtCbaXx6rn63EfrvpeB10fQKqGCH1x8JfdM60g@mail.gmail.com>
-Message-ID: <CAHk-=whAAQi8EtCbaXx6rn63EfrvpeB10fQKqGCH1x8JfdM60g@mail.gmail.com>
-Subject: Re: [MAINTAINERS SUMMIT] Transparency when rejecting patches without
- technical reason
-To: Wolfram Sang <wsa@kernel.org>
-Cc: ksummit@lists.linux.dev
+References: <20230816180808.GB2919664@perftesting> <ZN0uNrpD8JUtihQE@bombadil.infradead.org>
+ <20230817093914.GE21668@pendragon.ideasonboard.com> <44814ed5-7bab-4e56-9ca6-189870f97f41@lunn.ch>
+ <20230817081957.1287b966@kernel.org> <CAADnVQ+6=RjVziJG6rXwiC0+dEKGTGFNPUgsa4dyPP66NyTbog@mail.gmail.com>
+ <CACRpkdbfSzNwkwnew-5YN4j4yBjgh=fCiaKdPmiRbViTdOcXkw@mail.gmail.com>
+ <20230818080949.7b17b0d5@kernel.org> <CAHk-=wibRQBp3VyJrUzk4=E_ozHokOM2LsYD9P_0XSN0edD_kw@mail.gmail.com>
+In-Reply-To: <CAHk-=wibRQBp3VyJrUzk4=E_ozHokOM2LsYD9P_0XSN0edD_kw@mail.gmail.com>
+From: Daniel Vetter <daniel.vetter@ffwll.ch>
+Date: Mon, 21 Aug 2023 10:50:04 +0200
+Message-ID: <CAKMK7uG68PV5MZLjZXNLxsfdweKVZwz2UW9fuG1vLBEi8600dg@mail.gmail.com>
+Subject: Re: [MAINTAINERS SUMMIT] Maintainer burnout
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Jakub Kicinski <kuba@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, 
+	Alexei Starovoitov <alexei.starovoitov@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Josef Bacik <josef@toxicpanda.com>, ksummit@lists.linux.dev, 
+	Jeff Layton <jlayton@kernel.org>, Song Liu <song@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Sat, 19 Aug 2023 at 18:22, Wolfram Sang <wsa@kernel.org> wrote:
+On Fri, 18 Aug 2023 at 19:07, Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
 >
-> I hope you understood that my wish for transparency was not about
-> discussing if the patches should have gone in or not. It is about
-> discussing or at least stating which reasons we have for not accepting
-> patches.
+> On Fri, 18 Aug 2023 at 17:10, Jakub Kicinski <kuba@kernel.org> wrote:
+> >
+> > I was wondering last time if we can do a run of short sessions
+> > where a few volunteers talk about their subsystems? Let's say
+> > 10min talking about
+> >  - current process subsystem uses
+> >  - "realities" / day to day challenges / problems
+> >  - how the subsystem is evolving the process
+>
+> I feel like we did exactly that a few years in a row, but it was
+> probably back before covid times, and probably when it was still
+> called the "kernel summit" rather than "maintainer summit".
+>
+> At that point it was mainly just the GPU and ARM people who were doing it.
+>
+> [ Goes back and looks at my old ksummit mails ]
+>
+> Heh. It seems we did it enough that during the 2018 discussion, we had
+> Daniel Vetter say "We don't need another overview over group
+> maintainership". I think most of this was 2016/17 or so, and then by
+> 2018 we had that "not again.." situation.
+>
+> But I suspect that all predates the networking people starting to do
+> the group maintainership (I think you started doing pull requests in
+> 2020?), so I guess you never saw any of that.
+>
+> I do think the whole "how to spread the pain of being a maintainer" is
+> very much the point of the maintainer summit, though, so I do think we
+> should revisit.
 
-I don't think there is any value at all in discussing hypotheticals.
+I think hearing what the networking folks do would be rather
+interesting, maybe in a split format with a presentation for the
+entire lpc audience and then maintainer summit discussion with the
+small group. There's a lot more maintainers and area leaders than the
+30 or so who can participate in the maintainer summit.
 
-But I will say that the next time some has-been superpower ends up
-with a premier that goes crazy and starts attacking other countries,
-we'll do the same thing.
+For gpu not much really has changed in the process and approach, it
+seems to hold up the test of time. The one thing that's been under
+progress and might finally land is some CI integration with our
+gitlab.freedesktop.org infrastructure. We have that for years for the
+userspace side (including hw testing) and some kernel drivers, but not
+yet for the entire gpu subsystem. Which is pain because it results in
+a lot of duplicated work and stuff falling through cracks for no good
+reasons. I'm hoping that this merge window will finally have the pull
+with the initial thing (all contained in a dedicated directory so it's
+easy to delete in case it all turns out to be a big mistake).
 
-So that's certainly _one_ reason to not take patches.
+So there's really nothing to report from the GPU side, and I think my
+quote from 2018 still holds :-)
 
-But let's hope that one reason ends up never being relevant again, and
-as such not really worth discussing (and it's sure as hell not worth
-debating).
-
-And other reasons? I don't think most people had "Russia ends up going
-rogue, so kernel developers stop taking patches from state-sponsored
-actors" on their bingo card in 2021. I certainly didn't.
-
-So unless you have a crystal ball and can predict what the next event
-that would cause us to not accept patches would look like, what is
-there to discuss?
-
-That's kind of my point.
-
-The Russian situation isn't worth discussing - anybody who wants to
-debate it is simply not anybody I want to spend one second debating
-*with*.
-
-And any future situation is so hypothetical as to not seemingly be
-worth discussing either, unless you have some inside information.
-
-We'll have to take them as they come, and the best we can probably do
-is to just hope we don't ever see anything similar in the future.
-
-               Linus
+Cheers, Daniel
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
 
