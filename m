@@ -1,45 +1,44 @@
-Return-Path: <ksummit+bounces-1035-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1036-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D71D6782D5B
-	for <lists@lfdr.de>; Mon, 21 Aug 2023 17:35:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4360A782DB9
+	for <lists@lfdr.de>; Mon, 21 Aug 2023 18:04:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D4D9280E63
-	for <lists@lfdr.de>; Mon, 21 Aug 2023 15:35:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3180280F01
+	for <lists@lfdr.de>; Mon, 21 Aug 2023 16:04:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24DB8481;
-	Mon, 21 Aug 2023 15:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE329882D;
+	Mon, 21 Aug 2023 16:04:05 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8AC679F1
-	for <ksummit@lists.linux.dev>; Mon, 21 Aug 2023 15:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646628460
+	for <ksummit@lists.linux.dev>; Mon, 21 Aug 2023 16:04:03 +0000 (UTC)
 Received: from pendragon.ideasonboard.com (213-243-189-158.bb.dnainternet.fi [213.243.189.158])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id BC9AEF0A;
-	Mon, 21 Aug 2023 17:34:25 +0200 (CEST)
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 06A183F1;
+	Mon, 21 Aug 2023 18:02:44 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1692632066;
-	bh=z/H+0YTpCf0n5BX1GsFLsT5lYe12R/zlE1fizuc20xA=;
+	s=mail; t=1692633765;
+	bh=FchihxCKYdKngHG7f+tybiBZlWbgj7Zz3HIh3QtUed8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TDHoX6fJYrkfXjfVnDYVowH+uMc6oFQCeVQxTwusU1iEb3O1Uw/TN6TiyE3by8l18
-	 iev1cdIJYVdsikWL9O6X6rjw1Ird3PujmAoYYlHXHi+nYv05P74Nhfg2U/mP0kwIsu
-	 +Mqt2Q9ULaxExgKyYt0BwSB4b6VrKC+xP5W9MTE0=
-Date: Mon, 21 Aug 2023 18:35:49 +0300
+	b=bJkDQlswq1iTBcbTZlHZTBhXPJjQt7BOKNE4QH1BF7wlwBue+2myQYHD+DB/uDN29
+	 p85u/vfx0mSbulbACOmfqcqG37Y58XeMjuX4KQqCIp5jB8d9Eks0zDg061p9pYydNG
+	 q27lG7jJpVTc+qEZt4V4MmGqivW1nN5Kxhp7TMOI=
+Date: Mon, 21 Aug 2023 19:04:08 +0300
 From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+To: Mark Brown <broonie@kernel.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
 	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>, Luis Chamberlain <mcgrof@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+	Luis Chamberlain <mcgrof@kernel.org>,
 	Josef Bacik <josef@toxicpanda.com>, ksummit@lists.linux.dev,
 	Jeff Layton <jlayton@kernel.org>, Song Liu <song@kernel.org>
 Subject: Re: [MAINTAINERS SUMMIT] Maintainer burnout
-Message-ID: <20230821153549.GJ10135@pendragon.ideasonboard.com>
+Message-ID: <20230821160408.GK10135@pendragon.ideasonboard.com>
 References: <20230816180808.GB2919664@perftesting>
  <ZN0uNrpD8JUtihQE@bombadil.infradead.org>
  <20230817093914.GE21668@pendragon.ideasonboard.com>
@@ -47,9 +46,8 @@ References: <20230816180808.GB2919664@perftesting>
  <20230817081957.1287b966@kernel.org>
  <CAADnVQ+6=RjVziJG6rXwiC0+dEKGTGFNPUgsa4dyPP66NyTbog@mail.gmail.com>
  <CACRpkdbfSzNwkwnew-5YN4j4yBjgh=fCiaKdPmiRbViTdOcXkw@mail.gmail.com>
- <20230818080949.7b17b0d5@kernel.org>
- <CAHk-=wibRQBp3VyJrUzk4=E_ozHokOM2LsYD9P_0XSN0edD_kw@mail.gmail.com>
- <20230819064537.GM22185@unreal>
+ <20230818152629.GA13558@pendragon.ideasonboard.com>
+ <e1b0f9e6-8e40-4365-868b-8340153e6a9c@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -58,56 +56,52 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230819064537.GM22185@unreal>
+In-Reply-To: <e1b0f9e6-8e40-4365-868b-8340153e6a9c@sirena.org.uk>
 
-On Sat, Aug 19, 2023 at 09:45:37AM +0300, Leon Romanovsky wrote:
-> On Fri, Aug 18, 2023 at 07:07:24PM +0200, Linus Torvalds wrote:
-> > On Fri, 18 Aug 2023 at 17:10, Jakub Kicinski wrote:
-> > >
-> > > I was wondering last time if we can do a run of short sessions
-> > > where a few volunteers talk about their subsystems? Let's say
-> > > 10min talking about
-> > >  - current process subsystem uses
-> > >  - "realities" / day to day challenges / problems
-> > >  - how the subsystem is evolving the process
-> > 
-> > I feel like we did exactly that a few years in a row, but it was
-> > probably back before covid times, and probably when it was still
-> > called the "kernel summit" rather than "maintainer summit".
+On Fri, Aug 18, 2023 at 05:10:07PM +0100, Mark Brown wrote:
+> On Fri, Aug 18, 2023 at 06:26:29PM +0300, Laurent Pinchart wrote:
+> > On Fri, Aug 18, 2023 at 03:55:11PM +0200, Linus Walleij wrote:
 > 
-> <...>
+> > > The DRI/DRM community has group maintainership that works a little
+> > > bit.
+> > > Essentially it boils down to ask people to review your stuff and you
+> > > will review and also merge their stuff in return.
+> > > Sometimes this works.
+> > > Especially if you are a circle of acquaintances working full
+> > > time on similar things, yay! So much support.
+> > > When you are a sporadic contributor it doesn't work as well.
+> > > Because you cannot always find some matching contribution to
+> > > review and you feel like begging.
+> > > So different solutions for different contributors may be needed.
 > 
-> > I do think the whole "how to spread the pain of being a maintainer" is
-> > very much the point of the maintainer summit, though, so I do think we
-> > should revisit.
+> > I've also experienced mixed results from "trading reviews". It's
+> > certainly nice on paper, and it works sometimes, especially when asking
+> > contributors to review patches that are directly related to their
+> > business interest. I remember asking a contributor from a large company
+> > to help me with reviews, to free some of my time to review their
+> > patches. The contributor helped with reviewing third-party contributions
+> > to the driver they're actively working on. When I asked for help
+> > reviewing an entirely separate driver that their employer had no
+> > business interest in, however, I faced the "we're busy and don't have
+> > time" argument.
+> >
+> > Maybe part of the solution here, to share the maintenance burden, is to
+> > expect contributors, especially the ones with large financial resources,
+> > to spent a certain percentage of their time reviewing code that is in
+> > their area of expertise but not in their area of business interest.
 > 
-> It is worth to try to get honest feedback from active developers/contributors/vendors
-> what is their "real" excuse for not doing code review.
-> 
-> I saw in this thread about "have no time to do code review" answers and we
-> all can relate to it, but IMHO it is just an excuse and not the real reason.
-> Especially for a people who are employed by big corporations to do their
-> upstream work.
-> 
-> From what I personally saw, the reasons can be different from truly
-> no time upto toxic subsystem behavior with huge variety and gray areas
-> in between.
+> That issue with people having the background knowledge needed to
+> adequately review things they don't have specific experience with can be
+> a problem here.  It's not typically *harmful* other than issues with
+> people doing disproportionately pedantic reviews (which can be a
+> problem) but you do still need to keep an eye on things it can feel a
+> bit make work so there's a balance with making it an explicit
+> requirement.
 
-That can be the case, but I think that the "no time" excuse is not just
-an excuse. Many developers working upstream, even (or perhaps especially
-?) those working for large companies, are put under intense time
-pressure by their management. If we want to consider the "no time"
-reason as an excuse, we should see it as a management excuse, not an
-individual contributor excuse.
-
-> It is not clear to me how to get honest answers without fear of loosing
-> an ability to work with that subsystems later.
-
-One straightforward (on paper) option is to guarantee anonymity. When I
-was in university, students were given the opportunity to provide
-feedback on teachers, and the feedback was aggregated into a report that
-didn't contain any personal information that could be used to identify
-the students.
+Most of my reviews point of issues with usage of in-kernel and userspace
+APIs, rather than problems specific to the hardware at hand. Developers
+who contribute drivers with similar usage patterns of APIs should be
+able to help there.
 
 -- 
 Regards,
