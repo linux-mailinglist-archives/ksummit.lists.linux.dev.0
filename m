@@ -1,46 +1,72 @@
-Return-Path: <ksummit+bounces-1053-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1054-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 329E7783F21
-	for <lists@lfdr.de>; Tue, 22 Aug 2023 13:33:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50A94784215
+	for <lists@lfdr.de>; Tue, 22 Aug 2023 15:30:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFACE281096
-	for <lists@lfdr.de>; Tue, 22 Aug 2023 11:33:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C3021C20B0F
+	for <lists@lfdr.de>; Tue, 22 Aug 2023 13:30:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4F41C2B3;
-	Tue, 22 Aug 2023 11:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F611CA06;
+	Tue, 22 Aug 2023 13:30:25 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178A61BEF6
-	for <ksummit@lists.linux.dev>; Tue, 22 Aug 2023 11:32:06 +0000 (UTC)
-Received: from pendragon.ideasonboard.com (213-243-189-158.bb.dnainternet.fi [213.243.189.158])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 092CADD9;
-	Tue, 22 Aug 2023 13:30:47 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1692703848;
-	bh=45N7tM1nidTATOaemcXiSWYpukDGHBbZjk/T4bUJj+g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YK289l8Xc7cjrL2fTa1Raw63FV7jEKzfoF6VV8tKzqNLwSbykn3CouBF/wJ5o7L+z
-	 GH8ENEMBNQRAhcvYnGIcvaB8s6j36ZWTVWQJ/kXZmK8UsrE/80nhK/4wYiTPxV+IWO
-	 JR2gP0m2Ea3/NbX6y9wFyMvZ0WdttDB9+g59O+s4=
-Date: Tue, 22 Aug 2023 14:32:12 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547A37F
+	for <ksummit@lists.linux.dev>; Tue, 22 Aug 2023 13:30:23 +0000 (UTC)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 86AC01F381;
+	Tue, 22 Aug 2023 13:30:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1692711021; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/4mxv6DmIcAAjlGlkOAYX9hyW/Lj6iK+6bkGRcBzcpo=;
+	b=rgeYyANAFfHpLfpv7DTCXRKz+KwE8hg5myVD89m8Den75bATXSwMFPea3SoORfaHGBtdW8
+	io9dAImEaecDNAfhK3siG7h2zhzYwpGKpBuoBqnu3AtT75BEEnUe7Nk6Fv2f/mswx83rVG
+	9hBaUuMjuBhLhrvvPvDjiOvNvGMcMQc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1692711021;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/4mxv6DmIcAAjlGlkOAYX9hyW/Lj6iK+6bkGRcBzcpo=;
+	b=6lGIrZeNKYY7RmQ5wgLU0znk8c+sCau3byc3hx2u9NOJ3S6OdjvkTAK2qP4BqxfAPqdZoy
+	8t8yr15wKtdSTSDA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 6802D132B9;
+	Tue, 22 Aug 2023 13:30:21 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id jZ5dGW245GR8BAAAMHmgww
+	(envelope-from <jack@suse.cz>); Tue, 22 Aug 2023 13:30:21 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id EC5D9A0774; Tue, 22 Aug 2023 15:30:20 +0200 (CEST)
+Date: Tue, 22 Aug 2023 15:30:20 +0200
+From: Jan Kara <jack@suse.cz>
 To: Leon Romanovsky <leon@kernel.org>
 Cc: Jan Kara <jack@suse.cz>, Vegard Nossum <vegard.nossum@oracle.com>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Linus Walleij <linus.walleij@linaro.org>,
 	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>, Luis Chamberlain <mcgrof@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
 	Josef Bacik <josef@toxicpanda.com>, ksummit@lists.linux.dev,
 	Jeff Layton <jlayton@kernel.org>, Song Liu <song@kernel.org>
 Subject: Re: [MAINTAINERS SUMMIT] Maintainer burnout
-Message-ID: <20230822113212.GP10135@pendragon.ideasonboard.com>
+Message-ID: <20230822133020.pndelsocbhqwzn5f@quack3>
 References: <44814ed5-7bab-4e56-9ca6-189870f97f41@lunn.ch>
  <20230817081957.1287b966@kernel.org>
  <CAADnVQ+6=RjVziJG6rXwiC0+dEKGTGFNPUgsa4dyPP66NyTbog@mail.gmail.com>
@@ -57,11 +83,11 @@ List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20230822110523.GB6029@unreal>
 
-On Tue, Aug 22, 2023 at 02:05:23PM +0300, Leon Romanovsky wrote:
+On Tue 22-08-23 14:05:23, Leon Romanovsky wrote:
 > On Tue, Aug 22, 2023 at 11:46:13AM +0200, Jan Kara wrote:
 > > On Mon 21-08-23 21:23:18, Vegard Nossum wrote:
 > > > On 8/19/23 08:45, Leon Romanovsky wrote:
@@ -125,11 +151,11 @@ On Tue, Aug 22, 2023 at 02:05:23PM +0300, Leon Romanovsky wrote:
 > causes to the lack of trust from everybody involved in the process and
 > common responsibility can't be built in that subsystems at all.
 
-Do we need to organize a workshop for maintainers on how to stop
-clinging to power ? I'm sure I could learn something there.
+I agree. People can hardly have common responsibility when they have the
+feeling their opinion doesn't really matter for the maintainer.
 
+								Honza
 -- 
-Regards,
-
-Laurent Pinchart
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
