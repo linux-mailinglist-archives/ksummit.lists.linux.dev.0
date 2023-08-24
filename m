@@ -1,66 +1,48 @@
-Return-Path: <ksummit+bounces-1063-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1064-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3D20787882
-	for <lists@lfdr.de>; Thu, 24 Aug 2023 21:29:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39B9B7878F9
+	for <lists@lfdr.de>; Thu, 24 Aug 2023 21:58:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C78051C20EE7
-	for <lists@lfdr.de>; Thu, 24 Aug 2023 19:29:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 196C91C20ED4
+	for <lists@lfdr.de>; Thu, 24 Aug 2023 19:58:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2928215AD7;
-	Thu, 24 Aug 2023 19:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D6117FFA;
+	Thu, 24 Aug 2023 19:58:18 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6332614A81
-	for <ksummit@lists.linux.dev>; Thu, 24 Aug 2023 19:29:37 +0000 (UTC)
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-1bdb7b0c8afso2163935ad.3
-        for <ksummit@lists.linux.dev>; Thu, 24 Aug 2023 12:29:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692905376; x=1693510176;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jOX7PbHhMRFdG/jllgUmwKtu84TtzXPhLDJRoreAKhU=;
-        b=fdcGZn56lTfCa8S2C69beD96MMaDKft7XgjZrQlmAnLCe+V4njtHU+0D6DWD+jeno4
-         S4RxdEo+IS98UkBEud2glKYJygFl1z6l6Qdxd0TwqwbCy54FCDsRvkeALsHGKDoBG7BK
-         Y2whnIidbzZrC3Sb86hca8pblhQyiOriiwoLhLLb/iezwS8lm/ZOlRCJNAHsRPBnZYX6
-         4/aqQa4p9nXU98+vCR9Dusyl+an3pZ0bXpvQYr0cghY51JZ57jdvIybwyXBec6QyeTO5
-         x2UIn/jEPH4vV/Ad1rH96ZjlPY6LZkTNHPfKL6NZr3C68NSxhaJavQyRo6e0t4fvzD9A
-         cGmg==
-X-Gm-Message-State: AOJu0Yx1t1ZKNmzmEimmhLXm09iF0U9gjeui4f2DM6qEnoyC32TdCeY7
-	JwkwIepjTqZwv1lWPL0cHxg=
-X-Google-Smtp-Source: AGHT+IHRJ7G+9jDizAbObbHMgLbaWlqspuPwhDju8OZUfaBqWIvdrMLfCYMjsSTGIbrKhXrRdISHZQ==
-X-Received: by 2002:a17:903:44f:b0:1bc:682a:b130 with SMTP id iw15-20020a170903044f00b001bc682ab130mr13431754plb.27.1692905376391;
-        Thu, 24 Aug 2023 12:29:36 -0700 (PDT)
-Received: from ?IPV6:2620:15c:211:201:e6ec:4683:972:2d78? ([2620:15c:211:201:e6ec:4683:972:2d78])
-        by smtp.gmail.com with ESMTPSA id t8-20020a1709027fc800b001bdcafcf8d3sm32847plb.69.2023.08.24.12.29.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Aug 2023 12:29:35 -0700 (PDT)
-Message-ID: <6c140552-9c1c-5038-35b3-443d60de31f1@acm.org>
-Date: Thu, 24 Aug 2023 12:29:34 -0700
-Precedence: bulk
-X-Mailing-List: ksummit@lists.linux.dev
-List-Id: <ksummit.lists.linux.dev>
-List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
-List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A004B17FF0
+	for <ksummit@lists.linux.dev>; Thu, 24 Aug 2023 19:58:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F84DC433C8;
+	Thu, 24 Aug 2023 19:58:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1692907096;
+	bh=6fTL1rMPZmY+HRwy2qp6eWClw3gCJWu/WGis1iqrmYU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=I6hkIy1x6KEZKzYCxLqEnP/myyO3O/18PXwJAXnoafJEWiYHS8k0K8xLlMm/WORR5
+	 a9o5JehwuCZMeuYxXnN4kkLa63crYkLMhRwwya3Ki5O0LrjkliSSSgCs/KvaF4zZ6B
+	 sZSrcyzRfGFC5mf3uszDNjRqem+2RYPhlevO0g4OUgI5NVhtLzGZBAiAzKkKYkywli
+	 Dt9jRBzJVMH5fe/gJkiHjspX6J7NiP3OnLq1QTNPZldRe+YQXbfxDoDSXP1c+t9kZO
+	 U9AuLbx3udgxaLkcMjqpWjlr+ztV0RUcNtwDBL3fnbhmWZm1/OfTO9pVZk63GqA/y1
+	 J/k55ZRU4x4Cw==
+Date: Thu, 24 Aug 2023 20:58:12 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: "Bird, Tim" <Tim.Bird@sony.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
 Subject: Re: [MAINTAINERS SUMMIT] Between a rock and a hard place, managing
  expectations...
-Content-Language: en-US
-To: "Bird, Tim" <Tim.Bird@sony.com>, Mark Brown <broonie@kernel.org>,
- Linus Walleij <linus.walleij@linaro.org>
-Cc: Jason Gunthorpe <jgg@nvidia.com>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Greg KH <gregkh@linuxfoundation.org>, Dan Williams
- <dan.j.williams@intel.com>, "ksummit@lists.linux.dev"
- <ksummit@lists.linux.dev>
+Message-ID: <ZOe2VIuCkmal5YpV@finisterre.sirena.org.uk>
 References: <64e404a979f54_4c1f3294d3@dwillia2-mobl3.amr.corp.intel.com.notmuch>
  <2023082250-replace-rectangle-1d47@gregkh>
  <20230822142913.GB14596@pendragon.ideasonboard.com>
@@ -68,33 +50,57 @@ References: <64e404a979f54_4c1f3294d3@dwillia2-mobl3.amr.corp.intel.com.notmuch>
  <CACRpkdbt-GxDgGbpETJTjBXz6qH2yLFgTR8BVVU9EU1uj7tJ+Q@mail.gmail.com>
  <ZOePd+0Ncywxa5kZ@finisterre.sirena.org.uk>
  <BYAPR13MB25035A643E9E57FFFE06B644FD1DA@BYAPR13MB2503.namprd13.prod.outlook.com>
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <BYAPR13MB25035A643E9E57FFFE06B644FD1DA@BYAPR13MB2503.namprd13.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+ <6c140552-9c1c-5038-35b3-443d60de31f1@acm.org>
+Precedence: bulk
+X-Mailing-List: ksummit@lists.linux.dev
+List-Id: <ksummit.lists.linux.dev>
+List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
+List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Dgt7drZppyOA/g06"
+Content-Disposition: inline
+In-Reply-To: <6c140552-9c1c-5038-35b3-443d60de31f1@acm.org>
+X-Cookie: Give him an evasive answer.
 
-On 8/24/23 10:20, Bird, Tim wrote:
-> Sony has had experiences where GKI prevented us from making changes 
-> to the kernel to address issues raised in carrier certification, 
-> causing delays and extra (very funky) workarounds, since we couldn't
-> change kernel code directly.  Google is not very responsive to 
-> non-top-tier phone vendors, and using GKI you are essentially at 
-> their mercy.  GKI, for us, removed some of the value of open source 
-> (ie, the ability to modify the source to suit our needs).
 
-Since I'm a Google employee: can you give an example of Google not being
-very responsive, e.g. a bug number or patch URL? All the phone vendor
-requests I have seen are processed in a reasonable time.
+--Dgt7drZppyOA/g06
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The quality of the Android kernel patches that I have seen and that are 
-sent directly to Google is often low. Sometimes there is no other way to 
-describe these as a nightmare from the point of view of code maintenance.
+On Thu, Aug 24, 2023 at 12:29:34PM -0700, Bart Van Assche wrote:
 
-The GKI indeed makes changes to the core kernel harder after its API has 
-been frozen. Does carrier certification really require changes to the 
-core kernel?
+> The GKI indeed makes changes to the core kernel harder after its API has
+> been frozen. Does carrier certification really require changes to the core
+> kernel?
 
-Thanks,
+I don't know anything about the issue Tim was facing but I've definitely
+run into issues during testing which were best fixed by extending the
+core, sometimes it's not a straight bug in the core (which I'd guess
+should be relatively easy to get a backport for, you can probably just
+go via upstream stable) but rather that this is the appropriate layer to
+handle whatever the issue is.  Teach the core about a concept, then tell
+the core that your device does the thing which you've discovered needs
+to be handled.
 
-Bart.
+Note that I've got no experience working with GKI here, but unless
+things have changed a lot there's not really any phase of the process
+where there isn't substantial time pressure.
+
+--Dgt7drZppyOA/g06
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmTntlMACgkQJNaLcl1U
+h9BZ3Af+KjwOmi91vjzTcHwYZmqD9B8mFIaohqH7AggCTgSzzxHLlkf11sxu8mCY
+XvXtKN+pS2Qnpl/lhE3vr7fCwDWPrmk5tYC0zOtx9/j6gIsQ9Vd4rL5FAtAyOch5
+641MsP32DZtQvMOVZH5sOPpwnGMi4undlritbKBKjIZAB1hz1SxmVBQOrDGThKEW
+iHQDZmUH+LEeVQAhg6Ecf8LfHRs8p5r7bf5f0D2Ld7QR8mm8+Q3a9llRnhPqtmbT
+qB1ECLl6j9+aOD9Pp+WSH1d5Ebfb01S/eBBu0UEXrHdActKA18bi0xXKL+7FFVB+
+eqVBtef3ha77usxh80Qvmo39BzgJwA==
+=0nQy
+-----END PGP SIGNATURE-----
+
+--Dgt7drZppyOA/g06--
 
