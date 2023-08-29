@@ -1,59 +1,51 @@
-Return-Path: <ksummit+bounces-1068-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1069-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2051B78C0B8
-	for <lists@lfdr.de>; Tue, 29 Aug 2023 10:46:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC1E178C48A
+	for <lists@lfdr.de>; Tue, 29 Aug 2023 14:54:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55931280F84
-	for <lists@lfdr.de>; Tue, 29 Aug 2023 08:46:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 507A4280A96
+	for <lists@lfdr.de>; Tue, 29 Aug 2023 12:54:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F52014AB7;
-	Tue, 29 Aug 2023 08:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29402156DB;
+	Tue, 29 Aug 2023 12:54:12 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A982109
-	for <ksummit@lists.linux.dev>; Tue, 29 Aug 2023 08:46:11 +0000 (UTC)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out1.suse.de (Postfix) with ESMTP id B162521861;
-	Tue, 29 Aug 2023 08:46:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1693298769; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=75hUwRG0pJwOHrkkTuwvJBCJ7Ft5hmgzEuTnmdG0wdg=;
-	b=MScyU81oiQWsNJ0F+L7++Y502+P7k+SEE1I14CZ0RLGH6WvgVTbCVhOQPhjKHyzTQH88pP
-	+9EqZjSG7sk4OL7DBlm1UnDZPy90UyR344bJt7fwo+WdiVKBVKWd2vrzA9qMncGnmY/M3h
-	cipa/GS2e2P7aiRcaiTNTEofnGpb/7k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1693298769;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=75hUwRG0pJwOHrkkTuwvJBCJ7Ft5hmgzEuTnmdG0wdg=;
-	b=cbJWaEHZyfc+QTHUeEaR+eXKRIxrs0Y278qXLXxXHP49EV8TIbn4+sKu6MgTcyCsBJAknl
-	fgY+OTfJEMCSwTCg==
-Received: from pobox.suse.cz (pobox.suse.cz [10.100.2.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 4CAC52C142;
-	Tue, 29 Aug 2023 08:46:09 +0000 (UTC)
-Date: Tue, 29 Aug 2023 10:46:09 +0200 (CEST)
-From: Miroslav Benes <mbenes@suse.cz>
-To: Donald Buczek <buczek@molgen.mpg.de>
-cc: Solar Designer <solar@openwall.com>, oss-security@lists.openwall.com, 
-    Vegard Nossum <vegard.nossum@oracle.com>, Jiri Kosina <jkosina@suse.cz>, 
-    ksummit@lists.linux.dev
-Subject: Re: Re: [MAINTAINERS SUMMIT] Handling of embargoed security issues
- -- security@korg vs. linux-distros@
-In-Reply-To: <12aa367f-9934-7450-1016-fe303c72cc5a@molgen.mpg.de>
-Message-ID: <alpine.LSU.2.21.2308291043590.21665@pobox.suse.cz>
-References: <nycvar.YFH.7.76.2308150927190.14207@cbobk.fhfr.pm> <658e739b-c164-c360-d6a3-eb4fb15ae02e@oracle.com> <20230816152621.GA8252@openwall.com> <12aa367f-9934-7450-1016-fe303c72cc5a@molgen.mpg.de>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4593156CD
+	for <ksummit@lists.linux.dev>; Tue, 29 Aug 2023 12:54:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF163C433C7;
+	Tue, 29 Aug 2023 12:54:07 +0000 (UTC)
+Date: Tue, 29 Aug 2023 08:54:05 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Vegard Nossum <vegard.nossum@oracle.com>
+Cc: Leon Romanovsky <leon@kernel.org>, Linus Torvalds
+ <torvalds@linux-foundation.org>, Jakub Kicinski <kuba@kernel.org>, Linus
+ Walleij <linus.walleij@linaro.org>, Alexei Starovoitov
+ <alexei.starovoitov@gmail.com>, Andrew Lunn <andrew@lunn.ch>, Laurent
+ Pinchart <laurent.pinchart@ideasonboard.com>, Luis Chamberlain
+ <mcgrof@kernel.org>, Josef Bacik <josef@toxicpanda.com>,
+ ksummit@lists.linux.dev, Jeff Layton <jlayton@kernel.org>, Song Liu
+ <song@kernel.org>
+Subject: Re: [MAINTAINERS SUMMIT] Maintainer burnout
+Message-ID: <20230829085405.5faf3b51@rorschach.local.home>
+In-Reply-To: <e7554530-a1a5-216f-9a17-7cf763ee6a9d@oracle.com>
+References: <20230816180808.GB2919664@perftesting>
+	<ZN0uNrpD8JUtihQE@bombadil.infradead.org>
+	<20230817093914.GE21668@pendragon.ideasonboard.com>
+	<44814ed5-7bab-4e56-9ca6-189870f97f41@lunn.ch>
+	<20230817081957.1287b966@kernel.org>
+	<CAADnVQ+6=RjVziJG6rXwiC0+dEKGTGFNPUgsa4dyPP66NyTbog@mail.gmail.com>
+	<CACRpkdbfSzNwkwnew-5YN4j4yBjgh=fCiaKdPmiRbViTdOcXkw@mail.gmail.com>
+	<20230818080949.7b17b0d5@kernel.org>
+	<CAHk-=wibRQBp3VyJrUzk4=E_ozHokOM2LsYD9P_0XSN0edD_kw@mail.gmail.com>
+	<20230819064537.GM22185@unreal>
+	<e7554530-a1a5-216f-9a17-7cf763ee6a9d@oracle.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -61,22 +53,24 @@ List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-[ apologies for a slight off topic ]
+On Mon, 21 Aug 2023 21:23:18 +0200
+Vegard Nossum <vegard.nossum@oracle.com> wrote:
 
-Hi,
+> Can we maybe adjust the standards of the Reviewed-by: tag to mean that
+> the person has looked at the patch (or an earlier version of it) and
+> provided comments that show they actually put some effort into it?
+> For example, if a patch is changing a function (as patches often do),
+> the reviewer should add a line saying "error paths in foo() lgtm"
+> and not just tack on their Reviewed-by: line.
+> 
+> This adjustment would make it harder to just slap a Reviewed-by: on a
+> patch, but it would also make it easier to get your name in the
+> changelog provided that you actually put the effort in.
 
-On Fri, 25 Aug 2023, Donald Buczek wrote:
+Note, when I can't do a real review, I just slap an Acked-by tag to it.
+That to me means LGTM, but I haven't looked deep into it.
 
-> We go a long way to avoid rebooting. This might be as easy as disabling 
-> unused dynamic modules by just removing the .ko files from userspace, 
-> but sometimes we even convert an upstream fix into a loadable module 
-> which uses ftrace to replace or wrap the buggy functions in the running 
-> systems. A "reboot party" would only be a measure of last resort.
-
-the kernel live patching infrastructure might help you with this. See 
-Documentation/livepatch/ and samples/livepatch/ in the kernel tree.
-
-Regards,
-Miroslav
+-- Steve
 
