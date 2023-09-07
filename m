@@ -1,141 +1,132 @@
-Return-Path: <ksummit+bounces-1090-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1091-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5270E797157
-	for <lists@lfdr.de>; Thu,  7 Sep 2023 11:48:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 939F6797179
+	for <lists@lfdr.de>; Thu,  7 Sep 2023 12:30:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BCCE28148A
-	for <lists@lfdr.de>; Thu,  7 Sep 2023 09:48:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0A5E281517
+	for <lists@lfdr.de>; Thu,  7 Sep 2023 10:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A22D5663;
-	Thu,  7 Sep 2023 09:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDCEF5685;
+	Thu,  7 Sep 2023 10:29:56 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B58720E8
-	for <ksummit@lists.linux.dev>; Thu,  7 Sep 2023 09:48:31 +0000 (UTC)
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4018af103bcso4379735e9.1
-        for <ksummit@lists.linux.dev>; Thu, 07 Sep 2023 02:48:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1694080110; x=1694684910; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+/xavPfeHKkM5Edb1Fs57Ak7muWryzIAsBFEjQC6YKw=;
-        b=FP4AY4z0yF1NyW+A6qI8uSvOLnQx/gMXQjzX+dnlnguLup9rL9RhaSIpn3fJRLLPvj
-         ajnSKjVj0UAwf8EmzelJORn1SpJhoN70eg27GohfhrKClegCztykTkq8mZjGwhyPWvpS
-         F8dIanWoUtb0k6y1ShzHMo6EYw7ZHaITcvOCJdBmF+qRmgpjF6jDZGvEIbGp3S2rI+rJ
-         29wo2aTYkY4dBhRt8b20ngaYrfK78yrmfVCXkYXefTLZDK0gbrmkjlXPAAyo8J5d7/eZ
-         HvUuWyXiwe0PiJC7dpYNnW5GhCRIeVolHsbCEhf+W3h78y5HkS+ipiVrHzSg8YmsomOH
-         xlvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1694080110; x=1694684910;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+/xavPfeHKkM5Edb1Fs57Ak7muWryzIAsBFEjQC6YKw=;
-        b=d/RGPEIRr8rb/1gVyy/fYf7TgLcjSEOdP64pnslM23MSuYpTBFOwGxeFl5zh9Ysj5s
-         aLOsyhr+UhI67mFPW5ETCkPdSLgbRTBpYY20aAIBQ7lSvfa2IcWeCr6VM6X0xTv1da+4
-         ld0wFVZ0QyDhcy5pXUpv40+wxctxy5Aaucvm/2wZ9T6G9K8o0CAGfK14TASX4/9eXBQB
-         ZGpcB07oUImCK6QNy8lP0VXZXbPwiWg5I5/KDUiTWmr4jyCjLCSezfzmx8iVv5HWf5mB
-         yiI7gGM6jlmOjFQsDxpupxXCxaVpN7d6R8bnu8J8rjCqm6CkLPa9PYNJe/fedYoxeVYG
-         Uo7A==
-X-Gm-Message-State: AOJu0YxDZhJw9QvrR06OWWyRris6QHgfQepC/3zoIO1ge+g4oZZ52Z4h
-	qE925jHa6mD8Ngj7HAS9H5Lvfw==
-X-Google-Smtp-Source: AGHT+IECB9k1RoR69ENUNhn2CpFuTYnYdpxvNiieJ33Nc1+rYNTbtaD4fi9Kzgag3CTTMvD+59exlg==
-X-Received: by 2002:a05:600c:492f:b0:401:431e:2d03 with SMTP id f47-20020a05600c492f00b00401431e2d03mr1584782wmp.14.1694080109945;
-        Thu, 07 Sep 2023 02:48:29 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id e6-20020a05600c218600b003fe1c332810sm1971573wme.33.2023.09.07.02.48.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Sep 2023 02:48:29 -0700 (PDT)
-Date: Thu, 7 Sep 2023 12:48:25 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Dave Chinner <david@fromorbit.com>, Guenter Roeck <linux@roeck-us.net>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562D4566C
+	for <ksummit@lists.linux.dev>; Thu,  7 Sep 2023 10:29:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C61C116B3;
+	Thu,  7 Sep 2023 10:29:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1694082594;
+	bh=I5vny7qUROC8Da2C/sZSRv3leB/a+ax29yWPx9758F4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MPlMhsBhxY6IznKAllq8kKKqCPS+RMZDae+Un2tI2ha9ad1+XrIf7WmMAupPDvust
+	 pPO7oTgT3hMVfZev/0mYFKR9Nvvz3x+tEiuARbkcWNASKYECIdZ4A/K0rEaAMe9Chk
+	 dle9qLwhtYZQyBybrQXD/CWL2Pt8p9wC4B+HJwhnREM0KuZJVjv1EGWc+txnz4T4av
+	 nqjrXoFpLkY4X+Z8U8AENiMyJ/MbRHDuEeI+F4i23Z/unxixaPw5IV21/KfZrZlSmV
+	 1kJHwSfSS7PcVaw/klxM3DD2PStv/KungQqhtPquqVJL4NhqUN12/nXoXGMMCFRcSH
+	 Wksx9WSBC07xg==
+Date: Thu, 7 Sep 2023 12:29:50 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Thorsten Leemhuis <linux@leemhuis.info>
+Cc: Matthew Wilcox <willy@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Dave Chinner <david@fromorbit.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Christoph Hellwig <hch@infradead.org>, ksummit@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org, gcc-patches@gcc.gnu.org
+	linux-fsdevel@vger.kernel.org
 Subject: Re: [MAINTAINERS/KERNEL SUMMIT] Trust and maintenance of file systems
-Message-ID: <4af7c904-ac36-44c9-83c4-2cb30c732672@kadam.mountain>
+Message-ID: <20230907-kauern-kopfkissen-d8147fb40469@brauner>
 References: <ZO9NK0FchtYjOuIH@infradead.org>
  <8718a8a3-1e62-0e2b-09d0-7bce3155b045@roeck-us.net>
  <ZPkDLp0jyteubQhh@dread.disaster.area>
  <20230906215327.18a45c89@gandalf.local.home>
+ <ZPkz86RRLaYOkmx+@dread.disaster.area>
+ <20230906225139.6ffe953c@gandalf.local.home>
+ <ZPlC0pf2XA1ZGr6j@casper.infradead.org>
+ <c89ebbb2-1249-49f3-b80f-0b08711bc29b@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230906215327.18a45c89@gandalf.local.home>
+In-Reply-To: <c89ebbb2-1249-49f3-b80f-0b08711bc29b@leemhuis.info>
 
-On Wed, Sep 06, 2023 at 09:53:27PM -0400, Steven Rostedt wrote:
-> On Thu, 7 Sep 2023 08:54:38 +1000
-> Dave Chinner <david@fromorbit.com> wrote:
-> 
-> > And let's not forget: removing a filesystem from the kernel is not
-> > removing end user support for extracting data from old filesystems.
-> > We have VMs for that - we can run pretty much any kernel ever built
-> > inside a VM, so users that need to extract data from a really old
-> > filesystem we no longer support in a modern kernel can simply boot
-> > up an old distro that did support it and extract the data that way.
-> 
-> Of course there's the case of trying to recreate a OS that can run on a
-> very old kernel. Just building an old kernel is difficult today because
-> today's compilers will refuse to build them (I've hit issues in bisections
-> because of that!)
+> So why can't that work similarly for unmaintained file systems? We could
+> even establish the rule that Linus should only apply patches to some
+> parts of the kernel if the test suite for unmaintained file systems
+> succeeded without regressions. And only accept new file system code if a
 
-Yeah.  I can't run Smatch on obsolete kernels because I can't build the
-tools/ directory etc.  For example, it would be interesting to look at
-really ancient kernels to see how buggy they are.  I started to hunt
-down all the Makefile which add a -Werror but there are a lot and
-eventually I got bored and gave up.
+Reading this mail scared me. The list of reiserfs bugs alone is crazy.
+And syzbot keeps piling them on. It can't even succeed an xfstests run
+without splatting all over the place last I checked. And there's no
+maintainer for it. We'll pick up patches if we get sent them but none of
+the vfs maintainers and reviewers has the bandwith to take care of
+rotting filesystems and their various ailments.
 
-Someone should patch GCC so there it checks an environment variable to
-ignore -Werror.  Somethine like this?
+Yes, we should have a discussion under what circumstances we can remove
+a filesystem. I think that's absolutely what we should do and we should
+nudge userspace to stop compiling known orphaned filesystems. If most
+distros have stopped compiling support for a filesystem then I think
+that's a good indication that we can at least start to talk about
+how to remove it. And we should probably tell distros that a filesystem
+is orphaned and unmaintained more aggressively.
 
-diff --git a/gcc/opts.cc b/gcc/opts.cc
-index ac81d4e42944..2de69300d4fe 100644
---- a/gcc/opts.cc
-+++ b/gcc/opts.cc
-@@ -2598,6 +2598,17 @@ print_help (struct gcc_options *opts, unsigned int lang_mask,
- 			 lang_mask);
- }
- 
-+static bool
-+ignore_w_error(void)
-+{
-+  char *str;
-+
-+  str = getenv("IGNORE_WERROR");
-+  if (str && strcmp(str, "1") == 0)
-+    return true;
-+  return false;
-+}
-+
- /* Handle target- and language-independent options.  Return zero to
-    generate an "unknown option" message.  Only options that need
-    extra handling need to be listed here; if you simply want
-@@ -2773,11 +2784,15 @@ common_handle_option (struct gcc_options *opts,
-       break;
- 
-     case OPT_Werror:
-+      if (ignore_w_error())
-+	break;
-       dc->warning_as_error_requested = value;
-       break;
- 
-     case OPT_Werror_:
--      if (lang_mask == CL_DRIVER)
-+     if (ignore_w_error())
-+	break;
-+     if (lang_mask == CL_DRIVER)
- 	break;
- 
-       enable_warning_as_error (arg, value, lang_mask, handlers,
+But even if we decide or it is decided for us that we have to keep such
+old filesystems in tree forever then the contract with userspaces must
+be that such filesystems are zombies. They should however not become an
+even bigger burden or obstacle to improve actively maintained
+filesystems or the vfs than they are already.
+
+I think it's also worth clarifying something:
+Right now, everyone who does fs wide changes does their absolute best to
+account for every filesytem that's in the tree. And for people not
+familiar or even refusing to care about any other filesystems the
+maintainers and reviewers will remind them about consequences for other
+filesystems as far as they have that knowledge. And that's already a
+major task.
+
+For every single fs/ wide change we try to make absolutely sure that if
+it regresses anything - even the deadest-of-dead filesystems - it will
+be fixed as soon as we get a report. That's what we did for the
+superblock rework this cycle, the posix acl rework last cycles, the
+timestamp patches, the freezing patches.
+
+But it is very scary to think that we might be put even more under the
+yoke of dead filesystems. They put enough of a burden on us by not just
+having to keep the filesystems itself around but quite often legacy
+infrastructure and hacks in various places.
+
+The burden of unmaintained filesystems is very very real. fs/ wide
+changes are very costly in development time.
+
+> test suite that is easy to integrate in CI systems exists (e.g.
+> something smaller and faster than what the ext4 and xfs developers run
+> regularly, but smaller and faster should likely be good enough here).
+
+The big question of course is who is going to do that? We have a large
+number of filesystems. And only a subset of them is integrated or even
+integratable with xfstests. And xfstests is the standard for fs testing.
+
+So either a filesystem is integrated with xfstests and we can test it or
+it isn't and we can't. And if a legacy filesystem becomes integrated
+then someone needs to do the work to determine what the baseline of
+tests is that need to pass and then fix all bugs to get to a clean
+baseline run.
+
+That'll be a fulltime job for quite a while I would expect.
+
+Imho, mounting an unmaintained filesystem that isn't integrated with
+xfstests is a gamble with your data.
+
+(And what really I would rather see happen before that is that we get
+stuff like vfs.git to be auto-integrated with xfstests runs/CI at some
+point.)
 
