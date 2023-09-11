@@ -1,155 +1,193 @@
-Return-Path: <ksummit+bounces-1122-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1123-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22C0379A122
-	for <lists@lfdr.de>; Mon, 11 Sep 2023 04:07:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C64AA79A1A3
+	for <lists@lfdr.de>; Mon, 11 Sep 2023 05:10:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A6BC28105F
-	for <lists@lfdr.de>; Mon, 11 Sep 2023 02:07:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA6DF1C208CF
+	for <lists@lfdr.de>; Mon, 11 Sep 2023 03:10:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258EE17F2;
-	Mon, 11 Sep 2023 02:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAF891864;
+	Mon, 11 Sep 2023 03:10:44 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F7817C8
-	for <ksummit@lists.linux.dev>; Mon, 11 Sep 2023 02:07:11 +0000 (UTC)
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-1bf57366ccdso33923785ad.1
-        for <ksummit@lists.linux.dev>; Sun, 10 Sep 2023 19:07:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1694398030; x=1695002830; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=iFdWQV0JfBW9JatAANQUGiCR3g8udJbX/WYt1WXyjDE=;
-        b=TxtQX6pKssR8liTagdlXldJwZwbhvS+Y/ts5+apEKi5PSIADXsb5LS7wQiX7ok468q
-         RdS3Zknv1eMzpaibOA/ji+ofgzE6ez2qlOTLylqn2TaoYHah+miXbQxZYbVBs7WVNgqD
-         /539wE8KJtyni+q8dU8wXPV0h/rpMJ6A7AMrw5f0bbkMhUi8FjF4JaBVAfoB/zDkozG7
-         18Umaly9YoKRhWrkM57EqDKOhFRfrjfZXP4MnT7DOmRFLFzTT5gbnx7rTtOf42uDPZJV
-         kTvxju1A9vAZ1iGscmcQWmqI/yLai8d3PbSN2kUKXJDQofqHwb++yOk20mo7HCs4QRVH
-         4nQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694398030; x=1695002830;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iFdWQV0JfBW9JatAANQUGiCR3g8udJbX/WYt1WXyjDE=;
-        b=drg8Tcy40GstrXMFP3Drq7TiFyc+QZLDZfJZl5aJ7yY4d4AOgNfdDCir1/sYjbxTOf
-         IynqPQ33k4MYg7gOxZr/4BzS/AAcU0/sL32tZLccx7hUgcKhPhkng1wr9mNryYGoQhR5
-         Hj2W4xt1ka8FHEeIu1kW8du8YM+Nsgj4azX5dNZm9mJDoNqlu9aALUMhJfZXySgmM4bH
-         +ez5LS/h55W/Sbs4SiCwAZIK4sP08d9piY2VtxUiFP/5VcYyyhDzJnAiweOmKbCtouj7
-         91pywumr0oeX4k016ydei2eK0HCNxGo/ruupnWqYwDijwRhBPoM0airdiBnSSWKM7VzY
-         ilOA==
-X-Gm-Message-State: AOJu0Yye79wNHH1J9f/4Fi6dNBkoqXSef/jn1FgaXV7cNZDCtsQDY/dj
-	7gdWchet6rzSZ583gO/8i0D6Aw==
-X-Google-Smtp-Source: AGHT+IF1iWSDM7k1ay09wAZyHu4bNutY5poNI0pO3IQzH+yzO0oG1uBlmDWVAv3yfOmm0WaLKndtbA==
-X-Received: by 2002:a17:902:dac1:b0:1bc:7e37:e832 with SMTP id q1-20020a170902dac100b001bc7e37e832mr16481004plx.19.1694398030444;
-        Sun, 10 Sep 2023 19:07:10 -0700 (PDT)
-Received: from dread.disaster.area (pa49-195-66-88.pa.nsw.optusnet.com.au. [49.195.66.88])
-        by smtp.gmail.com with ESMTPSA id ja10-20020a170902efca00b001b9da8b4eb7sm5188478plb.35.2023.09.10.19.07.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Sep 2023 19:07:09 -0700 (PDT)
-Received: from dave by dread.disaster.area with local (Exim 4.96)
-	(envelope-from <david@fromorbit.com>)
-	id 1qfWKR-00DakW-13;
-	Mon, 11 Sep 2023 12:07:07 +1000
-Date: Mon, 11 Sep 2023 12:07:07 +1000
-From: Dave Chinner <david@fromorbit.com>
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Christoph Hellwig <hch@infradead.org>, ksummit@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A3517F3
+	for <ksummit@lists.linux.dev>; Mon, 11 Sep 2023 03:10:41 +0000 (UTC)
+Received: from cwcc.thunk.org (pool-173-48-113-225.bstnma.fios.verizon.net [173.48.113.225])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 38B3AFIF002752
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 10 Sep 2023 23:10:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1694401819; bh=Y4MQXZptEaxvgTu5opSKlAFWAlU8amKupQTFzDGYgk4=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=Ve9KdlaGXMlb8mnOtsMW6XpFQNW2arxSCy9tfxfVP8V7CeLN8ifJn3aDPgMUfLZ8K
+	 596p25S9FfBGdnsVSWILGJE+JJ7FfsCW6XeZu7JiSCQXe80KX51g35S9aifD218X/7
+	 18sgmH9CGDOZRWdUsIuXjcdA1t+v4Ut3Ehlo4/SeoGJKwwaNStqTwzHcgkrN3GohlL
+	 EaZi2uh/qWYqmgAiEtgVbTvW4lQPUkVWfZ+o99uXEmc5ZoE+XvhaRts8NkJpWsV1gD
+	 kJGSg24/OosXrzL1bmW7d5NQP0EzbA5hdtz4t4z9WStJzo4/JIhRQvN/vE9lIuM5zY
+	 KeYmC8owMEZpA==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+	id B095015C023F; Sun, 10 Sep 2023 23:10:15 -0400 (EDT)
+Date: Sun, 10 Sep 2023 23:10:15 -0400
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: Matthew Wilcox <willy@infradead.org>, Dave Chinner <david@fromorbit.com>,
+        Christoph Hellwig <hch@infradead.org>, ksummit@lists.linux.dev,
+        linux-fsdevel@vger.kernel.org
 Subject: Re: [MAINTAINERS/KERNEL SUMMIT] Trust and maintenance of file systems
-Message-ID: <ZP52S8jPsNt0IvQE@dread.disaster.area>
+Message-ID: <20230911031015.GF701295@mit.edu>
 References: <ZO9NK0FchtYjOuIH@infradead.org>
  <ZPe0bSW10Gj7rvAW@dread.disaster.area>
  <ZPe4aqbEuQ7xxJnj@casper.infradead.org>
  <8dd2f626f16b0fc863d6a71561196950da7e893f.camel@HansenPartnership.com>
- <20230909224230.3hm4rqln33qspmma@moria.home.lan>
- <ZP5nxdbazqirMKAA@dread.disaster.area>
- <20230911012914.xoeowcbruxxonw7u@moria.home.lan>
+ <ZPyS4J55gV8DBn8x@casper.infradead.org>
+ <a21038464ad0afd5dfb88355e1c244152db9b8da.camel@HansenPartnership.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20230911012914.xoeowcbruxxonw7u@moria.home.lan>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a21038464ad0afd5dfb88355e1c244152db9b8da.camel@HansenPartnership.com>
 
-On Sun, Sep 10, 2023 at 09:29:14PM -0400, Kent Overstreet wrote:
-> On Mon, Sep 11, 2023 at 11:05:09AM +1000, Dave Chinner wrote:
-> > On Sat, Sep 09, 2023 at 06:42:30PM -0400, Kent Overstreet wrote:
-> > > On Sat, Sep 09, 2023 at 08:50:39AM -0400, James Bottomley wrote:
-> > > > So why can't we figure out that easier way? What's wrong with trying to
-> > > > figure out if we can do some sort of helper or library set that assists
-> > > > supporting and porting older filesystems. If we can do that it will not
-> > > > only make the job of an old fs maintainer a lot easier, but it might
-> > > > just provide the stepping stones we need to encourage more people climb
-> > > > up into the modern VFS world.
-> > > 
-> > > What if we could run our existing filesystem code in userspace?
-> > 
-> > You mean like lklfuse already enables?
-> 
-> I'm not seeing that it does?
-> 
-> I just had a look at the code, and I don't see anything there related to
-> the VFS - AFAIK, a VFS -> fuse layer doesn't exist yet.
+On Sun, Sep 10, 2023 at 03:51:42PM -0400, James Bottomley wrote:
+> On Sat, 2023-09-09 at 16:44 +0100, Matthew Wilcox wrote:
+> > There hasn't been an HFS maintainer since 2011, and it wasn't a
+> > problem until syzbot decreed that every filesystem bug is a security
+> > bug.  And now, who'd want to be a fs maintainer with the automated
+> > harassment?
 
-Just to repeat what I said on #xfs here...
+The problem is that peopel are *believing* syzbot.  If we treat it as
+noise, we can ignore it.  There is nothing that says we have to
+*believe* syzbot's "decrees" over what is a security bug, and what
+isn't.
 
-It doesn't try to cut in half way through the VFS -> filesystem
-path. It just redirects the fuse operations to "lkl syscalls" and so
-runs the entire kernel VFS->filesystem path.
+Before doing a security assessment, you need to have a agreed-upon
+threat model.  Another security aphorism, almost as well known this
+one, is that security has to be designed in from the start --- and
+historically, the storage device on which the file system operates is
+part of the trusted computing base.  So trying to change the security
+model to one that states that one must assume that the storage device
+is under the complete and arbitrary control of the attacker is just
+foolhardy.
 
-https://github.com/lkl/linux/blob/master/tools/lkl/lklfuse.c
+There are also plenty of circumstances where this threat model is
+simply not applicable.  For example, if the server is a secure data
+center, and/or where USB ports are expoxy shut, and/or the automounter
+is disabled, or not even installed, then this particular threat is
+simply not in play.
 
-> And that looks a lot heavier than what we'd ideally want, i.e. a _lot_
-> more kernel code would be getting pulled in. The entire block layer,
-> probably the scheduler as well.
+> OK, so now we've strayed into the causes of maintainer burnout.  Syzbot
+> is undoubtedly a stressor, but one way of coping with a stressor is to
+> put it into perspective: Syzbot is really a latter day coverity and
+> everyone was much happier when developers ignored coverity reports and
+> they went into a dedicated pile that was looked over by a team of
+> people trying to sort the serious issues from the wrong but not
+> exploitable ones.  I'd also have to say that anyone who allows older
+> filesystems into customer facing infrastructure is really signing up
+> themselves for the risk they're running, so I'd personally be happy if
+> older fs teams simply ignored all the syzbot reports.
 
-Yes, but arguing that "performance sucks" misses the entire point of
-this discussion: that for the untrusted user mounts of untrusted
-filesystem images we already have a viable method for moving the
-dangerous processing out into userspace that requires almost *zero
-additional work* from anyone.
+Exactly.  So to the first approximation, if the syzbot doesn't have a
+reliable reproducer --- ignore it.  If it involves a corrupted file
+system, don't consider it a security bug.  Remember, we didn't sign up
+for claiming that the file system should be proof against malicious
+file system image.
 
-As long as the performance of the lklfuse implementation doesn't
-totally suck, nobody will really care that much that isn't quite as
-fast as a native implementation. PLuggable drives (e.g. via USB) are
-already going to be much slower than a host installed drive, so I
-don't think performance is even really a consideration for these
-sorts of use cases....
+I might take a look at it to see if we can improve the quality of the
+implementation, but I don't treat it with any kind of urgency.  It's
+more of something I do for fun, when I have a free moment or two.  And
+when I have higher priority issues, syzkaller issues simply get
+dropped and ignored.
 
-> What I've got in bcachefs-tools is a much thinner mapping from e.g.
-> kthreads -> pthreads, block layer -> aio, etc.
+The gamification which makes this difficult is when you get the
+monthly syzbot reports, and you see the number of open syzkaller
+issues climb.  It also doesn't help when you compare the number of
+syzkaller issues for your file system with another file system.  For
+me, one of the ways that I try to evade the manpulation is to remember
+that the numbers are completely incomparable.
 
-Right, and we've got that in userspace for XFS, too. If we really
-cared that much about XFS-FUSE, I'd be converting userspace to use
-ublk w/ io_uring on top of a port of the kernel XFS buffer cache as
-the basis for a performant fuse implementation. However, there's a
-massive amount of userspace work needed to get a native XFS FUSE
-implementation up and running (even ignoring performance), so it's
-just not a viable short-term - or even medium-term - solution to the
-current problems.
+For example, if a file system is being used as the root file system,
+and there some device driver or networking subsystem is getting
+pounded, leading to kernel memory corruptions before the userspace
+core dumps, this can generate the syzbot report which is "charged"
+against the file system, when in fact it's not actually a file system
+bug at all.  Or if the file system hasn't cooperated with Google's
+intern project to disable metadata checksum verifications, the better
+to trigger more file system corruption-triggered syzbot reports, this
+can depress one file system's syzbot numbers over another.
 
-Indeed, if you do a fuse->fs ops wrapper, I'd argue that lklfuse is
-the place to do it so that there is a single code base that supports
-all kernel filesystems without requiring anyone to support a
-separate userspace code base. Requiring every filesystem to do their
-own FUSE ports and then support them doesn't reduce the overall
-maintenance overhead burden on filesystem developers....
+So the bottom line is that the number of syzbot is ultimately fairly
+meaningless as a comparison betweentwo different kernel subsystems,
+despite the syzbot team's best attempts to manipulate you into feeling
+bad about your code, and feeling obligated to Do Something about
+bringing down the number of syzbot reports.
 
-Cheers,
+This is a "dark pattern", and you should realize this, and not let
+yourself get suckered into falling for this mind game.
 
-Dave.
--- 
-Dave Chinner
-david@fromorbit.com
+> The sources of stress aren't really going to decrease, but how people
+> react to them could change.  Syzbot (and bugs in general) are a case in
+> point.  We used not to treat seriously untriaged bug reports, but now
+> lots of people feel they can't ignore any fuzzer report.  We've tipped
+> to far into "everything's a crisis" mode and we really need to come
+> back and think that not every bug is actually exploitable or even
+> important.
+
+Exactly.  A large number of unaddressed syzbot number is not a "kernel
+security disaster" unless you let yourself get tricked into believing
+that it is.  Again, it's all about threat models, and the syzbot robot
+very cleverly hides any discussion over the threat model, and whether
+it is valid, and whether it is one that you care about --- or whether
+your employer should care.
+
+> Perhaps we should also go
+> back to seeing if we can prize some resources out of the major
+> moneymakers in the cloud space.  After all, a bug that could cause a
+> cloud exploit might not be even exploitable on a personal laptop that
+> has no untrusted users.
+
+Actually, I'd say this is backwards.  Many of these issues, and I'd
+argue all that involve an maliciously corrupted file system, are not
+actually an issue in the cloud space, because we *already* assume that
+the attacker may have root.  After all, anyone can pay their $5
+CPU/hour, and get an Amazon or Google or Azure VM, and then run
+arbitrary workloads as root.
+
+As near as I can tell **no** **one** is crazy enough to assume that
+native containers are a security boundary.  For that reason, when a
+cloud customer is using Docker, or Kubernetes, they are running it on
+a VM which is dedicated to that customer.  Kubernetes jobs running on
+behalf of say, Tesla Motors do not run on the same VM as the one
+running Kuberentes jobs for Ford Motor Company, so even if an attacker
+mounts a malicious file system iamge, they can't use that to break
+security and get access to proprietary data belonging to a competitor.
+
+The primary risk for maliciously corrupted file systems is because
+GNOME automounts file systems by default, and so many a laptop is
+subject to vulnerabilities if someone plugs in an untrusted USB key on
+their personal laptop.  But this risk can be addressed simply by
+uninstalling the automounter, and a future release of e2fsprogs will
+include this patch:
+
+https://lore.kernel.org/all/20230824235936.GA17891@frogsfrogsfrogs/
+
+... which will install a udev rule that will fix this bad design
+problem, at least for ext4 file systems.  Of course, a distro could
+decide to take remove the udev rule, but at that point, I'd argue that
+liability attaches to the distribution for disabling this security
+mitigation, and it's no longer the file system developer's
+responsibility.
+
+						- Ted
 
