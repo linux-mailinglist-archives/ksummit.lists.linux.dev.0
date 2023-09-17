@@ -1,110 +1,135 @@
-Return-Path: <ksummit+bounces-1141-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1142-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B61577A36FE
-	for <lists@lfdr.de>; Sun, 17 Sep 2023 20:10:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF1FD7A3732
+	for <lists@lfdr.de>; Sun, 17 Sep 2023 20:58:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F76A281963
-	for <lists@lfdr.de>; Sun, 17 Sep 2023 18:10:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7485E281386
+	for <lists@lfdr.de>; Sun, 17 Sep 2023 18:58:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F56A6D3F;
-	Sun, 17 Sep 2023 18:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43ADE6D3F;
+	Sun, 17 Sep 2023 18:58:10 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081CA636
-	for <ksummit@lists.linux.dev>; Sun, 17 Sep 2023 18:10:03 +0000 (UTC)
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-50300141a64so2154554e87.0
-        for <ksummit@lists.linux.dev>; Sun, 17 Sep 2023 11:10:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1694974201; x=1695579001; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=nPh6x9aEfKjMFpChJgZC4Fil+eS6ir7xBAr4/X5FntY=;
-        b=Mb+7nEkl6uFYGedOwx2QxnV6GyCfGgditnijd+n4a56r+R3n/FylgMBwo7yBH+KrOy
-         3qW1gtkpMJT/G4xXL4ntXG9KzosGpHiwSI2lqHMEKugAkaKMgxe+NlugZ63UgEe10K2r
-         wFL5GrHExlraAnjaeO3wYn/WDVyvEL9UicyQA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694974201; x=1695579001;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nPh6x9aEfKjMFpChJgZC4Fil+eS6ir7xBAr4/X5FntY=;
-        b=vm9TJpXlPno7UsKx+ta5F9u46nBfpGKy6K7t9KL8By+FFJ8VCJPyLrpsvK4Y9e9KX0
-         meunjPAwB2MiNaA3KiJW49283FCzUbmasOi7FQfAlVqiw7+Xza3AjOYonG6CEHFChI7e
-         4h8KbMXsSenAFW9V5IYMq9F+ZnsZTl2EpfRYzGAJe89ctcVODLlWKbq8CU9HQq0DC4DL
-         KUzpXY6tMMoVIo8TUoIM7BwReOcfJJY/hjGIVPQHCjm36YyP8GmPm28/WKyyBjnzS8FF
-         eBA+Y+GIh762piCXQbmfWmTm3IsINyQ+tj+gvfYBhzXBNmkuehYEHKTWA3QY/DphpnrE
-         1wIA==
-X-Gm-Message-State: AOJu0Yw7OuxgnSwcO/WrCRtjsHP+V8XSF2695w3+HF6suAGZDvGySVAh
-	gaNr8Eyp6NfMT5Ss2F1THOYhBUahin4935YIsdgU7GMR
-X-Google-Smtp-Source: AGHT+IH2feuZCS88RNoTse5duFV07AerZPVZG0bpMpDF8fwVWvpTVmOctHfIrA1CcWayl0XwNZurdA==
-X-Received: by 2002:a05:6512:238b:b0:4fe:c98:789a with SMTP id c11-20020a056512238b00b004fe0c98789amr8386932lfv.37.1694974201679;
-        Sun, 17 Sep 2023 11:10:01 -0700 (PDT)
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com. [209.85.167.48])
-        by smtp.gmail.com with ESMTPSA id s1-20020a19ad41000000b00500b6458ebfsm1485470lfd.229.2023.09.17.11.09.59
-        for <ksummit@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 17 Sep 2023 11:09:59 -0700 (PDT)
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-50317080342so415352e87.2
-        for <ksummit@lists.linux.dev>; Sun, 17 Sep 2023 11:09:59 -0700 (PDT)
-X-Received: by 2002:a05:6512:525:b0:503:c45:a6e9 with SMTP id
- o5-20020a056512052500b005030c45a6e9mr1751068lfc.39.1694974199018; Sun, 17 Sep
- 2023 11:09:59 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66FFE4A29
+	for <ksummit@lists.linux.dev>; Sun, 17 Sep 2023 18:58:07 +0000 (UTC)
+Received: from cwcc.thunk.org (pool-173-48-119-169.bstnma.fios.verizon.net [173.48.119.169])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 38HIvggW015608
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 17 Sep 2023 14:57:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1694977065; bh=iH9sxDfG+5MB1m5+3ayPE+TeTJxCHf134OA5mmfh9QY=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=INQWwT3/qdAH31QX0eF3YfIb0rX6DPYUxWJ64I0pd8WjrVRsrWHDCGjiWKhAkTB5X
+	 TaQJLD+aOh4mgRHYMRy88TGPJRSXClegg7cuMdeR/FaGaATkIFMFTMZFfPU2MTWCwj
+	 OWeXx6HYtvefa1ax9XhgFbyoN8IPCDwR74M+VbxtXt9K9vNOv3SDU0XagAhucI0yyA
+	 qBE8DWdN0NR/t79DqjtnsDTE2jBadgTotnzb189pZKJWTvRu7iocQEMLNSmKaT5cUi
+	 CskCkFr/TBMdRb15AxL1+Q9j4CYQXATqbbhHAsx8OFbJmxE0hd/UCWhJoUukEGFnW9
+	 AJjMB5zdNHAcg==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+	id A67E615C0346; Sun, 17 Sep 2023 14:57:42 -0400 (EDT)
+Date: Sun, 17 Sep 2023 14:57:42 -0400
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: NeilBrown <neilb@suse.de>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Dave Chinner <david@fromorbit.com>, Eric Sandeen <sandeen@sandeen.net>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Christoph Hellwig <hch@infradead.org>, ksummit@lists.linux.dev,
+        linux-fsdevel@vger.kernel.org
+Subject: Re: [MAINTAINERS/KERNEL SUMMIT] Trust and maintenance of file systems
+Message-ID: <20230917185742.GA19642@mit.edu>
+References: <ZPkz86RRLaYOkmx+@dread.disaster.area>
+ <20230906225139.6ffe953c@gandalf.local.home>
+ <ZPlFwHQhJS+Td6Cz@dread.disaster.area>
+ <20230907071801.1d37a3c5@gandalf.local.home>
+ <b7ca4a4e-a815-a1e8-3579-57ac783a66bf@sandeen.net>
+ <CAHk-=wg=xY6id92yS3=B59UfKmTmOgq+NNv+cqCMZ1Yr=FwR9A@mail.gmail.com>
+ <ZQTfIu9OWwGnIT4b@dread.disaster.area>
+ <db57da32517e5f33d1d44564097a7cc8468a96c3.camel@HansenPartnership.com>
+ <169491481677.8274.17867378561711132366@noble.neil.brown.name>
+ <CAHk-=wg_p7g=nonWOqgHGVXd+ZwZs8im-G=pNHP6hW60c8=UHw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <ZO9NK0FchtYjOuIH@infradead.org> <8718a8a3-1e62-0e2b-09d0-7bce3155b045@roeck-us.net>
- <ZPkDLp0jyteubQhh@dread.disaster.area> <20230906215327.18a45c89@gandalf.local.home>
- <ZPkz86RRLaYOkmx+@dread.disaster.area> <20230906225139.6ffe953c@gandalf.local.home>
- <ZPlFwHQhJS+Td6Cz@dread.disaster.area> <20230907071801.1d37a3c5@gandalf.local.home>
- <b7ca4a4e-a815-a1e8-3579-57ac783a66bf@sandeen.net> <CAHk-=wg=xY6id92yS3=B59UfKmTmOgq+NNv+cqCMZ1Yr=FwR9A@mail.gmail.com>
- <ZQTfIu9OWwGnIT4b@dread.disaster.area> <db57da32517e5f33d1d44564097a7cc8468a96c3.camel@HansenPartnership.com>
- <169491481677.8274.17867378561711132366@noble.neil.brown.name> <CAHk-=wg_p7g=nonWOqgHGVXd+ZwZs8im-G=pNHP6hW60c8=UHw@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <CAHk-=wg_p7g=nonWOqgHGVXd+ZwZs8im-G=pNHP6hW60c8=UHw@mail.gmail.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sun, 17 Sep 2023 11:09:41 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjGXuGWftrSWgDgYPrW4devkTjE14CL4+us4igcNkVDJQ@mail.gmail.com>
-Message-ID: <CAHk-=wjGXuGWftrSWgDgYPrW4devkTjE14CL4+us4igcNkVDJQ@mail.gmail.com>
-Subject: Re: [MAINTAINERS/KERNEL SUMMIT] Trust and maintenance of file systems
-To: NeilBrown <neilb@suse.de>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Dave Chinner <david@fromorbit.com>, Eric Sandeen <sandeen@sandeen.net>, 
-	Steven Rostedt <rostedt@goodmis.org>, Guenter Roeck <linux@roeck-us.net>, 
-	Christoph Hellwig <hch@infradead.org>, ksummit@lists.linux.dev, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-On Sun, 17 Sept 2023 at 10:30, Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> Sure, it's old.
+On Sun, Sep 17, 2023 at 10:30:55AM -0700, Linus Torvalds wrote:
+> And yes, *within* the context of a filesystem or two, the whole "try
+> to avoid the buffer cache" can be a real thing.
 
-.. and since it happens to be exactly 32 years today since I released
-0.01, I decided to go back and look.
+Ext4 uses buffer_heads, and wasn't on your list because we don't use
+sb_bread().  And we are thinking about getting rid of buffer heads,
+mostly because (a) we want to have more control over which metadata
+blocks gets cached and which doesn't, and (b) the buffer cache doesn't
+have a callback function to inform the file system if the writeback
+fails, so that the file system can try to work around the issue, or at
+the very least, mark the file system as corrupted and to signal it via
+fsnotify.
 
-Obviously fs/buffer.c existed back then too, but admittedly it was
-even smaller and simpler back then.
+Attempts to fix (b) via enhancements buffer cache where shot down by
+the linux-fsdevel bike-shedding cabal, because "the buffer cache is
+deprecated", and at the time, I decided it wasn't worth pushing it,
+since (a) was also a consideration, and I expect we can also (c)
+reduce the memory overhead since there are large parts of struct
+buffer_head that ext4 doesn't need.
 
-"It's small" clearly means something different today than it did 32 years ago.
 
-Today:
+There was *one* one technical argument raised by people who want to
+get rid of buffer heads, which is that the change from set_bh_page()
+to folio_set_bh() introduced a bug which broke bh_offset() in a way
+that only showed up if you were using bh_offset() and the file system
+block size was less than the page size.
 
-   $ wc -l fs/buffer.c
-   3152 fs/buffer.c
+Eh, it was a bug, and we caught it quickly enough once someone
+actually tried to run xfstests on the commit, and it bisected pretty
+quickly.  (Unfortunately, the change went in via the mm tree, and so
+it wasn't noticed by the ext4 file system developers; but
+fortunatelly, Zorro flagged it, and once that showed up, I
+investigated it.)  As far as I'm concerned, that's working as
+intended, and these sorts of things happen.  So personally, I don't
+consider this an argument for nuking the buffer cache.
 
-Back then:
+I *do* view it as only one of many concerns when we do make these
+tree-wide changes, such as the folio migration.  Yes, these these
+tree-wide can introduce regressions, such as breaking bh_offset() for
+a week or so before the regression tests catch it, and another week
+before the fix makes its way to Linus's tree.  That's the system
+working as designed.
 
-   $ wc -l fs/buffer.c
-   254 fs/buffer.c
+But that's not the only concern; the other problem with these
+tree-wide changes is that it tends to break automatic backports of bug
+fixes to the LTS kernels, which now require manual handling by the
+file system developers (or we could leave the LTS kernels with the
+bugs unfixed, but that tends to make customers cranky :-).
 
-So things have certainly changed. LOL.
+Anyway, it's perhaps natural that the people who make these sorts of
+tree-wide changes may get cranky when they need to modify, or at least
+regression test, 20+ legacy file systems, and it does kind of suck
+that many of these legacy file systems can't easily be tested by
+xfstests because we don't even have a mkfs program for them.  (OTOH,
+we recently merged ntfs3 w/o a working, or at least open-source, mkfs
+program, so this isn't *just* the fault of legacy file systems.)
 
-              Linus
+So sure, they may wish that we could make the job of landing these
+sorts of tree-wide changes to make their job easier.  But we don't do
+tree-wide changes all that often, and so it's a mistake to try to
+optimize for this non-common case.
+
+Cheers,
+
+					- Ted
 
