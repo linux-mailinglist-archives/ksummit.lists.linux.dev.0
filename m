@@ -1,74 +1,76 @@
-Return-Path: <ksummit+bounces-1152-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1153-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C4D37A56E0
-	for <lists@lfdr.de>; Tue, 19 Sep 2023 03:16:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 813377A5776
+	for <lists@lfdr.de>; Tue, 19 Sep 2023 04:44:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D7831C20A1B
-	for <lists@lfdr.de>; Tue, 19 Sep 2023 01:16:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 432CC1C20B30
+	for <lists@lfdr.de>; Tue, 19 Sep 2023 02:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9A3D187C;
-	Tue, 19 Sep 2023 01:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A420E8470;
+	Tue, 19 Sep 2023 02:44:09 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D197F163
-	for <ksummit@lists.linux.dev>; Tue, 19 Sep 2023 01:15:58 +0000 (UTC)
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1bf5c314a57so37173345ad.1
-        for <ksummit@lists.linux.dev>; Mon, 18 Sep 2023 18:15:58 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E821136D
+	for <ksummit@lists.linux.dev>; Tue, 19 Sep 2023 02:44:05 +0000 (UTC)
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1bf1935f6c2so37081695ad.1
+        for <ksummit@lists.linux.dev>; Mon, 18 Sep 2023 19:44:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1695086158; x=1695690958; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8BP6Q+AMCPZ9MOO2xNlzGG06UMqHA6HfF4RkMK4C86Q=;
-        b=JGj7s9dUqw+FZ9VxeLcyYHFhsy1pRyqiZ5whiv+N8XoiabSiwyKTrZgfW9IYK2b9bK
-         xh/H0UZ7OtlzqA1celVto12CyvSFgOs/NbDRYX3gSgO2Y7jdBpEg18LFF25V377XgGWX
-         ZuSOKspFA+gEAe6JF+Wr8syr96sACuKN6m+DdJA5W5lfzQoeHPcNtuB1sbcaOLeZy/eb
-         3i2c6W97AM5V7YhD+Wzw3K5Oj68zG3dJy+UGs0M1bosEzuL5FOjJe3klAjmZ6G02vLOI
-         BBnbHUqfAKBh+F9VCynpqoL7pWS9PacX7q2KPqaTC4V7fu3ltCPKDGClxd/kx4kj949A
-         bNdw==
+        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1695091445; x=1695696245; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=DaQ7S4Czgw55gMOMG3g0mH+EVG0KMgeQe9X7+ZUKWE4=;
+        b=H+5eyZMj06kEmDeDfZmWnPnsABuJezLah1AxO8QUnCqoQXgirrqWVEn3vxfTVGDWN8
+         XvfR0IucsxN0r7UOG0No5njNT2HovHOAz9nskMtz7k/keGHaoJvtpy150dHuKAFLsHaQ
+         AHJCIQI6fYJVahfLHGGlHssKBcgrJ1EmuCvIeHGWrHB+1D5CaoidzIetn5MPLhsiJWs8
+         K3HAHhgYYW4EKKJh2ZXBO6/ZYXV19ySVkcKTlIffljS/lRcatRwXRgvBOUpDJCmlJbzu
+         UG+f6+K5OnRhB6hI7NC9kS1ETGcAg4bIH4fuRb4rhcSI4zVppjQ6FodwSb4dekkzC+JF
+         ZzPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695086158; x=1695690958;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8BP6Q+AMCPZ9MOO2xNlzGG06UMqHA6HfF4RkMK4C86Q=;
-        b=BJ2MovDIYAaqcyD+fwBaJ8TFxRTgVHjdGRomNGWomhmpKV2boa3miImwdra8yOpJhs
-         MSQJN6rmDgfk7IogNVdgs2yRsDWuiDcRs3BFSLq0lqWRS1CzYutLQxApWOFRO8826RWY
-         5GDE8qpYY/mU6BtpUAHgGnqOkSjqPR7IZ7BG5wXWnGDeA7SpODcBhONOG25Y1bN+EQqI
-         noIiZd44FGLMvJthZlwr5ZAzKHNLAZqcGcul98nZVzof/yOztu75MjMqSBnTB7A8Wbtx
-         kyhWxjJ6kY7cMP1lnbmHyX97fDI66xkwbIOChv5ssTbtI37IiFQS8gBkisrIir8Qc7F7
-         eq7A==
-X-Gm-Message-State: AOJu0YzH2wHqWvoMVZrOLtyaictsad49sJoedfdUDGc1wBfFkvZ36fXn
-	P2lvO3zv35mqJMLCy+ncj1GR3Q4TT3VRRe0JQIU=
-X-Google-Smtp-Source: AGHT+IGOgXqDv1bbpA30MGtF4mW4FWWx/FG+CA3auvFFmXfcnA2Uzim5eQdbBL3ID+8bVQ5OqrVrbA==
-X-Received: by 2002:a17:903:1c8:b0:1c3:9544:cf63 with SMTP id e8-20020a17090301c800b001c39544cf63mr12300495plh.23.1695086158005;
-        Mon, 18 Sep 2023 18:15:58 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1695091445; x=1695696245;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DaQ7S4Czgw55gMOMG3g0mH+EVG0KMgeQe9X7+ZUKWE4=;
+        b=Wx6GOlJQv6ZZ9CCPPTiTvp9E8SsFpTvd3adFzM0JDx9GSyMKFaEPMCyPuHKo2CmXnt
+         VZp2PzAiFmVOLHwGA4hCvp2QMpJb/M43zff7/b/iettpB930gJSnv0ejz55pXVU9PWYb
+         Kg/ns66fsSy+cWRtc6HT4ekWCJNtLEkkej7QiC5t8Oon4A+2rT8U1TdDjuC9ScJizWLy
+         vls1Nsm0CMOD5jkJW8/XO+SryBJ0liKM4T/tx9O0jDmawF0z/trGb6hbDw3MnbfmLs+w
+         Ibqw9o5M21PVHWHkmApJmlk+7lb4Ekk1N3+3HwvCF6InOzK9/H70G2/C3Iti3EQqTOEi
+         l1Jw==
+X-Gm-Message-State: AOJu0YySZP3Jviaw5Tr3vapMdwv2cTPl/29RSXpm/qN1DikH6POhGwoG
+	Tutsud3aCQ6OO0eGTjyGtAwibpeSp+ngco8tHmY=
+X-Google-Smtp-Source: AGHT+IFaUPTzW+AZNYUCbNAzz4Yh4s2XQ3AtuwCW41UnfrtAgOKAvPJ+/XtCTVFO1ZCTe5HaxkDXVg==
+X-Received: by 2002:a17:902:c109:b0:1c3:e4b8:701f with SMTP id 9-20020a170902c10900b001c3e4b8701fmr1445729pli.19.1695091445193;
+        Mon, 18 Sep 2023 19:44:05 -0700 (PDT)
 Received: from dread.disaster.area (pa49-180-20-59.pa.nsw.optusnet.com.au. [49.180.20.59])
-        by smtp.gmail.com with ESMTPSA id jj14-20020a170903048e00b001bdc6ca748esm8905210plb.185.2023.09.18.18.15.57
+        by smtp.gmail.com with ESMTPSA id x24-20020a170902b41800b001bbdf32f011sm8879326plr.269.2023.09.18.19.44.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Sep 2023 18:15:57 -0700 (PDT)
+        Mon, 18 Sep 2023 19:44:04 -0700 (PDT)
 Received: from dave by dread.disaster.area with local (Exim 4.96)
 	(envelope-from <david@fromorbit.com>)
-	id 1qiPLG-002a5u-2O;
-	Tue, 19 Sep 2023 11:15:54 +1000
-Date: Tue, 19 Sep 2023 11:15:54 +1000
+	id 1qiQiY-002bkQ-0x;
+	Tue, 19 Sep 2023 12:44:02 +1000
+Date: Tue, 19 Sep 2023 12:44:02 +1000
 From: Dave Chinner <david@fromorbit.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: NeilBrown <neilb@suse.de>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	Eric Sandeen <sandeen@sandeen.net>,
 	Steven Rostedt <rostedt@goodmis.org>,
 	Guenter Roeck <linux@roeck-us.net>,
 	Christoph Hellwig <hch@infradead.org>, ksummit@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org
 Subject: Re: [MAINTAINERS/KERNEL SUMMIT] Trust and maintenance of file systems
-Message-ID: <ZQj2SgSKOzfKR0e3@dread.disaster.area>
-References: <ZPkz86RRLaYOkmx+@dread.disaster.area>
+Message-ID: <ZQkK8kTPhFw8BpVA@dread.disaster.area>
+References: <ZPkDLp0jyteubQhh@dread.disaster.area>
+ <20230906215327.18a45c89@gandalf.local.home>
+ <ZPkz86RRLaYOkmx+@dread.disaster.area>
  <20230906225139.6ffe953c@gandalf.local.home>
  <ZPlFwHQhJS+Td6Cz@dread.disaster.area>
  <20230907071801.1d37a3c5@gandalf.local.home>
@@ -76,146 +78,101 @@ References: <ZPkz86RRLaYOkmx+@dread.disaster.area>
  <CAHk-=wg=xY6id92yS3=B59UfKmTmOgq+NNv+cqCMZ1Yr=FwR9A@mail.gmail.com>
  <ZQTfIu9OWwGnIT4b@dread.disaster.area>
  <db57da32517e5f33d1d44564097a7cc8468a96c3.camel@HansenPartnership.com>
- <169491481677.8274.17867378561711132366@noble.neil.brown.name>
- <CAHk-=wg_p7g=nonWOqgHGVXd+ZwZs8im-G=pNHP6hW60c8=UHw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <CAHk-=wg_p7g=nonWOqgHGVXd+ZwZs8im-G=pNHP6hW60c8=UHw@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <db57da32517e5f33d1d44564097a7cc8468a96c3.camel@HansenPartnership.com>
 
-On Sun, Sep 17, 2023 at 10:30:55AM -0700, Linus Torvalds wrote:
-> On Sat, 16 Sept 2023 at 18:40, NeilBrown <neilb@suse.de> wrote:
-> >
-> > I'm not sure the technical argument was particularly coherent.  I think
-> > there is a broad desire to deprecate and remove the buffer cache.
-
-....
-
-> In other words, the buffer cache is
+On Sat, Sep 16, 2023 at 05:50:50PM -0400, James Bottomley wrote:
+> On Sat, 2023-09-16 at 08:48 +1000, Dave Chinner wrote:
+> > On Wed, Sep 13, 2023 at 10:03:55AM -0700, Linus Torvalds wrote:
+> [...]
+> > >  - "they use the buffer cache".
+> > > 
+> > > Waah, waah, waah.
+> > 
+> > .... you dismiss those concerns in the same way a 6 year old school
+> > yard bully taunts his suffering victims.
+> > 
+> > Regardless of the merits of the observation you've made, the tone
+> > and content of this response is *completely unacceptable*.  Please
+> > keep to technical arguments, Linus, because this sort of response
+> > has no merit what-so-ever. All it does is shut down the technical
+> > discussion because no-one wants to be the target of this sort of
+> > ugly abuse just for participating in a technical discussion.
+> > 
+> > Given the number of top level maintainers that signed off on the CoC
+> > that are present in this forum, I had an expectation that this is a
+> > forum where bad behaviour is not tolerated at all.  So I've waited a
+> > couple of days to see if anyone in a project leadership position is
+> > going to say something about this comment.....
+> > 
+> > <silence>
+> > 
+> > The deafening silence of tacit acceptance is far more damning than
+> > the high pitched squeal of Linus's childish taunts.
 > 
->  - simple
+> Well, let's face it: it's a pretty low level taunt and it wasn't aimed
+> at you (or indeed anyone on the thread that I could find) and it was
+> backed by technical argument in the next sentence.  We all have a
+> tendency to let off steam about stuff in general not at people in
+> particular as you did here:
 > 
->  - self-contained
-> 
->  - supports 20+ legacy filesystems
-> 
-> so the whole "let's deprecate and remove it" is literally crazy
-> ranting and whining and completely mis-placed.
+> https://lore.kernel.org/ksummit/ZP+vcgAOyfqWPcXT@dread.disaster.area/
 
-But that isn't what this thread is about. This is a strawman that
-you're spending a lot of time and effort to stand up and then knock down.
+There's a massive difference between someone saying no to a wild
+proposal with the backing of solid ethical arguments against
+experimentation on non-consenting human subjects vs someone calling
+anyone who might disagree with them a bunch of cry-babies.
 
-Let's start from a well known problem we currently face: the
-per-inode page cache struggles to scale to the bandwidth
-capabilities of modern storage. We've known about this for well over
-a decade in high performance IO circles, but now we are hitting it
-with cheap consumer level storage. These per-inode bandwidth
-scalability problems is one of the driving reasons behind the
-conversion to folios and the introduction of high order folios into
-the page cache.
+You do yourself a real disservice by claiming these two comments are
+in any way equivalent.
 
-One of the problems being raised in the high-order folio context is
-that *bufferheads* and high-order folios don't really go together
-well.  The pointer chasing model per-block bufferhead iteration
-requires to update state and retrieve mapping information just does
-not scale to marshalling millions of objects a second through the
-page cache.
+> But I didn't take it as anything more than a rant about AI in general
+> and syzbot in particular and certainly I didn't assume it was aimed at
+> me or anyone else.
 
-The best solution is to not use bufferheads at all for file data.
-That's the direction the page cache IO stack is moving; we are
-already there with iomap and hence XFS. With the recent introduction
-of high order folios into the buffered write path, single file write
-throughput on a pcie4.0 ssd went from ~2.5GB/s consuming 5 CPUs in
-mapping lock contention to saturating the device at over 7GB/s
-whilst also providing a 70% reduction in total CPU usage. This
-result is came about simply by reduce reducing mapping lock traffic
-by a couple of orders of magnitude across the write syscall, IO
-submission, IO completion and memory reclaim paths....
+I wasn't ranting about AI at all. If you think that was what I was
+talking about then you have, once again, completely missed the
+point.
 
-This was easy to do with iomap based filesystems because they don't
-carry per-block filesystem structures for every folio cached in page
-cache - we carry a single object per folio that holds the 2 bits of
-per-filesystem block state we need for each block the folio maps.
-Compare that to a bufferhead - it uses 56 bytes of memory per
-fielsystem block that is cached.
+I was talking about the *ethics of our current situation* and how
+that should dictate the behaviour of community members and bots that
+they run for the benefit of the community. If a bot is causing harm
+to the community, then ethics dictates that there is only one
+reasonable course of action that can be taken...
 
-Hence in modern systems with hundreds of GB to TB of RAM and IO
-rates measured in the multiple GB/s, this is a substantial cost in
-terms of page cache efficiency and resource usage when using
-bufferheads in the data path.  The benefits to moving from
-bufferheads for data IO to iomap for data IO are significant.
+This has *nothing to do with AI* and everything to do with how the
+community polices hostile actors in the community. If 3rd party
+run infrastructure is causing direct harm to developers and they
+aren't allowed to opt out, then what do we do about it?
 
-However, that's not an easy conversion. There's a lot of work to
-validate the intergrity of the IO path whilst making such a change.
-It's complex and requires a fair bit of expertise in how the IO path
-works, filesystem locking models, internal fs block mapping and
-allocation routines, etc. And some filesystems flush data through
-the buffer cache or track data writes though their journals via
-bufferheads, so actually removing bufferheads for them is not an
-easy task.
+> If everyone reached for the code of conduct when someone had a non-
+> specific rant using colourful phraseology, we'd be knee deep in
+> complaints, which is why we tend to be more circumspect when it
+> happens.
 
-So we have to consider that maybe it is less work to make high-order
-folios work with bufferheads. And that's where we start to get into
-the maintenance problems with old filesysetms using bufferheads -
-how do we ensure that the changes for high-order folio support in
-bufferheads does not break the way one of these old filesystems
-that use bufferheads?
+I disagree entirely, and I think this a really bad precedent to try
+to set. Maybe you see it as "Fred has a colourful way with words",
+but that doesn't change the fact the person receiving that comment
+might see the same comment very, very differently.
 
-That comes down to a simple question: if we can't actually test all
-these old filesystems, how do we even know that they work correctly
-right now?  Given that we are supposed to be providing some level of
-quality assurance to users of these filesystems, are they going to
-bve happy with running untested code that nobody really knows if it
-works properly or not?
+I don't think anyone can dispute the fact that top level kernel
+maintainers are repeat offenders when it comes to being nasty,
+obnoxious and/or abusive. Just because kernel maintainers have
+normalised this behaviour between themselves, it does not make it OK
+to treat anyone else this way.
 
-The buffer cache and the fact legacy filesystems use it is the least
-of our worries - the problems are with the complex APIs,
-architecture and interactions at the intersection point of shared
-page cache and filesystem state. The discussion is a reflection on
-how difficult it is to change a large, complex code base where
-significant portions of it are untestable.
-
-Regardless of which way we end up deciding to move forwards there is
-*lots* of work that needs to be done and significant burdens remain
-on the people who need to API changes to do get where we need to be.
-We want to try to minimise that burden so we can make progress as
-fast as possible.
-
-Getting rid of unmaintained, untestable code is low hanging fruit.
-Nobody is talking about getting rid of the buffer cache; we can
-ensure that the buffer cache continues to work fairly easily; it's
-all the other complex code in the filesystems that is the problem.
-
-What we are actually talking about how to manage code which is
-unmaintained, possibly broken and which nobody can and/or will fix.
-Nobody benefits from the kernel carrying code we can't easily
-maintain, test or fix, so working out how to deal with this problem
-efficiently is a key part of the decisions that need to be made.
-
-Hence to reduce this whole complex situation to a statement "the
-buffer cache is simple and people suggesting we deprecate and remove
-it" is a pretty significant misrepresentation the situation we find
-ourselves in.
-
-> Was this enough technical information for people?
-> 
-> And can we now all just admit that anybody who says "remove the buffer
-> cache" is so uninformed about what they are speaking of that we can
-> just ignore said whining?
-
-Wow. Just wow.
-
-After being called out for abusive behaviour, you immediately call
-everyone who disagrees with you "uninformed" and suggest we should
-"just ignore said whining"?
-
-Which bit of "this is unacceptable behaviour" didn't you understand,
-Linus?
+Maintainers need to be held to a higher standard than the rest of
+the community - the project leaders need to set the example of how
+everyone else should behave, work and act - and right now I am _very
+disappointed_ by where this thread has ended up.
 
 -Dave.
 -- 
