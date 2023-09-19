@@ -1,50 +1,55 @@
-Return-Path: <ksummit+bounces-1155-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1156-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 156787A5944
-	for <lists@lfdr.de>; Tue, 19 Sep 2023 07:17:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67F967A6908
+	for <lists@lfdr.de>; Tue, 19 Sep 2023 18:34:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26FF81C20CAF
-	for <lists@lfdr.de>; Tue, 19 Sep 2023 05:17:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20DEF2819F7
+	for <lists@lfdr.de>; Tue, 19 Sep 2023 16:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7213134CEF;
-	Tue, 19 Sep 2023 05:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3863F37152;
+	Tue, 19 Sep 2023 16:34:46 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF3C10E3
-	for <ksummit@lists.linux.dev>; Tue, 19 Sep 2023 05:17:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=JbEsJiZbiePyr03jReWi7ze2b4drn08csPH6tc8v8PE=; b=ZsHi1QrJzYiMSgzP+GrmnFRwFr
-	QaCeJAjNuUVM6hWTJZdA1NSSD0l1BxTQvbhikWZA9EEmEoxGdNqv9XwqdbOO751W+N3WIvAix9abi
-	2M1iS/fo02Kqu7DUpZHkdzhNa3zm/T09KP9hOMPiobcljOs9+TziBV7yUiM/aXPfqTb2SXBR19A0+
-	TC3oAIyMPer8UiiapNFOTmN3m2h4rHbnmUjVdsovwVqGXFF/oFTVmW9BivU2yWse1JOQAZjJZgPZL
-	MMiSNHzTuWQVM6d4m23Otkk8Q1CnFvfXT9MxBVPrNAorGrBE+qQ54zlykccPRNhWEYD8PsI8bNNRH
-	cZWnUQmg==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1qiT6v-00FLZz-6i; Tue, 19 Sep 2023 05:17:21 +0000
-Date: Tue, 19 Sep 2023 06:17:21 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Dave Chinner <david@fromorbit.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	NeilBrown <neilb@suse.de>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Eric Sandeen <sandeen@sandeen.net>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Christoph Hellwig <hch@infradead.org>, ksummit@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9151347CC
+	for <ksummit@lists.linux.dev>; Tue, 19 Sep 2023 16:34:40 +0000 (UTC)
+Received: from letrec.thunk.org (c-73-8-226-230.hsd1.il.comcast.net [73.8.226.230])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 38JGYI8E028975
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 19 Sep 2023 12:34:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1695141262; bh=NGBAkjk/YE/hENxosqRG5ZbZZ+oPURPyaV1n+mDjY4A=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=SUJaN+rRopikPSk+FjhrYbdNLPy3QXmfYPFefn5UODLHyy/H25cnUHqV9XYdsaI5e
+	 nf3ucoAT4DsE66LG+0KnbJ0jtipdSiHgrn2OMBzs40DJi6DvKQvraLQnZqS9N7wDnR
+	 UzQT3TL3JFlTbYRKIM0iFnZnPy0MxiwfTjthqMwqv++6yHMnlfBlHwzCO5qHy2ixEz
+	 YrhunkgRly4lpkkFPUmt5vHdU29Gqs1M08jJG/IoD0nU2p/ZpRsuaEp1JUYbB4LV5O
+	 N9e+5FTFbd+gBQHDxzvlYRdzD6CFpnpMRWaN0zH/voACnAVc5xXrNeKbGEUqmmypQT
+	 p00dKfxBovd3A==
+Received: by letrec.thunk.org (Postfix, from userid 15806)
+	id AC4708C0385; Tue, 19 Sep 2023 12:34:17 -0400 (EDT)
+Date: Tue, 19 Sep 2023 12:34:17 -0400
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Dave Chinner <david@fromorbit.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        NeilBrown <neilb@suse.de>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Eric Sandeen <sandeen@sandeen.net>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Christoph Hellwig <hch@infradead.org>, ksummit@lists.linux.dev,
+        linux-fsdevel@vger.kernel.org
 Subject: Re: [MAINTAINERS/KERNEL SUMMIT] Trust and maintenance of file systems
-Message-ID: <ZQku4dvmtO56BvCr@casper.infradead.org>
-References: <20230906225139.6ffe953c@gandalf.local.home>
- <ZPlFwHQhJS+Td6Cz@dread.disaster.area>
+Message-ID: <ZQnNiTfXK81ZQGEq@mit.edu>
+References: <ZPlFwHQhJS+Td6Cz@dread.disaster.area>
  <20230907071801.1d37a3c5@gandalf.local.home>
  <b7ca4a4e-a815-a1e8-3579-57ac783a66bf@sandeen.net>
  <CAHk-=wg=xY6id92yS3=B59UfKmTmOgq+NNv+cqCMZ1Yr=FwR9A@mail.gmail.com>
@@ -53,6 +58,7 @@ References: <20230906225139.6ffe953c@gandalf.local.home>
  <169491481677.8274.17867378561711132366@noble.neil.brown.name>
  <CAHk-=wg_p7g=nonWOqgHGVXd+ZwZs8im-G=pNHP6hW60c8=UHw@mail.gmail.com>
  <ZQj2SgSKOzfKR0e3@dread.disaster.area>
+ <ZQku4dvmtO56BvCr@casper.infradead.org>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -61,53 +67,22 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZQj2SgSKOzfKR0e3@dread.disaster.area>
+In-Reply-To: <ZQku4dvmtO56BvCr@casper.infradead.org>
 
-On Tue, Sep 19, 2023 at 11:15:54AM +1000, Dave Chinner wrote:
-> This was easy to do with iomap based filesystems because they don't
-> carry per-block filesystem structures for every folio cached in page
-> cache - we carry a single object per folio that holds the 2 bits of
-> per-filesystem block state we need for each block the folio maps.
-> Compare that to a bufferhead - it uses 56 bytes of memory per
-> fielsystem block that is cached.
+On Tue, Sep 19, 2023 at 06:17:21AM +0100, Matthew Wilcox wrote:
+> Frustratingly, it looks like buffer_heads were intended to be used as
+> extents; each one has a b_size of its own.  But there's a ridiculous
+> amount of code that assumes that all BHs attached to a folio have the
+> same b_size as each other.
 
-56?1  What kind of config do you have?  It's 104 bytes on Debian:
-buffer_head          936   1092    104   39    1 : tunables    0    0    0 : slabdata     28     28      0
+The primary reason why we need a per-bh b_size is for the benefit of
+non-iomap O_DIRECT code paths.  If that goes away, then we can
+simplify this significantly, since we flush the buffer cache whenever
+we change the blocksize used in the buffer cache; the O_DIRECT bh's
+aren't part of the buffer cache, which is when you might have bh's with
+a b_size of 8200k (when doing a 8200k O_DIRECT read or write).
 
-Maybe you were looking at a 32-bit system; most of the elements are
-word-sized (pointers, size_t or long)
+Cheers,
 
-> So we have to consider that maybe it is less work to make high-order
-> folios work with bufferheads. And that's where we start to get into
-> the maintenance problems with old filesysetms using bufferheads -
-> how do we ensure that the changes for high-order folio support in
-> bufferheads does not break the way one of these old filesystems
-> that use bufferheads?
-
-I don't think we can do it.  Regardless of the question you're proposing
-here, the model where we complete a BIO, then walk every buffer_head
-attached to the folio to determine if we can now mark the folio as being
-(uptodate / not-under-writeback) just doesn't scale when you attach more
-than tens of BHs to the folio.  It's one bit per BH rather than having
-a summary bitmap like iomap has.
-
-I have been thinking about spitting the BH into two pieces, something
-like this:
-
-struct buffer_head_head {
-	spinlock_t b_lock;
-	struct buffer_head *buffers;
-	unsigned long state[];
-};
-
-and remove BH_Uptodate and BH_Dirty in favour of setting bits in state
-like iomap does.
-
-But, as you say, there are a lot of filesystems that would need to be
-audited and probably modified.
-
-Frustratingly, it looks like buffer_heads were intended to be used as
-extents; each one has a b_size of its own.  But there's a ridiculous
-amount of code that assumes that all BHs attached to a folio have the
-same b_size as each other.
+						- Ted
 
