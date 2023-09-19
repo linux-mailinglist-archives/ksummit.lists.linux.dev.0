@@ -1,165 +1,198 @@
-Return-Path: <ksummit+bounces-1158-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1159-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD9D27A692F
-	for <lists@lfdr.de>; Tue, 19 Sep 2023 18:52:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D02D7A6944
+	for <lists@lfdr.de>; Tue, 19 Sep 2023 18:58:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEEBD1C2098C
-	for <lists@lfdr.de>; Tue, 19 Sep 2023 16:52:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BED9281250
+	for <lists@lfdr.de>; Tue, 19 Sep 2023 16:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE793347B2;
-	Tue, 19 Sep 2023 16:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D92347D6;
+	Tue, 19 Sep 2023 16:58:01 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A65C747C
-	for <ksummit@lists.linux.dev>; Tue, 19 Sep 2023 16:52:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F949C433C8;
-	Tue, 19 Sep 2023 16:52:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1695142361;
-	bh=nfkKJNdu/FkIeIElrMJPUm6vIHdrmSfbkG4xAGkMu6w=;
-	h=Date:Subject:To:References:From:Cc:In-Reply-To:From;
-	b=Vq+6X5NMknOHE2vUBODksCUxb+URU1Miif4deSlS8LWWSYHixronf1KMry1J/Wg5r
-	 bwbz6OpcjjqjqLpLM3e7vjwUK2hQTKeCUsKiKasi7gaCVnWnl5fi5tkEzqb9d9BDgM
-	 pn81bK+4ZwtGVKPkqczkoXJTilln/FVZQEdDnXHg6kduveD6EdKmdhJEzH4xE7kcGz
-	 k9WIAwGna+uf20yi+Gq9qKHUJfTZPIr5XNzVQN5TJf8zZ7C0CM1P8HxvMeRWI6/il7
-	 7meTocY4wXy9q1QQbfMZvAvRQzfsvmbT4MYL6iVN4rxmezuwp3MkrSCi5YXxBekdo2
-	 wdD/RXPiqr9ug==
-Message-ID: <371cb5d1-9997-a03b-4848-550ac8658021@kernel.org>
-Date: Tue, 19 Sep 2023 10:52:40 -0600
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FFC347AB
+	for <ksummit@lists.linux.dev>; Tue, 19 Sep 2023 16:57:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1695142678;
+	bh=4XN17DBUYw9+xg2L7gGa15NHHbB4soAr8EZrLkJaqg0=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=T0xtxaiFZ8AjIc3VcsvRjmfUs6fiM5eFmD7L3t5y2jLsU8cularoOkQXadoXnRnLz
+	 +4g8pmVTjM9TjuBhsm4TI6vtPPQsxGfyRoOpVgdxYVavAj/XJrA5Vm1qGmknfjq4LF
+	 u/8Ua9EIh6i+uRTlnhp/vCn6X1WnPXhJq3vARfhc=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 32E0912867B6;
+	Tue, 19 Sep 2023 12:57:58 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id irqNu3k6ObXb; Tue, 19 Sep 2023 12:57:58 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1695142677;
+	bh=4XN17DBUYw9+xg2L7gGa15NHHbB4soAr8EZrLkJaqg0=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=Zh5vU5hZ7Pr0hdmpN8exN2IkJ9lJfQf7QflBoPeHf25+Mr7cf5ptF8vjfw96RgIoP
+	 0crq1b7G/OLKYjs820S7hFolzJXasYTSLypx75FiWcnRpZjQ71G78NVl/t3GN6bNGR
+	 pXLFM6DRiM8oAm5VGXv3149CT9i8ilaucT0vuIKU=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::c14])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 378151281B49;
+	Tue, 19 Sep 2023 12:57:57 -0400 (EDT)
+Message-ID: <4b2f3646fb3da593ec67c47bcfaec3b0a744dc5b.camel@HansenPartnership.com>
+Subject: Re: [MAINTAINERS/KERNEL SUMMIT] Trust and maintenance of file
+ systems
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Dave Chinner <david@fromorbit.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Eric Sandeen
+	 <sandeen@sandeen.net>, Steven Rostedt <rostedt@goodmis.org>, Guenter Roeck
+	 <linux@roeck-us.net>, Christoph Hellwig <hch@infradead.org>, 
+	ksummit@lists.linux.dev, linux-fsdevel@vger.kernel.org
+Date: Tue, 19 Sep 2023 12:57:56 -0400
+In-Reply-To: <ZQkK8kTPhFw8BpVA@dread.disaster.area>
+References: <ZPkDLp0jyteubQhh@dread.disaster.area>
+	 <20230906215327.18a45c89@gandalf.local.home>
+	 <ZPkz86RRLaYOkmx+@dread.disaster.area>
+	 <20230906225139.6ffe953c@gandalf.local.home>
+	 <ZPlFwHQhJS+Td6Cz@dread.disaster.area>
+	 <20230907071801.1d37a3c5@gandalf.local.home>
+	 <b7ca4a4e-a815-a1e8-3579-57ac783a66bf@sandeen.net>
+	 <CAHk-=wg=xY6id92yS3=B59UfKmTmOgq+NNv+cqCMZ1Yr=FwR9A@mail.gmail.com>
+	 <ZQTfIu9OWwGnIT4b@dread.disaster.area>
+	 <db57da32517e5f33d1d44564097a7cc8468a96c3.camel@HansenPartnership.com>
+	 <ZQkK8kTPhFw8BpVA@dread.disaster.area>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [Tech-board-discuss] [MAINTAINERS SUMMIT] Maintainers Support
- Group
-Content-Language: en-US
-To: Steven Rostedt <rostedt@goodmis.org>, ksummit@lists.linux.dev,
- tech-board-discuss@lists.linux-foundation.org
-References: <20230919121001.7bc610d4@gandalf.local.home>
-From: Shuah <shuah@kernel.org>
-Cc: shuah <shuah@kernel.org>
-In-Reply-To: <20230919121001.7bc610d4@gandalf.local.home>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Steve,
-
-On 9/19/23 10:10, Steven Rostedt wrote:
-> There has been several topics brought up already about maintainer burnout.
-> A while back, I was talking with another maintainer that basically told me
-> that they were ready to quit being a maintainer because it's not fun
-> anymore. There's a lot of requirements and basically have to deal with crap
-> from submitters. The Code of Conduct has been successful in helping to keep
-> a more civil environment, but all the focus has mainly been around telling
-> maintainers how to behave.
-
-As a member of the CoC, I respectfully disagree with the statement "but all the
-focus has mainly been around telling maintainers how to behave." This impression
-might have been the result of one unfortunate incident that took place last year.
-is only part of what CoC has been doing.
-
-A majority of reports are related to incorrect understanding of how the community
-works and discusses technical issues. Most of them get resolved without involving
-the community. This is behind the scenes silent work CoC does.
-
-It is unfortunate that CoC is being viewed as a body that is focused on telling
-maintainers how to behave. I would encourage to not view CoC work based on one
-or two cases that were outliers. CoC worked very hard to resolve them fairly and
-that benefited the community as a whole.
-
-But maintainers are humans too, and their work
-> can cause a large amount of frustration to build up with no way to release
-> that pressure.  When that frustration boiled over, it use to come out with
-> a nasty rant to at some unlucky submitter. Although this may have helped
-> the maintainer, but in the long run, this was not healthy for the community
-> in the whole, and the CoC has been created to prevent that from happening.
-> The problem is that there's been no replacement for the maintainer to
-> release their frustration.
+On Tue, 2023-09-19 at 12:44 +1000, Dave Chinner wrote:
+> On Sat, Sep 16, 2023 at 05:50:50PM -0400, James Bottomley wrote:
+> > On Sat, 2023-09-16 at 08:48 +1000, Dave Chinner wrote:
+> > > On Wed, Sep 13, 2023 at 10:03:55AM -0700, Linus Torvalds wrote:
+> > [...]
+> > > >  - "they use the buffer cache".
+> > > > 
+> > > > Waah, waah, waah.
+> > > 
+> > > .... you dismiss those concerns in the same way a 6 year old
+> > > school yard bully taunts his suffering victims.
+> > > 
+> > > Regardless of the merits of the observation you've made, the tone
+> > > and content of this response is *completely unacceptable*. 
+> > > Please keep to technical arguments, Linus, because this sort of
+> > > response has no merit what-so-ever. All it does is shut down the
+> > > technical discussion because no-one wants to be the target of
+> > > this sort of ugly abuse just for participating in a technical
+> > > discussion.
+> > > 
+> > > Given the number of top level maintainers that signed off on the
+> > > CoC that are present in this forum, I had an expectation that
+> > > this is a forum where bad behaviour is not tolerated at all.  So
+> > > I've waited a couple of days to see if anyone in a project
+> > > leadership position is going to say something about this
+> > > comment.....
+> > > 
+> > > <silence>
+> > > 
+> > > The deafening silence of tacit acceptance is far more damning
+> > > than the high pitched squeal of Linus's childish taunts.
+> > 
+> > Well, let's face it: it's a pretty low level taunt and it wasn't
+> > aimed at you (or indeed anyone on the thread that I could find) and
+> > it was backed by technical argument in the next sentence.  We all
+> > have a tendency to let off steam about stuff in general not at
+> > people in particular as you did here:
+> > 
+> > https://lore.kernel.org/ksummit/ZP+vcgAOyfqWPcXT@dread.disaster.area/
 > 
-
-+1 on maintainers are humans too, and their work can be challenging. I have
-observed maintainers at the receiving end of nasty rants from submitters,
-other developers, and maintainers and experienced it myself. It was helpful
-when one or more people reached out privately to provide support and
-understanding.
-
-> I brought up to the TAB a suggestion of starting basically a "Maintainer's
-> support group". A place a maintainer, or even a submitter can go to when
-> they are feeling frustrated. This is not a replacement for the Code of
-> Conduct committee. This is more of a preventive measure. Ideally, the Code
-> of Conduct committee members should be very bored where there are no
-> submitted reports.  That would mean our community is running in a very
-> smooth way. But that's currently not the case. There's been a few cases
-> that have come up where if the maintainer had someone to vent to, it could
-> have prevented the violation of the Code of Conduct.
->
-> The idea is this:
+> There's a massive difference between someone saying no to a wild
+> proposal with the backing of solid ethical arguments against
+> experimentation on non-consenting human subjects vs someone calling
+> anyone who might disagree with them a bunch of cry-babies.
 > 
-> When a maintainer is getting frustrated with a submitter or another
-> maintainer, or even a submitter is getting frustrated with a maintainer,
-> they would have a place to find a list of people that can help. They would
-> pick one of the people and send an email to them with a subject of
-> "[MAINTAINER SUPPORT]" (or something like that). This would let the
-> supporting maintainer know that this email is about support and should be
-> confidential and follow the guidelines. The email will include who and why
-> they are frustrated with the other person. Again, this is *not* a Code of
-> Conduct issue. This is not to point blame, just frustration. Sometimes
-> people just can not work with other people. The supporting maintainer can
-> be an outside POV and can possibly help with explaining why the other
-> person is acting the way they are. Or the supporting maintainer can find
-> another maintainer to work with this person.
+> You do yourself a real disservice by claiming these two comments are
+> in any way equivalent.
+
+Well, let's see shall we.  The detrimental impact of an email often
+results from the first sentence which is what most people see and react
+to especially on the modern display devices like phones.  Pretty much
+as you reacted to the first sentence from Linus above.  Your first
+sentence in the email I quoted above replying to my idea was:
+
+> No fucking way.
+
+Absent further context that's a textbook stress inducing personal
+attack.  Now, I've been on the receiving end of things like this for a
+long time, so I simply deployed the usual stress reduction techniques,
+read the rest of your email, deleted the knee jerk response and waited
+to see if anyone else had a different opinion.
+
+However, the key point is that your email induced the same stress
+reaction in me that Linus' statement apparently did in you, so
+absolutely I see an equivalence.
+
+> > But I didn't take it as anything more than a rant about AI in
+> > general and syzbot in particular and certainly I didn't assume it
+> > was aimed at me or anyone else.
 > 
-
-I am not sure adding one more body whose work overlaps with what CoC does is
-helpful. Creating yet another mailing list for people that are drowning under
-the flood emails might not be productive.
-
-> Several of us already do some of this. But its only a few. I would like to
-> make it a more formal process where those that have not gone to conferences
-> and such would still know who they can talk with.
+> I wasn't ranting about AI at all. If you think that was what I was
+> talking about then you have, once again, completely missed the
+> point.
 > 
-> We discussed this within the TAB, but I would like to bring this up to a
-> more general discussion at Maintainers Summit.
+> I was talking about the *ethics of our current situation* and how
+> that should dictate the behaviour of community members and bots that
+> they run for the benefit of the community. If a bot is causing harm
+> to the community, then ethics dictates that there is only one
+> reasonable course of action that can be taken...
 > 
-> I know some people would just dismiss this as unneeded, but I've talked to
-> others that said this would be very useful. If it's useful for some, then I
-> think it's worth it. If you believe it's unneeded, then you don't need to
-> be involved with it (although someone could be submitting something about
-> their frustrations with you ;)
+> This has *nothing to do with AI* and everything to do with how the
+> community polices hostile actors in the community. If 3rd party
+> run infrastructure is causing direct harm to developers and they
+> aren't allowed to opt out, then what do we do about it?
+
+My point was basically trying to improve the current situation by
+getting the AI processes producing the reports to make them more useful
+and eliminate a significant portion of the outbound flow, but I get
+that some people are beyond that and would go for amputation rather
+than attempted cure.
+
+> > If everyone reached for the code of conduct when someone had a non-
+> > specific rant using colourful phraseology, we'd be knee deep in
+> > complaints, which is why we tend to be more circumspect when it
+> > happens.
 > 
+> I disagree entirely, and I think this a really bad precedent to try
+> to set. Maybe you see it as "Fred has a colourful way with words",
+> but that doesn't change the fact the person receiving that comment
+> might see the same comment very, very differently.
 
-I really can't weigh in on whether this is needed or unneeded until I hear
-more about it and how it would work.
+Which was precisely my point about your email above.  At its most basic
+level the standard you hold yourself to has to be the same or better
+than the standard you hold others to.
 
-> To recap what I'm asking: We would have a list of volunteers of support
-> group members. There would be guidelines on how to interact.  These guidelines
-> will be public so that the submitter is also aware of them. One of the
-> guidelines we discussed was what happens if the volunteer is just too busy,
-> or they themselves do not want to deal with the individual submitting their
-> frustrations. Both cases would have the same response, and that is to reply
-> saying that they are not available and to please reach out to someone else
-> on the list.
+James
 
-- Does our community have bandwidth to create a support group
-   and policies to run it effectively?
-- How does this new body interact and interface with CoC?
-- What happens when CoC and the support group are put in a situation
-   to handle an issue?
+> I don't think anyone can dispute the fact that top level kernel
+> maintainers are repeat offenders when it comes to being nasty,
+> obnoxious and/or abusive. Just because kernel maintainers have
+> normalised this behaviour between themselves, it does not make it OK
+> to treat anyone else this way.
+> 
+> Maintainers need to be held to a higher standard than the rest of
+> the community - the project leaders need to set the example of how
+> everyone else should behave, work and act - and right now I am _very
+> disappointed_ by where this thread has ended up.
 
-Lot of details to work out. I would encourage inviting CoC committee
-members to the Maintainer Summit if this issue is accepted and added
-to the agenda.
 
-thanks,
--- Shuah
 
