@@ -1,114 +1,111 @@
-Return-Path: <ksummit+bounces-1179-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1180-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E10737A88C8
-	for <lists@lfdr.de>; Wed, 20 Sep 2023 17:46:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 912117A8D2A
+	for <lists@lfdr.de>; Wed, 20 Sep 2023 21:53:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE5121C20A7C
-	for <lists@lfdr.de>; Wed, 20 Sep 2023 15:46:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 808FB281B2B
+	for <lists@lfdr.de>; Wed, 20 Sep 2023 19:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD16B3C69B;
-	Wed, 20 Sep 2023 15:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AEA1405D6;
+	Wed, 20 Sep 2023 19:52:43 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633E638DEB
-	for <ksummit@lists.linux.dev>; Wed, 20 Sep 2023 15:46:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11220C433C8;
-	Wed, 20 Sep 2023 15:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D35405CD
+	for <ksummit@lists.linux.dev>; Wed, 20 Sep 2023 19:52:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DDDC433C7;
+	Wed, 20 Sep 2023 19:52:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1695224759;
-	bh=ff0hkpS1Szt1KkDmya8pWl4ogYwhgNztAND7aD90sCY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bqs/J6/m7zZD83W1DwiUlVmUVdeEUiJnBvBTjZnGvLhe14gnXD/EGvmkj3NCNBP+h
-	 4IgmYkFAjuTw0kbtQaRaydPxrrB6b9k9O6TU+bAHtr+ozf26EhY0apXD+T/CpFKjuS
-	 j/0tpPt8ZEONmPZJ2uT0yfQNn/pwGNwRViz+QxMsGd+fi/t3oigV0YGrw7NhAVkmE5
-	 WHOBtUZLD+cq1Io+dMi0vox7IJpHn+gPzGrjI3CBOyRqV5Itp84Bw9NbkwZEoZE2Xc
-	 /5HkUEBks7h2sB13/jlMh+qZvAWPHliWPdXfNESyDitXj41P1hLblZ21ooM/ZPv+3L
-	 6/N2ao7xunTHw==
-Date: Wed, 20 Sep 2023 16:45:56 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: ksummit@lists.linux.dev, tech-board-discuss@lists.linux-foundation.org
-Subject: Re: [MAINTAINERS SUMMIT] Maintainers Support Group
-Message-ID: <b7f6d444-a3c0-459d-a683-8ea2e160160d@sirena.org.uk>
-References: <20230919121001.7bc610d4@gandalf.local.home>
+	s=k20201202; t=1695239562;
+	bh=Axl6hWaVlkItjCeLpwDlrtUOWPQ0nK/1DbVZ5arkDeA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=VL2ng5o/Pyx4m99qKfcRq72cub5KLCzjb2KEC5tr33S73sVkIeLTAkxTltfW4B9hH
+	 glWPaTBzzHsN2Zol94jr5QnWTn45F7GMK54uiVgjYgxbW2bMD//RgW01QCqmuBLWkI
+	 1FOc5UFPsbFfJtwAQgPG6VfyTeDzFb7XdpwPX0w6o97PvL/IoI9vp3gXIAjR3yw3Nd
+	 RKx4sXFaQBLSNltO++JyWwsFyYYZRKCqoDDOaR+iG6Z9ZwrGYy7/o6oa2D0i0WPNN3
+	 hrvRMIeAVVI2C70Ls0uTWageCosEWHmniOXM5L7upccVNmtDBhQg+IWIeuugsJPuWv
+	 iazZehtkBTb8A==
+Message-ID: <57b53325-3c40-641e-30de-5755650960f8@kernel.org>
+Date: Wed, 20 Sep 2023 13:52:19 -0600
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="+Jmdq4yfHdJaoea2"
-Content-Disposition: inline
-In-Reply-To: <20230919121001.7bc610d4@gandalf.local.home>
-X-Cookie: Even a hawk is an eagle among crows.
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [MAINTAINERS SUMMIT] Maintainers Support Group
+Content-Language: en-US
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Bart Van Assche <bvanassche@acm.org>,
+ James Bottomley <James.Bottomley@hansenpartnership.com>,
+ ksummit@lists.linux.dev, tech-board-discuss@lists.linux-foundation.org,
+ shuah <shuah@kernel.org>
+References: <20230919121001.7bc610d4@gandalf.local.home>
+ <dbeb5ad9-fa6d-4633-a160-6a0f8ed6bd51@acm.org>
+ <20230919132112.19b700df@gandalf.local.home>
+ <496f0b46-1a40-af25-ac1a-d4e7f1a8aad0@kernel.org>
+ <20230919192148.1010cc74@gandalf.local.home>
+From: Shuah <shuah@kernel.org>
+In-Reply-To: <20230919192148.1010cc74@gandalf.local.home>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 9/19/23 17:21, Steven Rostedt wrote:
+> On Tue, 19 Sep 2023 16:55:29 -0600
+> Shuah <shuah@kernel.org> wrote:
+> 
+>> As I replied to Ted and Randy, I think the proposal James pointed to is
+>> where we could start and evolve that discussion to the actions such as
+>> support group, instead of starting with a solution without looking at
+>> the bigger picture.
+>>
+>> https://lore.kernel.org/ksummit/ab9cfd857e32635f626a906410ad95877a22f0db.camel@HansenPartnership.com/
+> 
+> I saw this when James first posted it. I may have been the lone figure to
+> do so as I had to point it out when the topic came up a second time ;-)
+> 
+>    https://lore.kernel.org/all/20230817104622.511c61b4@gandalf.local.home/
+> 
+> I'm all for having this discussion under James topic, but this idea of a
+> Support Group is something I've been discussing with other maintainers for
+> some time. I believe I even mentioned it to you while on the bus in Dublin.
+> 
+Thank you. Yes. We talked about this last year at Dublin. Work of being an
+Open source developer and especially a maintainer demands emotional labor.
+This is definitely a risk factor for burnout.
 
---+Jmdq4yfHdJaoea2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I happened to com across an article today about burnout risk factors and some
+of those are faced by maintainers and developers. If you are interested, I can
+send the link.
 
-On Tue, Sep 19, 2023 at 12:10:01PM -0400, Steven Rostedt wrote:
+> One of the things the TAB is working on is to come up with a "Communication
+> Style" document that will be focused on how submitters should speak to
+> maintainers and how maintainers should speak to submitters. The idea is to
+> help people understand the POV that others are coming from. But that's a
+> discussion for another day.
+> 
 
-> The problem is that there's been no replacement for the maintainer to
-> release their frustration.
+Formalizing the communication is a good idea - I keep translating maintainer
+and developer speak to new developers I mentor often enough to see the value
+of such an effort. :)
 
-...
+> Anyway, with the majority of the [MAINTAINERS SUMMIT] submissions related
+> to this, I think it should definitely be discussed at the maintainers
+> summit.
+> 
 
-> I brought up to the TAB a suggestion of starting basically a "Maintainer's
-> support group". A place a maintainer, or even a submitter can go to when
-> they are feeling frustrated. This is not a replacement for the Code of
-> Conduct committee. This is more of a preventive measure. Ideally, the Code
-> of Conduct committee members should be very bored where there are no
-> submitted reports.  That would mean our community is running in a very
-> smooth way. But that's currently not the case. There's been a few cases
-> that have come up where if the maintainer had someone to vent to, it could
-> have prevented the violation of the Code of Conduct.
+I would recommend discussion this prior to the Maintainer summit in an open
+session to get input from developers and maintainers who aren't invited to
+the maintainers summit myself included.
 
-...
+thanks,
+-- Shuah
 
-> When a maintainer is getting frustrated with a submitter or another
-> maintainer, or even a submitter is getting frustrated with a maintainer,
-> they would have a place to find a list of people that can help. They would
-> pick one of the people and send an email to them with a subject of
-> "[MAINTAINER SUPPORT]" (or something like that). This would let the
-> supporting maintainer know that this email is about support and should be
-> confidential and follow the guidelines. The email will include who and why
-> they are frustrated with the other person. Again, this is *not* a Code of
-> Conduct issue. This is not to point blame, just frustration. Sometimes
-> people just can not work with other people. The supporting maintainer can
-> be an outside POV and can possibly help with explaining why the other
-> person is acting the way they are. Or the supporting maintainer can find
-> another maintainer to work with this person.
-
-I think this is a really good idea, and I do think the bit about
-submitters also getting frustrated with maintainers is important here -
-there's a lot of "the process isn't working well" about this stuff which
-will apply just as much to submitters.  It's going to be more obvious to
-us as maintainers that there's issues for maintainers, and in general
-submitters have more valves for releasing frustration (eg, for a lot of
-them it's easy to just walk away, though that's not true for everyone).
-
---+Jmdq4yfHdJaoea2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmULE7MACgkQJNaLcl1U
-h9Dl6wf9E8WwaeqOkbppGzFBtJiLohtAHD3vKM6b0qsLgH5rx0okexsHQj7NkWhF
-HA4DE1IJHA3yb0LhkajzI1uRemsM5NVB9W617Uu3AU3msYrduhHKgNLdEjIyCOHT
-wdaKlo2FtrQVFFp54IvWpJlA/1j52k/nD+D3EbSuWy7Fs/ZRRG5jpgjTX4ci3ZFw
-wNx1tLgLRJXCWezCogD2pz150kmj8WX9hY5szGc7xW46jZheKJ1x5QCHrb35+HEw
-hgxkesPHh0OxmW7kwpgpQhu8dSgB+nQVW+lFij9wkYdXkl/ONJfTxBv3yE/I/DmN
-EVpbKq+eYEWuJsRtE3etqwpLuOOGfg==
-=X3Ua
------END PGP SIGNATURE-----
-
---+Jmdq4yfHdJaoea2--
 
