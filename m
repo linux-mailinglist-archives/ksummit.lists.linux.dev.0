@@ -1,57 +1,76 @@
-Return-Path: <ksummit+bounces-1187-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1188-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40EFD7AD4C2
-	for <lists@lfdr.de>; Mon, 25 Sep 2023 11:43:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 522B17AD9D2
+	for <lists@lfdr.de>; Mon, 25 Sep 2023 16:14:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 1F62E281ACE
-	for <lists@lfdr.de>; Mon, 25 Sep 2023 09:43:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 54F7D2815F9
+	for <lists@lfdr.de>; Mon, 25 Sep 2023 14:14:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACBBD13FFB;
-	Mon, 25 Sep 2023 09:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36D561BDF2;
+	Mon, 25 Sep 2023 14:14:16 +0000 (UTC)
 X-Original-To: ksummit@lists.linux.dev
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F34320D
-	for <ksummit@lists.linux.dev>; Mon, 25 Sep 2023 09:43:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=RvJ6btVstunC4sS1SymReLeaSFeBaYeiuoBVBLuk0CA=; b=NaOM2H+2F/cWm6Ly14gVW8af3u
-	y3rCqBvJShGZGeansx9fkozSzg8mmHORIXn+EoL7Za3Gz1AwjYbG9fgGTuzSDUiywY8qjobseF/ad
-	2zMeGbiSWJdcPF2z/lZmspLytUGn/oHP+RS0cZX7B8/QByMyUPl/11UeqHQIBa90xi92Um3GzXFnC
-	LUFd5V4+L0Zx2yLdMLqFZ4Vv+evlXlNiissEIOoLwQHFJWegVN6lEwSuk378lDb/0YzMKDmCcrQnB
-	YnUeK7NgxUoiwH3qWT5ENn2WluVyP/g5fwBGSsCvNXks6TnBgjzraYzQKjg3pUlg1lDlMIx9NsKZw
-	1ysZ5BNw==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
-	id 1qki7q-00Dsq8-1x;
-	Mon, 25 Sep 2023 09:43:34 +0000
-Date: Mon, 25 Sep 2023 02:43:34 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Dave Chinner <david@fromorbit.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Jan Kara <jack@suse.cz>,
-	Theodore Ts'o <tytso@mit.edu>, NeilBrown <neilb@suse.de>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404E263D6
+	for <ksummit@lists.linux.dev>; Mon, 25 Sep 2023 14:14:13 +0000 (UTC)
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-405361bb94eso65297895e9.0
+        for <ksummit@lists.linux.dev>; Mon, 25 Sep 2023 07:14:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1695651252; x=1696256052; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=iQq/BqSoldA8+HkQXbEK/xXi8jrjFiaKILJ9T9QlK0o=;
+        b=hWnPyICh3LH15V9mN+q+r1twblotnVhez54tGXXzrZM9l0YuDTNx4OzjPB7Um27apg
+         PKj9K2J4BicdRaH1WJzUGYkk5NiVoEzbmf2Fdmp1m0iEnP+5BDJEfHlwXaFMymx8Z3hx
+         +W90PPFq0DXOLSCM3rqHmEEB4cwPelhjeuLKxlIVu/HuqxDiQsBQ/gRen6aI+P2G6alL
+         Y0vE+8NNJq0xIuT3Jzz1LxuDoMkX9L+3YoYG3Ll692e9ISjz9dxCLEusF9tYRGptCND/
+         9t72fAPoKfS0KFNNM6EYEUDEA6qZogJYQ3Y5J1XLx9nWjfWHFX/ddoXhz23oBetb370j
+         S3bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695651252; x=1696256052;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iQq/BqSoldA8+HkQXbEK/xXi8jrjFiaKILJ9T9QlK0o=;
+        b=Jbh17vMwIojT6tYmwiw4x3m7c5WhUpIeL/+WSSQy5IQerKHQst0vsKb2gFAm+rVy+H
+         aFfZ27+lz+DAF/dw4+J1ooTMC9FWRtD6KmPK/2/TCH050Je0/UT9V0RPJPqtYzYLqoGp
+         BndDh4v7priemeVVsqXRTqlbKHnLcaNFpKQFQS+o4gE5dyECjw7XO5sb1ry5nc7xczHZ
+         3nuAtGIt3xErS9z2MqE6WPItYRpOh2G807KfCeiUntamrA5CyTY4Hn67EIX6l9PizdZk
+         ffHPylrBF/vKmw0TflHAgsDkV5E4XH38Md2/X/wZOTk6cOeup0QtM1Ru3mmRgHu5B1Iw
+         zqbg==
+X-Gm-Message-State: AOJu0Yxb04D3k2Pqv+st+qjK4qNmaWVxgBTmZSkj4ltdctFGtCrKhzrl
+	rhlcNcCawXHB8DSA59sVcL4l/w==
+X-Google-Smtp-Source: AGHT+IHUVb+vo/W+27VYRqqrkX6MmlMh6Bm5zqYmDI9ffn0TT8EMbIgHkXOfOzbwguwBLO3KCIaZHA==
+X-Received: by 2002:adf:f48a:0:b0:31f:f1f4:ca85 with SMTP id l10-20020adff48a000000b0031ff1f4ca85mr6035329wro.37.1695651252387;
+        Mon, 25 Sep 2023 07:14:12 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id j13-20020adfd20d000000b003232c2109cbsm2074379wrh.7.2023.09.25.07.14.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Sep 2023 07:14:11 -0700 (PDT)
+Date: Mon, 25 Sep 2023 17:14:09 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	Eric Sandeen <sandeen@sandeen.net>,
 	Steven Rostedt <rostedt@goodmis.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Christoph Hellwig <hch@infradead.org>, ksummit@lists.linux.dev,
+	Dave Chinner <david@fromorbit.com>,
+	Guenter Roeck <linux@roeck-us.net>, ksummit@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org
 Subject: Re: [MAINTAINERS/KERNEL SUMMIT] Trust and maintenance of file systems
-Message-ID: <ZRFWRm1L0Ridyfy8@infradead.org>
-References: <CAHk-=wg=xY6id92yS3=B59UfKmTmOgq+NNv+cqCMZ1Yr=FwR9A@mail.gmail.com>
- <ZQTfIu9OWwGnIT4b@dread.disaster.area>
- <db57da32517e5f33d1d44564097a7cc8468a96c3.camel@HansenPartnership.com>
- <169491481677.8274.17867378561711132366@noble.neil.brown.name>
- <CAHk-=wg_p7g=nonWOqgHGVXd+ZwZs8im-G=pNHP6hW60c8=UHw@mail.gmail.com>
- <20230917185742.GA19642@mit.edu>
- <CAHk-=wjHarh2VHgM57D1Z+yPFxGwGm7ubfLN7aQCRH5Ke3_=Tg@mail.gmail.com>
- <20230918111402.7mx3wiecqt5axvs5@quack3>
- <CAHk-=whB5mjPnsvBZ4vMn7A4pkXT9a5pk4vjasPOsSvU-UNdQg@mail.gmail.com>
- <ZQkqDZF9GPbrHDax@dread.disaster.area>
+Message-ID: <f02917bb-db26-46b8-899d-9a3571682583@kadam.mountain>
+References: <8718a8a3-1e62-0e2b-09d0-7bce3155b045@roeck-us.net>
+ <ZPkDLp0jyteubQhh@dread.disaster.area>
+ <20230906215327.18a45c89@gandalf.local.home>
+ <ZPkz86RRLaYOkmx+@dread.disaster.area>
+ <20230906225139.6ffe953c@gandalf.local.home>
+ <ZPlFwHQhJS+Td6Cz@dread.disaster.area>
+ <20230907071801.1d37a3c5@gandalf.local.home>
+ <b7ca4a4e-a815-a1e8-3579-57ac783a66bf@sandeen.net>
+ <CAHk-=wg=xY6id92yS3=B59UfKmTmOgq+NNv+cqCMZ1Yr=FwR9A@mail.gmail.com>
+ <ZRFVH3iJX8scrFvn@infradead.org>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -60,26 +79,22 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZQkqDZF9GPbrHDax@dread.disaster.area>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <ZRFVH3iJX8scrFvn@infradead.org>
 
-On Tue, Sep 19, 2023 at 02:56:45PM +1000, Dave Chinner wrote:
-> That's the best argument for removing all these old filesystems from
-> the kernel that anyone has made so far.
+On Mon, Sep 25, 2023 at 02:38:39AM -0700, Christoph Hellwig wrote:
+> On Wed, Sep 13, 2023 at 10:03:55AM -0700, Linus Torvalds wrote:
+> >  - syzbot issues.
+> > 
+> > Ignore them for affs & co.
 > 
-> As it is, I'm really failing to see how it can be argued
-> successfully that we can remove ia64 support because it has no users
-> and is a maintenance burden on kernel developers, but that same
-> argument doesn't appear to hold any weight when applied to a
-> filesystem.
-> 
-> What makes filesystems so special we can't end-of-life them like
-> other kernel code?
+> And still get spammed?  Again, we need some good common way to stop
+> them even bothering instead of wasting their and our resources.
 
-Yepp.  And I don't want to remove them against major objections.  If
-we even have a single user that actually signs up to do basic QA
-I think it's fair game to keep it.  Similar to how we deal with most
-drivers (except for some subsystems like net that seemed to be a lot
-more aggressive in their removal schedules).
+A couple people have suggested adding a pr_warn() in mount.  But another
+idea is we could add a taint flag.  That's how we used to ignore bugs in
+binary out of tree drivers.
+
+regards,
+dan carpenter
 
 
