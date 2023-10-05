@@ -1,99 +1,66 @@
-Return-Path: <ksummit+bounces-1192-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1193-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C12B7B0EDD
-	for <lists@lfdr.de>; Thu, 28 Sep 2023 00:24:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E033F7BA8B3
+	for <lists@lfdr.de>; Thu,  5 Oct 2023 20:08:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id B5DCA281BE5
-	for <lists@lfdr.de>; Wed, 27 Sep 2023 22:24:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 9196528216B
+	for <lists@lfdr.de>; Thu,  5 Oct 2023 18:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B147F4BDCB;
-	Wed, 27 Sep 2023 22:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21C923D3AF;
+	Thu,  5 Oct 2023 18:08:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ZnWGiEXt"
 X-Original-To: ksummit@lists.linux.dev
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2043.outbound.protection.outlook.com [40.107.244.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EFEA11188
-	for <ksummit@lists.linux.dev>; Wed, 27 Sep 2023 22:24:18 +0000 (UTC)
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38RL7Tne005172;
-	Wed, 27 Sep 2023 22:23:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-03-30;
- bh=gcjlaA+t+Mauf2/u6Y7jeQWF05acvLWnLbSz4pqM4fY=;
- b=DKvjb4ykcizvJ7y05k81SBDRtLkIboAMkKAmUPQCl+ouFLw+VBShxt/bMKj+1xJSZEEQ
- o0GV2cX9SNNT/BmJ9AduBhyWoDTj12XUBuZZUh/7zoreXHpHAc3WZE0IHnXhuoZciVST
- jCf5WoBFuuyAaTB82Q4292jbYgdpSdvAaVOdJyd+WRKeSX+6bUGpNnht7/gyf7ReuAmY
- XDE7UtLVFQxeKf16c1oAmDEczr63zmuhqEjFYR+2IVxSMky8iYDliZtULnIP34tiIXpi
- d7R/oatDBOPzjzbgwvowZqzDlePFdyTxCpyDNrITr8xV3RnfifpxGZ5CynxyFq1oOQco sQ== 
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3t9pm2avh9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 27 Sep 2023 22:23:33 +0000
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 38RKSSPF035041;
-	Wed, 27 Sep 2023 22:23:32 GMT
-Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2172.outbound.protection.outlook.com [104.47.57.172])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3t9pf9015t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 27 Sep 2023 22:23:32 +0000
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA152374C
+	for <ksummit@lists.linux.dev>; Thu,  5 Oct 2023 18:08:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JsHY4DlPC55am+jafG31XGO+gESW2TAzjHtXRsHKlRQo2WSJxddindio7cbJeiktMYyL67FsTLDHgs6VBBcFaXMd3sJOX68D/0/9sqiuKSuHPrFQSrbw1BwKutkcA+QjGO4cYsUSsAnCqBZ5hJOW8yTTrDEaH004UxjE55MHxNgVha6vFPV6Dv6wZmtAj0MJqEiVOWe3HPeUQ4CznbyunMVueaLvej/5UfaFc3ilYromN3MCMnWG6q7TjH6oiXkowkHwOkG5Xu6LmzfvB7ywRomT8FS4dvYfFT+hyY/SR7xGXM6EVvO15mLPKpl8ZDYXxefGhAk0+LdMcqQ3O2+3FA==
+ b=leKAH7UenSZ8d7WtlDsd4W+J9WdS70P3qRZyiJixSllrcEJOuI61lYZibB2LJwtuFtn9jSf5Z7eiZbBScgFqZAsUh7FctD1rfWS+XRxVq9KRTaj1yBldE7FlVj4pNP5+z+cLr4KhnMEZg9jUQ+rI2jG5e8iZbaf4B4KD27mUUclfN6KYhGgoXGvOcWE8/8p/DonShEoGixTqun3Qe05xOWksrAtaDNSpJ4aPwSeKFKdf9FAhxwWhhgW/DLzlU6RlGEeJACGVc6a2q0f6SLla9fP/wmKVuEWbg1mAG+zR0OJs991OLj6ao35RnA+HFAz8goboUMPGT6xp55J57DPs7A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gcjlaA+t+Mauf2/u6Y7jeQWF05acvLWnLbSz4pqM4fY=;
- b=CV2jLysDn+ZSLeVvraLah3PQ8rYc5+sVQuTfOpw+zoCQ6/0o+mwhy8s3uU+SoZIVZoSUDswZUTs5i90xOQuD4U7SAbziNdIHSosRGhCpFdzem7PGq2GnSmhtKIRRrKxU+u9bFDbXAlSIK4DklO3Lpees9eKndEjN2mXRfvpJLSKlY/E870T8dTTqQxk7ChZBc9Vcxs+jajCfl+UTCoazFECcYQ5mTaSVAmUAbXF6TBim+/vvdBOEy7rJd9VBj6Lr1ezGOq1yXBRNj9KZKJSxTIbYHUj9E8N98YnvJbFNDg0NPQ5nzbxcmVuoWAtTZCvXlvRh2ySDGM0ldcUYcTbiCQ==
+ bh=bM4ySFwQNORhRlogiueCKvZX3GbZtB6DZpuf/7T5IQI=;
+ b=hp3iQGMLYPWqxUamJtJGHJvGbxbhNeq1SlfL/2bYenqpwYzyALcUXKbMOgUmvujI3bXRpyNrfHnxPRCy3e+i1ajT3WUUTKcOF5WNXep7rSUSXQLZ/h+YZv78jcImzh5uKN8mphC7xBcgEhJ+xclHsIjnT76otOo3iUo1+VR2JLkK9Jj1d+dIN2JLwPPLxErdg0Es/1C+8c8fHP1K6Y8X1EdqtXdhh7SIbnJ7YZdzhXR61TMnkP/dUyyUtlmOEvRVX5aKGLWS9NdBTUQoVfNi3VEaeCRpIvxPrr/2Oc5RVUp7PUjKhzEokuzxNaV3VKMLoKB7uxswDfImVmuRXoQHGg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gcjlaA+t+Mauf2/u6Y7jeQWF05acvLWnLbSz4pqM4fY=;
- b=medlNhPB9o7VdxQQxxANobwnXATyOZHwr1cRUUwh/KTU8epPmLGk8Ivt+pw5y31mWDoo+taHIpb29YWf9cZ7wnIPx0c9Fl6jDC39zZtNnSNDr/jHp2xu7rKtGsMOZSeU3jeRYJJrgvKeESiXxDLxTK1kNsxCwYHqFojo3yzvkL8=
-Received: from MW5PR10MB5738.namprd10.prod.outlook.com (2603:10b6:303:19b::14)
- by SA1PR10MB5824.namprd10.prod.outlook.com (2603:10b6:806:236::22) with
+ bh=bM4ySFwQNORhRlogiueCKvZX3GbZtB6DZpuf/7T5IQI=;
+ b=ZnWGiEXtHb+BEwsDe/TH3XMAtFsX8sBhY4W8RDmbj/e0hsMy7rnh1XG8VfDObsW3vzzRpMd0l+57DvKobfvFjmiDLoQjzifLjryPwjgK/SLeOh5TTNBFx9dFtx1pPQBP3/IlfL596rtfDie5jV/0aiOjILfXxI4YsoQ7bEq2181u8ryJXu1NSc3v2rYpiX9wUjp0VJWdMzjemgnskD50UcKNqZnK80tc+L4xsuKyB+9PPszMJ7emTCFFIAWrld1mUyMjkvpnK0bGrXB+hu86deo4AIJwA4QcrtBC9+TwJ2sLWH9A424JxIK0NMLCaYICVzg5DNQtmJw4jN1Bwi3oMQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
+ by CY5PR12MB6226.namprd12.prod.outlook.com (2603:10b6:930:22::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.22; Wed, 27 Sep
- 2023 22:23:20 +0000
-Received: from MW5PR10MB5738.namprd10.prod.outlook.com
- ([fe80::5943:cf66:5683:21be]) by MW5PR10MB5738.namprd10.prod.outlook.com
- ([fe80::5943:cf66:5683:21be%4]) with mapi id 15.20.6792.024; Wed, 27 Sep 2023
- 22:23:19 +0000
-Message-ID: <e32610af-732d-4f36-ace7-83112b94da1b@oracle.com>
-Date: Wed, 27 Sep 2023 17:23:16 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [MAINTAINERS/KERNEL SUMMIT] Trust and maintenance of file systems
-Content-Language: en-US
-To: Jan Kara <jack@suse.cz>, Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Theodore Ts'o <tytso@mit.edu>, NeilBrown <neilb@suse.de>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Dave Chinner <david@fromorbit.com>, Eric Sandeen <sandeen@sandeen.net>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Christoph Hellwig <hch@infradead.org>, ksummit@lists.linux.dev,
-        linux-fsdevel@vger.kernel.org
-References: <ZPlFwHQhJS+Td6Cz@dread.disaster.area>
- <20230907071801.1d37a3c5@gandalf.local.home>
- <b7ca4a4e-a815-a1e8-3579-57ac783a66bf@sandeen.net>
- <CAHk-=wg=xY6id92yS3=B59UfKmTmOgq+NNv+cqCMZ1Yr=FwR9A@mail.gmail.com>
- <ZQTfIu9OWwGnIT4b@dread.disaster.area>
- <db57da32517e5f33d1d44564097a7cc8468a96c3.camel@HansenPartnership.com>
- <169491481677.8274.17867378561711132366@noble.neil.brown.name>
- <CAHk-=wg_p7g=nonWOqgHGVXd+ZwZs8im-G=pNHP6hW60c8=UHw@mail.gmail.com>
- <20230917185742.GA19642@mit.edu>
- <CAHk-=wjHarh2VHgM57D1Z+yPFxGwGm7ubfLN7aQCRH5Ke3_=Tg@mail.gmail.com>
- <20230918111402.7mx3wiecqt5axvs5@quack3>
-From: Dave Kleikamp <dave.kleikamp@oracle.com>
-In-Reply-To: <20230918111402.7mx3wiecqt5axvs5@quack3>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CH0PR13CA0044.namprd13.prod.outlook.com
- (2603:10b6:610:b2::19) To MW5PR10MB5738.namprd10.prod.outlook.com
- (2603:10b6:303:19b::14)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.37; Thu, 5 Oct
+ 2023 18:08:34 +0000
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::3f66:c2b6:59eb:78c2]) by LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::3f66:c2b6:59eb:78c2%6]) with mapi id 15.20.6838.030; Thu, 5 Oct 2023
+ 18:08:34 +0000
+Date: Thu, 5 Oct 2023 15:08:33 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>, ksummit@lists.linux.dev,
+	tech-board-discuss@lists.linux-foundation.org
+Subject: Re: [MAINTAINERS SUMMIT] Maintainers Support Group
+Message-ID: <20231005180833.GA975221@nvidia.com>
+References: <20230919121001.7bc610d4@gandalf.local.home>
+ <b7f6d444-a3c0-459d-a683-8ea2e160160d@sirena.org.uk>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b7f6d444-a3c0-459d-a683-8ea2e160160d@sirena.org.uk>
+X-ClientProxiedBy: BLAPR03CA0168.namprd03.prod.outlook.com
+ (2603:10b6:208:32f::6) To LV2PR12MB5869.namprd12.prod.outlook.com
+ (2603:10b6:408:176::16)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -101,124 +68,131 @@ List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW5PR10MB5738:EE_|SA1PR10MB5824:EE_
-X-MS-Office365-Filtering-Correlation-Id: c8a21f70-8ac4-49e3-659c-08dbbfa85a67
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|CY5PR12MB6226:EE_
+X-MS-Office365-Filtering-Correlation-Id: fa23d718-bd5d-4d92-c2c5-08dbc5ce16fe
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	lZxPI+xjb6uhulZq9VdAzDqToajVVnD4giEc3sj9OorX+26/7912cWiuWo+XBaXVEmXuK3fpoiQxBrLCminCL9sFh+KD5v0y/TT6kxJXkX6RTtUsTQjM6CU5nk9suxhq3qdeAOntgnRyxYUYzIBHeYysZRH0Ku7sxdCkxxG4WOD5GNXdIdXuIqu48vxJ89PPGPpsOukCaBqyUQAxvy7Na/J0bMJQUW3GQFi9kTaAkWOrrprc/g4crKZJnZOfKQN5c5DPMVz8az2fEWptWw6gViI65nNddv0hefSF6SsCEFMVO5V2Pr94j50I9D/apPSSbDM1+T1M7O3QeNDJ1LN4B7mxif4rpn7R9MsHh/HDfK9buqSHPl1vtledzLvM+lymGvu/a5Dz5SC4I8dlVdCWNpjbChAN8nXPtL9RhLg1lOFhV170NsOL8UOvU55rSNJwsRh1Hz7SnxZbqGKgihPHBHGFg0R5/kyo+jEFBRa5fcGBeWQ6wpXBQHFlKQ3Xjk8eQh51E+VwKPaImo1CCmH5TYzG7QITMWySgu9ghRO5tWl8GhD/QdqsWWXijjQmF5l9cHxvX9jMixjSYsmaAP0lriifl6aWP37VfKkwbem6boUCdUPhGy41FxIwBneeAS3E/gJMKT1kNR9ytnquxqIWVQ==
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW5PR10MB5738.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(366004)(136003)(346002)(396003)(39860400002)(230922051799003)(64100799003)(451199024)(186009)(1800799009)(26005)(2616005)(36756003)(6486002)(6506007)(6666004)(6512007)(478600001)(316002)(66556008)(110136005)(31686004)(66946007)(54906003)(38100700002)(41300700001)(66476007)(5660300002)(44832011)(7416002)(4744005)(86362001)(8936002)(8676002)(4326008)(2906002)(31696002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info:
+	2keiWuACO9KTdySP6Del51OPDaCmuMNgtDdvRNAI8sA8Xm3olRUhq35aGNVGs4cQbrU8/rj00qc9FV2i4SbSuZs10V3RSYaNfSHJuwo+aJHs6vnpgeMFspIZeZdWmKsPhlo+CG+ex3R9Sb9AoDEgSjkMskwo8FJ+Z0b+96XnavdNwkzfmWAdaMQyQjwCEBnRVRQjNKBkecZBeOfnqjyTEuSqGLhSgyZkwO3xo8pq80zOsiUPcohva4j+uIO9FDtP6hQl/Dp2ZUt1FtICHZwk7BmOBiHwtNoWkNeMqfphRSO/DnKeXzHdCjNXT66SUnArGtIaBneS+i6PzVmxg8k41IHmC3YwaxYUK5e/X6oyqNO3FdRFuR3qHeM/iSd/ZwYL/hhJRimn6dZF8z+/abE5TEOBoW7siOEejoQBpvuFQDzfxPKz5xqjaaILl7ypyJxccq9mITgxZtVCB6a7ATsg+b9dnHLXf+JtMfaCxLwsksBEFOracqw0ipQ1z/NrA+vyxbiedO9pA/hKsAZM5LguSE/BPHz4kUOeMMdy6tTf013spbDTMgLlfPO+HbESQ7dJCYjymyDsMX8uLH13vusPwBVd9dPeMRWwtD9dYcfCNdlSGTNPHprf4xwGZ6KcqLLk
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5869.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(396003)(346002)(366004)(136003)(376002)(230922051799003)(64100799003)(186009)(1800799009)(451199024)(2616005)(66476007)(66556008)(6916009)(316002)(66946007)(66899024)(41300700001)(1076003)(33656002)(6512007)(26005)(66574015)(36756003)(6506007)(478600001)(6486002)(38100700002)(86362001)(83380400001)(2906002)(4326008)(8936002)(8676002)(5660300002)(27376004);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?N2szQ0p2bjlId0h2dlQwQnhkV200Y3ViTXNVdXQ0bmFldEdKT0daTlNhWWtv?=
- =?utf-8?B?aU9NRmNFUGkxOEFTd0Rpcm1qOXhjNEtMSU5nb3RjUW9jOHFEQms0YXBMcDd5?=
- =?utf-8?B?SW5DSUdlZmlGSnFYbmFZUmc1V1FQSTZTTVVvdDBzWXV0VkxFSU81L2dqMHZw?=
- =?utf-8?B?aVh1TW9mWlh3cWV0SWY2bVJaWTBHd0hmS210U0o5cnMvV2JZdzY4WFpOUzZZ?=
- =?utf-8?B?OVlGdEt2YW5NUCt0aUp1MVBhc3VSUU1wd2dsU2N2bC9jMWVYNFRpaXpaMGQ4?=
- =?utf-8?B?dEdsMndLUUUwaWpPbTVWSFRWcERHeVRPcHdMbklVQThGZ24yNmpSRjZ1aUZF?=
- =?utf-8?B?dVhTdmdhRGFvS0ZWZk4vR015ZXpxTDZoZDBPMWtPcXdRL25rdklTMHI4ZDdS?=
- =?utf-8?B?dlBIVFNoZGgwdDE4VkoveUV5VWd4QzJHcmYrOGlkeXRWcXNQRFdkUEM3V085?=
- =?utf-8?B?R3VmN09ITWoycnJjVUloRVVpRSs4eVlDaHF2cGxtVkJzS3FXdXNXcmM1T0o1?=
- =?utf-8?B?WTFHdjRleUdMU1J4VTlPb1d5bEF4VzNtTnh6NDkvYlA0L1lLT0hVSktjYVo0?=
- =?utf-8?B?V3l2TE9rUWg2d29ka2F3UXFncGdlcWR2bFllN0UrY08wL212RUZ0RHcrS3Bv?=
- =?utf-8?B?UU05RUxSTnAxNXYzaVlWTWtBWnY4R3ZXUHNzL1BYcG9DN09VVVoyQUY4Y2pM?=
- =?utf-8?B?MSt1UmVHeWcxNzNlTHZmc0pOVjFyai8rdnhmMUQwTlRqVTJ1c1p5ZjBoRTEy?=
- =?utf-8?B?QkliVWlTZzRzaTN2Z01YdSsrUkhjaDBzeGtJN3U5bE54SGdlTkZSTlVKK1N0?=
- =?utf-8?B?b1NGMnVwM3pMdTRoTTcrRU5nOEkrdHFxK3N1NWh2cDVwT2tSalN4MytibFdp?=
- =?utf-8?B?T3lVeDhDTGNjTFdjbjZTRGpkOExXSTc0Wms3dmYrSDVFa2VWMkIvVC9HNUIw?=
- =?utf-8?B?ekp2Nmd3clNqMEl0L3Z4YUhCT3JkWXl3dXJhQWlVT0NwdVFBckQ5eGd3Z3ZK?=
- =?utf-8?B?djVORUR3V1plWmdYaUNaalZ5NDlVMUU2emtWOXl2M0orT01JYUFaMkNKUmdV?=
- =?utf-8?B?NUtWVXpnbm50TFgxaG5xVlJGc3BMRFJOOUtpNjRtL2JOaXVYVnE2ODdLODZ0?=
- =?utf-8?B?TDZVWU9HNGh5bVM4UlNCbkVnem4yVjRnYlIram9VMGdLOW1YTFlrMnkrOW1C?=
- =?utf-8?B?Nld4WUVRVDB1R0hLMFhBbnI4UGd4Nmp4OG91cTdQUnA0bTc4NE9zVjRxUElK?=
- =?utf-8?B?UFZvWTAzUlJ3WkJJS280dmhBV0hBQW5QSC93cWRyVlphZm4xeExieW92bVY4?=
- =?utf-8?B?dGhVcEJLSTBSa1gyMk1lVmJkbDdrN0NZRHlXMWo3cUJHZ0EvQWg1cnNVYnhx?=
- =?utf-8?B?blNUdTBtWXIrMUtZL1d5K2QwTnF3THIvaGY3QVkxV3RXcGMrSHppMzRaN2ZK?=
- =?utf-8?B?UHlTZkMvcXVoNTRlWXBraGR3Tmo3cUlKTERNakpiZVd0bVFpcHd1eFJLYVNF?=
- =?utf-8?B?eGtrVFVxNlZTMU1COWptNjdxSzdIb29PczBNSEdTYlZKdjM2ZVRFS1JIdXVs?=
- =?utf-8?B?S0U2U1JwVms5L2p1bVBsZW1LRkhtYUc2Q3U2U3o0K2tOb0NiZHdvd0Zuc3ho?=
- =?utf-8?B?U0xISmNzcVpsaXROTmw2NDgzWnEraDNReDBtVzg3T2hhYWN6dUprSnNob1Ew?=
- =?utf-8?B?TU1mR3FTSk1yV25ZWFJUUGFjYUF3akNhMjZSaVIxQ2hnUENzQ3JRdzBMa1ZW?=
- =?utf-8?B?RjR5N1ZqUlRMd3RHWnQreXhFRG1DdW9EcFNIMTZjN2hGRjZUc1RCbm14OFF3?=
- =?utf-8?B?cDl1ckJBU25LVUdSSm5ma3F3MytlY0hxWmNHL1ZXKzRyQnRJNXJ0M1FvRnoz?=
- =?utf-8?B?bjE3VDJBaXZOcnB3OHB4U3ZzY2M3NnI1NEJNVllmYnk0enEyNkhEcVl0b0Zo?=
- =?utf-8?B?KzdhbDNReWNTa3A2bkhEbnNXZXhnckFNMG9SUU9TMkFRTmZGck5wclMrd01S?=
- =?utf-8?B?UVg5R2R0WW11cHRUN1E1djYzQ0FsUHpFd0poMjFzWmNhclg2R0dpUXVuN0J6?=
- =?utf-8?B?cWs0RmMrNWs1d01UeG9YYTgyVUx0ak9HQlB0UFA0YXN5ZCt6QlJvOEFoUUtK?=
- =?utf-8?B?YTBjS0RXS3l3TWg5bjcvcWFZaTNMRS9waW9NNk1ZSytZNjhTM1ZLUU15RXJn?=
- =?utf-8?B?TkE9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	=?utf-8?B?ZXhpTFhaaWN6WGFzZ082WThmejlUWlJuLzNIUERwN3FNUlg4TWRCdEFTSUx5?=
- =?utf-8?B?c1pCMlZtb1JMNmFYb0I0SjhpN21VM2NUUS96U0V0RnVaZjdDQThZU2Z1MitF?=
- =?utf-8?B?YktqUnBHYXBvd05GVXFMdTBJYmVNV2ZRZnlOZHM4TFdieDJGcWpSU3UwRUtB?=
- =?utf-8?B?ODkxU3NGNzhhQXZ4OHZvekRrNmxTNVRvTWlpTnhPS3lmK2FzeEcxbWVWK3BE?=
- =?utf-8?B?TkRGOVlLOWlPeWY0LzVlQ2o5ajFWWHNGVXBOcHIwSWJENEE5eDN0dFJ6djhW?=
- =?utf-8?B?NHJaRitLSU9lOEdPZWJvWXRzNFVkNE9KWjFOZU1PZ1dkQ3lOYU1Ja1hOU1BL?=
- =?utf-8?B?NFQ2eXBMdE1GZmlsODhOTDR5LzFNa01NSmlCTXFheEl6dHl5MG1QUlJVTXdV?=
- =?utf-8?B?K1RTUisvTnJ5TklxWGp5UjVWeXE2S2pkQkxINXVnWVdzT3RIZ0lLOTlGalVX?=
- =?utf-8?B?bEh6RVFLbGdIeU5wWjFpY21xdGt1MFVhZDFJTW1TY0U2aXpNc3lmUHRpZWNn?=
- =?utf-8?B?R0JGcWpWYWloRUN0WkJZVVNFdHpONTBuanBaUjVGaWZ4cXJvLzdBZ0RuazFZ?=
- =?utf-8?B?WHBLWWU4NXcxa0ZESjl3NnZnMFZnSE53V0ZQUjlJSHVyOW8wTlY4OU95a1BV?=
- =?utf-8?B?d0g5TFdmNWRjMCtFOGU2c0VNV1lkTzJpYllIam50SzNJa3FOK3NrUHNoNWEz?=
- =?utf-8?B?UXpEWTgyOStXU25BaklvbHpRbTBUSlJqVHoycE5QNWtlV1JqNzFWd1EzRW84?=
- =?utf-8?B?UWxQMGJiWk5leUd5SkVPV2xFdzByTEZsMzE4a0VUSno4SGhXSW9IZXZLdmR2?=
- =?utf-8?B?RXZzM3ZYOWZzS2o1QmNVU3B1VUJRVkV2WmhmOHB2RWdwdVlXdGU5Q2FXQzNw?=
- =?utf-8?B?K0lhTWxwSVJtM0RyQzRRQzFFeFBvS0JFTHJSSGpIcEJhT1gwUWFMV1pyVnV1?=
- =?utf-8?B?cGduOE9PTFFZOU9FL2hjV1FCaDNzWVZWakprcHVVdVEvd0hoOFVQaGJtSWEz?=
- =?utf-8?B?VDZOd2hOc09iaVdMOWRQdHY0VEJUamN3NG5zNnVVb3pHcjZoNkdjdjNVYjNm?=
- =?utf-8?B?azlNblBiY0Y5SFg5L212TTZ3K0lYclZpMFRyTlkreTFwZk8xYWRJVzRzbi9I?=
- =?utf-8?B?aHRtcGd4Q0xqOUgrUnhWT2VzSlpmazc1c1lyT0IvQXFDSHVJaXpCcEp0SXhH?=
- =?utf-8?B?dEtUNkNHZWR6VVFNek5ZZUE2SjJGbzgwOEt6eTM3cmxhRC9PeWZTYUo2VXlC?=
- =?utf-8?B?S3hjWGpqNTdzZUlOY2JqUytiTG1mY0VuOXUyN2RSYnpwN2k5aHhQMXg2cXZ0?=
- =?utf-8?B?cCtPQUNlNmxaOXFUZm1aZ3BQdTJJSjRkN0ZkSTN3SUdoK3lhbnJYNWR2YWlX?=
- =?utf-8?B?MmFrRE9LUFBQTWNGbFZURVlGQTRYdXhvNzhzbHRWRjRPc280UWpOZDZKV3pI?=
- =?utf-8?B?MlNrT2oyY21ndk5RZlJyRjE5OEIxY3pqTEgrbzlFMEJhWlBkcWVzUmxTbG5W?=
- =?utf-8?B?L21aa0tjZnJubzNxM1htZGVrYUtDbWNWM2lsZElNdjNZV2RUZW45ejVlTmdY?=
- =?utf-8?B?bHZSZz09?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c8a21f70-8ac4-49e3-659c-08dbbfa85a67
-X-MS-Exchange-CrossTenant-AuthSource: MW5PR10MB5738.namprd10.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?MUGlznT3PG3XUze6u9e1ejeqcmo2YTrA+h14GcF3tLMy3u+WYDlReOA/YNU1?=
+ =?us-ascii?Q?3IAMO3H2kwjgbH6nUMfmWnsv4LGJtv3e9EOmdEfMtPIGqLS9NCEVu82J/ILf?=
+ =?us-ascii?Q?ykvOJQlUEwr45lRUTLximKSx1rGW5/UJ6PgcsqXzCxJUBcEa5p89SpZVgw3t?=
+ =?us-ascii?Q?iVJmEkfBIoGO7qcc6PObndB9YscDwMFSNZoit/tdd3VuTXO3D4HPImTpOmrt?=
+ =?us-ascii?Q?Y0BwujB8TFzFncLXFOiRtsKC0mKygVpJfYeOubCXvAplOZiOdqwwpUveItU+?=
+ =?us-ascii?Q?L+GBeXaaZMpP8OWUtMSzN0jS0irU9SOYZMtwzOmH+MUPNKMXcJf8ohHkkE2j?=
+ =?us-ascii?Q?yTtxQKCoYyn0SGb5GPu9mS95JuCzyDzxcGNmGRYRg1qplKZyAX851tJI3048?=
+ =?us-ascii?Q?z3YmmbgPH/+3hxHUzJwl/y6XDmho6xhLaR5NMmzkKpu9kciDB/WH5nNE6mqD?=
+ =?us-ascii?Q?HpcyR+6OLkO87ShuLUMp/cAQbEACaqzAkBN9Nzye1J3cYKUyVc8A3aHU5qZP?=
+ =?us-ascii?Q?fygZduaZZBgViuKI+MiP4XuwG7igAy3wlyPnLRMOj/FIincRpmaDvgm9LnJ0?=
+ =?us-ascii?Q?XM8pJp8Y+45xKCEPZXdkeZPwGFhMjDzBrTMtE7XmMTz2cZQTXxrp7qSDH76i?=
+ =?us-ascii?Q?3Ked3smJxB3F5K5huD19F7rf4cFFS8bSEQDf7IEPn30Nvsz4JciUsjPzE1wi?=
+ =?us-ascii?Q?QH+S8yeSkNMvF1qAjTV5w35tj/4s47SS3jCAeACIa1AWyO0h7wGG4eJZd+3O?=
+ =?us-ascii?Q?t53MclrrmmjKriYlLPHoavKZYlhkaUaW4WGOn3NRLgR1z+Tz+BoTmNCHxZl3?=
+ =?us-ascii?Q?nnH0Qtw2q7R+tRIncXn4oE5oC/ppzspyAeFWIp5Cq4deRVW8ROQb4/VFUr2F?=
+ =?us-ascii?Q?LG1pqCgEYiyjPDEmYl4A+99xpEEXFMUaBI0ADvmaY3/6mLaV3wV1m3+euDrn?=
+ =?us-ascii?Q?00jkEkmlcFjcSWLkDM/5EUgOhhOJ89WK4d7HEddsIq4/iubcI65U5d2Z1JeF?=
+ =?us-ascii?Q?ltQW/NlG+V+R5+WTKwsfI0rnAAmA0gdV3GOZdoGDKABh9lye76rU0WGPnZXy?=
+ =?us-ascii?Q?9I50qGRhAb+xRmUwOAYavzT/aD1QMmjpjlmjV17OmUf0ZhRSInP0asSuWKKk?=
+ =?us-ascii?Q?B6QYLhuHA7TT1uFUA3aYbROSbtbCXazP5iCPVRmyuqhuryuobvcfpszLUkMi?=
+ =?us-ascii?Q?hhMgsgZcdTgxa1AuADNM4O+9iwD6AyrzYo3ss80uU8CNwd7wG2Lzxb0jiRy3?=
+ =?us-ascii?Q?VwaMsxghhL3jZthWfnYeTv1b04hdEYoPX+Q+ipoCcli1+oYbdZCssQJYyjS2?=
+ =?us-ascii?Q?z6YrUcmgmhlXg5P5NnluDhsIvIKUrw/vYW6wPLIbm0o2Vq1Nj60GKUUBjLnd?=
+ =?us-ascii?Q?eDCQ09iFFNPEBrioQh53uwxNfGc5uPOlXLwlExSe+9iIS7x2I+MIoIC4HTVN?=
+ =?us-ascii?Q?bqVTdYG3OIKlUT6IwzbwPiAERyPyvQBM0Sg9g58mE2IkZ865/xib2uR5qyoj?=
+ =?us-ascii?Q?A1c8V/HBeRO1Z0gASAg9tHX8CdNmsH6xo0BbmPe0gKGiK8f4BSEn0bjsk2xM?=
+ =?us-ascii?Q?j/Mw8e/GOaqyxQr1y9SjztW7CioQx83BZEPpcwTQ?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fa23d718-bd5d-4d92-c2c5-08dbc5ce16fe
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Sep 2023 22:23:19.8551
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2023 18:08:34.7568
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iPMJ/uis7FJt1SnwZqkEGmN7nisHptBG/pdLkH+jhTIpq4mjQ/zthG7+Qq8QGUDSp7gVas7hLgAvyz6cwtvZa4rm50eWDbrpVNpy4Htfdig=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR10MB5824
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-09-27_15,2023-09-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 bulkscore=0 mlxscore=0
- mlxlogscore=999 suspectscore=0 phishscore=0 adultscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
- definitions=main-2309270193
-X-Proofpoint-ORIG-GUID: pXaT2taM6EsXHw8oUcV2AvbedN2JUyJB
-X-Proofpoint-GUID: pXaT2taM6EsXHw8oUcV2AvbedN2JUyJB
+X-MS-Exchange-CrossTenant-UserPrincipalName: hBFkpoa1H4AJ1cmvFFzs0DVYZRz7nkBjtXPoalocEX+Y7l3p/uXhyDnBrlTPdSSJ
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6226
 
-On 9/18/23 6:14AM, Jan Kara wrote:
+On Wed, Sep 20, 2023 at 04:45:56PM +0100, Mark Brown wrote:
+> On Tue, Sep 19, 2023 at 12:10:01PM -0400, Steven Rostedt wrote:
+> 
+> > The problem is that there's been no replacement for the maintainer to
+> > release their frustration.
+> 
+> ...
+> 
+> > I brought up to the TAB a suggestion of starting basically a "Maintainer's
+> > support group". A place a maintainer, or even a submitter can go to when
+> > they are feeling frustrated. This is not a replacement for the Code of
+> > Conduct committee. This is more of a preventive measure. Ideally, the Code
+> > of Conduct committee members should be very bored where there are no
+> > submitted reports.  That would mean our community is running in a very
+> > smooth way. But that's currently not the case. There's been a few cases
+> > that have come up where if the maintainer had someone to vent to, it could
+> > have prevented the violation of the Code of Conduct.
+> 
+> ...
+> 
+> > When a maintainer is getting frustrated with a submitter or another
+> > maintainer, or even a submitter is getting frustrated with a maintainer,
+> > they would have a place to find a list of people that can help. They would
+> > pick one of the people and send an email to them with a subject of
+> > "[MAINTAINER SUPPORT]" (or something like that). This would let the
+> > supporting maintainer know that this email is about support and should be
+> > confidential and follow the guidelines. The email will include who and why
+> > they are frustrated with the other person. Again, this is *not* a Code of
+> > Conduct issue. This is not to point blame, just frustration. Sometimes
+> > people just can not work with other people. The supporting maintainer can
+> > be an outside POV and can possibly help with explaining why the other
+> > person is acting the way they are. Or the supporting maintainer can find
+> > another maintainer to work with this person.
+> 
+> I think this is a really good idea, and I do think the bit about
+> submitters also getting frustrated with maintainers is important here -
+> there's a lot of "the process isn't working well" about this stuff which
+> will apply just as much to submitters.  It's going to be more obvious to
+> us as maintainers that there's issues for maintainers, and in general
+> submitters have more valves for releasing frustration (eg, for a lot of
+> them it's easy to just walk away, though that's not true for everyone).
 
-> I agree. On the other hand each filesystem we carry imposes some
-> maintenance burden (due to tree wide changes that are happening) and the
-> question I have for some of them is: Do these filesystems actually bring
-> any value? I.e., are there still any users left? Sadly that's quite
-> difficult to answer so people do bother only if the pain is significant
-> enough like in the case of reiserfs. But I suspect we could get rid of a
-> few more without a real user complaining (e.g. Shaggy said he'd be happy to
-> deprecate JFS and he's not aware of any users).
+Yes, I think this is very true. I've seen a number of cases now where
+experienced valuable people in submitter roles just walk away. No
+explosion, no LWN article, but our community definitively lost
+something of value. [*]
 
-Sorry for the late response, but just catching up on this discussion.
+It would be nice to stop talking about this in terms of sides and
+focus on the submitter/maintainer relationship as a whole. The issues
+I'm aware of are not CoC violations, but nevertheless they have upset
+people. There are a whole host of behaviors sumitters/maintainers can
+choose to do that range hurtful to non-productive.
 
-When I did make that statement, I did get a response that there actually 
-are some users out there that want JFS to stay.
+I think the fact is there are not really any good release valves. We
+can chat amung little groups how situation XYZ is troubled but, unless
+it is really critical, the default response I see is to not rock the
+boat. Especially if you are on the submitter side - raising a
+complaint risks retribution.
 
-Every few weeks I do try to catch up JFS things. I can try to do so 
-weekly. (We'll see how that goes.) I'm not promising and major revisions 
-though.
+A safe space to resolve issues without fear of retribution would be
+nice, but is probably unrealistic.
 
-Shaggy
+I don't want to be a downer but I've chatted with a enough people now
+to say that things seem to be getting worse - it *feels* worse to
+participate these days. eg I just finished a nice big series for
+something outside the areas I maintain and I'm dreading the process of
+merging it :\ Then I think: I wonder if people feel the same way about
+my areas? No idea, nobody says.
 
+Maybe I need [MAINTAINER SUPPORT] therapy already.
+
+* - I think we lack quality submitters and that is a big contributor
+to stress on the relationship as a whole. So I lament every time I see
+a good person walk away.
+
+Regards,
+Jason
 
