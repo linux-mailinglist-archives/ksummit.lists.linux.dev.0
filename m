@@ -2,124 +2,174 @@ Return-Path: <ksummit+bounces-1195-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 175677D41DE
-	for <lists@lfdr.de>; Mon, 23 Oct 2023 23:46:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AEED7D428A
+	for <lists@lfdr.de>; Tue, 24 Oct 2023 00:04:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFD77280FAB
-	for <lists@lfdr.de>; Mon, 23 Oct 2023 21:46:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B30172816A1
+	for <lists@lfdr.de>; Mon, 23 Oct 2023 22:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C2722F16;
-	Mon, 23 Oct 2023 21:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B003123770;
+	Mon, 23 Oct 2023 22:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="nhrLhWza";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="tS4L14K2"
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CZ5koS6t"
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A80D1859;
-	Mon, 23 Oct 2023 21:46:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E0C9321B30;
-	Mon, 23 Oct 2023 21:45:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1698097556; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nFrlB0ZSECQCYvBjPP/UdyQ818M2Ekn7XUxo38mmv2M=;
-	b=nhrLhWzarRTgEP7/W8m8OpjtzThw4zBto/5f5lNtWKf5ULViG7nOJo8PnInTN4gGzhNmsx
-	IuKP2np4y3b+XKKA+13dWkaJ2vsJ2MQcuS1jbq1GjOErTEr16QchM+xCr/zIr4XVf4W9i4
-	l47lAkYEtUKerPL5i/S6z1DbSKBuF3s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1698097556;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nFrlB0ZSECQCYvBjPP/UdyQ818M2Ekn7XUxo38mmv2M=;
-	b=tS4L14K2pgr7gRy6CH7gG6fQ1XD3gqWoB64aP2vhdzuWEQEpB3mSceaT5/tWr82fEEQvs8
-	JBAlhBwd4gU2MfCQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 1FCF3139C2;
-	Mon, 23 Oct 2023 21:45:54 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id oMhrMZLpNmXTQgAAMHmgww
-	(envelope-from <neilb@suse.de>); Mon, 23 Oct 2023 21:45:54 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC341A722
+	for <ksummit@lists.linux.dev>; Mon, 23 Oct 2023 22:04:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698098682; x=1729634682;
+  h=message-id:date:mime-version:from:subject:to:cc:
+   content-transfer-encoding;
+  bh=MqyemEmCCo8/gZeC6kbwvDHCFwfdIhjprp0ACYcLCWM=;
+  b=CZ5koS6tN5ECz3nAcRIWM92vHEyzV2YBVtVexlow2SEmXhZwIM5VI/Al
+   ORmFs0LQrx676ord8yhFGb3AB68JSdD/Pv0gAVxGfsSoF+tjeb0eDQOX3
+   FbcNTDs32SPOudOlga+KyjFUC3ZQzffOB74WrAzxiWmQqD+/AumFXMvYW
+   9PBkLrGh43x/znccpsbYtIEFSHMapI2EgHnFCDpET2QmYZZy2v5WlIUXy
+   NCv2iqRUoo1wXyqf5Ib1S6NiueyKBo2wUyU4mIAwXbv3byfVhFsmRzYfM
+   sSFQ143o10uH+RkB1MWn96LBHCwDBFZeQqHDFdWlqKI/0a4pUZOKs/mC0
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="5564860"
+X-IronPort-AV: E=Sophos;i="6.03,246,1694761200"; 
+   d="scan'208";a="5564860"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2023 15:04:42 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="828590920"
+X-IronPort-AV: E=Sophos;i="6.03,246,1694761200"; 
+   d="scan'208";a="828590920"
+Received: from dahansge-mobl.amr.corp.intel.com (HELO [10.212.208.196]) ([10.212.208.196])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2023 15:04:40 -0700
+Message-ID: <a13b3481-ec35-446d-ac7d-9581ce87646f@intel.com>
+Date: Mon, 23 Oct 2023 15:04:40 -0700
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "NeilBrown" <neilb@suse.de>
-To: "Andrew Morton" <akpm@linux-foundation.org>
-Cc: "Dan Carpenter" <dan.carpenter@linaro.org>, ksummit@lists.linux.dev,
- outreachy@lists.linux.dev, kernel-janitors@vger.kernel.org
-Subject: Re: KTODO automated TODO lists
-In-reply-to: <20231023114949.34fc967988c354547f79c4e7@linux-foundation.org>
-References: <369bc919-1a1d-4f37-9cc9-742a86a41282@kadam.mountain>,
- <20231023114949.34fc967988c354547f79c4e7@linux-foundation.org>
-Date: Tue, 24 Oct 2023 08:45:51 +1100
-Message-id: <169809755184.20306.3698252725424588550@noble.neil.brown.name>
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Level: 
-X-Spam-Score: -9.34
-X-Spamd-Result: default: False [-9.34 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 NEURAL_HAM_LONG(-3.00)[-1.000];
-	 MIME_GOOD(-0.10)[text/plain];
-	 REPLY(-4.00)[];
-	 RCPT_COUNT_FIVE(0.00)[5];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 NEURAL_HAM_SHORT(-1.00)[-1.000];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_COUNT_TWO(0.00)[2];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-1.24)[89.50%]
-X-Spam-Flag: NO
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+Subject: 2023 Technical Advisory Board election info and call for nominees
+To: linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
+Cc: "tab-elections@lists.linuxfoundation.org"
+ <tab-elections@lists.linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, 24 Oct 2023, Andrew Morton wrote:
-> On Thu, 19 Oct 2023 07:11:36 +0300 Dan Carpenter <dan.carpenter@linaro.org>=
- wrote:
->=20
-> > Yesterday someone on my lists just sent an email looking for kernel
-> > tasks.=20
->=20
-> Well here's a task: write a bot which follows the mailing lists and
-> sends people nastygrams if one of their emails is more than 95%(?)
-> quoted text.
+The 2023 election for membership on the Linux Foundation Technical
+Advisory Board (TAB) will be held electronically during the 2023 Linux
+Plumbers Conference, from November 13 to 15.  This announcement covers
+both the call for candidates and the details of voting in this election.
 
-Doesn't your email reader automatically hide most of a large quote?
-Mine does :-)
+The TAB exists to provide advice from the kernel community to the Linux
+Foundation; it also serves to facilitate interactions both within the
+community and with outside entities.  Over the last year, the TAB has
+overseen the organization of the Linux Plumbers Conference, released a
+kernel  contribution maturity model for organizations, advised on
+code-of-conduct issues, and more.
 
-NeilBrown
+CALL FOR NOMINATIONS
 
+The TAB has ten members serving two-year terms; half of the board is
+elected each year.  The members whose terms are expiring this year are:
 
->=20
-> It's happening significantly more lately.  Possibly because the gmail
-> client helpfully hides quoted text.
->=20
-> Probably not a great way of becoming popular.
->=20
->=20
+ - Jonathan Corbet
+ - Greg Kroah-Hartman
+ - Sasha Levin
+ - Steve Rostedt
+ - Ted Ts'o
+
+The members whose terms expire next year are:
+
+ - Christian Brauner
+ - Kees Cook
+ - Dave Hansen
+ - Jakub Kicinski
+ - Dan Williams
+
+Anybody who meets the voting criteria (described below) may
+self-nominate to run in this election.  To nominate yourself, please
+send an email to:
+
+	tech-board-discuss@lists.linux-foundation.org
+
+Please include a short (<= 200 words) statement describing why you are
+running and what you would like to accomplish on the TAB; these
+statements will be collected and made publicly available.
+
+The nomination deadline is 9:00AM EST (GMT-5) on November 13.
+
+VOTING IN THE TAB ELECTION
+
+The criteria for voting in this year's TAB election are unchanged from
+2022.  To be eligible to vote, you must have at least three commits in a
+released mainline or stable kernel that:
+
+ - Have a commit date in 2022 or later
+ - List your email in a Signed-off-by, Tested-by, Reported-by, Reviewed-
+   by, or Acked-by tag.
+
+Everybody with at least 50 commits meeting this description will receive
+a ballot automatically; they will receive an email confirming this
+status shortly.  Eligible voters with less than 50 commits can receive a
+ballot by sending a request to tab-elections@lists.linuxfoundation.org.
+
+We will, once again, be using the Condorcet Internet Voting Service
+(CIVS) https://civs1.civs.us/ . This is a voting service focused on
+security and privacy. There are sample polls on the website if you would
+like to see what a ballot will look like.
+
+Please contact tab-elections@lists.linuxfoundation.org if you have any
+questions.
 
 
