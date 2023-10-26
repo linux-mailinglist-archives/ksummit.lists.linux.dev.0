@@ -2,103 +2,94 @@ Return-Path: <ksummit+bounces-1195-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B5AB7D84B0
-	for <lists@lfdr.de>; Thu, 26 Oct 2023 16:28:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A0A57D8B01
+	for <lists@lfdr.de>; Thu, 26 Oct 2023 23:59:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3621C282054
-	for <lists@lfdr.de>; Thu, 26 Oct 2023 14:27:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1453C282183
+	for <lists@lfdr.de>; Thu, 26 Oct 2023 21:59:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A741A2EAF2;
-	Thu, 26 Oct 2023 14:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2613E473;
+	Thu, 26 Oct 2023 21:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="h6cR5JYN";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="Y6dY9H2A"
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VidmOXVF"
+Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B89B2EAE4
-	for <ksummit@lists.linux.dev>; Thu, 26 Oct 2023 14:27:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1698330470;
-	bh=+AVbEQ2cO0W9NNjiJtJkceR113CnWKAa4egRigHhpC8=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=h6cR5JYN2ZWd9xnbjDhtTfiqFnYa7QwdfKSvUPHy2sPmCvLqnUWcTcYNzMcg+2QuQ
-	 B7yAAh9KNG9PMgTSwpZDR7BSNH2ogrBNpVHMBnfh9kXusJbz1ED0sLguYX36OkdewS
-	 DSpW/5oH06539YK83ggl+fQt8QRx7dOo/t2MQRUE=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 248311287229;
-	Thu, 26 Oct 2023 10:27:50 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id ZZkmk4Z3gm94; Thu, 26 Oct 2023 10:27:49 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1698330469;
-	bh=+AVbEQ2cO0W9NNjiJtJkceR113CnWKAa4egRigHhpC8=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=Y6dY9H2Ag71Glx/YfwRdXuukMdycq0MxM73+lD+vaQqdcz4au5+rNKmd/9D7ptupA
-	 QM7lQ0BOpVCJE2L0eyXBZA93gOyWaok2k8pGROHfh6X2YlIKXyQnqNYudbPqejHGVj
-	 9iBvcEpE9yOctDEZApzyqJziWi6xU6Gayw/agEZQ=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::c14])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 992DA1281005;
-	Thu, 26 Oct 2023 10:27:47 -0400 (EDT)
-Message-ID: <f6372ec20b47624799546130e9170bf9ff1d22a5.camel@HansenPartnership.com>
-Subject: Re: the nul-terminated string helper desk chair rearrangement
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Andrew Lunn <andrew@lunn.ch>, Christoph Hellwig <hch@lst.de>
-Cc: Kees Cook <keescook@chromium.org>, Justin Stitt
- <justinstitt@google.com>,  Keith Busch <kbusch@kernel.org>, Jens Axboe
- <axboe@kernel.dk>, Sagi Grimberg <sagi@grimberg.me>, 
- linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-hardening@vger.kernel.org, ksummit@lists.linux.dev
-Date: Thu, 26 Oct 2023 10:27:45 -0400
-In-Reply-To: <c7445b16-27c9-4182-8b0a-4272ddd2d341@lunn.ch>
-References: 
-	<20231018-strncpy-drivers-nvme-host-fabrics-c-v1-1-b6677df40a35@google.com>
-	 <20231019054642.GF14346@lst.de> <202310182248.9E197FFD5@keescook>
-	 <20231020044645.GC11984@lst.de>
-	 <CAFhGd8o8FaD-3rkBAhEXhc8XqpUk_cLqNwyfpndVuSxDOei_gA@mail.gmail.com>
-	 <202310201127.DA7EDAFE4D@keescook> <20231026100148.GA26941@lst.de>
-	 <c7445b16-27c9-4182-8b0a-4272ddd2d341@lunn.ch>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924643D3A5;
+	Thu, 26 Oct 2023 21:58:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-d9a6399cf78so1299252276.0;
+        Thu, 26 Oct 2023 14:58:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698357533; x=1698962333; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zvwMcqSWwKO0wXJv0H7UCPPqsu6sxGdcOrGctTr5qgQ=;
+        b=VidmOXVF4sTWZIOuXE/p8iOcIXoYTB0pU0pT5pLg4Bd11fukFLo1DCAUqMIeXclhge
+         jhm4XZ9nc3b5lbOTzEs5BAAcilSPQ8nmoGzAOu0Mh3yN86ZqXoA0G1+kxwRmTKo2sgK+
+         LPve7TYmGs/gEcNzfV/d+CHf6/kdS3AEfHgy5x+eiilqIYsfhQ9amDZLV+lcmRnLgqXP
+         VEmYG+mKpRL0OH94MYK0NWuTmBeWYcVfJJEJ/u5tpKw34mI1ANAmfnnmDbfjB/9OmpCK
+         BllMSWwNtvAydKAmad48DuGUWQRIbOn3/5GlEYjekqx1S7Rp8pMPjtCLdDMYXbdZ0FgN
+         wP9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698357533; x=1698962333;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zvwMcqSWwKO0wXJv0H7UCPPqsu6sxGdcOrGctTr5qgQ=;
+        b=NJsK2sKmlj7jJ00IrrhzqQt/cAbcHoO4JgmBwDqmcFvtJqdlCI4Bl41vGZ5O5JabVf
+         zKAcjNGBKGEgMoZ92C8p9ELazfOxUDp/rbjWVD5SQPvCLTJbjC4yRUWy40pzmW6+9XP5
+         Qfiq6bmcSyHNctpGtqmtPY9Ryf1mVCFCAqx585o8TyBJSy1/WtWdBKKNzzI03cpiJ2IP
+         ttS/jTWzE0Suf6hlTjcKNWA9VL5jhvIqnTgeEyKIloIRSb4GZng5HVp/LVkSdMnVFhuY
+         L5YkZ6vFY5nTRBoCqv31OJUl7LAdoFLWhuTcQ7RAkCWE6001BRZRV1aQvYm1xLGpqR/J
+         +vkA==
+X-Gm-Message-State: AOJu0Ywt4sdfTvDILr6/GA45dvaszT4aQ15xmW9rvvzYs+CUy0s7ntB3
+	7TugD1U981rTjIeIKO9F3MvkWNNhgN5ZtbBvZY0=
+X-Google-Smtp-Source: AGHT+IGx/ZHQdoq72DxRa+WbDxL2QzPV1zMjFCJVUT76NH83eBA1Fk7QbBfs4Yj0Olum11qg0SZMgiYJ097GUhy6e1Q=
+X-Received: by 2002:a25:4041:0:b0:da0:8283:416e with SMTP id
+ n62-20020a254041000000b00da08283416emr6952142yba.27.1698357532913; Thu, 26
+ Oct 2023 14:58:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <369bc919-1a1d-4f37-9cc9-742a86a41282@kadam.mountain>
+ <20231023114949.34fc967988c354547f79c4e7@linux-foundation.org>
+ <CAHk-=wiS=h7XBt0UMHq_8xWZxR_hmFik_j=SwTp9LzHhJVW=aQ@mail.gmail.com>
+ <20231023-righteous-peridot-parakeet-1bbda0@meerkat> <20231024-notorious-elegant-crayfish-a45d63@meerkat>
+In-Reply-To: <20231024-notorious-elegant-crayfish-a45d63@meerkat>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 26 Oct 2023 23:58:41 +0200
+Message-ID: <CANiq72nndjv301OE9oZpO5Uqwf1-hMyGn5FVVWqyrCEY0_ZG2A@mail.gmail.com>
+Subject: Re: KTODO automated TODO lists
+To: Konstantin Ryabitsev <mricon@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Dan Carpenter <dan.carpenter@linaro.org>, 
+	ksummit@lists.linux.dev, outreachy@lists.linux.dev, 
+	kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 2023-10-26 at 15:44 +0200, Andrew Lunn wrote:
-> > > > [1]:
-> > > > https://elixir.bootlin.com/linux/v6.6-rc6/source/include/linux/fortify-string.h#L292
-> 
-> I found that https://elixir.bootlin.com/linux
+On Tue, Oct 24, 2023 at 5:28=E2=80=AFPM Konstantin Ryabitsev <mricon@kernel=
+org> wrote:
+>
+> FWIW, such page now exists:
+> https://subspace.kernel.org/etiquette.html
 
-That's a 404, I think you mean
+Thanks Konstantin -- I have added a link to it in the Rust for Linux webpag=
+e.
 
-https://elixir.bootlin.com/linux/latest/source
+I would suggest linking it at
+https://docs.kernel.org/process/submitting-patches.html#use-trimmed-interle=
+aved-replies-in-email-discussions
+too.
 
->  is the best way to find Documentation for functions and structures.
-> I would suggest try it first, and only when what fails to start using
-> grep.
-
-I just tried it with system_state and it doesn't even find the
-definition.  I think it might be because it has annotations which
-confuse the searcher (it's in init/main.c as
-
- enum system_states system_state __read_mostly;
-
-).  If there's any meaningful doc about it, elixir also doesn't find
-it.
-
-James
- 
+Cheers,
+Miguel
 
