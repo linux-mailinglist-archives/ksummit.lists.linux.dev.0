@@ -1,74 +1,117 @@
 Return-Path: <ksummit+bounces-1195-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD547D78D8
-	for <lists@lfdr.de>; Thu, 26 Oct 2023 01:45:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CAF37D7B7D
+	for <lists@lfdr.de>; Thu, 26 Oct 2023 06:29:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED1601C20F03
-	for <lists@lfdr.de>; Wed, 25 Oct 2023 23:45:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CB64281E4A
+	for <lists@lfdr.de>; Thu, 26 Oct 2023 04:29:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681D3381AB;
-	Wed, 25 Oct 2023 23:45:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB0BBE7E;
+	Thu, 26 Oct 2023 04:29:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FVC+H+T7"
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59C1339AD;
-	Wed, 25 Oct 2023 23:45:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EE5EC433C7;
-	Wed, 25 Oct 2023 23:45:50 +0000 (UTC)
-Date: Wed, 25 Oct 2023 19:45:47 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: NeilBrown <neilb@suse.de>, Krzysztof Kozlowski <krzk@kernel.org>, Andrew
- Morton <akpm@linux-foundation.org>, Dan Carpenter
- <dan.carpenter@linaro.org>, ksummit@lists.linux.dev,
- outreachy@lists.linux.dev, kernel-janitors@vger.kernel.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE3123AE
+	for <ksummit@lists.linux.dev>; Thu, 26 Oct 2023 04:29:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-40839652b97so3334505e9.3
+        for <ksummit@lists.linux.dev>; Wed, 25 Oct 2023 21:29:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1698294556; x=1698899356; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pMx657uezOJ5kmCTgoeA4HCR7tZ3spvjRGAv0FLPlKw=;
+        b=FVC+H+T7N+RgO06dkxn0qk4RWGlj2dksFVYSYywR4q5OlPaDddZgeTAjn2kp6n38dZ
+         7nmxwIaHrd8d4LMzxhrwhijZw65ot3RpV037J0Dmo+ue0V3WLTN5RyycJRepRQuIKi3O
+         bL2/vNHJokCdI4vDAD56Ab/LJy9Ff/ROKe4d3xBMHeqTyGwiR6AftDAKJGuF36fiWKAO
+         J7NqJvc/oze2MUUp7eQ6Y/sBI/hNCaLOalngP/Rf2oryv1vtCji9kQ1IwmStAzhNn8Ts
+         Fwwq+ruqpYKRnK5B+H352ZN/G4BghTwZJ5uS06XhdK4hMxdvcrJK9e683SBQK1uJOjRz
+         Qzzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698294556; x=1698899356;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pMx657uezOJ5kmCTgoeA4HCR7tZ3spvjRGAv0FLPlKw=;
+        b=B8yCTkSU8WZOiTlauEMb0oXKJKv+oiQJ92BpbW+mtvvhq3Bly99SPCGSMMB3zPtw0T
+         kd0AZEhlhooBEx16qlH0OsoYQzMeB7P9JhMbbIUfmmsWnMnndCygo4sVKF4adSylvstd
+         2BAJEzas4u3VuKKtE0c0c2KrNZLJp8lrGXnDNASGIwl/8fZ5w3SQKai0EDUzySGrsUf/
+         AbYDoUUbUd+4XBcxmI9uIHjLv68wZTOvKJukZds0mXm1H0xb8A4jTZUq0rUFtW63yMaz
+         5HI4CxKuRd1+JXN9OPKdHWxOuA9WM7FHMp+O/9gRDOK+60r+Z9uoImjCHC0sdBgZ+LZk
+         Z3PA==
+X-Gm-Message-State: AOJu0YwdlL7Ke0bB5YT6fNn9N8yXGFt0k2833FIyrPczd/u5ZDJefLF0
+	9OVKpd0FKCU2K7M60l8ZTMKjCg==
+X-Google-Smtp-Source: AGHT+IFtEu9JZd5Mj+phH40fmg2CCAygbMyK5FuzrXPcDZ5lzRVQggILIz8W6yil4r/Yml9tjv8P0w==
+X-Received: by 2002:a05:600c:3b90:b0:408:37aa:4766 with SMTP id n16-20020a05600c3b9000b0040837aa4766mr13041643wms.5.1698294556619;
+        Wed, 25 Oct 2023 21:29:16 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id z6-20020a05600c220600b00407b93d8085sm1363441wml.27.2023.10.25.21.29.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Oct 2023 21:29:16 -0700 (PDT)
+Date: Thu, 26 Oct 2023 07:29:12 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: NeilBrown <neilb@suse.de>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, ksummit@lists.linux.dev,
+	outreachy@lists.linux.dev, kernel-janitors@vger.kernel.org
 Subject: Re: KTODO automated TODO lists
-Message-ID: <20231025194547.05959d74@gandalf.local.home>
-In-Reply-To: <92cff666-c948-457a-8aa6-967e624a3d37@paulmck-laptop>
+Message-ID: <092891b2-b1cb-4b95-bb6b-65e538378d99@kadam.mountain>
 References: <369bc919-1a1d-4f37-9cc9-742a86a41282@kadam.mountain>
-	<20231023114949.34fc967988c354547f79c4e7@linux-foundation.org>
-	<8ca50d4c-3c96-4efa-a111-fca04d580ab5@kernel.org>
-	<169818295461.20306.14022136719064683486@noble.neil.brown.name>
-	<20231024180517.421618c0@gandalf.local.home>
-	<92cff666-c948-457a-8aa6-967e624a3d37@paulmck-laptop>
-X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+ <20231023114949.34fc967988c354547f79c4e7@linux-foundation.org>
+ <8ca50d4c-3c96-4efa-a111-fca04d580ab5@kernel.org>
+ <169818295461.20306.14022136719064683486@noble.neil.brown.name>
+ <CAMuHMdXaSv3w0iAJBZ_8PrjMV=A2neZ0a72XbqftxrYVJyCzsA@mail.gmail.com>
+ <169826846576.20306.981035382886610843@noble.neil.brown.name>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <169826846576.20306.981035382886610843@noble.neil.brown.name>
 
-On Tue, 24 Oct 2023 20:47:28 -0700
-"Paul E. McKenney" <paulmck@kernel.org> wrote:
-
-> On Tue, Oct 24, 2023 at 06:05:17PM -0400, Steven Rostedt wrote:
-> > On Wed, 25 Oct 2023 08:29:14 +1100
-> > "NeilBrown" <neilb@suse.de> wrote:
-> >   
-> > > Here we all are, brilliantly talented computer programmers who spend
-> > > our days making amazing fast digital devices do amazingly clever and
-> > > subtle things, inventing time-saving tools and processing vast amounts
-> > > of data without blinking, but for some reason we think the task of
-> > > skipping over a few thousand lines that all start with '> " is too hard
-> > > for us and that we should, in stead, complain to some other human to
-> > > convince them to make our life easier for us.
-> > > 
-> > > Does anyone else see the irony?  
+On Thu, Oct 26, 2023 at 08:14:25AM +1100, NeilBrown wrote:
+> On Wed, 25 Oct 2023, Geert Uytterhoeven wrote:
 > > 
-> > Did you also know that real-time developers are the most unpredictable?  
+> > Please compare the numbers:
+> >   1. 1 sender removes irrelevant parts,
+> >   2. N receivers skip irrelevant parts.
 > 
-> Are safety-critical programmers the most easy-going?
+> That is one way to look at the numbers.
+> Another is:
 > 
+>   12 - fix about a dozen MUAs to summaries quotes properly
+>   12000 - fix an unknownable number of people to quote just exactly the
+>           amount that their particular audience is going to want
+> 
+> and when it comes to fixing-code versus fixing-people, I know which this
+> community is better at.
 
-No, they are the most accident prone ;-)
+We've historically been successful at enforcing LKML etiquette rules on
+everyone.  This is just another rule to not quote the entire email when
+you're replying to a patch.
 
--- Steve
+If you're just adding a Reviewed-by tag then post some context but not
+more than a page.
+
+For a new driver, what I sometimes to is put a summary at the top.
+"Thanks.  The only real bug is some missing error codes in probe.  I had
+some other style nits as well.  See below for all the details."  I
+normally write the email first and then chop out the "no comment"
+functions at the end.  (Sometimes I chop out the no comment functions
+at the begining and then I have to start over when I change my mind).
+
+regards,
+dan carpenter
+
 
