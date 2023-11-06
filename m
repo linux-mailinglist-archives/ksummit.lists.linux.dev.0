@@ -1,91 +1,71 @@
 Return-Path: <ksummit+bounces-1195-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 337FF7E29BC
-	for <lists@lfdr.de>; Mon,  6 Nov 2023 17:30:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A556C7E2A96
+	for <lists@lfdr.de>; Mon,  6 Nov 2023 18:05:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF61DB20C03
-	for <lists@lfdr.de>; Mon,  6 Nov 2023 16:29:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3106A1F21C0D
+	for <lists@lfdr.de>; Mon,  6 Nov 2023 17:05:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91EE029416;
-	Mon,  6 Nov 2023 16:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E1C29CE8;
+	Mon,  6 Nov 2023 17:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="V7j24RE/"
-Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="JcwOEcAM"
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBD024214
-	for <ksummit@lists.linux.dev>; Mon,  6 Nov 2023 16:29:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from relay7-d.mail.gandi.net (unknown [IPv6:2001:4b98:dc4:8::227])
-	by mslow1.mail.gandi.net (Postfix) with ESMTP id E483DC8513
-	for <ksummit@lists.linux.dev>; Mon,  6 Nov 2023 16:29:42 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0F00020010;
-	Mon,  6 Nov 2023 16:29:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1699288174;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2cAS9IqLSrnB2aAcJ59/rg++NroJ/ZUKz4wPWS8R1iA=;
-	b=V7j24RE/iEfuxrD7EM24DbRSjhZm+XKSy/sWS+RKZq/OPj4Zw8LHY4RwajupILLlay0VCT
-	ukv5umrV8imLg0uqi5h5cvKoT8dsMefYCoNosj4fomiNcGzrHp85Rn/SWiY7WBEpJSwDWN
-	WmjxFZL+EacTBAjDTZ/0bZMIiK41H0qCZdqbJQPFhPR3ju619JZ5I24E+x5IriwyxpBR5o
-	WeyipLBIScfW+NJY2Wu8NXxq6BcYemUo9FgdDnOdKLOM/a8wREYShHtUq8SAT2ozlffm7Z
-	rcOuF0mGxyOB7J+20eWdChjODjkS/Xb5qo3hLLcKNje4TbTQLZ/519gDe/b8GQ==
-Date: Mon, 6 Nov 2023 17:29:32 +0100
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Steven Rostedt <rostedt@goodmis.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A4015AF2;
+	Mon,  6 Nov 2023 17:05:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=xLvzAB2KqsXWK/bbI9xwkoQUFfUR6fNp0TU22xjrqRk=; b=JcwOEcAMHmgVhZlrJBdDumFqrS
+	U0j1GJBXtM0u63T85zW6QdmzbBqN2Y83nL0GexodIXCgzcAt7gcGRfwL/RvhfvjyCdJcDxHlASdEv
+	7h512YLUOFGP/JomoI207Y5cE6fW7HvH2S9YuK+JiRLebxMGnRYrC+oocdNoLXYebt1CJ6TxhDIrj
+	9Ayxt9F9HzaEtbkJRvuqA0JC1sesZ5H/6OyHi2buaD5gvrVc0tsrgrGKbDEURPMx1aXrOuts1/Hto
+	LPBA4xwZtKoFMW7yP3rxd3nJeqIGascVdmHjfc7jBvd/cOd1JaTN63hMtY7im9Z4Qd6oAqSBzeZjH
+	zbq+mxQg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
+	id 1r032G-00HBhA-30;
+	Mon, 06 Nov 2023 17:05:12 +0000
+Date: Mon, 6 Nov 2023 09:05:12 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: "Eric W. Biederman" <ebiederm@xmission.com>
 Cc: Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
- users@linux.kernel.org, ksummit@lists.linux.dev
-Subject: Re: [workflows]RFC: switching "THE REST" in MAINTAINERS away from
+	users@linux.kernel.org, ksummit@lists.linux.dev
+Subject: Re: RFC: switching "THE REST" in MAINTAINERS away from
  linux-kernel@vger.kernel.org
-Message-ID: <20231106172932.01bce954@xps-13>
-In-Reply-To: <20231106110547.6956a430@gandalf.local.home>
+Message-ID: <ZUkcyCb5DEVEDkKj@infradead.org>
 References: <20231106-venomous-raccoon-of-wealth-acc57c@nitro>
-	<20231106110547.6956a430@gandalf.local.home>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+ <87r0l2yi7v.fsf@email.froward.int.ebiederm.org>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87r0l2yi7v.fsf@email.froward.int.ebiederm.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-Hello Konstantin,
+On Mon, Nov 06, 2023 at 10:11:48AM -0600, Eric W. Biederman wrote:
+> > - due to the sheer volume of messages, LKML is generally seen as useless for
+> >   holding any actual discussions
+> 
+> I have never had that impression of LKML.
 
-rostedt@goodmis.org wrote on Mon, 6 Nov 2023 11:05:47 -0500:
+Same here, I am actually reading through lkml, although superficially
+skipping over some bits, and definitively starting discussions there.
 
-> On Mon, 6 Nov 2023 10:33:21 -0500
-> Konstantin Ryabitsev <konstantin@linuxfoundation.org> wrote:
->=20
-> > For this reason, I propose switching the "F: *" entry in MAINTAINERS=20
-> > ("THE REST") to patches@lists.linux.dev instead. This list differs from=
- LKML
-> > in the following important aspects: =20
->=20
-> As long as it doesn't affect those that have L: linux-kernel@vger.kernel.=
-org
->=20
-> All core kernel changes should still go there.
->=20
->  (Scheduler, timing, tracing, interrupts, etc)
+Restricting access to the new lkml is not acceptable.  How about
+restricting access to all lists for gmail addresses if gmail is so
+broken?
 
-There are many MAINTAINERS entries without explicit mailing-list which
-are not really 'core kernel' areas. If we consider
-patches@lists.linux.dev as an archive-only list, then
-maybe get_maintainers.pl should somehow fallback to
-linux-kernel@vger.kernel.org anyway when no list pops-up?
-
-Thanks,
-Miqu=C3=A8l
 
