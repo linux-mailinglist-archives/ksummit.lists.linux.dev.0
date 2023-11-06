@@ -1,46 +1,49 @@
 Return-Path: <ksummit+bounces-1195-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3321D7E2AF3
-	for <lists@lfdr.de>; Mon,  6 Nov 2023 18:30:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E314F7E2AF4
+	for <lists@lfdr.de>; Mon,  6 Nov 2023 18:30:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78F07B20F74
-	for <lists@lfdr.de>; Mon,  6 Nov 2023 17:30:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FD92B20F34
+	for <lists@lfdr.de>; Mon,  6 Nov 2023 17:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0170829D05;
-	Mon,  6 Nov 2023 17:30:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=80x24.org header.i=@80x24.org header.b="QVVbc4j5"
-Received: from dcvr.yhbt.net (dcvr.yhbt.net [173.255.242.215])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E499629D0F;
+	Mon,  6 Nov 2023 17:30:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
+Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93CCB29CF8
-	for <ksummit@lists.linux.dev>; Mon,  6 Nov 2023 17:30:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=80x24.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=80x24.org
-Received: from localhost (dcvr.yhbt.net [127.0.0.1])
-	by dcvr.yhbt.net (Postfix) with ESMTP id E111E1F406;
-	Mon,  6 Nov 2023 17:21:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=80x24.org;
-	s=selector1; t=1699291274;
-	bh=ZVdkFed+w54to46gZ0V3Kto1e96f4nMYhOMZgOEoyJA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QVVbc4j5mjmaaBBha7CE3LGgb7bDsnZ9j99STN+h5eaWySuJKw76Mv3xrVJr0S+Lh
-	 0Wc91bz+CbBM8OrnB0vwdfh9TORkYzVm7XhGZGOid2AsnwPI3XDCnHU+CA2xpmCLe3
-	 c0PH+96ZyWMOAoXq00DE690YWDf7cAMPth5v45i4=
-Date: Mon, 6 Nov 2023 17:21:13 +0000
-From: Eric Wong <e@80x24.org>
-To: "Eric W. Biederman" <ebiederm@xmission.com>
-Cc: Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
-	users@linux.kernel.org, ksummit@lists.linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A4F29CF9
+	for <ksummit@lists.linux.dev>; Mon,  6 Nov 2023 17:30:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nod.at
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id 16AD26343CD7;
+	Mon,  6 Nov 2023 18:23:11 +0100 (CET)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id UM6T4RKan3jy; Mon,  6 Nov 2023 18:23:10 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id AAD1863DCAC6;
+	Mon,  6 Nov 2023 18:23:10 +0100 (CET)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id VmxH8idqvLUa; Mon,  6 Nov 2023 18:23:10 +0100 (CET)
+Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
+	by lithops.sigma-star.at (Postfix) with ESMTP id 8D8766343CD7;
+	Mon,  6 Nov 2023 18:23:10 +0100 (CET)
+Date: Mon, 6 Nov 2023 18:23:10 +0100 (CET)
+From: Richard Weinberger <richard@nod.at>
+To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Cc: users@linux.kernel.org, ksummit@lists.linux.dev
+Message-ID: <572860847.59829.1699291390371.JavaMail.zimbra@nod.at>
+In-Reply-To: <20231106-venomous-raccoon-of-wealth-acc57c@nitro>
+References: <20231106-venomous-raccoon-of-wealth-acc57c@nitro>
 Subject: Re: RFC: switching "THE REST" in MAINTAINERS away from
  linux-kernel@vger.kernel.org
-Message-ID: <20231106172113.M499728@dcvr>
-References: <20231106-venomous-raccoon-of-wealth-acc57c@nitro>
- <87r0l2yi7v.fsf@email.froward.int.ebiederm.org>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -48,21 +51,23 @@ List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87r0l2yi7v.fsf@email.froward.int.ebiederm.org>
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [195.201.40.130]
+X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF97 (Linux)/8.8.12_GA_3809)
+Thread-Topic: switching "THE REST" in MAINTAINERS away from linux-kernel@vger.kernel.org
+Thread-Index: PUahPjNMDoB8PKFO0WabflKHDkLlBw==
 
-"Eric W. Biederman" <ebiederm@xmission.com> wrote:
-> Has anyone come up with a good way to mirror the public inbox git
-> repositories?
-> 
-> In the rare occasion when public inbox splits git repositories any
-> script that just mirrors the git repository silent stops working.
+----- Urspr=C3=BCngliche Mail -----
+> Von: "Konstantin Ryabitsev" <konstantin@linuxfoundation.org>
+> - due to the sheer volume of messages, LKML is generally seen as useless =
+for
+>  holding any actual discussions
 
-public-inbox-clone + public-inbox-fetch in released versions
-of public-inbox work for mirroring individual inboxes.
+I disagree. Of course I'm unable to follow all mail but I regularly
+browse LKML to see what's going on.
+Without LKML I'd have to subscribe to hundreds of subsystem specific
+mailing lists for no reason.
 
-
-public-inbox-clone for 2.0 (WIP in https://80x24.org/public-inbox.git )
-can mirror multiple inboxes at once using grokmirror manifests
-(no need for -fetch).
+Thanks,
+//richard
 
