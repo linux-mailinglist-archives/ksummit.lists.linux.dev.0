@@ -1,44 +1,44 @@
 Return-Path: <ksummit+bounces-1195-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 309387E2B5F
-	for <lists@lfdr.de>; Mon,  6 Nov 2023 18:41:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A6387E2B68
+	for <lists@lfdr.de>; Mon,  6 Nov 2023 18:45:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DED5928111A
-	for <lists@lfdr.de>; Mon,  6 Nov 2023 17:41:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 484951C20D97
+	for <lists@lfdr.de>; Mon,  6 Nov 2023 17:45:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C562C84C;
-	Mon,  6 Nov 2023 17:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2266C2C856;
+	Mon,  6 Nov 2023 17:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I4SXej9V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4BqjtUm"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329C829D0C;
-	Mon,  6 Nov 2023 17:41:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9201DC433C8;
-	Mon,  6 Nov 2023 17:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504C82C840;
+	Mon,  6 Nov 2023 17:45:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3B0C433C8;
+	Mon,  6 Nov 2023 17:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1699292479;
-	bh=YmTsZkG18GWUeGd4RqDZDXnefCXSwr3/JE2f/JJXRqs=;
+	s=korg; t=1699292704;
+	bh=iWBR4jZ3kCnJ05Ym7IzAR3AfUGVcsCYqTVSsVE1OaR8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=I4SXej9Vr4UiueT//DAlR5t4NJxFY5+H56PN60NhTL5ucy08yRTRQyFLEuZajWWdi
-	 TOH8ee98HRMZ5DWvsM575hG5kCFyS/34VnBZiCTlvqkrW/Mc9eHJsejt5Y098iiFeX
-	 q9fDCzk1vmFQ8qvKOsO1VUb46eCyoPovdScPJP7g=
-Date: Mon, 6 Nov 2023 12:41:18 -0500
+	b=V4BqjtUm8JSOEl62g/wBKDkHY4rjyp2TM7NF9Csr8jbqDwkRop+PSffLmIjnRQ598
+	 ZbRXgDzEoWpf6ehQA1X7AeX1uJNDCzO+PXlvJTe5R1t+TEEC38cKkFXLBvKYBf2c5+
+	 pwJJtzRerv2fnuAozc0ez0MJzGEyq7MCeBBD9vhI=
+Date: Mon, 6 Nov 2023 12:45:03 -0500
 From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: "Eric W. Biederman" <ebiederm@xmission.com>, users@linux.kernel.org, 
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>, users@linux.kernel.org, 
 	ksummit@lists.linux.dev
-Subject: Re: RFC: switching "THE REST" in MAINTAINERS away from
+Subject: Re: [workflows]RFC: switching "THE REST" in MAINTAINERS away from
  linux-kernel@vger.kernel.org
-Message-ID: <20231106-mega-albatross-of-beauty-f2a7e9@meerkat>
+Message-ID: <20231106-ambitious-grinning-grebe-eeafcf@meerkat>
 References: <20231106-venomous-raccoon-of-wealth-acc57c@nitro>
- <87r0l2yi7v.fsf@email.froward.int.ebiederm.org>
- <ZUkcyCb5DEVEDkKj@infradead.org>
+ <20231106110547.6956a430@gandalf.local.home>
+ <20231106172932.01bce954@xps-13>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -47,39 +47,29 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ZUkcyCb5DEVEDkKj@infradead.org>
+In-Reply-To: <20231106172932.01bce954@xps-13>
 
-On Mon, Nov 06, 2023 at 09:05:12AM -0800, Christoph Hellwig wrote:
-> > > - due to the sheer volume of messages, LKML is generally seen as useless for
-> > >   holding any actual discussions
+On Mon, Nov 06, 2023 at 05:29:32PM +0100, Miquel Raynal wrote:
+> > > For this reason, I propose switching the "F: *" entry in MAINTAINERS 
+> > > ("THE REST") to patches@lists.linux.dev instead. This list differs from LKML
+> > > in the following important aspects:  
 > > 
-> > I have never had that impression of LKML.
+> > As long as it doesn't affect those that have L: linux-kernel@vger.kernel.org
+> > 
+> > All core kernel changes should still go there.
+> > 
+> >  (Scheduler, timing, tracing, interrupts, etc)
 > 
-> Same here, I am actually reading through lkml, although superficially
-> skipping over some bits, and definitively starting discussions there.
+> There are many MAINTAINERS entries without explicit mailing-list which
+> are not really 'core kernel' areas. If we consider
+> patches@lists.linux.dev as an archive-only list, then
+> maybe get_maintainers.pl should somehow fallback to
+> linux-kernel@vger.kernel.org anyway when no list pops-up?
 
-Hence my use of the word "generally."
-
-> Restricting access to the new lkml is not acceptable.
-
-It's not the "new lkml" -- the LKML is still there, it would just no longer be
-a dumping ground for copies of all patches.
-
-I also intentionally wrote "pre-moderated" instead of "restricted."
-Subscriptions are still open, we just request a valid reason why someone wants
-to receive copies of all patches.
-
-> How about restricting access to all lists for gmail addresses if gmail is so
-> broken?
-
-Today it's gmail, tomorrow it's something else. Just a month ago all services
-using outlook.com were broken for days:
-https://learn.microsoft.com/en-us/answers/questions/1388775/outlook-com-servers-tells-server-busy-please-try-a
-
-All I want is to know is why someone wants to receive a copy of all patches
-via SMTP when much more effective mechanisms to achieve the same are
-available. If someone can provide a valid reason -- such as being a
-high-profile maintainer -- then of course I'll be happy to let them subscribe.
+I'm happy if we disambiguate between "THE REST" and "ALWAYS CC" behaviours. If
+"THE REST" only triggers when there are no matching L: entries, and "ALWAYS
+CC" gets added on all mail regardless, that would achieve the same result that
+I'm looking for.
 
 -K
 
