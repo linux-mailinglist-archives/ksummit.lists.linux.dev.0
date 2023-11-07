@@ -1,112 +1,78 @@
 Return-Path: <ksummit+bounces-1195-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F9BF7E302D
-	for <lists@lfdr.de>; Mon,  6 Nov 2023 23:52:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AD1B7E347F
+	for <lists@lfdr.de>; Tue,  7 Nov 2023 05:20:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD5C4280E07
-	for <lists@lfdr.de>; Mon,  6 Nov 2023 22:52:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E2B31C209CC
+	for <lists@lfdr.de>; Tue,  7 Nov 2023 04:19:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 131631CF95;
-	Mon,  6 Nov 2023 22:52:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="MuvOrFn1"
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8752D057
-	for <ksummit@lists.linux.dev>; Mon,  6 Nov 2023 22:52:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id D9EB41C0070; Mon,  6 Nov 2023 23:52:42 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-	t=1699311162;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=p3xRYin5AFzKjkUb7KScxOlgxl2YXSXBMohOhXc8190=;
-	b=MuvOrFn1RjbdISpMFQVAdHzOCd9lpVR1oi/WHiT3a5kxftskwQMiY0VEy+FsJtMhoz1k0q
-	57XobudCvCoPHnYO4API3OHgp+ORAXVHBnk1YEwFheGX7oYUfbQJOpqCeekar1aVUPnYrZ
-	0Qx2nEsGtdNV/gLwBJvKKZVA7v9dVyE=
-Date: Mon, 6 Nov 2023 23:52:42 +0100
-From: Pavel Machek <pavel@ucw.cz>
-To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-Cc: users@linux.kernel.org, ksummit@lists.linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 961BD944B;
+	Tue,  7 Nov 2023 04:19:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
+Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B8E8F40;
+	Tue,  7 Nov 2023 04:19:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=1wt.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1wt.eu
+Received: (from willy@localhost)
+	by pcw.home.local (8.15.2/8.15.2/Submit) id 3A744Xf5023841;
+	Tue, 7 Nov 2023 05:04:33 +0100
+Date: Tue, 7 Nov 2023 05:04:33 +0100
+From: Willy Tarreau <w@1wt.eu>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: "Eric W. Biederman" <ebiederm@xmission.com>,
+        Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
+        users@linux.kernel.org, ksummit@lists.linux.dev
 Subject: Re: RFC: switching "THE REST" in MAINTAINERS away from
  linux-kernel@vger.kernel.org
-Message-ID: <ZUluOoDjp/awmXtF@duo.ucw.cz>
+Message-ID: <20231107040433.GA23816@1wt.eu>
 References: <20231106-venomous-raccoon-of-wealth-acc57c@nitro>
+ <87r0l2yi7v.fsf@email.froward.int.ebiederm.org>
+ <ZUkcyCb5DEVEDkKj@infradead.org>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="zg8p8u0V1AGyxVXL"
-Content-Disposition: inline
-In-Reply-To: <20231106-venomous-raccoon-of-wealth-acc57c@nitro>
-
-
---zg8p8u0V1AGyxVXL
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <ZUkcyCb5DEVEDkKj@infradead.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-Hi!
->=20
-> About 70% of all vger traffic is linux-kernel@vger.kernel.org ("LKML"), w=
-hich
-> is explained by the following 2 facts:
->=20
-> 1. There are ~2900 subscribers to that list
-> 2. It is added to all patches because it has "F: *" in MAINTAINERS
->=20
-> In the past month alone that list received 33,000 posts, which translates=
- to
-> about 3.1 million messages delivered daily. This has pretty critical
-> downsides:
->=20
-> - due to the sheer volume of messages, LKML is generally seen as useless =
-for
->   holding any actual discussions
-> - people tend to subscribe gmail accounts to it and then filter out what =
-they
->   don't want
-> - due to gmail's quota policies, this generally results in anywhere from =
-50K to
->   200K messages stuck in the queue all trying to deliver to gmail and bei=
-ng
->   deferred with "this account is receiving too much mail"
->=20
-> For this reason, I propose switching the "F: *" entry in MAINTAINERS=20
-> ("THE REST") to patches@lists.linux.dev instead. This list differs from L=
-KML
-> in the following important aspects:
+On Mon, Nov 06, 2023 at 09:05:12AM -0800, Christoph Hellwig wrote:
+> On Mon, Nov 06, 2023 at 10:11:48AM -0600, Eric W. Biederman wrote:
+> > > - due to the sheer volume of messages, LKML is generally seen as useless for
+> > >   holding any actual discussions
+> > 
+> > I have never had that impression of LKML.
+> 
+> Same here, I am actually reading through lkml, although superficially
+> skipping over some bits, and definitively starting discussions there.
 
-How many patches are in "the rest" area? I don't think it is that
-many, and I believe those should be broadcasted, as it is not clear
-who should handle them. And lkml seems to be reasonable place for them
-at the moment.
+Same here. I used to have a procmail filter to deliver lkml to its own
+box a decade ago and I figured that I lost contact with what was happening
+so I removed that filter so that I move all these messages manually several
+times a day after scrolling over them (a single key in mutt). This way
+every day I can have a quick glance at all subjects there, that's how I
+discover new topics, patch series, discussions etc. I think that a non
+negligible number of LKML subscribers are there for this exact reason.
 
-Best regards,
-								Pavel
---=20
-People of Russia, stop Putin before his war on Ukraine escalates.
+I would personally miss these messages if they would not be delivered
+there anymore :-/ And I don't think that the situation would significantly
+improve in the short term anyway due to this.
 
---zg8p8u0V1AGyxVXL
-Content-Type: application/pgp-signature; name="signature.asc"
+> Restricting access to the new lkml is not acceptable.  How about
+> restricting access to all lists for gmail addresses if gmail is so
+> broken?
 
------BEGIN PGP SIGNATURE-----
+Or even simpler, flush the queue very often and make it clear that gmail
+is not a reliable recipiet for LKML. The trouble will self-regulate.
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZUluOgAKCRAw5/Bqldv6
-8uX9AJ4/75TopttvuWGzD+pIR+ZywPKywwCggPoshksvlcyx5UHWMOB3ZIyzj/Y=
-=fkNi
------END PGP SIGNATURE-----
-
---zg8p8u0V1AGyxVXL--
+Just my two cents,
+Willy
 
