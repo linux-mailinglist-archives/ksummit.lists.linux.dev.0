@@ -1,102 +1,108 @@
 Return-Path: <ksummit+bounces-1195-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F5E7E3A39
-	for <lists@lfdr.de>; Tue,  7 Nov 2023 11:47:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED6777E3C48
+	for <lists@lfdr.de>; Tue,  7 Nov 2023 13:14:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FF451C20B9F
-	for <lists@lfdr.de>; Tue,  7 Nov 2023 10:47:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A95F128113B
+	for <lists@lfdr.de>; Tue,  7 Nov 2023 12:14:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF06329CF2;
-	Tue,  7 Nov 2023 10:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3AE2EB1F;
+	Tue,  7 Nov 2023 12:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GQ1JwZTb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UmN/Lnff"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2ACFBE5;
-	Tue,  7 Nov 2023 10:47:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E7CC433C8;
-	Tue,  7 Nov 2023 10:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB7E2E418;
+	Tue,  7 Nov 2023 12:14:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F5CC433C9;
+	Tue,  7 Nov 2023 12:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1699354049;
-	bh=zFr2mkj6LisFCY2fEwcpx1yFKNo+3Qy/SXjVuIQkQlo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GQ1JwZTbd675vH7AWa+pjLCLbpBhpxuvGlHb70gNXLqH+Y30NLu6WPFniAbcxRfi/
-	 fSZHSM0OwU2WYldGsTh31RZ/ze4UeqcoSf3THieC2Wd+aQaUJhbUgk6D1rYdZ398cQ
-	 8+vGEaIPOuWaFly2Rdn2+M4Zik9kdPBf6X5/wYSNFO+NNVy4NYvv3OORT9mCAws53k
-	 oZPwi3JTceoxb4xuqU8HLEfKwECUtZBWSnCJkpkiRjxBI9kqqhzc0zbgVYQuLDkc4b
-	 jDG8YC7+aFAKuOqRhIrEO9ZoLsP755k/LYzX8aBFfZgoSLWwXuDF+eSLiziANA8/za
-	 u5S7diQlKExNg==
-Date: Tue, 7 Nov 2023 10:47:25 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Pavel Machek <pavel@ucw.cz>,
-	Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
-	users@linux.kernel.org, ksummit@lists.linux.dev
+	s=k20201202; t=1699359243;
+	bh=8O3YfSKR0ri2R4khmrLtRw7qDFvFMkV3jy4Nwxy8h9c=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=UmN/Lnff0tbqFaNVnHUS1zZV0nVv0juTdpoakgmp/VA/hB8n4pYOX2VETzyFYJYmo
+	 8rt7JcIAec63xBCFGxIE4IQuEmHEY2s87OaKPiJ5s5emcNbmZop9o1/Fpk9lrFu7ns
+	 nIiu6j2lPgbbMw0jorw1ZxkPZIpxJXYf+nrtRhC+4cS+KfBkCmxf/0+C8MWoxrUIU+
+	 Cs8HSuDgMcCB9lv6QCWjqkTU+vaeXtNMOlgRTwR15c5Ab6u8TJSee9LfJsmCB5V3p6
+	 jjnQRVo2qoaL8a89c56Dg3PF0myCv1HHOaIJGQXgBDLFL6vrpHwHWhLM6f9egZP//R
+	 rgtPCW57IBx/A==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,  Pavel Machek <pavel@ucw.cz>,
+  Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
+  users@linux.kernel.org,  ksummit@lists.linux.dev
 Subject: Re: RFC: switching "THE REST" in MAINTAINERS away from
  linux-kernel@vger.kernel.org
-Message-ID: <ZUoVvQ6vpkXp10lI@finisterre.sirena.org.uk>
+In-Reply-To: <20231107101513.GB27932@pendragon.ideasonboard.com> (Laurent
+	Pinchart's message of "Tue, 7 Nov 2023 12:15:13 +0200")
 References: <20231106-venomous-raccoon-of-wealth-acc57c@nitro>
- <ZUluOoDjp/awmXtF@duo.ucw.cz>
- <34eda1fe-0e14-4f12-b472-d152eadb7b88@redhat.com>
+	<ZUluOoDjp/awmXtF@duo.ucw.cz>
+	<34eda1fe-0e14-4f12-b472-d152eadb7b88@redhat.com>
+	<20231107101513.GB27932@pendragon.ideasonboard.com>
+Date: Tue, 07 Nov 2023 13:14:01 +0100
+Message-ID: <mafs0o7g5hiba.fsf_-_@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="NsSfqgZHNEtmiCzI"
-Content-Disposition: inline
-In-Reply-To: <34eda1fe-0e14-4f12-b472-d152eadb7b88@redhat.com>
-X-Cookie: Slow day.  Practice crawling.
+Content-Type: text/plain
 
+On Tue, Nov 07 2023, Laurent Pinchart wrote:
 
---NsSfqgZHNEtmiCzI
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On Tue, Nov 07, 2023 at 10:18:58AM +0100, Paolo Bonzini wrote:
+>> On 11/6/23 23:52, Pavel Machek wrote:
+>> >> For this reason, I propose switching the "F: *" entry in MAINTAINERS
+>> >> ("THE REST") topatches@lists.linux.dev  instead. This list differs from LKML
+>> >> in the following important aspects:
+>> >
+>> > How many patches are in "the rest" area? I don't think it is that
+>> > many, and I believe those should be broadcasted, as it is not clear
+>> > who should handle them. And lkml seems to be reasonable place for them
+>> > at the moment.
+>>
+>> Indeed, I suspect that a lot of the traffic to LKML does not come from
+>> "THE REST", but rather from people using a git-send-email configuration like
+>>
+>>       [sendemail]
+>>       to = linux-kernel@vger.kernel.org
 
-On Tue, Nov 07, 2023 at 10:18:58AM +0100, Paolo Bonzini wrote:
+FWIW, I do not have this nor have I seen any of my colleagues ever have
+this in their config. In the patches I send, lkml always comes from
+get_maintainers.pl.
 
-> Indeed, I suspect that a lot of the traffic to LKML does not come from "T=
-HE
-> REST", but rather from people using a git-send-email configuration like
+>
+> Do we document this as being a recommended git-send-email configuration
+> ? That sounds horrible :-( Documentation/process/submitting-patches.rst
+> states
+>
+>   linux-kernel@vger.kernel.org should be used by default for all
+>   patches, but the volume on that list has caused a number of developers
+>   to tune it out.  Please do not spam unrelated lists and unrelated
+>   people, though.
+>
+> This should be updated, even if for the only reason that the text is
+> quite confusing (in my opinion at least, I'm not sure if it means LKML
+> should be used for all patches, or shouldn't).
+>
+> To give another data point, balancing a bit the replies that expressed
+> surprise at Konstantin's point that LKML is generally seen as useless
+> for holding actual discussions, I do not follow LKML at all due to the
+> amount of mails that are not general discussions. It drowns the useful
+> information in noise for me.
 
-> 	[sendemail]
-> 	to =3D linux-kernel@vger.kernel.org
+Yes, same for me. In general, I find the mail volume on LKML to be too
+large for me to subscribe to it. Of late I have been relying more and
+more on public-inbox and lei to read and browse kernel mail.
 
-> I'm afraid that having everyone switch this to patches@lists.linux.dev wi=
-ll
-> take a looooong time.  Right now I import LKML via public-inbox for use by
-> https://patchew.org/linux/, it doesn't include all messages but it's pret=
-ty
-> close; the patches@lists.linux.dev mailing list by comparison hardly gets
-> any message apart from Greg's stable kernel queues.
-
-Note that get_maintainers.pl at some point started everyone to CC lkml
-on everything, it's *much* more likely that people are picking things up
-=66rom there than that they've gone and made an explicit configuration
-like this.
-
---NsSfqgZHNEtmiCzI
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmVKFbwACgkQJNaLcl1U
-h9CVCAgAguXlGSrYsP46ARDLdVioVi8MhXs4chvXxQNNIFbcgOzNCFdzR5H2aXfs
-u85/JQ5mXzpWd9HSRzRXMSSD9FQnmHYbeA5FTH8w8Bdzjiv2zrPRM8+rKC3H6Vq3
-CuxjnbwJecp4Khp87g7F+slqPOYI9WlW1hZWEpKDAXutDj7In74JGytg9h7x8nV3
-BZ0YTX0O7aOOkEwZ79aa1189NXQhl0JVXB95zpQukLNXu1WNqEekfadTVS3dA1Gb
-WpJvM9uGbYjHivoNbGic9HdxEJ8AMf60pE9nFryc1N0WRuYlR7GJSIr099mg8JY/
-LqD7ANGOxh+Eoz9E5qIQZnHJY/K37Q==
-=ds16
------END PGP SIGNATURE-----
-
---NsSfqgZHNEtmiCzI--
+-- 
+Regards,
+Pratyush Yadav
 
