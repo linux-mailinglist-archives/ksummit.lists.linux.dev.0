@@ -2,96 +2,82 @@ Return-Path: <ksummit+bounces-1195-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70EEC7E3FFE
-	for <lists@lfdr.de>; Tue,  7 Nov 2023 14:23:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3470A7E4002
+	for <lists@lfdr.de>; Tue,  7 Nov 2023 14:24:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1DB41C20C3E
-	for <lists@lfdr.de>; Tue,  7 Nov 2023 13:23:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 655BD1C20C31
+	for <lists@lfdr.de>; Tue,  7 Nov 2023 13:24:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 867E230CE8;
-	Tue,  7 Nov 2023 13:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD6B430CEF;
+	Tue,  7 Nov 2023 13:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ND72U8mx"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jIiyTqEO"
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C092FE3A;
-	Tue,  7 Nov 2023 13:23:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 194A8C433C7;
-	Tue,  7 Nov 2023 13:23:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1699363422;
-	bh=aXFDULiO2PewQoXSfyNrT6njuw/uEAeWtRfzO+UMfTM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ND72U8mxJNyaHlZ+5428ajKpGakYDpclY0SifHeKNq0GfPvcEFas4qMPPXiURm2dF
-	 1Liyw06nZmpwrNyB8au9fkgkfzCG82UTFswmah/361+CnN9rZGE+0exflodrRgxD17
-	 GSKrlQnB187v9ttpgYCqlKhMX2641p5YA7Lc2qWQN4dZtKS3Fd+lYWrReVyRZEwEgR
-	 na+MfyRo8zOm+qrCvcK6KZsQk2AWLFa25Z8dfWFs+D1PVmO6SObUvziq4VKQw1UYta
-	 a7Y0JSmc5FR+P/25KBsWhXtQ8NW873rLQwsRcz0/qal9k7Asc/wGAFBbt8kgTOo+Fm
-	 xW44xqtJipPCg==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Julia Lawall <julia.lawall@inria.fr>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Laurent Pinchart
- <laurent.pinchart@ideasonboard.com>,  Paolo Bonzini <pbonzini@redhat.com>,
-  Pavel Machek <pavel@ucw.cz>,  Konstantin Ryabitsev
- <konstantin@linuxfoundation.org>,  users@linux.kernel.org,
-  ksummit@lists.linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DDC129414
+	for <ksummit@lists.linux.dev>; Tue,  7 Nov 2023 13:24:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-9c603e2354fso1122447966b.1
+        for <ksummit@lists.linux.dev>; Tue, 07 Nov 2023 05:24:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1699363453; x=1699968253; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JZDGjEKMk8xYia1ZfSfFomGToUwUjvcMJKQm9xKCgAI=;
+        b=jIiyTqEOFhH8LSYRi8LfJFPkSf7fUNG2m+9FK/5ItLWH0i1Bjs6dyaKyvhYamlUHnd
+         9aPHom08UA6eCozRBNGSmInr+RZGIyTd3Q96+oM0q5AcWcu7QBOOhHCH/y25BH8OxRmM
+         ScRymBwWoTuTzbc7BMq0EDdPVieyaQLD4NQ/dK0Dn9/btNbR1PeFyZnEV85lmj7aqGxp
+         t+YxjCl9FBORO8R4dQtKhpqyeVGtxQ9b13nzVN12QFsW5gdoM/ClqGk/EUiHn56l2k//
+         usPMfNGoQ6WnSXnndCRxgkG+C0oYOcFQ7HvfAgGSYd84TIxvhVzjM3gp0S3ai/Dk8BJb
+         3KNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699363453; x=1699968253;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JZDGjEKMk8xYia1ZfSfFomGToUwUjvcMJKQm9xKCgAI=;
+        b=mtrFXhiVnknkKv9yDymCfMYqIIPS0cQ4E1vSrPFYFuwLTemzDouQIXwUKMdklJb7zv
+         LQAZKdHprvHJ18yhaAUkrBumYaN+fIXinshfH0aXyLss537J9rsy4BB9wIzTRtP+bMoz
+         C7ug6iEbZ+l9MhtTyNAytEx0b7orrk7xCbweUHs2oSB97esk+Sz+oUS9xHcouLmEoR3v
+         G2pmVv4e6HtG66Blup/XKBL7/BbkmGCU0kx5E5hxIOixtOIg7LsTmOdviJ6Mo9BusID0
+         RFKIH/huZe9hSS2HthIqx5uXsL/V9jMRUutKucH6TQW4Y55LJ0zm32LWUH8ARpx+uC+R
+         S4mQ==
+X-Gm-Message-State: AOJu0YwtqOrM0oRRzOLnPgwmZ3Mx5wej9fqAhY7DKXCovyKsO6hXpEi/
+	3jCrBhfWdPC90lGq2wjuwT01Pw==
+X-Google-Smtp-Source: AGHT+IEd861pLsQzYyzvRysrHXAW3nxhW13tOmEG0jf0kXMMGojx/GtdwtO1BoXd3woi4CbxMmktMg==
+X-Received: by 2002:a17:906:fe08:b0:9cd:26e9:a8af with SMTP id wy8-20020a170906fe0800b009cd26e9a8afmr1975452ejb.21.1699363452668;
+        Tue, 07 Nov 2023 05:24:12 -0800 (PST)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id i22-20020a17090671d600b009929d998abcsm1027602ejk.209.2023.11.07.05.24.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Nov 2023 05:24:12 -0800 (PST)
+Date: Tue, 7 Nov 2023 16:24:10 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Cc: users@linux.kernel.org, ksummit@lists.linux.dev
 Subject: Re: RFC: switching "THE REST" in MAINTAINERS away from
  linux-kernel@vger.kernel.org
-In-Reply-To: <b36d7b18-2092-1848-e22a-7e34588db0f5@inria.fr> (Julia Lawall's
-	message of "Tue, 7 Nov 2023 07:47:23 -0500 (EST)")
+Message-ID: <a53bcecb-3230-4ad3-8e62-29f4395a26a0@kadam.mountain>
 References: <20231106-venomous-raccoon-of-wealth-acc57c@nitro>
-	<ZUluOoDjp/awmXtF@duo.ucw.cz>
-	<34eda1fe-0e14-4f12-b472-d152eadb7b88@redhat.com>
-	<20231107101513.GB27932@pendragon.ideasonboard.com>
-	<mafs0o7g5hiba.fsf_-_@kernel.org>
-	<b36d7b18-2092-1848-e22a-7e34588db0f5@inria.fr>
-Date: Tue, 07 Nov 2023 14:23:39 +0100
-Message-ID: <mafs0ttpxg0is.fsf_-_@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231106-venomous-raccoon-of-wealth-acc57c@nitro>
 
-On Tue, Nov 07 2023, Julia Lawall wrote:
+It's interesting that you announced this on ksummit@lists.linux.dev
+and didn't even bother CC'ing LKML.  That's what I do as well these days
+for discussions that affect everyone.  The ksummit list is the defacto
+list for general topics.
 
-> At various times, I have wanted to see the discussion that led up to a
-> commit, and LKML was the obvious place to go for that.  What will be the
-> approach to take in the future?
-
-I use lei with lore.kernel.org/all for that. For example, say I want to
-see the discussion behind b6094ac83dd4 ("mtd: spi-nor: core: Introduce
-spi_nor_set_4byte_addr_mode()"). I run the below query (on lore or on
-lei, whichever suits your workflow) [0]:
-
-   s:mtd: spi-nor: core: Introduce spi_nor_set_4byte_addr_mode() 
-
-I then get the emails associated with the patch. This also works for
-patches that arrived before I subscribed to any of the mailing lists. So
-I find this method to be more powerful and complete than subscribing to
-mailing lists.
-
-[0] I have written some bits of code to integrate lei with gnus which
-makes it easy for me to quickly open and read email threads. In the
-background, it essentially runs:
-
-    lei q --no-save -O https://lore.kernel.org/all/ -o mboxrd:temp.mbox -t "s:mtd: spi-nor: core: Introduce spi_nor_set_4byte_addr_mode()"
-
-which creates an mbox file with the results of the query. "-t" tells it
-to fetch the whole thread of any email that matches this query. I then
-create a gnus group from the mbox and read the emails. See the lei q man
-page for more details: https://public-inbox.org/lei-q.html
-
-Lei can do much more but right now this simple workflow works pretty
-good for me.
-
--- 
-Regards,
-Pratyush Yadav
+regards,
+dan carpenter
 
