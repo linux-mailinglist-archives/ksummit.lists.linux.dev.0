@@ -1,76 +1,174 @@
 Return-Path: <ksummit+bounces-1195-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C4757E465D
-	for <lists@lfdr.de>; Tue,  7 Nov 2023 17:51:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FCB57E5B51
+	for <lists@lfdr.de>; Wed,  8 Nov 2023 17:35:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30D8BB20D83
-	for <lists@lfdr.de>; Tue,  7 Nov 2023 16:51:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D19591C20BE4
+	for <lists@lfdr.de>; Wed,  8 Nov 2023 16:35:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DC1C328C0;
-	Tue,  7 Nov 2023 16:51:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SO6EbnaL"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15D1FD50E;
+	Wed,  8 Nov 2023 16:35:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F98931584;
-	Tue,  7 Nov 2023 16:51:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A001EC433C7;
-	Tue,  7 Nov 2023 16:51:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1699375886;
-	bh=EAK+qfRbtRhsy9UvpsNzFaTH9Mvr71+XSrobOACKGmY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SO6EbnaLVuHsIHc+ZihFR88LyFz8CZF2VuEEFUXVzdqRWX9IsIw1npIDZgV73pyAz
-	 RLMqo3ZfzcIEEy35f698jsaCMOmCXgaQI8/6lEcE6yVghPq0P/ASb5OFbesbp1ZuuZ
-	 +fSa9jUW9Pbkd6h8PhPctvZ+By3lh0KTaoHDM6tw=
-Date: Tue, 7 Nov 2023 11:51:25 -0500
-From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Julia Lawall <julia.lawall@inria.fr>, 
-	Pratyush Yadav <pratyush@kernel.org>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Pavel Machek <pavel@ucw.cz>, users@linux.kernel.org, ksummit@lists.linux.dev
-Subject: Re: RFC: switching "THE REST" in MAINTAINERS away from
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5958DEEA0
+	for <ksummit@lists.linux.dev>; Wed,  8 Nov 2023 16:35:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
+Received: from omf12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3C31C12011C;
+	Wed,  8 Nov 2023 16:19:50 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf12.hostedemail.com (Postfix) with ESMTPA id 1EA8D19;
+	Wed,  8 Nov 2023 16:19:47 +0000 (UTC)
+Message-ID: <280f404dcaab5a1cee2cc67f829c1d85aa91d772.camel@perches.com>
+Subject: Re: [workflows]RFC: switching "THE REST" in MAINTAINERS away from
  linux-kernel@vger.kernel.org
-Message-ID: <20231107-resolute-honest-pelican-8fe2a9@nitro>
+From: Joe Perches <joe@perches.com>
+To: Steven Rostedt <rostedt@goodmis.org>, Konstantin Ryabitsev
+	 <konstantin@linuxfoundation.org>
+Cc: users@linux.kernel.org, ksummit@lists.linux.dev
+Date: Wed, 08 Nov 2023 08:19:46 -0800
+In-Reply-To: <20231106110547.6956a430@gandalf.local.home>
 References: <20231106-venomous-raccoon-of-wealth-acc57c@nitro>
- <ZUluOoDjp/awmXtF@duo.ucw.cz>
- <34eda1fe-0e14-4f12-b472-d152eadb7b88@redhat.com>
- <20231107101513.GB27932@pendragon.ideasonboard.com>
- <mafs0o7g5hiba.fsf_-_@kernel.org>
- <b36d7b18-2092-1848-e22a-7e34588db0f5@inria.fr>
- <20231107-skilled-calculating-frigatebird-8db1bb@nitro>
- <cefe4c99-2af9-4e22-a448-801a7080fc48@redhat.com>
+	 <20231106110547.6956a430@gandalf.local.home>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <cefe4c99-2af9-4e22-a448-801a7080fc48@redhat.com>
+X-Stat-Signature: uepyj1gm1eb74trucmb5xz63wykrgs45
+X-Rspamd-Server: rspamout05
+X-Rspamd-Queue-Id: 1EA8D19
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX1/a8YVDp+/kiv2byUFMon4jyRIxeMR3Z7Y=
+X-HE-Tag: 1699460386-629131
+X-HE-Meta: U2FsdGVkX1+LWJCfUdVcXKsdUu2GjVkHPhYJ0JGE0D5rR8EVlez1HgZt+kTzeq/4hlSeOUvuPE32+VYOxknc1oovE06T+Ji7MVeN1QcrpfXK9kj6YMRiPY/yXm5kmLTBvKL8Skc88hBa6Upd73uTbOB5G0s3V7T22fJupFHeKuaTrXJDQAOIEd1lVDtXp2IwGhEURKpC2IlJ+h8nXyGHuJ8FKMsmTseLfUK4DLAS1KVAylpUVpMzDD16Ty+VdBGY+qrDHQRlmeRdCfPNWyWaQBV3xaUyh10VmAOLA3f/4XQyhipauswdfMxZYsuggAe6Id8DW4G2fexodA9ieudKPwb0m8pN/03+zCfWpbbJXvFKZGsqCx24Nie5G8d90+D2j3bNdrOm8H7qTwso4vSJvO0ZgxtqNIaXyMxWoyB1mBJQpS/xfu11rd0vG70/u2cM
 
-On Tue, Nov 07, 2023 at 05:43:20PM +0100, Paolo Bonzini wrote:
-> > I assume you're asking if following links to lkml.kernel.org/r/<msgid>
-> > is still going to find the thread? If that's the case, then yes, it's
-> > really just a redirect to lore.kernel.org/all/, which aggregates
-> > everything across all lists indexed by lore.kernel.org. You can
-> > similarly search in /all/ for the subjects matching commits if you don't
-> > have a Link:. In other words, this functionality is not affected by
-> > which list the patches were sent to.
-> 
-> What about _pulling_ all patches from public-inbox?  Right now the git repos
-> under https://lore.kernel.org/lkml/ do not catch everything, but it's close
-> enough.  There would be no https://lore.kernel.org/all/1.git/ and, even if
-> there were, there is no easy way to filter out non-Linux projects.
+On Mon, 2023-11-06 at 11:05 -0500, Steven Rostedt wrote:
+> On Mon, 6 Nov 2023 10:33:21 -0500
+> Konstantin Ryabitsev <konstantin@linuxfoundation.org> wrote:
+>=20
+> > For this reason, I propose switching the "F: *" entry in MAINTAINERS=
+=20
+> > ("THE REST") to patches@lists.linux.dev instead. This list differs from=
+ LKML
+> > in the following important aspects:
+>=20
+> As long as it doesn't affect those that have L: linux-kernel@vger.kernel.=
+org
+>=20
+> All core kernel changes should still go there.
+>=20
+>  (Scheduler, timing, tracing, interrupts, etc)
 
-Sorry, I'm not entirely sure what you're asking. You want to be able to
-automatically retrieve all patches but only if they are related to the kernel?
+If this is done, perhaps half or more of the lkml
+mailing list entries in MAINTAINERS should be removed.
 
--K
+This grep shows all the section entries with
+	L:	linux-kernel@vger.kernel.org
+most of which seem not "core".
+
+$ git grep -P -n "(?:^[\w][^:]|^L:\s*linux-kernel@vger.kernel.org)" MAINTAI=
+NERS | \
+  grep -B1 linux-kernel | grep -v '^--' | grep -v ':L:'
+MAINTAINERS:1382:ANDROID DRIVERS
+MAINTAINERS:2357:ARM/Mediatek SoC support
+MAINTAINERS:2881:ARM/TEXAS INSTRUMENT AEMIF/EMIF DRIVERS
+MAINTAINERS:2896:ARM/TEXAS INSTRUMENT KEYSTONE CLOCK FRAMEWORK
+MAINTAINERS:2902:ARM/TEXAS INSTRUMENT KEYSTONE CLOCKSOURCE
+MAINTAINERS:2909:ARM/TEXAS INSTRUMENT KEYSTONE RESET DRIVER
+MAINTAINERS:3318:ATOMIC INFRASTRUCTURE
+MAINTAINERS:4192:BROADCOM BRCMSTB USB2 and USB3 PHY DRIVER
+MAINTAINERS:4659:CANAAN/KENDRYTE K210 SOC RESET CONTROLLER DRIVER
+MAINTAINERS:5119:CLOCKSOURCE, CLOCKEVENT DRIVERS
+MAINTAINERS:5429:CPU HOTPLUG
+MAINTAINERS:5821:DEBUGOBJECTS:
+MAINTAINERS:6018:DEVICE COREDUMP (DEV_COREDUMP)
+MAINTAINERS:6025:DEVICE DEPENDENCY HELPER SCRIPT
+MAINTAINERS:6402:DPAA2 DATAPATH I/O (DPIO) DRIVER
+MAINTAINERS:8004:EXTERNAL CONNECTOR SUBSYSTEM (EXTCON)
+MAINTAINERS:8016:EXTRA BOOT CONFIG
+MAINTAINERS:8232:FIRMWARE LOADER (request_firmware)
+MAINTAINERS:8697:FUNCTION HOOKS (FTRACE)
+MAINTAINERS:8730:FUTEX SUBSYSTEM
+MAINTAINERS:8795:GENERIC ARCHITECTURE TOPOLOGY
+MAINTAINERS:8802:GENERIC ENTRY CODE
+MAINTAINERS:8915:GENERIC VDSO LIBRARY
+MAINTAINERS:9460:HIGH-RESOLUTION TIMERS, CLOCKEVENTS
+MAINTAINERS:9484:HIKEY960 ONBOARD USB GPIO HUB DRIVER
+MAINTAINERS:9592:HISILICON PTT DRIVER
+MAINTAINERS:9647:HISILICON SPMI CONTROLLER DRIVER FOR HIKEY 970
+MAINTAINERS:9654:HISILICON SPMI PMIC DRIVER FOR HIKEY 6421v600
+MAINTAINERS:9842:HYGON PROCESSOR SUPPORT
+MAINTAINERS:10613:INTEL CPU family model numbers
+MAINTAINERS:10820:INTEL MANAGEMENT ENGINE (mei)
+MAINTAINERS:10951:INTEL STRATIX10 FIRMWARE DRIVERS
+MAINTAINERS:11215:IRQ SUBSYSTEM
+MAINTAINERS:11224:IRQCHIP DRIVERS
+MAINTAINERS:11628:KERNEL USERMODE HELPER
+MAINTAINERS:11906:KPROBES
+MAINTAINERS:12307:LINUX KERNEL MEMORY CONSISTENCY MODEL (LKMM)
+MAINTAINERS:12446:LOCKING PRIMITIVES
+MAINTAINERS:12725:MAILBOX API
+MAINTAINERS:12735:MAILBOX ARM MHUv2
+MAINTAINERS:13059:MAXIM MAX20086 CAMERA POWER PROTECTOR DRIVER
+MAINTAINERS:13072:MAXIM MAX77650 PMIC MFD DRIVER
+MAINTAINERS:13093:MAXIM MAX77802 PMIC REGULATOR DEVICE DRIVER
+MAINTAINERS:13117:MAXIM PMIC AND MUIC DRIVERS FOR EXYNOS BASED BOARDS
+MAINTAINERS:13857:MEMBARRIER SUPPORT
+MAINTAINERS:13876:MEMORY CONTROLLER DRIVERS
+MAINTAINERS:14069:MICROCHIP AT91 USART MFD DRIVER
+MAINTAINERS:14606:MODULE SUPPORT
+MAINTAINERS:15278:NITRO ENCLAVES (NE)
+MAINTAINERS:15290:NOHZ, DYNTICKS SUPPORT
+MAINTAINERS:15581:NXP PTN5150A CC LOGIC AND EXTCON DRIVER
+MAINTAINERS:15595:NXP SJA1105 ETHERNET SWITCH DRIVER
+MAINTAINERS:16315:PADATA PARALLEL EXECUTION MECHANISM
+MAINTAINERS:16952:PERFORMANCE EVENTS SUBSYSTEM
+MAINTAINERS:17031:PIDFD API
+MAINTAINERS:17290:POSIX CLOCKS and TIMERS
+MAINTAINERS:17409:PROC FILESYSTEM
+MAINTAINERS:17418:PROC SYSCTL
+MAINTAINERS:17762:QORIQ DPAA2 FSL-MC BUS DRIVER
+MAINTAINERS:18252:RDT - RESOURCE ALLOCATION
+MAINTAINERS:18350:REGISTER MAP ABSTRACTION
+MAINTAINERS:18561:RESTARTABLE SEQUENCES SUPPORT
+MAINTAINERS:18775:ROHM MULTIFUNCTION BD9571MWV-M PMIC DEVICE DRIVERS
+MAINTAINERS:19140:SAMSUNG MULTIFUNCTION PMIC DEVICE DRIVERS
+MAINTAINERS:19251:SAMSUNG USB2 PHY DRIVER
+MAINTAINERS:19275:SCHEDULER
+MAINTAINERS:20458:SPMI SUBSYSTEM
+MAINTAINERS:21799:TI KEYSTONE MULTICORE NAVIGATOR DRIVERS
+MAINTAINERS:21884:TIMEKEEPING, CLOCKSOURCE CORE, NTP, ALARMTIMER
+MAINTAINERS:21976:TORTURE-TEST MODULES
+MAINTAINERS:22064:TRACING
+MAINTAINERS:22080:TRACING MMIO ACCESSES (MMIOTRACE)
+MAINTAINERS:22123:TTY LAYER AND SERIAL DRIVERS
+MAINTAINERS:22219:UACCE ACCELERATOR FRAMEWORK
+MAINTAINERS:22737:UUID HELPERS
+MAINTAINERS:23222:VME SUBSYSTEM
+MAINTAINERS:23232:VMWARE BALLOON DRIVER
+MAINTAINERS:23275:VMWARE VMCI DRIVER
+MAINTAINERS:23300:VMWARE VSOCK VMCI TRANSPORT DRIVER
+MAINTAINERS:23314:VOLTAGE AND CURRENT REGULATOR FRAMEWORK
+MAINTAINERS:23568:X-POWERS MULTIFUNCTION PMIC DEVICE DRIVERS
+MAINTAINERS:23588:X86 ARCHITECTURE (32-BIT AND 64-BIT)
+MAINTAINERS:23602:X86 ENTRY CODE
+MAINTAINERS:23634:X86 MM
+MAINTAINERS:23705:X86 VDSO
+MAINTAINERS:24008:XILINX ZYNQMP PSGTR PHY DRIVER
+MAINTAINERS:24021:XILLYBUS DRIVER
+MAINTAINERS:24115:ZHAOXIN PROCESSOR SUPPORT
+MAINTAINERS:24148:ZRAM COMPRESSED RAM BLOCK DEVICE DRVIER
+MAINTAINERS:24190:THE REST
+
 
