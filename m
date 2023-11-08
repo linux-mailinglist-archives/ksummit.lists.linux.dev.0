@@ -2,112 +2,76 @@ Return-Path: <ksummit+bounces-1195-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D6307E5E6F
-	for <lists@lfdr.de>; Wed,  8 Nov 2023 20:15:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90DC87E5EB2
+	for <lists@lfdr.de>; Wed,  8 Nov 2023 20:34:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91A45B20BEE
-	for <lists@lfdr.de>; Wed,  8 Nov 2023 19:14:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C28EB20D0F
+	for <lists@lfdr.de>; Wed,  8 Nov 2023 19:34:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F237636B05;
-	Wed,  8 Nov 2023 19:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B65B33715C;
+	Wed,  8 Nov 2023 19:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA44E36AFB
-	for <ksummit@lists.linux.dev>; Wed,  8 Nov 2023 19:14:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
-Received: from omf09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5B124160AB6;
-	Wed,  8 Nov 2023 19:14:49 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf09.hostedemail.com (Postfix) with ESMTPA id 5C9DE2002A;
-	Wed,  8 Nov 2023 19:14:46 +0000 (UTC)
-Message-ID: <985f7533f6d6e28f78d695b34a24702c3dd4eb1c.camel@perches.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA6637153;
+	Wed,  8 Nov 2023 19:34:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADBADC433C8;
+	Wed,  8 Nov 2023 19:34:43 +0000 (UTC)
+Date: Wed, 8 Nov 2023 14:34:47 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Joe Perches <joe@perches.com>
+Cc: Mark Brown <broonie@kernel.org>, Konstantin Ryabitsev 
+ <konstantin@linuxfoundation.org>, users@linux.kernel.org,
+ ksummit@lists.linux.dev
 Subject: Re: [workflows]RFC: switching "THE REST" in MAINTAINERS away from
  linux-kernel@vger.kernel.org
-From: Joe Perches <joe@perches.com>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Mark Brown <broonie@kernel.org>, Konstantin Ryabitsev
-	 <konstantin@linuxfoundation.org>, users@linux.kernel.org, 
-	ksummit@lists.linux.dev
-Date: Wed, 08 Nov 2023 11:14:45 -0800
-In-Reply-To: <20231108140415.46f84baa@gandalf.local.home>
+Message-ID: <20231108143447.12d73140@gandalf.local.home>
+In-Reply-To: <985f7533f6d6e28f78d695b34a24702c3dd4eb1c.camel@perches.com>
 References: <20231106-venomous-raccoon-of-wealth-acc57c@nitro>
-	 <20231106110547.6956a430@gandalf.local.home>
-	 <280f404dcaab5a1cee2cc67f829c1d85aa91d772.camel@perches.com>
-	 <ZUu68zEzrlDVenA1@finisterre.sirena.org.uk>
-	 <6737487f097401510c87f38239d2f75e22fca46d.camel@perches.com>
-	 <20231108140415.46f84baa@gandalf.local.home>
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+	<20231106110547.6956a430@gandalf.local.home>
+	<280f404dcaab5a1cee2cc67f829c1d85aa91d772.camel@perches.com>
+	<ZUu68zEzrlDVenA1@finisterre.sirena.org.uk>
+	<6737487f097401510c87f38239d2f75e22fca46d.camel@perches.com>
+	<20231108140415.46f84baa@gandalf.local.home>
+	<985f7533f6d6e28f78d695b34a24702c3dd4eb1c.camel@perches.com>
+X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 5C9DE2002A
-X-Rspamd-Server: rspamout06
-X-Stat-Signature: zgjpakgq4m3x5f63gqg7cpybp36e7epe
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX18eZ0Zkb4hC4rLM74T5X1iMsRZulF19Coo=
-X-HE-Tag: 1699470886-780658
-X-HE-Meta: U2FsdGVkX1/XcX5+kIWkki382rAc/yvOlSqRubDJkfhgGCRC/vaRQ7ZduDn+0IlUgLQoy58KgKghSUBfI/ecXbTXsyw0VhtmXtZ+B3/nHx0rqnAe+T5iqpL/FOQd/RfWj+8QaticcAhj7c6NBnFqKiZweK/Z1/rkZ49q5blDs7RmG3W5dVq5kqEXnhNbSOds01II5AC0liNVmhZw9iPOTRk/YlZ/xH88cCYWEOk6SYap6BUxXHSPesmbh1carQ+l9yk5CY3278eChFDhMEhw+Gay0csYxIW9T+kOk0+AbXmY99p3RpjzudqFm342smGPrkYBFKQJTf98oGGuemCpZy1y8xGM3D6x4QBX1GjdOb3z0Y7D/9LWiIkRYdJXkJqWJHOhR+FF+HFNRi/f3RnpWjyy40ft3O5lW+ZgZ0gTU6uaQvJSq+Ak5JxfnPM+ywZihT+RUBR+mw4d2W+Oc97D/IlfILMpgUVPFhw3Us7TJo1rwI2GxPHWzA==
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 2023-11-08 at 14:04 -0500, Steven Rostedt wrote:
-> On Wed, 08 Nov 2023 10:16:15 -0800
-> Joe Perches <joe@perches.com> wrote:
->=20
-> > On Wed, 2023-11-08 at 16:44 +0000, Mark Brown wrote:
-> > > On Wed, Nov 08, 2023 at 08:19:46AM -0800, Joe Perches wrote: =20
-> > > > On Mon, 2023-11-06 at 11:05 -0500, Steven Rostedt wrote: =20
-> > > > > Konstantin Ryabitsev <konstantin@linuxfoundation.org> wrote: =20
-> > >  =20
-> > > > > > For this reason, I propose switching the "F: *" entry in MAINTA=
-INERS=20
-> > > > > > ("THE REST") to patches@lists.linux.dev instead. This list diff=
-ers from LKML
-> > > > > > in the following important aspects: =20
-> > >  =20
-> > > > > As long as it doesn't affect those that have L: linux-kernel@vger=
-kernel.org =20
-> > >  =20
-> > > > > All core kernel changes should still go there. =20
-> > >  =20
-> > > > >  (Scheduler, timing, tracing, interrupts, etc) =20
-> > >  =20
-> > > > If this is done, perhaps half or more of the lkml
-> > > > mailing list entries in MAINTAINERS should be removed. =20
-> > >  =20
-> > > > This grep shows all the section entries with
-> > > > 	L:	linux-kernel@vger.kernel.org
-> > > > most of which seem not "core". =20
-> > >=20
-> > > The suggestion wasn't to use LKML exclusively for core changs but rat=
-her
-> > > to not have LKML added for everything that has a more specific list. =
-=20
-> >=20
-> > Likely you and I read Steven's suggestion differently.
-> > Perhaps Steven wants to clarify.
->=20
-> Right. For example, I use linux-trace-kernel@ to add patches to patchwork=
-,
-> but I prefer the discussions to be done on LKML.
+On Wed, 08 Nov 2023 11:14:45 -0800
+Joe Perches <joe@perches.com> wrote:
 
-How would that work?  Especially with get_maintainer?
+> > Right. For example, I use linux-trace-kernel@ to add patches to patchwork,
+> > but I prefer the discussions to be done on LKML.  
+> 
+> How would that work?  Especially with get_maintainer?
 
-Are people are supposed to start discussions on lkml but
-only send patches to a separate list?
+The way it works now. Just Cc both lists. What's the problem with that?
 
-What linkage would you expect to offer between a discussion
-and a proposed patch?
+I use to only do discussions on LKML and have myself Cc'd (or Cc myself in
+the discussions), but then I couldn't manage the patches from my inbox. So
+I set up the mailing list and added that to be Cc'd too in MAINTAINERS, so
+that everything goes to the other mailing list as well. That would then keep
+the patches in patchwork, but the discussions would still be visible to the
+general audience on LKML.
 
-Subject matching?  People adding Link: markings?
 
-Both of those seem unlikely to be effective.
+TRACING
+M:      Steven Rostedt <rostedt@goodmis.org>
+M:      Masami Hiramatsu <mhiramat@kernel.org>
+L:      linux-kernel@vger.kernel.org
+L:      linux-trace-kernel@vger.kernel.org
+S:      Maintained
+
+
+-- Steve
 
