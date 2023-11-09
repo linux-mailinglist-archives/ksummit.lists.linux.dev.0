@@ -1,87 +1,113 @@
-Return-Path: <ksummit+bounces-1203-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1204-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90F437E66DA
-	for <lists@lfdr.de>; Thu,  9 Nov 2023 10:33:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 109567E6978
+	for <lists@lfdr.de>; Thu,  9 Nov 2023 12:22:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1F4C1C20C1C
-	for <lists@lfdr.de>; Thu,  9 Nov 2023 09:33:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E063D1C20C24
+	for <lists@lfdr.de>; Thu,  9 Nov 2023 11:21:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C02212B7B;
-	Thu,  9 Nov 2023 09:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 676E3199DF;
+	Thu,  9 Nov 2023 11:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Q5qP7/63"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KED8DCTe"
 X-Original-To: ksummit@lists.linux.dev
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8FC512E48
-	for <ksummit@lists.linux.dev>; Thu,  9 Nov 2023 09:33:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (213-243-189-158.bb.dnainternet.fi [213.243.189.158])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 7F18DAE;
-	Thu,  9 Nov 2023 10:26:32 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1699521992;
-	bh=vH13lbwWIqijMtvhPiYr4mrtse5VKUuqdVcz2XNcd6E=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7CE199CA;
+	Thu,  9 Nov 2023 11:21:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC0EC433C8;
+	Thu,  9 Nov 2023 11:21:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1699528914;
+	bh=H38QywGmimFcFLqGSrhNg/50t8gDbDPxUY8+7C78Uxk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q5qP7/63fEX5TQ4aCIks1bIjD4KiuN1fAyZLlqjUmcsK4xZkbmttGw7HyGDFrDUg3
-	 GgkKxXTDav01653WzuQNaN8ORKdreNbK2GNCBgHwzDakavmA9nXeB7aFMBRdYL2fpC
-	 cuot/fXqS4qZS5AQppVZMIZeTpgdK6RKm+XElJyI=
-Date: Thu, 9 Nov 2023 11:27:01 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Joe Perches <joe@perches.com>,
-	Mark Brown <broonie@kernel.org>,
+	b=KED8DCTeK8yx2Nixj43JmuDhRVnnjDg8DEcxbDFG4ew3vtLsYCwyyJKbbB9evlxSK
+	 Fxk8GqYXpm6XkMamLZfu5cv2jmfXtPBde4d+vDue/2edYBKooYqTxpsE8MChjKOS3Z
+	 vv/sGrosvzEGDJCl7CdFQ6OV5WTsvX+HTl8pZp5snY0JTuCrszXECySUdiLzU4W2r9
+	 3MzNBeyEKVSnDfFH8+9CdUChMabPw92Ny1QTxw67fncmVlTxysrgHmzvZBSUmAqvcv
+	 4A4wxAOBPpmCftHnwVIZ6SDVMrXSsarNN2Ap5rhN88zr4TwK33zj3DQlmhqUTWPQCa
+	 bWJcfalit4d/g==
+Date: Thu, 9 Nov 2023 11:21:50 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Joe Perches <joe@perches.com>,
 	Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
 	users@linux.kernel.org, ksummit@lists.linux.dev
 Subject: Re: [workflows]RFC: switching "THE REST" in MAINTAINERS away from
  linux-kernel@vger.kernel.org
-Message-ID: <20231109092701.GG21616@pendragon.ideasonboard.com>
+Message-ID: <ZUzAzl9I7h9bjMp0@finisterre.sirena.org.uk>
 References: <20231106-venomous-raccoon-of-wealth-acc57c@nitro>
  <20231106110547.6956a430@gandalf.local.home>
  <280f404dcaab5a1cee2cc67f829c1d85aa91d772.camel@perches.com>
  <ZUu68zEzrlDVenA1@finisterre.sirena.org.uk>
  <6737487f097401510c87f38239d2f75e22fca46d.camel@perches.com>
  <20231108140415.46f84baa@gandalf.local.home>
- <eb1befce-af02-4e33-b5f2-f2ae17bf0eec@kadam.mountain>
+ <985f7533f6d6e28f78d695b34a24702c3dd4eb1c.camel@perches.com>
+ <20231108143447.12d73140@gandalf.local.home>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="W63gAsQP+c+BrACA"
 Content-Disposition: inline
-In-Reply-To: <eb1befce-af02-4e33-b5f2-f2ae17bf0eec@kadam.mountain>
+In-Reply-To: <20231108143447.12d73140@gandalf.local.home>
+X-Cookie: Slow day.  Practice crawling.
 
-On Thu, Nov 09, 2023 at 11:32:16AM +0300, Dan Carpenter wrote:
-> On Wed, Nov 08, 2023 at 02:04:15PM -0500, Steven Rostedt wrote:
-> > 
-> > Right. For example, I use linux-trace-kernel@ to add patches to patchwork,
-> > but I prefer the discussions to be done on LKML.
-> 
-> I had no idea that how tracing worked...  I normally strip out mailing
-> lists from my patches if I think they're not necessary so I seldom CC
-> lkml.  In years past, there used to be a lot of complaining about CC'ing
-> too many people so I try to trim the CC list when I send patches.
 
-I do exactly the same and drop LKML from most of my patch submissions if
-there are more "appropriate" (in the sense of more targetted) lists
-reported by get_maintainer.pl.
+--W63gAsQP+c+BrACA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Networking doesn't need to be CC'd about wireless patches.
-> Drm doesn't need to be CC'd about amd gpu driver patches.
-> 
-> And for bug reports, I only ever CC one lore mailing list.  (For zero
-> day bot stuff, the bot chooses the CC lists).
+On Wed, Nov 08, 2023 at 02:34:47PM -0500, Steven Rostedt wrote:
+> Joe Perches <joe@perches.com> wrote:
 
--- 
-Regards,
+> > > Right. For example, I use linux-trace-kernel@ to add patches to patch=
+work,
+> > > but I prefer the discussions to be done on LKML. =20
 
-Laurent Pinchart
+> > How would that work?  Especially with get_maintainer?
+
+> The way it works now. Just Cc both lists. What's the problem with that?
+
+So that's just CC the list and then both the patch and discussion end up
+on both lists, which one you use is more of a personal thing with your
+workflow.
+
+> TRACING
+> M:      Steven Rostedt <rostedt@goodmis.org>
+> M:      Masami Hiramatsu <mhiramat@kernel.org>
+> L:      linux-kernel@vger.kernel.org
+> L:      linux-trace-kernel@vger.kernel.org
+> S:      Maintained
+
+That wouldn't be affected since it's an explicit thing in the entry for
+the subsystem - it's not being picked up by the wildcard entry or by=20
+get_maintainers just automatically adding a CC to LKML to everything
+even without it being explicitly listed.
+
+--W63gAsQP+c+BrACA
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmVMwM0ACgkQJNaLcl1U
+h9BPBQf+MYfl4RArXFFiXIV1CdIYOPN4LUl6Ve1LY/AwvAzgdf57NogzfyJv0OyM
+UJHD/g8hx3DdCzS9u0rj19u+7LFheC7LVYijOy8//pRM1m84pv3wfZjrsmIg6c5Y
++z4cnT6zHsu2DS77k204hjko1Sy/vbWcRVuTbYZZR8M/93bguo+hMteZQfxI+LY0
+Ac7GMwrYcOj6xrIUBIcrjoYzo68WN+KYgA6sFIteMI0WgwEDinWybLmhKxdjoeRi
+M/JD0ojXscTxV3sT2B3nFSESoARsaCY1UUF2JkSGyO43bg1QK5Dy6lQ5S8c/D0z4
+XFIRT+3MWDfaEwSw1JGamOEpti5ttA==
+=0v/c
+-----END PGP SIGNATURE-----
+
+--W63gAsQP+c+BrACA--
 
