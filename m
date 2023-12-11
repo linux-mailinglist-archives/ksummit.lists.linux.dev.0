@@ -1,61 +1,78 @@
 Return-Path: <ksummit+bounces-1207-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3DA17F35A4
-	for <lists@lfdr.de>; Tue, 21 Nov 2023 19:08:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77A2480D87E
+	for <lists@lfdr.de>; Mon, 11 Dec 2023 19:46:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA78B1C21953
-	for <lists@lfdr.de>; Tue, 21 Nov 2023 18:08:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DAF61F21442
+	for <lists@lfdr.de>; Mon, 11 Dec 2023 18:46:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4356C22092;
-	Tue, 21 Nov 2023 18:08:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fmNuBMOg"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1DF51C37;
+	Mon, 11 Dec 2023 18:46:21 +0000 (UTC)
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D68020DF4;
-	Tue, 21 Nov 2023 18:08:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF327C433C7;
-	Tue, 21 Nov 2023 18:08:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700590132;
-	bh=j2rLv+Wbq2Z8LhtS3KdLLsvOVJ5OVxzhCyjsBNKLqG0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fmNuBMOgMyEB5LnvPbHDrud147BeiJLyyH5kqCM53R/lE0NmvsjzdrtfyxDigM5H5
-	 TGolGoxR2jm7iES+mopNqx7JNvQx9gq2yUyQU3IJXWrUAqBza50xPRgmsudDA+N+Fd
-	 KtKtVxMMy9sKjW3RcecEcC16eagB0FoWCsjZKwSc=
-Date: Tue, 21 Nov 2023 19:08:48 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Joe Perches <joe@perches.com>
-Cc: Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
-	users@linux.kernel.org, ksummit@lists.linux.dev
-Subject: Re: RFC: switching "THE REST" in MAINTAINERS away from
- linux-kernel@vger.kernel.org
-Message-ID: <2023112137-shrubbery-pogo-8fb0@gregkh>
-References: <20231106-venomous-raccoon-of-wealth-acc57c@nitro>
- <12ff8c26fd08ce1eec1934f1abc1be72090177c9.camel@perches.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE65DC8C8;
+	Mon, 11 Dec 2023 18:46:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223D0C433C7;
+	Mon, 11 Dec 2023 18:46:20 +0000 (UTC)
+Date: Mon, 11 Dec 2023 13:47:00 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>, ksummit@lists.linux.dev,
+ outreachy@lists.linux.dev, kernel-janitors@vger.kernel.org
+Subject: Re: KTODO automated TODO lists
+Message-ID: <20231211134700.2c90f106@gandalf.local.home>
+In-Reply-To: <9e0dc452-c4fe-4511-83fe-a1e356bd5438@embeddedor.com>
+References: <369bc919-1a1d-4f37-9cc9-742a86a41282@kadam.mountain>
+	<9e0dc452-c4fe-4511-83fe-a1e356bd5438@embeddedor.com>
+X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <12ff8c26fd08ce1eec1934f1abc1be72090177c9.camel@perches.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 21, 2023 at 06:53:29AM -0800, Joe Perches wrote:
-> On Mon, 2023-11-06 at 10:33 -0500, Konstantin Ryabitsev wrote:
-> > For this reason, I propose switching the "F: *" entry in MAINTAINERS 
-> > ("THE REST") to patches@lists.linux.dev instead.
+On Mon, 23 Oct 2023 17:38:15 -0600
+"Gustavo A. R. Silva" <gustavo@embeddedor.com> wrote:
+
+> On 10/18/23 22:11, Dan Carpenter wrote:
+> > Yesterday someone on my lists just sent an email looking for kernel
+> > tasks.  This was a university student in a kernel programming class.
+> > We also have kernel-janitors and outreachy and those people are always
+> > asking for small tasks.  
 > 
-> Any agreement on this?
+> We have tons of issues waiting to be audited and fixed here:
+> 
+> https://scan.coverity.com/projects/linux-next-weekly-scan
+> 
+> You will never run out of fun. :) People just need to sign up.
+> 
+> That's really a great way to learn and gain experience across the whole
+> kernel tree.
+>
 
-No disagreement from me!
+The difference between this and the KTODO is that the above is bugs that a
+bot has discovered, right?
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Although I agree that fixing bugs is a great way to learn the kernel, in
+some cases people want to create a feature. At least that's a bit more
+rewarding.
+
+Currently, while working on adding a feature to the tracing ring buffer,
+I've come across several bugs (that I fixed), but also a list of "nice to
+haves".
+
+That is, small feature enhancements that make the system better, that I
+simply do not have the time to implement. This is where I think KTODO is
+useful. If someone wants to add these enhancements, I'd be happy to help
+them out (sparingly).
+
+-- Steve
 
