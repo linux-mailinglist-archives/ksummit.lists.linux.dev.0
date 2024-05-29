@@ -1,113 +1,125 @@
-Return-Path: <ksummit+bounces-1212-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1213-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 746438CE41A
-	for <lists@lfdr.de>; Fri, 24 May 2024 12:21:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A71DE8D3ABF
+	for <lists@lfdr.de>; Wed, 29 May 2024 17:24:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 128431F21910
-	for <lists@lfdr.de>; Fri, 24 May 2024 10:21:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23976B23AC6
+	for <lists@lfdr.de>; Wed, 29 May 2024 15:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C7A285268;
-	Fri, 24 May 2024 10:21:16 +0000 (UTC)
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 065631802A3;
+	Wed, 29 May 2024 15:24:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LC9xDGHE"
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A9E1AACC
-	for <ksummit@lists.linux.dev>; Fri, 24 May 2024 10:21:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9B91B947
+	for <ksummit@lists.linux.dev>; Wed, 29 May 2024 15:24:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716546076; cv=none; b=oS642GBMPX4pcq3xpGS9tFfRO6xaSXCP/Lmb8tCJ4b4fxxyng/RWBPy66gUOqGHCw3uuxecPCsB2ptOM/IhTG89kzwpQJb/paDqElB8W/vMEjF5usn/f1oGMNIpJd1PT9a/2ehoLEoon2/q7H77wg4Svx9VVTwIFnQ9cK3L4CKs=
+	t=1716996273; cv=none; b=ZVVTJhCqWTsB1fHUcCCQ3Ho91KTOL8eNrnPrmTSIWYDkOnO5HZKANMuxLzZw7O6bDq67/PFK5BsTbLnpWitCzmooqoQ0OiyRtCdFUOnKXkdYKvikbxq8lBqzJpWTfE6HvwePpWys0jXPtbyZPzYQWmB55enpGXCkoY0lfDEIZTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716546076; c=relaxed/simple;
-	bh=CRsMPVShU0jcDGXNPHRdkEE3PCcuOFg6TnVh0o83/yM=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=DRj3fur2qgXhGhKGV8UvSFxWP0CNiVUmzEoCn/kLkdLoTypRHWH0zmuRd03hPHDZz4MMmqSGT6694265vmcZpMOw00XdVIGoMexFCZ78YLRHK8XuapXwuCX5deitd8s4U8Knp141DXaNyR8xhWHPvzqocNOeHWZO9MBdJ39mi/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1sAS2x-0007NS-Kx
-	for ksummit@lists.linux.dev; Fri, 24 May 2024 12:21:11 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1sAS2x-002mUV-2Z
-	for ksummit@lists.linux.dev; Fri, 24 May 2024 12:21:11 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1sAS2w-00Bddy-3D
-	for ksummit@lists.linux.dev;
-	Fri, 24 May 2024 12:21:11 +0200
-Date: Fri, 24 May 2024 12:21:10 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: ksummit@lists.linux.dev
-Subject: [TECH TOPIC] Graceful Under Pressure: Prioritizing Shutdown to
- Protect Your Data in Embedded Systems
-Message-ID: <ZlBqFozNUbhovuig@pengutronix.de>
+	s=arc-20240116; t=1716996273; c=relaxed/simple;
+	bh=eS9ZFeec5B5KKZCWeMXBRz7DrZuvinuxQTxCQOTN67c=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=hM9N8TsVR9Oa8XxwIb5Xeg3CiJhcs9tZCZNs27qXBfruwsPgCtVGMA+RZDEI38zhHBDWECsOTp8nGsACQua+EWIHSy5MF/mRATTCSLBkGd2GMif0FOToHNqHlhJ99P+hUwDI2gbwC7btaKmkXne1ePigH7lnYh3SCnXZMKN265Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LC9xDGHE; arc=none smtp.client-ip=209.85.219.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-df4eb08fd9eso2202717276.2
+        for <ksummit@lists.linux.dev>; Wed, 29 May 2024 08:24:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1716996271; x=1717601071; darn=lists.linux.dev;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=eS9ZFeec5B5KKZCWeMXBRz7DrZuvinuxQTxCQOTN67c=;
+        b=LC9xDGHEQP9pTj0/vMZDNVpWiFRnGT4Ttypqm7sZ/RoRaTFZd5KQfvTcq8CMEg2V1y
+         iXZV9wKE1L4YdmDa4qkYHLGZqolMBerGyvVRoT9Lf2nVQw68yXlx22IEwzr88sy0nCZ3
+         yh/7zMOyDIjhbFM7S8RVeMPeKVnH/NIqilvvtD8ZApEvTHyko50odLsPhyv8tPDaA4J/
+         zwy2TVYp5Q3APnLFXg7uaiK/aYMPsX6nHWHuoi2LKqjBkOYQt53NuxVwhpxnni3OqkDG
+         kcweyJpUPUEOinQYu78e3y+HDD/2X1u5J/6C0aLy1Y6h0i75YuTld2Gos2ysfyiLiSl3
+         FV/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716996271; x=1717601071;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=eS9ZFeec5B5KKZCWeMXBRz7DrZuvinuxQTxCQOTN67c=;
+        b=OkOQvPcL0G0nE4Oo/Hipm/EhRgL/hmnGpV4aioxUsokXLRZ3j5cOYHgEdZ7jJee5uu
+         zxtgLfNqFYJ3TbkmHEyuPcU7RZ5BwqlY9K5CT2hfgj4lqNJ8NHk5mUlnuOW0LK9fTAIO
+         N8Pzr2ZHBotymmsX8XOQKLWg8z0mwFnFtWRPreMpEUsGfP3Wfk7RheUofYh8Aj5eh4Wn
+         3brdFgMSpLN/2qvoJeIM6Vww3tymt97/ZQP8oYvc7nusPSSaIZuFOV1nUq1ggVYwRVZz
+         K924Q9r77tJXu7nLCGIaD86/qDPAI/XXYdsK6a9mn6XX0wjpUzoaQ8wR/Ua9xhn2UUXc
+         ojYQ==
+X-Gm-Message-State: AOJu0YynjFapktMOPmYDijUMBLU2lVZ9WSmEEk//cKQrXRWphAabwmZJ
+	Ph8oe7zcWCPHNMD53Xk4vQhwUKsFDoGETs0/rt5JF5l+Cz7o8CPccv94buDA3kGTEyotC2ywHWv
+	8bbfEYt1UMzd2h4izTi3oByPh37TAR+I8nCPc062JNavH/Nqwf20=
+X-Google-Smtp-Source: AGHT+IFA1NEpeesQIdpojb7moW/FeA0KupJucDHE4tTHe8dz+NrwCDbOUn0rIP+SLotcEDVR+oE3FTYPKD8MHzLFu38=
+X-Received: by 2002:a25:abea:0:b0:dee:6ffb:b3c2 with SMTP id
+ 3f1490d57ef6-df7721ff6fdmr15058302276.54.1716996270717; Wed, 29 May 2024
+ 08:24:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: ksummit@lists.linux.dev
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Date: Wed, 29 May 2024 17:24:19 +0200
+Message-ID: <CACMJSeupU_j3bkj8muMrdrYvfnppYdZ4tPvZ+8OQ5A9BpTOWDw@mail.gmail.com>
+Subject: [TECH TOPIC] Introducing the power sequencing subsystem
+To: ksummit@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Hi all,
+Hi!
 
-I just submitted following abstract:
+Here's my submission for the kernel summit track at LPC24.
 
-Subject: Graceful Under Pressure: Prioritizing Shutdown to Protect Your Data in
-Embedded Systems (Even When the Power Flickers)
+Note: The power sequencing subsystem has not yet made its way into
+mainline but as there's a lot of time left between when I'm writing
+this and the LPC24 in Vienna I think it should at least make it into
+next by the time of the presentation (there do not seem to be any
+showstopper objections on the mailing list).
 
-Power fluctuations are a common challenge in embedded systems, where
-components like SD cards, eMMCs, and raw NAND flash are widely used for
-storage. These storage components are vulnerable to data corruption or
-even permanent damage when power unexpectedly drops. While larger
-systems, such as servers, often employ solutions like uninterruptible
-power supplies (UPS) to mitigate this risk, the size and cost
-constraints of embedded devices often preclude such measures. Although
-some modern embedded systems can detect power issues early, a unified,
-upstream solution for gracefully shutting down critical components is
-still lacking.
+Thanks,
+Bartosz
 
-In fact, software-based solutions for prioritized shutdown already exist
-in some Linux-based embedded systems. However, these solutions are not
-integrated into the mainline kernel. This fragmentation makes it
-difficult for the broader community to benefit from these advancements.
-This talk aims to bridge this gap by advocating for the inclusion of
-prioritized shutdown mechanisms in the Linux kernel. We will discuss the
-unique challenges faced by embedded systems, where size and cost
-constraints often limit hardware-based protections like UPS systems. By
-leveraging existing software solutions and collaborating with the
-community, we can develop a standardized approach to power loss
-protection that benefits all embedded Linux users.
+---
 
-Join us as we explore the technical and community aspects of this issue,
-with the goal of making graceful shutdowns a standard feature in all
-Linux-based embedded systems. Let's work together to protect our data,
-even when the power flickers.
+There is a class of physical devices that contain several discrete
+modules in a single package but which are represented in the kernel as
+separate entities. An example of such devices is the Qualcomm WCN/QCA
+family of WLAN/Bluetooth adapter chipsets.
 
-Regards,
-Oleksij
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Typically the WLAN and Bluetooth modules will have their own
+device-tree nodes - one under the PCI bridge (WLAN) and one under the
+serial node (Bluetooth). The relevant drivers will bind to these
+devices and consume assigned resources (which are usually already
+reference counted).
+
+The problem arises when the two modules packaged together have
+interdependencies - for instance: a chipset may require a certain
+delay between powering-up the Bluetooth and WLAN modules (an example:
+Qualcomm QCA6490). In this case, reference counting alone is not
+sufficient and we need more fine-grained serialization.
+
+In order to support such devices, a new driver subsystem has been
+proposed: the power sequencing framework[1]. It allows to abstract the
+shared powering-up/-down operations for multiple devices into a
+separate power sequence provider which knows about any possible
+interactions between the modules it services. The new subsystem allows
+for a flexible representation of the underlying hardware (e.g.: the
+power management unit of the WCN/QCA chips is the device node to which
+the power sequencer binds but on the device-tree it is represented as
+a PMIC exposing a set of regulators consumed by WLAN and Bluetooth
+nodes).
+
+This talk will present the idea behind the new subsystem, the provider
+and consumer programming interfaces for drivers and how we enabled
+WiFi and Bluetooth support upstream for several Qualcomm platforms
+with the first driver based on the pwrseq framework.
+
+[1] https://lore.kernel.org/netdev/20240528-pwrseq-v8-0-d354d52b763c@linaro.org/
 
