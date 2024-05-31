@@ -1,125 +1,134 @@
-Return-Path: <ksummit+bounces-1213-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1214-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A71DE8D3ABF
-	for <lists@lfdr.de>; Wed, 29 May 2024 17:24:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 051BC8D64EF
+	for <lists@lfdr.de>; Fri, 31 May 2024 16:54:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23976B23AC6
-	for <lists@lfdr.de>; Wed, 29 May 2024 15:24:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CAA46B2BE37
+	for <lists@lfdr.de>; Fri, 31 May 2024 14:53:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 065631802A3;
-	Wed, 29 May 2024 15:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C555731B;
+	Fri, 31 May 2024 14:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LC9xDGHE"
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="gJhSWPMl"
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9B91B947
-	for <ksummit@lists.linux.dev>; Wed, 29 May 2024 15:24:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E760A75817
+	for <ksummit@lists.linux.dev>; Fri, 31 May 2024 14:53:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716996273; cv=none; b=ZVVTJhCqWTsB1fHUcCCQ3Ho91KTOL8eNrnPrmTSIWYDkOnO5HZKANMuxLzZw7O6bDq67/PFK5BsTbLnpWitCzmooqoQ0OiyRtCdFUOnKXkdYKvikbxq8lBqzJpWTfE6HvwePpWys0jXPtbyZPzYQWmB55enpGXCkoY0lfDEIZTI=
+	t=1717167205; cv=none; b=OKf8ADDq/XrvzOxnqwv7RSG27VrgGm2V7Ti3hNk4tzCXUN2OR4gN+xDbwgNrKb7vatopGS4QeVSpA7kwfdMMvSznKU6mrJDKsVEGSR1hd47+sQDP/CTtjagAnwGXFeyZvjUBwSEkHVB0LBfK9Rhb3YnKr2KSZ7FRWq4r46GQGSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716996273; c=relaxed/simple;
-	bh=eS9ZFeec5B5KKZCWeMXBRz7DrZuvinuxQTxCQOTN67c=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=hM9N8TsVR9Oa8XxwIb5Xeg3CiJhcs9tZCZNs27qXBfruwsPgCtVGMA+RZDEI38zhHBDWECsOTp8nGsACQua+EWIHSy5MF/mRATTCSLBkGd2GMif0FOToHNqHlhJ99P+hUwDI2gbwC7btaKmkXne1ePigH7lnYh3SCnXZMKN265Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LC9xDGHE; arc=none smtp.client-ip=209.85.219.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-df4eb08fd9eso2202717276.2
-        for <ksummit@lists.linux.dev>; Wed, 29 May 2024 08:24:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1716996271; x=1717601071; darn=lists.linux.dev;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=eS9ZFeec5B5KKZCWeMXBRz7DrZuvinuxQTxCQOTN67c=;
-        b=LC9xDGHEQP9pTj0/vMZDNVpWiFRnGT4Ttypqm7sZ/RoRaTFZd5KQfvTcq8CMEg2V1y
-         iXZV9wKE1L4YdmDa4qkYHLGZqolMBerGyvVRoT9Lf2nVQw68yXlx22IEwzr88sy0nCZ3
-         yh/7zMOyDIjhbFM7S8RVeMPeKVnH/NIqilvvtD8ZApEvTHyko50odLsPhyv8tPDaA4J/
-         zwy2TVYp5Q3APnLFXg7uaiK/aYMPsX6nHWHuoi2LKqjBkOYQt53NuxVwhpxnni3OqkDG
-         kcweyJpUPUEOinQYu78e3y+HDD/2X1u5J/6C0aLy1Y6h0i75YuTld2Gos2ysfyiLiSl3
-         FV/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716996271; x=1717601071;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eS9ZFeec5B5KKZCWeMXBRz7DrZuvinuxQTxCQOTN67c=;
-        b=OkOQvPcL0G0nE4Oo/Hipm/EhRgL/hmnGpV4aioxUsokXLRZ3j5cOYHgEdZ7jJee5uu
-         zxtgLfNqFYJ3TbkmHEyuPcU7RZ5BwqlY9K5CT2hfgj4lqNJ8NHk5mUlnuOW0LK9fTAIO
-         N8Pzr2ZHBotymmsX8XOQKLWg8z0mwFnFtWRPreMpEUsGfP3Wfk7RheUofYh8Aj5eh4Wn
-         3brdFgMSpLN/2qvoJeIM6Vww3tymt97/ZQP8oYvc7nusPSSaIZuFOV1nUq1ggVYwRVZz
-         K924Q9r77tJXu7nLCGIaD86/qDPAI/XXYdsK6a9mn6XX0wjpUzoaQ8wR/Ua9xhn2UUXc
-         ojYQ==
-X-Gm-Message-State: AOJu0YynjFapktMOPmYDijUMBLU2lVZ9WSmEEk//cKQrXRWphAabwmZJ
-	Ph8oe7zcWCPHNMD53Xk4vQhwUKsFDoGETs0/rt5JF5l+Cz7o8CPccv94buDA3kGTEyotC2ywHWv
-	8bbfEYt1UMzd2h4izTi3oByPh37TAR+I8nCPc062JNavH/Nqwf20=
-X-Google-Smtp-Source: AGHT+IFA1NEpeesQIdpojb7moW/FeA0KupJucDHE4tTHe8dz+NrwCDbOUn0rIP+SLotcEDVR+oE3FTYPKD8MHzLFu38=
-X-Received: by 2002:a25:abea:0:b0:dee:6ffb:b3c2 with SMTP id
- 3f1490d57ef6-df7721ff6fdmr15058302276.54.1716996270717; Wed, 29 May 2024
- 08:24:30 -0700 (PDT)
+	s=arc-20240116; t=1717167205; c=relaxed/simple;
+	bh=zIxJj+eFNW131CghuD8tAVb+DXZz1K/r7747QzysLZ0=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=eV5kZZ2fDmqHHrPptCJ8u6zst/ArVdNqGeiB1x/TtoVMAvfNJCjAOflj6khL7lvcNDGfSyOIUHKc2lVxW+gPN8H+yXeyqwk+RYJwYOaVxcoq071uJEv0ARNUu2ZtKWz1NkuqaViCnoIW7Ha3HJfNjDilpc2WqNv0ZpsLl1ZraiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=gJhSWPMl; arc=none smtp.client-ip=18.9.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
+Received: from macsyma.thunk.org (unn-149-40-50-56.datapacket.com [149.40.50.56] (may be forged))
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 44VEnwYM020082
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 31 May 2024 10:50:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1717167002; bh=TVitHfGXx2wIQGCXtRSfpVuiPAJXkRLy5+/11kjTZi8=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=gJhSWPMlva12midGaeg/PHU2neWOcKsKiFso7tYpYY6tMVpafdbk0znXMFEK9H1hU
+	 qdyBPtkEngiB7yqQ+IbNrHlkWYOWgTjcvQgJNO7MTOTZisvZdZSoDHJWY3lqeJaYZE
+	 U38u43F9VE4lFxJknYqgbIoTNE+P1A2Q4LVc12BHeDv1KKY88JN9DqWz4hzA6iWmx8
+	 y2TY1uFckzpWjIiew4C1qPlARFYwrj6ebMmhkk+fiFQEX7rpKDXel6j5rvPRdi9eDf
+	 HMJqjXMcGDUiuhpBoML4bUHQ6xIbM2FnKtOoPuHSbUzya2eBGa7gg01LX6ZZmBbqR2
+	 QX791qc6scs2g==
+Received: by macsyma.thunk.org (Postfix, from userid 15806)
+	id 257EA340A68; Fri, 31 May 2024 16:49:57 +0200 (CEST)
+Date: Fri, 31 May 2024 16:49:57 +0200
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: Linux Kernel Developers List <linux-kernel@vger.kernel.org>,
+        Linux Filesystem Development List <linux-fsdevel@vger.kernel.org>,
+        linux-block@vger.kernel.org, netdev@vger.kernel.org,
+        linux-mm@kvack.org, ksummit@lists.linux.dev
+Subject: Maintainers Summit 2024 Call for Topics
+Message-ID: <20240531144957.GA301668@mit.edu>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Date: Wed, 29 May 2024 17:24:19 +0200
-Message-ID: <CACMJSeupU_j3bkj8muMrdrYvfnppYdZ4tPvZ+8OQ5A9BpTOWDw@mail.gmail.com>
-Subject: [TECH TOPIC] Introducing the power sequencing subsystem
-To: ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Hi!
+This year, the Maintainers Summit will be held in Vienna, Austria on
+Tuesday, September 17th, 2024, just before the Linux Plumber's Conference
+(September 18--20th).
 
-Here's my submission for the kernel summit track at LPC24.
+As in previous years, the Maintainers Summit is invite-only, where the
+primary focus will be process issues around Linux Kernel Development.
+It will be limited to 30 invitees and a handful of sponsored
+attendees.
 
-Note: The power sequencing subsystem has not yet made its way into
-mainline but as there's a lot of time left between when I'm writing
-this and the LPC24 in Vienna I think it should at least make it into
-next by the time of the presentation (there do not seem to be any
-showstopper objections on the mailing list).
+Linus has generated a list of people for the program committee to
+consider.  People who suggest topics that should be discussed at the
+Maintainers Summit will also be added to the list for consideration.
+To make topic suggestions for the Maintainers Summit, please send
+e-mail to the ksummit@lists.linux.dev with a subject prefix of
+[MAINTAINERS SUMMIT].
 
-Thanks,
-Bartosz
+To get the most out of our topic discussions, folks proposing a topic
+should also suggest relevant people and desired outcomes.
 
----
+For an examples of past Maintainers Summit topics, please see these
+LWN articles:
 
-There is a class of physical devices that contain several discrete
-modules in a single package but which are represented in the kernel as
-separate entities. An example of such devices is the Qualcomm WCN/QCA
-family of WLAN/Bluetooth adapter chipsets.
+ * 2023 https://lwn.net/Articles/951847/
+ * 2022 https://lwn.net/Articles/908320/
+ * 2021 https://lwn.net/Articles/870415/
 
-Typically the WLAN and Bluetooth modules will have their own
-device-tree nodes - one under the PCI bridge (WLAN) and one under the
-serial node (Bluetooth). The relevant drivers will bind to these
-devices and consume assigned resources (which are usually already
-reference counted).
+The Kernel Summit is organized as a track which is run in parallel
+with the other tracks at the Linux Plumbers Conference (LPC), and is
+open to all registered attendees of LPC.  The goal of the Kernel
+Summit track will be to provide a forum to discuss specific technical
+issues that would be easier to resolve in person than over e-mail.
+The program committee will also consider "information sharing" topics
+if they are clearly of interest to the wider development community
+(i.e., advanced training in topics that would be useful to kernel
+developers).
 
-The problem arises when the two modules packaged together have
-interdependencies - for instance: a chipset may require a certain
-delay between powering-up the Bluetooth and WLAN modules (an example:
-Qualcomm QCA6490). In this case, reference counting alone is not
-sufficient and we need more fine-grained serialization.
+To suggest a topic for the Kernel Summit, please do two things. by
+June 16th, 2024.  First, please tag your e-mail with [TECH TOPIC].  As
+before, please use a separate e-mail for each topic, and send the
+topic suggestions to the ksummit discussion list.
 
-In order to support such devices, a new driver subsystem has been
-proposed: the power sequencing framework[1]. It allows to abstract the
-shared powering-up/-down operations for multiple devices into a
-separate power sequence provider which knows about any possible
-interactions between the modules it services. The new subsystem allows
-for a flexible representation of the underlying hardware (e.g.: the
-power management unit of the WCN/QCA chips is the device node to which
-the power sequencer binds but on the device-tree it is represented as
-a PMIC exposing a set of regulators consumed by WLAN and Bluetooth
-nodes).
+Secondly, please create a topic at the Linux Plumbers Conference
+proposal submission site and target it to the Kernel Summit track:
 
-This talk will present the idea behind the new subsystem, the provider
-and consumer programming interfaces for drivers and how we enabled
-WiFi and Bluetooth support upstream for several Qualcomm platforms
-with the first driver based on the pwrseq framework.
+	https://lpc.events/event/18/abstracts/
 
-[1] https://lore.kernel.org/netdev/20240528-pwrseq-v8-0-d354d52b763c@linaro.org/
+Please do both steps.  I'll try to notice if someone forgets one or
+the other, but your chances of making sure your proposal gets the
+necessary attention and consideration are maximized by submitting both
+to the mailing list and the web site.
+
+
+If you were not subscribed on to the kernel mailing list from
+last year (or if you had removed yourself after the kernel summit),
+you can subscribe by sending an e-mail to the address:
+
+   ksummit+subscribe@lists.linux.dev
+
+The program committee this year is composed of the following people:
+
+Christian Brauner
+Jon Corbet
+Greg KH
+Sasha Levin
+Ted Ts'o
+Rafael J. Wysocki
+
 
