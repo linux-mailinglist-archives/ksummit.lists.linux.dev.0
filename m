@@ -1,74 +1,51 @@
-Return-Path: <ksummit+bounces-1226-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1227-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C985905768
-	for <lists@lfdr.de>; Wed, 12 Jun 2024 17:51:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE642905824
+	for <lists@lfdr.de>; Wed, 12 Jun 2024 18:08:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9698F1C2231E
-	for <lists@lfdr.de>; Wed, 12 Jun 2024 15:51:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7181B28902A
+	for <lists@lfdr.de>; Wed, 12 Jun 2024 16:08:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E5F181301;
-	Wed, 12 Jun 2024 15:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3AF180A87;
+	Wed, 12 Jun 2024 16:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dsVSuRSf"
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="PxI9aYvL"
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60AD8180A9C
-	for <ksummit@lists.linux.dev>; Wed, 12 Jun 2024 15:50:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC65620314
+	for <ksummit@lists.linux.dev>; Wed, 12 Jun 2024 16:07:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718207450; cv=none; b=GuNr5558mAC5OdkuH4CNsyRR1WE9AiYRF8f/bk63rtCOSkfSGC03Ev52+AWFSgjTYTwDZapwBkLhBkyJx4dP3FmI05+wpDNfr5eb2IINOEWL2vm/nHPg1ayTWl+QbdlYxwLeg32SbivbklMqnZUMt/VOfv76Gzbx7arPiFYRYaY=
+	t=1718208465; cv=none; b=auRAhPNtBit4CRV32Sfz71Kn0+fuhhy7W8e+b5qmXV/2DcXNAZ6DMWedqXCDUEPfX2gvBFQb9T5Qv1POzp6l6OrOBmPGRfCZKithf4tO9JsHyMhJ7LhgWFgWK/rxMUswC5fh/2ow+ac76FX5APPXdqSN2JTNzxwHwSFhO/YmZcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718207450; c=relaxed/simple;
-	bh=Qpk3zIMkNGc0WlmEnh8UEoXUTfe8guFnrxHEo3hs0uc=;
+	s=arc-20240116; t=1718208465; c=relaxed/simple;
+	bh=/47Bs2Hj1A/qCtpiRhqf3CMtrhOGjcUgOu1fWJgpoeQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nDjULSdQlXFXVWlXS1aEshvXstlvINh/n0S/DwJ+n1MdQK1YfAPcREQVr9QKnQ/1IBouzCYJz2xUr0I/IiiqaLpBreXlzHbo5mDeuzE/wQWhH+QN8NaNmwIHeUV1Ulr8+GHMEvSyCK4DbdQWXzr839KQkwsJ9YncSEiAzWWOaDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dsVSuRSf; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7024d571d8eso2015768b3a.0
-        for <ksummit@lists.linux.dev>; Wed, 12 Jun 2024 08:50:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718207449; x=1718812249; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=2F8aYsEwgaDqGnzdNsTnHb5SOMb96Oxaqd5nUu+5eLs=;
-        b=dsVSuRSfTdpqVfnmu8W8oqrxR2o9kR6wjSJC7BNyMcBWgoemxaebF6qschMEJ05aft
-         yqJnOl102FCx6qPN3e+OYP9H3Xba0Zu2rOabojG7bMtRLsWougyFATeV3WEfnv4Mc9lg
-         if1bUL263ELyK2rk40/l43wCzDOMCx1TbXSZsenGtBJQ8kd1RgAkKDp45ulwuEV811ii
-         p2wZrJhw9ZZSzXMZXHjVugHk9VQY7L6B6ouIPpduY1TinEBk2084L0GSvfHdTM+h9laD
-         0u9mSf/MovPf74A982zqCFXQwzIrnEfyIyn09xNZMspu9XsOtWS8Odn8TyJ8r2HA0/F2
-         w+ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718207449; x=1718812249;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2F8aYsEwgaDqGnzdNsTnHb5SOMb96Oxaqd5nUu+5eLs=;
-        b=oQKRHR5OyQ+o1dGdTenNlvA8gHpur1/X9LxaNs1CvUXr3QNUyDR+Am/oWPkhBjhGLM
-         br1K4ITCN5mU5G0wl3M+q55x7EQHUoR+ggnqPQntRRgxALPc1yGznkY1xDkF4evPLmTk
-         j8qxwl583P6S4Mw6y45WCdMNuvsdyrds341Gqaj4EW1ZrIUDQTC3rQaawbPYvVXe3/ER
-         1kbN+D8cHwGkxnVpHRwEw4YV/+l/kVlCONL47MH3rE9wDsruZpypMZSK+XEppajHEihc
-         ROq1wENY7eNBPw9HGausOMG5ZTpRaD9d3zFNl18FCuSX5VR3YBy/52lnKbsRTxCikErR
-         Hn5A==
-X-Gm-Message-State: AOJu0Yzm+FQcxewxDZkjaWEJ7LlNolK9lGAf+eOXvVVurQ+UiLfagvnG
-	WHAFBj46tzqTbvSFb+ZYaZ4EJk2twRdjVx5ae7HATPGC5BqYCK7IbMGdbw==
-X-Google-Smtp-Source: AGHT+IHin7DVTecAt5dfgG/fuqRAReiG62dO9j5pWuK4bgOdXeatoP5QEP7uqbi1OA6S/+J2CJSngw==
-X-Received: by 2002:a05:6a00:a14:b0:704:23dc:6473 with SMTP id d2e1a72fcca58-705bcf09b55mr3287085b3a.30.1718207448548;
-        Wed, 12 Jun 2024 08:50:48 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-705c0d75ccbsm1209590b3a.46.2024.06.12.08.50.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Jun 2024 08:50:47 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <9b28bd22-f4b7-4bb4-8471-cb131347b6e8@roeck-us.net>
-Date: Wed, 12 Jun 2024 08:50:46 -0700
+	 In-Reply-To:Content-Type; b=Q388x/zei0otLgOd3eexuWRspxK/84VpygRyRk17/L35LBksAw+XoSAUa56JkMRlWTsi3YT5+or6MRvoybMSZZJrxbui3vMR0zzoVPzUwE+jYVmRlZzi4MCKwU++twlxnI2LO1bBhrOwbwHVUX5zy4L5Dt9drDKCW9fgHT9Z9sE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=PxI9aYvL; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=/47Bs2Hj1A/qCtpiRhqf3CMtrhOGjcUgOu1fWJgpoeQ=; t=1718208462;
+	x=1718640462; b=PxI9aYvLQpGIdSAaZkE+vggDApn/AXuxLS8YOmdgmwIPiHPrQqbUTP1DQC8d6
+	u8LbKtl9Ugc3uXI/BBv0lANkKvFWXYlFkOjGhClxjdV39didf5UVH+em3+Z/Qh/Csf40IvmRSEs1s
+	Re4TsoEk+Q6ILTQR2u6oz3M/5IdK+5DQ3d2dqpbJuZUkh5dEiv9tXzz2i+AZU97XOLSNcXT+USDUt
+	+CKLCOV/LDClS4D9pnnjTpSXjBuYnvjt6W0n4t+3ekbB7eh8PPCv7tmo0VNEKHnnbjN/dYD39veRm
+	ikHBNTcudnC3OyoBRZ9J+wohYPVGxNCMVdd6P401I7noeZ2Avg==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1sHQVf-0005TN-M4; Wed, 12 Jun 2024 18:07:39 +0200
+Message-ID: <47793732-03f6-4cbb-a2a4-393ad9c96de9@leemhuis.info>
+Date: Wed, 12 Jun 2024 18:07:39 +0200
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -77,81 +54,102 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [TECH TOPIC] regressions: our workflows are the biggest enemy
-To: Steven Rostedt <rostedt@goodmis.org>,
- Thorsten Leemhuis <linux@leemhuis.info>
+To: Guenter Roeck <linux@roeck-us.net>, Steven Rostedt <rostedt@goodmis.org>
 Cc: "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
 References: <5182e50a-3d13-4edc-8f2a-a024e0588177@leemhuis.info>
  <20240612112622.21bf7c89@rorschach.local.home>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20240612112622.21bf7c89@rorschach.local.home>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ <9b28bd22-f4b7-4bb4-8471-cb131347b6e8@roeck-us.net>
+From: Thorsten Leemhuis <linux@leemhuis.info>
+Content-Language: en-US, de-DE
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 n7RI
+In-Reply-To: <9b28bd22-f4b7-4bb4-8471-cb131347b6e8@roeck-us.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1718208462;7af90e77;
+X-HE-SMSGID: 1sHQVf-0005TN-M4
 
-On 6/12/24 08:26, Steven Rostedt wrote:
-> On Wed, 12 Jun 2024 08:34:42 +0200
-> Thorsten Leemhuis <linux@leemhuis.info> wrote:
-> 
->> The talk among others will describe why some workflow patterns are what
->> frequently leads to regressions -- and why they are also a factor why
->> some subsystems fix regression quickly, while others take weeks or
->> months to resolve.
-> 
-> The above looks more than a TECH TOPIC. If you have real numbers that
-> point out workflows that are an issue, I think this should be discussed
-> at Maintainers Summit, and perhaps we should start "encouraging" people
-> to change their workflows. Especially if we have hard data showing
-> that it's not working.
-> 
-> /me hopes he's not one of the ones with a bad workflow!
-> 
+On 12.06.24 17:50, Guenter Roeck wrote:
+> On 6/12/24 08:26, Steven Rostedt wrote:
+>> On Wed, 12 Jun 2024 08:34:42 +0200
+>> Thorsten Leemhuis <linux@leemhuis.info> wrote:
+>>
+>>> The talk among others will describe why some workflow patterns are what
+>>> frequently leads to regressions -- and why they are also a factor why
+>>> some subsystems fix regression quickly, while others take weeks or
+>>> months to resolve.
+>>
+>> The above looks more than a TECH TOPIC.
 
-Same here...
+Stuff for the maintainers summit is still in my editor.
 
-Guenter
+>> If you have real numbers that point out workflows that are an issue,
 
+No, I sadly do not. And they would be flawed anyway, as there are many
+regressions I never become aware of -- and it's not really possible to
+determine from commits if they were fixing a regression or not. So it
+could easily be possible that I only see the bad cases and miss out on a
+lot of cases that a subsystem handles well. Not to mention that I
+currently miss out on a most DRM bugs, as they use a external bug
+tracker. Regzbot can monitor that now, but I have no easy means to
+become aware of regressions reported there. The idea was to start vising
+a handful of issue trackers every day or two and use a boring search,
+but as of now that's still an unrealized plan.
 
+>> I think this should be discussed
+>> at Maintainers Summit, and perhaps we should start "encouraging" people
+>> to change their workflows. Especially if we have hard data showing
+>> that it's not working.
+>>
+>> /me hopes he's not one of the ones with a bad workflow!
+>
+> Same here...
+
+Don't worry folks, my plan was to primarily mention the subsystems that
+from my point of view are doing a good job and highlight what they are
+doing well. Apart from maybe one case -- but I will only do so after
+asking the stakeholders for an okay.
+
+Ciao, Thorsten
 
