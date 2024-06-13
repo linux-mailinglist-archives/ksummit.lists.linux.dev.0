@@ -1,56 +1,58 @@
-Return-Path: <ksummit+bounces-1245-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1246-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E53F69073AC
-	for <lists@lfdr.de>; Thu, 13 Jun 2024 15:28:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BDAA9073F4
+	for <lists@lfdr.de>; Thu, 13 Jun 2024 15:39:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3AC61C2499C
-	for <lists@lfdr.de>; Thu, 13 Jun 2024 13:28:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F0E228ABF3
+	for <lists@lfdr.de>; Thu, 13 Jun 2024 13:39:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27DA914430E;
-	Thu, 13 Jun 2024 13:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8C6E144D2C;
+	Thu, 13 Jun 2024 13:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q3+agUlM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R0oGojIr"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4580143C40
-	for <ksummit@lists.linux.dev>; Thu, 13 Jun 2024 13:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532161448E4
+	for <ksummit@lists.linux.dev>; Thu, 13 Jun 2024 13:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718285275; cv=none; b=VDwpdgnUr3gRsKTlePW3qQ5aOl9vyUlzZbzQiWGyWkL6dWfbd4AKwjvgr8dc+K1+h68MYAkzB/vLc25CmeTGg4cYthhC6Bx9L4nt/CRrbX3WOAdvMn7wa6TgqCJFxvuzh6tT4a9/BykqYwKRWBUe6FA0Fd4YLp0P4nuCi2cZjhk=
+	t=1718285958; cv=none; b=bZ+uFPO4AHiUPsz5qpDuH5pfF/ah8KalAojmLzglMlkhipdmyXsxebfH8v2vSOILo3ZTXVyk4MzOGMnuRA0w3MbBFuMHHrolfjqYJGkZ/0zdfM61jhx4TMb7yag6JctYod+KZb48b96fYK42+NlnfswsS/Pma9z+DYR717INPWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718285275; c=relaxed/simple;
-	bh=MSZd7PqDTfBtArLx3vfrNGRtjyn0ohKADT0UGFhnEf8=;
+	s=arc-20240116; t=1718285958; c=relaxed/simple;
+	bh=/0jIyw34pld3xUXvXx1u9wHaL7OnaeIQ++WR+q+y/+I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IAE+dVY4HJPHzTuJs+EdTc7Mt8TGD5dClzMKLDk+O502A5M6zvB6JbwZvWLinuJt4aZlkB9ZvD8B9lbNSoFjtlIjHfE+Dno5f5IoVXiGCRjusGXsu6pa9MhtKd5K7NpkwcYWbNMnR79xwaaFjjk8lUPp7h+91EPxnt0HJfb1YBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q3+agUlM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3461AC4AF49;
-	Thu, 13 Jun 2024 13:27:47 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=syz1EpetJTM7AMsWmxeu0Z2Vk1QZ29TDpgJSx2jMosYr782oCWRf20HevJGl+rC8Pl1SLX4rofBoQfYh7ecKW9UWWB2WkJcvejqFGPu2dc1QpZykWlpTzjyDVNL48OZ7SirNjECfHDLZ/qE5J9yNCKEdvNy1d7lngamAGOkMlBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R0oGojIr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34CC7C2BBFC;
+	Thu, 13 Jun 2024 13:39:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718285275;
-	bh=MSZd7PqDTfBtArLx3vfrNGRtjyn0ohKADT0UGFhnEf8=;
+	s=k20201202; t=1718285958;
+	bh=/0jIyw34pld3xUXvXx1u9wHaL7OnaeIQ++WR+q+y/+I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q3+agUlMt3ir6yfAKMkKLX8c4jmLN6NjPArEIRbaSQJg4wylJ4l2YItflCVUecGZ6
-	 dfXQZ88bShy4K218brgADScug621IvAj1GW0BV7uBZH+vsxAd4TLpNh2+gu2IIoDj6
-	 kuI/wdfSJX1xuMAPN5oWFQZSW5QOzmWsbWjKJqfOntooeQXMjgZlABbDE/nsw7Y6il
-	 K85PwBW454u3w88k24zZaMjVcYFCoOP8rU9n2KjwbbbQ8OKg8GAXfBDofEzjKD9TFY
-	 7ksa56MpGi/S8FLbRA1duKyzsAN3Ar4V707LvKcbDogs/vyJiWvLLIVnWw5p71bRXk
-	 1S+4BTegVWA+g==
-Date: Thu, 13 Jun 2024 09:06:54 -0400
+	b=R0oGojIrAZUFRTuEvWQt0UUMhTCwRUhNn/IT+5WtgjmeiaI2Byn11WgyjO6r6rebv
+	 BPo/Cd2kur4PWP+JyH6o9fIn/KepyuWWxRdCXRn9N9ZxCdPqyL3pUQAFJuwtfXxLpT
+	 QjuoMGHZT9xbCLM6kIYII7AURXMpOG1J1DurBSYlC6IvxHM5MQ1DtFIbpgM8LrlEUG
+	 A+M3AN+UktoXjo35XUjEDhUCKcfWpZstxmd9l2OUuL01DwgxM3JVZTrGxBh9jO/6xI
+	 v/1/T8nWuolaMW8CEhqrN37LMD2hLz02zSwv7t3Mak1bvNkPUnFeXQ+G7YkjH6DCBo
+	 ZmsK2TcF+C7Vg==
+Date: Thu, 13 Jun 2024 09:18:28 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Thorsten Leemhuis <linux@leemhuis.info>,
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+	Thorsten Leemhuis <linux@leemhuis.info>,
 	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
-Subject: Re: [MAINTAINERS SUMMIT] [4/4] Discuss how to better prevent
- backports of commits that turn out to cause regressions
-Message-ID: <ZmruqWDTG2PK-rbu@sashalap>
+Subject: Re: [MAINTAINERS SUMMIT] [2/4] Ensure recent mainline regression are
+ fixed in latest stable series
+Message-ID: <ZmrwuE9REjmK4sDo@sashalap>
 References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
- <e7f9ae0f-7635-4bf7-827b-bad2d58bf228@leemhuis.info>
- <7794a2b09ae4fa73ac35fdaec4858145a665efea.camel@HansenPartnership.com>
+ <c10b7cb2-6ea8-4a15-86a7-9ae689064f6b@leemhuis.info>
+ <68ad780601dd5788ab7c18e8ba683e808cf98f4c.camel@sipsolutions.net>
+ <2024061332-amazingly-haggler-de9a@gregkh>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -59,45 +61,35 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <7794a2b09ae4fa73ac35fdaec4858145a665efea.camel@HansenPartnership.com>
+In-Reply-To: <2024061332-amazingly-haggler-de9a@gregkh>
 
-On Thu, Jun 13, 2024 at 07:58:58AM -0400, James Bottomley wrote:
->On Thu, 2024-06-13 at 10:42 +0200, Thorsten Leemhuis wrote:
->> The scenario shown at the start of the thread illustrates a problem I
->> see frequently: commits with a Fixes: tag end up in new to stable
->> series releases just days after being mainlined and cause regressions
->> -- just like they do in mainline, which just was not known yet at the
->> time of backporting. This happens extremely often right after merge
->> windows when huge piles of changes are backported to the stable trees
->> each cycle shortly after -rc1 is out (which even some kernel
->> developers apparently are somewhat afraid to test from what I've
->> seen).
+On Thu, Jun 13, 2024 at 01:21:15PM +0200, Greg KH wrote:
+>On Thu, Jun 13, 2024 at 01:02:44PM +0200, Johannes Berg wrote:
+>> On Thu, 2024-06-13 at 10:32 +0200, Thorsten Leemhuis wrote:
+>> >
+>> > I know I'm asking a lot here, especially from the file system folks due
+>> > to the testing this will require. And I fully understand the
+>> > participation in stable maintenance always has been and still is
+>> > optional for mainline developers -- and that this would change it.
+>> >
+>> > But I'm bringing this up anyway, as users afaics expect "fix recently
+>> > introduced problems with new minor releases'
+>>
+>> You are saying that users can have it both ways: not test each release,
+>> but actually get fixes in each release...
+>>
+>> So no, I strongly object to putting *even* more work onto maintainers,
+>> basically making us all responsible for stable releases.
 >
->I haven't really observed this for curated fixes.  For most subsystems,
->patches with Fixes tags that are cc'd to stable tend to go steadily
->outside the merge window.  Obviously a few arrive within it, but
->usually at roughly the rate they arrive outside it.
->
->What I observe in the merge window is huge piles of patches go into
->stable *without* a cc:stable tag from the autosel machinery (and quite
->a few even without fixes: tags).
+>I also agree.  Remember, the FIRST rule of us doing a stable release at
+>all was that we would NOT put any extra work on any maintainer or
+>developer that did not want to do anything extra.  Let's not change that
+>please.
 
-Could you provide a concrete example? This shouldn't happen.
+Nor is this something we want to start policing on our end.
 
->So this does beg a couple of questions:
->
->Since you have the figures, what's the proportion of regressions caused
->by backports to stable without cc:stable tags?
-
-This question came up two years ago and we had statistics around this.
-Autosel patches didn't cause more (actually, it was *less*) regressions
-than stable tagged ones.
-
->Could we fix a lot of this by delaying autosel?  It tends to ramp up in
->the merge window when everyone is concentrating on other things, so any
->regressions it causes naturally get ignored for a couple of weeks.
-
-autosel is currently delayed about 3-4 weeks, sometimes more.
+What happens if someone breaks this rule? Do we ban them from sending
+stuff upstream?
 
 -- 
 Thanks,
