@@ -1,33 +1,33 @@
-Return-Path: <ksummit+bounces-1232-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1233-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D4839066EB
-	for <lists@lfdr.de>; Thu, 13 Jun 2024 10:36:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12BC29066F5
+	for <lists@lfdr.de>; Thu, 13 Jun 2024 10:36:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83A461C224A2
-	for <lists@lfdr.de>; Thu, 13 Jun 2024 08:36:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95FD8283941
+	for <lists@lfdr.de>; Thu, 13 Jun 2024 08:36:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1512A140E38;
-	Thu, 13 Jun 2024 08:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BA113D609;
+	Thu, 13 Jun 2024 08:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="qjLvwFu1"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="VE293ewm"
 Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E89B13D50A
-	for <ksummit@lists.linux.dev>; Thu, 13 Jun 2024 08:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C30113D538
+	for <ksummit@lists.linux.dev>; Thu, 13 Jun 2024 08:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718267551; cv=none; b=b3paIYteKM4M4hBap7YJjIK972H7hBR6gwgp+XJjXdzbLjH2SsKtsKQNNZ///C1LWYgfEwefNNiHgy/ZCHMRWEuIbcXLfVulh8EcXWK/VTvLqLtva7QnukUJz3VUJ3FfdBv+n3Y3sx16jkEWiaexrby64A3YjblnYmiaqp1Pkqs=
+	t=1718267662; cv=none; b=Xpwr9geu9P6x8MXCdJ0xvjN0cdAj4TDmzzBZf1Ws7XqGLqG3BYkWQgERlPHXVDQjjj7FBgalnOWo3BX1qVuCqkjNMO3jGNLafOSECXRzVycL1WbTyAhf3ZALIDbx0Avrb7KaaieeI/5hAW91nFYCTHMlZQ4/RvLVZVOIv3FzDEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718267551; c=relaxed/simple;
-	bh=x8GlQqiUvKSl4F5pO4w745t4Xna2l++xrX+weUwIVio=;
+	s=arc-20240116; t=1718267662; c=relaxed/simple;
+	bh=oEHhN15eYfpSdcE2k4A2bNZeGhEtt0hDlmWiDMmFWwo=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=Zdj3645WxTD/oViyeXESim3pMNce3XojK96OprZ+JIIQX/HB4jCMez0I7bgwMaXVq62Ckny+HUFmv95uJWWo7nCUffe9GUvUChUOQ9QWeDuSORc7qz9EUzBHHUt6/CWXdtQam1y9cskHD6I1UwwkNf1XRlIc+uZsd+qhrLq+dJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=qjLvwFu1; arc=none smtp.client-ip=80.237.130.52
+	 In-Reply-To:Content-Type; b=ehNW1cl+4ZolHRZ9QkDQTHRdvdYSTHu5kHKyhkkN5gqq4EFML3JHrV6u5Na6oGkNE1iZTAJVrJJXtBNRJ/tbL1OZy65OE31bf27kQUPZLMIfFZF9MXFz+6PE1jsnOovwdmL0/SMFxVDnZsBM+3uZf/iCd3G8nR7JiCkq34oq0tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=VE293ewm; arc=none smtp.client-ip=80.237.130.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -35,17 +35,17 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	In-Reply-To:References:To:From:Subject:MIME-Version:Date:Message-ID:From:
 	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
 	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=x8GlQqiUvKSl4F5pO4w745t4Xna2l++xrX+weUwIVio=; t=1718267549;
-	x=1718699549; b=qjLvwFu1djBO/GZs4QL4Vt3CCzgtZ6T5yxuoR+bYdit2EX6mdBke1vpzVdJ1/
-	BT/pYfUZMiEeHIqYqLWumFyeV3DvGBBNRPcBih2MEXsCY+5KvX7U4/bIvH3tlMw9VIDfsn3F47tZN
-	w0iAG0od4c0veGSeAGen+MQmJ0DJJiFvOla5akLZ+e3ncorgJDjwmfvlO6TLojwX4vZe8x+13X5gJ
-	qbXG3O2wCdfskqTqYoVSDM1nWWi3JXdPdLe1Cl25stb7h3W9AH07o7JmrDPGqlnZLkuD4ewpRshuZ
-	lpHlcSbov7t8EJFnkxsIj5LABb0mUDn964ibrNs9r7T81+Ci+w==;
+	References; bh=oEHhN15eYfpSdcE2k4A2bNZeGhEtt0hDlmWiDMmFWwo=; t=1718267660;
+	x=1718699660; b=VE293ewmw1N9eGEMpA6NWL0OxM41s7WEjZ687UIMBB8GNegH5JURq9ClIBMqb
+	EbeGVFXHLjyGr6G8Am5E7iVVlX0SaXZGbBh/Rnhg3j+qSMuFS7vHe0d8qvEyxJUWP4WZI+4ATuS5n
+	spq4gRbwWtKOwWfFw9hRPSUQlN8IEdJ513YJmXlfbWU53TUvHUBvOusH9K8cnFrbXW6Lq/d5cNesF
+	blhFrr4yuiPFqIHFUjk2uvn5Ln14WcgOVorInQroAe9e0awSC8cJOX59dNK0HAWE5DAP66VlS9r75
+	GB4/7uyy4kM1jQx2puEjXslPenz0waeaegyF3eyj2a6nh49eFA==;
 Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
 	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1sHfsh-0004dp-K6; Thu, 13 Jun 2024 10:32:27 +0200
-Message-ID: <c10b7cb2-6ea8-4a15-86a7-9ae689064f6b@leemhuis.info>
-Date: Thu, 13 Jun 2024 10:32:27 +0200
+	id 1sHfuU-00055x-23; Thu, 13 Jun 2024 10:34:18 +0200
+Message-ID: <55e89d2c-fa25-4daa-805e-5aca31b321bf@leemhuis.info>
+Date: Thu, 13 Jun 2024 10:34:17 +0200
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -53,8 +53,8 @@ List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [MAINTAINERS SUMMIT] [2/4] Ensure recent mainline regression are
- fixed in latest stable series
+Subject: [MAINTAINERS SUMMIT] [3/4] Elevate handling of regressions that made
+ it to releases deemed for end users
 From: Thorsten Leemhuis <linux@leemhuis.info>
 To: "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
 References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
@@ -104,69 +104,42 @@ Autocrypt: addr=linux@leemhuis.info; keydata=
  ic3b8Yec+Kn+ExIF5IuLfHkUgIUs83kDGGbV+wM8NtlGmCXmatyavUwNCXMsuI24HPl7gV2h n7RI
 In-Reply-To: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1718267549;d509fd83;
-X-HE-SMSGID: 1sHfsh-0004dp-K6
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1718267660;b8873eef;
+X-HE-SMSGID: 1sHfuU-00055x-23
 
-I propose we extend the implications of the "no regressions" rule so
-that mainline developers must ensure fixes for recent mainline
-regression make it to the latest stable series.
+I propose we elevate fixing of mainline regressions that made it to
+releases deemed for end users by setting a target to ideally mainline a
+fix (which might be a revert) within two weeks after the culprit was found.
 
-[FWIW, yes I'm well aware that this is a bold proposal; I also have no
-idea how even Linus thinks about the idea. But I'm bringing it up anyway
-to at least discuss this, as from my point of view it would fix what I
-consider a kind of loophole regarding our "no regressions" rule -- at
-least from the point of view of the users.]
+That IMHO would lessen one of the big pain points for users regarding
+regressions, as quite a few make it into proper release and then take
+quite a while to resolve (as shown in the scenario in the mail at the
+start of this thread). So much so that quite a few users afaics doubt
+that we take our "no regression" rule seriously.
 
-We might have a "no regressions" rule, but nothing currently makes sure
-that regressions introduced recently are fixed in a timely manner in the
-latest stable series. Hence a fix for a regression found just hours
-after a new mainline release (say 6.7) might only reach users weeks
-later with its successor (e.g. 6.8) -- or in unlucky cases when the fix
-is only merged in the next merge window and not backported only with the
-second successor (6.9). The example scenario at the start of this thread
-illustrates that in more details.
+This is why I'd like to see such situations resolved even faster than
+regression that happen just in development kernels. "Expectations and
+best practices for fixing regressions" in
+Documentation/process/handling-regressions.rst (see [1/4] in this
+thread) kind of covers this already:
 
-To improve this situation I propose we add a rule like the following
-somewhere:
+"""Expedite fixing mainline regressions that recently made it into a
+proper mainline, stable, or longterm release (either directly or via
+backport). [...] Aim to mainline a fix by Sunday after the next, if the
+culprit made it into a recent mainline, stable, or longterm release
+(either directly or via backport); if the culprit became known early
+during a week and is simple to resolve, try to mainline the fix within
+the same week. [...]"""
 
-"""Developers must ensure that fixes for regressions introduced in the
-last development cycle make it to the latest stable series -- typically
-by adding 'Fixes:' and 'CC: <stable…' tags to the patch description's
-footer."""
+I'd like to make the language somewhat stronger.
 
-I know I'm asking a lot here, especially from the file system folks due
-to the testing this will require. And I fully understand the
-participation in stable maintenance always has been and still is
-optional for mainline developers -- and that this would change it.
-
-But I'm bringing this up anyway, as users afaics expect "fix recently
-introduced problems with new minor releases', as it is a pretty normal
-thing in most other FLOSS projects that have minor releases. A lot of
-kernel developers are already doing what I proposed anyway. It could be
-viewed as fair to our user base, too. And without it the "no
-regressions" rule might be considered hollow.
-
-Note, to quickly fix such regression in the latest stable series such
-regressions obviously must first be fixed in a timely manner in
-mainline; that aspect is ignored here, as proposals 3/4 of this thread
-will covers that.
-
-Another note: the "Expectations and best practices for fixing
-regressions" in Documentation/process/handling-regressions.rst (see
-[1/4] kind of covers this already. But it does not use the term "must";
-at the same time the scope is bigger, too, which is partly due to a
-statement from Linus[1]: """If a regression made it into a proper
-mainline release during the past twelve months, ensure to tag the fix
-with "Cc: stable@vger.kernel.org", as a "Fixes:" tag alone does not
-guarantee a backport. Please add the same tag, in case you know the
-culprit was backported to stable or longterm kernels.""""
-[1]
-https://lore.kernel.org/all/CAHk-=wis_qQy4oDNynNKi5b7Qhosmxtoj1jxo5wmB6SRUwQUBQ@mail.gmail.com/
-
-Side note: due to the [1] above the rule this messages proposes above
-maybe needs 's/introduced in the last development cycle/introduced in
-mainline versions released during the past 12 months/" (or five or six
-releases instead, as that is easier to keep track of?). But I guess with
-that this proposal likely would be even less welcomed. :-/
+"""Handle mainline regressions that recently made it into a proper
+mainline, stable, or longterm release (either directly or via backport)
+with an even higher priority and try to fix them as fast as possible.
+[...] Aim hard to mainline a fix by Sunday after the next, if the
+culprit made it into a recent mainline, stable, or longterm release
+(either directly or via backport); try to mainline the fix within the
+same week, if the regression apparently bothers quite a few users or if
+the problem with the culprit became known on a Monday or Tuesday."""
 
