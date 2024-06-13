@@ -1,81 +1,86 @@
-Return-Path: <ksummit+bounces-1239-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1240-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97962906AD5
-	for <lists@lfdr.de>; Thu, 13 Jun 2024 13:17:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C31EA906AE2
+	for <lists@lfdr.de>; Thu, 13 Jun 2024 13:21:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AABF1C23358
-	for <lists@lfdr.de>; Thu, 13 Jun 2024 11:17:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7370B28704F
+	for <lists@lfdr.de>; Thu, 13 Jun 2024 11:21:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D75143725;
-	Thu, 13 Jun 2024 11:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6AB9142E8E;
+	Thu, 13 Jun 2024 11:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UbWQM6+2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QVGOSdRZ"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0A013E88B
-	for <ksummit@lists.linux.dev>; Thu, 13 Jun 2024 11:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D71D1422DD
+	for <ksummit@lists.linux.dev>; Thu, 13 Jun 2024 11:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718277440; cv=none; b=pfVb4dAtCuCtP5GrNxVj3wmjaKMkx2dLPdn5xPt5lrSeUTr3URpdaH/D9AdrDO0RdsRNp6MYQlUUHdHV+JXDr3oXiDwM02uM4o4Ua1L4tl70OyWH1nUI55jyJxE0obnCuDrbceW7Ogf4UC9FOZ8JXaPV2pVHhF1GVLUZT38F6Qw=
+	t=1718277678; cv=none; b=kNbUzittB/iJUIvEC29MudhcBb+ZuXmgIiTGWtj6rzR3fHY+w6Z6lCNoQ0vX1cxx2sAvG8esgX31kGB7pY/xBDsj5ZNeOe8oxvsBzyuSfAvbSWjdNbmQ3U4W3/5uhbo9fWFDoRUA7fiqPnr12JW3m2DR4UbnGF0T4U53SylRtlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718277440; c=relaxed/simple;
-	bh=72T+HPUmhr4eZhQvMHvUYQpSNyt/BZ34We4i4WNUfzk=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=ta+y4R778Q+nRWC6gpHGjNteetW0DWUn9ZemDNlbCj4+vZLggH+csMB3PO/1K1M77wyOr0e+QJWSQyyuANVP058FJ525kFLkyXiXbci53+UBXuOaDK/HpH0Vq4mX9gRxqIeGtUeXz/JWj7Ib6/+5iWfLj3Tk5icijwa/WebMId4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UbWQM6+2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B0CC4AF1D;
-	Thu, 13 Jun 2024 11:17:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718277439;
-	bh=72T+HPUmhr4eZhQvMHvUYQpSNyt/BZ34We4i4WNUfzk=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=UbWQM6+2tQHhEjW+p1SCfRGf+x+R0QCnecqLE7tVPr5J8R6TmrQSiOE4SrEry9mOR
-	 q8JHODTbHaEDRIyIpedfU/qVbOgMuIUGEMh/FrS2x2SLo6DoVv96TTM2yAapq760Mf
-	 u4Vfo7KC6dJRJLjbYX6wNS6BZQRWGG4LscCshU6ZvQPnoVUFH/8gHO68W81Dq1VaXA
-	 eAtpgNeLbTVvKa8uMso/9te5nx8Stq0oaAMQdl36oBK+sWzzmLPztqQyPdrOns+ny1
-	 Oq2wo6R4jZtXXDY9jARUalvIOy+pxw+WS6AYG+6SpI20adViRjQ8TbxssQ/F/v8fjy
-	 /yYLuNXwFQy8g==
-Date: Thu, 13 Jun 2024 13:17:15 +0200 (CEST)
-From: Jiri Kosina <jikos@kernel.org>
-To: Thorsten Leemhuis <linux@leemhuis.info>
-cc: "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
-Subject: Re: [MAINTAINERS SUMMIT] [2/4] Ensure recent mainline regression
- are fixed in latest stable series
-In-Reply-To: <c10b7cb2-6ea8-4a15-86a7-9ae689064f6b@leemhuis.info>
-Message-ID: <nycvar.YFH.7.76.2406131312200.24940@cbobk.fhfr.pm>
-References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info> <c10b7cb2-6ea8-4a15-86a7-9ae689064f6b@leemhuis.info>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+	s=arc-20240116; t=1718277678; c=relaxed/simple;
+	bh=OaUQZu91pRIS675ZKfEojsCoS+tC5Y6wBIw4ObxN6jY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Cm8lREauD7xvm6a/ToP771y7tKTyn5MLp5rNSMV0ZvmprfPKuI6nr6AqrsiNx78BMwkh9i+fw/wGHxAilB/mvNMvMIvUunSUj8zMZkjzu8wJng5hqVxK++L4Qx+UsYuJQT6bgY+On6nQIkq6jSi7ij5azw6ayhIztbKQKKVRXDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QVGOSdRZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F01AC2BBFC;
+	Thu, 13 Jun 2024 11:21:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718277677;
+	bh=OaUQZu91pRIS675ZKfEojsCoS+tC5Y6wBIw4ObxN6jY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QVGOSdRZsGiayFdNoP/71K5B5qZHJu4X6W90zytvKClMFhP0WWbThLi9amoieWQU/
+	 tz5qieV7yYusvvz0OHaJtdI5tMVdIVZVFkX1txKoqZq6HTxEDRDHlOeumkZdKyL9Pw
+	 4fhdo/zXIEgu2Mgysy+Gn5ELHyuLPZ7nuZU3PiUA=
+Date: Thu, 13 Jun 2024 13:21:15 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Thorsten Leemhuis <linux@leemhuis.info>,
+	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
+Subject: Re: [MAINTAINERS SUMMIT] [2/4] Ensure recent mainline regression are
+ fixed in latest stable series
+Message-ID: <2024061332-amazingly-haggler-de9a@gregkh>
+References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
+ <c10b7cb2-6ea8-4a15-86a7-9ae689064f6b@leemhuis.info>
+ <68ad780601dd5788ab7c18e8ba683e808cf98f4c.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <68ad780601dd5788ab7c18e8ba683e808cf98f4c.camel@sipsolutions.net>
 
-On Thu, 13 Jun 2024, Thorsten Leemhuis wrote:
+On Thu, Jun 13, 2024 at 01:02:44PM +0200, Johannes Berg wrote:
+> On Thu, 2024-06-13 at 10:32 +0200, Thorsten Leemhuis wrote:
+> > 
+> > I know I'm asking a lot here, especially from the file system folks due
+> > to the testing this will require. And I fully understand the
+> > participation in stable maintenance always has been and still is
+> > optional for mainline developers -- and that this would change it.
+> > 
+> > But I'm bringing this up anyway, as users afaics expect "fix recently
+> > introduced problems with new minor releases'
+> 
+> You are saying that users can have it both ways: not test each release,
+> but actually get fixes in each release...
+> 
+> So no, I strongly object to putting *even* more work onto maintainers,
+> basically making us all responsible for stable releases.
 
-> I propose we extend the implications of the "no regressions" rule so
-> that mainline developers must ensure fixes for recent mainline
-> regression make it to the latest stable series.
+I also agree.  Remember, the FIRST rule of us doing a stable release at
+all was that we would NOT put any extra work on any maintainer or
+developer that did not want to do anything extra.  Let's not change that
+please.
 
-Sorry, but I am personally very strongly against that.
+thanks,
 
-As I maintainer, I never felt responsibile for -stable tree, and I believe 
-this is the case for many others (please feel free to speak up if you 
-disagree). My only objective is to have all the features and fixes land in 
-mainline in a timely manner and good quality.
-
-This is definitely not a way how to avoid maintainer burnout, quite the 
-contrary.
-
--- 
-Jiri Kosina
-SUSE Labs
-
+greg k-h
 
