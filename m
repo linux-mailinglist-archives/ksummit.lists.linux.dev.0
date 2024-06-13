@@ -1,33 +1,33 @@
-Return-Path: <ksummit+bounces-1233-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1234-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12BC29066F5
-	for <lists@lfdr.de>; Thu, 13 Jun 2024 10:36:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EC33906744
+	for <lists@lfdr.de>; Thu, 13 Jun 2024 10:44:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95FD8283941
-	for <lists@lfdr.de>; Thu, 13 Jun 2024 08:36:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0167E1C21E03
+	for <lists@lfdr.de>; Thu, 13 Jun 2024 08:44:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BA113D609;
-	Thu, 13 Jun 2024 08:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA281419A9;
+	Thu, 13 Jun 2024 08:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="VE293ewm"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="AL6oDhDs"
 Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C30113D538
-	for <ksummit@lists.linux.dev>; Thu, 13 Jun 2024 08:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6077713D8B3
+	for <ksummit@lists.linux.dev>; Thu, 13 Jun 2024 08:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718267662; cv=none; b=Xpwr9geu9P6x8MXCdJ0xvjN0cdAj4TDmzzBZf1Ws7XqGLqG3BYkWQgERlPHXVDQjjj7FBgalnOWo3BX1qVuCqkjNMO3jGNLafOSECXRzVycL1WbTyAhf3ZALIDbx0Avrb7KaaieeI/5hAW91nFYCTHMlZQ4/RvLVZVOIv3FzDEA=
+	t=1718268125; cv=none; b=fnV5wu0M9dhL5fDeNVrhdp6pu1HmxcT/FGrSWzIjdu7N0LkFcjuTyEFrJ1MJj4LHD+CklAL2RjQHJOHQidELnvtLRNlGp1JiOVlZTPp4eYFmMNkFs5cFyf4vnQLfO9CN4LCbl969sGnwUnz1OMdvS8se83EiN2u2Z3WF5aMtcDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718267662; c=relaxed/simple;
-	bh=oEHhN15eYfpSdcE2k4A2bNZeGhEtt0hDlmWiDMmFWwo=;
+	s=arc-20240116; t=1718268125; c=relaxed/simple;
+	bh=8hfoYXFxMgGWHmGV8iCwhOXqhoYbtX9Q/PZDk0fy0uM=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=ehNW1cl+4ZolHRZ9QkDQTHRdvdYSTHu5kHKyhkkN5gqq4EFML3JHrV6u5Na6oGkNE1iZTAJVrJJXtBNRJ/tbL1OZy65OE31bf27kQUPZLMIfFZF9MXFz+6PE1jsnOovwdmL0/SMFxVDnZsBM+3uZf/iCd3G8nR7JiCkq34oq0tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=VE293ewm; arc=none smtp.client-ip=80.237.130.52
+	 In-Reply-To:Content-Type; b=d2dI0ujTVszFvjHKw/4MYTs9ztzmp9lLnq0ZhuaxuBII2KdDowo4IKu7J+7s0pqwsSJRUEhf+0BcpAL8Broe2WtsQxfWHTIOmDjHbuP2cqAU9GalRPXt3mxp6GIS6VACAyFQcML6JS3DBNnXp43CvmwByxJaYCrzbpz4CEBRn24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=AL6oDhDs; arc=none smtp.client-ip=80.237.130.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -35,17 +35,17 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	In-Reply-To:References:To:From:Subject:MIME-Version:Date:Message-ID:From:
 	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
 	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=oEHhN15eYfpSdcE2k4A2bNZeGhEtt0hDlmWiDMmFWwo=; t=1718267660;
-	x=1718699660; b=VE293ewmw1N9eGEMpA6NWL0OxM41s7WEjZ687UIMBB8GNegH5JURq9ClIBMqb
-	EbeGVFXHLjyGr6G8Am5E7iVVlX0SaXZGbBh/Rnhg3j+qSMuFS7vHe0d8qvEyxJUWP4WZI+4ATuS5n
-	spq4gRbwWtKOwWfFw9hRPSUQlN8IEdJ513YJmXlfbWU53TUvHUBvOusH9K8cnFrbXW6Lq/d5cNesF
-	blhFrr4yuiPFqIHFUjk2uvn5Ln14WcgOVorInQroAe9e0awSC8cJOX59dNK0HAWE5DAP66VlS9r75
-	GB4/7uyy4kM1jQx2puEjXslPenz0waeaegyF3eyj2a6nh49eFA==;
+	References; bh=8hfoYXFxMgGWHmGV8iCwhOXqhoYbtX9Q/PZDk0fy0uM=; t=1718268123;
+	x=1718700123; b=AL6oDhDsuKkl9IXocYFe97E+wFs12xkd0dPhuwtis2Qm/2CTz/sjfTRyjU9v2
+	dNxLKWi/xIR6OU+9RujfnowPKuy+Et1t/66ylYBCfYjhk49OOeCQqUntjqDrBHFTctnbeHEDzdF83
+	8vkp+5Jl/UvhURJTj9J50vfhedONmE0h2CqIJZhj3agJGkzUbyuPDJTx63CHseBtVOHDcyMdnMoC8
+	8iMGcByImKMTcZWG+r4ku7raPPAhkYr9cgDNmrVW5oBlqYkAoeZ+aH7YjJec/f/GERS8/8f4YRX73
+	4K6H2ZI5TwiORsy4VtdvErpeX/DTi7Pbjj8dv2jRQYb7boG+Xw==;
 Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
 	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1sHfuU-00055x-23; Thu, 13 Jun 2024 10:34:18 +0200
-Message-ID: <55e89d2c-fa25-4daa-805e-5aca31b321bf@leemhuis.info>
-Date: Thu, 13 Jun 2024 10:34:17 +0200
+	id 1sHg1x-0007ND-FT; Thu, 13 Jun 2024 10:42:01 +0200
+Message-ID: <e7f9ae0f-7635-4bf7-827b-bad2d58bf228@leemhuis.info>
+Date: Thu, 13 Jun 2024 10:42:01 +0200
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -53,8 +53,8 @@ List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [MAINTAINERS SUMMIT] [3/4] Elevate handling of regressions that made
- it to releases deemed for end users
+Subject: [MAINTAINERS SUMMIT] [4/4] Discuss how to better prevent backports of
+ commits that turn out to cause regressions
 From: Thorsten Leemhuis <linux@leemhuis.info>
 To: "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
 References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
@@ -105,41 +105,81 @@ Autocrypt: addr=linux@leemhuis.info; keydata=
 In-Reply-To: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1718267660;b8873eef;
-X-HE-SMSGID: 1sHfuU-00055x-23
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1718268123;aca25bb1;
+X-HE-SMSGID: 1sHg1x-0007ND-FT
 
-I propose we elevate fixing of mainline regressions that made it to
-releases deemed for end users by setting a target to ideally mainline a
-fix (which might be a revert) within two weeks after the culprit was found.
+I would like to discuss how to better prevent backports of mainline
+commits to stable that turn out to cause regressions.
 
-That IMHO would lessen one of the big pain points for users regarding
-regressions, as quite a few make it into proper release and then take
-quite a while to resolve (as shown in the scenario in the mail at the
-start of this thread). So much so that quite a few users afaics doubt
-that we take our "no regression" rule seriously.
+The scenario shown at the start of the thread illustrates a problem I
+see frequently: commits with a Fixes: tag end up in new to stable series
+releases just days after being mainlined and cause regressions -- just
+like they do in mainline, which just was not known yet at the time of
+backporting. This happens extremely often right after merge windows when
+huge piles of changes are backported to the stable trees each cycle
+shortly after -rc1 is out (which even some kernel developers apparently
+are somewhat afraid to test from what I've seen).
 
-This is why I'd like to see such situations resolved even faster than
-regression that happen just in development kernels. "Expectations and
-best practices for fixing regressions" in
-Documentation/process/handling-regressions.rst (see [1/4] in this
-thread) kind of covers this already:
+I do not want to criticize the stable team for their approach to things,
+as I can understand why they are doing this: there is no simple way to
+distinguish "this is an urgent (security) fix that should be quickly
+backported" from "this should be tested in mainline for a while first"
+or "this has a Fixes: tag, but is not backport-worthy at all" -- which
+is why they handle changes about equally. I think untangling that aspect
+and backporting the non-urgent ones more slowly could help a lot to
+prevent many regressions from hitting stable trees.
 
-"""Expedite fixing mainline regressions that recently made it into a
-proper mainline, stable, or longterm release (either directly or via
-backport). [...] Aim to mainline a fix by Sunday after the next, if the
-culprit made it into a recent mainline, stable, or longterm release
-(either directly or via backport); if the culprit became known early
-during a week and is simple to resolve, try to mainline the fix within
-the same week. [...]"""
+The thing is: I'm not sure how to achieve that. Here are a few thoughts
+my brain came up with:
 
-I'd like to make the language somewhat stronger.
+* For patches that are tagged for backporting it's easy to for
+developers to influence the timing, as they can use a stable tag like
+`Cc: <stable@vger.kernel.org> # after -rc4` to delay backporting (see
+Documentation/process/stable-kernel-rules.rst for details). But for
+quite a few developers this is not an option, as such a Cc: implies that
+the developer wants the fix to be backported -- and thus should ideally
+have tested it, will provide an adjusted patch when needed, and is
+willing to handle any fallout. Maybe untangling these aspects from the
+stable tag might be wise, so that developers can signal "I think this
+should be backported, but I don't want anything to do with it" could
+help. If this becomes the norm then maybe the stable team could even
+stop taking nearly everything with a Fixes: tag. But I'm not sure if I
+like this idea myself, as it has downsides, too.
 
-"""Handle mainline regressions that recently made it into a proper
-mainline, stable, or longterm release (either directly or via backport)
-with an even higher priority and try to fix them as fast as possible.
-[...] Aim hard to mainline a fix by Sunday after the next, if the
-culprit made it into a recent mainline, stable, or longterm release
-(either directly or via backport); try to mainline the fix within the
-same week, if the regression apparently bothers quite a few users or if
-the problem with the culprit became known on a Monday or Tuesday."""
+* We could ask the stable team to only backport changes once they have
+been in mainline for a certain time (something like "at the earliest two
+weeks after the change was present in a mainline release or
+pre-release"?). But to not delay urgent fixes we then would need
+developers to mark the urgent ones somehow. That is likely a hard sell,
+but maybe less so then what the previous point outlined; untangling
+could help here, too.
+
+* Maybe convince the stable team to consider all commits with just a
+Fixes: tag as "non urgent", if they were merged during a merge window
+with a committer (or author?) date from before the merge window -- and
+then only backport them after -rc4 to ensure they got at least three
+weeks of mainline testing before they are backported. This is imperfect
+and has downsides, but would be relatively simple to realize.
+
+* We could extend the Fixes tag in a fashion similar to the stable tag
+(see above) to establish something like `Fixes: cafec0cacafe ("foo: bar:
+foobar baz") # after -rc4 if considered backportworthy` -- but some of
+these lines will become awfully long (they already are occasionally even
+without this add-on note).
+
+Ciao, Thorsten
+
+P.S.: Related things that could be discussed:
+
+* One cause of regressions that happen in stable trees (and not in
+mainline) I've seen quite a few times are backports of commits with
+Fixes: tags that were part of a patch-series and depend on earlier
+patches from the series. The stable-team afaics has no easy way to spot
+this, as there is no way to check "was this change part of a series".
+Sometimes I wonder if a dedicated tag linking to the submission of a
+patch could help -- and is something quite a few maintainers already
+really want and add using a "Link" tag despite Linus dislike for that
+(IIRC). But following that link for each and every patch slated for
+backporting does not scale for the stable team anyway, so it's likely
+not worth it.
 
