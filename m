@@ -1,181 +1,169 @@
-Return-Path: <ksummit+bounces-1235-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1236-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B58F9906984
-	for <lists@lfdr.de>; Thu, 13 Jun 2024 11:59:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B87979069CE
+	for <lists@lfdr.de>; Thu, 13 Jun 2024 12:18:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 296F12853DE
-	for <lists@lfdr.de>; Thu, 13 Jun 2024 09:59:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B55371C21B4E
+	for <lists@lfdr.de>; Thu, 13 Jun 2024 10:18:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E9201420B3;
-	Thu, 13 Jun 2024 09:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0ED1422C9;
+	Thu, 13 Jun 2024 10:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="kAfoqNFh";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="9fvWneIR";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="kAfoqNFh";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="9fvWneIR"
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="zyPoSobx"
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6C81411FD
-	for <ksummit@lists.linux.dev>; Thu, 13 Jun 2024 09:59:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05064522F
+	for <ksummit@lists.linux.dev>; Thu, 13 Jun 2024 10:18:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718272762; cv=none; b=MfpIDH+IGHiciipFl9AIXBBlY6lNtnHVKpuS7sA/qbfXkwCV83v5nm0aWLwuVBoq5o5R/so+Wh4ooLuzII2HklpKuxZNJGC40tfQz5YpU1PLtKOGm3D2AayrLu2l8D+e9eU7BQA5Afi8SCTkjktpAS0Ej+IlifA8F6yMLE7v4fg=
+	t=1718273896; cv=none; b=HeK1+0szr77nW0OFF8hGMqtQCBqJ6DhVWhqJpihOTaz2ATVA8Isyr0kmamGKvnr28HDWY804//eNZ4JQXzPh6aqfohF/uYCt4n+Axe/EPpNzEgmHGfTNg9u4CvO7LHYreZVwrMSDTOT2OEp3FB8QTzxVDLw2bNiq0KMMhA9l6Kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718272762; c=relaxed/simple;
-	bh=O31Iu5Lvokfz2VgFLA5PJrPQ+UVhWyFD8GJJHs9cOk8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HVDIGAOMGEwltHukqITcThmlSh6lH8ryMMdrfl7x4elfEYorbokiv2yzu3vkK7zIZ4iwlACnacH2It+EOUvi7OV+wTIbXNGiIhZCvS/JigHyKfoxiuk6pPe+4Xg5bI+87X41VxtVefgB57HzsPfqoSkjEibpz1RVlUQ/ZZyoZ/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=kAfoqNFh; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=9fvWneIR; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=kAfoqNFh; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=9fvWneIR; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 4EA265D133;
-	Thu, 13 Jun 2024 09:59:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1718272758; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zite7KjVNnX2bEh4S4J9IWU9VzCxq49lymlIrlt8pME=;
-	b=kAfoqNFhu6lRES0JaXUCHWrC4+SppKNfyFHETosu2mpxjgHDK2CXB3gqMMsqxzWWx/hpMd
-	n89GwXOrQWS9F/8wl8Bqm+OIGADaIxxY62K6XGZvZnhKfDjAT2F+7gW4H/+fd9nGHwzv8l
-	qAgpqOpK4CILZ3utXZax6Jhq2Rpads4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1718272758;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zite7KjVNnX2bEh4S4J9IWU9VzCxq49lymlIrlt8pME=;
-	b=9fvWneIRuEHrol/yUmZAdXpOTMVgJvVs/I6rGLHLurfCzpEJG8Aqy0YxSh4wQRb8sqSCTg
-	dXiRpkNjq3BiBNDg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kAfoqNFh;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9fvWneIR
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1718272758; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zite7KjVNnX2bEh4S4J9IWU9VzCxq49lymlIrlt8pME=;
-	b=kAfoqNFhu6lRES0JaXUCHWrC4+SppKNfyFHETosu2mpxjgHDK2CXB3gqMMsqxzWWx/hpMd
-	n89GwXOrQWS9F/8wl8Bqm+OIGADaIxxY62K6XGZvZnhKfDjAT2F+7gW4H/+fd9nGHwzv8l
-	qAgpqOpK4CILZ3utXZax6Jhq2Rpads4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1718272758;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zite7KjVNnX2bEh4S4J9IWU9VzCxq49lymlIrlt8pME=;
-	b=9fvWneIRuEHrol/yUmZAdXpOTMVgJvVs/I6rGLHLurfCzpEJG8Aqy0YxSh4wQRb8sqSCTg
-	dXiRpkNjq3BiBNDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4479B13A87;
-	Thu, 13 Jun 2024 09:59:18 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id aNCwEPbCamZ3eAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 13 Jun 2024 09:59:18 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id E0619A087B; Thu, 13 Jun 2024 11:59:17 +0200 (CEST)
-Date: Thu, 13 Jun 2024 11:59:17 +0200
-From: Jan Kara <jack@suse.cz>
-To: Thorsten Leemhuis <linux@leemhuis.info>
-Cc: "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
-Subject: Re: [MAINTAINERS SUMMIT] [4/4] Discuss how to better prevent
- backports of commits that turn out to cause regressions
-Message-ID: <20240613095917.eeplayyfvl6un56y@quack3>
-References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
- <e7f9ae0f-7635-4bf7-827b-bad2d58bf228@leemhuis.info>
+	s=arc-20240116; t=1718273896; c=relaxed/simple;
+	bh=cU5GIffJ211u6Lttb3b1Jj8ktnwsBAMYNzOQbp9FInk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=T6/T90tKRBWHMQbMumfby1AsgeOVP0MuWitYBWdWXEX9h2dnTQz5xzbAM4vlWv4c5fOXfU5y9nvNOC6XmlcezPeyn3l48Z78QqA67MUA3CKHnXyB/hPlBEMxP0Df/IRIaF+WZOyqQEAEjg9FZ6NUb0EozmetoeSyGb9eCFHt658=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=zyPoSobx; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=TEWEYts/T7Eghdkegd3MBulU5ow74SK2cV9SZ6V1dNo=; t=1718273894;
+	x=1718705894; b=zyPoSobx8CPZ4xN2VVrwffBPmp75ijEFsUdPdNjB+Kj1VBzsT4BSWqfVvTAcG
+	w71MzjCcsTmfEoFWy52R5JHmwFksSXuhC44I5kiAuuSAAUKTtLZFcDKZK+d+FskGHtqHpImSNkLis
+	vMchLfKMsbHKqUhA47xgJzHcPdJ5lGZqPPsGscJT04BbIbEkJ88lBbBOZCRVqmcxN77Yt0janqSW8
+	rTtq9tnbbcPkrpq1oF0iuHpNj9tDWBRCCaaVQWn82/0IU1jMXMeGrJPnLuaACYp5hVboV/QMMQHVM
+	5oxLahH3es5uPjIankHSpaIXzv7kh5QvxXhagkUaGxDgkb9F1w==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1sHhWw-0002he-Gg; Thu, 13 Jun 2024 12:18:06 +0200
+Message-ID: <ed72d2ed-d9e6-406d-a5e1-549fa6786ec1@leemhuis.info>
+Date: Thu, 13 Jun 2024 12:18:06 +0200
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e7f9ae0f-7635-4bf7-827b-bad2d58bf228@leemhuis.info>
-X-Spamd-Result: default: False [-4.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	ARC_NA(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.cz:dkim];
-	RCPT_COUNT_TWO(0.00)[2];
-	RCVD_COUNT_THREE(0.00)[3];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+]
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: 4EA265D133
-X-Spam-Flag: NO
-X-Spam-Score: -4.01
-X-Spam-Level: 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [MAINTAINERS SUMMIT] [4/4] Discuss how to better prevent
+ backports of commits that turn out to cause regressions
+To: Jan Kara <jack@suse.cz>
+Cc: "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
+References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
+ <e7f9ae0f-7635-4bf7-827b-bad2d58bf228@leemhuis.info>
+ <20240613095917.eeplayyfvl6un56y@quack3>
+From: Thorsten Leemhuis <linux@leemhuis.info>
+Content-Language: en-US, de-DE
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 n7RI
+In-Reply-To: <20240613095917.eeplayyfvl6un56y@quack3>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1718273894;15b028f0;
+X-HE-SMSGID: 1sHhWw-0002he-Gg
 
-On Thu 13-06-24 10:42:01, Thorsten Leemhuis wrote:
-> * One cause of regressions that happen in stable trees (and not in
-> mainline) I've seen quite a few times are backports of commits with
-> Fixes: tags that were part of a patch-series and depend on earlier
-> patches from the series. The stable-team afaics has no easy way to spot
-> this, as there is no way to check "was this change part of a series".
-> Sometimes I wonder if a dedicated tag linking to the submission of a
-> patch could help -- and is something quite a few maintainers already
-> really want and add using a "Link" tag despite Linus dislike for that
-> (IIRC).
+On 13.06.24 11:59, Jan Kara wrote:
+> On Thu 13-06-24 10:42:01, Thorsten Leemhuis wrote:
+>> * One cause of regressions that happen in stable trees (and not in
+>> mainline) I've seen quite a few times are backports of commits with
+>> Fixes: tags that were part of a patch-series and depend on earlier
+>> patches from the series. The stable-team afaics has no easy way to spot
+>> this, as there is no way to check "was this change part of a series".
+>> Sometimes I wonder if a dedicated tag linking to the submission of a
+>> patch could help -- and is something quite a few maintainers already
+>> really want and add using a "Link" tag despite Linus dislike for that
+>> (IIRC).
+> 
+> FWIW I (and a few other maintainers) use 'Message-Id' tag to link to
+> submission. This is still easily convertible to lore link and unlike 'Link'
+> tag it is clear what this tag is about and that it is not just a link to
+> related discussion or something like that. AFAIK this also addresses Linus'
+> dislike because what he was complaining about is that 'Link' should be
+> linking to some useful context for the changelog, not just patch
+> submission.
 
-FWIW I (and a few other maintainers) use 'Message-Id' tag to link to
-submission. This is still easily convertible to lore link and unlike 'Link'
-tag it is clear what this tag is about and that it is not just a link to
-related discussion or something like that. AFAIK this also addresses Linus'
-dislike because what he was complaining about is that 'Link' should be
-linking to some useful context for the changelog, not just patch
-submission.
+Well, I fine with me. But at the same time this makes me wonder: if we
+want to establish a new tag, why not just use something that makes it
+more obvious what the tag is about (e.g. "Review:", "Posting:",
+"Submission:", or something like that) and then just use a lore link for
+consistency, as we deal with those already all the time? Also makes it
+easier to follow later for anyone that looks closer at the commit and
+wants the bigger picture (e.g. cover letter and a list of related patches).
 
-> But following that link for each and every patch slated for
-> backporting does not scale for the stable team anyway, so it's likely
-> not worth it.
+>> But following that link for each and every patch slated for
+>> backporting does not scale for the stable team anyway, so it's likely
+>> not worth it.
+> 
+> Well, what I'd propose is that if 'Message-Id' tag is present and thus it
+> can be established (in an automated way using lore) which series this patch
+> was part of, then stable maintainers will either pick all patches from the
+> start of the series upto this change or nothing.
 
-Well, what I'd propose is that if 'Message-Id' tag is present and thus it
-can be established (in an automated way using lore) which series this patch
-was part of, then stable maintainers will either pick all patches from the
-start of the series upto this change or nothing. Because what I see
-happening several times in a year just in subsystems I maintain is that
-stable tree picks up more or less random subset of a patch series
-(depending on what applies and what their algorithms decide to take) and
-that causes issues. Sometimes we catch that during glancing over patches
-flowing into stable (like Amir did last week) but sometimes we don't and
-breakage happens.
++1 (and this obviously could work about the same if it was a proper link)
 
-This will require a bit more discipline when creating patch series to put
-more or less independent fixes that should go into stable first but that is
-a good practice anyway and mostly followed at least in the areas of the
-kernel I work in.
+> Because what I see
+> happening several times in a year just in subsystems I maintain is that
+> stable tree picks up more or less random subset of a patch series
+> (depending on what applies and what their algorithms decide to take) and
+> that causes issues. Sometimes we catch that during glancing over patches
+> flowing into stable (like Amir did last week) but sometimes we don't and
+> breakage happens.
+> 
+> This will require a bit more discipline when creating patch series to put
+> more or less independent fixes that should go into stable first but that is
+> a good practice anyway and mostly followed at least in the areas of the
+> kernel I work in.
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
++1
+
+Ciao, Thorsten
 
