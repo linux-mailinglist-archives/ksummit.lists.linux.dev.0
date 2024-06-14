@@ -1,113 +1,96 @@
-Return-Path: <ksummit+bounces-1269-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1270-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD84C908D6E
-	for <lists@lfdr.de>; Fri, 14 Jun 2024 16:32:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D21C908D95
+	for <lists@lfdr.de>; Fri, 14 Jun 2024 16:37:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3884C284FBA
-	for <lists@lfdr.de>; Fri, 14 Jun 2024 14:32:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E04F1C223A1
+	for <lists@lfdr.de>; Fri, 14 Jun 2024 14:37:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69385E560;
-	Fri, 14 Jun 2024 14:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07172DF78;
+	Fri, 14 Jun 2024 14:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AOqmAuNY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EYI7OJ9w"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3DCFDDA5
-	for <ksummit@lists.linux.dev>; Fri, 14 Jun 2024 14:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A9B27471
+	for <ksummit@lists.linux.dev>; Fri, 14 Jun 2024 14:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718375564; cv=none; b=WqJXD2EHe++BkOS9XoA3lVgisZBySk8RuD75J9oUJGgaOeKLdz4N8Lxuo49t8Um2Dws4mDrWzZwHnYBVsfY3S9cscikfacTwSz4SN9Bsw9WEdO3cnQZU2DqCb7dXTKsKOcsrSB5H3cMqcCijEsyzsnjrcbi2J1Dw9P4O5yzYsVc=
+	t=1718375819; cv=none; b=kQoQzEWPJCIAjiTKms1y8iCt+2T0RIyPZaBb33Gd6hM67xQNQ5J+rjld/OmYQhBwzcJ6g+ol/YMTFohj7wWgBi+K6WveMd2uoM7rdgRgLKG2RY4ZPnns79t2rOUhgQcD1D1/yZQ/M8wX+UYtceUcfMLEdTTFqmQwOg3Hp7NCSkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718375564; c=relaxed/simple;
-	bh=FneaIPldtjV8hw8yb0o5ye0MkxOEI5C1sw6GL0zDH6M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L0J9WoDnTBRwaHjnIBhE04+l4Z2uqeYxGNCP+WWKlZ2Ah94sgF3Ic/Opx0+G748EzIJshK2jnJ0DM1Tf98zKF0UxgaV7jAFYSQLrEgfToJJP587Jxxn1PVKu2AGH2OLza6PW8QSkwSdtJIR0LIG1ETBo0PB9/9IVVcfB65KDqUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AOqmAuNY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76231C2BD10
-	for <ksummit@lists.linux.dev>; Fri, 14 Jun 2024 14:32:43 +0000 (UTC)
+	s=arc-20240116; t=1718375819; c=relaxed/simple;
+	bh=l9LipkwlMJEtpFcwtueFGd+bih2JZ+fN0kt35NmaCFI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t9Cd/CkRsGZI57EEvovgnlMBNGPZWBi9+IdiYXXxhPwUP++Y9slxh41iLApcJ0uuH0gVNjSU5ONL4uJE1gXxW1CRpYdgKjOTRsChNQb/hjBx0agbUXRhW0RsEaX6Gm5ni5chzzIrCh/iL41RjZ8DLWGoPD4+1cVNDaPevqg7C2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EYI7OJ9w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD13DC2BD10;
+	Fri, 14 Jun 2024 14:36:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718375563;
-	bh=FneaIPldtjV8hw8yb0o5ye0MkxOEI5C1sw6GL0zDH6M=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=AOqmAuNYx0qrLRw/5fxH3BXH7+TiDI53Bp7i5XYZ90qFucvgaWVUpUenKE87tfXSb
-	 vql8GutrA8rDrF0xRQoJmvMIssQ9koysmx65kl3QWyhugoxxAzr3uEi5mQxA215NfV
-	 I134i4JMwncb/5/L7R/OBlYDqvkiIxUF8Y1iBqEeK0ty3GTaimz/WYZ4XVVAL3JW/k
-	 ipHscSYWpzbvq3CyhjSDkfHBG9ZR4xMEuKbVdgeVJW1ceRpSC9Mf710pdnN20fwtr5
-	 3MO+C24tzKep+c8Vu1nG5DvBaXj6kNM5cGCP2mGsVuduPXQghZn1zBvWn8aOX7mTLG
-	 xfnOjZU21nlSA==
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5bb24436f72so61016eaf.2
-        for <ksummit@lists.linux.dev>; Fri, 14 Jun 2024 07:32:43 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXHQwWSPeAFViVyT6nAlslN0zb0gfRMxY9amYiMOevvu8UH0IkTjPN9nmQiPhhipMRYUDV4hUGD/DO/XKadZKNc2sRswsBiHQ==
-X-Gm-Message-State: AOJu0YxhE+S+fDq2Z41C161LW3lXWLKNzclxUfA71cwgIo7Yfb8M2+xH
-	OV0y3UIhYiUq00i0KcAg1z/kmgBRm+B45bv4/ZYkHijfxQ9CW+OXAXXPRaQH4LjLv+I2zp/ejN7
-	kbu1t705QLSWrT/hLWExAuvuU5Q8=
-X-Google-Smtp-Source: AGHT+IGbcdKma6T6NkzDOe4jgLSj4B7Sjj/jdg5gSAC/Hy+mp2XEXYZ9vr+E7W9bfsC0X+fOgl9A69YPChleWYsy+Jk=
-X-Received: by 2002:a4a:e1da:0:b0:5ba:ead2:c742 with SMTP id
- 006d021491bc7-5bdad9f0343mr3103980eaf.0.1718375562737; Fri, 14 Jun 2024
- 07:32:42 -0700 (PDT)
+	s=k20201202; t=1718375819;
+	bh=l9LipkwlMJEtpFcwtueFGd+bih2JZ+fN0kt35NmaCFI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EYI7OJ9wnr4iBzARx/aM66euOPUDQm8kLXqPIrWawJDsiTQwtNPSwesCqtnWNbiGL
+	 I5iuIIV0gqsUY05xh1HdXxcim8I/WdPi1jEI/cMSO5Y3xB8jL1tHlk/CY4oOnshn39
+	 +kBKlntuHr5d+LuDnOXFYotuU3+Yjh0iN8Iduvaxw690ZDs3/Yv4fyN8ugP2e8ZuW6
+	 juDmv2Aazadj2B9jN5rAipjbbJQIC8ccz0NmDeEWAo2Z/3VKOr+uq3qdqgwTp/sfE1
+	 izcBHfDhSiuuDNgmPY0JSOdW4zIt1DFMiIxXqOQ4f0bMv1G/vJ8XXD5YxfBEVXIA8y
+	 8JXmZz+PyH9KQ==
+Date: Fri, 14 Jun 2024 15:36:46 +0100
+From: Lee Jones <lee@kernel.org>
+To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Cc: Jan Kara <jack@suse.cz>, Thorsten Leemhuis <linux@leemhuis.info>,
+	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
+Subject: Re: [MAINTAINERS SUMMIT] [4/4] Discuss how to better prevent
+ backports of commits that turn out to cause regressions
+Message-ID: <20240614143646.GI3029315@google.com>
+References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
+ <e7f9ae0f-7635-4bf7-827b-bad2d58bf228@leemhuis.info>
+ <20240613095917.eeplayyfvl6un56y@quack3>
+ <20240613-rustling-chirpy-skua-d7e6cb@meerkat>
+ <20240614091949.GB3029315@google.com>
+ <20240614-quirky-watchful-fulmar-a9bc50@lemur>
+ <20240614-offbeat-talented-warthog-9c3de7@lemur>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
- <c10b7cb2-6ea8-4a15-86a7-9ae689064f6b@leemhuis.info> <ZmxNPE0a8nB5YezI@finisterre.sirena.org.uk>
-In-Reply-To: <ZmxNPE0a8nB5YezI@finisterre.sirena.org.uk>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 14 Jun 2024 16:32:31 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0iAPicQni+VZknF2d_JzW7TBT5fi87NK1hqiHTm5cvk5Q@mail.gmail.com>
-Message-ID: <CAJZ5v0iAPicQni+VZknF2d_JzW7TBT5fi87NK1hqiHTm5cvk5Q@mail.gmail.com>
-Subject: Re: [MAINTAINERS SUMMIT] [2/4] Ensure recent mainline regression are
- fixed in latest stable series
-To: Mark Brown <broonie@kernel.org>
-Cc: Thorsten Leemhuis <linux@leemhuis.info>, 
-	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240614-offbeat-talented-warthog-9c3de7@lemur>
 
-On Fri, Jun 14, 2024 at 4:01=E2=80=AFPM Mark Brown <broonie@kernel.org> wro=
-te:
->
-> On Thu, Jun 13, 2024 at 10:32:27AM +0200, Thorsten Leemhuis wrote:
->
-> > I propose we extend the implications of the "no regressions" rule so
-> > that mainline developers must ensure fixes for recent mainline
-> > regression make it to the latest stable series.
->
-> I do note that there is already a bunch of disquiet about what makes it
-> into stable...
->
-> > """Developers must ensure that fixes for regressions introduced in the
-> > last development cycle make it to the latest stable series -- typically
-> > by adding 'Fixes:' and 'CC: <stable=E2=80=A6' tags to the patch descrip=
-tion's
-> > footer."""
->
-> Personally I stopped bothering with manually Ccing stable because the
-> stable team already picks up much more than I'm comfortable with,
-> devoting any effort to thinking about what might go to stable just
-> doesn't seem like a good use of time.
+On Fri, 14 Jun 2024, Konstantin Ryabitsev wrote:
 
-Same here mostly except for 3 cases:
+> On Fri, Jun 14, 2024 at 08:27:30AM GMT, Konstantin Ryabitsev wrote:
+> > On Fri, Jun 14, 2024 at 10:19:49AM GMT, Lee Jones wrote:
+> > > > 1. disambiguates Link: trailers so they point to relevant online discussions
+> > > > 2. allows tooling like b4, patchwork, etc, to reliably match commits to
+> > > >    submissions for the purposes of better code review automation
+> > > > 3. allows stable and similar projects to better track series grouping for
+> > > >    commits
+> > > 
+> > > Sounds good to me.
+> > > 
+> > > So `b4 am -l` should be replaced with `b4 am ?`.
+> > 
+> > You can still use -l for this by adding this to .gitconfig:
+> > 
+> >     [b4]
+> >         linktrailermask = Message-Id: <%s>
+> 
+> I also just added the -i flag, which will make it into b4-0.14, so you'll be
+> able to run "b4 am -i" to insert the Message-ID: trailer instead of the Link:
+> trailer.
 
- - When I want to limit the scope of the backports.
- - When I want the patch to get into "stable" earlier than autosel
-would pick it up.
- - When there are dependencies I want "stable" to know about.
+I might keep both.  It'll give Michael something to click on.
 
-> We also already have problems with people spamming fixes tags onto
-> things that are not really bugs or where not much effort appears to have
-> gone into identifying a relevant commit, I think some people have
-> internal process pressures on having Fixes tags for the sake of it.
-> Demanding that people who don't really care fill in the blank to appease
-> some workflow strategist doesn't seem likely to improve the quality of
-> information provided any.
-
-+1
+-- 
+Lee Jones [李琼斯]
 
