@@ -1,131 +1,113 @@
-Return-Path: <ksummit+bounces-1268-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1269-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF9B908D5D
-	for <lists@lfdr.de>; Fri, 14 Jun 2024 16:29:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD84C908D6E
+	for <lists@lfdr.de>; Fri, 14 Jun 2024 16:32:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E48731C24F1B
-	for <lists@lfdr.de>; Fri, 14 Jun 2024 14:29:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3884C284FBA
+	for <lists@lfdr.de>; Fri, 14 Jun 2024 14:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544639463;
-	Fri, 14 Jun 2024 14:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69385E560;
+	Fri, 14 Jun 2024 14:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="jpyHQFNZ"
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AOqmAuNY"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710CE171B0
-	for <ksummit@lists.linux.dev>; Fri, 14 Jun 2024 14:29:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3DCFDDA5
+	for <ksummit@lists.linux.dev>; Fri, 14 Jun 2024 14:32:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718375356; cv=none; b=fcKuoTXSvPpYLFE8786dY+U4/4bTx/zsBMoFgAYpQOe5ebD1QrLd438ICKE4mTvLGEcGpOCCW1NBjpYTu84A7V2Vgc2gWgxm4le2aT3n0Rj9L0egPoIPpOHnentsCPYailt4J19d7JXKGKbtDiGjsjZiFwMXKlvT2OkmM1+BksA=
+	t=1718375564; cv=none; b=WqJXD2EHe++BkOS9XoA3lVgisZBySk8RuD75J9oUJGgaOeKLdz4N8Lxuo49t8Um2Dws4mDrWzZwHnYBVsfY3S9cscikfacTwSz4SN9Bsw9WEdO3cnQZU2DqCb7dXTKsKOcsrSB5H3cMqcCijEsyzsnjrcbi2J1Dw9P4O5yzYsVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718375356; c=relaxed/simple;
-	bh=EjE/CNY3MYU3DSnFNB2OK5RyKukqn3rd7siASMEgtIw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=tTQQ8xuQ7LRRAxko0zeaEaYBNPA04V/ZFB4zLznkcIC9JpK638FuwAxj/u67iMSVMFRvEKvYsjhH8g88l0FHMRh+sYQjvBsMX7g5+tjb3I5+jjhAmGVWOWCLjja15rOhWo6ZjIvHAPJF881ui9nFKKHlvQfC3nNftfAf1arQ03o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=jpyHQFNZ; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1718375350;
-	bh=C2t/dWnqkr6UGY0jC6xomHjUuYK1g2JgKYbXOiIcnKY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=jpyHQFNZnMu/eY+gCu76ejJwEq4zNXaS+/w188+Tul9GeAyP0ySGG1yf+PMWZ9V6Z
-	 ujK2EHqHUyqMi4TZD7d5JP3DcLiX8pbwttWIx44M5P9Rlu3n6miqvJA+44sWbhacFT
-	 AsaRXfqsN2NOgnGniX+EoQT2nXY8LNNV126HFq7bEjpIakvJBDheKdD9o7iPjb8L+/
-	 JHlDhGA2MHVPfPTqXEhvj+e1mSouk6aAvfNy808cmkvFk0jbMPKYenBfqhk7Fe6VYK
-	 flce9hIPEtQ0xPnVuu5OeZan/3YhDMFRYqZoj3x8bGV0RI/ic2rONKAhucl0RFAwic
-	 s6RJM2sfYNNTg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4W11qn4Pbgz4wc3;
-	Sat, 15 Jun 2024 00:29:09 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>, Jan Kara
- <jack@suse.cz>
-Cc: Thorsten Leemhuis <linux@leemhuis.info>, "ksummit@lists.linux.dev"
- <ksummit@lists.linux.dev>
-Subject: Re: [MAINTAINERS SUMMIT] [4/4] Discuss how to better prevent
- backports of commits that turn out to cause regressions
-In-Reply-To: <20240613-rustling-chirpy-skua-d7e6cb@meerkat>
-References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
- <e7f9ae0f-7635-4bf7-827b-bad2d58bf228@leemhuis.info>
- <20240613095917.eeplayyfvl6un56y@quack3>
- <20240613-rustling-chirpy-skua-d7e6cb@meerkat>
-Date: Sat, 15 Jun 2024 00:29:09 +1000
-Message-ID: <87plsjoax6.fsf@mail.lhotse>
+	s=arc-20240116; t=1718375564; c=relaxed/simple;
+	bh=FneaIPldtjV8hw8yb0o5ye0MkxOEI5C1sw6GL0zDH6M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=L0J9WoDnTBRwaHjnIBhE04+l4Z2uqeYxGNCP+WWKlZ2Ah94sgF3Ic/Opx0+G748EzIJshK2jnJ0DM1Tf98zKF0UxgaV7jAFYSQLrEgfToJJP587Jxxn1PVKu2AGH2OLza6PW8QSkwSdtJIR0LIG1ETBo0PB9/9IVVcfB65KDqUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AOqmAuNY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76231C2BD10
+	for <ksummit@lists.linux.dev>; Fri, 14 Jun 2024 14:32:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718375563;
+	bh=FneaIPldtjV8hw8yb0o5ye0MkxOEI5C1sw6GL0zDH6M=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=AOqmAuNYx0qrLRw/5fxH3BXH7+TiDI53Bp7i5XYZ90qFucvgaWVUpUenKE87tfXSb
+	 vql8GutrA8rDrF0xRQoJmvMIssQ9koysmx65kl3QWyhugoxxAzr3uEi5mQxA215NfV
+	 I134i4JMwncb/5/L7R/OBlYDqvkiIxUF8Y1iBqEeK0ty3GTaimz/WYZ4XVVAL3JW/k
+	 ipHscSYWpzbvq3CyhjSDkfHBG9ZR4xMEuKbVdgeVJW1ceRpSC9Mf710pdnN20fwtr5
+	 3MO+C24tzKep+c8Vu1nG5DvBaXj6kNM5cGCP2mGsVuduPXQghZn1zBvWn8aOX7mTLG
+	 xfnOjZU21nlSA==
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5bb24436f72so61016eaf.2
+        for <ksummit@lists.linux.dev>; Fri, 14 Jun 2024 07:32:43 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXHQwWSPeAFViVyT6nAlslN0zb0gfRMxY9amYiMOevvu8UH0IkTjPN9nmQiPhhipMRYUDV4hUGD/DO/XKadZKNc2sRswsBiHQ==
+X-Gm-Message-State: AOJu0YxhE+S+fDq2Z41C161LW3lXWLKNzclxUfA71cwgIo7Yfb8M2+xH
+	OV0y3UIhYiUq00i0KcAg1z/kmgBRm+B45bv4/ZYkHijfxQ9CW+OXAXXPRaQH4LjLv+I2zp/ejN7
+	kbu1t705QLSWrT/hLWExAuvuU5Q8=
+X-Google-Smtp-Source: AGHT+IGbcdKma6T6NkzDOe4jgLSj4B7Sjj/jdg5gSAC/Hy+mp2XEXYZ9vr+E7W9bfsC0X+fOgl9A69YPChleWYsy+Jk=
+X-Received: by 2002:a4a:e1da:0:b0:5ba:ead2:c742 with SMTP id
+ 006d021491bc7-5bdad9f0343mr3103980eaf.0.1718375562737; Fri, 14 Jun 2024
+ 07:32:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
+ <c10b7cb2-6ea8-4a15-86a7-9ae689064f6b@leemhuis.info> <ZmxNPE0a8nB5YezI@finisterre.sirena.org.uk>
+In-Reply-To: <ZmxNPE0a8nB5YezI@finisterre.sirena.org.uk>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 14 Jun 2024 16:32:31 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iAPicQni+VZknF2d_JzW7TBT5fi87NK1hqiHTm5cvk5Q@mail.gmail.com>
+Message-ID: <CAJZ5v0iAPicQni+VZknF2d_JzW7TBT5fi87NK1hqiHTm5cvk5Q@mail.gmail.com>
+Subject: Re: [MAINTAINERS SUMMIT] [2/4] Ensure recent mainline regression are
+ fixed in latest stable series
+To: Mark Brown <broonie@kernel.org>
+Cc: Thorsten Leemhuis <linux@leemhuis.info>, 
+	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Konstantin Ryabitsev <konstantin@linuxfoundation.org> writes:
-> On Thu, Jun 13, 2024 at 11:59:17AM GMT, Jan Kara wrote:
->> > * One cause of regressions that happen in stable trees (and not in
->> > mainline) I've seen quite a few times are backports of commits with
->> > Fixes: tags that were part of a patch-series and depend on earlier
->> > patches from the series. The stable-team afaics has no easy way to spot
->> > this, as there is no way to check "was this change part of a series".
->> > Sometimes I wonder if a dedicated tag linking to the submission of a
->> > patch could help -- and is something quite a few maintainers already
->> > really want and add using a "Link" tag despite Linus dislike for that
->> > (IIRC).
->> 
->> FWIW I (and a few other maintainers) use 'Message-Id' tag to link to
->> submission. This is still easily convertible to lore link and unlike 'Link'
->> tag it is clear what this tag is about and that it is not just a link to
->> related discussion or something like that. AFAIK this also addresses Linus'
->> dislike because what he was complaining about is that 'Link' should be
->> linking to some useful context for the changelog, not just patch
->> submission.
+On Fri, Jun 14, 2024 at 4:01=E2=80=AFPM Mark Brown <broonie@kernel.org> wro=
+te:
 >
-> I am strongly in favour of that from the tooling perspective. Linus suggested
-> that we can always trace the original patch submission from the commit by
-> using the patch-id, but that doesn't work reliably. I mused on that here:
+> On Thu, Jun 13, 2024 at 10:32:27AM +0200, Thorsten Leemhuis wrote:
 >
-> https://lore.kernel.org/git/20240605-hilarious-dramatic-mushroom-7fd941@lemur/
+> > I propose we extend the implications of the "no regressions" rule so
+> > that mainline developers must ensure fixes for recent mainline
+> > regression make it to the latest stable series.
 >
-> The gist is that we cannot reliably match the patch-id of the original
-> submission from the git commit, because there are multiple ways to generate
-> the same patch, such as changing the diff algorithm (myers vs. minimal vs.
-> histogram), or changing the number of context lines. If the original author
-> generated their patch with --histogram, but we try to find it by generating
-> the same patch using the default myers algorithm, we may not find it.
+> I do note that there is already a bunch of disquiet about what makes it
+> into stable...
 >
-> The "Message-Id" trailer is already documented in git:
-> https://www.git-scm.com/docs/git-am#Documentation/git-am.txt---message-id
+> > """Developers must ensure that fixes for regressions introduced in the
+> > last development cycle make it to the latest stable series -- typically
+> > by adding 'Fixes:' and 'CC: <stable=E2=80=A6' tags to the patch descrip=
+tion's
+> > footer."""
 >
-> I suggest we move away from the practice of using Link: trailers to indicate
-> the patch provenance to using Message-Id: trailers for the same purpose. This
-> solves multiple problems:
->
-> 1. disambiguates Link: trailers so they point to relevant online discussions
-> 2. allows tooling like b4, patchwork, etc, to reliably match commits to
->    submissions for the purposes of better code review automation
-> 3. allows stable and similar projects to better track series grouping for
->    commits
+> Personally I stopped bothering with manually Ccing stable because the
+> stable team already picks up much more than I'm comfortable with,
+> devoting any effort to thinking about what might go to stable just
+> doesn't seem like a good use of time.
 
-Message-Id: sucks, I want a link I can open with a single click.
+Same here mostly except for 3 cases:
 
-At your suggestion I switched to using https://msgid.link/ as the target
-for patch links, eg:
+ - When I want to limit the scope of the backports.
+ - When I want the patch to get into "stable" earlier than autosel
+would pick it up.
+ - When there are dependencies I want "stable" to know about.
 
-  Link: https://msgid.link/20240529123029.146953-2-mpe@ellerman.id.au
+> We also already have problems with people spamming fixes tags onto
+> things that are not really bugs or where not much effort appears to have
+> gone into identifying a relevant commit, I think some people have
+> internal process pressures on having Fixes tags for the sake of it.
+> Demanding that people who don't really care fill in the blank to appease
+> some workflow strategist doesn't seem likely to improve the quality of
+> information provided any.
 
-Which gives the reader a hint that the link is just to the submission.
-
-I don't really care if the tag is "Link:", but it has to be a URL, not
-just a bare message-id that I have to cut and paste like it's the stone
-age.
-
-cheers
++1
 
