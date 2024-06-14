@@ -1,103 +1,120 @@
-Return-Path: <ksummit+bounces-1258-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1259-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D340B907CC7
-	for <lists@lfdr.de>; Thu, 13 Jun 2024 21:40:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72808908049
+	for <lists@lfdr.de>; Fri, 14 Jun 2024 02:50:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1F831C23FA4
-	for <lists@lfdr.de>; Thu, 13 Jun 2024 19:40:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58AD31C219BC
+	for <lists@lfdr.de>; Fri, 14 Jun 2024 00:50:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A55514B091;
-	Thu, 13 Jun 2024 19:39:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YdwgWJRn"
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA1581C27;
+	Fri, 14 Jun 2024 00:50:33 +0000 (UTC)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48AE6134407
-	for <ksummit@lists.linux.dev>; Thu, 13 Jun 2024 19:39:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93FB04A11
+	for <ksummit@lists.linux.dev>; Fri, 14 Jun 2024 00:50:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718307596; cv=none; b=a/9dsq3lIf9dTrs+eghBjw/QX3iLNLs820Fn7UmVNWIm7uUQBajQvLTz4cmbU+RRrhhNJ4R1pJGDIZMhdxArfM8cHf/oN7CIha4mWga6Nq3jHFbsvdCXLfNt8emCq6IxxeG4KZOR+EA7LASl3uKl6s6yOF9Jp2lcoVaiW1oVB/8=
+	t=1718326233; cv=none; b=C4sfgLd06l0MxwFfvcgXeA3tZb0rA9IcE+TcJUkEr689HGTJUU9TJhRKWdUaEuC4Zt8vIkW12AAQUixdYLDla7GaStl9dRt4osHRwu0oWnHdSYz9gvoAp+gt7NKtNdMGb/o9yvgji64vmuuShzryE4I17+AWAi4ZRYXnWiAVi+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718307596; c=relaxed/simple;
-	bh=bT8ppMEXPdqRxWbcGJCWwoPeP5uwj6XeUMCHa87JrmI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eb8frw6kzJODGdu74jbMQ4c0MvzH/3ibcn9kVyjVEOnzAp5z2MeO5rHTaJnGUBxplmPpvl3A4czsj4d6ckG2Ky2hvz241HrtNKUjRNGBh+5sAKPSiwwzmtl23uK4A9FwbJrv5SqA3ksHPuN9n36T/TScZCMpid9eC4t2bAjbjtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YdwgWJRn; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-35f27eed98aso1273369f8f.2
-        for <ksummit@lists.linux.dev>; Thu, 13 Jun 2024 12:39:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718307592; x=1718912392; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q+M6I+JwcoIXzHrUHirr13qHAWxZbb11rFCWlmsASdA=;
-        b=YdwgWJRn2AdJ12ubOpFOkedYF33eAG1kzTxle6HnyJhYP86dkBrV9pG4E1rOap4sR4
-         JeuhEOlCqgHSeIHdqG5Gvd6HLmo6Yt0PzDwxzoefRZjTc1VmcPb6+osLTY485MshocFk
-         Tg/hJChOGY6Bpn7wJ9UV7FKeb5dsAiWFAVYEQrb2mgy54JP+DTFkXyfgDOygQSs7mQUc
-         Vo9gr8cP37Vt8U9/kaJEtyR5aIHV3NAGyzEqcZ6f/49jU4YRpBKgi+4RAVrGkPnB3GGS
-         0yTdPJUcg/iMK5KFyPkJvQG8wIR3irexe7WWS+RkN5/kAZ16j0a7tQA4xXOo5JS90GDE
-         gJww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718307592; x=1718912392;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q+M6I+JwcoIXzHrUHirr13qHAWxZbb11rFCWlmsASdA=;
-        b=ksd/fHpsb52aDhjCJSqv91Wg6e+36JPCAvCo9EYAy3DK7L3xxcUdmGMgJKBpLkUfoe
-         u2b4HSlvgLeMhYW54TMM4kJ7t2q/61aHDOC4cALkaX68WIboT45JIYmdAs6udbStxMi/
-         VrG5NtsmvuXNZQ7PdRZRQD3XGbIZC+ipbO1c9LBRQCEULOK8uXad0vx5cvtYUOyW/rbx
-         FHBCwliCsEZkiXn137/1OGE9lbm5y/8D+fOMvycT/1oB8nb9/pj+HYC9z/Pjn7KkX2tJ
-         8GuEYrojXiSND+cOgHTjaBfT31cufQHl4AeYuPSuuO6SD2UBKmEeI7sSEQjzqDDxA7cg
-         oHSA==
-X-Forwarded-Encrypted: i=1; AJvYcCUgACKOyoIgucKpaAD2xqX0r1K+CHVUFK2Dp5PhMieluUExULdLmw46iS8jNuROFjhntN3V4MsZf0kXZgZzke2LebPCJ8mu6w==
-X-Gm-Message-State: AOJu0YyupQ4bu0GEAVzkUj1WafBhVzY2U3RUHqlejtZhgyijktkLduF4
-	MljjKJmtZ/jqT34KnT9ZiJX2NxXP2E/5cTGSYmUPkwWsM2o8rHno8vIbMdjpjhs=
-X-Google-Smtp-Source: AGHT+IFUiUMP2ecy0S3YZmXS8a1KInDmGX43Mogsllr+AlnehpLLqgUc0uUl7jxCzR4/fCMYvl+/tA==
-X-Received: by 2002:a5d:4b48:0:b0:35f:27b3:1d99 with SMTP id ffacd0b85a97d-3607a75d281mr516038f8f.31.1718307592450;
-        Thu, 13 Jun 2024 12:39:52 -0700 (PDT)
-Received: from localhost ([102.222.70.76])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3607509c883sm2531515f8f.29.2024.06.13.12.39.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Jun 2024 12:39:52 -0700 (PDT)
-Date: Thu, 13 Jun 2024 22:39:48 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Jan Kara <jack@suse.cz>
-Cc: Thorsten Leemhuis <linux@leemhuis.info>,
-	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
-Subject: Re: [MAINTAINERS SUMMIT] [4/4] Discuss how to better prevent
- backports of commits that turn out to cause regressions
-Message-ID: <3226c18c-9f56-4f98-8b12-c51be4a68033@moroto.mountain>
+	s=arc-20240116; t=1718326233; c=relaxed/simple;
+	bh=trpkZYh0pQWxDA8g8picCBz/wpMWTsQuejR3lgj0XJk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Cv6fO8Bkg74zLr6DcQG8TxPcFrpMn4jIIQAZLM2jNxx/1SDrvhuYAXGYTCCvqMxCsPAu53OlQt+3nO6v9GDRfyTBHiOdGMl1gACNS5VIMZuuAzBVOUDrDawYo/H87Pakgj3NkMp7hMz9X0s2fU49kEy64tPBreLkOIPEMNkfVXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92FB1C4AF1A;
+	Fri, 14 Jun 2024 00:50:32 +0000 (UTC)
+Date: Thu, 13 Jun 2024 20:50:29 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Thorsten Leemhuis <linux@leemhuis.info>, "ksummit@lists.linux.dev"
+ <ksummit@lists.linux.dev>
+Subject: Re: [MAINTAINERS SUMMIT] [2/4] Ensure recent mainline regression
+ are fixed in latest stable series
+Message-ID: <20240613205029.42b9970f@rorschach.local.home>
+In-Reply-To: <20240613112848.GG6019@pendragon.ideasonboard.com>
 References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
- <e7f9ae0f-7635-4bf7-827b-bad2d58bf228@leemhuis.info>
- <20240613095917.eeplayyfvl6un56y@quack3>
+	<c10b7cb2-6ea8-4a15-86a7-9ae689064f6b@leemhuis.info>
+	<20240613112848.GG6019@pendragon.ideasonboard.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240613095917.eeplayyfvl6un56y@quack3>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 13, 2024 at 11:59:17AM +0200, Jan Kara wrote:
-> FWIW I (and a few other maintainers) use 'Message-Id' tag to link to
-> submission.
+On Thu, 13 Jun 2024 14:28:48 +0300
+Laurent Pinchart <laurent.pinchart@ideasonboard.com> wrote:
 
-These are great.  What I wish is that someone added that to Patchwork.
+> Hi Thorsten,
 
-KTODO: Add Message-Id tag support to patchwork
+Hi Thorsten,
 
-(KTODO is like a when you say a wish and throw a coin into a fountain
-except it doesn't cost you a quarter).
+I'm sure you had your flame suit on when you posted this ;-)
 
-regards,
-dan carpenter
+>=20
+> On Thu, Jun 13, 2024 at 10:32:27AM +0200, Thorsten Leemhuis wrote:
+> > I propose we extend the implications of the "no regressions" rule so
+> > that mainline developers must ensure fixes for recent mainline
+> > regression make it to the latest stable series.
+> >=20
+> > [FWIW, yes I'm well aware that this is a bold proposal; I also have no
+> > idea how even Linus thinks about the idea. But I'm bringing it up anyway
+> > to at least discuss this, as from my point of view it would fix what I
+> > consider a kind of loophole regarding our "no regressions" rule -- at
+> > least from the point of view of the users.]
+> >=20
+> > We might have a "no regressions" rule, but nothing currently makes sure
+> > that regressions introduced recently are fixed in a timely manner in the
+> > latest stable series. Hence a fix for a regression found just hours
+> > after a new mainline release (say 6.7) might only reach users weeks
+> > later with its successor (e.g. 6.8) -- or in unlucky cases when the fix
+> > is only merged in the next merge window and not backported only with the
+> > second successor (6.9). The example scenario at the start of this thread
+> > illustrates that in more details.
+> >=20
+> > To improve this situation I propose we add a rule like the following
+> > somewhere:
+> >=20
+> > """Developers must ensure that fixes for regressions introduced in the
+> > last development cycle make it to the latest stable series -- typically
+> > by adding 'Fixes:' and 'CC: <stable=E2=80=A6' tags to the patch descrip=
+tion's
+> > footer.""" =20
+>=20
+> I think there's a general agreement that those tags are useful, should
+> be used, and are already widely used. Reminding everybody, be they
+> maintainers or not, is fine with me. Making this an extra strict duty
+> for maintainers, however, is something I can't support. We already have
+> a bad maintainer burnout problem, and this would make it worse,
+> resulting in a worse long term outcome in my opinion.
+>=20
+> I would be more interested in exploring why regression fixes don't end
+> up in stable releases in a timely manner, and seeing how we could
+> improve that at no cost for maintainers. We may even be able to come up
+> with processes and tools that, when used right, would save time for
+> maintainers. That would have a higher chance of getting broader
+> adoption.
 
+When reading this thread I was thinking somewhat the same thing. I like
+knowing about regressions, and having a way to track them. What would
+really be helpful is to have more ways to be able to catch regressions,
+and possibly better tooling to find where they started.
+
+I think the focus on this is to make it easier for maintainers to see
+there's a regression and where it started. But there should not be any
+requirement that the maintainer must deal with it. It could be
+something that others working in that subsystem could track. This could
+be used for those that want to start kernel development and keep asking
+us "do you have any todo list?". Well, this looks like the perfect todo
+list for people to take on.
+
+-- Steve
 
