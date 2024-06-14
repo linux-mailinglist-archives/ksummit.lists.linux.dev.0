@@ -1,115 +1,108 @@
-Return-Path: <ksummit+bounces-1284-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1285-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5134909278
-	for <lists@lfdr.de>; Fri, 14 Jun 2024 20:42:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C737909284
+	for <lists@lfdr.de>; Fri, 14 Jun 2024 20:47:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C499E1C218FF
-	for <lists@lfdr.de>; Fri, 14 Jun 2024 18:42:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 325B81F2128F
+	for <lists@lfdr.de>; Fri, 14 Jun 2024 18:47:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A75C19EEDB;
-	Fri, 14 Jun 2024 18:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3767E19EEDB;
+	Fri, 14 Jun 2024 18:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SvU8f1C3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E6PXciY/"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BABD125601;
-	Fri, 14 Jun 2024 18:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31BB19EEDE
+	for <ksummit@lists.linux.dev>; Fri, 14 Jun 2024 18:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718390568; cv=none; b=OZEbl+JzZXxNBpr0pmp+nvLVqIqWdqgyHLmfWBCqyq5uQJ8ZNAbLpDhHm0NN5GtDAYt9w4spvK7PpKBWM3zGdtz3B/mLL+m/opqUpQgryLzZTYDs3bi3/xbCq/U+QEu8OXhk0Llie3vzeD1v5HZoLhIlRL4trly0dar0S8ZQ6wQ=
+	t=1718390868; cv=none; b=rg20PFkuqJVSVJvowoO2rLvmNF3L3JivjmxPN6q40+rW6kPTqMMEb+BLyBGSLtBsgyiHS+rmKTKWrxs0kO9s9RuMoEOp6Nu1MUtSG50cJPUfcAE5vacr8APp8ISAGolzKhDLCFd93q5mm1gxOAgKY/ORHVlmY6EGRTenZxcIVqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718390568; c=relaxed/simple;
-	bh=r3V8uORqgOShk02c6OFxElT3YBFjzYzIlhjvqyeiKeE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cT0aUcCQdHKJ/zhaCMD/sOVOUlGBwJs2wjEgAmR4bpW7MZhNSJh3Lb8J2yuXIU67H7jAzxC5f7cst/oNkuaD8Wwbt+5hFhVmSI3RNR37ZKHrNAMXcvvgh1U9+ElLs2e6dMBp80YvI1/8pfauDbfO6aaF/OeMVOip9LCQ+tq1fLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SvU8f1C3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA22BC2BD10;
-	Fri, 14 Jun 2024 18:42:47 +0000 (UTC)
+	s=arc-20240116; t=1718390868; c=relaxed/simple;
+	bh=ixZqsymycEzg6t5Ob3NDZquDwHrOIzsyUI0zv38U6U0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WgocCMMpCqbxpEi934wc3xOfkaasJfRzEHTte/QZ11Mi97woX7UALhISM6hcxmQc0yIrYtL8ktz6rBVtQN6kP3YBDTseZBHBNwptj9jVz1GhB532Nhhm9nAlEBcKSu+UkXXYiSDHtXANDkPg5OdZHX/1VWk/LkcKP1KczgmomVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E6PXciY/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CD14C2BD10;
+	Fri, 14 Jun 2024 18:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718390568;
-	bh=r3V8uORqgOShk02c6OFxElT3YBFjzYzIlhjvqyeiKeE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SvU8f1C3HJ9SSrYwuhffp9UEDc4x9qJIVsqb6Os26CMYNefSixh2EtYTwr7O7VAWc
-	 1dNaUxYLtJoDgPbpIcGdFSV6nJ/quG4kuIeP+VkvTslQjfoz5L5bjsPTsl2AjEW1/u
-	 905s7Zo7dg8T1C1PBrgoLhELthL1rMv5bOKpsTuabukAUnVhMUguUGRPAy7x66C6Nw
-	 c+MGbaELnbrs8ewiKPP6thQCJgtthNHS3Py9fdheQN0Y/n4HunywKw7hNK6BQ5l1Wb
-	 Bch0NCjLskk9ii/XfStNKB6dCnKZ101b7h9HcRfoUsR6hWZdll1HG8XIzypiSmjaKu
-	 FKKmtt/t891ww==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: ksummit@lists.linux.dev,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Fwd: [TECH TOPIC] DAMON: Updates and Plans
-Date: Fri, 14 Jun 2024 11:42:45 -0700
-Message-Id: <20240614184245.88080-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240614175504.87365-1-sj@kernel.org>
-References: 
+	s=k20201202; t=1718390868;
+	bh=ixZqsymycEzg6t5Ob3NDZquDwHrOIzsyUI0zv38U6U0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=E6PXciY/Jt0FsWhL/pQ246WruTEtBkJ82PGkMYM83NkfRaDdsrkkQlmK5vmSmxBTR
+	 ld4cR2SiDgjvg/RHf7vui+UP1xpc5//AJtYZ39HfzSzDm0lkBQnwViOBqmXp6fMsFw
+	 nLImRjQLE6n8MfYWBvWlbq40ybaFt3gSxA4i9yqxh0bLH/xIKtRKUXBCy17itaW/OG
+	 jA+E8MPiBK+SDmYfu/W/Ag+yuOAD03pWvujZ7VCRjBkJI8cE8guo5Hm6MwGr1FMxQ1
+	 HpXQ0R4Nm9fcws9gAXKjyuh8I+x1fDnZkHVqAe26iBVAeV4Gyjq9rDNSbJRP2xsAb4
+	 l9qbrOXLfk7Uw==
+Date: Fri, 14 Jun 2024 14:47:46 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: Greg KH <greg@kroah.com>, Thorsten Leemhuis <linux@leemhuis.info>,
+	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
+Subject: Re: [MAINTAINERS SUMMIT] [4/4] Discuss how to better prevent
+ backports of commits that turn out to cause regressions
+Message-ID: <ZmyQUqQ5ZFLuR7YX@sashalap>
+References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
+ <e7f9ae0f-7635-4bf7-827b-bad2d58bf228@leemhuis.info>
+ <7794a2b09ae4fa73ac35fdaec4858145a665efea.camel@HansenPartnership.com>
+ <ZmruqWDTG2PK-rbu@sashalap>
+ <dea93a79fc457d8a5424a18f8c138a4f75def064.camel@HansenPartnership.com>
+ <2024061305-swimming-politely-30f3@gregkh>
+ <78bfcb1f27462d160457b36f302ae4e12083493a.camel@HansenPartnership.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <78bfcb1f27462d160457b36f302ae4e12083493a.camel@HansenPartnership.com>
 
-I made a typo on the mail address for linux-mm@, on the original mail.  So
-forwarding to linux-mm@ as a reply-to-all.  Sorry for making noise.
+On Thu, Jun 13, 2024 at 11:11:54AM -0400, James Bottomley wrote:
+>On Thu, 2024-06-13 at 16:02 +0200, Greg KH wrote:
+>> On Thu, Jun 13, 2024 at 09:56:56AM -0400, James Bottomley wrote:
+>> > On Thu, 2024-06-13 at 09:06 -0400, Sasha Levin wrote:
+>[...]
+>> > > Could you provide a concrete example? This shouldn't happen.
+>> >
+>> > This one has no fixes or cc stable:
+>> >
+>> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=37f1663c91934f664fb850306708094a324c227c
+>> >
+>> > Yet here it is backported:
+>> >
+>> > Message-id: 20240603121056.1837607-1-sashal@kernel.org
+>> >
+>> > (I can't give a lore reference because conveniently it was a
+>> > personal cc with no tracked mailing list).
+>> >
+>> > I picked that one because we discovered a bug with the strlcpy to
+>> > strscpy conversions in SCSI which it looks like this backport has.
+>>
+>> It says, in the commit message:
+>>          Stable-dep-of: c3408c4ae041 ("scsi: qla2xxx: Avoid possible
+>> run-time warning with long model_num")
+>>
+>> That is why it was backported.
+>
+>Well, that still tracks back to a patch which wasn't tagged:
+>c3408c4ae041 is actually fixing a bug in 527e9b704c3d which is another
+>of the strlcpy to strscpy patches which also has no cc:stable or fixes
+>tag:
+>
+>https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=527e9b704c3d
 
-================================= >8 ========================================
+Nor was it ever backported to any stable tree... What am I missing?
 
-Hello all,
-
-
-I'm posting my Kernel Summit topic suggestion below.  I will also submit it to
-the LPC site.
-
-
-DAMON[1,2] is a Linux kernel subsystem that provides efficient data access
-monitoring and access-aware system operations (DAMON-based Operation Schemes,
-a.k.a DAMOS).  From multiple use cases of it including multiple years of real
-world products' usage, it is proven to be useful for improving memory
-efficiency.
-
-Like many other Linux kernel projects, DAMON is developed by the community.  We
-proactively present the status and discuss future plans of DAMON with the
-community.  As a major part of the effort, we had a DAMON session every year at
-Kernel Summit[3-7].  Those sessions have been one of the most essential and
-effectful fuels of the project.
-
-This session will continue the sharing and discussion at the kernel summit of
-2024.  We will share what feedback we received, what patches have been
-developed or are under development, what requests are still in the planning
-stage, and what the plans are.  With that, hopefully we will have discussions
-that will be helpful for improving and prioritizing the plans and specific
-tasks, and finding new requirements.
-
-Specific sub-topics would include, but are not limited to:
-
-- Fine-grained DAMOS control
-- Automated tuning of DAMOS
-- Tiered-memory management
-- Access/Contiguity-aware Memory Auto-scaling
-- Write-only monitoring and live migration
-
-Based on the progress until the summit, some items can be added or dropped.
-
-[1] project homepage, https://damonitor.github.io
-[2] official doc, https://docs.kernel.org/mm/damon/index.html
-[3] ksummit 2019, https://linuxplumbersconf.org/event/4/contributions/548/
-[4] ksummit 2020, https://www.linuxplumbersconf.org/event/7/contributions/659/
-[5] ksummit 2021, https://linuxplumbersconf.org/event/11/contributions/984/
-[6] ksummit 2022, https://lpc.events/event/16/contributions/1224/
-[7] ksummit 2023, https://lpc.events/event/17/contributions/1624/
-
-
+-- 
 Thanks,
-SJ
+Sasha
 
