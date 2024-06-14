@@ -1,125 +1,119 @@
-Return-Path: <ksummit+bounces-1261-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1262-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EB82908727
-	for <lists@lfdr.de>; Fri, 14 Jun 2024 11:15:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D499908732
+	for <lists@lfdr.de>; Fri, 14 Jun 2024 11:20:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FE951C23F2C
-	for <lists@lfdr.de>; Fri, 14 Jun 2024 09:15:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F0131C220B1
+	for <lists@lfdr.de>; Fri, 14 Jun 2024 09:20:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCBC148FED;
-	Fri, 14 Jun 2024 09:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC331922F8;
+	Fri, 14 Jun 2024 09:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="Y8kif0iF"
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TNcLqyYM"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594AA18FC9F
-	for <ksummit@lists.linux.dev>; Fri, 14 Jun 2024 09:15:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B437E574
+	for <ksummit@lists.linux.dev>; Fri, 14 Jun 2024 09:19:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718356518; cv=none; b=cb2sfGp3mwp2Bstnnlor3aS9Mj3ci19rdPTuC/J1RSxft0rsN0dYwQtxA61F7L+R8tYTatmOON1N2pBLMFuwuDuBbkvOZw8dNtxXhtWyj7qEQE8sw1zXtq9AQZnlSGcCSAYv9MgV3w0kWYnhJU1rBcxByUOdVQmFgDxyCFPRhDM=
+	t=1718356793; cv=none; b=HObM1nixuN/Hr7koUQgs418gJ6fNkCOFQG9IqApS8PmhqPwqj7t/+TNGjIxSKFoqop6I2cMYB6vbek7A9TF92lVR2DXXuJc57w9dnta98a0UXPYGvAXmXCQR/d6sUz4SAbfkbSXHZAHSJQeQp40+z5tqZ5/Oe4G6Vo58WrlpV4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718356518; c=relaxed/simple;
-	bh=rGjFgy1zj19TJpINVpqnoToyeLbd+YihGWRM0gkxp9E=;
+	s=arc-20240116; t=1718356793; c=relaxed/simple;
+	bh=6ZgzTZZuVJ4IujxYHoMaxdlcC8HEii6Qz3nHWCsiqJA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fiUAwbOwPLt+zYfTnExYDXlRH+tUe1GGf2mDPAmQ0SwFlTAuqHPqoaSat9kXbLHwoT08FGAg8jdWCxGY5aSEb3LOIA+QaL5kLOc0GqbpcgXmSi176nvYLfHoQHbxZFujt4GS0JJvP8HDyi384tJQHnFKX4LI9WkubIULAENzwMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=Y8kif0iF; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=v/bv
-	9snJ/HzHdR/e8VJLbcHUG8LzAg+CMyj1aMYLbmE=; b=Y8kif0iFlALdV7gyT89m
-	2iXvkJ+hdj5RMyjy4m0fRIbu+KZ7bg9sKOEW0cw0getlwrBYYFfMy0AZ933pJSvV
-	ZPJOVLlaTfSV9MUkQ2Cp0SVUcdtGbdGUwsAQxC4mjNQnqzOm+mY0PxlSY08TipuN
-	zJaSGUdxHgwex5NhGTSgo/P2Lq9jRi/daohhIRfQvY98VZnq2GcuR0Ylgss1V+V2
-	wKQJxoRDN/L7p6VpP4XWouzwkDrtJL0Wol/ymoGsuMYjtrfVQfCR/NSq9CbKQUDI
-	dsY3nELFBMtRvxPfFU+LgbmYNpDUe+s0NNcVJ4/NaoMpQW4l0rFPm5vzhQUcAUTj
-	vw==
-Received: (qmail 1457823 invoked from network); 14 Jun 2024 11:15:09 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 14 Jun 2024 11:15:09 +0200
-X-UD-Smtp-Session: l3s3148p1@Z39bDdYaNLggAwDPXzjQABqqX1QYyOSW
-Date: Fri, 14 Jun 2024 11:15:09 +0200
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Jiri Kosina <jikos@kernel.org>, 
-	ksummit@lists.linux.dev
-Subject: Re: [MAINTAINERS SUMMIT] Merge tree too flat?
-Message-ID: <ia6eflrudxea7ndujrxytqcdvbv7kjwlcdnkel2hb5mdsboznt@edtpxkvf5xay>
-References: <nycvar.YFH.7.76.2406041151590.24940@cbobk.fhfr.pm>
- <20240604182137.2cfdc0b2@gandalf.local.home>
- <nycvar.YFH.7.76.2406050028090.24940@cbobk.fhfr.pm>
- <20240604184506.007c4682@gandalf.local.home>
- <356ad539-3b37-4ada-8344-45ed938c02c5@sirena.org.uk>
+	 Content-Type:Content-Disposition:In-Reply-To; b=VrZfBCX7iB7rvTAPF2yIEciJ0juEuoNWJTMr8b7ScS5Na5fHH3y6vsYNVq9WA42nycG8SEpm5ttcNKPmsx0vJTKzkdbF1c+vzr+g3MZYJyA9hQ1c/bYFTgbzU/fLIoj2hxvIWkY1zdy3CoqeH4k9sf4rSzZk541YAXLvz/UR6a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TNcLqyYM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B638AC2BD10;
+	Fri, 14 Jun 2024 09:19:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718356792;
+	bh=6ZgzTZZuVJ4IujxYHoMaxdlcC8HEii6Qz3nHWCsiqJA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TNcLqyYM7YvqloCygO+rVhktAKW6jXNjAB5a8jP+Eau+oAYI/Vu4Nnbs6tFhRXDbD
+	 8fQooOS2TYkDhVcW19A5GBsNzDUfmgyqBCXoBnKKcAR20ObLVPjxdIuoCNPzp5ygCT
+	 RrR0Zt1NSscCKO6ypw+J/qofqWEz36v/mMrJtVWJW9rNLGPDJMg0SkxKHtslPn2TM+
+	 2+x5fwynlq+kdcOG8t9D7JxE3BX04Vt6UBRWE1XFqOtzCcXkSAinoPNyXGjfsZ9kY4
+	 pleS0NATohgJMJHeQGz4nE4rK/TpxSdiSzFNU+S0hNrkiDObYDDkx7IgvRMcdIPi+i
+	 cEI5LoUsnxORA==
+Date: Fri, 14 Jun 2024 10:19:49 +0100
+From: Lee Jones <lee@kernel.org>
+To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Cc: Jan Kara <jack@suse.cz>, Thorsten Leemhuis <linux@leemhuis.info>,
+	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
+Subject: Re: [MAINTAINERS SUMMIT] [4/4] Discuss how to better prevent
+ backports of commits that turn out to cause regressions
+Message-ID: <20240614091949.GB3029315@google.com>
+References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
+ <e7f9ae0f-7635-4bf7-827b-bad2d58bf228@leemhuis.info>
+ <20240613095917.eeplayyfvl6un56y@quack3>
+ <20240613-rustling-chirpy-skua-d7e6cb@meerkat>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="qv3c3bm5u6kdrkfa"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <356ad539-3b37-4ada-8344-45ed938c02c5@sirena.org.uk>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240613-rustling-chirpy-skua-d7e6cb@meerkat>
 
+On Thu, 13 Jun 2024, Konstantin Ryabitsev wrote:
 
---qv3c3bm5u6kdrkfa
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> On Thu, Jun 13, 2024 at 11:59:17AM GMT, Jan Kara wrote:
+> > > * One cause of regressions that happen in stable trees (and not in
+> > > mainline) I've seen quite a few times are backports of commits with
+> > > Fixes: tags that were part of a patch-series and depend on earlier
+> > > patches from the series. The stable-team afaics has no easy way to spot
+> > > this, as there is no way to check "was this change part of a series".
+> > > Sometimes I wonder if a dedicated tag linking to the submission of a
+> > > patch could help -- and is something quite a few maintainers already
+> > > really want and add using a "Link" tag despite Linus dislike for that
+> > > (IIRC).
+> > 
+> > FWIW I (and a few other maintainers) use 'Message-Id' tag to link to
+> > submission. This is still easily convertible to lore link and unlike 'Link'
+> > tag it is clear what this tag is about and that it is not just a link to
+> > related discussion or something like that. AFAIK this also addresses Linus'
+> > dislike because what he was complaining about is that 'Link' should be
+> > linking to some useful context for the changelog, not just patch
+> > submission.
+> 
+> I am strongly in favour of that from the tooling perspective. Linus suggested
+> that we can always trace the original patch submission from the commit by
+> using the patch-id, but that doesn't work reliably. I mused on that here:
+> 
+> https://lore.kernel.org/git/20240605-hilarious-dramatic-mushroom-7fd941@lemur/
+> 
+> The gist is that we cannot reliably match the patch-id of the original
+> submission from the git commit, because there are multiple ways to generate
+> the same patch, such as changing the diff algorithm (myers vs. minimal vs.
+> histogram), or changing the number of context lines. If the original author
+> generated their patch with --histogram, but we try to find it by generating
+> the same patch using the default myers algorithm, we may not find it.
+> 
+> The "Message-Id" trailer is already documented in git:
+> https://www.git-scm.com/docs/git-am#Documentation/git-am.txt---message-id
+> 
+> I suggest we move away from the practice of using Link: trailers to indicate
+> the patch provenance to using Message-Id: trailers for the same purpose. This
+> solves multiple problems:
+> 
+> 1. disambiguates Link: trailers so they point to relevant online discussions
+> 2. allows tooling like b4, patchwork, etc, to reliably match commits to
+>    submissions for the purposes of better code review automation
+> 3. allows stable and similar projects to better track series grouping for
+>    commits
 
+Sounds good to me.
 
-> I don't think the mechanics of how patches get moved about has a huge
-> impact on the effort involved
+So `b4 am -l` should be replaced with `b4 am ?`.
 
-50:50, in my case.
-
-> - trust and delegation make much more of a difference.  I've got
-> several areas where other people are reviewing large volumes of
-> patches before I ever see them,
-
-This is also true for me. When I called out for per-driver maintainers,
-this made the flood of patches bearable. All of the driver maintainers
-prefer to review only, though, and let me handle the rest. This is
-totally fine with me. I'd likely lose some reviewers if I force to them
-to provide me with separate branches.
-
-The other part is: a few months ago Andi Shyti took over the maintenance
-of the I2C controller patches. He updates patchwork, handles
-dependencies, decides on for-current and for-next, writes pull
-requests... That frees so much time that I have actually time left to
-work on the core code again and give high-level guidance how to tackle
-problems. So, this really helps as well.
-
-That basically boils down to what I said last year at the Maintainer
-Summit: In some parts of the Kernel, there is no flexibility to redesign
-the hierarchy. The limited amount of people interested in maintaining
-and their needs already shape the workflow. And for me, this is also the
-primary reason why the merge-tree looks so flat.
-
-
---qv3c3bm5u6kdrkfa
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmZsChkACgkQFA3kzBSg
-KbZ/kA/9GvhzkzPjLxKMbW8Sb0AFW/pk8GnK6zWz+piuimhCbag36bH7igRBgJmJ
-C4A5bbSxsWA/njkw5STao8oBm8qhDKdlyDffb1sd0Z1gi3T3vQKywHlsQa4m5Hdf
-S2gLPAvvpPufZOjtqlaa74uzEArA0LmdcKfbZsEVtJsZ/HUen25FtgGPxO+hiVX6
-T+sZpA8wEe7OqxgPHAZWds2eF81ZS/IpzCuNy0Vm7QbWLl2UaWHWdcBYmgFBuheQ
-RasY4erPjJy0P1M0Pq/cJttHtTXZuFuAtiTpqHppDVkIKO+lNRGH/Jw2ukCPajfD
-5/NGaHgcstrwTE9udynSJd0jYZnzxhMnzW+XGzp79FzuS3ozRA2E7/DlDvMLsHfj
-ln72E8DQokl3pLZieNufFQe2AYa+VUmFtDN2G4Az0XzHxdFQKCoNEQ+ZdpFsEE83
-RJtXMNvxZU9FDYju8S7E87tsMSBk5IfO6b89LwFFvILEVpYpKXlDvTloCyX9Lm1w
-JbnmlJfr1vtUbtimAf3ZzVy8eGLlQrvsbgK9oHfk6e5Xkd7r3gYv1vzh1rgNT/My
-iPLJftbS1buxp9n8Kx3GD2iFueiiudOtB30ylvlxNn30sK8HSl5g2MLS7TpdIJrP
-t1DeJ3OyuXu7FHdNdO5AlSTYd4kFiLZfcYvtWTTqK7eIBAWFb4U=
-=dU54
------END PGP SIGNATURE-----
-
---qv3c3bm5u6kdrkfa--
+-- 
+Lee Jones [李琼斯]
 
