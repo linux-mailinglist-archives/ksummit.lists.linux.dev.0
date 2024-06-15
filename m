@@ -1,152 +1,117 @@
-Return-Path: <ksummit+bounces-1286-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1287-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 954799096BC
-	for <lists@lfdr.de>; Sat, 15 Jun 2024 10:08:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A929097F4
+	for <lists@lfdr.de>; Sat, 15 Jun 2024 13:30:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46F291F21E35
-	for <lists@lfdr.de>; Sat, 15 Jun 2024 08:08:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD734B21923
+	for <lists@lfdr.de>; Sat, 15 Jun 2024 11:30:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC0D018042;
-	Sat, 15 Jun 2024 08:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87FC93D393;
+	Sat, 15 Jun 2024 11:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="CjYg5+K2"
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="n8lDfCwV"
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C902517BA9
-	for <ksummit@lists.linux.dev>; Sat, 15 Jun 2024 08:07:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FBC93AC0F
+	for <ksummit@lists.linux.dev>; Sat, 15 Jun 2024 11:29:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718438876; cv=none; b=IMulGj6hnuxql4X4GlwHHDM6ipQnVjJ52SuD+2EcfF8qyR77oAkw4eQlqpeER6sPGnYtBTsY8yumo66BNDEeHwquHSTxCg5x3UwXHyWILDK+2a5XuRLRT2LGHUELe35F4F6jrPqG4peobiE0X9JL0kKR4BODwZrB0NmpQEMdvkA=
+	t=1718451004; cv=none; b=YANROZ19xv4JInS0wgaIipusGnYdNQKvlHpnVeiK5InKw4wcR4oX8OoXE2iFcY5tiLB+H4YorJzBcLoMwk4LfXhorPr5Du3+Q64fg65LRSl0z2tVVM5kMqY+4UFPYegi47nM/9mml6AP3YCIZV991C7lbWT3EoN1B44ohr2afIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718438876; c=relaxed/simple;
-	bh=zpTDiiwYRHFfQwWxieiObPybAsuSt+nSdOvDRnB85dY=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SLUXcEbx8XFzbqkqmPETh6KPBpFwpeFRZ3X7zU6ZdWqWN8w/YCuh2TH+5B74CYvOg1XaZEj09mdREd4qp9iFT40QS38BeiKzaGj6LYuCQwsjeW7iukEVJy4UBwIhCVCBmMI/Yggd/yGE/8tKUvKOlrJEwuvgvyYx8WNtZ6+BDOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=CjYg5+K2; arc=none smtp.client-ip=18.9.28.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
-Received: from macsyma.thunk.org ([154.16.192.69])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 45F87bPV000998
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 15 Jun 2024 04:07:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1718438860; bh=+/ngTIzUuX7XPploPv7z+d8ZCh/mJEmERdsDc2gEMQs=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=CjYg5+K2+Wt1RLQ4rv/rviuM5Rz8VL+A3E1rEEB4T/+8o2YS/oBowYjanddtdm/0C
-	 4G7N+4tRWRA3fPsh5hq/AIj1G0Pa4hCSMaH6i4rwrLmBScFI2VFgH9qDgGA6d8nrvD
-	 2oQDe1t4ZrBpP5mRxtXccrh2xJ+Qaer0EQcL26vKfcUVwuOqEAIfL0XvDugL04HN1z
-	 ge9vs5n04NZOimsUAZeWuYz9RnBKirMAW2GOKPLtdrvyZWugpczGMTfigg7a67WGNe
-	 KCAMalwB9RtUKWGD88XTRBOVb0oKMdNjo0rL3EvmPVDHZvhQBQ4MSLrb1fNX9erl6P
-	 n0GWoI8nalb+Q==
-Received: by macsyma.thunk.org (Postfix, from userid 15806)
-	id 3C980341697; Sat, 15 Jun 2024 10:07:37 +0200 (CEST)
-Date: Sat, 15 Jun 2024 09:07:37 +0100
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: Linux Kernel Developers List <linux-kernel@vger.kernel.org>,
-        Linux Filesystem Development List <linux-fsdevel@vger.kernel.org>,
-        linux-block@vger.kernel.org, netdev@vger.kernel.org,
-        linux-mm@kvack.org, ksummit@lists.linux.dev,
-        linux-security-module@vger.kernel.org
-Subject: Re: Maintainers Summit 2024 Call for Topics
-Message-ID: <20240615080737.GG1906022@mit.edu>
-References: <20240531144957.GA301668@mit.edu>
+	s=arc-20240116; t=1718451004; c=relaxed/simple;
+	bh=mNzTUlSw+Nf6o3+yNoWrTmCVyQwIfVldzNMXwnDX47M=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=F3P7292jhuy/K5Y9fVQ3wdAYlTyETuWd15k8cHQx3ScSr6Zjs/anDd6TAi35ywGi8I4Cwrsbnt4AZsKpoza0WoQhM5lCsl7D1lhXtbWpK4q54HzPkN6uF65q6YbG/RlDm2zv/dcabCNmHAU6xdrtS4nazwLBqWKVVeVu9w9UxeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=n8lDfCwV; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1718450992;
+	bh=uMAJ2SHRBiH5u1yHyzDZ7jFDvcJVu32MG4V/WgCPaYE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=n8lDfCwVc1Lp8Yq8vSW8bKghtMAfb9n95XlnTbNS8IcuCeoNH69yAcBmXVy77pX9+
+	 oDhkr9vFcl/YMYG0/nn/QU7Anv2/teLkCkJe2BM5hh4M0cTxla0dZxsV9uY/yKrjH+
+	 sCvZSzSPnQ0uMf9kK0Os8p30YiyFUF/esmpcL/fpt/D5Rbnaoqx6dcSOSe3qQHDWY+
+	 VSab6ESnuK7X5sIiHPedyLHZiivGhHloY76LaVbwTZMjDVjF/bvgipSsXFaq+jHvSc
+	 9T36qh/FMjyqt63dfd4d4zrqMMMTlRhuBWKJvS3B8Y/4+tNAw3SgpEd6F67kJP9X+R
+	 0+OMPWM9vqdPQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4W1YpR2sljz4wqK;
+	Sat, 15 Jun 2024 21:29:51 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Geert Uytterhoeven <geert@linux-m68k.org>, Konstantin Ryabitsev
+ <konstantin@linuxfoundation.org>
+Cc: Jan Kara <jack@suse.cz>, Thorsten Leemhuis <linux@leemhuis.info>,
+ "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
+Subject: Re: [MAINTAINERS SUMMIT] [4/4] Discuss how to better prevent
+ backports of commits that turn out to cause regressions
+In-Reply-To: <CAMuHMdXS4E3sfzcmBE0G8x4-G7tY==rZvMy269bSbV3LoYTQSA@mail.gmail.com>
+References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
+ <e7f9ae0f-7635-4bf7-827b-bad2d58bf228@leemhuis.info>
+ <20240613095917.eeplayyfvl6un56y@quack3>
+ <20240613-rustling-chirpy-skua-d7e6cb@meerkat>
+ <87plsjoax6.fsf@mail.lhotse>
+ <20240614-almond-lorikeet-of-reading-6d959f@lemur>
+ <CAMuHMdXS4E3sfzcmBE0G8x4-G7tY==rZvMy269bSbV3LoYTQSA@mail.gmail.com>
+Date: Sat, 15 Jun 2024 21:29:48 +1000
+Message-ID: <87msnmo34j.fsf@mail.lhotse>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240531144957.GA301668@mit.edu>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Many thanks to those who have submitted topics for the Maintainers
-Summit and to the Kernel Summit track at the Linux Plumber's
-Conference.
+Geert Uytterhoeven <geert@linux-m68k.org> writes:
+> Hi Konstantin,
+>
+> On Fri, Jun 14, 2024 at 4:38=E2=80=AFPM Konstantin Ryabitsev
+> <konstantin@linuxfoundation.org> wrote:
+>> On Sat, Jun 15, 2024 at 12:29:09AM GMT, Michael Ellerman wrote:
+>> > > 1. disambiguates Link: trailers so they point to relevant online dis=
+cussions
+>> > > 2. allows tooling like b4, patchwork, etc, to reliably match commits=
+ to
+>> > >    submissions for the purposes of better code review automation
+>> > > 3. allows stable and similar projects to better track series groupin=
+g for
+>> > >    commits
+>> >
+>> > Message-Id: sucks, I want a link I can open with a single click.
+>>
+>> But why would you want to, on a regular basis? Viewing the series submis=
+sion
+>> has got to provide near zero useful info -- if it was accepted into the =
+tree,
+>> then at most it would have a couple of stray code review trailers.
+>
+> I open these links regularly (as in daily), for various reasons:
+>   - Finding the thread to reply to when reporting a bug,
+>   - Checking for new Rb-tags given,
+>   - As a starting point for reading earlier submissions of the
+>     same patch,
+>   - ...
 
-We have extended the deadline for Kernel Summit proposals by a week,
-to June 23.  If you have something that you would like to share with
-the kernel development community as a technical topic, or something
-you'd like to porpose as a Maintainers Summit topic, please submit
-your proposal in the next week!
+Yep, all those.
 
-Many thanks,
+I also use them to check that the version of a patch I have committed
+locally in my testing tree is still the latest submission, before
+pushing. Because the time between applying a patch and pushing it can be
+days if it needs lots of testing.
 
-						- Ted
+Another case from yesterday was a ~3 year old patch, someone was asking
+about backporting. I opened the link to the submission and saw that
+someone had replied to it reporting a bug (that I had forgotten about).
 
-On Fri, May 31, 2024 at 04:49:57PM +0200, Theodore Ts'o wrote:
-> This year, the Maintainers Summit will be held in Vienna, Austria on
-> Tuesday, September 17th, 2024, just before the Linux Plumber's Conference
-> (September 18--20th).
-> 
-> As in previous years, the Maintainers Summit is invite-only, where the
-> primary focus will be process issues around Linux Kernel Development.
-> It will be limited to 30 invitees and a handful of sponsored
-> attendees.
-> 
-> Linus has generated a list of people for the program committee to
-> consider.  People who suggest topics that should be discussed at the
-> Maintainers Summit will also be added to the list for consideration.
-> To make topic suggestions for the Maintainers Summit, please send
-> e-mail to the ksummit@lists.linux.dev with a subject prefix of
-> [MAINTAINERS SUMMIT].
-> 
-> To get the most out of our topic discussions, folks proposing a topic
-> should also suggest relevant people and desired outcomes.
-> 
-> For an examples of past Maintainers Summit topics, please see these
-> LWN articles:
-> 
->  * 2023 https://lwn.net/Articles/951847/
->  * 2022 https://lwn.net/Articles/908320/
->  * 2021 https://lwn.net/Articles/870415/
-> 
-> The Kernel Summit is organized as a track which is run in parallel
-> with the other tracks at the Linux Plumbers Conference (LPC), and is
-> open to all registered attendees of LPC.  The goal of the Kernel
-> Summit track will be to provide a forum to discuss specific technical
-> issues that would be easier to resolve in person than over e-mail.
-> The program committee will also consider "information sharing" topics
-> if they are clearly of interest to the wider development community
-> (i.e., advanced training in topics that would be useful to kernel
-> developers).
-> 
-> To suggest a topic for the Kernel Summit, please do two things. by
-> June 16th, 2024.  First, please tag your e-mail with [TECH TOPIC].  As
-> before, please use a separate e-mail for each topic, and send the
-> topic suggestions to the ksummit discussion list.
-> 
-> Secondly, please create a topic at the Linux Plumbers Conference
-> proposal submission site and target it to the Kernel Summit track:
-> 
-> 	https://lpc.events/event/18/abstracts/
-> 
-> Please do both steps.  I'll try to notice if someone forgets one or
-> the other, but your chances of making sure your proposal gets the
-> necessary attention and consideration are maximized by submitting both
-> to the mailing list and the web site.
-> 
-> 
-> If you were not subscribed on to the kernel mailing list from
-> last year (or if you had removed yourself after the kernel summit),
-> you can subscribe by sending an e-mail to the address:
-> 
->    ksummit+subscribe@lists.linux.dev
-> 
-> The program committee this year is composed of the following people:
-> 
-> Christian Brauner
-> Jon Corbet
-> Greg KH
-> Sasha Levin
-> Ted Ts'o
-> Rafael J. Wysocki
-> 
+cheers
 
