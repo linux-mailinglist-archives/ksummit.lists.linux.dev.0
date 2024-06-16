@@ -1,75 +1,144 @@
-Return-Path: <ksummit+bounces-1297-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1298-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47A50909D24
-	for <lists@lfdr.de>; Sun, 16 Jun 2024 13:32:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34338909D25
+	for <lists@lfdr.de>; Sun, 16 Jun 2024 13:39:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC96DB20C9E
-	for <lists@lfdr.de>; Sun, 16 Jun 2024 11:32:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AD0B1C20982
+	for <lists@lfdr.de>; Sun, 16 Jun 2024 11:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06FED16C6AF;
-	Sun, 16 Jun 2024 11:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EB28186E3F;
+	Sun, 16 Jun 2024 11:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="la+VPS8O"
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="EMHWOg3V";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="QLrJqOQO";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="EMHWOg3V";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="QLrJqOQO"
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8314C502B9
-	for <ksummit@lists.linux.dev>; Sun, 16 Jun 2024 11:32:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1EC6A008
+	for <ksummit@lists.linux.dev>; Sun, 16 Jun 2024 11:39:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718537530; cv=none; b=Regords6tgSKzu0GSr5gN1+l+ccf49q6KqQ3Y19Qjno2y8wawP6d5zoYespKEIkjIuI1WFRsgKyyfLc3zY4FYsxZvG12y/FtQgeNg5zFLn8fgno3aAn2vR/Afw3JmpIcN4m5SiboyPO3ZRZAjpSQWaAYPv9pNb0JNJ612drwI5s=
+	t=1718537950; cv=none; b=VFUI1vhe18jmBMs/YRXtiEoWs2HJJ09onRif/ldJlkcD7dbHZjRMSECzWI6/+sWyZ0+dcssy3nqQMmcTu84vxZrsQD9trzaJlEhQ7hjlJneQWfRJFR186b2IB0GPECcmWmKdHKsLaSO262l8CBputQMXitR0ozwWMgdWBNNTato=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718537530; c=relaxed/simple;
-	bh=SzmV3y4y7Ej1uO77goUmxU1pDEhQzmTApmZvQmVZtgA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cc/RHr6eEvWWqapjcO2Yj7yo1GnCsXjBUnnXbQUCvjua+3Azkei0C5cnfyFURTiFnEwjIewk5iNfwBk/ZxZJPkCcHKuDiVvjuAk8bQrvqBa5k7A3hFUpoFD9GCLhF/fCyKDnddyJFyc3Vp4Uc/477a0i+wvpUOWbIv8o3+qwa/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=la+VPS8O; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 2F60C581;
-	Sun, 16 Jun 2024 13:31:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1718537504;
-	bh=SzmV3y4y7Ej1uO77goUmxU1pDEhQzmTApmZvQmVZtgA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=la+VPS8OgG7jh06cxhaZ+OaS9Fy5FPplIbGn6PF258PwV8Wbet+ixsbRRqpVzUfLd
-	 BF5HpjshyikNqk+ZFpjc5DVkaN1+9cld/6rFeoq2GoVoZpIEJpiVaESKgktkrFMBZb
-	 DEeeHn7D/bah7Da63iICi11La+zFdehAvvBKIhbY=
-Date: Sun, 16 Jun 2024 14:31:39 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+	s=arc-20240116; t=1718537950; c=relaxed/simple;
+	bh=nVqk2/u0LluyS/sQ1FO/b7ySRGJNCejpORWv5pgl+JM=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=d+NcBYl4jNlLW22VVvww9A7uPPuQzEutVStOgueWX9B/nFcbjX0CFeh2qUfEkeGwtLHdg4KHmKLxJYpjuKzjJpEPmzsLiVk3q2YTV0FbJj/raVxaawO+w0Hh9KSb1MWiR52AyTCx5UiPHuHIuSeZ6QUpuGMPisdKB7uasTUSJL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=EMHWOg3V; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=QLrJqOQO; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=EMHWOg3V; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=QLrJqOQO; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 953FB22DD0;
+	Sun, 16 Jun 2024 11:39:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1718537940; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NJSUWRM5bOuc9Xmx+FnG9z2zIvOYJWYl3AfDLgfsevs=;
+	b=EMHWOg3Vo7t+mKKer9OF4zMl+pxhshMrP6PqPsOwLCun9UFC38rnlzjcCnx4UXxqYN9DGn
+	tXvcDHDv2K2ayLY2U6o3IHoik1kyqiXL6jGHHNwD7J3unn24ZEmCcdi9N3ZQI0mF96eOsC
+	Bw5S6jl4ALgf+JAIBN6/DveRH3VTDSk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1718537940;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NJSUWRM5bOuc9Xmx+FnG9z2zIvOYJWYl3AfDLgfsevs=;
+	b=QLrJqOQOvz5Hn+gLQ1hBiKzO2+G4ay521oVmFDPt3O03NxzQEaL7DkOKLZrvPXZMZNdWUJ
+	yAunESl0oj+v1ICA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1718537940; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NJSUWRM5bOuc9Xmx+FnG9z2zIvOYJWYl3AfDLgfsevs=;
+	b=EMHWOg3Vo7t+mKKer9OF4zMl+pxhshMrP6PqPsOwLCun9UFC38rnlzjcCnx4UXxqYN9DGn
+	tXvcDHDv2K2ayLY2U6o3IHoik1kyqiXL6jGHHNwD7J3unn24ZEmCcdi9N3ZQI0mF96eOsC
+	Bw5S6jl4ALgf+JAIBN6/DveRH3VTDSk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1718537940;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NJSUWRM5bOuc9Xmx+FnG9z2zIvOYJWYl3AfDLgfsevs=;
+	b=QLrJqOQOvz5Hn+gLQ1hBiKzO2+G4ay521oVmFDPt3O03NxzQEaL7DkOKLZrvPXZMZNdWUJ
+	yAunESl0oj+v1ICA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4A92C13AA0;
+	Sun, 16 Jun 2024 11:39:00 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id zqtzENTObmbLPwAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Sun, 16 Jun 2024 11:39:00 +0000
+Date: Sun, 16 Jun 2024 13:39:25 +0200
+Message-ID: <875xu95d76.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>, Takashi Iwai <tiwai@suse.de>,
+	"Michael S. Tsirkin"
+ <mst@redhat.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
-	Jan Kara <jack@suse.cz>, Thorsten Leemhuis <linux@leemhuis.info>,
+	Jan Kara <jack@suse.cz>,
+	Thorsten Leemhuis <linux@leemhuis.info>,
 	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
-Subject: Re: [MAINTAINERS SUMMIT] [4/4] Discuss how to better prevent
- backports of commits that turn out to cause regressions
-Message-ID: <20240616113139.GA747@pendragon.ideasonboard.com>
+Subject: Re: [MAINTAINERS SUMMIT] [4/4] Discuss how to better prevent backports of commits that turn out to cause regressions
+In-Reply-To: <70bce57a-22b5-482c-89fe-d9cd775294f3@redhat.com>
 References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
- <e7f9ae0f-7635-4bf7-827b-bad2d58bf228@leemhuis.info>
- <20240613095917.eeplayyfvl6un56y@quack3>
- <20240613-rustling-chirpy-skua-d7e6cb@meerkat>
- <87plsjoax6.fsf@mail.lhotse>
- <CAHk-=wiD9du3fBHuLYzwUSdNgY+hxMZEWNZpqJXy-=wD2wafdg@mail.gmail.com>
- <70bce57a-22b5-482c-89fe-d9cd775294f3@redhat.com>
+	<e7f9ae0f-7635-4bf7-827b-bad2d58bf228@leemhuis.info>
+	<20240613095917.eeplayyfvl6un56y@quack3>
+	<20240613-rustling-chirpy-skua-d7e6cb@meerkat>
+	<87plsjoax6.fsf@mail.lhotse>
+	<CAHk-=wiD9du3fBHuLYzwUSdNgY+hxMZEWNZpqJXy-=wD2wafdg@mail.gmail.com>
+	<70bce57a-22b5-482c-89fe-d9cd775294f3@redhat.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <70bce57a-22b5-482c-89fe-d9cd775294f3@redhat.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Score: -3.30
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_TLS_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_DN_SOME(0.00)[]
 
-On Sun, Jun 16, 2024 at 10:10:25AM +0200, Paolo Bonzini wrote:
+On Sun, 16 Jun 2024 10:10:25 +0200,
+Paolo Bonzini wrote:
+> 
 > On 6/16/24 03:13, Linus Torvalds wrote:
 > > And no, I'm not at all happy with the fact that apparently vhost and
 > > kvm has made it their thing.
@@ -77,50 +146,30 @@ On Sun, Jun 16, 2024 at 10:10:25AM +0200, Paolo Bonzini wrote:
 > > Paolo, Michael, Takashi, please put useful links, not those braindead
 > > message id's in your commit messages.
 > 
-> Ok, ok.  Before lore existed, there was no service that I can remember 
-> that archived messages with a message-id in the URL.  So, for example 
-> Gmane links would be useless now, and patchwork links are not really 
+> Ok, ok.  Before lore existed, there was no service that I can remember
+> that archived messages with a message-id in the URL.  So, for example
+> Gmane links would be useless now, and patchwork links are not really
 > something I'd trust for long-term archival either.
 > 
-> These days, it's mostly just that I have set am.message-id to true years 
-> ago; but since lore is managed by kernel.org, we can expect the URLs to 
-> be stable and the original reason to use Message-ID is obsolete.  Having 
-> learnt right now about the applypatch-msg git hook, I've stuck a
+> These days, it's mostly just that I have set am.message-id to true
+> years ago; but since lore is managed by kernel.org, we can expect the
+> URLs to be stable and the original reason to use Message-ID is
+> obsolete.  Having learnt right now about the applypatch-msg git hook,
+> I've stuck a
 > 
-> sed -i -e 's,^Message-ID: <\(.*\)>$,Link: https://lore.kernel.org/r/\1,' 
-> "$1"
+> sed -i -e 's,^Message-ID: <\(.*\)>$,Link:
+> https://lore.kernel.org/r/\1,' "$1"
 > 
-> in there which should do the trick.  I guess Michael and Takashi can do 
-> the same. :)
-> 
-> 
-> By the way, if you use Firefox, you can do the following two steps to 
-> install a search plugin that searches lore by Message-ID:
-> 
-> - first go to 
-> https://mycroftproject.com/install.html?id=121759&basename=lore_kernel_org&icontype=png&name=lore.kernel.org 
-> to install the search engine (an XML file, you can see it at 
-> https://mycroftproject.com/installos.php/121759/lore_kernel_org.xml).
-> 
-> - then go to about:preferences#search and add a search shortcut
+> in there which should do the trick.  I guess Michael and Takashi can
+> do the same. :)
 
-You can also add a smart bookmark:
+Heh, that's actually what I've done already, but my script had
+"Message-Id" or such to match and it didn't hit any longer after some
+mail change; as a result, Message-id tag remained.  You'd better to
+make it case-insensitive match.
 
-- Name: 'Lore' (or whatever you want as a name)
-- URL: https://lore.kernel.org/r/%s
-- Keyword: 'lore' (or whatever you want as a keyword)
 
-Entering 'lore <msg-id>' in the URL bar will then do the right thing.
+HTH,
 
-> On Chrome instead you can add https://lore.kernel.org/r/%s at 
-> chrome://settings/searchEngines.
-> 
-> (Apart from git commit messages, I use it also with the 
-> https://addons.thunderbird.net/en-us/thunderbird/addon/copy-message-id/ 
-> extension for Thunderbird).
-
--- 
-Regards,
-
-Laurent Pinchart
+Takashi
 
