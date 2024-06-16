@@ -1,80 +1,80 @@
-Return-Path: <ksummit+bounces-1292-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1293-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0490D909C6F
-	for <lists@lfdr.de>; Sun, 16 Jun 2024 10:10:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6B56909C78
+	for <lists@lfdr.de>; Sun, 16 Jun 2024 10:23:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 004161C20B58
-	for <lists@lfdr.de>; Sun, 16 Jun 2024 08:10:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B45891C20B4A
+	for <lists@lfdr.de>; Sun, 16 Jun 2024 08:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C834D1836FB;
-	Sun, 16 Jun 2024 08:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D9721822F9;
+	Sun, 16 Jun 2024 08:23:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Jjdxspsb"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Vp2kZ1FN"
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84549944F
-	for <ksummit@lists.linux.dev>; Sun, 16 Jun 2024 08:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D3B1822F3
+	for <ksummit@lists.linux.dev>; Sun, 16 Jun 2024 08:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718525440; cv=none; b=pHqQ9B5OIsOUonPgnb2z29dT3GjYqIjX0GRnuAXi4+OftEUIIJgkt4TeKFwqXDg32Yz2A4aT0tbszGethfh2m5FfgIHfOvbbG7FsxHuVJawvdsJibh0eIpnuHW8HR0z/qkq6kDpK4Roe/+PGbSRNUUDG99ZAuA/UfGXTCEIRf2o=
+	t=1718526184; cv=none; b=qtj8Qpel5FRykOX4T19Cq4GoDjCAB9FR50hAppG/vuqf4S4jbh/2ELJ+06XBIUpz/I6eg0ixmykg8+WG6G0KCF+ITjjrVqLO9csHMqye8usIrDbfA+N7tG42lJb2swraUS5GhBxTFjZQtuOFUxYOTntgOYn4FX/jJPSkbncMyys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718525440; c=relaxed/simple;
-	bh=JfthFi9LhRyByMOHUEzQs5sX2OPhUfj3Aw0t+4odLDY=;
+	s=arc-20240116; t=1718526184; c=relaxed/simple;
+	bh=8eHMI35/80XUjuxeS73ht+PjTyVXiEiEeDBzpU6voYs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hYLw3DO9qO3mD30944Tp1/Xb6g0EhB/7dCr5Av/qXf15TY5HZTv42r5fJoiQqAbA0ovlcNgfMh/pjKNDdBhVdx2EYlIUcLah5vYTC4UbWjebok3u/Eh/OMSFZ4D1Sw11vo3P5bdhiKm51XMuklcr+BAurjWeiH7Hq33IsLG6bV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Jjdxspsb; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=VgwnmmP+lge7Gykqoxe5bBuZ1XnH+LjRNmxBEeX7OZuWl88TEwpSxIeJw0+gAN13Bx7Tx0ylyAbmypYujDPKuspI8MV1AaZuf122IWw9nCp2HFzgQa8egtN8knx08HtireoxQYHWfPmAfObrjdr8ZQihNAs922K1rmF7sSdrRhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Vp2kZ1FN; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718525437;
+	s=mimecast20190719; t=1718526182;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=mAAmtj5lMpFJWjI+yClY7qbPBddpp/h/D3VoQjVd8IM=;
-	b=Jjdxspsbngl+O8JENeEkZACtRmK9DEg2ITIW8fHKAb14Ki9WrVJ1YJe0JsODDSUp28jeuZ
-	6pzI0QWumnB964DjSH3LpruGgmMy3Xb912IgXG2Xmsxd8U1U/mSdTmEAFx60K6v+V7IKoU
-	3TR92Lt3YsZCEfCwYzJTVlEPcFQ5CsU=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=/zkpapPgLVhwqoLdGa2/pqOYSWzAHLdXANCuIv+YXu4=;
+	b=Vp2kZ1FNBsyFBJpM9SJMUvoqbN5Oq2s20bZigX1hoLL97zNjM55LIq65tmFzmA3VcjHiYT
+	uqorvNrZ/xi+axL9JPXLRtP71qfMsJd4HnmSYw9ta0fUeE44E4N6eT5fHlQzczp/WFpF3w
+	bLa07xEiQ9bpbIs6XZffXohKwuGGRiw=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-627-eG4JHt2qMBuVDGUaWdkOIw-1; Sun, 16 Jun 2024 04:10:33 -0400
-X-MC-Unique: eG4JHt2qMBuVDGUaWdkOIw-1
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a6f0fee1f49so185493666b.0
-        for <ksummit@lists.linux.dev>; Sun, 16 Jun 2024 01:10:33 -0700 (PDT)
+ us-mta-563-K2jFlx62O0CQumdMajLqPw-1; Sun, 16 Jun 2024 04:23:00 -0400
+X-MC-Unique: K2jFlx62O0CQumdMajLqPw-1
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-a6f0da6cd62so310968766b.1
+        for <ksummit@lists.linux.dev>; Sun, 16 Jun 2024 01:23:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718525432; x=1719130232;
+        d=1e100.net; s=20230601; t=1718526179; x=1719130979;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=mAAmtj5lMpFJWjI+yClY7qbPBddpp/h/D3VoQjVd8IM=;
-        b=xPsPmm3Qfv/H0v6/H3ijc3PRaUEBIP2mnfRCLMIqQJPh6J4+WTdYs5UOKx53GAkd00
-         MglPojbaKauv98KQsfdeHNdzE/DNBKUz3ySvwN5PQKCKmXDXVFT0abJMcnU473XYseYR
-         g8KMnU0Ju3q7PpN0PHSnRv7yuHUgXVuyaeqz8zhFlM3hZc5NIN/3G27K5RLvBvy/Mc1C
-         9oWcm1Hti5lvZ319szub0mxgTgYygY0bJyQLG171kwPNcH+bizQccx1RzoxZXTTr6oWr
-         FOBk4Psa5C5cBVPTPNhi4/StreZoqOYAHAv20Wd2U55Re1mUFa3GIpthiVp296//WTrC
-         5iJA==
-X-Forwarded-Encrypted: i=1; AJvYcCXZ2UbV/skoYQPWKpvfy/SLHoi3LlJWxMfewSxC4ZfERS88mFXmUI/mBUpg4C4ZbiFGU1XWtKAtsTtAA4tPGdpmtCF0vg71yw==
-X-Gm-Message-State: AOJu0Yxg1oOJQnVii+ZbAF9dAHUv/X/uptE2NM6lltLUGQQVDpu9GDIv
-	nc8aYO7MgcxD1ptRM/ceU1A/r2u4q2wgKuI8VbZBcc+0qlAIjhPxW7nTRt44H+FCLcA3Da81xRQ
-	8Kx7kuu2XKKaEP9khYWMzhWZTLS4hRKEK5xjFm4bwOssnX8LIopt7TzQ=
-X-Received: by 2002:a17:907:d30d:b0:a6f:6f4a:b24d with SMTP id a640c23a62f3a-a6f6f4ab52dmr327254466b.27.1718525432465;
-        Sun, 16 Jun 2024 01:10:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEErz80YDOzYYhjCp376vbN0ZofjC8pYx6+8uhfhb+/mCXPm8w8wirRB+4Nt7VVCvn+4nWOJw==
-X-Received: by 2002:a17:907:d30d:b0:a6f:6f4a:b24d with SMTP id a640c23a62f3a-a6f6f4ab52dmr327252266b.27.1718525431959;
-        Sun, 16 Jun 2024 01:10:31 -0700 (PDT)
+        bh=/zkpapPgLVhwqoLdGa2/pqOYSWzAHLdXANCuIv+YXu4=;
+        b=fEtWOwKI9iDpAbVk588WELs+iN9FmNIyBiHzUyd5BXVKr0bAYqSorMZPby6pgaD0U+
+         vHuNkfLw5CI5KMNZRaN82u8P9GNgYLFcL3vxO3QapLZ9puAgm3NVhnZPYJtDNVGDtRTB
+         hFvM2bXJ9ILrlfpL4o3yrd5HpyvgWdAv1/oq47EtKFU5KnKVeYss9XG4f6LeGL5TW+dC
+         xytv59HPoNwiAF1L88uPknldW2CnVqwpAB6IKhJkn5bOo8BOTxqLE7BhRr0+k+vOJ15t
+         RMUuxqw2UL2IccsCfrySnxjs774imr6NXUb5ORPfIkTtrqaK1xvxwQe8skCvISrDZlzH
+         7+ng==
+X-Forwarded-Encrypted: i=1; AJvYcCVYV08thtSWScF9IjgJ5tExw+zIjqH5bdJvcQabWRoTuhYhRWGM53Dz/1FZgvW4VA1M0cGQkeBTvcwjjhfN/t9XGsGhisuAtg==
+X-Gm-Message-State: AOJu0YxbW5mEvVixXvyCihtyky4mOlsXGQUph7N6Ci5YoYFZ9VXM1st+
+	zZKsFJY1d+NPoQnk+BxSMIlnL4xExWyTt7GslH5w2+4YgQRIuF/fRC4N8a7w6H3osXWhjvVErhU
+	gB4LZm0IzJjZ4RRAG++RdRyQdh5AuaCTaJKX1Zo7smZrE7vHo7lKZK/g=
+X-Received: by 2002:a17:906:451:b0:a6e:f8c1:8395 with SMTP id a640c23a62f3a-a6f524037bamr597153566b.9.1718526179087;
+        Sun, 16 Jun 2024 01:22:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEQs5NDJRtBd845pWtCQlG0kg5SMU09oZu7qVn0jEiOVs7+ReKNhh0o6J1fMB7TNEXpUqszqQ==
+X-Received: by 2002:a17:906:451:b0:a6e:f8c1:8395 with SMTP id a640c23a62f3a-a6f524037bamr597152566b.9.1718526178720;
+        Sun, 16 Jun 2024 01:22:58 -0700 (PDT)
 Received: from [192.168.10.3] ([151.62.196.71])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a6f57552633sm378551466b.191.2024.06.16.01.10.30
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a6f56f427a5sm377730366b.180.2024.06.16.01.22.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 16 Jun 2024 01:10:30 -0700 (PDT)
-Message-ID: <70bce57a-22b5-482c-89fe-d9cd775294f3@redhat.com>
-Date: Sun, 16 Jun 2024 10:10:25 +0200
+        Sun, 16 Jun 2024 01:22:57 -0700 (PDT)
+Message-ID: <841e528b-357a-4bc6-bc42-1c4c2f13adae@redhat.com>
+Date: Sun, 16 Jun 2024 10:22:56 +0200
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -85,9 +85,10 @@ User-Agent: Mozilla Thunderbird
 Subject: Re: [MAINTAINERS SUMMIT] [4/4] Discuss how to better prevent
  backports of commits that turn out to cause regressions
 To: Linus Torvalds <torvalds@linux-foundation.org>,
- Michael Ellerman <mpe@ellerman.id.au>, "Michael S. Tsirkin"
- <mst@redhat.com>, Takashi Iwai <tiwai@suse.de>
-Cc: Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
+ Steven Rostedt <rostedt@goodmis.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Takashi Iwai <tiwai@suse.de>,
+ Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
  Jan Kara <jack@suse.cz>, Thorsten Leemhuis <linux@leemhuis.info>,
  "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
 References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
@@ -95,6 +96,8 @@ References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
  <20240613095917.eeplayyfvl6un56y@quack3>
  <20240613-rustling-chirpy-skua-d7e6cb@meerkat> <87plsjoax6.fsf@mail.lhotse>
  <CAHk-=wiD9du3fBHuLYzwUSdNgY+hxMZEWNZpqJXy-=wD2wafdg@mail.gmail.com>
+ <20240615232831.6c7f27dd@gandalf.local.home>
+ <CAHk-=wiUS4r788i5XjTtSwvfvKRm9uH2H5=eLHbZVu3Wo-YHCA@mail.gmail.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
 Autocrypt: addr=pbonzini@redhat.com; keydata=
  xsEhBFRCcBIBDqDGsz4K0zZun3jh+U6Z9wNGLKQ0kSFyjN38gMqU1SfP+TUNQepFHb/Gc0E2
@@ -131,54 +134,46 @@ Autocrypt: addr=pbonzini@redhat.com; keydata=
  JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
  dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
  b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
-In-Reply-To: <CAHk-=wiD9du3fBHuLYzwUSdNgY+hxMZEWNZpqJXy-=wD2wafdg@mail.gmail.com>
+In-Reply-To: <CAHk-=wiUS4r788i5XjTtSwvfvKRm9uH2H5=eLHbZVu3Wo-YHCA@mail.gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 6/16/24 03:13, Linus Torvalds wrote:
-> And no, I'm not at all happy with the fact that apparently vhost and
-> kvm has made it their thing.
+On 6/16/24 06:59, Linus Torvalds wrote:
+> Here's the thing: if you applied it unchanged from lore, you already
+> have the email address and a date in the commit.
 > 
-> Paolo, Michael, Takashi, please put useful links, not those braindead
-> message id's in your commit messages.
+> Are you seriously saying that you can't find it based on that?
 
-Ok, ok.  Before lore existed, there was no service that I can remember 
-that archived messages with a message-id in the URL.  So, for example 
-Gmane links would be useless now, and patchwork links are not really 
-something I'd trust for long-term archival either.
+Sure I _can_ but it's not especially handy (bordering self-inflicted 
+pain, tbh).  Having the Message-ID of the URL makes it a lot easier to 
+find the message in your mail program and reply to it if needed.
 
-These days, it's mostly just that I have set am.message-id to true years 
-ago; but since lore is managed by kernel.org, we can expect the URLs to 
-be stable and the original reason to use Message-ID is obsolete.  Having 
-learnt right now about the applypatch-msg git hook, I've stuck a
+I also used to have a script that tagged as "merged" any messages in my 
+inbox for which the corresponding Message-ID trailer appeared in 
+linux.git, but it broke at some point and I never fixed it...
 
-sed -i -e 's,^Message-ID: <\(.*\)>$,Link: https://lore.kernel.org/r/\1,' 
-"$1"
-
-in there which should do the trick.  I guess Michael and Takashi can do 
-the same. :)
-
-
-By the way, if you use Firefox, you can do the following two steps to 
-install a search plugin that searches lore by Message-ID:
-
-- first go to 
-https://mycroftproject.com/install.html?id=121759&basename=lore_kernel_org&icontype=png&name=lore.kernel.org 
-to install the search engine (an XML file, you can see it at 
-https://mycroftproject.com/installos.php/121759/lore_kernel_org.xml).
-
-- then go to about:preferences#search and add a search shortcut
-
-On Chrome instead you can add https://lore.kernel.org/r/%s at 
-chrome://settings/searchEngines.
-
-(Apart from git commit messages, I use it also with the 
-https://addons.thunderbird.net/en-us/thunderbird/addon/copy-message-id/ 
-extension for Thunderbird).
+(In fact, that is IMO the main point in favor of Message-ID - use it for 
+the plain message you're applying, so that it can be used to reply and 
+for tracking purposes; use Link for the discussion that _prompted_ the 
+patch to be created.  But I'm not going to argue too much about it).
 
 Paolo
+
+
+> Now, if you*base*  your commit it on somebody elses work on the lists,
+> you should most definitely say that, and say something like
+> 
+>     Based on patch submission by Xyz at [1]
+> 
+>     Link:https://lore.kernel.org/...../  [1]
+> 
+> and that's_wonderful_.
+> 
+> But if you just did "b4 am" and applied a patch, what's the advantage
+> of including information that adds no real value?
+
 
 
