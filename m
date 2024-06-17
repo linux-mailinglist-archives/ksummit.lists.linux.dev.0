@@ -1,83 +1,52 @@
-Return-Path: <ksummit+bounces-1304-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1305-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A07F90B213
-	for <lists@lfdr.de>; Mon, 17 Jun 2024 16:32:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC34F90B3CD
+	for <lists@lfdr.de>; Mon, 17 Jun 2024 17:18:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B7FA1C230A6
-	for <lists@lfdr.de>; Mon, 17 Jun 2024 14:32:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93B371F29EE2
+	for <lists@lfdr.de>; Mon, 17 Jun 2024 15:18:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467CB1B4C4E;
-	Mon, 17 Jun 2024 13:48:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D3215ADA0;
+	Mon, 17 Jun 2024 14:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="yhfgSt0f"
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OsrMlPT4"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CB419B591
-	for <ksummit@lists.linux.dev>; Mon, 17 Jun 2024 13:48:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995C415991E
+	for <ksummit@lists.linux.dev>; Mon, 17 Jun 2024 14:39:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718632090; cv=none; b=hoNQEbI74k4YWhYLm1BLhXwKQX8S2RmqrPfZy/6qhE4hLbl4mZNwfXxnefDOdC1j7qwKCQO99VOkN7lTO4Z4N4zZ6oCEibDgHb5JyJsIDppWpaN47nScR9epKjmq6vy2CJShj4ic99ODrKb7A64GRZcW96v5I/sXLQj6Nl5TYhI=
+	t=1718635156; cv=none; b=Hvi73jh976QZTj1LvE+sOrCuEeQDfi9A+8qScU9TaZUFpMF1t99eB+wHuhDHeQzOS7NXcFd1hE3pQ4zFFLJdjmlhcTyHelXMBuUWGBNU1KhHtmse1lbWqi5K59o1+1vWI2m+keTeHM0qEKFPDkonl0g5leq7aGC6SOW3zT8bubU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718632090; c=relaxed/simple;
-	bh=cuU6yIlF7G+78NvSHhFp8ntpA7RUyAmtA6Qajh4TqXk=;
+	s=arc-20240116; t=1718635156; c=relaxed/simple;
+	bh=Sg0j0U4f8yS+schIs4Ghz+5UNYHGckAJn6LafjXU4uM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VAb/itiu/ICXX/zM74/kl9mKS+J8KZfnV8BBIe/qKwUJbSNhyFt5A2IXbBLELiV+df2VpoBw1/z1UTyzSPkN1saLEV19Q+GNIvGJ0qyrO1E0AUdJVGiQ69YuOxbZmg475BrVQb3RBsgiM4r9HDtLgjxjYH5SaM4X8r2OiAkJ9SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=yhfgSt0f; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-35f089e35e7so2773395f8f.0
-        for <ksummit@lists.linux.dev>; Mon, 17 Jun 2024 06:48:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718632087; x=1719236887; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ahyQtBJEmtmou/O9ZQ5JwVJ6Wx8XXbyrXuJfzSYCTlU=;
-        b=yhfgSt0fiGMd7+HysXQMvTNac4jU97Q/SowfXn78AMXomKSB8JgmLRVyFnZsPP1nK5
-         3WVqPx1zjsoJx6pDjA0iBSCbqSsjyoVoLD0re+cU11N+F1q7zmINH0ujx4U2jvbku7EH
-         HiI02foRT/OHFKYPhl0hp74R+BPC793iFZX7/Uq+W/tyNJ3Thdi5qzMhZaoyuum+d1wP
-         pHcfp97HWcZJwmVtODqvL8Bz6pxfifdm04DusOg8Eylnx3lR62quOgi/Z9Wq9nH/5orP
-         ujLoKghVjRYP3HT/c1fmi9+az4c6mFdcWmHpAggUGbSy3/W1tx10dH3Iz+/fqKyZDzGs
-         HWBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718632087; x=1719236887;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ahyQtBJEmtmou/O9ZQ5JwVJ6Wx8XXbyrXuJfzSYCTlU=;
-        b=lbUYneo6x8SZTuwHzWLa4XYwxLm3BK9cxo1RRU7bdKVunWQ5cuLdZQcMzwk0cRmlaZ
-         Y6J9/uSI4H9rsGpVMD60nc4j+L4v8hQkuYD2RL/kfpuAAeHMEktwE5HwMDi0ZWxxYE2F
-         jEilUSp6/57UtL67pKVu5RIUgRJOHJNgDzW3G2WqSHBjQo2X7yMOGQx0nBAtURCCWYz9
-         VUwINY3c6ykQIspmAPl07rr8UogVVPXmrSKQENQAB0n9JjvrMp0FdPmOeZ2V3u/2+gi5
-         ToLUvTaCCuIvkDXnaFpsFxjZcLiw5t4OKEy+IJ77i1qoW4lb3vuro+iDZSuBfBEL+bOv
-         JBrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVV+8WZ4D3U3L2EtUEXF6Adlz49/wpvrbFU7f7NG/58Yl2YBTGLWaFdAPs7pPSd1NPMgQ36LzzV2CMHkoomAF0X3Wh6/Tmp9A==
-X-Gm-Message-State: AOJu0YxIWCWmnIaPh3aYVgKLYWKROX34Nyi39b+8aWjLxjtSIfh8BuH1
-	jkQtg5jWRJHG9y2fGqy9/SCcmEtACoLpA7MAsfrSM4OMOWmHyUD7nw/27vcUJCY=
-X-Google-Smtp-Source: AGHT+IE1A0ZRdCxpks76XoloK7ZQw035E9BBsDyvUPEh4oWKqnqeRTOil3Jhdg8kiI2fXeFOZu2tIQ==
-X-Received: by 2002:adf:efc9:0:b0:35f:1c1c:e1e5 with SMTP id ffacd0b85a97d-3607a7c2cd3mr9847928f8f.31.1718632087268;
-        Mon, 17 Jun 2024 06:48:07 -0700 (PDT)
-Received: from localhost ([102.222.70.76])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3608fb0b145sm5657936f8f.102.2024.06.17.06.48.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jun 2024 06:48:06 -0700 (PDT)
-Date: Mon, 17 Jun 2024 16:48:03 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=rRmh2jOROB+fqLKG4+DVr4fGp/xZyZGVNJKoFvt3F58CqASDv04fPPLFOAa8xhlTQt5rj1me0LNVK0MbxarmRGmB7Xpx0EPFvfOuQVPOWy1yo6OOJS9+o9oCm9TEvRio+p8UKYmbgXT0ALXJuFfA0QvayTOyBqoyAgJbUzHb9Eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OsrMlPT4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA560C4AF1D;
+	Mon, 17 Jun 2024 14:39:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718635156;
+	bh=Sg0j0U4f8yS+schIs4Ghz+5UNYHGckAJn6LafjXU4uM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OsrMlPT40Pkl9XHdDv5GFZMS/K7ShK1wNrtKMJiUfHA6vufFbtqgdo7CmTxwo3wPL
+	 LjGThg47y/R3x/BkDIpBwJs46zbCMcY4M8pY04TYjTKyvxtqw3Trmvk5OLpxVIfrBK
+	 EHuphD3Sn3igUvQOapMayvA7tCZxL3xXS1hhGkqE=
+Date: Mon, 17 Jun 2024 10:39:14 -0400
+From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, Takashi Iwai <tiwai@suse.de>,
-	Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
-	Jan Kara <jack@suse.cz>, Thorsten Leemhuis <linux@leemhuis.info>,
-	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
+Cc: Steven Rostedt <rostedt@goodmis.org>, 
+	Michael Ellerman <mpe@ellerman.id.au>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Takashi Iwai <tiwai@suse.de>, Jan Kara <jack@suse.cz>, 
+	Thorsten Leemhuis <linux@leemhuis.info>, "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
 Subject: Re: [MAINTAINERS SUMMIT] [4/4] Discuss how to better prevent
  backports of commits that turn out to cause regressions
-Message-ID: <f0850566-2fcd-4ce1-ac8e-a41ae70545ca@moroto.mountain>
+Message-ID: <20240617-arboreal-industrious-hedgehog-5b84ae@meerkat>
 References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
  <e7f9ae0f-7635-4bf7-827b-bad2d58bf228@leemhuis.info>
  <20240613095917.eeplayyfvl6un56y@quack3>
@@ -92,17 +61,69 @@ List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 In-Reply-To: <CAHk-=wiUS4r788i5XjTtSwvfvKRm9uH2H5=eLHbZVu3Wo-YHCA@mail.gmail.com>
 
-To me, the explicit links to the lore thread are useful because when I'm
-reporting static checker bugs, I can reply to the thread and CC all the
-correct people.
+On Sat, Jun 15, 2024 at 09:59:40PM GMT, Linus Torvalds wrote:
+> And finally - if you applied the patch by just following a message ID
+> with basically "b4" from lore, I think the source link is almost
+> entirely worthless.
 
-I guess if we have multiple Link: tags then probably the last one is
-going to be the link to the thread.  So that could work...
+I have to continue to disagree here. I need something *reliable* for
+automation to work. If automation fails even 10% of the time, it generates
+confusion. I have lots of reports from people where b4 was able to match 9 out
+of 10 commits because the author changed something minor in patch 8/10, and so
+the patch-id no longer matched. As a result, committers follow up with "why
+didn't you apply 8/10" and the maintainers then have to reply with "oh, I did,
+but b4 got confused."
 
-regards,
-dan carpenter
+Message-IDs are the perfect solution to this problem -- they are a reliable
+mechanism to match a commit to the patch where it came from. I don't care if
+they are part of the Link: trailer, but I do care to know *which one* of the
+Link: trailers point at the original submission. If there are multiple Link:
+trailers pointing at lore, one for the patch submission, and another for a
+series dependency, discussion, or an alternative implementation of the same
+thing, then I no longer have a reliable course of action.
+
+> Here's the thing: if you applied it unchanged from lore, you already
+> have the email address and a date in the commit.
+> 
+> Are you seriously saying that you can't find it based on that?
+
+There are situations where this is unreliable for automation:
+
+- the patch has the "From:" header inside the body that is different from the
+  "From:" message header (this is why this would fail most commonly)
+- the patch has a "Date:" or "Subject:" headers inside the body that override
+  the "Date:" or "Subject:" headers in the message
+- the author sends the series to a test list
+- the author sends the series for a pre-review to the newbies list ("hey, can
+  someone quickly confirm that this looks good?")
+- the author sends the series to the wrong list, and then corrects themselves
+  and sends it to the correct list
+- the author sends the same patch as part of multiple series, in the hopes
+  that one of them gets through
+
+All of these cases would cause automation to fail.
+
+I understand the reasons why everyone hates having the "Message-ID:" trailer,
+and this is fine. Can I counter-propose that we have a unique URL for links
+specifically going to patch submissions from which the commits were made? I've
+been already recommending using the "msgid.link" domain, but I'll go a bit
+further and put forward the recommendation that:
+
+- commits MAY have Link: trailers indicating the exact origin of the patch. To
+  distinguish these links from other Link: trailers that may lead to relevant
+  online discussions, they should either use the "patch.msgid.link" domain, or 
+  indicate the nature of the link using the hash-notation. Examples:
+
+  - Link: https://patch.msgid.link/message@id-here
+  - Link: https://lore.kernel.org/message@id-here # patch
+
+This would satisfy both the need for automation to have a reliable way to find
+the origin of the commit, and clearly indicate the nature of the link for
+humans doing commit spelunking.
+
+-K
 
