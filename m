@@ -1,33 +1,33 @@
-Return-Path: <ksummit+bounces-1313-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1314-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF83990CB9C
-	for <lists@lfdr.de>; Tue, 18 Jun 2024 14:24:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB01890D083
+	for <lists@lfdr.de>; Tue, 18 Jun 2024 15:34:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D73C1F23A7C
-	for <lists@lfdr.de>; Tue, 18 Jun 2024 12:24:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E04C1F226D0
+	for <lists@lfdr.de>; Tue, 18 Jun 2024 13:34:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E50C7132109;
-	Tue, 18 Jun 2024 12:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A59217839F;
+	Tue, 18 Jun 2024 12:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="Ij3RxIuE"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="xHTNgvPb"
 Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50DF212DD92
-	for <ksummit@lists.linux.dev>; Tue, 18 Jun 2024 12:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99D8156898
+	for <ksummit@lists.linux.dev>; Tue, 18 Jun 2024 12:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718713461; cv=none; b=rywBSmAKr15xrfvFR16AdvskGL2R3OlUIYb06QxJrIZgtDQsRuZJjbmn58nbafagZxc7SoIThO8EyJJwCEhckx+HLd819mYlSTv/LxJHNZDJJpBz75v+mfl3LvnPkCeLSvWPRFhUnLud90Mg6UE2LZ1IlHGcYVVMQEHOwuJnzKk=
+	t=1718715533; cv=none; b=RDFFXE3f82HToakg5hNRYkewROSEsBi4witxOFo+q0dG6/WkwYrn90GXoX3N8gIuKGNrqc5FyXNrwRBX2VpUv4pHicClbzAR7XoimE/33ypYeteWQVviu1Rk/Dch3Nxl/pJAmQ1XmLSfO8ZVZKaBCrP1Quc1u9B7+a6q6xdXRL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718713461; c=relaxed/simple;
-	bh=tdH44NFL9Kr2lgRqUjtymhhe/jz5ulzptMuIiwmE2uI=;
+	s=arc-20240116; t=1718715533; c=relaxed/simple;
+	bh=XI7zV3UOYfa7N0W5rtVaJixjQ6qfxljyVaj6cVmOnsA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SYP8qT7f1B8hwFwVGreeQHWk7QNwfp2ATfVscSHxHrSbyhZN8Dj+c9HPmRjwU7UiDjWYnj9bgKkxVBjihJq05EUbm9bgO52f3hAkmrP40G5ZP5knx1h6Addmdlcjnr1l3SU5B1J4Dp0u2Zkj+jwP8DU8PT0A+nhFIJxlHWwxoHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=Ij3RxIuE; arc=none smtp.client-ip=80.237.130.52
+	 In-Reply-To:Content-Type; b=BOQdQrxEawU4y8cjEml4JajwXWxdFU0T27jLp38OR3+xfEEc3vfZDvFrym2fZ3rbqoRbco/wfUZRnR+a1wexKtdCibmwpAz+IQv9At822jNtGF39n+2T3UV/dYrPNiSkDu6njez9wVVTmcWTu/UvHPkUWJSiPJShUUfx09QVVhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=xHTNgvPb; arc=none smtp.client-ip=80.237.130.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -35,17 +35,17 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
 	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
 	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=iyBYCYdvClRoWVBtX5J31Yb/XSvaVwKjieUMmcsJpyQ=; t=1718713459;
-	x=1719145459; b=Ij3RxIuEzQHUvKDxoAH8UnxhQhkjrt62aVrK/DJlsOFMEQPRMuiqO4H+/13SK
-	98fwvIzm/YfbxnEnbxi6hRa+kiBU017qeHHH+bT2ul6eJEEfCyEivG8Ojb7nWUG/+CD1eJwHukr6c
-	LXR7GcScXC0r1kJ83nrOc9xsvqXDFzU+nxskhjQkWUKYSYm3QUkALta8FI2zp+wgaL2i02iJSxrNV
-	bfHvVmiy6oQW3foiOkJGklNJzNPgPNwg4mIaCsIYIenk5bOIM6peqdGqqZ78sQsZ9uDXrF9roASVL
-	yPz0THfAzF5cSWKBjRapgIdymz6wgATfj63/eVoCxvOGkUY7Vw==;
+	References; bh=8dHgqub/HfBiGPqwZtYgnV9a3l6a2YgBX1FZX5RCBBw=; t=1718715532;
+	x=1719147532; b=xHTNgvPbvZGs4cyZ8srD76R4FaXFYJM61e5eNX4KorS7gw4prTHAo0T83Xyso
+	qhbeIgyY0G+y1MSSk+882MsDhB7tUeS0HMtFgeID/hms+Nu7lMXq1s+mCNEbG+h4oF8956NycWrLv
+	4lxG2iOZSKQFQOEl/sJ4x1bNmGdG6Cm30ygKJQC1b8YKFG5b/p2CI0MhwMqCufnwGwr+lFlQRPyem
+	pEabw8Fr9Y/iEnnKQLWwgEQo3oy/5PFQda1WkliROB3ZF7dNKLetZxP8Et18NRemEN4rzdCw9jHT7
+	semdg5yQbhkN6/KnqrvIdFA7Nbhsfpmedd7Qt1/VEOorlBI3yQ==;
 Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
 	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1sJXsm-0003Qq-Re; Tue, 18 Jun 2024 14:24:16 +0200
-Message-ID: <a1c7cf66-07ec-476a-a2aa-f09cae929c0a@leemhuis.info>
-Date: Tue, 18 Jun 2024 14:24:01 +0200
+	id 1sJYQD-0002wQ-QE; Tue, 18 Jun 2024 14:58:49 +0200
+Message-ID: <635e47c6-c2ce-4a5b-9957-6efcdcfe2f00@leemhuis.info>
+Date: Tue, 18 Jun 2024 14:58:38 +0200
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -55,11 +55,14 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [MAINTAINERS SUMMIT] [3/4] Elevate handling of regressions that
  made it to releases deemed for end users
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
+To: Mark Brown <broonie@kernel.org>, Jiri Kosina <jikos@kernel.org>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
 References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
  <55e89d2c-fa25-4daa-805e-5aca31b321bf@leemhuis.info>
  <20240613113455.GH6019@pendragon.ideasonboard.com>
+ <nycvar.YFH.7.76.2406131336450.24940@cbobk.fhfr.pm>
+ <ZmxPPH2PSxoryu11@finisterre.sirena.org.uk>
 From: Thorsten Leemhuis <linux@leemhuis.info>
 Content-Language: en-US, de-DE
 Autocrypt: addr=linux@leemhuis.info; keydata=
@@ -105,38 +108,55 @@ Autocrypt: addr=linux@leemhuis.info; keydata=
  ysaCIZqWxrlhHWWmJMvowVMkB92uPVkxs5IMhSxHS4c2PfZ6D5kvrs3URvIc6zyOrgIaHNzR
  8AF4PXWPAuZu1oaG/XKwzMqN/Y/AoxWrCFZNHE27E1RrMhDgmyzIzWQTffJsVPDMQqDfLBhV
  ic3b8Yec+Kn+ExIF5IuLfHkUgIUs83kDGGbV+wM8NtlGmCXmatyavUwNCXMsuI24HPl7gV2h n7RI
-In-Reply-To: <20240613113455.GH6019@pendragon.ideasonboard.com>
+In-Reply-To: <ZmxPPH2PSxoryu11@finisterre.sirena.org.uk>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1718713459;59b86f47;
-X-HE-SMSGID: 1sJXsm-0003Qq-Re
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1718715532;d120db27;
+X-HE-SMSGID: 1sJYQD-0002wQ-QE
 
-On 13.06.24 13:34, Laurent Pinchart wrote:
-
-> On Thu, Jun 13, 2024 at 10:34:17AM +0200, Thorsten Leemhuis wrote:
->
->> I'd like to make the language somewhat stronger.
->>
->> """Handle mainline regressions that recently made it into a proper
->> mainline, stable, or longterm release (either directly or via backport)
->> with an even higher priority and try to fix them as fast as possible.
->> [...] Aim hard to mainline a fix by Sunday after the next, if the
+On 14.06.24 16:10, Mark Brown wrote:
+> On Thu, Jun 13, 2024 at 01:39:00PM +0200, Jiri Kosina wrote:
+>> On Thu, 13 Jun 2024, Laurent Pinchart wrote:
 > 
-> Are we really telling people, some of them contributing in their spare
-> time, that they have to work during weekends ?
+>>> I don't think piling pressure will help. What could help is to reduce
+>>> pressure on already overloaded maintainers, to give them more time to
+>>> handle regressions. There have been multiple discussions about
+>>> co-maintainance models over the past few years, and some subsystems are
+>>> (slowly) moving forward. I would be more interested in participating in
+>>> that effort. 
+> 
+>> Fully agreed. That's exactly why a few days ago I proposed the topic about 
+>> exploring the options of making the merge tree more deep (by delegating 
+>> more and making the co-maintainership model more prominent), as that in my 
+>> view is the only available solution to the current maintainer pressure 
+>> problem.
+> 
+> In my experience deeper maintainer trees are often a factor in slowing
+> down patches, passing things between maintainers often just inherently
+> adds delays even if nobody goes on holiday or whatever.  
 
-To clarify: I'm not asking for that at all. The aim for Sunday is only
-here because Linus usually releases new -rc's on Sunday evenings, which
-quite a few people seem to use. So from the regressions point of view
-it's better to flush fixes to Linus late in the week (say on Friday --
-or if you want on Sat or Sun, which some subsystem do), and not on a
-Monday, as people that use -rcs otherwise will run into the regression
-for yet another week -- and sometimes report it again, when the fix was
-just mainlined.
+From what I see from the regressions perspective they are not ideal
+either. The slow down is one problem, unless the process is streamlined
+well. Another one from my biased point of view seems to be that a few of
+are far away from Linus and apparently not fully aware how he wants
+regressions to be handled.
 
-What wording can avoid this? "By the end of the (current/next) week"
-maybe? In business context that afaik usually mean Fridays, but I'm not
-a native speaker, so might be wrong there.
+Which is not really surprising, as over the years there were quite a few
+cases where maintainers of core subsystems were not handled well either.
+But sooner or later that resulted in a clash with Linus[1] and from then
+on things worked better. For many sub-subsystem something like that
+never happened -- and the maintainers of the higher level subsystem can
+not have their eyes everywhere, so they do not notice such problems or
+are more lax and friendly.
+
+If I notice a regression is not handled well in a sub-subsystem I point
+it out (often in private) to the higher level maintainers. But that does
+it tedious, does not scale, and delays things. That's one of the reasons
+why written guidelines IMHO would be worth it.
 
 Ciao, Thorsten
+
+[1] see the quotes from Linus at the end of
+Documentation/process/handling-regressions.rst /
+https://docs.kernel.org/process/handling-regressions.html
 
