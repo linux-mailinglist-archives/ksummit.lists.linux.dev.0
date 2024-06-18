@@ -1,132 +1,118 @@
-Return-Path: <ksummit+bounces-1311-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1312-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 081DD90B786
-	for <lists@lfdr.de>; Mon, 17 Jun 2024 19:11:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B48E90CB18
+	for <lists@lfdr.de>; Tue, 18 Jun 2024 14:07:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 809FD2843BB
-	for <lists@lfdr.de>; Mon, 17 Jun 2024 17:11:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35A511C2366A
+	for <lists@lfdr.de>; Tue, 18 Jun 2024 12:07:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2896816A940;
-	Mon, 17 Jun 2024 17:11:41 +0000 (UTC)
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F6F2770F9;
+	Tue, 18 Jun 2024 12:05:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="evSrnfea"
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24431684BF
-	for <ksummit@lists.linux.dev>; Mon, 17 Jun 2024 17:11:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00206CDC0
+	for <ksummit@lists.linux.dev>; Tue, 18 Jun 2024 12:05:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718644300; cv=none; b=glBkBnP6lRhTkJDL9PT66+xacihmWs6kNpLqJ5wVLrs9ZAU47hpZrsJqy7hocX8ciaWCbIUTUjWbB6SpZsqEt4Uc5mpbm/HGDZKFuvGJV/o/r70vK3yQ+L46YBqj8+tygDAglTeAYPZTQauJsNDjVErWgUZKvF0pLMsasO83/W8=
+	t=1718712326; cv=none; b=Bp4pmA90sJP7kg1xiBYDJ7vVrSRjkKnCbmx/fP6Mv+zxkzzmkvypMJoUOLA/wetNpEpaEoGwLwU3Kmdre0714kj4oAdOsK9/vr72iK6PRetF02p4qQIKpafnol0A+nMYeTqNK+BD3Sn/TvPeQnHRuXDkGovXw/l/LrZb3TszYys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718644300; c=relaxed/simple;
-	bh=UKm3fqRzmQajRaFhP92VrxmkIvypXLpGehRK8k4fWh4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dhMWBMZhkuXSurzeKUd5UiE6EqQMaT8fQY5+yiqKxx+0KvofovTno7XKgXHv2ctl9vmZYOZ3e1H7U08Ie0a1NhXDjCn+1MlPgheNiWn1Aa1+udJiZ14Dn2Xqo4BBYbyeaJUyTvUg5GHCJ4pVIH4EDgzzB8riOu6Mm5/0wW5Kfvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-63186c222eeso41031997b3.2
-        for <ksummit@lists.linux.dev>; Mon, 17 Jun 2024 10:11:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718644297; x=1719249097;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TAPTusat/z8914ilquplWUPHit60yqwbYlTYMmCk63c=;
-        b=KzDZILob2e1fTmDbywc8TfmvZhDyjn+fImGm0FtYeZ/d5g4+W04PUORlGTlWPAPsCj
-         f4nlJ481P88r0aggB/QzDClLeQpwJHATIbvhMcKE2kPxGj4fZYParlthDi9WDIeC7pzu
-         vBnlSzbQopZM7ItyKU8ay3+FALVXzXoRdX9Lm2IjkamonPgC3alQGEOu1IVyGV1YtpPi
-         Up6xRfoc/cYgDo+NVjHXO0vIXLFAvLTAOl7rz30dlPo/WBbkzgryGHnKi0Wgu3iqjRC2
-         bPmFfY75zyEq8dtxe54QSRRyB6szYcxJrwMITUKWznlqL2Nu8I9QnNXH835twEvEbKUz
-         Zzvw==
-X-Forwarded-Encrypted: i=1; AJvYcCUmq4OBTUjjo6BTbIkISpCpnDhr7OUWOXoyVC1TAsfwEjTJ3gfS5g9av9WKgwqAU0gZAqI+X2Q9yGSeRE24MWzkFlKv4AegVw==
-X-Gm-Message-State: AOJu0YzYA1x5SARiShJ7IYeDJS6fEhWC4koW6vIVifyEy61NTf4Y1qnD
-	LdOk1pACDoiIf2fIiKLjmB64w/mOz0mmt4uzIh3Wq00L9aRF/IDXzISA1qmk
-X-Google-Smtp-Source: AGHT+IEbbCo+1JArKRw7qq5/DWnePlPTuSC643lc0O/rQc+x/lgRcCI5sxENeBS0zgnplfOtAil0dA==
-X-Received: by 2002:a81:6f55:0:b0:631:4a11:87eb with SMTP id 00721157ae682-63224a0a5e9mr95101737b3.39.1718644296214;
-        Mon, 17 Jun 2024 10:11:36 -0700 (PDT)
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com. [209.85.128.175])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-6311ae10068sm14910267b3.126.2024.06.17.10.11.35
-        for <ksummit@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Jun 2024 10:11:35 -0700 (PDT)
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-63186c222eeso41031447b3.2
-        for <ksummit@lists.linux.dev>; Mon, 17 Jun 2024 10:11:35 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU+HB06e88pGm+4SJe9T63JoJt0gQJ/7p6x09EeQusuCD2E0Tlv1H8knNSZLvjtoz1Y8Liz8C1PXUV11QHGbRyyEdUerPBYhQ==
-X-Received: by 2002:a81:be02:0:b0:631:43e1:6b99 with SMTP id
- 00721157ae682-63222a57ad3mr98554867b3.12.1718644295131; Mon, 17 Jun 2024
- 10:11:35 -0700 (PDT)
+	s=arc-20240116; t=1718712326; c=relaxed/simple;
+	bh=h6fgNkGBkmeh/5MtnrGst2R9aa3vKsFYv+TTX9X9klk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=JJausaCHwlGkFM9Wai8DafE2nfEJXYXwkzv8eZV9CeCvfqGOPGB8wQtZfjvh2CAbEgTRAbWpaFmZPr3hhKnTHX1z/59eQusNXyXOA5y6Gk6X0PKBxmXRTewuOWiTj1z1vw/1Ixu9q1Eb+WghbRi0z4yLCIuLsXvvQu1N4Qee/gQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=evSrnfea; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1718712314;
+	bh=gOhiVfNfmairOOUaxbmSwF8vcjb3mqukzSXclyx1uKQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=evSrnfea13LJ4+K+8TZsCpcjv59xzW0Eyjj+wdFhczBUqthYv9L19KxTDD3K3c7u2
+	 2URnfh9eyWpfvikLFrCIgCZHsKlkefjb2ixZLqU9mVyECt3qzChxNqx10Nncy8ZKKd
+	 RSt1hMJlmHHV1F/WAwUjNPxdnVwy+t8hs8Eg9WirRWO8dXr0NhHaRZplA9b6U+GTeU
+	 6HR5Vb+IDbeO5dQ52kfsAMnRO/ORprCry3WW+qC8BgRdePM7WnoH6cpX9dcYqXCrCu
+	 0JBemRMXnAU7jY9zCzmUs5fY9VLPc52kGSAa7I94lSjLaFBrStuwMu8cBHgzaalsgD
+	 iz9H2xVQ6ZRZA==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4W3QRs0Chqz4wb2;
+	Tue, 18 Jun 2024 22:05:12 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>, Linus Torvalds
+ <torvalds@linux-foundation.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, Takashi Iwai
+ <tiwai@suse.de>, Jan Kara <jack@suse.cz>, Thorsten Leemhuis
+ <linux@leemhuis.info>, "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
+Subject: Re: [MAINTAINERS SUMMIT] [4/4] Discuss how to better prevent
+ backports of commits that turn out to cause regressions
+In-Reply-To: <20240617-arboreal-industrious-hedgehog-5b84ae@meerkat>
+References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
+ <e7f9ae0f-7635-4bf7-827b-bad2d58bf228@leemhuis.info>
+ <20240613095917.eeplayyfvl6un56y@quack3>
+ <20240613-rustling-chirpy-skua-d7e6cb@meerkat>
+ <87plsjoax6.fsf@mail.lhotse>
+ <CAHk-=wiD9du3fBHuLYzwUSdNgY+hxMZEWNZpqJXy-=wD2wafdg@mail.gmail.com>
+ <20240615232831.6c7f27dd@gandalf.local.home>
+ <CAHk-=wiUS4r788i5XjTtSwvfvKRm9uH2H5=eLHbZVu3Wo-YHCA@mail.gmail.com>
+ <20240617-arboreal-industrious-hedgehog-5b84ae@meerkat>
+Date: Tue, 18 Jun 2024 22:05:10 +1000
+Message-ID: <87frta1mo9.fsf@mail.lhotse>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240613095917.eeplayyfvl6un56y@quack3> <20240613-rustling-chirpy-skua-d7e6cb@meerkat>
- <87plsjoax6.fsf@mail.lhotse> <CAHk-=wiD9du3fBHuLYzwUSdNgY+hxMZEWNZpqJXy-=wD2wafdg@mail.gmail.com>
- <20240615232831.6c7f27dd@gandalf.local.home> <CAHk-=wiUS4r788i5XjTtSwvfvKRm9uH2H5=eLHbZVu3Wo-YHCA@mail.gmail.com>
- <20240617-arboreal-industrious-hedgehog-5b84ae@meerkat> <1ff23e26-0099-4826-bb79-4928507edce1@paulmck-laptop>
- <20240617-inventive-bumblebee-of-champagne-e133bc@meerkat>
- <79b5f7fb-28b1-441f-a064-eb52be0d20da@redhat.com> <20240617-crazy-cougar-of-romance-becc3e@meerkat>
-In-Reply-To: <20240617-crazy-cougar-of-romance-becc3e@meerkat>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 17 Jun 2024 19:11:22 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdX1eVOJSTTT1pEtnp8_YojMspzCdYs0KdwzHVPwCuHi_A@mail.gmail.com>
-Message-ID: <CAMuHMdX1eVOJSTTT1pEtnp8_YojMspzCdYs0KdwzHVPwCuHi_A@mail.gmail.com>
-Subject: Re: [MAINTAINERS SUMMIT] [4/4] Discuss how to better prevent
- backports of commits that turn out to cause regressions
-To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Michael Ellerman <mpe@ellerman.id.au>, "Michael S. Tsirkin" <mst@redhat.com>, Takashi Iwai <tiwai@suse.de>, 
-	Jan Kara <jack@suse.cz>, Thorsten Leemhuis <linux@leemhuis.info>, 
-	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-Hi Konstantin,
-
-On Mon, Jun 17, 2024 at 6:57=E2=80=AFPM Konstantin Ryabitsev
-<konstantin@linuxfoundation.org> wrote:
-> On Mon, Jun 17, 2024 at 06:14:48PM GMT, Paolo Bonzini wrote:
-> > > - Link: https://patch.msgid.link/20240617-arboreal-industrious-hedgeh=
-og-5b84ae@meerkat
-> > > - Link: https://lore.kernel.org/20240617-arboreal-industrious-hedgeho=
-g-5b84ae@meerkat # patch
-> >
-> > Two questions:
-> >
-> > 1) just one is needed, right? (should go without saying, but still)
+Konstantin Ryabitsev <konstantin@linuxfoundation.org> writes:
 >
-> Yes, either-or. I just need to know which link takes me to the original p=
-atch.
+...
 >
-> > 2) Is the "/r/MESSAGE-ID" format (https://lore.kernel.org/r/20240617-ar=
-boreal-industrious-hedgehog-5b84ae@meerkat)
-> > not valid or deprecated?
+> I understand the reasons why everyone hates having the "Message-ID:" trailer,
+> and this is fine. Can I counter-propose that we have a unique URL for links
+> specifically going to patch submissions from which the commits were made? I've
+> been already recommending using the "msgid.link" domain, but I'll go a bit
+> further and put forward the recommendation that:
 >
-> It's valid, but /r/ has been unnecessary for ages.
+> - commits MAY have Link: trailers indicating the exact origin of the patch. To
+>   distinguish these links from other Link: trailers that may lead to relevant
+>   online discussions, they should either use the "patch.msgid.link" domain, or 
+>   indicate the nature of the link using the hash-notation. Examples:
+>
+>   - Link: https://patch.msgid.link/message@id-here
+   
+This is the better option. The fact that it's the patch link is right there
+at the start of the line "patch.msgid.link", and will always be in the
+same place visually, which helps human readers trying to recognise it
+amongst other links.
 
-Care to update
-https://docs.kernel.org/maintainer/configure-git.html?highlight=3Dlore.kern=
-el.org/r/?
+>   - Link: https://lore.kernel.org/message@id-here # patch
 
-Thanks!
+Here you have to read all the way to the end of the line to see that
+it's the patch. And it is worse with longer message ids, eg:
 
-Gr{oetje,eeting}s,
+  - Link: https://lore.kernel.org/message@20240617-arboreal-industrious-hedgehog-5b84ae@meerkat # patch
 
-                        Geert
+The "# patch" is almost off the edge of the screen.
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+It's also a bit easier to grep for.
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+> This would satisfy both the need for automation to have a reliable way to find
+> the origin of the commit, and clearly indicate the nature of the link for
+> humans doing commit spelunking.
+
++100
+
+cheers
 
