@@ -1,174 +1,127 @@
-Return-Path: <ksummit+bounces-1315-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1316-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 803A490D1B8
-	for <lists@lfdr.de>; Tue, 18 Jun 2024 15:44:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B8190D614
+	for <lists@lfdr.de>; Tue, 18 Jun 2024 16:51:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 870C61C210E5
-	for <lists@lfdr.de>; Tue, 18 Jun 2024 13:44:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEC601F228AC
+	for <lists@lfdr.de>; Tue, 18 Jun 2024 14:51:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D05A1A2C3E;
-	Tue, 18 Jun 2024 13:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7DBB14B06C;
+	Tue, 18 Jun 2024 14:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="nB3suKix"
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="cuIb1U6T";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="cuIb1U6T"
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50AE158D9A
-	for <ksummit@lists.linux.dev>; Tue, 18 Jun 2024 13:13:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FBEE2139DA
+	for <ksummit@lists.linux.dev>; Tue, 18 Jun 2024 14:43:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716385; cv=none; b=e1qYHrMYhEoG702kwSjYVCIYezimaJpJzdVDfFDCcptiwyNx6QeyETgooowdYGMJGCCcYde3N61ocoV/FRi3fxKzPLoFeDbtQQeIw9OpaO78KDLPWxs4UnoVIGUbi6jVlnfynsb/WaiPvZ0YDae6/F2Zcsn0PE/ywEmgqAMLMD8=
+	t=1718721835; cv=none; b=hqIglSce/Hp+hSfjXXaD2rKkkjnzzSMAebLxgYPCFqV+xT4bYdrfGPky22kyK3ZfJ31UctNjSfzOClHtKeYUAZEmqt+3sLNalJEQZ2elIyqJjOeyBi8YeUuugGkXvd/81+W/aYxn2fljdfAqG0Ps9sQIRzZujWF/UlRgaQSsNsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716385; c=relaxed/simple;
-	bh=PyLHxTY4c0CrMvevzwZbpbJME70u1iIGBTEh7r4UdVc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Oa5VJlUNejbZ/45D02AOBRXKrP26NR7MRefvlQGcL+uVdmIaEbhv0alZcnw4Pj0BPgo7i2czp2Il8Es1/j8DQdqLR9Ipto9h5N+CoifWbRRiH+2Ki1oiXR3txfoawmTw68MM1NK8BJ8OSWuwRmQ/rQEb1MvUtw1sSScBXLyeB+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=nB3suKix; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=TFgTZN8C4tB2qCCLJWkbE/qxBlxRrNp/hKX11L6qFus=; t=1718716383;
-	x=1719148383; b=nB3suKixn7gD5u0mOwUQBZVHO4wlt7v7xe/QGV/m/cv9Z977WwkhRHGtiNg/T
-	hs+exJ0ehJdxhOgKB76Do1pcXf0IjUj/n1cVp4emY4/VqumnD3ThlqwwFo+Wmy/TuiAjwaTnGsvkz
-	1Zfo9vpxDz7l00Ga5fK/p7Lqnh1dmJSMmEJ+OHOQgi+xbBJV6YwuXU/sVYLIvO0C6GEIzjVgNhOp2
-	tDmTj1U7nzK32Fw9dwatsN9hGAa7UaiTg/Th2CFmOxvHAhXGxZZcdzS+a9s6ihyLfziBkZy4T2hWv
-	UVjj9WGezmkTOABCTu3wM8fdp6qzPd2PjaG0LGAahIRYuxYLqg==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1sJYdx-0006Qi-Uv; Tue, 18 Jun 2024 15:13:02 +0200
-Message-ID: <a4fd88e3-fda0-4fb4-ac9b-047c1c9a3d97@leemhuis.info>
-Date: Tue, 18 Jun 2024 15:12:59 +0200
+	s=arc-20240116; t=1718721835; c=relaxed/simple;
+	bh=Ux8X8LZ8PpgHyfNlKRtRZxTJRElk6N4SwAbomWfLd+8=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=rizdcS5Fyi4V41GT0/k+oC8ztE8m4YwGRGSzmEM+lYjZmjpRPW7SSrdUo3FvLoZoCyaRphMowlZTuTwW1ch+W6b83KDE0T5Vv9imES5zoCm2g8DR6eJfQ/ALkv1QEInKDnk7SSOYJOdwVpb3gYETe2S35rxnv8Jrh62dztwW6Y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=cuIb1U6T; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=cuIb1U6T; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1718721832;
+	bh=Ux8X8LZ8PpgHyfNlKRtRZxTJRElk6N4SwAbomWfLd+8=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=cuIb1U6TTk9D0nEsakQuPlYZOASICQcuy9IyzfolDBI6r/gpzzuowhERk7j0QBjIx
+	 hqtc/sn52EulKGAMEPDwm8faVFrD7ZF7pClL2EPZlQNw8Ap2Niosc22R+UfAuROW3Q
+	 b7gxHdzPTLlHkoFHedd9cIie7Qr4X3lJGjkQdcac=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 61202128127F;
+	Tue, 18 Jun 2024 10:43:52 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id fyZLndhqRaTG; Tue, 18 Jun 2024 10:43:52 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1718721832;
+	bh=Ux8X8LZ8PpgHyfNlKRtRZxTJRElk6N4SwAbomWfLd+8=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=cuIb1U6TTk9D0nEsakQuPlYZOASICQcuy9IyzfolDBI6r/gpzzuowhERk7j0QBjIx
+	 hqtc/sn52EulKGAMEPDwm8faVFrD7ZF7pClL2EPZlQNw8Ap2Niosc22R+UfAuROW3Q
+	 b7gxHdzPTLlHkoFHedd9cIie7Qr4X3lJGjkQdcac=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id F07BA1280806;
+	Tue, 18 Jun 2024 10:43:51 -0400 (EDT)
+Message-ID: <54f26c0959f796c52f04da9e831899f6482686ac.camel@HansenPartnership.com>
+Subject: Re: [MAINTAINERS SUMMIT] [0/4] Common scenario for four proposals
+ regarding regressions
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Thorsten Leemhuis <linux@leemhuis.info>, "ksummit@lists.linux.dev"
+	 <ksummit@lists.linux.dev>
+Date: Tue, 18 Jun 2024 10:43:49 -0400
+In-Reply-To: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
+References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [MAINTAINERS SUMMIT] [4/4] Discuss how to better prevent
- backports of commits that turn out to cause regressions
-To: Sasha Levin <sashal@kernel.org>
-Cc: "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
-References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
- <e7f9ae0f-7635-4bf7-827b-bad2d58bf228@leemhuis.info>
- <Zmr22oK1_clYwDNi@sashalap>
-From: Thorsten Leemhuis <linux@leemhuis.info>
-Content-Language: en-US, de-DE
-Autocrypt: addr=linux@leemhuis.info; keydata=
- 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 n7RI
-In-Reply-To: <Zmr22oK1_clYwDNi@sashalap>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1718716383;a529f7ff;
-X-HE-SMSGID: 1sJYdx-0006Qi-Uv
 
-On 13.06.24 15:40, Sasha Levin wrote:
-> On Thu, Jun 13, 2024 at 10:42:01AM +0200, Thorsten Leemhuis wrote:
->> I would like to discuss how to better prevent backports of mainline
->> commits to stable that turn out to cause regressions.
-> If you can tell us which backports cause regression we promise not to
-> backport them :)
+On Thu, 2024-06-13 at 10:22 +0200, Thorsten Leemhuis wrote:
+> Lo! I prepared four proposals for the maintainers summit regarding
+> regressions I'll send in reply to this mail. They are somewhat
+> related and address different aspects of one scenario I see
+> frequently in different variations; so instead of repeating that
+> scenario in slightly modified form in each of the proposals, I'm
+> putting it out here once:
 
-:)
+I think you're missing a piece here about how we actually find
+regressions.  A lot, it is true, come from test suites running on the
+mainline.  However, for obscure drivers and even some more complex
+dependencies, the regression sometimes isn't discovered until it gets
+into the hands of the wider pool of testers, often via stable.
 
-FWIW (as you know, but others might not): I sometimes already do when I
-notice such a problem (of course that only works if the regression is
-tracked already). But the machinery and workflow for it could definitely
-be improved on my side; it's on my todo list, but so are many other
-things. :-/
+This is important, because it emphasizes that zero regressions in
+stable is impossible (and thus preventing backporting patches that
+cause regressions is also impossible) if stable is the vehicle by which
+some regressions are discovered.  Plus it also means that a backport
+delay or cadence would actually delay discovery of some regressions
+because the patches that cause them won't be seen by the configs that
+run into them until they get put into stable.  There's also a longer
+delay in discovery of the actual upstream commit because bugs in stable
+need to be reproduced or at least identified in mainline before we can
+fix them and the discoverers often have a harder time than mainline
+users in helping with this.  This stable being both a vehicle for fixed
+kernels and a testing platform for regressions is a tension I don't
+think we can (or should) resolve.
 
->> * We could ask the stable team to only backport changes once they have
->> been in mainline for a certain time (something like "at the earliest two
->> weeks after the change was present in a mainline release or
-> 
-> We could, but is the net result positive? This also means that fixes for
-> real issues take longer to get to users.
+So what should we do about this?  I think the first thing is to
+recognize the important role stable plays in actually finding bugs. 
+There already is a -rc tree for stable, but it doesn't actually seem to
+be very useful in finding bugs (likely because the pool of testers is
+too small), so perhaps we should discuss whether we could expand this,
+or whether we really accept that non-rc stable is part of our testing
+infrastructure.
 
-Well, if the fix is that important urgent it should have been merged in
-the previous cycle and not have waited for the merge window.
+The other thing I think would help is better tooling and advice to help
+reporters find regressions in stable.  What we do a lot upstream is ask
+if they can reproduce it in mainline.  However, not everyone is
+equipped to test out mainline kernels, so we could do with helping them
+bisect it in stable (note this can be time dependent: older stable
+trees more naturally give rise to the question "has this been fixed
+upstream" making mainline testing more of an imperative).
 
-> It would make sense if most backports cause a regression. Is it the
-> case?
+Regards,
 
-I can't answer that -- and the data I have is likely to incomplete for
-that, as I don't become aware of all regressions.
+James
 
->> pre-release"?). But to not delay urgent fixes we then would need
->> developers to mark the urgent ones somehow. That is likely a hard sell,
->> but maybe less so then what the previous point outlined; untangling
->> could help here, too.
-> 
-> I'd argue that even developers don't necessarily know if something is
-> "urgent" or not. Heck, what does "urgent" mean? There are so many
-> usecases for the kernel that it's impossible to define what is urgent
-> and what is not.
-
-Yup. :-/
-
->> * Maybe convince the stable team to consider all commits with just a
->> Fixes: tag as "non urgent", if they were merged during a merge window
->> with a committer (or author?) date from before the merge window -- and
->> then only backport them after -rc4 to ensure they got at least three
->> weeks of mainline testing before they are backported. This is imperfect
->> and has downsides, but would be relatively simple to realize.
-> 
-> The tricky part here is that we can't rely on stable tags for importance
-> determination. Individuals and subsystems simply don't add stable tags
-> because they don't want to, not because their commits are not important
-> or urgent.
-
-I know, I know. :-( That's why I introduced that section with "few
-thoughts my brain came up with", as I myself was unsure how to best
-improve the situation.
-
-Ciao, Thorsten
 
