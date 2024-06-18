@@ -1,111 +1,112 @@
-Return-Path: <ksummit+bounces-1317-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1318-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 923C090D7D6
-	for <lists@lfdr.de>; Tue, 18 Jun 2024 17:53:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 199CE90D98B
+	for <lists@lfdr.de>; Tue, 18 Jun 2024 18:42:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 266EB28676C
-	for <lists@lfdr.de>; Tue, 18 Jun 2024 15:51:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86F3E282C69
+	for <lists@lfdr.de>; Tue, 18 Jun 2024 16:42:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A147045BF1;
-	Tue, 18 Jun 2024 15:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F381304A3;
+	Tue, 18 Jun 2024 16:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nir/k/HM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ifN/ebc"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B80D4C62B
-	for <ksummit@lists.linux.dev>; Tue, 18 Jun 2024 15:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A3D74070;
+	Tue, 18 Jun 2024 16:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718725837; cv=none; b=tMjdSS8Y2A5ZpGzA/Rl40C1ZWEzVXffgH69I64PcoccWbjeGqkGUKDvh7/BnGAZTyw4QcR79VG/H/77YkT8pZXbhMtOWAkefu3NsnCDSIfo7aB75gXPEG8IIFI/Rd0j+tz0bv04vvRLoqAt6EMQv/iSajrl0OzUm/wD4kbTfIuA=
+	t=1718728964; cv=none; b=UTXMRAWjBw1/vKFeSepa/gBt1UD5T/MmmYcTT1mil2UTlXLAevkWEdGl6uUKYRdO+qVWvik5SafQ90zoQ57dzJyzF1qM2IrKkH2KyjouUeMWKI2V/AFG5mt71rGLTIIrzo9IkNvXHzGylcAYzK84vwW8qOqQ/JaZOTOFTSeNzzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718725837; c=relaxed/simple;
-	bh=zYIE1ydNittI0rygZVOR4EU3sH2V5YTtHCDF+nMoczM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o1oRdFBNdsSr/xwQAWuJ86/J0ERW/GwfAsTRj/IijetGbHUdI2RvjxZ7c81rwuQfghev8KY9YoSgg4jDhBnZC7aq+zgjDxMYN7HyANe1z1HD962P1UGHyn9n6Vd5CJ1Ut2Evq5MEHHlD6XQXw0sRl0RT7xnJcQ5S01ezyo/1Yho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nir/k/HM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF2C3C4AF1C;
-	Tue, 18 Jun 2024 15:50:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718725836;
-	bh=zYIE1ydNittI0rygZVOR4EU3sH2V5YTtHCDF+nMoczM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Nir/k/HMVT06Cn5tMGCSctBb3Jb+w/LSMlaKSCCrdeswU3Q5cWGoAdKcsEZzLFQ0x
-	 FLFklje8bpt9eMIEECH0RTM1/U0Dyo4q1kDBCOAQaC55tkSfVt84SDEf5db52bFaJw
-	 UVeT/Zwzy5lBhnsS/21WOwiUPMm6fISBrDv4oSm91ks9D6AqU6i+f3lbks5zN5gPzL
-	 n5xpQIyLSL+pfwnRWynMjwa2NBGoDtmVSf3c83V3VjBbzedZPM96I5T7OeBslStCJR
-	 Quf/K02jLRJFdvAkOuohEzlbsxCkREdZ9SsRv3/gE/yDzw7kZqn8ec470NK7p3Xvwk
-	 fOdW6l13NnS5A==
-Date: Tue, 18 Jun 2024 16:50:26 +0100
-From: Mark Brown <broonie@kernel.org>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Thorsten Leemhuis <linux@leemhuis.info>,
-	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
-Subject: Re: [MAINTAINERS SUMMIT] [0/4] Common scenario for four proposals
- regarding regressions
-Message-ID: <a98cfd3c-6ca8-4519-83b0-b431ce2efba2@sirena.org.uk>
-References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
- <54f26c0959f796c52f04da9e831899f6482686ac.camel@HansenPartnership.com>
+	s=arc-20240116; t=1718728964; c=relaxed/simple;
+	bh=vb9LUO9mKPOH1DjeuwESq/a3JXWFnuLS8evFmyQO3vI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Z3tIRuCwun+rul/pMvfGyWDdLZgAUd7h8Jf1pXA24AalD3gc8zcJE+dKWRmMRdFR1ctX+qeytaSW8+ryvunWPMg8TEMFIW5gr13/ExqoprbwvhQ11IZmBi9T9N1+m5t6R9Exdt+kNkxMU7r2siWF/klrFDNutzbl9ZX2Lz5hKTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ifN/ebc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB0AC3277B;
+	Tue, 18 Jun 2024 16:42:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718728963;
+	bh=vb9LUO9mKPOH1DjeuwESq/a3JXWFnuLS8evFmyQO3vI=;
+	h=From:Subject:Date:To:Cc:From;
+	b=2ifN/ebcXIc4lsWkct1D9/TQA87+8izEMYl5EQv2g2upfFU7FuS4chnQSDqZU5gF5
+	 AKLMcpM696hqInNrKdGtY+cleBOk2/K0B0oddg+5kEO/fZM9dkE7THLhxAhlFRtyZL
+	 j8BGJpX1OZp0G9oNlGXdTgucFul5NdnLAbnls0hs=
+From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Subject: [PATCH 0/2] Documentation: update information for mailing lists
+Date: Tue, 18 Jun 2024 12:42:09 -0400
+Message-Id: <20240618-docs-patch-msgid-link-v1-0-30555f3f5ad4@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="NrkEmg5rQlOxMh2O"
-Content-Disposition: inline
-In-Reply-To: <54f26c0959f796c52f04da9e831899f6482686ac.camel@HansenPartnership.com>
-X-Cookie: If you can read this, you're too close.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOG4cWYC/x3MQQqAIBBA0avErBvQKKmuEi1CJxsqCycikO6et
+ HyL/xMIRSaBvkgQ6WbhI2TosgC7TMETssuGSlW1MrpFd1jBc7rsgrt4drhxWNF0Rqu6abQhBbk
+ 9I838/N9hfN8Pb1CcMGcAAAA=
+To: Jonathan Corbet <corbet@lwn.net>, 
+ Carlos Bilbao <carlos.bilbao.osdev@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: workflows@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ Konstantin Ryabitsev <konstantin@linuxfoundation.org>, 
+ ksummit@lists.linux.dev
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1656;
+ i=konstantin@linuxfoundation.org; h=from:subject:message-id;
+ bh=vb9LUO9mKPOH1DjeuwESq/a3JXWFnuLS8evFmyQO3vI=;
+ b=owGbwMvMwCW27YjM47CUmTmMp9WSGNIKdzIETlnisaWn5cHZtA+Wt4+eLsqc/nvv//yDB3zeH
+ 5mZr9fv1lHKwiDGxSArpshSti92U1DhQw+59B5TmDmsTCBDGLg4BWAityMZ/tfcin5+rfHS1eeW
+ cs6i66/5m4ZVTFpdf2lpa/H/T3d7tuoy/E9OuaDm4t7NylF/invbrJXF2auL886uKJ05ZV9USpb
+ xA04A
+X-Developer-Key: i=konstantin@linuxfoundation.org; a=openpgp;
+ fpr=DE0E66E32F1FDD0902666B96E63EDCA9329DD07E
 
+There have been some important changes to the mailing lists hosted at
+kernel.org, most importantly that vger.kernel.org was migrated from
+majordomo+zmailer to mlmmj and is now being served from the unified
+mailing list platform called "subspace" [1].
 
---NrkEmg5rQlOxMh2O
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This series updates many links pointing at obsolete locations, but also
+makes the following changes:
 
-On Tue, Jun 18, 2024 at 10:43:49AM -0400, James Bottomley wrote:
+- drops the recommendation to use /r/ subpaths in lore.kernel.org links
+(it has been unnecessary for a number of years)
+- adds some detail on how to reference specific Link trailers from
+inside the commit message
 
-> So what should we do about this?  I think the first thing is to
-> recognize the important role stable plays in actually finding bugs.=20
-> There already is a -rc tree for stable, but it doesn't actually seem to
-> be very useful in finding bugs (likely because the pool of testers is
-> too small), so perhaps we should discuss whether we could expand this,
-> or whether we really accept that non-rc stable is part of our testing
-> infrastructure.
+Some of these changes are the result of discussions on the ksummit
+mailing list [2].
 
-The pool of testers is quite small, and the turnarounds for responses
-are relatively tight which precludes certain kinds of testing.
+Link: https://subspace.kernel.org # [1]
+Link: https://lore.kernel.org/20240617-arboreal-industrious-hedgehog-5b84ae@meerkat/ # [2]
+Signed-off-by: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+---
+Konstantin Ryabitsev (2):
+      Documentation: fix links to mailing list services
+      Documentation: best practices for using Link trailers
 
-> The other thing I think would help is better tooling and advice to help
-> reporters find regressions in stable.  What we do a lot upstream is ask
-> if they can reproduce it in mainline.  However, not everyone is
-> equipped to test out mainline kernels, so we could do with helping them
-> bisect it in stable (note this can be time dependent: older stable
-> trees more naturally give rise to the question "has this been fixed
-> upstream" making mainline testing more of an imperative).
+ Documentation/process/2.Process.rst          |  8 ++++----
+ Documentation/process/howto.rst              | 10 +++++-----
+ Documentation/process/kernel-docs.rst        |  5 ++---
+ Documentation/process/maintainer-netdev.rst  |  5 ++---
+ Documentation/process/maintainer-tip.rst     | 24 ++++++++++++++++++------
+ Documentation/process/submitting-patches.rst | 15 +++++----------
+ 6 files changed, 36 insertions(+), 31 deletions(-)
+---
+base-commit: 6ba59ff4227927d3a8530fc2973b80e94b54d58f
+change-id: 20240618-docs-patch-msgid-link-6961045516e0
 
-Also questions like "can I get this building and running without
-reworking my development infrastructure".
+Best regards,
+-- 
+Konstantin Ryabitsev <konstantin@linuxfoundation.org>
 
---NrkEmg5rQlOxMh2O
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZxrMIACgkQJNaLcl1U
-h9Aq/wf9HKn3r+K0qX2grtiLUaitnQuVi95202fMc9ksiPb6GvfFv+4w2BlULDT5
-9uVPKIJhCUD5vhLMFILwBo8M7OuYBYYKfKriTnfgBDmm23i/g1SyJzfaKPLcfmYT
-vFjrukbI7TmeGCS5VVLlDdSfBWfS5ryTElYsqc71+3NzZi/9HQ3wWpAK99QO5ReZ
-0QxaqmVKMi5pkhc7LIo1I+c66F4fkJu5RFporNIiAHm/8M0lnLPGn+kHil5tPmOU
-PIPWrCfDVty0+MTpe0oGCN+ASC14xaNlVOCqiE3C1aAi/PX9FZFKGisH8KwWxIZc
-9ETXzRninX96DNGP7uKVzSWor7ZqjA==
-=fyaq
------END PGP SIGNATURE-----
-
---NrkEmg5rQlOxMh2O--
 
