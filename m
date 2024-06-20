@@ -1,51 +1,51 @@
-Return-Path: <ksummit+bounces-1330-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1331-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 408A790FF4A
-	for <lists@lfdr.de>; Thu, 20 Jun 2024 10:48:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD0D2910180
+	for <lists@lfdr.de>; Thu, 20 Jun 2024 12:33:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43EBF1C2352B
-	for <lists@lfdr.de>; Thu, 20 Jun 2024 08:48:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28191B2173A
+	for <lists@lfdr.de>; Thu, 20 Jun 2024 10:33:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9022F1AAE0F;
-	Thu, 20 Jun 2024 08:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C931A8C3B;
+	Thu, 20 Jun 2024 10:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="t4RkBj6R"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="rUthm8tq"
 Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F79157A7C;
-	Thu, 20 Jun 2024 08:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FEF12594
+	for <ksummit@lists.linux.dev>; Thu, 20 Jun 2024 10:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718873122; cv=none; b=uXGtd60wLMJJBvIl5hNp7OszrhK52YFIgTfVH4p+pVQMSm+KPt/N7z4iRoVw4X0okREKmWnBOHAPF15S8Wb/HrzTPue7xjK6U++60D1CFqJbEd0K7siw0NeleF9FUjZuTiqGcVYg2sCabV1sbrYXgGobzL6Y4+U7wsSQcty2WxM=
+	t=1718879577; cv=none; b=cg4q/VRQXRiceehVhhMRtGoIyoRJtDIQSE/qcIld3qORU5SmZz4TUJhUKpqlFC5zkf3vNDpE1DemZx7caxppraD5OjHFD+6zlZKIUSKa5ae6hl+LWYXSuaw4SBOxOZoJrvx3KzITIALqvOAIYfiRaRpNC4VAGnGMSNQDE62ECXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718873122; c=relaxed/simple;
-	bh=PxBnoJGW4Rs6vDxQykJcoC7D5CHDpHoYUPQTU1o3cyY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mz8SgVIrSRXh0D5q3+sEx1545WpDBzuE7heinZ001wEdFQNLaI9XZWfthG+AtHTuh4bMomtsBlSHb9hUbxMqBfSsLHLELngW47Aikh2KJ2eSX2lHT8UF2j4YNhrEw3OhBShmxTVNW8tzoBLfL5QBthvQwOpw6dqNApdCjgIHmUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=t4RkBj6R; arc=none smtp.client-ip=80.237.130.52
+	s=arc-20240116; t=1718879577; c=relaxed/simple;
+	bh=wiQIrmCM8wkRhdyOPRYExABGoBhLB7vWhDLBUx38i/E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=iyqm2qix2v1i+aEWShDbhhtK9ow+wZa7qKhol672tEwTsvTb2g//hFrQJfwPgIt0h0+4WjgIFD9gRMvnQ6ObZweXZHpfwTb70F/pkBcCjXzltnoDi8OTCncvSacEJgzcM9k9smXkTVuilumy55WsdCZrBuWjxEzmGgs+QIcL+Nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=rUthm8tq; arc=none smtp.client-ip=80.237.130.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
+	In-Reply-To:From:References:To:Subject:MIME-Version:Date:Message-ID:From:
 	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
 	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=zCGKty/L5MGdwQS5K/QcY24vFCLiM8wHxaRMk4azd9w=; t=1718873120;
-	x=1719305120; b=t4RkBj6Rkb78LSbnz+MfrKHG52WQUSIkGn7WgBiPgyLEHkNdZ/LdUDB++2NKF
-	tQ/Z5OS9RtxewlBLqeS9u448vKbas0ms8G3ldeDmG7ytkKzxj7/+HOAUKNx7KxaDvKYf9eSJEFK1d
-	rTTwex6h4rO4FmcQ1p1JEWB0w3/nNLdLbUUtEjFsPyMLgzOoOTFQvsjrZPEGZ52E13RTzVWYpEGo4
-	cofhtiJrUoAV8ahkgZXu8VmD9H0+cGUoIPuy0UpSezT2/QM8WeUFQ9SXDA/Mo/8og1Pgh7illwymg
-	ZTs+/5JGVHw5qBBOL8WzK7+lAHqiDRBEz/j8cQnPYhGshtvvbw==;
+	References; bh=SZ4zIO0Wnqwzfn2s91TO2o3K+OKD0EDWC5Nd0dnE0nY=; t=1718879574;
+	x=1719311574; b=rUthm8tqsG40Snb6cHsYzs1XxLD7UBNI+NUjZA0SvDWrXK0hLUt6qr14jm6Wo
+	/OuP9UOKbqzAy5lt2xPUChQpoogNwr/kJZH/ZOiMX0YAedyjP2mPlofizEEDvDB0kiozLaRjRYdWD
+	kP1BYqQf5j2SQ3+Ic9M+hy6DLxL81qfH0aGcNKqgi4oJSLZh9nDSGO9PgSEpZFv2tNGupuBlDgIxl
+	ywkNYgojDxooDB2hWZIrwu0shGgClUIQjLBOShQtB9eRStaMWGl+CY57ZPO6/7T+w58yrNZh0MCtN
+	OG/xe9HugNzmnhzQimoYnrHDKcH2ftyqADRqls+cuf9M2TR9sQ==;
 Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
 	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1sKDPj-0003QU-2M; Thu, 20 Jun 2024 10:45:03 +0200
-Message-ID: <02493a25-30c4-4e32-835c-6fdfe0f2abbb@leemhuis.info>
-Date: Thu, 20 Jun 2024 10:45:02 +0200
+	id 1sKF63-0006Xr-UA; Thu, 20 Jun 2024 12:32:51 +0200
+Message-ID: <c4db6faa-89ac-4f1c-ac87-1db8f91ac480@leemhuis.info>
+Date: Thu, 20 Jun 2024 12:32:51 +0200
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -53,16 +53,12 @@ List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] Documentation: best practices for using Link trailers
-To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
- Jonathan Corbet <corbet@lwn.net>,
- Carlos Bilbao <carlos.bilbao.osdev@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: workflows@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, ksummit@lists.linux.dev
-References: <20240618-docs-patch-msgid-link-v1-0-30555f3f5ad4@linuxfoundation.org>
- <20240618-docs-patch-msgid-link-v1-2-30555f3f5ad4@linuxfoundation.org>
+Subject: Re: [MAINTAINERS SUMMIT] [0/4] Common scenario for four proposals
+ regarding regressions
+To: James Bottomley <James.Bottomley@HansenPartnership.com>,
+ "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
+References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
+ <54f26c0959f796c52f04da9e831899f6482686ac.camel@HansenPartnership.com>
 From: Thorsten Leemhuis <linux@leemhuis.info>
 Content-Language: en-US, de-DE
 Autocrypt: addr=linux@leemhuis.info; keydata=
@@ -108,54 +104,90 @@ Autocrypt: addr=linux@leemhuis.info; keydata=
  ysaCIZqWxrlhHWWmJMvowVMkB92uPVkxs5IMhSxHS4c2PfZ6D5kvrs3URvIc6zyOrgIaHNzR
  8AF4PXWPAuZu1oaG/XKwzMqN/Y/AoxWrCFZNHE27E1RrMhDgmyzIzWQTffJsVPDMQqDfLBhV
  ic3b8Yec+Kn+ExIF5IuLfHkUgIUs83kDGGbV+wM8NtlGmCXmatyavUwNCXMsuI24HPl7gV2h n7RI
-In-Reply-To: <20240618-docs-patch-msgid-link-v1-2-30555f3f5ad4@linuxfoundation.org>
+In-Reply-To: <54f26c0959f796c52f04da9e831899f6482686ac.camel@HansenPartnership.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1718873120;606b96ce;
-X-HE-SMSGID: 1sKDPj-0003QU-2M
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1718879574;986f8c74;
+X-HE-SMSGID: 1sKF63-0006Xr-UA
 
-On 18.06.24 18:42, Konstantin Ryabitsev wrote:
-> Based on multiple conversations, most recently on the ksummit mailing
-> list [1], add some best practices for using the Link trailer, such as:
+On 18.06.24 16:43, James Bottomley wrote:
+> On Thu, 2024-06-13 at 10:22 +0200, Thorsten Leemhuis wrote:
+>> Lo! I prepared four proposals for the maintainers summit regarding
+>> regressions I'll send in reply to this mail. They are somewhat
+>> related and address different aspects of one scenario I see
+>> frequently in different variations; so instead of repeating that
+>> scenario in slightly modified form in each of the proposals, I'm
+>> putting it out here once:
 > 
-> - how to use markdown-like bracketed numbers in the commit message to
-> indicate the corresponding link
-> - when to use lore.kernel.org vs patch.msgid.link domains
+> I think you're missing a piece here about how we actually find
+> regressions.  A lot, it is true, come from test suites running on the
+> mainline.
 
-[...]
+Sure.
 
-> +   When using the ``Link:`` trailer to indicate the provenance of the
-> +   patch, you should use the dedicated ``patch.msgid.link`` domain. This
-> +   makes it possible for automated tooling to establish which link leads
-> +   to the original patch submission. For example::
-> +
-> +     Link: https://patch.msgid.link/patch-source-msgid@here
+> However, for obscure drivers and even some more complex
+> dependencies, the regression sometimes isn't discovered until it gets
+> into the hands of the wider pool of testers, often via stable.
+> 
+> This is important, because it emphasizes that zero regressions in
+> stable is impossible (and thus preventing backporting patches that
+> cause regressions is also impossible) if stable is the vehicle by which
+> some regressions are discovered.
 
-I wonder how long it will take until someone starts using
-patch.msgid.link/ for things that are not the submission of the change,
-for example by misunderstanding what "provenance of the patch" is meant
-to mean here.
+Of course "Zero regressions in stable is impossible" as we are dealing
+with software. ;) And of course even with delayed backport for
+non-urgent fixes some problems would make it through.
 
-How about something this:
+But right now users testing mainline sometimes hardly have a chance to
+test and report problems with mainline in time to prevent a backport.
+Take Linux 6.7.2 (released 2024-01-25 23:58 UTC) with its 640 changes
+for example, where users had only 4 days to do so, as almost all of its
+changes had been merged for 6.8-rc1 (2024-01-21 22:23 UTC). FWIW: 200 of
+those changes were committed to some subsystem git tree during January,
+363 during December, 70 during November, and 7 during October.
 
-"""
-In case you want to record the public review submission of a patch while
-committing it, use a ``Link:`` trailer with the dedicated
-``patch.msgid.link`` domain::
+So if those 440 fixes could wait some time to be mainlined and were not
+important enough to get into 6.7 (2024-01-07 20:29 UTC) in the first
+place, why the rush backporting them to 6.7.y so quickly after the merge
+window?
 
-   Link: https://patch.msgid.link/patch-source-msgid@here
+All that leads to the related question "How many of those changes maybe
+should have gone into 6.7?". And maybe even "Should we somehow try to
+motivate more people to try -next?". But those are different problems.
+And the situation regarding the first already got somewhat better from
+what I can see -- among others afaics due to me prodding people when the
+queue fixes for recent regression for the -next merge window.
 
-This makes it possible to reliably look the submission up, hence don't
-use that domain for any other patches you might want to link to.
-"""
+>  Plus it also means that a backport
+> delay or cadence would actually delay discovery of some regressions
+> because the patches that cause them won't be seen by the configs that
+> run into them until they get put into stable.
 
-But I suspect some people will never see this and start assuming that
-this domain should be meant for all patches -- and not all of these
-cases will be found during review (or by checkpatch, in case we add a
-check and people actually run it). Writing that made me think a
-dedicated tag like "Lore-Submission" or "Public-Review-Link" could avoid
-this while keeping some of the aspects that Linus likes about "Link" --
-but I doubt that will convince him.
+And why is that a problem?
+
+> [...]
+> 
+> The other thing I think would help is better tooling and advice to help
+> reporters find regressions in stable.  What we do a lot upstream is ask
+> if they can reproduce it in mainline.  However, not everyone is
+> equipped to test out mainline kernels, so we could do with helping them
+> bisect it in stable
+
+FWIW Documentation/admin-guide/verify-bugs-and-bisect-regressions.rst /
+https://docs.kernel.org/admin-guide/verify-bugs-and-bisect-regressions.html
+covers this: users that notice a regression in a stable tree will bisect
+that tree. But before...
+
+> (note this can be time dependent: older stable
+> trees more naturally give rise to the question "has this been fixed
+> upstream" making mainline testing more of an imperative).
+
+...it does so, but tells users to try mainline for two reasons:
+* It might be fixed there already.
+* When Greg receives a regression report for stable he'll usually ask
+"is mainline also affected" anyway to figure out if this is something he
+or somebody else has to look into. And some of the mainline developer
+will ask this, too.
 
 Ciao, Thorsten
 
