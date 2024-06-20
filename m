@@ -1,140 +1,111 @@
-Return-Path: <ksummit+bounces-1337-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1338-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E379991075E
-	for <lists@lfdr.de>; Thu, 20 Jun 2024 16:04:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E26219107D0
+	for <lists@lfdr.de>; Thu, 20 Jun 2024 16:16:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69DC6B26F2F
-	for <lists@lfdr.de>; Thu, 20 Jun 2024 14:04:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9950A28135B
+	for <lists@lfdr.de>; Thu, 20 Jun 2024 14:16:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82D01AE85C;
-	Thu, 20 Jun 2024 14:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF071AD408;
+	Thu, 20 Jun 2024 14:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="QN5mwjWf";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="QN5mwjWf"
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tg0tzoqR"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C48D11AD9C1
-	for <ksummit@lists.linux.dev>; Thu, 20 Jun 2024 14:02:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB4117554A
+	for <ksummit@lists.linux.dev>; Thu, 20 Jun 2024 14:16:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718892124; cv=none; b=T9ZG4ZfALMR50mGkr6tPW8SSOgVnwe17MlCY/yy0Z+gdUJkCLHLmxhnixThfZs28PcyML19SsGJJ11Kc6tws7C5eZAIeLaudUg9m7eP4l6eWLLG6nyfa90pzyY+n2gAqk1eeLN64nQGZIFnsxhKs+YE/vFceW0xmzXLy3haI+eQ=
+	t=1718892989; cv=none; b=nNkdBwoLak9P5BslCkfUw7tlpMLxQ9lJzKlYIK7BgRNFZs1FW/mub0qrZbYjGX/svH4kaMAKgLgYDFLSF0FTJe71n0/TshSBleY/bC9bUkFKo0/s8/ebmQVsYjmGUh1nv97vo3LmMZf/kz5StS/kHicGcVfwXcZT1hCc/Lwo0So=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718892124; c=relaxed/simple;
-	bh=jyEN1gKMhkIX0Eiuuf9YPvss7RDXWcT/CrI6l/2i7sA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lgq0YlYFolctBjV+ZGtINdz84OleM0g8jsp3SC3pEbGvb8AGfbsWtp0v7Xd6EkeeihgRtSRdeoP/I7h2qNhWMKYoO3Dp1AUAXc0jgsL3/xZS4jlsQL8dPP7utfR0zOAvIhTniz74QAVOjOWph6nTY/2S1dzIVA3X63rr7M45j9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=QN5mwjWf; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=QN5mwjWf; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1718892121;
-	bh=jyEN1gKMhkIX0Eiuuf9YPvss7RDXWcT/CrI6l/2i7sA=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=QN5mwjWfqYQmxR2OTFpwwvO9D6WdtkvU/uIVEIK9/b09+RT+3VDLX6N+DfE42yfGg
-	 qRk3F5qz1pS0p9o9RsnemCi+j9Uz+JnzYhzQq+h7xoNgtcdfOcB4p82vE2IQGJBZzT
-	 HRzbt+7KnC2soMoqAHKD8YhPPYsCOIoKyT0Z/H1Y=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id D686F12862E7;
-	Thu, 20 Jun 2024 10:02:01 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id pjyQFu5DUwEe; Thu, 20 Jun 2024 10:02:01 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1718892121;
-	bh=jyEN1gKMhkIX0Eiuuf9YPvss7RDXWcT/CrI6l/2i7sA=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=QN5mwjWfqYQmxR2OTFpwwvO9D6WdtkvU/uIVEIK9/b09+RT+3VDLX6N+DfE42yfGg
-	 qRk3F5qz1pS0p9o9RsnemCi+j9Uz+JnzYhzQq+h7xoNgtcdfOcB4p82vE2IQGJBZzT
-	 HRzbt+7KnC2soMoqAHKD8YhPPYsCOIoKyT0Z/H1Y=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 32BE01280EBD;
-	Thu, 20 Jun 2024 10:02:01 -0400 (EDT)
-Message-ID: <d1b85ab5a4363457eef65096c7c1d0efe28b5e41.camel@HansenPartnership.com>
-Subject: Re: [MAINTAINERS SUMMIT] [0/4] Common scenario for four proposals
- regarding regressions
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Thorsten Leemhuis <linux@leemhuis.info>, "ksummit@lists.linux.dev"
-	 <ksummit@lists.linux.dev>
-Date: Thu, 20 Jun 2024 10:01:57 -0400
-In-Reply-To: <c3071fa8-e64a-40a6-a725-4be1c668346f@sirena.org.uk>
+	s=arc-20240116; t=1718892989; c=relaxed/simple;
+	bh=o6IO/GUlX0YQhVJbqf8qVyAuDg7PDMjmlG7sr3O6BrI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VA/njgBky35AJdsu+r+N98D07j+5PgCkJKbHS48tuQgVTMsKNklaTcHFPW4uUGoa20KYK6NY3+cmDMP/iZWSEsRBirs1pCV23GXELATDWpEGP0H01iKDpGoMIFIzvCrJU14ZLE/01i/fyCdtJu6/eYAZYDTDqMV7xM6edoEdAI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tg0tzoqR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9268C2BD10;
+	Thu, 20 Jun 2024 14:16:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718892988;
+	bh=o6IO/GUlX0YQhVJbqf8qVyAuDg7PDMjmlG7sr3O6BrI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tg0tzoqRxfNomsOGI1rO9BsT6td43IwcgQjHar1tMaszg5h3k//4c1x5c6hVW3+d4
+	 lhBRfgI5os+W68OMpTVwis7/cyPXZcq44tL3/gLx4nD4QlNmhocHNSBeLFRzW6BCy3
+	 PTIMCWUWWFznoebzuTp0X4cJ0nbVf7pHk4Z5QoqA2lxbBHCeettN+rjDqv3GjWIIOk
+	 oOfbO63ITd82VrPIwdRMyiltLPxrV3gjKELFvqACT86ESGx4y5PGAvjQPHrsQE+uBn
+	 rh2TJJA4oaxnyIAcRTjjNu+zCmRc6AYksAy6jb6o6Dj2DeMlNZeCFAr67E0mB9ezOm
+	 g/96aeri5sCFQ==
+Date: Thu, 20 Jun 2024 15:16:25 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Thorsten Leemhuis <linux@leemhuis.info>
+Cc: Jani Nikula <jani.nikula@intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
+Subject: Re: [MAINTAINERS SUMMIT] [3/4] Elevate handling of regressions that
+ made it to releases deemed for end users
+Message-ID: <ec16d469-6cd5-4ba9-a20c-e3fc9035e7fe@sirena.org.uk>
 References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
-	 <54f26c0959f796c52f04da9e831899f6482686ac.camel@HansenPartnership.com>
-	 <c4db6faa-89ac-4f1c-ac87-1db8f91ac480@leemhuis.info>
-	 <ead819d8bc59bd188bf4c07b3604a4aa5a194d8d.camel@HansenPartnership.com>
-	 <c3071fa8-e64a-40a6-a725-4be1c668346f@sirena.org.uk>
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-/UMWe2oYpZrkbqGzD/q7"
-User-Agent: Evolution 3.42.4 
+ <55e89d2c-fa25-4daa-805e-5aca31b321bf@leemhuis.info>
+ <20240613113455.GH6019@pendragon.ideasonboard.com>
+ <a1c7cf66-07ec-476a-a2aa-f09cae929c0a@leemhuis.info>
+ <87jzijeony.fsf@intel.com>
+ <9e417917-91b9-4506-9fbe-d6436ed48b9e@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="owTDBlz77fOl4Hax"
+Content-Disposition: inline
+In-Reply-To: <9e417917-91b9-4506-9fbe-d6436ed48b9e@leemhuis.info>
+X-Cookie: You're already carrying the sphere!
 
 
---=-/UMWe2oYpZrkbqGzD/q7
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+--owTDBlz77fOl4Hax
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Thu, 2024-06-20 at 14:55 +0100, Mark Brown wrote:
-> On Thu, Jun 20, 2024 at 08:57:29AM -0400, James Bottomley wrote:
->=20
-> > Actually, if we got more people to try mainline we could perhaps
-> > find more bugs.=C2=A0 Testing -next is problematic because its
-> > instability makes things like bisection and update to next release
-> > difficult.
->=20
-> -next is problematic to actually *use* but it's not particularly bad
-> for testing, mostly it's fine but you have to be able to cope with
-> things going bad in you in potentially very bad ways.=C2=A0 For testing
-> the stability is generally perfectly fine, and given that the whole
-> goal is to find problems it's hard to see much of an issue.=C2=A0
-> Bisection also works about as well as for mainline - you need to
-> bisect from whatever commit in Linus' tree things were based off (or
-> pending-fixes if you know that was fine) rather than a prior -next
-> tag but otherwise I can't say I notice much difference to mainline.
->=20
-> If your tests take more than a day to run then it gets more tricky,
-> but that's just generally harder no matter which tree you're testing.
+On Thu, Jun 20, 2024 at 03:35:05PM +0200, Thorsten Leemhuis wrote:
+> On 20.06.24 15:20, Jani Nikula wrote:
+> > On Tue, 18 Jun 2024, Thorsten Leemhuis <linux@leemhuis.info> wrote:
 
-The difficulty is usually that by the time you get a signal something
-is wrong, the next tree is different.  I agree you can freeze on the
-next tree you have and hope that the identified commit (by the time you
-find it) is still in the current version of -next, but there is a non-
-zero chance it would get rebased which makes testing next a bit more of
-a chore than testing main, which is why it's tested less often than
-main
+> >> What wording can avoid this? "By the end of the (current/next) week"
+> >> maybe? In business context that afaik usually mean Fridays, but I'm not
+> >> a native speaker, so might be wrong there.
 
-Regardless, I don't think -next is a useful tree for the wider pool who
-usually test stable to try because of all the difficulties.  I do think
-it's not impossible to get some of them to move up to main (after all
-it's the .0 of stable).
+> > Perhaps try wording it in terms of -rc/release instead of calendar?
 
-James
+> Not totally against that, but the thing is: in a earlier local draft it
+> used to be like that. And then I noticed that this will add another week
+> when it comes to the merge window.
 
+I don't think rules lawyering the specific wording is going to make an
+enormous difference here, people are going to try to do something
+sensible anyway and the merge window is just different to the normal
+flow.  You need something that's a suitable combination of
+comprehensible and not looking like unreasonable micromanagement.
 
---=-/UMWe2oYpZrkbqGzD/q7
+--owTDBlz77fOl4Hax
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABMIAB0WIQTnYEDbdso9F2cI+arnQslM7pishQUCZnQ2VQAKCRDnQslM7pis
-hS2RAQDC9b4iR1bOx6NG6LXl1nMdXUjLoKm3coBaLnPJJ53MsgD7BCEQVJ+irqrH
-wfMaFvbBMacylkAE1Z5Xz7SuOxqtr0w=
-=902F
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZ0ObgACgkQJNaLcl1U
+h9AKaQgAgtTV8lfzRMpAw8MqzGchsxQW7uAS1AxNMoEwPZpTh4BBG2WJg2uvl+bO
+3nl9cySVIJ2dA7yHCnSIuXgZsnho3jS8E5rX7ffdJxQGvdHR+lWu1XsAgBfzuGTV
+VxOQoweW/WY1D6+VEVSDio9mL1Gng9O4Ico4vCBaWe6naBlzUWkLqnseXssGD+69
+UsGj1Wp7MN3K1A5g3sinZlPcmLmhbV1Xr61rYcZoueOpBr/yKzF33qk/kmFTV3/L
+ukEsn9oLwFVgzGI91pqkwlY4a7kM4IsWarzUJzB4wcEZVYGqmwDzhm4fXmAXQ3jj
+3HjXbVhm7/ViJj+utjewnj93VuG7UQ==
+=Q6qR
 -----END PGP SIGNATURE-----
 
---=-/UMWe2oYpZrkbqGzD/q7--
+--owTDBlz77fOl4Hax--
 
