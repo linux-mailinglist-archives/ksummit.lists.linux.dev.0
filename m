@@ -1,200 +1,208 @@
-Return-Path: <ksummit+bounces-1332-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1333-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 739729101E8
-	for <lists@lfdr.de>; Thu, 20 Jun 2024 12:51:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA024910540
+	for <lists@lfdr.de>; Thu, 20 Jun 2024 15:05:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 724C11C21A8C
-	for <lists@lfdr.de>; Thu, 20 Jun 2024 10:51:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72F831F218DD
+	for <lists@lfdr.de>; Thu, 20 Jun 2024 13:05:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDBE82C694;
-	Thu, 20 Jun 2024 10:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E38A41AE850;
+	Thu, 20 Jun 2024 12:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="WNxINgvr"
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="nYzg6Ams";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="GvhRruTx"
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB424481D1
-	for <ksummit@lists.linux.dev>; Thu, 20 Jun 2024 10:47:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBFE1ACE86
+	for <ksummit@lists.linux.dev>; Thu, 20 Jun 2024 12:57:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718880474; cv=none; b=T88s//Yid9blgpcyfuYla2qKQGDMvdbd3FfIe5ht8vXaW+TmsZtfz9g3RY+6vFBQ/IfGtuvkZrSmCBnia3nEXqfe65xDK00S1Kg3M4iQfDECu7xP9oHNDT4dJiOW9qmntwBB8upOGRhQjrP1arLhuFDr/PaMmDGNJJbRSvgwBCs=
+	t=1718888255; cv=none; b=ZURIbTrOF3hpzpUwl5DZoxTZY8MztUFcEqaMsde/X+D4iL3ic65j/SELtMtK4BM4dTZjzemYBRSW44s0gwufw6c7R2ZZMNYNQ6PxMxeGg2B6FjhEGSQ08tj6Dg1I2zIV2LWMLEVo7jpPuqBvn+X2ysiU+lUk/9oonhp9+FiEs5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718880474; c=relaxed/simple;
-	bh=z2DQAvHv2zTyYWDnEnS8t6NFTU1exozqldIILrmEE54=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Bhxhz3U4W9Wgk5Gw7wNNci9oggRpbe+OtoMBhAJ5lxPFiR0bwWJhwH3yBEsiVi0bup53vTamzY54dTbJTVIAyXHtiFawMhjOw+FL2UKsZ4rHBpHJFQU8rIBLYjKpWYwMsUPb0WanvqpRzivfatrznzGNy5HwT2Ry2R1EnoKAz6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=WNxINgvr; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=31qMxp+P2fpok1R4uZdNlXmcbTV2vugSM3lniE07aiI=; t=1718880472;
-	x=1719312472; b=WNxINgvrIgU3j3xHHcFMk4uGXfF41s/tnAlvPPpmA3iyuDwkwSIh/l+r7xQIS
-	m5UWLwQ61+UzTEz38GanDp1A3sgkGxcceiMqGPRJF37AQGcFKmeXQpNIPHplVJsDYawJ3nAncbQWm
-	ylhAwozsPOdnAxhs5Z/U6Kv9xjtH5udbP6NHr7FSBb/8XwWI7/IFiXP+rvmn76J9qT1VLbcT8Fm8g
-	DktPc0ACwpLj9yZRswM3KViMHKMGw+aP7S9e6Dwnu/dGR0iz9D0igeH9Mv4ehDzXoryTKGI0p7Ml6
-	8gd3PchhvMhvLtv91LW+Jcp/Gpuk7ZTHhonsP0Y4xfQ6XdSTQA==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1sKFKX-00020y-Tb; Thu, 20 Jun 2024 12:47:49 +0200
-Message-ID: <b464e9e6-e423-4f5f-a75a-0e629534b366@leemhuis.info>
-Date: Thu, 20 Jun 2024 12:47:49 +0200
+	s=arc-20240116; t=1718888255; c=relaxed/simple;
+	bh=hJotcYV0J8SP1WVfGTIAkEiVu5lmOrO0O5rCzSca2/U=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=A4KuUA1w0Za/osFy1XSMplBMNJHf776TGvCRlzz3aQ7pQ5QXEjL6DrX+whBBMJZDqnBDW1fdUCXacc6+a4km8wLjztDt4AU9rxIAQBeUEHXGNEWoRuSNYPvwRirgE7k2Xy1oXzAsk51uJQX5E6PTJs0B8xK6Zhvls0opyK2dQM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=nYzg6Ams; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=GvhRruTx; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1718888252;
+	bh=hJotcYV0J8SP1WVfGTIAkEiVu5lmOrO0O5rCzSca2/U=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=nYzg6Amsys6NgyOpq7MQQvpqFL1X+1W7i589utTktr7TYgsIw20OFrM4/PSVLkEnI
+	 URTWHOVuXwWaqC2mFPcmOzJFAcQO++AM5SLnL5HT01t7lI0b1sDuah0ri17W89vbLd
+	 fvjVKu/dHRIZp5U5MRGdE5Mi5d5vgmuAMehqDp88=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 1D50012862F7;
+	Thu, 20 Jun 2024 08:57:32 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id na1OKn_oj3JE; Thu, 20 Jun 2024 08:57:32 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1718888251;
+	bh=hJotcYV0J8SP1WVfGTIAkEiVu5lmOrO0O5rCzSca2/U=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=GvhRruTxwv6THKVj0UjL11VOG2LIdG4ioKEPlTLefs1K+APyNeAY9a5oQbr5fFxdb
+	 ZToiohilxOyryPpbmrWhm6j3bYMaVkWtC+nWvUGrax3Tn+ZcRETAPNNw8dyRTVnQki
+	 q40kbNjIQoccKxRW8kGwrBqDIRRp11R1f+rgk+cg=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 6EF4012862D5;
+	Thu, 20 Jun 2024 08:57:31 -0400 (EDT)
+Message-ID: <ead819d8bc59bd188bf4c07b3604a4aa5a194d8d.camel@HansenPartnership.com>
+Subject: Re: [MAINTAINERS SUMMIT] [0/4] Common scenario for four proposals
+ regarding regressions
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Thorsten Leemhuis <linux@leemhuis.info>, "ksummit@lists.linux.dev"
+	 <ksummit@lists.linux.dev>
+Date: Thu, 20 Jun 2024 08:57:29 -0400
+In-Reply-To: <c4db6faa-89ac-4f1c-ac87-1db8f91ac480@leemhuis.info>
+References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
+	 <54f26c0959f796c52f04da9e831899f6482686ac.camel@HansenPartnership.com>
+	 <c4db6faa-89ac-4f1c-ac87-1db8f91ac480@leemhuis.info>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [MAINTAINERS SUMMIT] [3/4] Elevate handling of regressions that
- made it to releases deemed for end users
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Mark Brown <broonie@kernel.org>, Jiri Kosina <jikos@kernel.org>,
- "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
-References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
- <55e89d2c-fa25-4daa-805e-5aca31b321bf@leemhuis.info>
- <20240613113455.GH6019@pendragon.ideasonboard.com>
- <nycvar.YFH.7.76.2406131336450.24940@cbobk.fhfr.pm>
- <ZmxPPH2PSxoryu11@finisterre.sirena.org.uk>
- <635e47c6-c2ce-4a5b-9957-6efcdcfe2f00@leemhuis.info>
- <20240619202531.GE31507@pendragon.ideasonboard.com>
-From: Thorsten Leemhuis <linux@leemhuis.info>
-Content-Language: en-US, de-DE
-Autocrypt: addr=linux@leemhuis.info; keydata=
- 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 n7RI
-In-Reply-To: <20240619202531.GE31507@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1718880472;99ca8e65;
-X-HE-SMSGID: 1sKFKX-00020y-Tb
+Content-Transfer-Encoding: 8bit
 
-On 19.06.24 22:25, Laurent Pinchart wrote:
-> On Tue, Jun 18, 2024 at 02:58:38PM +0200, Thorsten Leemhuis wrote:
->> On 14.06.24 16:10, Mark Brown wrote:
->>> On Thu, Jun 13, 2024 at 01:39:00PM +0200, Jiri Kosina wrote:
->>>> On Thu, 13 Jun 2024, Laurent Pinchart wrote:
->>>
->>>>> I don't think piling pressure will help. What could help is to reduce
->>>>> pressure on already overloaded maintainers, to give them more time to
->>>>> handle regressions. There have been multiple discussions about
->>>>> co-maintainance models over the past few years, and some subsystems are
->>>>> (slowly) moving forward. I would be more interested in participating in
->>>>> that effort. 
->>>
->>>> Fully agreed. That's exactly why a few days ago I proposed the topic about 
->>>> exploring the options of making the merge tree more deep (by delegating 
->>>> more and making the co-maintainership model more prominent), as that in my 
->>>> view is the only available solution to the current maintainer pressure 
->>>> problem.
->>>
->>> In my experience deeper maintainer trees are often a factor in slowing
->>> down patches, passing things between maintainers often just inherently
->>> adds delays even if nobody goes on holiday or whatever.  
->>
->> From what I see from the regressions perspective they are not ideal
->> either. The slow down is one problem, unless the process is streamlined
->> well. Another one from my biased point of view seems to be that a few of
->> are far away from Linus and apparently not fully aware how he wants
->> regressions to be handled.
->>
->> Which is not really surprising, as over the years there were quite a few
->> cases where maintainers of core subsystems were not handled well either.
->> But sooner or later that resulted in a clash with Linus[1] and from then
->> on things worked better. For many sub-subsystem something like that
->> never happened -- and the maintainers of the higher level subsystem can
->> not have their eyes everywhere, so they do not notice such problems or
->> are more lax and friendly.
+On Thu, 2024-06-20 at 12:32 +0200, Thorsten Leemhuis wrote:
+> On 18.06.24 16:43, James Bottomley wrote:
+> > On Thu, 2024-06-13 at 10:22 +0200, Thorsten Leemhuis wrote:
+> > > Lo! I prepared four proposals for the maintainers summit
+> > > regarding regressions I'll send in reply to this mail. They are
+> > > somewhat related and address different aspects of one scenario I
+> > > see frequently in different variations; so instead of repeating
+> > > that scenario in slightly modified form in each of the proposals,
+> > > I'm putting it out here once:
+> > 
+> > I think you're missing a piece here about how we actually find
+> > regressions.  A lot, it is true, come from test suites running on
+> > the mainline.
 > 
-> This got me thinking: why don't we have trainings for maintainers,
-> instead of expecting people to decypher a combination of unwritten
-> rules, and written documentation containing conflicting and partly
-> outdated information ?
+> Sure.
+> 
+> > However, for obscure drivers and even some more complex
+> > dependencies, the regression sometimes isn't discovered until it
+> > gets into the hands of the wider pool of testers, often via stable.
+> > 
+> > This is important, because it emphasizes that zero regressions in
+> > stable is impossible (and thus preventing backporting patches that
+> > cause regressions is also impossible) if stable is the vehicle by
+> > which some regressions are discovered.
+> 
+> Of course "Zero regressions in stable is impossible" as we are
+> dealing with software. ;) And of course even with delayed backport
+> for non-urgent fixes some problems would make it through.
+> 
+> But right now users testing mainline sometimes hardly have a chance
+> to test and report problems with mainline in time to prevent a
+> backport. Take Linux 6.7.2 (released 2024-01-25 23:58 UTC) with its
+> 640 changes for example, where users had only 4 days to do so, as
+> almost all of its changes had been merged for 6.8-rc1 (2024-01-21
+> 22:23 UTC). FWIW: 200 of those changes were committed to some
+> subsystem git tree during January, 363 during December, 70 during
+> November, and 7 during October.
 
-Good point, but even if that training would exists it would be given by
-someone that deciphered "a combination of unwritten rules, and written
-documentation containing conflicting and partly outdated information"
-(as well as posts from Linus about the topic found on lore). At least
-unless we get Linus to give that training himself. :-)
+I did make this point here:
 
-Which is why I try to write something down and get it blessed -- ideally
-by Linus, but if we a handful of core maintainers agree on it that good
-enough for me as well.
+https://lore.kernel.org/all/7794a2b09ae4fa73ac35fdaec4858145a665efea.camel@HansenPartnership.com/
 
-> Of course, the whole path going from a first
-> submission to the kernel to maintaining a subsystem is some sort of
-> training (even if it looks like the kind of epic training the hero
-> ninja/warrior/sorcerer will undergo on their perilous journey to saving
-> the kingdom more than a process designed to optimize the end result),
+That merge window fixes should be delayed.  Not because I think a
+longer soak in main would allow us to find many more bugs, simply
+because it was causing reports in the merge window that weren't handled
+because people had other things to do.  The reply was that they're
+already doing it and when I looked, they actually started doing it for
+the 6.9 merge window (so your 6.7 example is probably out of date).
 
-:-D
+> So if those 440 fixes could wait some time to be mainlined and were
+> not important enough to get into 6.7 (2024-01-07 20:29 UTC) in the
+> first place, why the rush backporting them to 6.7.y so quickly after
+> the merge window?
+> 
+> All that leads to the related question "How many of those changes
+> maybe should have gone into 6.7?". And maybe even "Should we somehow
+> try to motivate more people to try -next?".
 
-> but at best that provides partial knowledge of the expected maintenance
-> process,
+Actually, if we got more people to try mainline we could perhaps find
+more bugs.  Testing -next is problematic because its instability makes
+things like bisection and update to next release difficult.
 
-+1
+>  But those are different problems.
+> And the situation regarding the first already got somewhat better
+> from what I can see -- among others afaics due to me prodding people
+> when the queue fixes for recent regression for the -next merge
+> window.
 
-> without even mentioning the issue of keeping the knowledge up
-> to date.
+Yes, that's why I was asking for stats on 6.9 and 6.10 where this delay
+policy was apparently in place.
 
-Once written down a simple diff will take care of that -- ideally of
-course coupled with some way to announcement the change to make people
-aware of it.
+> >  Plus it also means that a backport
+> > delay or cadence would actually delay discovery of some regressions
+> > because the patches that cause them won't be seen by the configs
+> > that run into them until they get put into stable.
+> 
+> And why is that a problem?
 
-But as I said somewhere else in this thread: writing things down has
-downsides as well (misinterpretations/misunderstandings, situations
-where ignoring them is for the greater good the right thing to do, ...).
+Because a regression we haven't found yet is still a regression.  If
+all we cared about was minimizing the regression stats, we could simply
+not look for any of them.  But we do care about this, so we need to
+support all our mechanisms for finding them and the point I was making
+is that one such mechanism is the early backports to stable.  There is
+probably a sweet spot backport delay for regressions we do eventually
+find in main, but for regressions that others only find in stable (and
+would never have been found in main however log we delayed) arbitrary
+delays merely increases the time to finding them.
 
-> It sometimes feels we're discussing how to improve the process
-> without even considering that many people are not even aware there is a
-> process.
+Perhaps one thing we should track with regressions is time to discovery
+and also ask about ones in stable if they could have been found in
+mainline?  That would give us more data for tuning the backport delay.
 
-Ciao, Thorsten
+> > [...]
+> > 
+> > The other thing I think would help is better tooling and advice to
+> > help reporters find regressions in stable.  What we do a lot
+> > upstream is ask if they can reproduce it in mainline.  However, not
+> > everyone is equipped to test out mainline kernels, so we could do
+> > with helping them bisect it in stable
+> 
+> FWIW Documentation/admin-guide/verify-bugs-and-bisect-regressions.rst
+> /
+> https://docs.kernel.org/admin-guide/verify-bugs-and-bisect-regressions.html
+> covers this: users that notice a regression in a stable tree will
+> bisect that tree. But before...
+
+Some do, but realistically the best others can do is this bug was in
+X.Y.Z but not in X.Y.Z-1 because they can't build their own kernels.
+
+> > (note this can be time dependent: older stable
+> > trees more naturally give rise to the question "has this been fixed
+> > upstream" making mainline testing more of an imperative).
+> 
+> ...it does so, but tells users to try mainline for two reasons:
+> * It might be fixed there already.
+> * When Greg receives a regression report for stable he'll usually ask
+> "is mainline also affected" anyway to figure out if this is something
+> he or somebody else has to look into. And some of the mainline
+> developer will ask this, too.
+
+Again not saying that's wrong, just saying we must accept that some
+bugs will only be found in stable and thus we could do with improving
+our tooling to help stable users pinpoint the backport that caused
+them.
+
+James
+
 
