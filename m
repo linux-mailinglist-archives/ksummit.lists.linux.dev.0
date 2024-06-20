@@ -1,132 +1,161 @@
-Return-Path: <ksummit+bounces-1329-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1330-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF55F90F77E
-	for <lists@lfdr.de>; Wed, 19 Jun 2024 22:26:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 408A790FF4A
+	for <lists@lfdr.de>; Thu, 20 Jun 2024 10:48:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 597891F23BD3
-	for <lists@lfdr.de>; Wed, 19 Jun 2024 20:26:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43EBF1C2352B
+	for <lists@lfdr.de>; Thu, 20 Jun 2024 08:48:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B33415538A;
-	Wed, 19 Jun 2024 20:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9022F1AAE0F;
+	Thu, 20 Jun 2024 08:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="NE/fMRvr"
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="t4RkBj6R"
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106905588F
-	for <ksummit@lists.linux.dev>; Wed, 19 Jun 2024 20:25:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F79157A7C;
+	Thu, 20 Jun 2024 08:45:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718828757; cv=none; b=eLPnOQken1CdqddCQi1uzYBYLv0oOqrKGEWD5XXSGYTRnrbPH/ampv/AQAU6YXwVo0zzR2ASWCK3lmFJ2hzkY6OYfSxGaTGII+ReWmk4QdS8vIHJHq0c5JCtAZ+HLR5dOmTCzf1CD5Sh/kraPS1omnNbh4TkzOlF7pyV+fQuSV8=
+	t=1718873122; cv=none; b=uXGtd60wLMJJBvIl5hNp7OszrhK52YFIgTfVH4p+pVQMSm+KPt/N7z4iRoVw4X0okREKmWnBOHAPF15S8Wb/HrzTPue7xjK6U++60D1CFqJbEd0K7siw0NeleF9FUjZuTiqGcVYg2sCabV1sbrYXgGobzL6Y4+U7wsSQcty2WxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718828757; c=relaxed/simple;
-	bh=5uS+lBm1obVOfHcH9agHF0u60a26TP7AfzNlsrWlGg4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NxPNIVpQUyGhzhc/QE/xw1gR91J3Xwa0nrZ2yIcCE8ReHTjbAbdLpkIatgjYcke814FxgVX4na+EWHsILrODppto00wCC5QlpK98QWcTYs4Ee5TrWuYW8ipXzZUpVcLuWGkyhYlEPJwP8ZAT8qhn+s4fVk2h9DOp3TAh1HawRU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=NE/fMRvr; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 871CF18D;
-	Wed, 19 Jun 2024 22:25:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1718828735;
-	bh=5uS+lBm1obVOfHcH9agHF0u60a26TP7AfzNlsrWlGg4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NE/fMRvrL4tJyfh8I8yGLpiMeMC6+dLj3wFNBfD95acbafQ/YQVYg4++4RPABeM6U
-	 l5KPQsT5w+/GEtEiGDTI6EMByKmL+7InO2xNKznyYL6d/5Hple8cwsVUCYUNZd4iVL
-	 W5yXrdHiS1IUcTBEWNqiw4qGQT8fSpzri5Wa4xGA=
-Date: Wed, 19 Jun 2024 23:25:31 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Thorsten Leemhuis <linux@leemhuis.info>
-Cc: Mark Brown <broonie@kernel.org>, Jiri Kosina <jikos@kernel.org>,
-	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
-Subject: Re: [MAINTAINERS SUMMIT] [3/4] Elevate handling of regressions that
- made it to releases deemed for end users
-Message-ID: <20240619202531.GE31507@pendragon.ideasonboard.com>
-References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
- <55e89d2c-fa25-4daa-805e-5aca31b321bf@leemhuis.info>
- <20240613113455.GH6019@pendragon.ideasonboard.com>
- <nycvar.YFH.7.76.2406131336450.24940@cbobk.fhfr.pm>
- <ZmxPPH2PSxoryu11@finisterre.sirena.org.uk>
- <635e47c6-c2ce-4a5b-9957-6efcdcfe2f00@leemhuis.info>
+	s=arc-20240116; t=1718873122; c=relaxed/simple;
+	bh=PxBnoJGW4Rs6vDxQykJcoC7D5CHDpHoYUPQTU1o3cyY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mz8SgVIrSRXh0D5q3+sEx1545WpDBzuE7heinZ001wEdFQNLaI9XZWfthG+AtHTuh4bMomtsBlSHb9hUbxMqBfSsLHLELngW47Aikh2KJ2eSX2lHT8UF2j4YNhrEw3OhBShmxTVNW8tzoBLfL5QBthvQwOpw6dqNApdCjgIHmUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=t4RkBj6R; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=zCGKty/L5MGdwQS5K/QcY24vFCLiM8wHxaRMk4azd9w=; t=1718873120;
+	x=1719305120; b=t4RkBj6Rkb78LSbnz+MfrKHG52WQUSIkGn7WgBiPgyLEHkNdZ/LdUDB++2NKF
+	tQ/Z5OS9RtxewlBLqeS9u448vKbas0ms8G3ldeDmG7ytkKzxj7/+HOAUKNx7KxaDvKYf9eSJEFK1d
+	rTTwex6h4rO4FmcQ1p1JEWB0w3/nNLdLbUUtEjFsPyMLgzOoOTFQvsjrZPEGZ52E13RTzVWYpEGo4
+	cofhtiJrUoAV8ahkgZXu8VmD9H0+cGUoIPuy0UpSezT2/QM8WeUFQ9SXDA/Mo/8og1Pgh7illwymg
+	ZTs+/5JGVHw5qBBOL8WzK7+lAHqiDRBEz/j8cQnPYhGshtvvbw==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1sKDPj-0003QU-2M; Thu, 20 Jun 2024 10:45:03 +0200
+Message-ID: <02493a25-30c4-4e32-835c-6fdfe0f2abbb@leemhuis.info>
+Date: Thu, 20 Jun 2024 10:45:02 +0200
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <635e47c6-c2ce-4a5b-9957-6efcdcfe2f00@leemhuis.info>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] Documentation: best practices for using Link trailers
+To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Carlos Bilbao <carlos.bilbao.osdev@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, ksummit@lists.linux.dev
+References: <20240618-docs-patch-msgid-link-v1-0-30555f3f5ad4@linuxfoundation.org>
+ <20240618-docs-patch-msgid-link-v1-2-30555f3f5ad4@linuxfoundation.org>
+From: Thorsten Leemhuis <linux@leemhuis.info>
+Content-Language: en-US, de-DE
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 n7RI
+In-Reply-To: <20240618-docs-patch-msgid-link-v1-2-30555f3f5ad4@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1718873120;606b96ce;
+X-HE-SMSGID: 1sKDPj-0003QU-2M
 
-On Tue, Jun 18, 2024 at 02:58:38PM +0200, Thorsten Leemhuis wrote:
-> On 14.06.24 16:10, Mark Brown wrote:
-> > On Thu, Jun 13, 2024 at 01:39:00PM +0200, Jiri Kosina wrote:
-> >> On Thu, 13 Jun 2024, Laurent Pinchart wrote:
-> > 
-> >>> I don't think piling pressure will help. What could help is to reduce
-> >>> pressure on already overloaded maintainers, to give them more time to
-> >>> handle regressions. There have been multiple discussions about
-> >>> co-maintainance models over the past few years, and some subsystems are
-> >>> (slowly) moving forward. I would be more interested in participating in
-> >>> that effort. 
-> > 
-> >> Fully agreed. That's exactly why a few days ago I proposed the topic about 
-> >> exploring the options of making the merge tree more deep (by delegating 
-> >> more and making the co-maintainership model more prominent), as that in my 
-> >> view is the only available solution to the current maintainer pressure 
-> >> problem.
-> > 
-> > In my experience deeper maintainer trees are often a factor in slowing
-> > down patches, passing things between maintainers often just inherently
-> > adds delays even if nobody goes on holiday or whatever.  
+On 18.06.24 18:42, Konstantin Ryabitsev wrote:
+> Based on multiple conversations, most recently on the ksummit mailing
+> list [1], add some best practices for using the Link trailer, such as:
 > 
-> From what I see from the regressions perspective they are not ideal
-> either. The slow down is one problem, unless the process is streamlined
-> well. Another one from my biased point of view seems to be that a few of
-> are far away from Linus and apparently not fully aware how he wants
-> regressions to be handled.
-> 
-> Which is not really surprising, as over the years there were quite a few
-> cases where maintainers of core subsystems were not handled well either.
-> But sooner or later that resulted in a clash with Linus[1] and from then
-> on things worked better. For many sub-subsystem something like that
-> never happened -- and the maintainers of the higher level subsystem can
-> not have their eyes everywhere, so they do not notice such problems or
-> are more lax and friendly.
+> - how to use markdown-like bracketed numbers in the commit message to
+> indicate the corresponding link
+> - when to use lore.kernel.org vs patch.msgid.link domains
 
-This got me thinking: why don't we have trainings for maintainers,
-instead of expecting people to decypher a combination of unwritten
-rules, and written documentation containing conflicting and partly
-outdated information ? Of course, the whole path going from a first
-submission to the kernel to maintaining a subsystem is some sort of
-training (even if it looks like the kind of epic training the hero
-ninja/warrior/sorcerer will undergo on their perilous journey to saving
-the kingdom more than a process designed to optimize the end result),
-but at best that provides partial knowledge of the expected maintenance
-process, without even mentioning the issue of keeping the knowledge up
-to date. It sometimes feels we're discussing how to improve the process
-without even considering that many people are not even aware there is a
-process.
+[...]
 
-> If I notice a regression is not handled well in a sub-subsystem I point
-> it out (often in private) to the higher level maintainers. But that does
-> it tedious, does not scale, and delays things. That's one of the reasons
-> why written guidelines IMHO would be worth it.
-> 
-> Ciao, Thorsten
-> 
-> [1] see the quotes from Linus at the end of
-> Documentation/process/handling-regressions.rst /
-> https://docs.kernel.org/process/handling-regressions.html
+> +   When using the ``Link:`` trailer to indicate the provenance of the
+> +   patch, you should use the dedicated ``patch.msgid.link`` domain. This
+> +   makes it possible for automated tooling to establish which link leads
+> +   to the original patch submission. For example::
+> +
+> +     Link: https://patch.msgid.link/patch-source-msgid@here
 
--- 
-Regards,
+I wonder how long it will take until someone starts using
+patch.msgid.link/ for things that are not the submission of the change,
+for example by misunderstanding what "provenance of the patch" is meant
+to mean here.
 
-Laurent Pinchart
+How about something this:
+
+"""
+In case you want to record the public review submission of a patch while
+committing it, use a ``Link:`` trailer with the dedicated
+``patch.msgid.link`` domain::
+
+   Link: https://patch.msgid.link/patch-source-msgid@here
+
+This makes it possible to reliably look the submission up, hence don't
+use that domain for any other patches you might want to link to.
+"""
+
+But I suspect some people will never see this and start assuming that
+this domain should be meant for all patches -- and not all of these
+cases will be found during review (or by checkpatch, in case we add a
+check and people actually run it). Writing that made me think a
+dedicated tag like "Lore-Submission" or "Public-Review-Link" could avoid
+this while keeping some of the aspects that Linus likes about "Link" --
+but I doubt that will convince him.
+
+Ciao, Thorsten
 
