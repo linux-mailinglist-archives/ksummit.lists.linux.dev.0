@@ -1,96 +1,80 @@
-Return-Path: <ksummit+bounces-1361-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1362-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93D2F9183BD
-	for <lists@lfdr.de>; Wed, 26 Jun 2024 16:16:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31C17918E9C
+	for <lists@lfdr.de>; Wed, 26 Jun 2024 20:32:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53A802826B9
-	for <lists@lfdr.de>; Wed, 26 Jun 2024 14:16:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE692B20E14
+	for <lists@lfdr.de>; Wed, 26 Jun 2024 18:32:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282221850A5;
-	Wed, 26 Jun 2024 14:16:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="coJ/Nk5R"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35B018FDB8;
+	Wed, 26 Jun 2024 18:32:33 +0000 (UTC)
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9F28495;
-	Wed, 26 Jun 2024 14:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4306E611
+	for <ksummit@lists.linux.dev>; Wed, 26 Jun 2024 18:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719411401; cv=none; b=uh+wu/gMA6i0tgj9isvXdnQvAjNoQeta/4Vig74zr8bvU+fmG+uIOJcTEKqcm6uhiMZFfZoWJFEqj3FpfGQTXRxIdUwFWz7qIAIyApL3Ws0VEPWwJAuOH3dHvhJFULpDzuXe1xhy1ug74pk1eOEBh1VpqQOiREj6Fw+0cPo+UgQ=
+	t=1719426753; cv=none; b=J195cmb+c1l+9FEP3h12qrsUe8+k2d4XGlTIJBaF0u2NYYLxakuu/VqmUSYk9GeUMo6CdTCM1fK6GIrQ1Om25vbQHnTTpuVU3P1Lb2o5PqQrFLvCPOX3dL+31vmUnQc9jzhG17+tbVM9VIlbaSsD2dHDSCk8C6CNT0MJlAxJ9oM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719411401; c=relaxed/simple;
-	bh=BRs7yKKIEJjHjfCSav5qFX0qIBT++tHJPPAaw9tc/LI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ErzEGAw8O6Bdo8/oX9Sdietta75/KMElt9hiHy3sJxJSU+EV4SUwKKUld7Uj3CAWb0B24cWxtB7df5g6gI1WVzEME8CY3e1fSjB4fHL+70txJlOi3sAqeLEreZs81km45sIRyYgs5GPi5Tdq8xTNxiVb2OW8E6K0XPf8k0DnTBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=coJ/Nk5R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34DFC116B1;
-	Wed, 26 Jun 2024 14:16:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719411401;
-	bh=BRs7yKKIEJjHjfCSav5qFX0qIBT++tHJPPAaw9tc/LI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=coJ/Nk5RY2qbkjfAXZwmuX9TK89cjfAqNFDK4rpjgud7kc+brMZC8LwCyJEoBDfQU
-	 idKQ6ohoAlMZAs1bLZXU9VlyZ3wk/3aIsNgI+gM+2Y+0Wbr9azLEml1W3MZL+wAjST
-	 U1hHBszv9S5K8v8SQMbJAWl5devzH6+Tg8qQyT4g=
-Date: Wed, 26 Jun 2024 10:16:36 -0400
-From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Carlos Bilbao <carlos.bilbao.osdev@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, workflows@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, ksummit@lists.linux.dev
-Subject: Re: [PATCH 2/2] Documentation: best practices for using Link trailers
-Message-ID: <20240626-olivine-spaniel-of-gallantry-9c904a@meerkat>
-References: <20240618-docs-patch-msgid-link-v1-0-30555f3f5ad4@linuxfoundation.org>
- <20240618-docs-patch-msgid-link-v1-2-30555f3f5ad4@linuxfoundation.org>
- <20240625172727.3dd2ad67@rorschach.local.home>
- <CAMuHMdXHa52RBjzA4eF4ERNuJjRHyq=FfyPz-yOsjOA7ZQfouQ@mail.gmail.com>
+	s=arc-20240116; t=1719426753; c=relaxed/simple;
+	bh=QPPWPQL11VHMGMu9Gi6pZ2sTx3enDTzAWi5Pk7fu+9w=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MuZDr7yvaInc3VDaKdJqe2mYl5HprjxMsotn0FapVuW5/FHR8pM4lV2eosCoo2UQoPVjvfC3RZ1hN3L0kUUapfG3b0UUUY5dludW5gfeNMVlIP5UIgGSKrsdwm4Kg+BIHQbKgQ/SdIPqWqUV1iFzs6J2+zarSNKAdiSYNb9R24E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F907C116B1;
+	Wed, 26 Jun 2024 18:32:32 +0000 (UTC)
+Date: Wed, 26 Jun 2024 14:32:30 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, Mark Brown
+ <broonie@kernel.org>, Thorsten Leemhuis <linux@leemhuis.info>,
+ ksummit@lists.linux.dev, Sasha Levin <sashal@kernel.org>
+Subject: Re: [MAINTAINERS SUMMIT] [0/4] Common scenario for four proposals
+ regarding regressions
+Message-ID: <20240626143230.192ebcdf@rorschach.local.home>
+In-Reply-To: <2024062651-skyward-stowaway-6ea6@gregkh>
+References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
+	<54f26c0959f796c52f04da9e831899f6482686ac.camel@HansenPartnership.com>
+	<c4db6faa-89ac-4f1c-ac87-1db8f91ac480@leemhuis.info>
+	<ead819d8bc59bd188bf4c07b3604a4aa5a194d8d.camel@HansenPartnership.com>
+	<c3071fa8-e64a-40a6-a725-4be1c668346f@sirena.org.uk>
+	<d1b85ab5a4363457eef65096c7c1d0efe28b5e41.camel@HansenPartnership.com>
+	<710867cc-fcc1-42e4-8946-34448a784afa@sirena.org.uk>
+	<32489d2e9b88f0353e97f28bf1d8018aa7dd4265.camel@HansenPartnership.com>
+	<20240625175131.672d14a4@rorschach.local.home>
+	<2024062651-skyward-stowaway-6ea6@gregkh>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdXHa52RBjzA4eF4ERNuJjRHyq=FfyPz-yOsjOA7ZQfouQ@mail.gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jun 26, 2024 at 10:12:35AM GMT, Geert Uytterhoeven wrote:
-> > > +     Link: https://patch.msgid.link/patch-source-msgid@here
-> >
-> > Hmm, I mentioned this in the other thread, but I also like the fact
-> > that my automated script uses the list that it was Cc'd to. That is, if
-> > it Cc'd linux-trace-kernel, if not, if it Cc'd linux-trace-devel, it
-> > adds that, otherwise it uses lkml. Now, I could just make the lkml use
-> > the patch-source-msgid instead.
-> >
-> > This does give me some information about what the focus of the patch
-> > was. Hmm, maybe I could just make it:
-> >
-> >   Link: https://patch.msgid.link/patch-source-msgid@here # linux-trace-devel
-> >
-> > Would anyone have an issue with that?
+On Wed, 26 Jun 2024 09:36:22 +0200
+Greg KH <gregkh@linuxfoundation.org> wrote:
+
+> > I'm curious. Is there a stable branch that adds the stable patches in
+> > continuously? That is, during the merge window, to have a branch that
+> > adds the stable patches as they come in and then when the merge window
+> > closes, to post the rc series with all the patches that have landed in
+> > that branch?  
 > 
-> Or, just like with lore links:
-> 
->     https://patch.msgid.link/linux-trace-devel/patch-source-msgid@here
+> Yes, it's in the stable-queue git tree.  And in the linux-stable-rc tree
+> for those that can not consume quilt trees.  Been there for years...
+>
 
-I don't recommend this because it is not always a reliable mechanism to just
-take the local part of the list address and assume that it will match the list
-directory on lore.kernel.org. We've had lists that moved around or got
-renamed, or disambiguated for clarity.
+Perhaps we should be encouraging people to download the linux-stable-rc
+and start testing that more?
 
-Overall, we're generally moving away from "where was this sent?" having any
-importance -- we already support lei queries and should soon have bridges
-exposing patches submitted via forge interfaces. If you want to indicate the
-focus of the patch, then going by the list to which it was sent is going to
-increasingly lose importance.
+Just because it's been there for years, doesn't mean people are aware of it.
 
--K
+-- Steve
 
