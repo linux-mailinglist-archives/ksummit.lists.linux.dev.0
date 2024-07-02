@@ -1,56 +1,48 @@
-Return-Path: <ksummit+bounces-1369-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1370-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6809591C5B5
-	for <lists@lfdr.de>; Fri, 28 Jun 2024 20:32:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A2E0924992
+	for <lists@lfdr.de>; Tue,  2 Jul 2024 22:48:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 134AD28332C
-	for <lists@lfdr.de>; Fri, 28 Jun 2024 18:32:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B84F31F25984
+	for <lists@lfdr.de>; Tue,  2 Jul 2024 20:48:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B2A1CD5B2;
-	Fri, 28 Jun 2024 18:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F185201255;
+	Tue,  2 Jul 2024 20:47:51 +0000 (UTC)
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB181E50B;
-	Fri, 28 Jun 2024 18:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3B41E531;
+	Tue,  2 Jul 2024 20:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719599548; cv=none; b=g2J7rl7kTNJm1wjS4HbP2r3oALqesFEcJ2fv6YGsPOmOHm/fHcr6Xva9ptf9KgglIKrgy/a2UWrUW9vjtRZlShAZDxWM8iMKqCBKiE1bUyHRNTmsCNbG04wFPvvjrDyfo5NEqlPaMhj5alAv2F+9Tkh0gqmBnHBQxwf3xsuqiOc=
+	t=1719953271; cv=none; b=d0oYQBEDYLZXQCYXy7pS/hTlAJ/zgCPBA+fFz+gBad0n8prePuq1WRv4R2zVLMFrIzTMyJ+xNuhYHkEIXK0eDmp6hHOK46pTz2iICIm1Bp5ZNQ+AU25gac7LiH+gg2r+HErYUQs1dzb15Yl+7iWw2OulSJdwhTmF8JAsm07LaZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719599548; c=relaxed/simple;
-	bh=xmAHf1q3wfr6LlUw9tXkd1fc2eHakw/YNd7upQANybk=;
+	s=arc-20240116; t=1719953271; c=relaxed/simple;
+	bh=0mfKML5YdAAG2tBLmjBtcbFJBQL1ZJApZDKstbioGaI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fwRfc9RbteTFxbX7J4EMsvuUrClXVU6+6rnroqMlwZjf4Qhfq+vOItpLOYLiIdmGCkVXkjalzNEpE3R4C9thpBkaKSk9pkPU2sUppqynXZ6DO0rwmQxaCL82HQLLXro6zywyo/04QzvrrcYbOlKi0jTi64Mn7cekaolQf32nQo0=
+	 MIME-Version:Content-Type; b=Uz6eOL6TigmJCdk6d2Pwm0w7KmMxd/jKVYE6RAcVhnqTrCZmjGuaxD/7lFYxGjZLYV4Fa82X4+lMinBvAGbNIiNWwoACOpkvhBgWRLPPXQ37hbzCGMllI5N818ijYIlS/l+MMS22i2/5WcEfPINq/cKh1oCN/YUk+8Vo9KEpavs=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2938DC116B1;
-	Fri, 28 Jun 2024 18:32:26 +0000 (UTC)
-Date: Fri, 28 Jun 2024 14:32:24 -0400
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 047C4C116B1;
+	Tue,  2 Jul 2024 20:47:48 +0000 (UTC)
+Date: Tue, 2 Jul 2024 16:47:47 -0400
 From: Steven Rostedt <rostedt@goodmis.org>
 To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-Cc: Thorsten Leemhuis <linux@leemhuis.info>, Randy Dunlap
- <rdunlap@infradead.org>, Jonathan Corbet <corbet@lwn.net>, Kees Cook
- <kees@kernel.org>, Carlos Bilbao <carlos.bilbao.osdev@gmail.com>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- workflows@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+Cc: Jonathan Corbet <corbet@lwn.net>, Carlos Bilbao
+ <carlos.bilbao.osdev@gmail.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, workflows@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
  ksummit@lists.linux.dev
-Subject: Re: [PATCH v2 2/2] Documentation: best practices for using Link
- trailers
-Message-ID: <20240628143224.6fb67dfd@rorschach.local.home>
-In-Reply-To: <20240628-mindful-jackal-of-education-95059f@lemur>
+Subject: Re: [PATCH v2 0/2] Documentation: update information for mailing
+ lists
+Message-ID: <20240702164747.2e45ce66@rorschach.local.home>
+In-Reply-To: <20240619-docs-patch-msgid-link-v2-0-72dd272bfe37@linuxfoundation.org>
 References: <20240619-docs-patch-msgid-link-v2-0-72dd272bfe37@linuxfoundation.org>
-	<20240619-docs-patch-msgid-link-v2-2-72dd272bfe37@linuxfoundation.org>
-	<202406211355.4AF91C2@keescook>
-	<20240621-amorphous-topaz-cormorant-cc2ddb@lemur>
-	<87cyo3fgcb.fsf@trenco.lwn.net>
-	<4709c2fa-081f-4307-bc9e-eef928255c08@infradead.org>
-	<62647fab-b3d4-48ac-af4c-78c655dcff26@leemhuis.info>
-	<20240628-mindful-jackal-of-education-95059f@lemur>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
@@ -61,49 +53,26 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 28 Jun 2024 10:52:37 -0400
+On Wed, 19 Jun 2024 14:24:05 -0400
 Konstantin Ryabitsev <konstantin@linuxfoundation.org> wrote:
 
-> On Thu, Jun 27, 2024 at 05:51:47AM GMT, Thorsten Leemhuis wrote:
-> > I thought it was documented, but either I was wrong or can't find it.
-> > But I found process/5.Posting.rst, which provides this example:
-> > 
-> >         Link: https://example.com/somewhere.html  optional-other-stuff
-> > 
-> > So no "# " there. So to avoid inconsistencies I guess this should not be
-> > applied, unless that document is changed as well.  
+> - drops the recommendation to use /r/ subpaths in lore.kernel.org links
+> (it has been unnecessary for a number of years)
+> - adds some detail on how to reference specific Link trailers from
+> inside the commit message
 > 
-> This is inconsistent with every other trailer that includes comments.
-> Currently, there are two mechanisms to provide comments with trailers:
+> Some of these changes are the result of discussions on the ksummit
+> mailing list [2].
 > 
-> 1:
-> 
->     | Trailer-name: trailer-content # trailer-comment
-> 
-> 2:
-> 
->     | Trailer-name: trailer-content
->     | [trailer-comment]
+> Link: https://subspace.kernel.org # [1]
+> Link: https://lore.kernel.org/20240617-arboreal-industrious-hedgehog-5b84ae@meerkat/ # [2]
+> Signed-off-by: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+> ---
+> Changes in v2:
+> - Minor wording changes to text and commit messages based on feedback.
+> - Link to v1: https://lore.kernel.org/r/20240618-docs-patch-msgid-link-v1-0-30555f3f5ad4@linuxfoundation.org
 
-Where do you see that?
-
-Whenever I do the second one, it has nothing to do with the tag, but
-what I have done to the patch/commit.
-
-    Signed-off-by: Random Developer <rdevelop@company.com>
-    [ Fixed formatting ]
-    Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-
-That is, if I do any modification of the original submission, I
-document it this way.
+Should drop the '/r' ;-)
 
 -- Steve
-
-
-> 
-> For the sake of consistency, all trailers, including Link, should use one of
-> these two mechanisms for "optional-other-stuff".
-> 
-> -K
-
 
