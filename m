@@ -1,69 +1,91 @@
-Return-Path: <ksummit+bounces-1370-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1371-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A2E0924992
-	for <lists@lfdr.de>; Tue,  2 Jul 2024 22:48:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F1CC926C3D
+	for <lists@lfdr.de>; Thu,  4 Jul 2024 01:04:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B84F31F25984
-	for <lists@lfdr.de>; Tue,  2 Jul 2024 20:48:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AE841F232D8
+	for <lists@lfdr.de>; Wed,  3 Jul 2024 23:04:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F185201255;
-	Tue,  2 Jul 2024 20:47:51 +0000 (UTC)
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C9AB194A5A;
+	Wed,  3 Jul 2024 23:04:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="foN6g2Aw"
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3B41E531;
-	Tue,  2 Jul 2024 20:47:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3A817B425
+	for <ksummit@lists.linux.dev>; Wed,  3 Jul 2024 23:04:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719953271; cv=none; b=d0oYQBEDYLZXQCYXy7pS/hTlAJ/zgCPBA+fFz+gBad0n8prePuq1WRv4R2zVLMFrIzTMyJ+xNuhYHkEIXK0eDmp6hHOK46pTz2iICIm1Bp5ZNQ+AU25gac7LiH+gg2r+HErYUQs1dzb15Yl+7iWw2OulSJdwhTmF8JAsm07LaZI=
+	t=1720047870; cv=none; b=hX9UZIsGafgUqX2cWM6DhAp2BGYIY01eMBSc7MOB7aEbCRLN59T86fDxUmrrat8Ta3J8vTAlx8A8xEIn1om5tOkZd6sbe1YWSEtZunXiw4XweLJfKh+Bz10yFDLWW/U6w5UTLp1VL9cQ90VdTiY0bt5Bm+BA7yMn2dH2pXuCFe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719953271; c=relaxed/simple;
-	bh=0mfKML5YdAAG2tBLmjBtcbFJBQL1ZJApZDKstbioGaI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Uz6eOL6TigmJCdk6d2Pwm0w7KmMxd/jKVYE6RAcVhnqTrCZmjGuaxD/7lFYxGjZLYV4Fa82X4+lMinBvAGbNIiNWwoACOpkvhBgWRLPPXQ37hbzCGMllI5N818ijYIlS/l+MMS22i2/5WcEfPINq/cKh1oCN/YUk+8Vo9KEpavs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 047C4C116B1;
-	Tue,  2 Jul 2024 20:47:48 +0000 (UTC)
-Date: Tue, 2 Jul 2024 16:47:47 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, Carlos Bilbao
+	s=arc-20240116; t=1720047870; c=relaxed/simple;
+	bh=sjUlk2dyanMoOOvqU/NU0Qw0qLzZxQECvFTWbr3HFx0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=KKXsP4fWYkH08g9DBDWpZo7IPn97T8Ssf6ClQQG4RHi/1aCwA2/qLoEQhsZ9BuaA+gWxDYBvqlmV51+dBuvp6QAC9dQ54u9W6qokIxnAeNX+HW8U8bxtCeBCJ2qOOfMbUcITksxeBY04PvXszawaTKm654MkubFVGKA5Qw3hgPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=foN6g2Aw; arc=none smtp.client-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 491D74189E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1720047868; bh=YTLOx/1o2O6vgLftzil18tbHX7AAy8OKyo+xBns4TL8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=foN6g2Awy5eiKZju1LPimmtXOR26SvHVLj3GQfBqu75Gzkyb2rCX4/C9CLU0E9Scn
+	 25gOIiHYzDk+1wKQFy24VU/7F1d0eBMctpd+BfpUBJ9X5Uk4xIH87HaczPT4wLhjDE
+	 2kA2efk/k+pm4mvDW2bffK229qejCmKvk3CseEWzwSg2V6BKe674vCJepuzP7OXUHB
+	 ALwDATik/GzfLBsi1VIVIuNhfVBQqN2jrQerInqOxDPBJnNp0t/bVeUn80NIQsONG3
+	 VSAiHzfOqEYvarluqY1xD6t5yh+JcBhpWnwt0sB3R9JSUkBctTWBx+huc1oueKTEFu
+	 6FHk79eTvoCIg==
+Received: from localhost (c-24-9-249-71.hsd1.co.comcast.net [24.9.249.71])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id 491D74189E;
+	Wed,  3 Jul 2024 23:04:28 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>, Carlos Bilbao
  <carlos.bilbao.osdev@gmail.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, workflows@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, Konstantin Ryabitsev
+ <konstantin@linuxfoundation.org>, Dan Williams <dan.j.williams@intel.com>,
  ksummit@lists.linux.dev
-Subject: Re: [PATCH v2 0/2] Documentation: update information for mailing
- lists
-Message-ID: <20240702164747.2e45ce66@rorschach.local.home>
+Subject: Re: [PATCH v2 0/2] Documentation: update information for mailing lists
 In-Reply-To: <20240619-docs-patch-msgid-link-v2-0-72dd272bfe37@linuxfoundation.org>
 References: <20240619-docs-patch-msgid-link-v2-0-72dd272bfe37@linuxfoundation.org>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Date: Wed, 03 Jul 2024 17:04:27 -0600
+Message-ID: <87y16irsas.fsf@trenco.lwn.net>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On Wed, 19 Jun 2024 14:24:05 -0400
-Konstantin Ryabitsev <konstantin@linuxfoundation.org> wrote:
+Konstantin Ryabitsev <konstantin@linuxfoundation.org> writes:
 
+> There have been some important changes to the mailing lists hosted at
+> kernel.org, most importantly that vger.kernel.org was migrated from
+> majordomo+zmailer to mlmmj and is now being served from the unified
+> mailing list platform called "subspace" [1].
+>
+> This series updates many links pointing at obsolete locations, but also
+> makes the following changes:
+>
 > - drops the recommendation to use /r/ subpaths in lore.kernel.org links
 > (it has been unnecessary for a number of years)
 > - adds some detail on how to reference specific Link trailers from
 > inside the commit message
-> 
+>
 > Some of these changes are the result of discussions on the ksummit
 > mailing list [2].
-> 
+>
 > Link: https://subspace.kernel.org # [1]
 > Link: https://lore.kernel.org/20240617-arboreal-industrious-hedgehog-5b84ae@meerkat/ # [2]
 > Signed-off-by: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
@@ -71,8 +93,21 @@ Konstantin Ryabitsev <konstantin@linuxfoundation.org> wrote:
 > Changes in v2:
 > - Minor wording changes to text and commit messages based on feedback.
 > - Link to v1: https://lore.kernel.org/r/20240618-docs-patch-msgid-link-v1-0-30555f3f5ad4@linuxfoundation.org
+>
+So I have gone ahead and applied this.  There are some important changes
+here that shouldn't miss the merge window, and we can argue about the #
+marking with it in-tree.
 
-Should drop the '/r' ;-)
+I am rather amused, though, that b4 added a few extra tag lines:
 
--- Steve
+> Link: https://example.com/somewhere.html  optional-other-stuff
+> Signed-off-by: Random Developer <rdevelop@company.com>
+>      [ Fixed formatting ]
+> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+
+I do believe I'll amend the changelog before pushing this one :)
+
+Thanks,
+
+jon
 
