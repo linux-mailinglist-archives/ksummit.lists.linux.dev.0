@@ -1,208 +1,226 @@
-Return-Path: <ksummit+bounces-1378-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1379-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84D7F92BF05
-	for <lists@lfdr.de>; Tue,  9 Jul 2024 18:02:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEE5092C408
+	for <lists@lfdr.de>; Tue,  9 Jul 2024 21:46:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C61E1F225A4
-	for <lists@lfdr.de>; Tue,  9 Jul 2024 16:02:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63B5C2822C3
+	for <lists@lfdr.de>; Tue,  9 Jul 2024 19:46:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4894119D8A4;
-	Tue,  9 Jul 2024 16:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFBDE1850A2;
+	Tue,  9 Jul 2024 19:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="LhE8j7NR";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="iYeSMbOA"
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a4VdqNjx"
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A2A158A1F
-	for <ksummit@lists.linux.dev>; Tue,  9 Jul 2024 16:02:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720540950; cv=none; b=Dlxqrryag/i3WazcYNiuFN/GIojluk6T0Xw3l+ZvjO22hv6vIvlvteXHJy4b/kW38I5rrsxRxeB2h3AhvlvxMbP7jZL6Kvxefu37FstBUDkunCwC6gAjG4ZcrGUUe52cO4M+TV34eKSfvoT9CkZPpuZAqj2Ho9rKiDjVAd31aRU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720540950; c=relaxed/simple;
-	bh=XJ/Jh5SnuG3rN/OavcSI+CyZ++lBTUQ2aTx68YCTme0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=krbIr9lKF/P/hES0cZN6VUNxPIi9++J7e1diz4bJeHsnsd+QjE33iNuSP8Ja+Qb8tMp54QO27nAqmEkfNO/9ufDwJcidxOagXKye2PKWXB4rSgYbofSIdYOW3TDfA/IswpNnodHR9MVntF8olDh4cMwc3uDFl01qlASi4GkQknU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=LhE8j7NR; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=iYeSMbOA; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E4212C80F
+	for <ksummit@lists.linux.dev>; Tue,  9 Jul 2024 19:46:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1720554404; cv=fail; b=rca+1rwNyTHQmR7nJhHQg5y1rvf2/uC9Q15WQWydGGgp5SsbOc7jjioZnY51IhEb7u5HZPxLEvdl1ulx/wtDqSDnYKiU5ppIRDCAyuy31VdAGVEjWMV6uLhfTL141q3IjQA1aVG6w4KTym8BMOipDz6nG8crLYsU7JW84PE/oz4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1720554404; c=relaxed/simple;
+	bh=aa5umGJiTRJXgBNAQHbE64xlcd8kMQ0ryOKAFnk5wus=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=dHrhPNR18CsIuM+33XaO1L3uSvfccImeZfkSotTIZv/PFygJWBZV0KTTF+ERZQD/PWmB07hMbzPChAOlIYv2LsMNGekIU+z2mW3hicJwhNkX79KW6EalyTz/qijZ/YT4I+IQFoscJ8J9LDYcvsNfUcchAW2/vaZ3j+3zeJeOLSg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a4VdqNjx; arc=fail smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1720540947;
-	bh=XJ/Jh5SnuG3rN/OavcSI+CyZ++lBTUQ2aTx68YCTme0=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=LhE8j7NR9Or3JdM8y+ZTcypR4EK+IG/fCQDEKhvjVxXMLLJGslRjbR/K4vr6l9loF
-	 wvHxImU4K3rhnWrMv0DnhwuAf1cHulVMn8rxP0XxEoV1AeIIprDKh9pdKq6KFursgh
-	 AL4sjWi+jC7AlEdW5V6I0czTMuhvRuT18Qr6LQxQ=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 831F41281049;
-	Tue, 09 Jul 2024 12:02:27 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id MstJzd94AWbf; Tue,  9 Jul 2024 12:02:27 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1720540946;
-	bh=XJ/Jh5SnuG3rN/OavcSI+CyZ++lBTUQ2aTx68YCTme0=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=iYeSMbOAD71KMRWonx4RGxhLw83wQPNCXkT/yAbxrzIk50O/DbL+gFDuhA4a2Ec39
-	 lI2P/ws+2QqOsCP/ZIhvFybuHu/dKOMEQFqcHE5k9MP6R7v9cDdwvdNCpfTojp4JpH
-	 +Z6wwBpOT7i7A9Z5AN3LESXPRh2JXShvd+HKAbuk=
-Received: from [172.20.11.192] (unknown [74.85.233.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 88E661280BA5;
-	Tue, 09 Jul 2024 12:02:26 -0400 (EDT)
-Message-ID: <3b9631cf12f451fc08f410255ebbba23081ada7c.camel@HansenPartnership.com>
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1720554403; x=1752090403;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=aa5umGJiTRJXgBNAQHbE64xlcd8kMQ0ryOKAFnk5wus=;
+  b=a4VdqNjxrtkaFKxrnfEqDVw0uqGjamtIiq0f2SvqT+dT680yzR19a/v5
+   waT0Skv9+CpE4XDfIyaaabgbgV9m/FOWq86v0TdiZtVcJhn+2VRTEo1RL
+   ORfHpByXzfDgFImW8PFtp1gabqjgPBjZSjNrTFjUO7VfI97IxQeqUVlYb
+   /EM5FaxfMGNCpVP2XasMELjLxBD/lYdFXoqJz6gdrtTsFuby/Iu6f/Zd8
+   h7BwopfiOBZqjmXyFx81845JrJdVU5a1sfVSZo0LCUQALEsAitbS3ck5J
+   h9zAu9dEk+MnnRakYBTJqCi5tzSBnQ9XsTupRbSd1kOh/SchAnLeNX7Ya
+   g==;
+X-CSE-ConnectionGUID: 6fwMpL9yR6q1gYaxGGHsNQ==
+X-CSE-MsgGUID: y51q1ev1TWWlr37+fbOb9A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11128"; a="21654140"
+X-IronPort-AV: E=Sophos;i="6.09,195,1716274800"; 
+   d="scan'208";a="21654140"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2024 12:44:02 -0700
+X-CSE-ConnectionGUID: SVW/RgC/QwinyzCxsf4XhA==
+X-CSE-MsgGUID: NS1kkVvkT8+uRO+JbOc/qQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,195,1716274800"; 
+   d="scan'208";a="47840804"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 09 Jul 2024 12:44:00 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 9 Jul 2024 12:44:00 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 9 Jul 2024 12:43:59 -0700
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Tue, 9 Jul 2024 12:43:59 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.40) by
+ edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 9 Jul 2024 12:43:59 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=L3XpBqR9eog5zg+HIJwhW5+IaSt9YMwl2lX00VbqaOFbbELUU7DbJrhEsTsPILNnT2C87SpQj55u4ms8+8j2vYaPLDmEA2dvIHWTXeHAS3WyPCfgYjG8yeII0IXq5R1Hekmyg6kVyI/R9T0i/Q2BvA6wR9zurdPgnh39YZAvkDWdT30SJYS2HIkcl3ueVHn6/K/B5oUuvSHRfYmDjuZq2n+ZePl0HugyWL16ytXTsILxyzGIPCYeq9gPOXDtVFxScME8Rrl3BW/BvOlecF1xIFnplgBeXl8ygKfVKlSkmTfuayaV9Scpcp/mQCLP6LziCUYBTMxZdSlcF4Uk2zy0TA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fI7zzssH1/NRSMvrQQHhObLz8MEMAvs2i9pmTtgYLpk=;
+ b=Fyqi/WkY1eQHiYYONWnz2TZE98/ieuPa2bDTvEvMaw3kCyIbCa6+plEkXMDPVWfqPiKCrfxg+zflCeHSs+ZflsZQJXQjJ2KdSEcMGE+E8fFET9MDBt05dqTvOUrn68WEP55bBuEQsAZP1OgAOH7xnVUd+m3rh363C/gpC8WdO3GGVivsLT14Y5k28n0kyIS+8ixIcOaWKZP8xqr5LoerkwEmMcob4Ew/I8xF5kS5s+ZoMBjCmk3yDuaJw9f1lipVFaIwY1rqH46P2CqAmkbKDLl5vcAr7ilnpRLP+dkJmUxZqiPoFhXvXngJD8I4VD8xCN7cXKDM2dmZfThOibF8tg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by CY5PR11MB6533.namprd11.prod.outlook.com (2603:10b6:930:43::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7741.36; Tue, 9 Jul
+ 2024 19:43:54 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%4]) with mapi id 15.20.7741.027; Tue, 9 Jul 2024
+ 19:43:52 +0000
+Date: Tue, 9 Jul 2024 12:43:50 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: Christoph Hellwig <hch@infradead.org>, Dan Williams
+	<dan.j.williams@intel.com>
+CC: <ksummit@lists.linux.dev>, <linux-cxl@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, <netdev@vger.kernel.org>, <jgg@nvidia.com>
 Subject: Re: [MAINTAINERS SUMMIT] Device Passthrough Considered Harmful?
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Dan Williams <dan.j.williams@intel.com>, ksummit@lists.linux.dev
-Cc: linux-cxl@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	netdev@vger.kernel.org, jgg@nvidia.com
-Date: Tue, 09 Jul 2024 09:02:25 -0700
-In-Reply-To: <668c67a324609_ed99294c0@dwillia2-xfh.jf.intel.com.notmuch>
+Message-ID: <668d92f68916f_102cc2947b@dwillia2-xfh.jf.intel.com.notmuch>
 References: <668c67a324609_ed99294c0@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+ <ZozUJepl9_gnKnlv@infradead.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <ZozUJepl9_gnKnlv@infradead.org>
+X-ClientProxiedBy: MW4PR03CA0260.namprd03.prod.outlook.com
+ (2603:10b6:303:b4::25) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|CY5PR11MB6533:EE_
+X-MS-Office365-Filtering-Correlation-Id: 88435025-b61b-4abe-69ba-08dca04f763b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?wo1e2sMqKw6CqO6WuBWTLbUidci6va37BuBpafLdXaCLaaDBoxvyURsNky3U?=
+ =?us-ascii?Q?FT4wXfvBqjFHWIG5UISdphnPHZkuFCK3K4jF+UPB0Szd2/0h+s4J8nYnLxgc?=
+ =?us-ascii?Q?kHFBFk+F5m+KZBFhraNmbnDGZht4eDKr4vvLXXUK0FVPf70SZp7AuI4RT0J3?=
+ =?us-ascii?Q?P6L3M4oO1YI2Wy8aH9nf+/7zhoYx1zTh24UQlTX7kHfdkZW56iXlRmxGmpnf?=
+ =?us-ascii?Q?CN50MDsKDcdZkFl3//XKCZiEjWdm9qslH3SGH9rcllqfdwge4y7IK3fE0AIT?=
+ =?us-ascii?Q?VSvJZjajShHpXyLFmP+S/tDliekiCkx2NO3nKIasE8UJvkurNM2moDRuo+5M?=
+ =?us-ascii?Q?PLksithrAF0n0bW6GlLrJ7q6cu8wVPEygL0LBamSqJiVcMk85Gv7FT0YB3uU?=
+ =?us-ascii?Q?QfL4I0INtti3Z1OSYTguiKbVKdSaBd9CZKoWcO5wXBTBVhKxcReCty1l1UD9?=
+ =?us-ascii?Q?vun294Xyp7SHAaPXuuDjQUcEzfp684eaX8U8Df67Q/s3D04sqkViCv4iqgPQ?=
+ =?us-ascii?Q?vnT5GMIFE7T1r8ZY8UO0Wb6ZecGVUjkeWAPJXoRob6wOqL/lNmwj4iUzwKpO?=
+ =?us-ascii?Q?eBgsh2hrpQo4PW2XugARS8dPuia+4U71T+sN7Q/Md9vj9INj5XuzKiqIsbXI?=
+ =?us-ascii?Q?jh/oVScQVmmFoV50xa7VtvtUw0a6lEX/yFoViX7eCtiQfmfKcKsXcuyyj/LQ?=
+ =?us-ascii?Q?Ltacobwk1HkGI6/+fX+Cs+rRWUEv5xmPStBJ68wC1OmpSh2nprzDZhfhovBk?=
+ =?us-ascii?Q?XIuF8n4PRQ/DeDGxZH8dOI0PfhWOObjsoiOfCOJWUBTJ9FhhjvORMw7CjjXo?=
+ =?us-ascii?Q?OgAlGQdqVPDmWUUx6NhXOahHKbJeYkpqbz/RXRMOVONei4/4f69/uPsjoNHQ?=
+ =?us-ascii?Q?MTZEfWp85wUCGdnqHC+R3qwXwMgu6GuA5rm6gyNsLMM/4RIDcM8eS5YEN1Gt?=
+ =?us-ascii?Q?V9XPvCty/ETBuNshxA3+wSCNJKuyFO70ZINBXaBo1WmxfaRZ3uxAJZmt6RHP?=
+ =?us-ascii?Q?6WWHK81DPxox8rzUK401+VGWWnPa+E+Oq6kvHum94uAaxA47hrBYrBEpOHxs?=
+ =?us-ascii?Q?T+Je8sIpCOBpWXP6zmdBd75my/DpU4vkfXMVVMxqcNicrt/1SsWE407bKqhX?=
+ =?us-ascii?Q?IRlg5R+T5vpKrifEdghn5WQaZo9daKdzthG3ynqPQWKUC3D61xkXfnm+JaeH?=
+ =?us-ascii?Q?BryUeXI4o7VhFZyCpbYL1/hdbZYdibUE9x8Mnhj4zflG6tIvZnSt9XPlIlla?=
+ =?us-ascii?Q?rPf9lYpfv1amglZmL0jVi/OqowTtdqm2q61dv5/2hCzK1fJtFZa5YleXkppY?=
+ =?us-ascii?Q?gwH/d6+HCnDj/J+bWRgO6GSfLDkVjkMB0YJugCOxuavLMg=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?rgYcR5kvDFe+auFN9kMunBDnsf+XzEU3QSX8YUNobhDWl7EGhlcHiC7yF/mk?=
+ =?us-ascii?Q?ulCt/uRWWmYXXrEDLSgapoewTWSCb328iqCrXIngARm0qye226DrVYSemRA+?=
+ =?us-ascii?Q?vC94/Sje+jkqr+13QfQG+WpUKZ/Jyb0lZFFIB5SgqtWu9P+MCkQcKjxpYOgb?=
+ =?us-ascii?Q?0M9sxX2KZuNFfHgyfUCGhaYyei7zEb01PUPEILDcwOW0fY8oMe0ADjUk4ADw?=
+ =?us-ascii?Q?Li4ttZWBxAuH5BNRTEotw0oLdebyof/3Kwwss0FSMYz36lFR7ZLwwKcIh/5M?=
+ =?us-ascii?Q?VKnIRUwfyslhhZAVev8d5d4p48TRa20gYhFrD1WRkNkMRhi38M+u9qABsgEg?=
+ =?us-ascii?Q?vwSS3LruzYXwCktD0yQSf79EMv3nLauM3ejm3EtjqeDaeDkF/nnqVdnL0GEy?=
+ =?us-ascii?Q?SDpYgUTTTwgi9TDjzB1DZBLzIxE8B6WPlzW/Dh8jLqm3qqWi5n4bfjU6nsGR?=
+ =?us-ascii?Q?mmf01NCSASNy2sM5+e5KUyhGBSe1sinH7tmXOm/dnxQmzISVUreba0MJx2gf?=
+ =?us-ascii?Q?D62U3bGwC+7BYAR5do+xjn75+u8LXE/BbBl0wF+edrxlHwg1aZ/QE53cTAPX?=
+ =?us-ascii?Q?yFNPnhvS7HAzhUpPN6wmsLBoaoAdsbfvYSydeYkwc10MzYFGcAXbs5VymMPK?=
+ =?us-ascii?Q?/diEkAFKXwaZ5b/qbEASWUOt697aY3Dkg2LSXrbSbRcOTts4TjdCS/MBoOrO?=
+ =?us-ascii?Q?+ZyZJdnzc9Pwat92cwOf3qDUJzUf6f+FWp9lcKyJxH+oArY7L4EgRxZqpJTc?=
+ =?us-ascii?Q?Cc33Ila33YqJrBqKbuasi7GsWHa+if3Rd4wM8ttF7dc+WVaw9ez7d89bt660?=
+ =?us-ascii?Q?BtcXybcNxvlYBXNTIESO80hNjtpFAWirX8VxHsFEKQ2XXn/lOTQL1vrA2kX7?=
+ =?us-ascii?Q?3bMpWyFiWxOtRd60k6YHcnGqjhL8xG3QvAedqy10VnRc79QMsklgNhxZ7olf?=
+ =?us-ascii?Q?viWWPRRDAp1TZCutXsN2byDbFdxOck0uLr18he7kKbWqAMTqzlscZLo05B6z?=
+ =?us-ascii?Q?2PnThvFV/uG0ZvV2eeLtpVCONfNEKVXnwVTse4awUL4wk3LyV4JrAwr+1Ah+?=
+ =?us-ascii?Q?IbztVre/BcBrlXJbItgNOSc+Vl+CXFZyXg6WRSJwToIUhZ6xVygrFgqcPgSl?=
+ =?us-ascii?Q?os868aMtxzQ8Cdfbnxb+PZRKPhSXy5zXX+4wP9UbnBbZSBUjeONTh/B1U20G?=
+ =?us-ascii?Q?Cdd2yWYuE7lyfZloklu1zDJKzN2X0BvlTSxXddzk/T6uMBd3/1ImwpkvNixN?=
+ =?us-ascii?Q?FDPg4Z7PjJP6Mq/N+aJqAJTIia43jSFsH+wHVyVCM+6P0igYoo+iRSM2uSA7?=
+ =?us-ascii?Q?vbGPwGLaCbc/nxxKfQt1YuZ/WaOyXEB5qKljO+NfkhhyEvHPXqPmrWo/GRnc?=
+ =?us-ascii?Q?i5/UMKlFG5WNgedaCCE+16mzSI+Hwj9t4Tterjxbqi/Z3n9vegwXoYfF0u5V?=
+ =?us-ascii?Q?TZoDApib1Oooio7TuTyj+9GzBAdLW08eu65ACA3g/nzrBfvRu9N6tae8tQbO?=
+ =?us-ascii?Q?1/VR+1SLj2zM9j2ppjTzzMzIWFeVPoTbn2XfsBGAJLXXTfGGbQfFrXN91sp1?=
+ =?us-ascii?Q?oFUunUoCzWY/iQ6zw+yvfjJtvos0VqQzFLdFvaITTh8nFgm4BIFBPS+R70fm?=
+ =?us-ascii?Q?qg=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 88435025-b61b-4abe-69ba-08dca04f763b
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2024 19:43:52.7336
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NSYmtwpE1L1B9hbgqXK8XOkuW5pH0hcEVHAoNYXhOcDFhcrr04yfyXuWfIQ0VtU0khwhv8fkoJOrEt0puAKaUT/jg5T5HpKO6KTPIlQGA/I=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6533
+X-OriginatorOrg: intel.com
 
-On Mon, 2024-07-08 at 15:26 -0700, Dan Williams wrote:
-> Early in my Linux career there was palpable concern around Linux
-> being locked out of future computing platforms by hardware vendors
-> who did not provide open drivers, or even documentation for their
-> hardware. For the hardware vendors that did participate upstream,
-> maintainers used code acceptance to influence them towards common
-> Linux commands and cross-vendor cooperation.
-
-Firstly could I say "passthrough" seems to be the wrong word here. 
-When I see it I think of device pass through from host to VM (SRIOV and
-the like), which is becoming the bedrock of the virtualization world. 
-However, this proposal seems to be more about user space device drivers
-and fat firmware cards.
-
-> The internalized lesson from those days was: "Be wary of vendors
-> pushing 'do anything you want and get away with it' passthrough
-> tunnels. Demand open documentation of all interfaces."
+Christoph Hellwig wrote:
+> Passthrough in general is useful, but the problem is that protocols
+> aren't designed with it in mind.  Look at the list of command that
+> affect too much state and we have to block in SCSI and NVMe.  And
+> in NVMe I'm fighting a constant fight in the technical working group
+> to not add new command that instantly disable the access control we've
+> built into NVMe passthrough.   So IMHO passthrough can be good idea,
+> but only if the protocol is designed for it, and protocol designer
+> generally have a hard time how software works at all, never mind
+> the futuristic concepts of layering, abstraction and access control.
 > 
-> Present day realities and discussions merit revisiting that lesson:
-> 
-> 1/ The truth of the matter is that until the Kernel Lockdown facility
->    arrived, device vendors *had* an unfettered passthrough tunnel via
->    userspace driver mechanisms like /dev/mem and pci-sysfs. The
-> presence of
->    those facilities did not appear to injure the ascension of Linux.
-> 
-> 2/ Device passthrough, kernel passing opaque payloads, is already
-> taken
->    for granted in many subsystems. USB and HID have "raw" interfaces,
-> EFI
->    variables provide platform-specific configuration, and the oft-
-> cited
->    examples of SCSI and NVME that provide facilities to marshal any
-> command
->    payload whether mainline maintainers think the functionality is a
-> good
->    idea or not. In the case of NVME, the specification continues to
-> evolve
->    despite this Linux bypass.
 
-Time was decades ago Oracle demanded raw access to the SCSI device
-because they claimed it was easier for customers and faster for them if
-they just talked to devices in their native protocol and got all of the
-annoying kernel filesystems and page cache out of the way.  Fast
-fowards to today and database vendors largely use filesystems thanks to
-the evolution of interfaces (direct I/O) that support what they want to
-do and the huge annoyance for customers of having to manage huge
-numbers of unidentifiable raw devices.
+I think this protocol feedback from the kernel community to hardware
+designers is top on the list of benefits for this discussion.
 
-For NVMe and net we do have SPDK and DPDK.  What I find is that people
-tend to use them for niche use cases (like the NVMe KV command set) or
-obscure network routers.  Even though the claim they both make is to
-get the kernel out of the way and do stuff "way faster" the difficulty
-they create by bypassing everything is quite a high burden.
+How to draw that "needs kernel mediation" line takes
+kernel-developer-practitioner expertise.
 
-For USB security tokens in the early days we had the huge problem of
-everyone inventing their own interface, then they realised this was
-unsustainable and came up with CTAP, but it's just a unified way for
-user space applications to talk to FIDO tokens over raw USB ... is this
-a problem?
+The positive takeaway from the NVME experience in my mind is that no
+doubt the NVME subsystem has blocked commands that hardware developers
+prefer that Linux not filter. That filter is likely trivially bypassed
+by repurposing some other non-filtered command to have the desired side
+effect. Something like "write to a magic LBA == run filtered command".
+The fact that those cynical hacks are not deployed and the technical
+working group is still holding discussions on the proper protocol means
+that hardware designers have a higher incentive to get it right than to
+get it deployed.
 
-> 
-> 3/ The practice of requiring Linux commands to wrap all device
-> commands
->    does not appear to have accelerated upstream participation in the
-> CXL
->    subsystem. I.e. CXL, in contrast to NVME, relegates passthrough to
-> a
->    build-time debug option. Some vendors are even shipping vendor
->    specific firmware update facilities even though mainline has
-> support for
->    the CXL standard firmware update mechanism.
-> 
->    With the impending arrival of CXL switch devices wanting to share
->    mailbox handling code with the CXL core, the prohibition of
->    device-specific commands is going to generate significant upstream
-> work
->    to wrap all that in Linux commands with little perceivable long
-> term
->    benefit to the subsystem.
-> 
-> CXL and RDMA are also foreshadowing conflicts across subsystems. It
-> is not difficult to imagine a future CXL or RDMA device that supports
-> mem, block, net, and drm/accel functionality. Which subsystem's
-> device-command policy applies to such a thing?
+The conversation seems to break down when it comes to "trust us this
+passthrough is only for device-specific functionality with low cross
+vendor or kernel appeal." How can we design protocols that have a
+high-level of trust?
 
-We already have that today: pretty much every device protocol looks a
-bit network like and has an Over Ethernet or Over RDMA equivalent.
-
-What all of the prior pass through's taught us is that if the use case
-is big enough it will get pulled into the kernel and the kernel will
-usually manage it better (DB users).  If it remains a niche use case it
-will likely remain out of the kernel, but we won't be hurt by it (NVME
-KV protocol) and sometimes it doesn't really matter and the device
-manufacturers will sort it out on their own (USB tokens).
-
-> Enter the fwctl proposal [1]. From the CXL subsystem perspective it
-> looks like a long-term solution to the problem of managing
-> expectations between hardware vendors and mainline subsystems. It
-> disclaims support for the fast-path (data-plane) and is targeted at
-> the long tail of slow-path (config/debug plane) device-specific
-> operations that are often uninteresting to mainline. It sets
-> expectations that the device must advertise the effect of all
-> commands so that the kernel can deploy reasonable Kernel Lockdown
-> policy, or otherwise require CAP_SYS_RAWIO for commands that may
-> affect user-data. It sets common expectations for device designers,
-> distribution maintainers, and kernel developers. It is complimentary
-> to the Linux-command path for operations that need
-> deeper kernel coordination.
-
-This proposal does look to me more like a tool for configuring highly
-malleable fat firmware (or really mini-os) offload type devices (like
-intelligent network cards) to interact correctly and be easier to
-debug.  Every cloud vendor effectively has their own one of these, so I
-think the problem isn't going away, so trying to bring some order to it
-looks like a potentially good idea.
-
-> The upstream discussion has yielded the full spectrum of positions on
-> device specific functionality, and it is a topic that needs cross-
-> kernel consensus as hardware increasingly spans cross-subsystem
-> concerns. Please consider it for a Maintainers Summit discussion.
-
-I'm with Greg on this ... can you point to some of the contrary
-positions?
-
-Regards,
-
-James
-
+A "Command Effects Log" seems like that starting point, with trust that
+cynical abuses of that contract have a higher cost than benefit, and
+trust that the protocol limits the potential damage of such abuse.
 
