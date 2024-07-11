@@ -1,163 +1,191 @@
-Return-Path: <ksummit+bounces-1384-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1385-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 733C692E558
-	for <lists@lfdr.de>; Thu, 11 Jul 2024 13:01:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 738D192E9E4
+	for <lists@lfdr.de>; Thu, 11 Jul 2024 15:50:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28E111F22F34
-	for <lists@lfdr.de>; Thu, 11 Jul 2024 11:01:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F107C1F23083
+	for <lists@lfdr.de>; Thu, 11 Jul 2024 13:50:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD9615ADA4;
-	Thu, 11 Jul 2024 11:00:39 +0000 (UTC)
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A063215F40D;
+	Thu, 11 Jul 2024 13:50:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="QV2Jh6CV"
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2043.outbound.protection.outlook.com [40.107.212.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8965415990C
-	for <ksummit@lists.linux.dev>; Thu, 11 Jul 2024 11:00:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720695639; cv=none; b=aowg6z5kBqQ8qRp0xlIzFimn91DgC4yORKLyoDS2qIx2E5uvRk+QvZEULT7pv5/Vj1bawqc09dY1BHsQmGKt/FWjx2iPOQn5J5lIZOcOzsuJghRfENTddYGixWYNQ62fnyco6S5KUnUPQv/nZaZU3TcOGtL4JwP/lBl89ZTqSUQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720695639; c=relaxed/simple;
-	bh=d+wMvdLVf+YR9DIyh4LVaJL8/YmjqFApmIjGfxbQ41E=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BVNam3T+Qsz2Fw7SlMfMSpfftKS3chNSsRRSc9kwB6GYrejNWsGMrtYpxQPrb4BOar5UIh5H+hmxFZIN6Zh07LbBrVnYQRACAmHxcd2fV3r37kzv65mRfI0KUx/l+Bhb/duCLNKLJykpY7FIIu0qEIANT6BUWavKgPLCsL4cxyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WKWt71LLrz67Q86;
-	Thu, 11 Jul 2024 18:58:23 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6E8AB1400C9;
-	Thu, 11 Jul 2024 19:00:28 +0800 (CST)
-Received: from localhost (10.203.174.77) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 11 Jul
- 2024 12:00:27 +0100
-Date: Thu, 11 Jul 2024 12:00:27 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Dan Williams <dan.j.williams@intel.com>
-CC: James Bottomley <James.Bottomley@hansenpartnership.com>,
-	<ksummit@lists.linux.dev>, <linux-cxl@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, <netdev@vger.kernel.org>, <jgg@nvidia.com>,
-	<admiyo@os.amperecomputing.com>, Jeremy Kerr <jk@codeconstruct.com.au>, "Matt
- Johnston" <matt@codeconstruct.com.au>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C57A15FA66
+	for <ksummit@lists.linux.dev>; Thu, 11 Jul 2024 13:50:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1720705840; cv=fail; b=qEeP4UWQQmdXqOfOTR0PbiqoV7HgAn7rsNIjAs7VA4DjyQef853YCKHwe4BGjUq492skydFB7TxPp27ayQvjJ2OfMjpDr7H9Yha6Rzp4ylYGgr1P0VLhc1SvLVYEA8RiAombr42q/TldGOqc8iPEMEdzlFOJ64Fs9X8gCERQDLs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1720705840; c=relaxed/simple;
+	bh=nsg9pam9dUuSnN/M1iQZ9pOT5/oB3wIAtJ7tVcX9TC4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Vdkh1ysJBs8UaxUqoWc57GPmijWFeAtm/5Ax6yKap6irUc0A7ufhfqTAkWecuyUZ6fNR7gM6HgLbUA1n4n1UaZl3uSMlnB9liaIolXouPZttZIWoK4FXU6p+uifSFpyU9LazTUxkavyoYNf33NjlVcoGuYQC42wNNmlPAiq/5ZI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=QV2Jh6CV; arc=fail smtp.client-ip=40.107.212.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GQOnYmF9Tou0DaCqKqxuTh8SzAqy//HYq6AkFteo/wIIjj0jSw9/CSaHEyNayb9bfT7keiTniAIeblSz7ojmw10kDnLbfEBm3raOzRQfhtO3Ju9j6BYLjKsvHgpdoB6miJ/PDLkASASs+yCxOOuyKsI4s+fkSPZng5QWirYOjrNtChMnHFZetEWWKkoLpc74h4Z38n4DfAYbFsJ0HBQ2pZ2OfT1PJmR23Jt4W4zogTO5BkLRFcFX1Q6bAL1CpUVyrF6lft+TjKa9GMbYwx9sixlPfRXAb70oG9aGyDBusFUIIT4dGxfZ+gFB3GSOGGgFUtSDrP1s47v6kkeb8ftbsg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bwGqxbsjI/ipmmqZJF9wbI7qDdV4+QMeHj+865phEr0=;
+ b=ZpHEEhMZurIi4O7zVbtsXXFm2GW6LOCVSZOHX9UhSJNUJH717AIlR2OmoZxz37Lafi0BTsuvMx2aJ6b57Ka81K+6f0wKdToJkO7Qze73o7Zr3X7fLvj4O8uq4jabeQxbMBJxYhv7/Bn87tblLDgfDp9CTimJKL0srshge8GqyGGMo3YNa1eeajfDdcUcWg+T4V275JLCMtpeUNCSyykZ0vnrdvyVsCK18mOB55a4pq1tCa1W14DBLaLeWmSEcAWVNPj/YN6VPmSintqt5sHsFuuVe4AJtxXOZqQm+TcMpuCdqUMsqphmdwXzIhSiB1lXUDsc7fD3rw6LQCVrbEVRqw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bwGqxbsjI/ipmmqZJF9wbI7qDdV4+QMeHj+865phEr0=;
+ b=QV2Jh6CVT9ymbKQ/5xhOkyLm8v6bItY3jCKi1SKR6oddV1LsFVTncIg1lKo5vsoMEv4ddqv0WmQRyOJ+P5XoJ7Kf9Mzh6w59b9fo5eGn6Q0B2wzTJ1xEPYixw0Pp8hH1idEI0sZYSBZE1hdf4UeVv72ycJBqf5m+IlG+Eo2zZvlM8okk39NEdAK0wod0ZFZRtOQn2rtEd/54bxqHT5cJ0tnFg8+Z7spJFhXV8I3MhIaKsL0SunQ/2RJrIECKz7XAFcSpc/lqs/P9dhv39UmkyaDYmTUStYd29pZ/Ur3HVxK9Ud19vkt0GF5Hm8hB5p2PnQBEDkktdTuOqYVqIqGHhw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM6PR12MB3849.namprd12.prod.outlook.com (2603:10b6:5:1c7::26)
+ by BY5PR12MB4146.namprd12.prod.outlook.com (2603:10b6:a03:20d::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.20; Thu, 11 Jul
+ 2024 13:50:32 +0000
+Received: from DM6PR12MB3849.namprd12.prod.outlook.com
+ ([fe80::c296:774b:a5fc:965e]) by DM6PR12MB3849.namprd12.prod.outlook.com
+ ([fe80::c296:774b:a5fc:965e%5]) with mapi id 15.20.7741.033; Thu, 11 Jul 2024
+ 13:50:32 +0000
+Date: Thu, 11 Jul 2024 10:50:30 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: Dan Williams <dan.j.williams@intel.com>, ksummit@lists.linux.dev,
+	linux-cxl@vger.kernel.org, linux-rdma@vger.kernel.org,
+	netdev@vger.kernel.org
 Subject: Re: [MAINTAINERS SUMMIT] Device Passthrough Considered Harmful?
-Message-ID: <20240711120027.000079b2@Huawei.com>
-In-Reply-To: <20240710142238.00007295@Huawei.com>
+Message-ID: <20240711135030.GD1482543@nvidia.com>
 References: <668c67a324609_ed99294c0@dwillia2-xfh.jf.intel.com.notmuch>
-	<3b9631cf12f451fc08f410255ebbba23081ada7c.camel@HansenPartnership.com>
-	<668db67196ca3_1bc8329416@dwillia2-xfh.jf.intel.com.notmuch>
-	<20240710142238.00007295@Huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ <3b9631cf12f451fc08f410255ebbba23081ada7c.camel@HansenPartnership.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3b9631cf12f451fc08f410255ebbba23081ada7c.camel@HansenPartnership.com>
+X-ClientProxiedBy: MN0PR02CA0015.namprd02.prod.outlook.com
+ (2603:10b6:208:530::16) To DM6PR12MB3849.namprd12.prod.outlook.com
+ (2603:10b6:5:1c7::26)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB3849:EE_|BY5PR12MB4146:EE_
+X-MS-Office365-Filtering-Correlation-Id: dfff4a82-c667-4a6b-953f-08dca1b06ea6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?KJN5dX/SWUhCdUMBV2G8Axy+rpYPGIkfgDDF+98WSJ1Xlj4PJc/jufKGz0uY?=
+ =?us-ascii?Q?ZMe0GKgUu806CQoq3GqU89widpIn7itB+eS6/Ry7I3/gQDHA8lv1OlzEU5DW?=
+ =?us-ascii?Q?r6Fs1QyLKqXmErpZcxjpE8b//v3nflLTPSTUByt9G62zAU5RjcScqRbasHfD?=
+ =?us-ascii?Q?CNnI6IZyx3ooofhpr7YFSmCe3ktaccYnqgZArontNh4JmJa2WiYCf+8/fIWN?=
+ =?us-ascii?Q?2D4FEHzjNWJjmCoMbwwKjj/rLaJ/+qZ8Kw11yCDYufrGlNCmCNA0bD/RKpa8?=
+ =?us-ascii?Q?nZA2RBj8fR1elvwDItmZiDUQC1YJ5fQ81ccySf7NcEbVqh8kMmuzdHo5Pm0c?=
+ =?us-ascii?Q?qbAfXiMf7nkQM/ErpfLkv9rYS5icCy8Xbi4vMlNsENb71pO0rvF5nfaplSQG?=
+ =?us-ascii?Q?53BSjbsd7NPuxKECgPiilyGV9Dno4vTSQ/neZY38lDkXg8qIBMJ/7dkrIE5W?=
+ =?us-ascii?Q?e5wa4N4riNGm4cM4Jb9QRE5rbWZ3z7PewIXRSNHZt44KUoK39u1/AFC6ST7z?=
+ =?us-ascii?Q?Q+X2K4bRdwzT0AeTS9hvhnQQbY8iXtnkLRjhbiSz86qOKQcjm1WZb5wVvW4g?=
+ =?us-ascii?Q?PGqlkM1kRUVETCe6BnJCEo5JjCsm4uVRV1KS576Na90C6iv39YLR/XBX80EZ?=
+ =?us-ascii?Q?aqllzgYBIp5iKKx6fk9Qg5rKRYot3es/8dqPIig+ozpmmR7VqSJIPV5kRf8l?=
+ =?us-ascii?Q?5nuDrUTm/DzZMvWP2asY0CVvxxOxR497A/Bmy1YdmfViA52lJ9xQsWsunS/H?=
+ =?us-ascii?Q?kKgrYTtQsp1REr54XZ201bCUz5MoGbM8+m3akVdqhCsvbYl1ML16mGxya+1b?=
+ =?us-ascii?Q?AidMlbUAlT7QOpaqJjmPek5zW6Poi+5cGb2whM3hoFXwUP0WIbJWCB3R3QqD?=
+ =?us-ascii?Q?yjeFK4qsAozK14dAIu3W/3tXjzXug3v8MqcgmWd++clr8NVgRYP+cQBg9dPs?=
+ =?us-ascii?Q?wp0mDaeFlWbh2BV5rC1fa8rHakVfChjZYKaBgzjxUP5Ze4usMDeBi24O+w5Q?=
+ =?us-ascii?Q?ZsbjzPHmDyytRykp8br36/UYiQm4Mw5THbfaGD1Ju4ugFY7uJYfvahTyyDwD?=
+ =?us-ascii?Q?sLC1yzDa9bOK13z1lJM4huIyGciyTi04LXPmxeNHMBZLV/zr0hZsZ3zdB5Pw?=
+ =?us-ascii?Q?3CM4gFV+vpfnt0JVR1ndISlgHGPxPIyxCkedkIzFDtPTFyv6KD1M0fluyRdA?=
+ =?us-ascii?Q?PjHgh6gwzb09kfVTQXBTwTd9Nn6wj3P8Vjlmdr1vr5enbZhaAmWAbfoICScJ?=
+ =?us-ascii?Q?/UeIYq8jo3Php6lcGHUrB9Vf8BF8rUvwHcDDvfp85mkVKFWO1L+/HIkwgQuN?=
+ =?us-ascii?Q?7T/ynZWjObFsLIt2N+ZsnMR+axhR7SWE9ZFQL85ZumWlNg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB3849.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?JxiRECmSj+dR/CQVzm2Yc8mVnHbcuvuGas27oSviyC80y306szqcOVHqm/TI?=
+ =?us-ascii?Q?sC/dUjavXtNhrHb/DyIuH0GPYodRpIr2U7qFHk/oaWQE6BYOtv2YmiplcxLe?=
+ =?us-ascii?Q?EC795d7kUm5DBu/NdmynrTFZt+IJNASHBSjCmqPlWl6WVttf2KMxDkZ21iUw?=
+ =?us-ascii?Q?2zzjZmEsidZTEgsvMIEJvgrv+GR7N1wu1ZEXY8kDaoV1oYoq9pxkRiA390Aq?=
+ =?us-ascii?Q?JlM0vhraWejoY6DV6VsdXHiwgefAHW0m87R1tTLm0f0dZpelQT80Blp1CLJd?=
+ =?us-ascii?Q?CureSKVEPsoaLLczs4C+zJEZvkFBG8ajXz88kxu0ns/Gm9oKxrqidaStkORY?=
+ =?us-ascii?Q?8iZYrFIU4PQGYU21hrS1kY6mDGxnHaUOXMzcm6VwLxw5faVH956LKHmpPvUU?=
+ =?us-ascii?Q?/SG9Fzzw2b6+xfBpG9gqAY8mu3msykwgkV5iXMmK4CzK8DFZY2uFknsddLRD?=
+ =?us-ascii?Q?WcLaJL1nxetoDZ0HjPQh7Vxlgsq9qLXQDC5D2IxF4GPd+F/34FW5nsvGOVQp?=
+ =?us-ascii?Q?v3MjqIUQBJJfi4mQ/sc7NQLUX5EMIkEhiz7XQM4RyaXauZyfOy5bQkWrEDmv?=
+ =?us-ascii?Q?ryT8DQim5TieKzE1wn1XEQw3Ildk6nn1hlfCtNvCvWhgOWpSfzGqfv+J5gB7?=
+ =?us-ascii?Q?/olPYsU5U0W8UtE/olGAUeFPW8uOYZzrzyGbTlM3SD2hc324lYdLgl8cJQtt?=
+ =?us-ascii?Q?/rJcWWMyQEp5Ptlu70GK7nsZwAOdpBKWZX5jrYNAeChGu7Fpy0TVVMKnMzKg?=
+ =?us-ascii?Q?8Mq1arGrRMVNxOi7jfY6O1W2mMekV/6rlGqTc235oWhflIY4P293/KOYzs+H?=
+ =?us-ascii?Q?Q3JN3ak4CnosJj/MGK+U/Rl2i69K5QalUdU0vHvNU00UT4z3+AwITXKx9Nzv?=
+ =?us-ascii?Q?gYpwo91N53nqUxPIKv7mODEsCN7U2U9Xw17It7+TZTTiM/MDHih5Lpdo451Z?=
+ =?us-ascii?Q?P3vdoMNRyYHlo6qtNNadTkc5PF03J2w7dAgzFfTX8vmcgB4d+dd26eHZU85V?=
+ =?us-ascii?Q?FFEosdYbZFx0N/THGuVX0eiYoD/UVO/3irT7aSrwkf9zTOz+l7SMDGGIRHKI?=
+ =?us-ascii?Q?C+hdPkadGBb7WU9NekhXdH1GvwEHAR+oXIoWdAC47OtiW4HbhHoeD7w60itL?=
+ =?us-ascii?Q?82lP6XBPfHRo8tsjxRWiXxCYWwcOQ457kYBLKF0yxze/oZmqDZySraV6Ffcb?=
+ =?us-ascii?Q?K+5wZKt7Hgm4WQ6O+x5gyMWinGb6F29HZfhhuMhrGvRtZKRfs9f72b8guYhn?=
+ =?us-ascii?Q?3z7NB6W+zxrZp5dMtOTh3/0TeFQHfHZGS2Mt5Kdwx36RONkO3HTDmt53bhY2?=
+ =?us-ascii?Q?/UvOCsVl6fisqUEwdfSk2q+QCK1gpFl3fL3Ip+PdfAf0qIxkAZ6YiXRDb1qS?=
+ =?us-ascii?Q?mkqha1zyVvANSwldFo6KzdUUfSYtwtGVn6rsdAitjyIRvSsDcYFYOXZcOrsm?=
+ =?us-ascii?Q?7sVNVB7W1Y2fEBeRyVuduVSKR3uJZlCH7u2OyUJERttaAz4lQSp3KiFWPywg?=
+ =?us-ascii?Q?g1Oh7PmAEsL0y+B70WGMNQ1Kw6UEEJpTnRMfw2t05mjVmcpUoGRZmVk6YU0k?=
+ =?us-ascii?Q?HHGNEYcf1Ul0MHcZHTsyVFltMjnELm+Tpzh8+LcZ?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dfff4a82-c667-4a6b-953f-08dca1b06ea6
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB3849.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2024 13:50:32.5099
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mbzkdFzI5RFNL/dSEc3AcG1gUFayzJp2BEZL5GL2z8X14DMjKDIpIxZDKG+7xIb7
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4146
 
-On Wed, 10 Jul 2024 14:22:38 +0100
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+On Tue, Jul 09, 2024 at 09:02:25AM -0700, James Bottomley wrote:
 
-> On Tue, 9 Jul 2024 15:15:13 -0700
-> Dan Williams <dan.j.williams@intel.com> wrote:
-> 
-> > James Bottomley wrote:  
-> > > > The upstream discussion has yielded the full spectrum of positions on
-> > > > device specific functionality, and it is a topic that needs cross-
-> > > > kernel consensus as hardware increasingly spans cross-subsystem
-> > > > concerns. Please consider it for a Maintainers Summit discussion.    
-> > > 
-> > > I'm with Greg on this ... can you point to some of the contrary
-> > > positions?    
-> > 
-> > This thread has that discussion:
-> > 
-> > http://lore.kernel.org/0-v1-9912f1a11620+2a-fwctl_jgg@nvidia.com
-> > 
-> > I do not want to speak for others on the saliency of their points, all I
-> > can say is that the contrary positions have so far not moved me to drop
-> > consideration of fwctl for CXL.  
-> 
-> I was resisting rat holing. Oh well...
+> For NVMe and net we do have SPDK and DPDK.  What I find is that people
+> tend to use them for niche use cases (like the NVMe KV command set) or
+> obscure network routers.  Even though the claim they both make is to
+> get the kernel out of the way and do stuff "way faster" the difficulty
+> they create by bypassing everything is quite a high burden.
 
-To throw another 'fun' one in there.  For anything integrated with the host
-there is a proposal to provide a MCTP via PCC (ACPI described mailbox). [1]
-I don't think it makes sense to rule that out as it's logically no
-different from MCTP in general (e.g. a host controller for PCI VDM, or
-I2C etc)
+[..]
+ 
+> What all of the prior pass through's taught us is that if the use case
+> is big enough it will get pulled into the kernel and the kernel will
+> usually manage it better (DB users).  If it remains a niche use case it
+> will likely remain out of the kernel, but we won't be hurt by it (NVME
+> KV protocol) and sometimes it doesn't really matter and the device
+> manufacturers will sort it out on their own (USB tokens).
 
-Anyone who has a suitable firmware can do whatever they like with that
-and the interfaces is exposed directly to userspace. Adam, perhaps you can
-describe your use case a little?  Is it applicable to general server distros?
+I don't see it as being linked to big enough use case at all.
 
-We might suggest distributions don't enable MCTP but does that
-actually get us anywhere?  Anyhow, I suspect there are other similar routes, but
-this one happens to be under review at the moment.
+The kernel gets involved if there are good technical reasons to do
+so. Databases running over real filesystems with O_DIRECT is really
+technically better than raw block devices.
 
-[1] https://lore.kernel.org/all/20240702225845.322234-1-admiyo@os.amperecomputing.com/
+While DPDK shows the opposite, userspace is the technically better
+option. This is now shown at scale. DPDK is not some niche. A big
+chunk of internet traffic is going through DPDKs, especially for
+mobile. Many ORAN solutions include DPDK on Linux.
 
-> 
-> For a 'subset' of CXL.  There are a wide range of controls that are highly
-> destructive, potentially to other hosts (simplest one is a command that
-> will surprise remove someone else's memory). For those I'm not sure
-> fwctl gets us anywhere - but we still need a solution (Subject to
-> config gates etc as typically this is BMCs not hosts).
-> Maybe fwctl eventually ends up with levels of 'safety' (beyond the
-> current read vs write vs write_full, or maybe those are enough).
-> 
-> Complexities such as message tunneling to multiple components are also
-> going to be fun, but we want the non destructive bits of those to work
-> as part of the safe set, so we can get telemetry from downstream devices.
-> 
-> Good to cover the debug and telemetry usecase, but it still leaves us with
-> gaping holes were we need to solve the permissions problem, perhaps that
-> is layered on top of fwctl, perhaps something else is needed.
-> 
-> So if fwctl is adopted, I do want the means to use it for the highly
-> destructive stuff as well!  Maybe that's a future discussion.
-> 
-> 
-> > 
-> > Where CXL has a Command Effects Log that is a reasonable protocol for
-> > making decisions about opaque command codes, and that CXL already has a
-> > few years of experience with the commands that *do* need a Linux-command
-> > wrapper.  
-> 
-> Worth asking if this will incorporate unknown but not vendor defined
-> commands.  There is a long tail of stuff in the spec we haven't caught up
-> with yet.  Or you thinking keep this for the strictly vendor defined stuff?
-> 
-> > 
-> > Some open questions from that thread are: what does it mean for the fate
-> > of a proposal if one subsystem Acks the ABI and another Naks it for a
-> > device that crosses subsystem functionality? Would a cynical hardware
-> > response just lead to plumbing an NVME admin queue, or CXL mailbox to
-> > get device-specific commands past another subsystem's objection?
-> > 
-> > My reconsideration of the "debug-build only" policy for CXL
-> > device-specific commands was influenced by a conversation with a distro
-> > developer where they asserted, paraphrasing: "at what point is a device
-> > vendor incentivized to ship an out-of-tree module just to restore their
-> > passthrough functionality?. At that point upstream has lost out on
-> > collaboration and distro kernel ABI has gained another out-of-tree
-> > consumer."
-> > 
-> > So the tension is healthy, but it has diminishing returns past a certain
-> > point.
-> >   
-> 
-> 
-> 
+What has been improved kernel-side is the intergation. DPDK
+deployments now often use RDMA raw queue pairs instead of VFIO, which
+laregly eliminates the "high burden".
 
+There are many other cases, like DPDK, where the right answer is to
+reduce the kernel involvement. It is not so simple that things always
+get pulled into the kernel.
+
+Jason
 
