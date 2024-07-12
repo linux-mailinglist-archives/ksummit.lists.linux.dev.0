@@ -1,185 +1,193 @@
-Return-Path: <ksummit+bounces-1392-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1393-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A622492EE01
-	for <lists@lfdr.de>; Thu, 11 Jul 2024 19:45:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3733792F910
+	for <lists@lfdr.de>; Fri, 12 Jul 2024 12:37:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C92FB210A4
-	for <lists@lfdr.de>; Thu, 11 Jul 2024 17:45:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC78C28535E
+	for <lists@lfdr.de>; Fri, 12 Jul 2024 10:37:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1160016C426;
-	Thu, 11 Jul 2024 17:45:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="dtvVP2bh"
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2057.outbound.protection.outlook.com [40.107.236.57])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7481915CD41;
+	Fri, 12 Jul 2024 10:37:32 +0000 (UTC)
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D268D38DEC
-	for <ksummit@lists.linux.dev>; Thu, 11 Jul 2024 17:45:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720719939; cv=fail; b=VlNNNOeaJY3XwSgMMQb3lfKN1fMu2NgSKin4Dm5D/amY3M4chhUhRPPUsJkOgx7Jg2ic6EPu7UhYyohE3e1LwBI2XbzXahPbSLq19PVFjGGNv8aAXmgU04FR7o40zdiLxHhvCKAKF4f6W1cPrPOMifZB3Bnc6A0rJlDDbTXbgks=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720719939; c=relaxed/simple;
-	bh=CIriOjy+mioJvk+HagPR+B9vWfAnuCtPUqSo0T3GgcU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=VyC1T6Twpwl0427zmuH0CsUwba+CrH+UVXwOrUnkk5Nk8mFFNG3jL4/lQ/Znk48bpjzLP9G3y6ujldQPsN8Am4NxoLEnK7Fzb8BuQcL1QkZvHDRTP9Khdg1ka1yg3jaPOsUc3xbET//lEtjYfirqnluNAj23yDTSno3ABMAUR28=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=dtvVP2bh; arc=fail smtp.client-ip=40.107.236.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GnxepYu4dkNCa8bAn86uJSJr9wbU/gMTfU92Db90ReQlO+KvqtgoRNez3yCs8Cv4hKmjir3zIsdCMyaTS1eIet4TOnIMGuR3W9UN69OGS+hdMxlSgGRC4H/CiiE9YG0kEY6nmFZI5lEpXwguTGPDTUcksnek/R2dLsEqXc/8hxeBFydXpSxNmI6DR7dAN6/6im8JfthIRYwvzkGIB2xS4ZJeuqiB0AfRGF3ptM62/3a/T4Vz6RwcvZm2HNf+r6C9VWHu1kE7AFO2oSe2tq/xJVOdIMETw2Kk0WjBINeJa38jpczP67kEkeReaLQcaxQplrcmfF28y76zhJKSGXOrWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kUT6C9LSUV+AT/F1EbQBdFFU+ne/0DemPLULASrJwYQ=;
- b=fy08SW+5VFygabB5GYxCbAhqrj5jI5+LVBjSfztLb/A7jeqgtvu4uulRsyTQWzY46ZqkseH7/xgCHsc6HwgWiR5F/LJvZyF0Jg7qzpmpKCpVUGQG7xofEenTwu2gNdgBbAmCg+WDx5Jnnon8ICdK8PtuOZ8wWy6uWxl8YLJedvlNJOcQ1ERE1zO4d6IV6zuc64rQ3SwATdsBPcxdg0Yt7UxlgU2wkPD7FNjFuewckfB30c8qODNesbUdElcVv0kyoOED99fMvM6jgEUDpFlebLgB74vwutad8SAdPreOVFoYjvdzJHjJFPzxDYmUpoU+aDg8WdqJK+DcfRzDxdzPgw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kUT6C9LSUV+AT/F1EbQBdFFU+ne/0DemPLULASrJwYQ=;
- b=dtvVP2bhN9dSPPlolSMxRGcOG64rHVpbRjnYm3kOzD6tvhC7Ozvj1CrLV0PJIjNrBJpxZzGuuHB58l054ScBgl7qnOzJ1dHZ2Qit2qchgLfWPPVJsNIwiYnayp0pHP+YDbaVvhqNGBTUnUuCpbmMEE6PiyJtq2PYCZK8Z4lTgzlqjMu/aG2VSwqAzxSlFir0tMIpRxOAK5LRT47f7wqMcE0oKbOIwzBuiIOoSX7e+vUN74son1qU4GrJPbuR9asy0NTIosdeZz4lUnzMxtvUKbxvZhGKx/UsJfoYv1wMEDhJ0pQMsseQA1NfSkFgIEcaELTlPRJwVemV64j+fzfe9w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM6PR12MB3849.namprd12.prod.outlook.com (2603:10b6:5:1c7::26)
- by MN2PR12MB4437.namprd12.prod.outlook.com (2603:10b6:208:26f::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.23; Thu, 11 Jul
- 2024 17:45:33 +0000
-Received: from DM6PR12MB3849.namprd12.prod.outlook.com
- ([fe80::c296:774b:a5fc:965e]) by DM6PR12MB3849.namprd12.prod.outlook.com
- ([fe80::c296:774b:a5fc:965e%5]) with mapi id 15.20.7741.033; Thu, 11 Jul 2024
- 17:45:33 +0000
-Date: Thu, 11 Jul 2024 14:45:31 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Dan Williams <dan.j.williams@intel.com>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	ksummit@lists.linux.dev, linux-cxl@vger.kernel.org,
-	linux-rdma@vger.kernel.org, netdev@vger.kernel.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819EC15539A
+	for <ksummit@lists.linux.dev>; Fri, 12 Jul 2024 10:37:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1720780652; cv=none; b=Zyd3hjuHqgbC2M3B63b84ezv2XteNyFID9G5WfTGqqkVcEmnj4ioj0fQ2Bbb9GeOKofVRHTef0N5k0oFP/c5JHQNv6MjU6qhPfns/gTF3jR21ryrbOl6UM760OV7kJxmijEm9gTp1YS+njZzEH/rljXEk42mmMt3y8cOJSCUB30=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1720780652; c=relaxed/simple;
+	bh=YaczT6mneoVMpKwMgJbp7Rg47TMAqdRTX0u8weR9avY=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KctPJ5m0BVDCTLGzeEqP/ZyMwlBXu7NR5cdmhPCzZPOP/cja8GblHVmYAaSNXEAO/2hy1LeZUPNoMHpiWRo5+dfT9qFQke8NGsRIU4ZNQ/gJsZLukHXO9WeVAme0w+GD+xpsFmLFB3d58xHN8pud6x3PPuogqcTGz4eAmOv0bJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WL7LG3yc9z6JB4b;
+	Fri, 12 Jul 2024 18:36:22 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 69B0B1400D9;
+	Fri, 12 Jul 2024 18:37:26 +0800 (CST)
+Received: from localhost (10.203.174.77) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 12 Jul
+ 2024 11:37:26 +0100
+Date: Fri, 12 Jul 2024 11:37:25 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Dan Williams <dan.j.williams@intel.com>
+CC: James Bottomley <James.Bottomley@hansenpartnership.com>,
+	<ksummit@lists.linux.dev>, <linux-cxl@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, <netdev@vger.kernel.org>, <jgg@nvidia.com>
 Subject: Re: [MAINTAINERS SUMMIT] Device Passthrough Considered Harmful?
-Message-ID: <20240711174531.GH1482543@nvidia.com>
+Message-ID: <20240712113725.00004cdb@Huawei.com>
+In-Reply-To: <66900a0b9770d_1a7742942c@dwillia2-xfh.jf.intel.com.notmuch>
 References: <668c67a324609_ed99294c0@dwillia2-xfh.jf.intel.com.notmuch>
- <3b9631cf12f451fc08f410255ebbba23081ada7c.camel@HansenPartnership.com>
- <668db67196ca3_1bc8329416@dwillia2-xfh.jf.intel.com.notmuch>
- <20240710142238.00007295@Huawei.com>
- <20240711150559.GF1482543@nvidia.com>
- <20240711180100.00006b96@Huawei.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240711180100.00006b96@Huawei.com>
-X-ClientProxiedBy: MN2PR15CA0037.namprd15.prod.outlook.com
- (2603:10b6:208:237::6) To DM6PR12MB3849.namprd12.prod.outlook.com
- (2603:10b6:5:1c7::26)
+	<3b9631cf12f451fc08f410255ebbba23081ada7c.camel@HansenPartnership.com>
+	<668db67196ca3_1bc8329416@dwillia2-xfh.jf.intel.com.notmuch>
+	<20240710142238.00007295@Huawei.com>
+	<66900a0b9770d_1a7742942c@dwillia2-xfh.jf.intel.com.notmuch>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB3849:EE_|MN2PR12MB4437:EE_
-X-MS-Office365-Filtering-Correlation-Id: 15abda18-6fca-4c9c-ad99-08dca1d14388
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?sUzXcaWssFvoXpyWDATSRD1HZYP+cs26JaCe57qQS1rlarFB5m70BZm5GFLR?=
- =?us-ascii?Q?jfFAsGJCQzevnnurOf5qwb0NlNBk057YxOEPuD6OQ1Gy0rusgQfKSoElefWt?=
- =?us-ascii?Q?XnHeQzsCECxs8C4nKGPI1RDS1Q2dAgYRSYMfAnzkqjDCdlBkebA6BJ3kZm2q?=
- =?us-ascii?Q?GRZvLkpmz5FoQh00aUT9roafzHQAIZ5wnBrVY4ckBS8VebYroHuIeDMNsjNe?=
- =?us-ascii?Q?hCkG+prclh1cw3amrFd9EJ57HaBVx6/qxnNxDDlX5Dr2rismPUI+kmLQ4t0P?=
- =?us-ascii?Q?IeHNBHJuQLgSW970O4gncwmH9ObfXzYtfvVvmiISmhos/Qrs9Wg8PGH5WUvh?=
- =?us-ascii?Q?vlBSV1tUkKH5Xg5qlJvLqbfB4F+rxq8PMPDAwxyRkJKtHrtdBXQZLHTbApgk?=
- =?us-ascii?Q?KjBIJU+jRk9szLe1m7tcImpccgXw07QEN4SZ5AmBqdzRpWfhYOEiWvTfT01s?=
- =?us-ascii?Q?t/I14oPOZx/gF5uhkl3OOTJQvL/SBoUiWv6hJYRXpwgJUxoyA4IzDkJq9NvX?=
- =?us-ascii?Q?fX1rJWZFx0P2Ivs7j9bELqTSWKLRHTibFZ8EMWbk9c1bEF4dAvPJMsby3yb1?=
- =?us-ascii?Q?tvcdyFlnEn8JzA+s0IEA6OnIFwV3J6o3hWzBktYuGfaXR+3SwwtCUXRlUu6g?=
- =?us-ascii?Q?o9ZEbtWOx1j0y5wjR20BSS2vcBMciaCXqhsvyWzrYqy3BzACkwFLCrpE+nhW?=
- =?us-ascii?Q?6e5Jnb95Z225xjMH+EgL+SS+fJg7GfWJs/OKMeBfEraQOP0BaDI7Lp0mjWNO?=
- =?us-ascii?Q?twH+V2WUCHDsgSCMLTtIxNho5olVQKcj2U80C6EAdbiunbHzH1CBDvJfC+r9?=
- =?us-ascii?Q?mvtv0MrPk2GgrNMMgisJua8be4zRDqw99JUo2RipYFv/9tX2ECKuXrbFy+Ul?=
- =?us-ascii?Q?0BlC+aLhAzSnSmHGW+CdoI8ycLD90NiuP8GLeleWZoVvNDAp1mmaVMjrR/zq?=
- =?us-ascii?Q?yoiotfZN2PngEUK3l6THO1gpRtAPugssx1zta5WRDoW9Mwdnr2LkP9PnYoc1?=
- =?us-ascii?Q?n2gE/SpDCjKOevqgVIQL3iiTQGjSLBdVcXRWqgj+mRth1LZwuaFmS3DxRqeS?=
- =?us-ascii?Q?yES+DPDCAX2ZSsqaEQXF3I7yQQpBvLR2uXESTs89dy7xSEkoz1TRhZsbuNgX?=
- =?us-ascii?Q?YvHMTDYE5pk4VE+bu95ovNxsvR4t/Ob7p0sjD8UJikUCt2tUucTHztoPMIPR?=
- =?us-ascii?Q?VlMqaogrlJly4asDBTnwtBpoz6LRBjt3HUvGIgpZNjNnZRhKS+b47zGAfl3k?=
- =?us-ascii?Q?tyDUsR+T/2Up08BzMu5Y5aI0PmF+bhNblbDCK1VDsDnVwYevGcMMoW9RzCIt?=
- =?us-ascii?Q?f0xe1KUq5FHkHnb0ak6qL1zj6mtX/8xx9PdLYeBQOqgu7Q=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB3849.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?fxebsZ3W2X4amgpm+FJ7Q+0kq4RWHfrc/VyYn5wZACM53e3Yk9pgVCHsYuGH?=
- =?us-ascii?Q?f83jLe8U+j02ePlNbJ1eRJJoC1MXOLDN1THWPZZ6clwy7ItIGuAm5OQbdJWN?=
- =?us-ascii?Q?8jEEqPJjr39R6x9dlZnFjZHk6p5XWW17HDBr1qdcQQDDXEqqZmCk0tHI5VLp?=
- =?us-ascii?Q?2GwN4XBOw+4LIAraZjB4lD5REyev6lodmv/hKKiL91LyfJiQZ1qzNSBb9s6R?=
- =?us-ascii?Q?bv0QyRtTAsfW5zNcBbFgO97OBGjCFrQbehNtR1Ru0w+g30u4yxP+oCidh742?=
- =?us-ascii?Q?6OfL/v31o8j0aYTY9VBkn/SNNdZuyyeNg9uW9V+MTG5DKjgh/S4QTeziIJuj?=
- =?us-ascii?Q?SNi1Xb/n1CKVTxDxgbiDcNzr7+evUIYvnOKej2tRnmPHSVm1D2txBXp0Jjku?=
- =?us-ascii?Q?+WhH9qw5dtHgUqX+u+S/Lt8uozayxoG8D6/GLoOXIk3K3xeqmF+mrVnewsEX?=
- =?us-ascii?Q?strS4++WuG/W803t2wBczNmvodadT0SrawCNUpMAxET53GiYm+fF9QfSL8Bj?=
- =?us-ascii?Q?4FYokYWLzk5jkK+nk0f+Dfkryoa22uSE7jHuqzqzaqIzGtk7G6Ez6DIZ06m+?=
- =?us-ascii?Q?IdOcwaMhfQ/y2yaKis7OLa/x0HN3A0CcRH1QyRY/yw0zumjgKemWOkPtn5DI?=
- =?us-ascii?Q?I6Ed5h8wQMXqLzuxsE8VpCV0T1aGVusyTw/wGeMvQvPm4Bom0l9aQt6k6Loj?=
- =?us-ascii?Q?IAXSfnBMgscrNV88T9h+i4yVoIJuL6h1H7XFF4gqaMwGpBTMAxumERkjl/r2?=
- =?us-ascii?Q?UtYVWeC4YeMSTWxAuKydrQQbd0RchkUB1e1nVO4tMaRizvUhQughIIM3BVh4?=
- =?us-ascii?Q?cK24liq7JI6KfkTOKGDjnWlyt/yKg5hPFqhO6g1mbYr/ENlqpAh1e+rOSPQ4?=
- =?us-ascii?Q?ajexoaQt5hi+bPiFspOQ6VDjSH2szpCUnXoSICVHtiK+w7fnxpQg0ZLIbuaW?=
- =?us-ascii?Q?Vtsw0r/ZQ86NNMUicErgmY0p9eInyCjWMkhmFQNjMEU1XzIZoz4jLv0W3nHd?=
- =?us-ascii?Q?ExEgmVxIOof5wWl8scM2pI2DVYKJWU8VhmUwdBUPcIFYYSieoLgmBLZktiOS?=
- =?us-ascii?Q?KmXBB9n/i+xVAL6qOOAsczPUSVo6bnBrFHoThbcRB89TNxCziG35jVbFiiAx?=
- =?us-ascii?Q?psh4qa9qDgwMHQBeYRU92euDniZ72zD2jFxmSMPiHJN3PGmJouDX5oQopWWW?=
- =?us-ascii?Q?IuOZzZZUYJIH07vswmm7dYWOzw5IifXzw98sVvChrRE6J2i75MUtQJVBWFZq?=
- =?us-ascii?Q?U2U62XOn9+Vs9kxLwH917nTTOWWFr23aquRSiD9J0PCGJ7+336nE9M/kTfEr?=
- =?us-ascii?Q?XbIc2Xp2sBtmSrmsm/3q1Ip8rzozUSfQ6+UQwmUc9/g1ao8fMETawBBiSL4Y?=
- =?us-ascii?Q?3YO9cnmCyB8RBy7F4AVMMjVgBeQlfwzcCy+OF/CcXeJleVVcQfqMOCtUwBVQ?=
- =?us-ascii?Q?O2TE6gwvUE8Hh6XykQ5JTBk4wfn/zMr4/LloX9Z4S/BuXpRQCdRY4lVyajdd?=
- =?us-ascii?Q?P0GGRmHaSHGu/dfgo25h7ickM1LamYxehuN9X8VOWxGiMxGNZ4viFOrha8pu?=
- =?us-ascii?Q?Tyv2oJQX7T3zmABSUT8iBFljvBxK2c8eNtEMiMNc?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 15abda18-6fca-4c9c-ad99-08dca1d14388
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB3849.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2024 17:45:33.4278
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NOxxr8tuKJlm/iNe+/+WBbS3ecPVriad7rqE4GcDMorjGARYwe/vdj7beT4KPqHo
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4437
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Thu, Jul 11, 2024 at 06:01:00PM +0100, Jonathan Cameron wrote:
+On Thu, 11 Jul 2024 09:36:27 -0700
+Dan Williams <dan.j.williams@intel.com> wrote:
 
-> Control plane for the nasty stuff should all be in control
-> of one entity in the system - termed a fabric manager.
-> 
+> Jonathan Cameron wrote:
+> > On Tue, 9 Jul 2024 15:15:13 -0700
+> > Dan Williams <dan.j.williams@intel.com> wrote:
+> >   
+> > > James Bottomley wrote:  
+> > > > > The upstream discussion has yielded the full spectrum of positions on
+> > > > > device specific functionality, and it is a topic that needs cross-
+> > > > > kernel consensus as hardware increasingly spans cross-subsystem
+> > > > > concerns. Please consider it for a Maintainers Summit discussion.    
+> > > > 
+> > > > I'm with Greg on this ... can you point to some of the contrary
+> > > > positions?    
+> > > 
+> > > This thread has that discussion:
+> > > 
+> > > http://lore.kernel.org/0-v1-9912f1a11620+2a-fwctl_jgg@nvidia.com
+> > > 
+> > > I do not want to speak for others on the saliency of their points, all I
+> > > can say is that the contrary positions have so far not moved me to drop
+> > > consideration of fwctl for CXL.  
 > > 
-> > Sounds sketchy to me :)
+> > I was resisting rat holing. Oh well...
+> > 
+> > For a 'subset' of CXL.  There are a wide range of controls that are highly
+> > destructive, potentially to other hosts (simplest one is a command that
+> > will surprise remove someone else's memory). For those I'm not sure
+> > fwctl gets us anywhere - but we still need a solution (Subject to
+> > config gates etc as typically this is BMCs not hosts).
+> > Maybe fwctl eventually ends up with levels of 'safety' (beyond the
+> > current read vs write vs write_full, or maybe those are enough).  
 > 
-> Yes. The model is with the intent that this is only exposed by
-> hardware to a BMC / Fabric Manager - so security is by wiring.
+> It is not clear to me that fwctl needs more levels of safety vs the
+> local subsystem config options controlling what can and can not be sent
+> over the channel. The CXL backend for fwctl adds the local "command
+> effects" level of safety.
+> 
+> For the "Linux as BMC" case the security model is external to the
+> kernel, right? Which means it does not present a protocol that the
+> kernel can reason about.
 
-If you rely on physical seperation then I'd say that the Linux who
-gets access to that physical HW should have rights to operate it, even
-from userspace. You may say only root/user/label should have those
-special rights, but it is kind of baked into the model that the
-special physical connection lets you harm other nodes too.
+The security model is indeed external, but I'd like a Linux BMC
+config to allow turning off the protections but still using the
+same fundamental interfaces as we normally use for the safe stuff.
+I don't want
+1) The CXL IOCTLs
+2) FWCTL
+3) Yet another interface.
 
-It is important to think what things should be in fwctl, if I were to
-take a similar situation for IB, the fabric manager plugs into
-/dev/infiniband/umad* and that is the special interface for exchanging
-packets between nodes to do fabric management.
+> 
+> Unless and until someone develops an authorization model for BMC nodes
+> to join a network topology I think that use case is orthogonal to the
+> primary in-band use case for fwctl.
 
-But IB has a well defined container for fabric management and it is
-easy to steer things into proper places.
+Use case wise I agree this isn't the current primary in-band use case
+for fwctl, hence the rat hole introductory comment.
 
-Jason
+> 
+> It is still useful there to avoid defining yet another transport, but a
+> node that has unfettered access to wreak havoc on the network is not the
+> kernel's problem.
+
+As long as I can enable it via a sensible interface (and don't need to
+spin another) that is fine by me.
+
+> 
+> > Complexities such as message tunneling to multiple components are also
+> > going to be fun, but we want the non destructive bits of those to work
+> > as part of the safe set, so we can get telemetry from downstream devices.
+> > 
+> > Good to cover the debug and telemetry usecase, but it still leaves us with
+> > gaping holes were we need to solve the permissions problem, perhaps that
+> > is layered on top of fwctl, perhaps something else is needed.  
+> 
+> But that's more a CXL switch-management command security protocol
+> problem than fwctl, right? In other words, as far as I understand, there
+> is no spec provided permission model for switch management that Linux
+> could enforce, so it's more in the category of build a kernel that can
+> pass any payload and hope someone else has solved the problem of
+> limiting what damage that node can inflict.
+
+Two separate things here.
+
+For tunneling, there is plenty that will map to fwctl because it's just
+a transport question.  The tunnel command itself has a CEL that says
+it might eat babies so we'd need to check the relevant CEL for the
+destination to make sure they were just as safe as non tunneled version.
+So it's just an implementation detail, be it a fiddly one.
+
+For destructive options sure it's a config problem. But I do want
+to be able to lock down the kernel on the BMC but still allow the
+discructive command. Lock down is protecting and restricting the BMC
+not the other hosts in this use case. 
+
+> 
+> > So if fwctl is adopted, I do want the means to use it for the highly
+> > destructive stuff as well!  Maybe that's a future discussion.
+> >   
+> > > Where CXL has a Command Effects Log that is a reasonable protocol for
+> > > making decisions about opaque command codes, and that CXL already has a
+> > > few years of experience with the commands that *do* need a Linux-command
+> > > wrapper.  
+> > 
+> > Worth asking if this will incorporate unknown but not vendor defined
+> > commands.  There is a long tail of stuff in the spec we haven't caught up
+> > with yet.  Or you thinking keep this for the strictly vendor defined stuff?  
+> 
+> Long term, yes, it should be able to expand to any command code family.
+> Short term, to get started, the CXL "Feature" facility at least conveys
+> whether opcodes are reads or writes, independent of their side effects,
+> and are scoped to be "settings".
+> 
+> There is still the matter of background commands need to support
+> cancellation to avoid indefinite background-command-slot monopolization,
+> and there are still commands that need kernel coordination. So, I see
+> fwctl command support arriving in stages.
+
+Makes sense.  Tunneled access to CXL features should be an a good explorative
+feature to do reasonably soon.
+
+Jonathan
+
+
 
