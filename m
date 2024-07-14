@@ -1,194 +1,116 @@
-Return-Path: <ksummit+bounces-1401-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1402-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36DB7930B4E
-	for <lists@lfdr.de>; Sun, 14 Jul 2024 21:21:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDFD9930B58
+	for <lists@lfdr.de>; Sun, 14 Jul 2024 21:28:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A34911F21CA9
-	for <lists@lfdr.de>; Sun, 14 Jul 2024 19:21:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D98A1F21940
+	for <lists@lfdr.de>; Sun, 14 Jul 2024 19:28:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F64B13BC0C;
-	Sun, 14 Jul 2024 19:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B0C613C3D3;
+	Sun, 14 Jul 2024 19:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="D2ukUYER";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="D2ukUYER"
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="L4nuzmuw"
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DFE61BDD3
-	for <ksummit@lists.linux.dev>; Sun, 14 Jul 2024 19:20:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F78D1FDD
+	for <ksummit@lists.linux.dev>; Sun, 14 Jul 2024 19:28:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720984854; cv=none; b=Ozs/MpjwuujOz50VE98xgbbQ78+M/QBy44wkmUsmmfdi4Ttb49RxT3B6n0N7vIBpNknv6Up4jsupUL5h8xb95WiVg8+lGuLZ4jdK3YwoOVfgRIexKlEcKpDUbrbPWWnodh3SxNiQwcyts/NmV5Sy7HRQP9HWmttswR8pbufAhbs=
+	t=1720985298; cv=none; b=JZTXqvhDAh0jaxzZh1E9BL3POGPwn41etLxG+nPuyLTN9Rkqm9IhdAwwPC1H6fo4j1OG5LE4Gwt5UMQb+7rwBcwg5sleD+MU9QbgtmhsAI8YOyrkyU7N7KPDrJ23XMsclANpGH0iAuAvaZgwGApD4k+IQambjDZiVRiEINcqJEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720984854; c=relaxed/simple;
-	bh=RQOdEw3QAmpkrU3BZWZCUD37Gbo46nSV0wm7kfz1MB0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BpgjX/RCEZyJZlF2+zXMcmJsRasWdYZiZtCsnfUmeD4ZjZ22uhdbR0SKZtyMwF7b1tRo49+U/fZIi1e9yGmkPst51v7uXs5CCdtgcnK6VX5BXQ/BSbepDIMXl+gfNE9DWXpD9W4MbSUkqTCu7+vOsbVLM0X30CLDWkQtq50Bvjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=D2ukUYER; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=D2ukUYER; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1720984851;
-	bh=RQOdEw3QAmpkrU3BZWZCUD37Gbo46nSV0wm7kfz1MB0=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=D2ukUYER284VTz1qOzm93JrwR+5+QNJ0Qx0W4aVW8o5CP4U+0NVmzKBjBopK8aCw2
-	 tu1WBZC3vhxkAMPay4jMg8FBYDOMXn1jv0XQRaxP725HQJStCXmFaUKFGgkALqaX57
-	 FFyZFwPJfjke5CCD0M9tz7qfyYtztSq7fXt0M77o=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 623B71286177;
-	Sun, 14 Jul 2024 15:20:51 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id Eyi2wmcOE1nv; Sun, 14 Jul 2024 15:20:51 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1720984851;
-	bh=RQOdEw3QAmpkrU3BZWZCUD37Gbo46nSV0wm7kfz1MB0=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=D2ukUYER284VTz1qOzm93JrwR+5+QNJ0Qx0W4aVW8o5CP4U+0NVmzKBjBopK8aCw2
-	 tu1WBZC3vhxkAMPay4jMg8FBYDOMXn1jv0XQRaxP725HQJStCXmFaUKFGgkALqaX57
-	 FFyZFwPJfjke5CCD0M9tz7qfyYtztSq7fXt0M77o=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id A666012860B6;
-	Sun, 14 Jul 2024 15:20:49 -0400 (EDT)
-Message-ID: <f0d42bfb20b728b0c80daff864bd858ce86b3bfe.camel@HansenPartnership.com>
-Subject: Re: Proposal: Enhancing Commit Tagging for Stable Kernel Branches
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: ksummit@lists.linux.dev, Greg KH <gregkh@linuxfoundation.org>
-Date: Sun, 14 Jul 2024 15:20:48 -0400
-In-Reply-To: <ZpQbQa-_8GkoiPhE@sashalap>
-References: <ZpPFJH2uDLzIhBoB@sashalap>
-	 <915ef4884d0cd347a1e0c87584346c764f7a11cf.camel@HansenPartnership.com>
-	 <ZpQbQa-_8GkoiPhE@sashalap>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	s=arc-20240116; t=1720985298; c=relaxed/simple;
+	bh=9GBaebZGhlEUy38lOtGkiTwHdzsjl8cBZuEio/gSl8M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hI2i8ElXs3fJnbMrSUj6lq16GULRk1zxAym1i/WDWIMixce7btzaicVS14ZyEF2piptMZjDH5+1cMU01fxruBG364rvEQpC41cPpgOLzWeiwzhUeqXWmWtmzVJqQOuB8OUwSPvMR4OX3MHBe6ZnXsd/06aTamzFCpWT0om8Yaic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=L4nuzmuw; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-52ea2ce7abaso6298004e87.0
+        for <ksummit@lists.linux.dev>; Sun, 14 Jul 2024 12:28:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1720985294; x=1721590094; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=t8IKSXxTQD2VekxHy64FCb3K8ae8GzDSC7uYISoCzm0=;
+        b=L4nuzmuwOed6Rj0XWXJDEKy5v0nd7j0iL7V+P0gYDfCy9TxdDT68PBIVSDucPafYdj
+         icGR2GuoMunTzDGfXY/9kFqqIgXFZFWb/9tqO/cPX4V7ee6tg0sUj3c9uBpg6s0fJq1V
+         IOodX8FlpM7fK6Kusb8FVAxea1v4X2bUEePu4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720985294; x=1721590094;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=t8IKSXxTQD2VekxHy64FCb3K8ae8GzDSC7uYISoCzm0=;
+        b=OvQGewyTYYqMW/lTWRR0itMjRvkfNDKRw1CA4DA22soyfBR5xRbIwANHn0ZrBPN4NK
+         plIGYbBzuMv5IQ6AR/ASSCgVxk1ue6eCmS+xKGE1wLQQl+mpU0XMnXPf5qxJTZR/uWZV
+         LBF102BELje82MJHhFCamMwWchaZ6h7bqcWDV+JoC+srjBVpHMvHPuJWkhWh8yO7Y+Gg
+         eiwXkWtocaPrU7ErXWfYGlywlYI1TSkjESZ8gftkhNhK0Dqm02jRH/A+JNC0ISYLWCT/
+         l3OXt6R8VjHPfVel/oEGl8Cxaa2tvn3oPrMmMjkK7Vt8ijRwFkChJeio0GYuD2cDhns7
+         xbeA==
+X-Gm-Message-State: AOJu0Yxqxhlg9JO1YNaMQYT+kst+geukqUSnKSqqUyT8yUYWUPwixd23
+	r6HHovv5j58yCiTweA2iCTGtE7kgi4Ip+L7pEuAN+dDVYaCsPJ8i712akE6VpZ504npINi487bR
+	Z2irNgA==
+X-Google-Smtp-Source: AGHT+IFNWgk3RD5GbORwcX7+2Sji3pX+KOMz+jjk2wna+xLoX88QaH6eej13PEFklqvIO5tdQc2Z9w==
+X-Received: by 2002:ac2:4901:0:b0:52c:db76:1c2d with SMTP id 2adb3069b0e04-52eb99d5f15mr9930731e87.63.1720985292456;
+        Sun, 14 Jul 2024 12:28:12 -0700 (PDT)
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com. [209.85.167.44])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52ed24f36f0sm575924e87.82.2024.07.14.12.28.11
+        for <ksummit@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 14 Jul 2024 12:28:11 -0700 (PDT)
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-52ea2ce7abaso6297975e87.0
+        for <ksummit@lists.linux.dev>; Sun, 14 Jul 2024 12:28:11 -0700 (PDT)
+X-Received: by 2002:a05:6512:308a:b0:52c:ec68:6165 with SMTP id
+ 2adb3069b0e04-52eb99a0fdemr14090205e87.33.1720985291451; Sun, 14 Jul 2024
+ 12:28:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <ZpPFJH2uDLzIhBoB@sashalap> <CAHk-=wgyLHxdj0wJT-2y-OVVvPbZgg7XtCdcd6UHBmhTWLtoKw@mail.gmail.com>
+ <ZpQdJpKhIzmf3veU@sashalap>
+In-Reply-To: <ZpQdJpKhIzmf3veU@sashalap>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sun, 14 Jul 2024 12:27:55 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjfXLDGBjieQhLRCP2tQnXTYhW2MiY3LWJ=g7QDE1cRyA@mail.gmail.com>
+Message-ID: <CAHk-=wjfXLDGBjieQhLRCP2tQnXTYhW2MiY3LWJ=g7QDE1cRyA@mail.gmail.com>
+Subject: Re: Proposal: Enhancing Commit Tagging for Stable Kernel Branches
+To: Sasha Levin <sashal@kernel.org>
+Cc: ksummit@lists.linux.dev, Greg KH <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Sun, 2024-07-14 at 14:38 -0400, Sasha Levin wrote:
-> On Sun, Jul 14, 2024 at 09:35:26AM -0400, James Bottomley wrote:
-> > On Sun, 2024-07-14 at 08:31 -0400, Sasha Levin wrote:
-> > > Hi folks,
-> > > 
-> > > The Linux kernel community relies heavily on commit tags to
-> > > identify and manage patches destined for stable kernel branches.
-> > > Currently, we use a "Stable tag" (cc: stable@kernel.org) to
-> > > indicate that a patch should be included in stable kernel
-> > > branches, and a "Fixes tag" (Fixes: 012345678901 ("commit
-> > > subject")) to point to an older commit that the new commit fixes
-> > > or improves. However, this scheme has led to some unintended
-> > > consequences.
-> > > 
-> > > One of the main issues is that most Fixes-tagged commits (>80%)
-> > > end up in a stable tree, leading some authors to omit the Stable
-> > > tag altogether. This means we may not be trying hard enough to
-> > > include critical commits in stable kernel branches. On the other
-> > > hand, some authors are unhappy when commits without a Stable tag
-> > > end up in a stable kernel branch. To address these shortcomings,
-> > > I propose introducing an "Improves tag" (Improves: 012345678901
-> > > ("commit subject")) and altering the meaning of the Fixes tag.
-> > 
-> > I've got to say this looks like a bad idea: your complaint is we're
-> > not being clear enough about the cc:stable and fixes semantics, so
-> > the proposal is to introduce a tag with even less clear semantics
-> > in the hope that it will somehow improve the situation. Why not
-> > simply be much more crisp about the meaning of Fixes and no
-> > cc:stable? If everyone
-> 
-> What does it mean exactly? What should we be doing now that wasn't
-> happening before?
+On Sun, 14 Jul 2024 at 11:47, Sasha Levin <sashal@kernel.org> wrote:
+>
+> I'm not trying to add an additional tag,
 
-I outlined it below and you replied.
+What? You *literally* suggested exactly that - adding an "Improves:" tag.
 
-> All our documentation explicitly says that a stable tag is a *must*,
-> we've been nagging folks to add it when they haven't, and we give
-> them the spiel whenever we're asked why a certain fixes-only commit
-> didn't make it into the stable trees.
+I'm not going to use such an odd and pointless tag.
 
-Then you've muddied that by backporting a lot of stuff without
-cc:stable leading to somewhat mixed messages.  However, most of the
-trees I'm involved in are very fastidious about cc:stable which should
-prove getting people to assist here isn't impossible.
+I would hope that *all* commits improve on something. And if it's an
+actual fix to a previous commit, it should say so.
 
-> > realised that Fixes without cc:stable meant the patch wouldn't be
-> > included in a stable tree that surely gives all the semantics you
-> > need without having to get everyone to try do differentiate between
-> > a fix and an improvement?
-> 
-> By your logic folks already have to do it now, right? The decision
-> around whether to add a stable tag or not means that there needs to
-> be a decision around whether something is a fix or an improvement
-> each time a Fixes tag is added.
+If it's just a random improvement, it shouldn't refer to a previous
+commit at all.
 
-I believe most maintainers who haven't given up on the cc:stable
-process do that, yes.
+What you seem to want is some made-up distinction between "fix that
+wants backporting" and "fix that is not important for backporting".
 
-> > One of the big reasons patches get Fixes without cc:stable is
-> > simply that it's an -rc fix for a merge window regression (so no
-> > released kernel has it in and therefore no stable kernel needs it),
-> > so you'd also need to explain that case in the improve docs
-> > (because it's a genuine fix, just not a stable candidate).
-> 
-> This is a fairly common misconception around what happens in the -rc
-> cycles.
-> 
-> The statistic is that about 70% of commits that have a stable tag but
-> no fixes tag actually fix something in the previous releases rather
-> than something that was introduced in the current merge window.
+We have long been told that commits that have a "Fixes" tag don't need
+a "Cc: stable" because the stabl;e people already pick up on the
+fixes, so now you're complaining about the lack of stable tagging.
 
-Given the number for fairly trivial spelling and other non user visible
-fixes we get in the trees I look at that doesn't sound too surprising.
-So the big question is how many of those *should* actually have had a
-stable tag?
+I think that the *real* issue is "not everything is black and white".
 
-> When you couple that with commits that are stable tagged, nearly 85%
-> of commits in each -rc release actually address something that
-> happened prior to the merge window.
+But no amount of tagging will change reality. Reality is not black and
+white. Tough.
 
-Here you seem to be assuming that every commit with a Fixes tag for a
-prior release should be in stable ... I don't think that's true at all.
-
-> > So the clear rules look like they should be
-> > 
-> >   1. every patch fixing something should have a fixes tag pointing
-> > to the fixed commit
-> >   2. Only patches with cc:stable should go automatically in to
-> > stable trees and as far back as the fixes tag allows
-> >   3. if a patch without cc:stable is later discovered to be a
-> > required fix, people can ask for it to be backported.
-> 
-> These were the rules for a while, and the issue was that there were
-> so many commits without a stable tag that needed to be backported
-> that the model of "later discovered" simply overwhelmed the process.
-
-How can it?  The cc:stable is automation driven, surely we could
-automate the discovered after process as well.  Our control systems via
-email has rather dramatically improved over the years, just look at
-regzbot.
-
-> We can't go back to that again.
-
-Why?  I mean I'm assuming the actual number of patches would be the
-same under a perfect cc:stable system as it would be under he cc:stable
-but ask for backport if I got it wrong system, so it's really just a
-question of using similar automation that drives the former for the
-latter.  If you can't figure out how to automate it, I'm sure we can
-lend a hand if that's all it takes.
-
-Regards,
-
-James
-
+              Linus
 
