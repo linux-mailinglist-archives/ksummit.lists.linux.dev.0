@@ -1,53 +1,53 @@
-Return-Path: <ksummit+bounces-1399-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1400-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48989930B39
-	for <lists@lfdr.de>; Sun, 14 Jul 2024 20:39:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C5D930B3D
+	for <lists@lfdr.de>; Sun, 14 Jul 2024 20:47:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5E20B20E05
-	for <lists@lfdr.de>; Sun, 14 Jul 2024 18:39:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8911B20E6D
+	for <lists@lfdr.de>; Sun, 14 Jul 2024 18:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 232C213C8F6;
-	Sun, 14 Jul 2024 18:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F319713BAE9;
+	Sun, 14 Jul 2024 18:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="erJDS6ev"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qOT5RYM/"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12EE11CB8
-	for <ksummit@lists.linux.dev>; Sun, 14 Jul 2024 18:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72247FC11
+	for <ksummit@lists.linux.dev>; Sun, 14 Jul 2024 18:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720982339; cv=none; b=jcxDISwlUB1Izkc/MCfh4uYo/hxT8BrAkhanWydW9djkyv+sK/MUY6gHKxqcfeBIYvHeCfJJyJZPi8RRz5j0MTus63/V39p+Hx7bc2R3LjQ4DNkHjJEe8BUSj2GEt8FCpYt23rblC39ueZe0w/g0p4v/msTqO9M3trOSzmkkiOU=
+	t=1720982824; cv=none; b=duE4Aoj2Oiq1iUIJ/1ip0gntAfG9zbeN2+ziKEHYsEflH9A4Rd9DbwvisOrETqePsiztWVzy/Bpziy0Mul9dG/1oLo7NdN1774bKURHaqFy+e5kr4EKP2F07lDqF7ysEoybpSZ2/Ez8cBJxe7NZwSIGfSgcDuUkHQwHUmKt3LM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720982339; c=relaxed/simple;
-	bh=aSi9ppgUjjQhV+o1eFizePVYxLqfnoB6VVmrQNvhMiU=;
+	s=arc-20240116; t=1720982824; c=relaxed/simple;
+	bh=7YJdOvlkUTfLEAP4HDHA8i626beRAL9M3JvGAmtQdRU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MNNOa+gHliNJYS/6litNhPs8eVDnaosnPoO7v20uhaSWeeIOVxrctVmcyc4GFF+JqUatMZOBXeZQZWGY6JUoZdCh9fn5Ss8Q6d6WZ1tj5V6R8LRQEuanvgAoTpNnOyicJfN1EJLK2zA8CnNoYeHzAYuXoVVe6tV48Md4B89Pl/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=erJDS6ev; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA3C2C116B1;
-	Sun, 14 Jul 2024 18:38:58 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=D2xmtkcppd0u99lhsiPfqt5QcpcOS+bPZX88NM6tqhebYABYEHqVeD6K4VxPseWzQWl9G3cNIrN+l8FYdQcmgVkiRCrWbtcqOPVI0+XLWKxUaTwHeKFd/5BcudIw68Gl3ueZfz8kiYNwW3ib0Z/dYPDtZSRsjhQeNdR+ZYLR3YE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qOT5RYM/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D13C116B1;
+	Sun, 14 Jul 2024 18:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720982339;
-	bh=aSi9ppgUjjQhV+o1eFizePVYxLqfnoB6VVmrQNvhMiU=;
+	s=k20201202; t=1720982824;
+	bh=7YJdOvlkUTfLEAP4HDHA8i626beRAL9M3JvGAmtQdRU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=erJDS6ev5mB4tCTfX/NQx5OeKS/oj8il7aUwYul1pp7VJHi34eVzfr+WiMYjabj7r
-	 YI+oofMWZUhqHLm2COjYExwkujdR3S8TQr7g4Ps1idqgG47HV4ggi1BYhrrNIFefyX
-	 JRd0IBWpmPPDIPkIZc+wfkuUcsBrYGppwq6hC26ECCYCSiUMtalnzGHrb7Chl3l8RM
-	 0IoTieX1jsq1BZ7nzG2DuhV5lVYNA0oOoC50Ahw/fppSov1etaVopDQIu3/BsVNsCv
-	 azEA0GvNig7BAv/a4bhSAeen8cNyyokZ04rrPa+SZAwNO3R7G7pEg3VEoiJCxS8zkV
-	 fGSgiCisdN7rQ==
-Date: Sun, 14 Jul 2024 14:38:57 -0400
+	b=qOT5RYM/tMhR/zsIGmIrttIkDKl5dMbVbcL/VK7KPrWh9jLl/8NOO0+fcsquJfiTK
+	 wscCg95AXxu1ZBKiatgL4fYMB8DEop191XFfeq9l3vt2QHN9UP7+AM8qD6oZ8O51XF
+	 6pXHprWifrl2tifXDyiR2P44dwQLV6473Wsv31Lneb/+JCwSSftkJr0kEnFu4hPoRF
+	 VH3yFkBWxDD8K+2ys7si48acaxalX369gOkiEhnJHeO8Uw6D72cMqIk8OWo+WwMOZ2
+	 hiTVmnaugsA1VIJ4E77kuAn5tB9j3KdcCY3MPAs8RA21PjQVWgt9wks7jmpOxxcBBY
+	 1geInKhPhvqqw==
+Date: Sun, 14 Jul 2024 14:47:02 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: ksummit@lists.linux.dev, Greg KH <gregkh@linuxfoundation.org>
 Subject: Re: Proposal: Enhancing Commit Tagging for Stable Kernel Branches
-Message-ID: <ZpQbQa-_8GkoiPhE@sashalap>
+Message-ID: <ZpQdJpKhIzmf3veU@sashalap>
 References: <ZpPFJH2uDLzIhBoB@sashalap>
- <915ef4884d0cd347a1e0c87584346c764f7a11cf.camel@HansenPartnership.com>
+ <CAHk-=wgyLHxdj0wJT-2y-OVVvPbZgg7XtCdcd6UHBmhTWLtoKw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -56,85 +56,50 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <915ef4884d0cd347a1e0c87584346c764f7a11cf.camel@HansenPartnership.com>
+In-Reply-To: <CAHk-=wgyLHxdj0wJT-2y-OVVvPbZgg7XtCdcd6UHBmhTWLtoKw@mail.gmail.com>
 
-On Sun, Jul 14, 2024 at 09:35:26AM -0400, James Bottomley wrote:
->On Sun, 2024-07-14 at 08:31 -0400, Sasha Levin wrote:
->> Hi folks,
+On Sun, Jul 14, 2024 at 10:07:48AM -0700, Linus Torvalds wrote:
+>On Sun, 14 Jul 2024 at 05:31, Sasha Levin <sashal@kernel.org> wrote:
 >>
->> The Linux kernel community relies heavily on commit tags to identify
->> and manage patches destined for stable kernel branches. Currently, we
->> use a "Stable tag" (cc: stable@kernel.org) to indicate that a patch
->> should be included in stable kernel branches, and a "Fixes tag"
->> (Fixes: 012345678901 ("commit subject")) to point to an older commit
->> that the new commit fixes or improves. However, this scheme has led
->> to some unintended consequences.
->>
->> One of the main issues is that most Fixes-tagged commits (>80%) end
->> up in a stable tree, leading some authors to omit the Stable tag
->> altogether. This means we may not be trying hard enough to include
->> critical commits in stable kernel branches. On the other hand, some
->> authors are unhappy when commits without a Stable tag end up in a
->> stable kernel branch. To address these shortcomings, I propose
->> introducing an "Improves tag" (Improves: 012345678901 ("commit
->> subject")) and altering the meaning of the Fixes tag.
+>> One of the main issues is that most Fixes-tagged commits (>80%) end up
+>> in a stable tree, leading some authors to omit the Stable tag
+>> altogether.
 >
->I've got to say this looks like a bad idea: your complaint is we're not
->being clear enough about the cc:stable and fixes semantics, so the
->proposal is to introduce a tag with even less clear semantics in the
->hope that it will somehow improve the situation. Why not simply be much
->more crisp about the meaning of Fixes and no cc:stable? If everyone
-
-What does it mean exactly? What should we be doing now that wasn't
-happening before?
-
-All our documentation explicitly says that a stable tag is a *must*,
-we've been nagging folks to add it when they haven't, and we give them
-the spiel whenever we're asked why a certain fixes-only commit didn't
-make it into the stable trees.
-
->realised that Fixes without cc:stable meant the patch wouldn't be
->included in a stable tree that surely gives all the semantics you need
->without having to get everyone to try do differentiate between a fix
->and an improvement?
-
-By your logic folks already have to do it now, right? The decision
-around whether to add a stable tag or not means that there needs to be a
-decision around whether something is a fix or an improvement each time a
-Fixes tag is added.
-
->One of the big reasons patches get Fixes without cc:stable is simply
->that it's an -rc fix for a merge window regression (so no released
->kernel has it in and therefore no stable kernel needs it), so you'd
->also need to explain that case in the improve docs (because it's a
->genuine fix, just not a stable candidate).
-
-This is a fairly common misconception around what happens in the -rc
-cycles.
-
-The statistic is that about 70% of commits that have a stable tag but no
-fixes tag actually fix something in the previous releases rather than
-something that was introduced in the current merge window.
-
-When you couple that with commits that are stable tagged, nearly 85% of
-commits in each -rc release actually address something that happened
-prior to the merge window.
-
+>So as others have said, the fix to two confusing tags is not to
+>introduce *more* tags. That only adds to the confusion.
 >
->So the clear rules look like they should be
+>I honestly personally will likely not ever use any more tags than the
+>ones we already have. Every single "let's add a new tag" proposal I've
+>ever seen has been pure garbage.
 >
->   1. every patch fixing something should have a fixes tag pointing to
->      the fixed commit
->   2. Only patches with cc:stable should go automatically in to stable
->      trees and as far back as the fixes tag allows
->   3. if a patch without cc:stable is later discovered to be a required
->      fix, people can ask for it to be backported.
+>People see one problem and want to fix it by introducing a tag, and
+>think tags magically would fix it, when adding more tags will only
+>cause more confusion and make the existing tags less obvious.
 
-These were the rules for a while, and the issue was that there were so
-many commits without a stable tag that needed to be backported that the
-model of "later discovered" simply overwhelmed the process.
+I'm not trying to add an additional tag, but rather replace a "broken"
+tag by adding something that is better aligned with how people are doing
+things these days.
 
-We can't go back to that again.
+For that matter, we can look at Linus Torvalds, a prominent Linux
+developer. In the past few years, Linus has authored:
+
+  - 2023: 3 stable tagged commits.
+  - 2022: 2 stable tagged commits.
+  - 2021: 4 stable tagged commits.
+  - 2020: 0 stable tagged commits.
+
+If we all agree that Linus authored more stable-worthy commits than
+that, then to me it's an indication that the stable tagging system isn't
+working well here.
+
+My thinking was that we can stop nagging folks about adding a stable tag
+and leverage their current (positive) behavior around adding fixes tags,
+but yes - training folks to use a new tag is hard.
+
+What's the path forward here? Stable tags don't work, "Improves:" tag
+might indeed be garbage, so what would make the folks who read this
+mailing list more consistent about tagging patches they author for
+backport?
 
 -- 
 Thanks,
