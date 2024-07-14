@@ -1,104 +1,97 @@
-Return-Path: <ksummit+bounces-1406-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1407-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DF95930C22
-	for <lists@lfdr.de>; Mon, 15 Jul 2024 01:09:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 909C1930C2B
+	for <lists@lfdr.de>; Mon, 15 Jul 2024 01:29:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E0781C20E09
-	for <lists@lfdr.de>; Sun, 14 Jul 2024 23:09:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA2DA1C20D79
+	for <lists@lfdr.de>; Sun, 14 Jul 2024 23:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C15213D28C;
-	Sun, 14 Jul 2024 23:09:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Mm02CIbf"
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040DA13CA95;
+	Sun, 14 Jul 2024 23:29:13 +0000 (UTC)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE01215C0
-	for <ksummit@lists.linux.dev>; Sun, 14 Jul 2024 23:09:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D9F9474
+	for <ksummit@lists.linux.dev>; Sun, 14 Jul 2024 23:29:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720998569; cv=none; b=TRAsW515xI8Bumum7mZ/2TRa5o3bjn4VfYRhb3EMXAa47Zqpn7ZlORrIkxe5zmjy/grJxdCQGvCEtevo2foBKca7bJIhcVXNz+yZivWRJ17cYkaekNa586SPG1c8YLysv5lOyg50L8xETqlC3TL8cl53pEp9pmaTodiEfUUV0mI=
+	t=1720999752; cv=none; b=ggwbyT6lVi5lGrNRG3258PBwXYF1BW9PFVG1dXsUIB8zPfVXoU/sSrCpMkD96Zu6Z2cVULgVHQK8Up8tQP7L2+acIyO/ZAaYsYXhepEpFpZoctWHno39qBn06O2CreboGfX9ye2V8RjPKTrXTmXyGKqZc53fp7vaidh5kl33bzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720998569; c=relaxed/simple;
-	bh=uTR3mPE81bOnx3HZEdtZAXzRHGpK4Q2y3kV07+cw3SQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e35cUxPeuipGBCyo7l5mrEndGHBuFWB9P5Nsg+3SibQFSpqBrfrMWVWcubLFXYvrJ78vcp4eRSt6tGBzyEbitGF5HJahqE+SU6TWlnLB0I9ejEgRzjFS0nYbMleOFxIrECEvNa2rROwja7lUQR/n0FOsgx/Bic0GTp1WekZQ0fU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Mm02CIbf; arc=none smtp.client-ip=209.85.208.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2eedeca1c79so18601861fa.3
-        for <ksummit@lists.linux.dev>; Sun, 14 Jul 2024 16:09:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1720998565; x=1721603365; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=u9DsJXHeIxS5aae00AFjJMwRMiGzZG0Dwh6DHTWZj/U=;
-        b=Mm02CIbfuUEiVCzsiayV8bEK58EJTiabDqpVLhQ0a4gl7VqgN2ocMtWLpfWWr9uJ8x
-         aP/fJi9yRxxjh4I9+N1TC2dRHVuchguUhGB+/djac+gfx26ZvgznX/IK2SgoO66KuGvZ
-         Il2qFzxJrICntJThAEH4ylGE2bBY0dc/F/VB8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720998565; x=1721603365;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=u9DsJXHeIxS5aae00AFjJMwRMiGzZG0Dwh6DHTWZj/U=;
-        b=Y79QT8lsncfNU63Py3SDaw/JHlr7EH57QP1MpSyCwOmJGeKSsnyibMqiSr+jyssx3h
-         tAszK7UflZQqilZlPfEIwhEJr6oOtluBUEwuYxJQaxkHNVT45athAdsZEVWtm6zVXJ3p
-         SP+oxrpPdPxwBWOzaGLHP6MfH3YGwEM0ic2F+02anlj2j2O1qlYqpd1PThj8TBRu6+GT
-         ya+DEf6VtUG321Tt/RYrkBVMs92MKll2ULpHklvto7agXhSFhE+cFiesA+08AZRK15vV
-         fLWeqxQa00dfw81aKRU5GudIsFSr1HPcQTlHW+4UrcejRE2odaxw7D5b9J0UhxR1l2Ix
-         1WPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVJfzz3Pnr2EfKZa9gtLAhlZw7jJuLonUo0n5XmSzdfeasb9TPBPEEpxoPo/g/P8Y3d9at8XF2nHe3tMGQ2syu0wIJMwmlKQQ==
-X-Gm-Message-State: AOJu0YygmU4/f545c2SncByKXt/Cx62/DC1j8fzbJD1O4nLGeo4R6ADt
-	M6k+sQG7IQp6RvDn/T1XraHoOgs6xeZ7zSvoS+dOWH5dAIXmwi/NsEfDszJzw9OYlggIaySxBtU
-	Y70YQFQ==
-X-Google-Smtp-Source: AGHT+IE48BmoAz19LivIJKqdAbMCqpfxz7jEJayN3mYHn75zffQS+fBHWs7tB+Hky/kzhZXErg20YA==
-X-Received: by 2002:a2e:9bd8:0:b0:2ee:8a8c:ce5c with SMTP id 38308e7fff4ca-2eeb31818f1mr125362641fa.37.1720998564397;
-        Sun, 14 Jul 2024 16:09:24 -0700 (PDT)
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com. [209.85.167.49])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2eee18bec2bsm6606351fa.68.2024.07.14.16.09.23
-        for <ksummit@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 14 Jul 2024 16:09:23 -0700 (PDT)
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-52e976208f8so4129422e87.2
-        for <ksummit@lists.linux.dev>; Sun, 14 Jul 2024 16:09:23 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWikL9FTFJKWdOzQRlhG+rd6832XkPDusRFfqwkquveROKGFa6FgMB3rdbBVTesbL9I4lr96vhwt6Mx2zupiKmn39/0/QzNBA==
-X-Received: by 2002:a05:6512:3d1d:b0:52c:df4e:3343 with SMTP id
- 2adb3069b0e04-52eb99948e1mr14032092e87.16.1720998563358; Sun, 14 Jul 2024
- 16:09:23 -0700 (PDT)
+	s=arc-20240116; t=1720999752; c=relaxed/simple;
+	bh=PNYMlekDc75BeFUldBmFPdjFpBNutJTtwN/+FIni2G0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iwJAEnpGp2mJTi7tarcPrxn3ECXwGkEOp+GH/6tgy7jCYgdheRHMc3ARoePSff62AIVe9C0rUt1IPqHlf7KjJ+zX7FoTgsXP5qeZckbtTi+It6c4G+oJWHgVIGuIc31lsYRHrM4zJm+WtgZ/tWj0ehrAMwTPVw8OzUxsT+zGhlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DBC4C116B1;
+	Sun, 14 Jul 2024 23:29:11 +0000 (UTC)
+Date: Sun, 14 Jul 2024 19:29:14 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, ksummit@lists.linux.dev,
+ Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: Proposal: Enhancing Commit Tagging for Stable Kernel Branches
+Message-ID: <20240714192914.1e1d3448@gandalf.local.home>
+In-Reply-To: <ZpQ0soWV6zIpgigf@sashalap>
+References: <ZpPFJH2uDLzIhBoB@sashalap>
+	<CAHk-=wgyLHxdj0wJT-2y-OVVvPbZgg7XtCdcd6UHBmhTWLtoKw@mail.gmail.com>
+	<ZpQdJpKhIzmf3veU@sashalap>
+	<CAHk-=wjfXLDGBjieQhLRCP2tQnXTYhW2MiY3LWJ=g7QDE1cRyA@mail.gmail.com>
+	<ZpQ0soWV6zIpgigf@sashalap>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <ZpPFJH2uDLzIhBoB@sashalap> <CAHk-=wgyLHxdj0wJT-2y-OVVvPbZgg7XtCdcd6UHBmhTWLtoKw@mail.gmail.com>
- <ZpQdJpKhIzmf3veU@sashalap> <CAHk-=wjfXLDGBjieQhLRCP2tQnXTYhW2MiY3LWJ=g7QDE1cRyA@mail.gmail.com>
- <ZpQ0soWV6zIpgigf@sashalap> <0e6c7c8ed259dcb50631c6fdc3d86d3080bdc6f3.camel@HansenPartnership.com>
-In-Reply-To: <0e6c7c8ed259dcb50631c6fdc3d86d3080bdc6f3.camel@HansenPartnership.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sun, 14 Jul 2024 16:09:06 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjLShGxeGtjRGkjQni+VzWC0yrf34EP0AUn+_zU0u-WeQ@mail.gmail.com>
-Message-ID: <CAHk-=wjLShGxeGtjRGkjQni+VzWC0yrf34EP0AUn+_zU0u-WeQ@mail.gmail.com>
-Subject: Re: Proposal: Enhancing Commit Tagging for Stable Kernel Branches
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Sasha Levin <sashal@kernel.org>, ksummit@lists.linux.dev, 
-	Greg KH <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sun, 14 Jul 2024 at 16:06, James Bottomley
-<James.Bottomley@hansenpartnership.com> wrote:
->
-> But we know how to enforce a unified view of process: we document it in
-> Documentaion/process ...
+On Sun, 14 Jul 2024 16:27:30 -0400
+Sasha Levin <sashal@kernel.org> wrote:
 
-Hahhahhahaahh.
+> If you think that anything with a Fixes tag should land in stable, then
+> great, we can change the formal policy and get it over with.
 
-Ahh, you're such a kidder, James.
+I guess it comes down to what exactly do we consider a fix worthy of
+stable? Most of my commits I tag with Fixes have Cc stable too. But there's
+some cases where I made an improvement in logic, or restructured something
+that helps with performance and tag that with a Fixes. So, in these cases
+when I add "Fixes" without a Cc stable, it does mean "improvement" more
+than fix. Or I think the code change may be too risky to consider stable
+(as it may introduce a bug, as the code change is too big).
 
-              Linus
+Basically, it comes down to that I add Cc stable for anything I think is
+worthy to send to Linus in an -rc release. Perhaps all commits that go to
+Linus during -rc must have a Fixes tag, and Cc stable if the fixed commit
+happened in a previous kernel version? As Linus has been pointing out that
+he only wants fixes after -rc1.
+
+Sometimes I find a behavior bug, that's been there since the code was
+written. Like a new feature that works "some of the time", but then I find
+a corner case that doesn't work. I'll add Fixes but not "stable" when I fix
+the corner case. As Linus once criticized one of these types of fixes as
+it's not a fix. But I still label it a fix for those that want the feature
+to work in all cases.
+
+Recently this happened with an update to the user events. We found a case
+that doesn't work as expected, and I sent the "fix" to Linus in the -rc
+release, but Linus refused it. That was because it was more of an extension
+of an existing feature. That is, it wasn't a regression. The behavior never
+worked that way in previous kernels, so it's not something to be added as a
+fix. I still tagged it as Fixes, as for us, the feature wasn't working in
+all the cases we wanted it to.
+
+Things like this is questionable for adding to a "stable" release. In that
+corner case, if you tried to do that feature, it would just fail. This
+would not break any existing code. But if you wanted that full feature to
+work, you needed the fix. Should this be considered a "stable" backport?
+For any distro that wanted the full feature, the answer was "yes". For those
+that just want stable not to have regressions, the answer is "no".
+
+-- Steve
 
