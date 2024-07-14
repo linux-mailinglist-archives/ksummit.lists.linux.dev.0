@@ -1,193 +1,104 @@
-Return-Path: <ksummit+bounces-1393-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1394-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3733792F910
-	for <lists@lfdr.de>; Fri, 12 Jul 2024 12:37:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 052579309ED
+	for <lists@lfdr.de>; Sun, 14 Jul 2024 14:31:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC78C28535E
-	for <lists@lfdr.de>; Fri, 12 Jul 2024 10:37:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89D67B2106A
+	for <lists@lfdr.de>; Sun, 14 Jul 2024 12:31:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7481915CD41;
-	Fri, 12 Jul 2024 10:37:32 +0000 (UTC)
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9154745E2;
+	Sun, 14 Jul 2024 12:31:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="unGACnT3"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819EC15539A
-	for <ksummit@lists.linux.dev>; Fri, 12 Jul 2024 10:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C936FE07
+	for <ksummit@lists.linux.dev>; Sun, 14 Jul 2024 12:31:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720780652; cv=none; b=Zyd3hjuHqgbC2M3B63b84ezv2XteNyFID9G5WfTGqqkVcEmnj4ioj0fQ2Bbb9GeOKofVRHTef0N5k0oFP/c5JHQNv6MjU6qhPfns/gTF3jR21ryrbOl6UM760OV7kJxmijEm9gTp1YS+njZzEH/rljXEk42mmMt3y8cOJSCUB30=
+	t=1720960295; cv=none; b=fx3cLsWZ3fvmOLQuG4GM0nX1xGwanA0bVENWMHV466zsWEZbG5+zUGNKHW1YELZm5sm3l+hgTgmrwLrLvulrYp2wk8zg32BwXeYen9DupPPv+ZCwTKUPK6CdQskljl520QOjvz8c3ZO7Zm/97WuaU55qWC/QYcipYlmv5JkShhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720780652; c=relaxed/simple;
-	bh=YaczT6mneoVMpKwMgJbp7Rg47TMAqdRTX0u8weR9avY=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KctPJ5m0BVDCTLGzeEqP/ZyMwlBXu7NR5cdmhPCzZPOP/cja8GblHVmYAaSNXEAO/2hy1LeZUPNoMHpiWRo5+dfT9qFQke8NGsRIU4ZNQ/gJsZLukHXO9WeVAme0w+GD+xpsFmLFB3d58xHN8pud6x3PPuogqcTGz4eAmOv0bJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WL7LG3yc9z6JB4b;
-	Fri, 12 Jul 2024 18:36:22 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 69B0B1400D9;
-	Fri, 12 Jul 2024 18:37:26 +0800 (CST)
-Received: from localhost (10.203.174.77) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 12 Jul
- 2024 11:37:26 +0100
-Date: Fri, 12 Jul 2024 11:37:25 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Dan Williams <dan.j.williams@intel.com>
-CC: James Bottomley <James.Bottomley@hansenpartnership.com>,
-	<ksummit@lists.linux.dev>, <linux-cxl@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, <netdev@vger.kernel.org>, <jgg@nvidia.com>
-Subject: Re: [MAINTAINERS SUMMIT] Device Passthrough Considered Harmful?
-Message-ID: <20240712113725.00004cdb@Huawei.com>
-In-Reply-To: <66900a0b9770d_1a7742942c@dwillia2-xfh.jf.intel.com.notmuch>
-References: <668c67a324609_ed99294c0@dwillia2-xfh.jf.intel.com.notmuch>
-	<3b9631cf12f451fc08f410255ebbba23081ada7c.camel@HansenPartnership.com>
-	<668db67196ca3_1bc8329416@dwillia2-xfh.jf.intel.com.notmuch>
-	<20240710142238.00007295@Huawei.com>
-	<66900a0b9770d_1a7742942c@dwillia2-xfh.jf.intel.com.notmuch>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1720960295; c=relaxed/simple;
+	bh=eFs7c9suLHknEBwUCTOWPP1zooe4Y1sytBABouaeKA4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Zy64YfDsqh+iInd1IqyB+ZunCpWxfeUyA29kRHAQ3Kyp5uel3VPOBUk6Xxr5gQ3dfwnVJZIFTIlM1Ax8EZnps90Ohdpc7/qRt8PEAqP8IgxnLDDTezFclA5HER0nH6PyxBrHxdsoRdwCGtMpaWMIj8arTCn8LOx4ZgAsjANIkEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=unGACnT3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E630C116B1;
+	Sun, 14 Jul 2024 12:31:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720960294;
+	bh=eFs7c9suLHknEBwUCTOWPP1zooe4Y1sytBABouaeKA4=;
+	h=Date:From:To:Cc:Subject:From;
+	b=unGACnT3MUlL9HEWUuUeFlEv3iWeYEdE9gSZAzWiE2tmSd0ja1/CHz8ucHqQuPwbt
+	 1tlwEKq/+eQfIEO8Tf076J0ibcfpUFZlQuWpR8xw7nW0mKHOvlwalTXvpUbC78GfWY
+	 4UtusOxF1Pw31YxWCUxUUm2L/ebpEVriSi1zc0WGyfmcG+N2m3bnHlNySxEFX617Cw
+	 CwLwl6UjEDlj1BS/WJnGEXARqG/vvE+S1ioQWzaf01svPAmOVnQyYppbyAt48re8rk
+	 y2001vAJYS2Tdi21vexzeJW+2jZPF3XmqCTXvLwYOjSzZG1dsdVacYPd1hxkoVr0OS
+	 pK/pqkn7IEnNQ==
+Date: Sun, 14 Jul 2024 08:31:32 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: ksummit@lists.linux.dev
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Subject: Proposal: Enhancing Commit Tagging for Stable Kernel Branches
+Message-ID: <ZpPFJH2uDLzIhBoB@sashalap>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
 
-On Thu, 11 Jul 2024 09:36:27 -0700
-Dan Williams <dan.j.williams@intel.com> wrote:
+Hi folks,
 
-> Jonathan Cameron wrote:
-> > On Tue, 9 Jul 2024 15:15:13 -0700
-> > Dan Williams <dan.j.williams@intel.com> wrote:
-> >   
-> > > James Bottomley wrote:  
-> > > > > The upstream discussion has yielded the full spectrum of positions on
-> > > > > device specific functionality, and it is a topic that needs cross-
-> > > > > kernel consensus as hardware increasingly spans cross-subsystem
-> > > > > concerns. Please consider it for a Maintainers Summit discussion.    
-> > > > 
-> > > > I'm with Greg on this ... can you point to some of the contrary
-> > > > positions?    
-> > > 
-> > > This thread has that discussion:
-> > > 
-> > > http://lore.kernel.org/0-v1-9912f1a11620+2a-fwctl_jgg@nvidia.com
-> > > 
-> > > I do not want to speak for others on the saliency of their points, all I
-> > > can say is that the contrary positions have so far not moved me to drop
-> > > consideration of fwctl for CXL.  
-> > 
-> > I was resisting rat holing. Oh well...
-> > 
-> > For a 'subset' of CXL.  There are a wide range of controls that are highly
-> > destructive, potentially to other hosts (simplest one is a command that
-> > will surprise remove someone else's memory). For those I'm not sure
-> > fwctl gets us anywhere - but we still need a solution (Subject to
-> > config gates etc as typically this is BMCs not hosts).
-> > Maybe fwctl eventually ends up with levels of 'safety' (beyond the
-> > current read vs write vs write_full, or maybe those are enough).  
-> 
-> It is not clear to me that fwctl needs more levels of safety vs the
-> local subsystem config options controlling what can and can not be sent
-> over the channel. The CXL backend for fwctl adds the local "command
-> effects" level of safety.
-> 
-> For the "Linux as BMC" case the security model is external to the
-> kernel, right? Which means it does not present a protocol that the
-> kernel can reason about.
+The Linux kernel community relies heavily on commit tags to identify and
+manage patches destined for stable kernel branches. Currently, we use a
+"Stable tag" (cc: stable@kernel.org) to indicate that a patch should be
+included in stable kernel branches, and a "Fixes tag" (Fixes:
+012345678901 ("commit subject")) to point to an older commit that the
+new commit fixes or improves. However, this scheme has led to some
+unintended consequences.
 
-The security model is indeed external, but I'd like a Linux BMC
-config to allow turning off the protections but still using the
-same fundamental interfaces as we normally use for the safe stuff.
-I don't want
-1) The CXL IOCTLs
-2) FWCTL
-3) Yet another interface.
+One of the main issues is that most Fixes-tagged commits (>80%) end up
+in a stable tree, leading some authors to omit the Stable tag
+altogether. This means we may not be trying hard enough to include
+critical commits in stable kernel branches. On the other hand, some
+authors are unhappy when commits without a Stable tag end up in a stable
+kernel branch. To address these shortcomings, I propose introducing an
+"Improves tag" (Improves: 012345678901 ("commit subject")) and altering
+the meaning of the Fixes tag.
 
-> 
-> Unless and until someone develops an authorization model for BMC nodes
-> to join a network topology I think that use case is orthogonal to the
-> primary in-band use case for fwctl.
+The Improves tag would indicate that a commit improves something but
+does not necessarily fix an issue. This new tag would imply that the
+commit should not be included in a stable kernel branch, unless it's
+needed as a dependency for a later commit. In contrast, the Fixes tag
+would henceforth carry the same meaning as if the Stable tag were
+present, ensuring that critical fixes are properly identified and
+prioritized.
 
-Use case wise I agree this isn't the current primary in-band use case
-for fwctl, hence the rat hole introductory comment.
+By introducing the Improves tag and updating the semantics of the Fixes
+tag, we can provide authors with more nuanced options for describing
+their commits. This change would also allow us to slowly deprecate the
+Stable tag, making it easier on authors by having one less tag to add.
+The recently introduced "not for stable tag" (Cc:
+<stable+noautosel@kernel.org>) could still be used in cases where an
+author explicitly wants to exclude their commit from a stable kernel
+branch.
 
-> 
-> It is still useful there to avoid defining yet another transport, but a
-> node that has unfettered access to wreak havoc on the network is not the
-> kernel's problem.
+I believe this proposal would improve the overall quality and
+consistency of our commit tagging scheme, making it easier for authors
+to provide accurate metadata about their commits. This, in turn, would
+facilitate more efficient management of patches destined for stable
+kernel branches. I invite feedback and discussion from the Linux kernel
+community on this proposal.
 
-As long as I can enable it via a sensible interface (and don't need to
-spin another) that is fine by me.
-
-> 
-> > Complexities such as message tunneling to multiple components are also
-> > going to be fun, but we want the non destructive bits of those to work
-> > as part of the safe set, so we can get telemetry from downstream devices.
-> > 
-> > Good to cover the debug and telemetry usecase, but it still leaves us with
-> > gaping holes were we need to solve the permissions problem, perhaps that
-> > is layered on top of fwctl, perhaps something else is needed.  
-> 
-> But that's more a CXL switch-management command security protocol
-> problem than fwctl, right? In other words, as far as I understand, there
-> is no spec provided permission model for switch management that Linux
-> could enforce, so it's more in the category of build a kernel that can
-> pass any payload and hope someone else has solved the problem of
-> limiting what damage that node can inflict.
-
-Two separate things here.
-
-For tunneling, there is plenty that will map to fwctl because it's just
-a transport question.  The tunnel command itself has a CEL that says
-it might eat babies so we'd need to check the relevant CEL for the
-destination to make sure they were just as safe as non tunneled version.
-So it's just an implementation detail, be it a fiddly one.
-
-For destructive options sure it's a config problem. But I do want
-to be able to lock down the kernel on the BMC but still allow the
-discructive command. Lock down is protecting and restricting the BMC
-not the other hosts in this use case. 
-
-> 
-> > So if fwctl is adopted, I do want the means to use it for the highly
-> > destructive stuff as well!  Maybe that's a future discussion.
-> >   
-> > > Where CXL has a Command Effects Log that is a reasonable protocol for
-> > > making decisions about opaque command codes, and that CXL already has a
-> > > few years of experience with the commands that *do* need a Linux-command
-> > > wrapper.  
-> > 
-> > Worth asking if this will incorporate unknown but not vendor defined
-> > commands.  There is a long tail of stuff in the spec we haven't caught up
-> > with yet.  Or you thinking keep this for the strictly vendor defined stuff?  
-> 
-> Long term, yes, it should be able to expand to any command code family.
-> Short term, to get started, the CXL "Feature" facility at least conveys
-> whether opcodes are reads or writes, independent of their side effects,
-> and are scoped to be "settings".
-> 
-> There is still the matter of background commands need to support
-> cancellation to avoid indefinite background-command-slot monopolization,
-> and there are still commands that need kernel coordination. So, I see
-> fwctl command support arriving in stages.
-
-Makes sense.  Tunneled access to CXL features should be an a good explorative
-feature to do reasonably soon.
-
-Jonathan
-
-
+-- 
+Thanks,
+Sasha
 
