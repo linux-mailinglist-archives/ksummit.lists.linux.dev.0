@@ -1,131 +1,154 @@
-Return-Path: <ksummit+bounces-1432-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1433-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36E8D931BC4
-	for <lists@lfdr.de>; Mon, 15 Jul 2024 22:25:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A705E931C37
+	for <lists@lfdr.de>; Mon, 15 Jul 2024 22:47:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63E2D1C213E4
-	for <lists@lfdr.de>; Mon, 15 Jul 2024 20:25:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 506DF1F22E13
+	for <lists@lfdr.de>; Mon, 15 Jul 2024 20:47:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9FB13AA45;
-	Mon, 15 Jul 2024 20:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4653A13BAE9;
+	Mon, 15 Jul 2024 20:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h/wUEqvv"
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PD03v/T/"
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247A3131E38
-	for <ksummit@lists.linux.dev>; Mon, 15 Jul 2024 20:25:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C651369B1
+	for <ksummit@lists.linux.dev>; Mon, 15 Jul 2024 20:47:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721075122; cv=none; b=ulP9iQybFlain7FGe/BqHtIbzd6W0mb2+J6wipyw0E1UBJroWIVxEyBeFTZF2Tjm46bYDONEkwmtxT+gxyBfEHu2Z8mMdR8f8sQnpqHPLo8Q96Bx617Yh/8LZDLpOvp7HEJNqe/cuXi4rpTNtvHNr0PFsxbzgOtQG2UfKGla6ps=
+	t=1721076439; cv=none; b=j0huIy3XjA1tu5wJSmQj6hZ95Zcdeqxfnsu+p48qXf4Puc/JoiFFfb2/1cUnBLIqPoI/Bc/Q7nfkMcfS5DoPBzy/A38cs7cm3BvGcT8xRsK3fLsVUswK1osE55CsXt4k0GNVJ+6b5UuN27yGbcOUyN3pjgTpi9TVNx0mTb35KVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721075122; c=relaxed/simple;
-	bh=vEhQ1r/9KMSJAQpxWRH/sS6tb+3ktwoMObiGPZgbkLI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GSSlEgDRndr0FGRV0sKRHM32yxzzFKUJkWk6cKdvHeOnqS8VEqiwnXlMs5ylBalYYrFDKWUvIEIJq2ArHk1+LI6vL6t8h3+FOOc4lWGnDvTmrDtQ7TH+YexyeCD54KVPjTcOusMlo4WH6RWieHF+egrux/ACme4Tzdv1/qhfs50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h/wUEqvv; arc=none smtp.client-ip=209.85.218.53
+	s=arc-20240116; t=1721076439; c=relaxed/simple;
+	bh=c4MPNDdpLYaZa9Hn+JriemCmIAIMF+eX5rlaDJ/Htn0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WANePTBw0e1jiwRtGyB3SpIVqLys/B3eO4kS2tYL1A32kDbfIEsYeT94wHEYDZtIHd7wDAL+MBkB3ibuWfZ9lI2WlsgS820swnrbUkbscpuUZaUPYnHZvEg44vYqtp6z1lzhJ3ju+UiyJ/WYvlb5CgJcI81WGrXBxnFCNn137Wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PD03v/T/; arc=none smtp.client-ip=209.85.215.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a7527afa23cso562649966b.2
-        for <ksummit@lists.linux.dev>; Mon, 15 Jul 2024 13:25:20 -0700 (PDT)
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-75e7e110e89so2736240a12.3
+        for <ksummit@lists.linux.dev>; Mon, 15 Jul 2024 13:47:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721075119; x=1721679919; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vEhQ1r/9KMSJAQpxWRH/sS6tb+3ktwoMObiGPZgbkLI=;
-        b=h/wUEqvv4oiHHY+wfSAWeHZnTTyiKQ62JPZt/of6Tm7pjeV6Zp1QjuTp8l3MlfhtAg
-         vVPwj6rQux7WyAyC+lKVW9xB6lLxjcdqZWQ3e245aC5dqW0El9N6RXb3RAxqNHj12sTc
-         8jd1DIGUEs6ex05HvCBJdLBXQTv1fY5bJPVJBdm/1Th5r0mJs4qvhIbKP+hSYGkNu+de
-         11yUASdw38aDeRLmTn+AaCV4J9L+2Rb5OI5Mx5JKtNw7P0278lvcihbunOl5hiZ4m/xQ
-         DFt3f904pSpAQg0FtsWs8d3inAs0EFqdgCYzmUWT4sRDNB+F7MJZaWSH5vOODM877V0Q
-         QE6g==
+        d=gmail.com; s=20230601; t=1721076437; x=1721681237; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1L6QS7UnA9mhEjmsRvV02NmmiCtD4P/miK4rnoHRBnY=;
+        b=PD03v/T/gqgM1xi5K9b0TITc4fSa2gzW8+vZcebDd39Hn8PazWpIH2pdplBNnTJOGE
+         7Gdb9PqM+lVwbA8vsNgxZOjlTyt9+FOOE8McfIlyKXEAAV4zmsE2Rn9orSlF5UZZA5+5
+         w91iNi26N6sv8+1FtIxULIvgWETu+tQZrGW8MTqTsbJBvKNiFCukmR8jSZwUn9U4DkaX
+         v7eHxux+zwkN3Zl8WZmaPpDvA1JsMnOWwzYdhVsyEflutmw0Wk4tmKMAxfzcM6zZypBu
+         B5f5hlV2KxEdVhhJVOdrO3ThxNKwjDL9/yTwep/7maXa7/f6GTxuPul/Snjln8VnEB1O
+         MdPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721075119; x=1721679919;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vEhQ1r/9KMSJAQpxWRH/sS6tb+3ktwoMObiGPZgbkLI=;
-        b=UZmcTDKzfxMtQ5iRdIGZgLfDxPhfkgs4/8+CRDuazcBB4bflV3BvC/80OGdtMEJdR0
-         cF3xAPbi+luF0VSBq9cWxQ/dWN5tKzFqQKMYvRqHUJOjcE4csWf6ht8sHmcvVpwaYEYi
-         JqpwndQs2phnPIBmTdhsGhz6HQTwXPuWKabyw4+TGIRwqWHJIeO+q1cBBXsy2hhMQxCv
-         hkYsAfLqXKzAMlPw+BK7yU6QnsBdJtefnIEanWQd4yjP2Y2ZENKxG8T2n5nI/ykDuPf2
-         E5i7C4Fsq9EAhw1Sm8WaKSxTS4+Z2sxvUzRgygTJvGkwJNjT+ZfDhGbOFN+o6b7QqNSd
-         +0kw==
-X-Forwarded-Encrypted: i=1; AJvYcCUTSS8axRc15z0173IXEfKc3yOCw3XBXTTBRCHS55E1u++8vlW768nd9uLJX+KhxoN9wBIZ41mY9I9q4Wogla9YsEw2tysGsA==
-X-Gm-Message-State: AOJu0YxlUoYDruqlipPA3DgA/WH9l7rCAqZQqEXsHwUr0z4JfAYoFgjN
-	4OwZEwX+UKq1J52FOXHS50nP4PTO3fS9sb77qBPg6P8rnkfJ1rdO
-X-Google-Smtp-Source: AGHT+IFWiTvKIV3UL2oG5MZbw3orbDCJ4BddNVfiXz1p+iXpMOIHdQo15B3EkTpmbAyDZcheD8pQww==
-X-Received: by 2002:a17:906:1404:b0:a77:d52d:5c5f with SMTP id a640c23a62f3a-a79eaa304eamr4826366b.51.1721075119077;
-        Mon, 15 Jul 2024 13:25:19 -0700 (PDT)
-Received: from foz.lan (ipb2184e18.dynamic.kabel-deutschland.de. [178.24.78.24])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a79bc7ff775sm241611266b.171.2024.07.15.13.25.18
+        d=1e100.net; s=20230601; t=1721076437; x=1721681237;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1L6QS7UnA9mhEjmsRvV02NmmiCtD4P/miK4rnoHRBnY=;
+        b=f0rGLCU1tERiFHUyH/xguHEuCOfmB9rfziIAIzyO5tFsW/mVecubP1TZYKe6RDCCEY
+         2IWuCvt/h+RvYRFT93Kj7GJanMlbP4yVDaMFqR3nhE5USe55LGkIuTzYjMVNxh0jP4um
+         Y8egGIudLY6Mxs+IPuVZ3pG9UZtlwoDMrjZbhWnCQDMjuWHLNZGXpRdGN9rBZCxqSmDV
+         pLnwYIBSlS0MPKsk96XpKvJf5rHSelNLv5Q85LEgL2Ioz8lNDAqftYYZAu1I57QWkf4p
+         yHydYbLyUV7EoyAFAtKZjGAZpW6aJKfmGUANygyqk03XssctYi1bgqHxqNFmYYECuP+3
+         cYzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWN145uVstKiwUVTyFnmpgE3mgUqSFWO2zkliC8CT1zHgbol2Tr7YIhIeiGaIxtxZ7nC6Zr6ktj8BVfg6+BeJPnDMnOGGA0Og==
+X-Gm-Message-State: AOJu0YykHWH5CAFUkQN9FwzjFWDuO1mQbQKje6dmPx1isSWZh2Vqt/cp
+	XqGuu6oFRuLb3cNCiyfBqJgar8oMEqLa4fZdSQdrg0H61b/zPpSB
+X-Google-Smtp-Source: AGHT+IEtALjFcu8NPU7r/X1zwG5xU4OkVth++WKATsiIEHklsgotGiYxkf9WiNojrYHMGEN5P249dg==
+X-Received: by 2002:a05:6a20:72a2:b0:1c2:8d16:c684 with SMTP id adf61e73a8af0-1c3f122f8e8mr118777637.21.1721076437378;
+        Mon, 15 Jul 2024 13:47:17 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:6d45:d4db:b14d:ea69])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fc0bc50a4asm45029675ad.283.2024.07.15.13.47.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jul 2024 13:25:18 -0700 (PDT)
-Date: Mon, 15 Jul 2024 22:25:13 +0200
-From: Mauro Carvalho Chehab <maurochehab@gmail.com>
-To: James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>, Theodore Ts'o <tytso@mit.edu>,
- Sasha Levin <sashal@kernel.org>, ksummit@lists.linux.dev, Greg KH 
- <gregkh@linuxfoundation.org>
+        Mon, 15 Jul 2024 13:47:17 -0700 (PDT)
+Date: Mon, 15 Jul 2024 13:47:14 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Theodore Ts'o <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	ksummit@lists.linux.dev, Greg KH <gregkh@linuxfoundation.org>
 Subject: Re: Proposal: Enhancing Commit Tagging for Stable Kernel Branches
-Message-ID: <20240715222426.2ec1f11d@foz.lan>
-In-Reply-To: <2d787d2e12b336f94afe5549cbfef4e1e20d9a7f.camel@HansenPartnership.com>
+Message-ID: <ZpWK0m7Ps6Y4vjL2@google.com>
 References: <ZpPFJH2uDLzIhBoB@sashalap>
-	<915ef4884d0cd347a1e0c87584346c764f7a11cf.camel@HansenPartnership.com>
-	<ZpQbQa-_8GkoiPhE@sashalap>
-	<f0d42bfb20b728b0c80daff864bd858ce86b3bfe.camel@HansenPartnership.com>
-	<ZpQyeLFJY1gJvRRA@sashalap>
-	<20240715180000.GC70013@mit.edu>
-	<fee1f575-e90b-495f-8832-6735c1917054@suswa.mountain>
-	<2d787d2e12b336f94afe5549cbfef4e1e20d9a7f.camel@HansenPartnership.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-redhat-linux-gnu)
+ <915ef4884d0cd347a1e0c87584346c764f7a11cf.camel@HansenPartnership.com>
+ <ZpQbQa-_8GkoiPhE@sashalap>
+ <f0d42bfb20b728b0c80daff864bd858ce86b3bfe.camel@HansenPartnership.com>
+ <ZpQyeLFJY1gJvRRA@sashalap>
+ <20240715180000.GC70013@mit.edu>
+ <fee1f575-e90b-495f-8832-6735c1917054@suswa.mountain>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fee1f575-e90b-495f-8832-6735c1917054@suswa.mountain>
 
-Em Mon, 15 Jul 2024 15:24:42 -0400
-James Bottomley <James.Bottomley@HansenPartnership.com> escreveu:
+On Mon, Jul 15, 2024 at 02:06:55PM -0500, Dan Carpenter wrote:
+> On Mon, Jul 15, 2024 at 02:00:00PM -0400, Theodore Ts'o wrote:
+> > On Sun, Jul 14, 2024 at 04:18:00PM -0400, Sasha Levin wrote:
+> > > From my experience, most issues tracked by regzbot and fixed upstream
+> > > don't actually have a stable tag. Here's one I just looked at a few days
+> > > ago: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=f451fd97dd2b78f286379203a47d9d295c467255
+> > > 
+> > > And I'm actually happy to point to that one as an example because the
+> > > ext4 folks are usually great about stable tags.
+> > >
+> > > Should we have not taken that commit?
+> > 
+> > Yep, that's just a mistake on our (my) part; you should have taken
+> > that commit, and my thanks for taking it without asking us.
+> > 
+> > That being said, maybe one path forward is that the stable team
+> > *should* be asking the subsystem maintainers about.  "Hey, the
+> > following commits appear to be backported, but you didn't add a cc:
+> > stable.  We plan to backport them unless you complain."  This has the
+> > benefit of giving feedback to the subsystem maintainers that they they
+> > missed tagging some number of commits, which might remind them to do
+> > better, or make them decide that they want to do something more
+> > explicit, such as have their own stable backports initiative ala XFS.
+> > 
+> > More generally, it seems to me that we are conflating multiple issues
+> > here in this discussion which may be making it harder for us make
+> > progress on the question.
+> > 
+> > 1) There are some subsystems who don't care about tagging commits,
+> >    either Fixes: or Cc: stable, or both;
+> > 
+> > 2) There are subsystems which are trying to appropriately tag commits, but:
+> >    a) Sometimes they will make a mistake, and forget to cc: stable
+> >    b) Sometimes it's too hard (tm) to figure out what is the commit which
+> >       introduces the regression, so they either make up something (e.g.,
+> >       hmm, it looks like commit XYZ changes one of the line that is touched
+> >       by the patch, so <shrug emoji>), or they will add a Cc: stable but
+> >       not supply a Fixes: tag
+> 
+> Too hard doesn't work as an excuse because someone has to figure it out,
+> and it may as well be the subsystem expert.
+> 
+> I've already added a checkpatch warning when people CC stable but don't
+> include a Fixes tag.  I also plan to start going back to maintainers
+> and manually asking them for Fixes tags.  This will be attached to the
+> patch.msgid.link URL so the stable tooling can pick up Fixes tags which
+> are added later.
+> 
+> The one question I have is for patches which pre-date git.  I was told
+> to leave the Fixes tag off in that case, but I think that's out of date.
+> It's more useful to say "Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")".
 
-> On Mon, 2024-07-15 at 14:06 -0500, Dan Carpenter wrote:
-> [...]
-> > The one question I have is for patches which pre-date git.=C2=A0 I was
-> > told to leave the Fixes tag off in that case, but I think that's out
-> > of date. It's more useful to say "Fixes: 1da177e4c3f4 ("Linux-2.6.12-
-> > rc2")". =20
->=20
-> Actually, we have a history tree (based on Bitkeeper) that goes back
-> before that:
->=20
-> https://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git/
->=20
-> So I'd tag these as
->=20
-> Fixes: 3bc0a5f5c1 (history "ext3: reservation info cleanup")
+If a thing was there since before git and only now is being discovered
+it either needs to be explicitly marked for stable with cc: or we can
+just keep the fix in newer kernels. IMO this particular "Fixes" tag does
+not bring any value.
 
-The problem with such tags is that eventually conflicts may arise
-with other checksum. Also, people may not notice that the fixes are
-referring to a different tree.
+Thanks.
 
-IMO, if you want to reference older commits, the best would be to use
-Link instead:
-
-Link: https://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git/comm=
-it/?id=3D3bc0a5f5c1
-
-and perhaps keep:
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-
-Regards,
-Mauro
+-- 
+Dmitry
 
