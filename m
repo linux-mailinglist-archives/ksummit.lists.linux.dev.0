@@ -1,113 +1,127 @@
-Return-Path: <ksummit+bounces-1445-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1446-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEF52934F75
-	for <lists@lfdr.de>; Thu, 18 Jul 2024 16:56:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAA959350BA
+	for <lists@lfdr.de>; Thu, 18 Jul 2024 18:36:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FDFA282989
-	for <lists@lfdr.de>; Thu, 18 Jul 2024 14:56:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43C8BB20901
+	for <lists@lfdr.de>; Thu, 18 Jul 2024 16:36:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D8F1411EE;
-	Thu, 18 Jul 2024 14:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E411144D11;
+	Thu, 18 Jul 2024 16:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="m7oBjX1l";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="m7oBjX1l"
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="R+Y05ufw"
+Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67889143726
-	for <ksummit@lists.linux.dev>; Thu, 18 Jul 2024 14:56:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 455B713FD83
+	for <ksummit@lists.linux.dev>; Thu, 18 Jul 2024 16:36:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721314580; cv=none; b=rzC/joAYbWcra+OJcVL2aCGSuA1tV/0+2wbVKin3NcOSIw/s83l94unjwcQUoWHHFnSJXOlsNB9ulU4opnbUxwrBER7CXdLoDkBpRF0zvtU+HKJSOAGMdagAwth2Gcavm66TqJ1zLBQ2JpyHMnxUaqKvJVAg1wbZtWoXoZlS0FQ=
+	t=1721320605; cv=none; b=F5IYsQT6nnilpA1zMYs37ftpAuGH1HIjn/C65gci7TFWnbv9emezRrZeWH474WmEiiVv41UYJ7XNk/JZQzSSKiUvdHqqoDeRVxgzQesEJ8g0UGVjC9Pa8LV03cVcT9nglHSv9H4bztYRWZKEUwh0+yHhUyo3yTddfA15R2L1lk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721314580; c=relaxed/simple;
-	bh=KTJeHnO6Ll1oWd6mJxYu4TAx1vBaEwfD03Y8gGcnHLU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=A79u06ahokCDTgNzFMTR6MDlKio9qZReOo/1APV0cuSe2jNvH7owW2POrfBFtbFbdryHrGsL60crwB8Y5Xq1ynwoEpljXRuNFnGg3wgzyIShmosmJc4YneVXZTz+THrfiNeEMkdLUcUcEcyYKE3ctz+c9LdyWgyd5npTn11bAtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=m7oBjX1l; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=m7oBjX1l; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1721314578;
-	bh=KTJeHnO6Ll1oWd6mJxYu4TAx1vBaEwfD03Y8gGcnHLU=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=m7oBjX1l4zmhnjA1z6Vs7qS+cZG+cuU/3ngoez9m6dV2MQ9To+2186eVzQOEZ6S9O
-	 f24djlwJhhYbf8VS7xJLRrBRO80BnyyxjMC0RYogL8l/Fn5WminzIYI0DB/pKwqIEc
-	 b3VnvaFdXPkzE5uuAbmKsWeRpQFf9ao5ipDzKlBI=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 61D951285D88;
-	Thu, 18 Jul 2024 10:56:18 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id 3MODyhBok9su; Thu, 18 Jul 2024 10:56:18 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1721314578;
-	bh=KTJeHnO6Ll1oWd6mJxYu4TAx1vBaEwfD03Y8gGcnHLU=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=m7oBjX1l4zmhnjA1z6Vs7qS+cZG+cuU/3ngoez9m6dV2MQ9To+2186eVzQOEZ6S9O
-	 f24djlwJhhYbf8VS7xJLRrBRO80BnyyxjMC0RYogL8l/Fn5WminzIYI0DB/pKwqIEc
-	 b3VnvaFdXPkzE5uuAbmKsWeRpQFf9ao5ipDzKlBI=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::db7])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 24C80128179A;
-	Thu, 18 Jul 2024 10:56:17 -0400 (EDT)
-Message-ID: <631f4f690b90dd3047f60cb4b77591e73ad144e7.camel@HansenPartnership.com>
+	s=arc-20240116; t=1721320605; c=relaxed/simple;
+	bh=biAH2iynPLiw0Hhtn3Ezli3RvWm8RcdrneB3yU9G7jI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q3iHB5jZbV3oZHWjSbBdzdsQzrY4yp6ZJFTdYQcDE3oJzI5MCPdNorCzLHkgRIkeEJoTA3hd3RMTcXWob7iu8lDNofugKvRwiWrlCffvHvOLZb10+nEHhwacn93LLUylZY5y7+k7wyac9YNz6K+OVPsZoulB8c4id3z+9zSVrgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=R+Y05ufw; arc=none smtp.client-ip=209.85.160.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-250ca14422aso538011fac.0
+        for <ksummit@lists.linux.dev>; Thu, 18 Jul 2024 09:36:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1721320603; x=1721925403; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Yp8/fLygD9U9tIxzfcHMZD+F9R40NCV7rxcXjPvPL8Q=;
+        b=R+Y05ufw7Zyqt+rWQ17g/kM2GgEP6Shxe/Bkd8nZeFx7VogMrsUI7p//WT3OwyVVvf
+         g2AGPUXscWRLFDk1oZVeNCUG04xre8odMwNPFdcnsUeju6dNwNpbUS/4Q0S8VWLxzj54
+         DNiZcp0W+IubcYBFmIrolr371yJLquYTwtv7AQpSzPew9nou9756w2GF7eBPI5th2r5t
+         v/xopk0fUD6D4hfGs+u3qmR4bY9KQKPvE3kJsL7uuYU8tr4oQR+rMGBibf2n8sQc0DQ5
+         AjE2+vIA65ZONeaU2jnF1RDMGjWrbvargpmiB9hRmL8zRpue38WsKVNr1khvfmjJ9e5S
+         SOWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721320603; x=1721925403;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Yp8/fLygD9U9tIxzfcHMZD+F9R40NCV7rxcXjPvPL8Q=;
+        b=Z4NsogpacpFYhMvZxELlUtvxYSDzW+6NyQyK8nM7BpG9WO66EmJ73q3jVmwotpkPrm
+         hzskGDzvRHM99ruRk54omqcqsTe7DX/VFEW+c76wIL/MXfAblo6FCGf/xFOM6s9LF3Ax
+         XXiTDOiApy3iE2GYHBFsc5bLv3iQ9HcjFmdRnlHYFeTw9emheawDWNVjL2kjUTayt8Un
+         P9rIMttnTFsK+0Lz1ohiYUFp/PKgW1iecUKO8MUng9kQjoYUYn76SjiBlLYNvZJzIZVM
+         dyNHtrWFjt58KzFK/+MoE4swvYkJgRdqmt/CHcfuay+iLYRfYhJ06npsSCrlOuBqZYJo
+         ZToA==
+X-Forwarded-Encrypted: i=1; AJvYcCXlJcSZGxVXvjs6iULFppyl3U0IF+G9srh8ykctWHb9oggxqlBc3l+blFBuq3vpJ++g9iK7outVTAGltDjXAWAQsrVew74xsA==
+X-Gm-Message-State: AOJu0YxArH61ELVOnopEmzyo+YF0dLTtVvWBgN/GoM/R2dHYMvaf4a2R
+	kxJ40TVW92/L3039q6RT6vSa+Gpmch+pHwbY2WYA8NVr16kpjH1ld7sQBp9YnzU=
+X-Google-Smtp-Source: AGHT+IEkphSB8Ky31ndQ01h4iHggqOrWMN/HJDd0sIjy68IfxWOLpCRMxuiBEXTih2ZWzTmi5QbJyw==
+X-Received: by 2002:a05:6870:6126:b0:261:679:d7f4 with SMTP id 586e51a60fabf-261067a21a9mr203005fac.25.1721320601349;
+        Thu, 18 Jul 2024 09:36:41 -0700 (PDT)
+Received: from localhost ([2603:8080:b800:f700:1a6d:d3d6:98e4:34e1])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-260efbc4e3dsm386783fac.6.2024.07.18.09.36.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Jul 2024 09:36:40 -0700 (PDT)
+Date: Thu, 18 Jul 2024 11:36:39 -0500
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: Takashi Iwai <tiwai@suse.de>, Greg KH <gregkh@linuxfoundation.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Theodore Ts'o <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>,
+	ksummit@lists.linux.dev
 Subject: Re: Proposal: Enhancing Commit Tagging for Stable Kernel Branches
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Dan Carpenter <dan.carpenter@linaro.org>, Takashi Iwai <tiwai@suse.de>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Dmitry Torokhov
-	 <dmitry.torokhov@gmail.com>, Theodore Ts'o <tytso@mit.edu>, Sasha Levin
-	 <sashal@kernel.org>, ksummit@lists.linux.dev
-Date: Thu, 18 Jul 2024 10:56:14 -0400
-In-Reply-To: <0c1d7d04-8040-4843-8aec-59c155273f84@suswa.mountain>
-References: <ZpQbQa-_8GkoiPhE@sashalap>
-	 <f0d42bfb20b728b0c80daff864bd858ce86b3bfe.camel@HansenPartnership.com>
-	 <ZpQyeLFJY1gJvRRA@sashalap> <20240715180000.GC70013@mit.edu>
-	 <fee1f575-e90b-495f-8832-6735c1917054@suswa.mountain>
-	 <ZpWK0m7Ps6Y4vjL2@google.com> <2024071605-bulb-plop-9cea@gregkh>
-	 <87frs91qat.wl-tiwai@suse.de>
-	 <ad9720d8-6b4e-4f7c-bf72-b3c2db8887d4@suswa.mountain>
-	 <87v813w3v7.wl-tiwai@suse.de>
-	 <0c1d7d04-8040-4843-8aec-59c155273f84@suswa.mountain>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+Message-ID: <1a8e6672-5431-4125-8d10-b00da89f84e7@suswa.mountain>
+References: <ZpQyeLFJY1gJvRRA@sashalap>
+ <20240715180000.GC70013@mit.edu>
+ <fee1f575-e90b-495f-8832-6735c1917054@suswa.mountain>
+ <ZpWK0m7Ps6Y4vjL2@google.com>
+ <2024071605-bulb-plop-9cea@gregkh>
+ <87frs91qat.wl-tiwai@suse.de>
+ <ad9720d8-6b4e-4f7c-bf72-b3c2db8887d4@suswa.mountain>
+ <87v813w3v7.wl-tiwai@suse.de>
+ <0c1d7d04-8040-4843-8aec-59c155273f84@suswa.mountain>
+ <631f4f690b90dd3047f60cb4b77591e73ad144e7.camel@HansenPartnership.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <631f4f690b90dd3047f60cb4b77591e73ad144e7.camel@HansenPartnership.com>
 
-On Thu, 2024-07-18 at 09:48 -0500, Dan Carpenter wrote:
-> On Thu, Jul 18, 2024 at 09:34:04AM +0200, Takashi Iwai wrote:
-[...]
-> > It's no "regression", per se, but
-> > a new feature that didn't exist in the past, after all.
+On Thu, Jul 18, 2024 at 10:56:14AM -0400, James Bottomley wrote:
+> On Thu, 2024-07-18 at 09:48 -0500, Dan Carpenter wrote:
+> > On Thu, Jul 18, 2024 at 09:34:04AM +0200, Takashi Iwai wrote:
+> [...]
+> > > It's no "regression", per se, but
+> > > a new feature that didn't exist in the past, after all.
+> > > 
 > > 
+> > If it's not a regression then don't add a Fixes tag.
 > 
-> If it's not a regression then don't add a Fixes tag.
+> Really, no, that's what got us into this issue in the first place: if
+> you only tag regressions with Fixes:, then we don't need cc:stable. 
+> Fixes: should be for anything that updated what was done in that prior
+> commit (including white space and spellings).  That way there's no
+> debate about whether it should apply and it's easy for Maintainers to
+> verify.
 
-Really, no, that's what got us into this issue in the first place: if
-you only tag regressions with Fixes:, then we don't need cc:stable. 
-Fixes: should be for anything that updated what was done in that prior
-commit (including white space and spellings).  That way there's no
-debate about whether it should apply and it's easy for Maintainers to
-verify.
+I'm honestly surprised you would say this.  You're very much in the
+minority view here.  I've reviewed over a thousand spelling mistake
+fixes across the whole tree as part of kernel-janitors and I don't
+remember anyone asking for a Fixes tag.
 
-cc:stable should be for stuff that is backport worthy (regressions
-etc), which does require some thought and a bit of guesswork.  And if
-something later proves to be a bug fix that wasn't tagged cc:stable it
-can be sent to stable later (and the Fixes: tag that wouldn't otherwise
-have been applied under your proposed rule helps to locate what trees
-it should be backported to).
+The one area where people debate is for harmless static checker fixes
+such as deleting an unnecessary variable, but the majority of
+maintainers say that doesn't qualify for a Fixes tag.
 
-James
+The majority opinion is that Fixes is only for bugs.
 
+regards,
+dan carpenter
 
