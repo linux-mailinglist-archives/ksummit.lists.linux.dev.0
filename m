@@ -1,180 +1,136 @@
-Return-Path: <ksummit+bounces-1447-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1448-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5997F93719F
-	for <lists@lfdr.de>; Fri, 19 Jul 2024 02:49:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B4F493720A
+	for <lists@lfdr.de>; Fri, 19 Jul 2024 03:35:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC6ECB215EF
-	for <lists@lfdr.de>; Fri, 19 Jul 2024 00:49:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5AC528251E
+	for <lists@lfdr.de>; Fri, 19 Jul 2024 01:35:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A8A137E;
-	Fri, 19 Jul 2024 00:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D68E15D1;
+	Fri, 19 Jul 2024 01:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="v75Znqny";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="lzFzqbir";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="VRsqfvVQ";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="iSEPQeP3"
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Uf5o6ykK"
+Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067111362
-	for <ksummit@lists.linux.dev>; Fri, 19 Jul 2024 00:49:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7E91FA5
+	for <ksummit@lists.linux.dev>; Fri, 19 Jul 2024 01:35:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721350167; cv=none; b=odk6sQbqnc4TtuAKSu8miQZRm3xFSLHu3RBKS2gexN0YisJus4s0Ilix6t15pMxwhS6I60RxMIc+YG4w0mfnwyk/5Sn3RuCn7Vs8XTKx1TNmrRaNIg8JmBXQTM2yVKrVTNMMrcFCb0dNF4c6m7L3LdbHs+5no9AULbGRX+ELguM=
+	t=1721352920; cv=none; b=MF+P3rSSPupNZmJFzlnWLRAwLTLOZtsmcMrAt7bX2Or1CrdnbGrHsnvooIXveknKATAuN4jYL5ze9AF4v6b2ewclJNYJ312UJG3jQ1x1u8CACuuWjkOhfoKcyL0GaIJkPoYEGCqVVJXTVaFFZmLn4GCZBQSj5unZ/FCF4xih1As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721350167; c=relaxed/simple;
-	bh=V1YctNIF2Q+9sMwsimV0P6dWNWIxdo1on6+hdAq4WQs=;
-	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
-	 References:Date:Message-id; b=fJ65/faCyOuzr2ou5mknehYYtXDTWmZB0qb1Sh1c2lG3bkgaIT1HstfkMTj1XYLL0XNOHe7O+42Cs/BiCbdPJVtrT/S7DKYcr9P7n3Aj5ChUwQfwdukMU3MPaZgNNsg41MF2bcvgiqBKndJSS3zXsY6wV8u/Fi14XjbGhiHL4iM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=v75Znqny; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=lzFzqbir; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=VRsqfvVQ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=iSEPQeP3; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id EDE021F786;
-	Fri, 19 Jul 2024 00:49:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1721350163; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3fFW034huYZMS+o867ktbY9HlZxlDcW+/lNrIegeEZk=;
-	b=v75ZnqnyjpdqwiQcn7lpqQYEKCi0fF+96X7IanNPngRE6ovxfGTU7YGJl15hAYYUTP4OkH
-	MwTFqWEep1v+Sqt8agIvrNK/pRXzAT5qcR+WdYrtFyPpiz4IXQPai2/JXzVvOw2lD7XjR/
-	OHr9ulc3PfrJjxEvWEbPW0bcVl+OQiI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1721350163;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3fFW034huYZMS+o867ktbY9HlZxlDcW+/lNrIegeEZk=;
-	b=lzFzqbir4gFbRofKOeMmPmN9C+lYNWwqwMpIOAowcndzLrZ1bgQvHVAIwAp9lyr/RYZech
-	jZikjXhsrz9wXPBA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=VRsqfvVQ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=iSEPQeP3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1721350162; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3fFW034huYZMS+o867ktbY9HlZxlDcW+/lNrIegeEZk=;
-	b=VRsqfvVQbOUHDDcTOp/KscSSpxGcro6IvyYIGHp3xA61HgYNfb/M77ccaXtoeH5KJi9E2S
-	DKXwJofl1m+GgGXZAzklu+HQxbew0xSRBewoYiHk7YooEhXpGbFCvsPtGqXvBNGYYtbh/G
-	JulrWuRxNPNF8X0pHylp30SjmcrjvyY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1721350162;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3fFW034huYZMS+o867ktbY9HlZxlDcW+/lNrIegeEZk=;
-	b=iSEPQeP3fPN53qPsR+Oq6vsPldn+zdquKakAIvHQ9lSWDQ8pr/xomSV3k8HhcgOyYnSoJ5
-	8Y8c5UXxwcfWDrDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 450C9136F7;
-	Fri, 19 Jul 2024 00:49:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id zxJaOg+4mWa2PwAAD6G6ig
-	(envelope-from <neilb@suse.de>); Fri, 19 Jul 2024 00:49:19 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=arc-20240116; t=1721352920; c=relaxed/simple;
+	bh=Jfw5S0ArwdMcuusFyl2l1bina4OYLoYkvu+ahOqey1c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j2gaZUm2jittYMoHj5LQCY8piC50KCwLCGQCc2Rb1y0rkFIPDa0CAArqJCDV2vjF9vJMVCM/sxZ2oqygTLI/pNascnRnRexMC+8LIEUSgLOD/I84tmdnwDrqOZ1JkakdgNftza+QYRpB3WlVfA+xZM4k/YtIwQQTfShjQdF4wvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Uf5o6ykK; arc=none smtp.client-ip=209.85.160.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-260fff38792so493674fac.1
+        for <ksummit@lists.linux.dev>; Thu, 18 Jul 2024 18:35:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1721352918; x=1721957718; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RayRIGnI2WiYCjgMN1yLuNFm6OZfmLmdi1IvOwvo6jU=;
+        b=Uf5o6ykKWyEZtiTWzR6P3Df3aWOGYPYMXCWmZrcbyegkXUKoqN3+IyBGQdImsFgMZK
+         61iiSLJkPztODSzDzsm3xk950UuXPyIQgscrkuomtIuB5Pt2o9F+aw8Ou4e+Y1cIkcjf
+         0F76ZhGbJOzQF0+ub4Qok8rif+CBEqUwpsZRgBpq5PsqywyK+7ZOveHSI4aRvayX12TX
+         BHBs2kheI9Dka+7ZYB0p/mWB4FMAElYIKSAHeAsUI1lKDJ9Oi8Ccm14+zuo3ucw/TEY2
+         G0D+Qv7H+3Sgjxpou3wXg6bSMfsU1hvY+9pCyRBKYyyt/0UN35zAezHwdIwj1SOchxca
+         xKBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721352918; x=1721957718;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RayRIGnI2WiYCjgMN1yLuNFm6OZfmLmdi1IvOwvo6jU=;
+        b=MBFUFeLAxB5sEl2Ep61QO3XDCw5tEbCSzGYnK+dyNDH/5GiLh+lDD8vc7pn5DcDUsf
+         Owor/A+3NX4nyVlviXn973iqdnf2Ezgn3wJrgVhGjaKdTO2IT6PyRyG8Y7ttRiHXEag9
+         j5tl6p6aUaHhQkqGOHU+9hDTa0AlPtkst/FxitqqiaeoOQWilJ1EnDq50igUKY0kVEVw
+         vnsfyi+8UFsqMV0erHc6QNPBfNIWm9I4DWDceR4I53OBQdgzuHAAnnGuVWcgY8VGL9l+
+         ZcCAupZSNoEobtRE3hnJmMf2SKus2jvTaNTi31+j6Nn3GAAbftlPIB2GLJ1socn6uMPd
+         ZunQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVXtJEKqVAtV9r6oc2AEMeBxjS8+vS9WZhz+RFLAH6jz0Km5fffdbYSrQmY1zeVKRXA5pHmdPhN2WziRwmlwrYLT4xSDXpMog==
+X-Gm-Message-State: AOJu0YxRamgxkhTspsNhCkzRjlFxZ/bKKO8ZhBiZtyO241Wf0ftGymGw
+	7AgAgY2JV5hYuc0ciNNA3cCisV5PtC51EubrRaFQB6nt4010TWPpYAcEJTpSeEg=
+X-Google-Smtp-Source: AGHT+IExMSwN2qY7czu8JrEsMNtXgr1lTjbaBepo8iMya4SA7URzIQi6D7Qn4TkdsE+va+2NVE40jw==
+X-Received: by 2002:a05:6870:f28b:b0:260:fc34:1c7d with SMTP id 586e51a60fabf-260fc342157mr2431910fac.23.1721352918007;
+        Thu, 18 Jul 2024 18:35:18 -0700 (PDT)
+Received: from localhost ([2603:8080:b800:f700:1a6d:d3d6:98e4:34e1])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2610c7ce708sm112667fac.25.2024.07.18.18.35.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Jul 2024 18:35:17 -0700 (PDT)
+Date: Thu, 18 Jul 2024 20:35:15 -0500
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: NeilBrown <neilb@suse.de>
+Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Takashi Iwai <tiwai@suse.de>, Greg KH <gregkh@linuxfoundation.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Theodore Ts'o <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>,
+	ksummit@lists.linux.dev
+Subject: Re: Proposal: Enhancing Commit Tagging for Stable Kernel Branches
+Message-ID: <3b661b6b-3236-45ed-8dfb-a1f1f1a38847@suswa.mountain>
+References: <>
+ <1a8e6672-5431-4125-8d10-b00da89f84e7@suswa.mountain>
+ <172135015702.18529.2525570382769472437@noble.neil.brown.name>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "NeilBrown" <neilb@suse.de>
-To: "Dan Carpenter" <dan.carpenter@linaro.org>
-Cc: "James Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Takashi Iwai" <tiwai@suse.de>, "Greg KH" <gregkh@linuxfoundation.org>,
- "Dmitry Torokhov" <dmitry.torokhov@gmail.com>,
- "Theodore Ts'o" <tytso@mit.edu>, "Sasha Levin" <sashal@kernel.org>,
- ksummit@lists.linux.dev
-Subject: Re: Proposal: Enhancing Commit Tagging for Stable Kernel Branches
-In-reply-to: <1a8e6672-5431-4125-8d10-b00da89f84e7@suswa.mountain>
-References: <>, <1a8e6672-5431-4125-8d10-b00da89f84e7@suswa.mountain>
-Date: Fri, 19 Jul 2024 10:49:17 +1000
-Message-id: <172135015702.18529.2525570382769472437@noble.neil.brown.name>
-X-Rspamd-Queue-Id: EDE021F786
-X-Spam-Flag: NO
-X-Spam-Score: 0.99
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [0.99 / 50.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TAGGED_RCPT(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[hansenpartnership.com,suse.de,linuxfoundation.org,gmail.com,mit.edu,kernel.org,lists.linux.dev];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
-	RCVD_COUNT_TWO(0.00)[2];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Spam-Level: 
-X-Spamd-Bar: /
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <172135015702.18529.2525570382769472437@noble.neil.brown.name>
 
-On Fri, 19 Jul 2024, Dan Carpenter wrote:
-> On Thu, Jul 18, 2024 at 10:56:14AM -0400, James Bottomley wrote:
-> > On Thu, 2024-07-18 at 09:48 -0500, Dan Carpenter wrote:
-> > > On Thu, Jul 18, 2024 at 09:34:04AM +0200, Takashi Iwai wrote:
-> > [...]
-> > > > It's no "regression", per se, but
-> > > > a new feature that didn't exist in the past, after all.
+On Fri, Jul 19, 2024 at 10:49:17AM +1000, NeilBrown wrote:
+> On Fri, 19 Jul 2024, Dan Carpenter wrote:
+> > On Thu, Jul 18, 2024 at 10:56:14AM -0400, James Bottomley wrote:
+> > > On Thu, 2024-07-18 at 09:48 -0500, Dan Carpenter wrote:
+> > > > On Thu, Jul 18, 2024 at 09:34:04AM +0200, Takashi Iwai wrote:
+> > > [...]
+> > > > > It's no "regression", per se, but
+> > > > > a new feature that didn't exist in the past, after all.
+> > > > > 
 > > > > 
+> > > > If it's not a regression then don't add a Fixes tag.
 > > > 
-> > > If it's not a regression then don't add a Fixes tag.
+> > > Really, no, that's what got us into this issue in the first place: if
+> > > you only tag regressions with Fixes:, then we don't need cc:stable. 
+> > > Fixes: should be for anything that updated what was done in that prior
+> > > commit (including white space and spellings).  That way there's no
+> > > debate about whether it should apply and it's easy for Maintainers to
+> > > verify.
 > > 
-> > Really, no, that's what got us into this issue in the first place: if
-> > you only tag regressions with Fixes:, then we don't need cc:stable. 
-> > Fixes: should be for anything that updated what was done in that prior
-> > commit (including white space and spellings).  That way there's no
-> > debate about whether it should apply and it's easy for Maintainers to
-> > verify.
+> > I'm honestly surprised you would say this.  You're very much in the
+> > minority view here.  I've reviewed over a thousand spelling mistake
+> > fixes across the whole tree as part of kernel-janitors and I don't
+> > remember anyone asking for a Fixes tag.
+> > 
+> > The one area where people debate is for harmless static checker fixes
+> > such as deleting an unnecessary variable, but the majority of
+> > maintainers say that doesn't qualify for a Fixes tag.
+> > 
+> > The majority opinion is that Fixes is only for bugs.
 > 
-> I'm honestly surprised you would say this.  You're very much in the
-> minority view here.  I've reviewed over a thousand spelling mistake
-> fixes across the whole tree as part of kernel-janitors and I don't
-> remember anyone asking for a Fixes tag.
+> First you said "regressions".  Then you said "bugs".  Which is it?
 > 
-> The one area where people debate is for harmless static checker fixes
-> such as deleting an unnecessary variable, but the majority of
-> maintainers say that doesn't qualify for a Fixes tag.
-> 
-> The majority opinion is that Fixes is only for bugs.
+> If I add a new feature that doesn't work as documented, it is clearly a
+> bug.  I don't think it is a regression.  I think the patch that corrects
+> the bug (either the code or the documentation or both) is a fix and
+> should be marked as such.
 
-First you said "regressions".  Then you said "bugs".  Which is it?
+Yeah.  I said that badly.  It should be for bugs.  Fixes tags mostly
+point to "Add <support> for something".  They mostly aren't regressions.
 
-If I add a new feature that doesn't work as documented, it is clearly a
-bug.  I don't think it is a regression.  I think the patch that corrects
-the bug (either the code or the documentation or both) is a fix and
-should be marked as such.
+regards,
+dan carpenter
 
-NeilBrown
+
+
 
