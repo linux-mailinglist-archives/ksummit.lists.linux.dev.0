@@ -1,121 +1,112 @@
-Return-Path: <ksummit+bounces-1464-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1465-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EEAB93A001
-	for <lists@lfdr.de>; Tue, 23 Jul 2024 13:36:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3921093A25E
+	for <lists@lfdr.de>; Tue, 23 Jul 2024 16:14:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 963801F231FC
-	for <lists@lfdr.de>; Tue, 23 Jul 2024 11:36:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 655BF1C22BFD
+	for <lists@lfdr.de>; Tue, 23 Jul 2024 14:14:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7AD81514C0;
-	Tue, 23 Jul 2024 11:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3549F153BF7;
+	Tue, 23 Jul 2024 14:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="QxLLppF3";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="QxLLppF3"
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i2DKmH8M"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA8E14F9F8
-	for <ksummit@lists.linux.dev>; Tue, 23 Jul 2024 11:36:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A721C153BE8
+	for <ksummit@lists.linux.dev>; Tue, 23 Jul 2024 14:14:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721734590; cv=none; b=YwlTtxZLcTaBjxaDKTfqiaGcq05RzxB5JIyNuai5hd/Sbc2u16NKPvLURQUBAhXMZUzzLBVn9ksCszgQ4bYaJMjwXjA3uxcK2sNueF53MarmvdVQctyS9Lp7sTs+E7gK6x1jRoPiqZgn7NR6bDZHVdYMk3lu4BO/J6JoH02v9gI=
+	t=1721744062; cv=none; b=QE1wn4yp4Yax5QdZQCA0S0iLfzMxqlHS5fnP6S1c2FMqex2c7Jo3oqqk6OWS7Y+lI6uUVUnF2CanmD8PYM0IKOAJxFnWtAUjnb7HFdicXMT+kwGbYbgpUsQuBAFBMEqUsp6KVFTnWjiGO29AYNwc8K+WFG3XPw0tJdekv8TzIBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721734590; c=relaxed/simple;
-	bh=MS6m6IULi+pEAfK0WMjEkJxpK0tYjHKlQi+2WOHrQPU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PcwnQeIyxwZGfeTfQtSEa5vGPwoY2ZqpOPW/8JzFgf2Wqx8u1m0M4/Z/Yt2k/is4BXVEsyPYLJuazfUjvnbTr6IA8R5V88os0vI4FmMncWuo0VLwV4eWL8lwgxdshGayPiJOwOqIuZnlnlN/sqIUeFg/swjIq00h7/FkmzZ03YA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=QxLLppF3; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=QxLLppF3; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1721734587;
-	bh=MS6m6IULi+pEAfK0WMjEkJxpK0tYjHKlQi+2WOHrQPU=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=QxLLppF3B4lzL7aV4SHiiGm17Got7OLk9K+Cv8IFtclvFddw69huooyT49bW5pgzW
-	 PxQxtZJ5zJmzR9E2m/5ElMS3F1NWb2Ik1IxnV52CSUa2k7Go3HVdkp5ElI3wtkPBCy
-	 TQhnNl5EN1xJ54iANj9F0rgMCaYQ9Ew997ROMXtU=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 9FD011286E02;
-	Tue, 23 Jul 2024 07:36:27 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id FvTuh8OnonKV; Tue, 23 Jul 2024 07:36:27 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1721734587;
-	bh=MS6m6IULi+pEAfK0WMjEkJxpK0tYjHKlQi+2WOHrQPU=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=QxLLppF3B4lzL7aV4SHiiGm17Got7OLk9K+Cv8IFtclvFddw69huooyT49bW5pgzW
-	 PxQxtZJ5zJmzR9E2m/5ElMS3F1NWb2Ik1IxnV52CSUa2k7Go3HVdkp5ElI3wtkPBCy
-	 TQhnNl5EN1xJ54iANj9F0rgMCaYQ9Ew997ROMXtU=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::db7])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id BCB4F1286DE3;
-	Tue, 23 Jul 2024 07:36:26 -0400 (EDT)
-Message-ID: <1e82a5c97e915144e01dd65575929c15bc0db397.camel@HansenPartnership.com>
-Subject: Re: [MAINTAINERS SUMMIT] Device Passthrough Considered Harmful?
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Jiri Kosina <jikos@kernel.org>, Dan Williams <dan.j.williams@intel.com>
-Cc: ksummit@lists.linux.dev, linux-cxl@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, netdev@vger.kernel.org, jgg@nvidia.com
-Date: Tue, 23 Jul 2024 07:36:24 -0400
-In-Reply-To: <nycvar.YFH.7.76.2407231320210.11380@cbobk.fhfr.pm>
-References: <668c67a324609_ed99294c0@dwillia2-xfh.jf.intel.com.notmuch>
-	 <nycvar.YFH.7.76.2407231320210.11380@cbobk.fhfr.pm>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	s=arc-20240116; t=1721744062; c=relaxed/simple;
+	bh=yj8g2biEfukUFflcD5whiHUSVYi75JwZPuXlu96hIro=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=hCaUorT9G4m/DzibvJrzcXGjG/BR7Utw9uqk3wIZKKIq8TNgs0IkL/W4mkDHenT/lfCefBbuMXr78z8gFEP8EjnX8c1wPkzvV3Ej2Px+wQSawdV/Jk1QXguk6xwPhsLh32RJbTHBPVLAGJqY+aJ3HeEpoCtuoZ6mdb5ETnKIgb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i2DKmH8M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3017C4AF09;
+	Tue, 23 Jul 2024 14:14:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721744062;
+	bh=yj8g2biEfukUFflcD5whiHUSVYi75JwZPuXlu96hIro=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=i2DKmH8MIXS9EGQIB8LOlAzzPXlm2qGjVxsuT5hElKw/kQGfe6sB2ex4Vxyn9kt2v
+	 uNAvG/A/LZP8cwkObg0OFL24d3O1Eyq1o0NuWG+EhXy/iFYlRPqWpGP6sz+7fg0qY2
+	 +2XKImdsEpJt4tgsBZzSfD58jwVOoUp4RcuMV3c7HUS/7wFme7DtkT1atexdhwwByz
+	 ofsWTe4QDrRZwGJUVO8oZbQbQnCGHz8Nit1ughLtl8Gp77lvqFO+rfoy+1K75AeHB/
+	 h8jwiCh1lHULl34TP5w//PHhhfN0p6ty4L9EvwnK35n5qk3d7nM/RvH8+h5NnawNdM
+	 vdCjlIgC95Z8Q==
+Date: Tue, 23 Jul 2024 16:14:19 +0200 (CEST)
+From: Jiri Kosina <jikos@kernel.org>
+To: Vegard Nossum <vegard.nossum@oracle.com>
+cc: Dan Carpenter <dan.carpenter@linaro.org>, NeilBrown <neilb@suse.de>, 
+    James Bottomley <James.Bottomley@hansenpartnership.com>, 
+    Takashi Iwai <tiwai@suse.de>, Greg KH <gregkh@linuxfoundation.org>, 
+    Dmitry Torokhov <dmitry.torokhov@gmail.com>, Theodore Ts'o <tytso@mit.edu>, 
+    Sasha Levin <sashal@kernel.org>, ksummit@lists.linux.dev
+Subject: Re: Proposal: Enhancing Commit Tagging for Stable Kernel Branches
+In-Reply-To: <676be898-56c2-4d26-a64b-5e25b7390899@oracle.com>
+Message-ID: <nycvar.YFH.7.76.2407231528050.11380@cbobk.fhfr.pm>
+References: <> <1a8e6672-5431-4125-8d10-b00da89f84e7@suswa.mountain> <172135015702.18529.2525570382769472437@noble.neil.brown.name> <3b661b6b-3236-45ed-8dfb-a1f1f1a38847@suswa.mountain> <676be898-56c2-4d26-a64b-5e25b7390899@oracle.com>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 
-On Tue, 2024-07-23 at 13:20 +0200, Jiri Kosina wrote:
-> On Mon, 8 Jul 2024, Dan Williams wrote:
+On Fri, 19 Jul 2024, Vegard Nossum wrote:
+
+> With my distro hat on, I definitely think Fixes: should be used for
+> anything that fixes a bug, regardless of whether it was a bug introduced
+> with a new feature or it was a regression.
 > 
-> > 2/ Device passthrough, kernel passing opaque payloads, is already
-> > taken for granted in many subsystems. USB and HID have "raw"
-> > interfaces
+> Fixes: is incredibly useful in the following way: You can check whether
+> you need to apply/cherry-pick a patch simply by checking whether you
+> have the commit it fixes (or a backport of it) in your branch. As a
+> distro (or even as a user), if you have a buggy commit in your branch
+> and there's a known fix for it, you almost always want the fix.
 > 
-> Just as a completely random datapoint here: after I implemented
-> hidraw inteface long time ago, I was a little bit hesitant about
-> really merging it, because there was a general fear that this would
-> shatter the HID driver ecosystem, making it difficult for people to
-> find proper drivers  for their devices, etc.
+> I don't really like the "Cc: stable # version+" tag for the exact same
+> reason: Authors/maintainers may be looking at when the bug was
+> introduced and decide not to put that "Cc: stable" tag since the patch
+> that introduced the problem was in an earlier -rc of the same release or
+> never appeared in a stable kernel _at that point in time_. But that's
+> the wrong approach, as the fixed commit may be backported to stable (or
+> a distro kernel) many years after it was merged into mainline (just look
+> at all the commits with Stable-dep-of: in stable), and without the
+> Fixes: tag we have no way to know that the fixed commit has a bug and
+> needs to have subsequent patches applied.
 
-The problem with hidraw is that userspace has to understand the device
-to use it, but a lot of HID devices (keyboards, mice, serial ports,
-etc.) want to fit into an existing ecosystem so they have to have a
-kernel driver to avoid having to update all the user applications. 
-However, entirely new devices don't have the existing ecosystem
-problem.
+For me, the biggest question coming out of this discussion is: what are 
+the groups / types of patches that should be getting "Cc: stable" despite 
+not being fixes for some older code?
 
-> Turns out that that didn't happen. Drivers for generic devices are
-> still implemented properly in the kernel, and hidraw is mostly used
-> for rather specific, one-off solutions, where the vendor's business
-> plan is "ship this one appliance and forget forever", which doesn't
-> really cause any harm to the whole ecosystem.
+As "fixing bugs" should be all what the stable tree is supposed to be 
+about, shouldn't it? (*)
 
-That's not entirely true.  FIDO tokens (the ones Konstantin is
-recommending for kernel.org access) are an entire class of devices that
-use hidraw and don't have a kernel driver.  There's an array of
-manufacturers producing them, but the CTAP specification and its
-conformance is what keeps a single user mode driver (which is now
-present as a separate implementation in all web browsers and the
-userspace libfido2) for all of them.  Fido is definitely not a one off,
-but on the other hand, not having a kernel driver doesn't seem to harm
-the ecosystem and they can get away with it because there was no
-existing device type for them to fit into (except, as you say, an array
-of incompatible and short lived USB key tokens which annoyed everyone
-by having usability limits due to the oneoffness).
+One of the obvious categories is "fixing HW issue", being it either 
+mitigations for HW security issues, or adding new device IDs, adding 
+quirks, etc.
 
-James
+But what next?
+
+
+
+(*) There is this famous defition at the beginning of
+
+	Documentation/process/stable-kernel-rules.rst
+
+but I guess it's obvious to everybody that it doesn't apply.
+
+-- 
+Jiri Kosina
+SUSE Labs
 
 
