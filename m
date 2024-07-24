@@ -1,166 +1,93 @@
-Return-Path: <ksummit+bounces-1469-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1470-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E2B93B81C
-	for <lists@lfdr.de>; Wed, 24 Jul 2024 22:37:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D58393B869
+	for <lists@lfdr.de>; Wed, 24 Jul 2024 23:10:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8222EB22409
-	for <lists@lfdr.de>; Wed, 24 Jul 2024 20:37:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC421B22E8F
+	for <lists@lfdr.de>; Wed, 24 Jul 2024 21:10:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523C5137772;
-	Wed, 24 Jul 2024 20:37:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="ZcNps47e";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="ZcNps47e"
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADB5013BC3E;
+	Wed, 24 Jul 2024 21:10:04 +0000 (UTC)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFFA6A347
-	for <ksummit@lists.linux.dev>; Wed, 24 Jul 2024 20:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C84513B2B0;
+	Wed, 24 Jul 2024 21:10:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721853445; cv=none; b=irk7nABfOSOuhn+Cj30wyZM9pG3UAPy1ANzN8+qYN4hEv9kvQQ9cl+DfhLwSSfFXdcCXedNa9ifuNXeHydfXCRkirkblRXCgImZU6bNXLpOEjqZiuFcQ54MVUpesa4Wnr2e0zVbAUtETXOXNHRCXEIWi/bX6wFwgYV2EU9TSiyg=
+	t=1721855404; cv=none; b=G6GnGSoAiSJcZ0UBOHNGH5zTtIoB4zqmQyjC/rbn20WhZIfWxXArS3/L0cclvrQXLvvTrYFV143XMpHMlBcJuze+3bm4yDIqesNXL8wDIL3aYy384ZfhNbzkDluYICpzhei065txvTktmilrM+n71k33oYyJw5n6i+i7SLpPwKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721853445; c=relaxed/simple;
-	bh=lPZvqySYXn0Ih/XTQwAHKD1AQY0p+922RJESktRa07s=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YbZ2U52erzHoyGlmD2Fp8Lbx3u+a9XXDhdmIiFb9q4NRpmgC4PiJcyIxQTiLDh3vIQT/uGNJhJxqM3nUV/6FixFkVXgpiwglgXvENYKVPsFLNuY+cJ33GnT9kz1VMxL3F7ka5Gkk03EK/zDdrRnD41DXjf/FskIQFODdYKOZfq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=ZcNps47e; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=ZcNps47e; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1721853443;
-	bh=lPZvqySYXn0Ih/XTQwAHKD1AQY0p+922RJESktRa07s=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=ZcNps47eri30xAk1Tju9WWaFYf3akmDYtLb32+G5m/O4Lk3zpSUL0gbmCVR30VgdP
-	 yuf5V7oV17But2SQmo+j69gHNcqTM4jJsnWTAdTZHNYgelQ5Q0bEqtlzCNYuTGb7HS
-	 zNk+ZWw6URN4qIHekyPhmzpA3fFwZ7uw+uAsM29A=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 8CD2812868A3;
-	Wed, 24 Jul 2024 16:37:23 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id ZP4tu15uyvwQ; Wed, 24 Jul 2024 16:37:23 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1721853443;
-	bh=lPZvqySYXn0Ih/XTQwAHKD1AQY0p+922RJESktRa07s=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=ZcNps47eri30xAk1Tju9WWaFYf3akmDYtLb32+G5m/O4Lk3zpSUL0gbmCVR30VgdP
-	 yuf5V7oV17But2SQmo+j69gHNcqTM4jJsnWTAdTZHNYgelQ5Q0bEqtlzCNYuTGb7HS
-	 zNk+ZWw6URN4qIHekyPhmzpA3fFwZ7uw+uAsM29A=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::db7])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id B23201286899;
-	Wed, 24 Jul 2024 16:37:22 -0400 (EDT)
-Message-ID: <a75782218f34ae3cff725cbcfb321527f6aa2e14.camel@HansenPartnership.com>
+	s=arc-20240116; t=1721855404; c=relaxed/simple;
+	bh=iecHcjgY45N2onErv+rBPVHXu+Da7UgJDK2xSAz9nR4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Fnz39EvTtLZf+dCtCX9zrfcb6aABnouePxeMgGoXURqxT+Oj1l/r8ySwZovf69sNXg9IPZ/7s1JNyDftNHOdvAajiwIPr0iiURwRborcTMGP+lG64yhoDJtr8zu+/8IZtKw2GQhDcnIASynjK4zzb55RLpJzN2xguT1Lcwuks2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAFB9C32781;
+	Wed, 24 Jul 2024 21:10:02 +0000 (UTC)
+Date: Wed, 24 Jul 2024 17:10:21 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Jiri Kosina
+ <jikos@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
+ ksummit@lists.linux.dev, linux-cxl@vger.kernel.org,
+ linux-rdma@vger.kernel.org, netdev@vger.kernel.org, jgg@nvidia.com
 Subject: Re: [MAINTAINERS SUMMIT] Device Passthrough Considered Harmful?
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Jiri Kosina <jikos@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
-  ksummit@lists.linux.dev, linux-cxl@vger.kernel.org,
- linux-rdma@vger.kernel.org,  netdev@vger.kernel.org, jgg@nvidia.com
-Date: Wed, 24 Jul 2024 16:37:21 -0400
-In-Reply-To: <20240724200012.GA23293@pendragon.ideasonboard.com>
+Message-ID: <20240724171021.05fbbadd@gandalf.local.home>
+In-Reply-To: <a75782218f34ae3cff725cbcfb321527f6aa2e14.camel@HansenPartnership.com>
 References: <668c67a324609_ed99294c0@dwillia2-xfh.jf.intel.com.notmuch>
-	 <nycvar.YFH.7.76.2407231320210.11380@cbobk.fhfr.pm>
-	 <1e82a5c97e915144e01dd65575929c15bc0db397.camel@HansenPartnership.com>
-	 <20240724200012.GA23293@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	<nycvar.YFH.7.76.2407231320210.11380@cbobk.fhfr.pm>
+	<1e82a5c97e915144e01dd65575929c15bc0db397.camel@HansenPartnership.com>
+	<20240724200012.GA23293@pendragon.ideasonboard.com>
+	<a75782218f34ae3cff725cbcfb321527f6aa2e14.camel@HansenPartnership.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 2024-07-24 at 23:00 +0300, Laurent Pinchart wrote:
-[...]
-> What I get from the discussions I've followed or partcipated in over
-> the years is that the main worry of free software communities is
-> being forced to use closed-source userspace components, whether that
-> would be to make the device usable at all, or to achieve decent level
-> of performance or full feature set. We've been through years of
-> mostly closed-source GPU support, of printer "windrivers", and quite
-> a few other horrors. The good news is that we've so far overcome lots
-> (most) of those challenges. Reverse engineering projects paid off,
-> and so did working hand-in-hand with industry actors in multiple ways
-> (both openly and behind the scenes). One could then legitimately ask
-> why we're still scared.
+On Wed, 24 Jul 2024 16:37:21 -0400
+James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
 
-I don't think I am.  We're mostly fully capable of expounding at length
-on the business rationale for being open if the thing they're hiding
-isn't much of a differentiator anyway (or they're simply hiding it to
-try to retain some illusion of control), so we shouldn't have any fear
-of being able to make our case in language business people understand.
-
-I also think this fear is partly a mindset problem on our part.  We
-came out of the real fight for openness and we do embrace things like a
-licence that forces open code (GPL) and symbols that discourage
-proprietary drivers (EXPORT_SYMBOL_GPL), so we've somewhat drunk the
-FSF coolaid that if we don't stand over manufacturers every second and
-force them they'll slide back to their old proprietary ways.  However,
-if you look at the entirely permissive ecosystem that grew up after we
-did (openstack, docker, kubernetes, etc.) they don't have any such fear
-and yet they still have large amounts of uncompelled openness and give
-back.
-
-> I can't fully answer that question, but there are two points that I
-> think are relevant. Note that due to my background and experience,
-> this will be heavily biased towards consumer and embedded hardware,
-> not data centre-grade devices. Some technologies from the latter
-> however have a tendency to migrate to the former over time, so the
-> distinction isn't necessarily as relevant as one may consider.
+> > The first point is that hardware gets more complicated over time, and
+> > in some markets there's also an increase in the number of vendors and
+> > devices. There's a perceived (whether true or not) danger that we
+> > won't be able to keep up with just reverse engineering and a
+> > development model relying on hobyists. Getting vendors involved is
+> > important if we want to scale.  
 > 
-> The first point is that hardware gets more complicated over time, and
-> in some markets there's also an increase in the number of vendors and
-> devices. There's a perceived (whether true or not) danger that we
-> won't be able to keep up with just reverse engineering and a
-> development model relying on hobyists. Getting vendors involved is
-> important if we want to scale.
+> Yes, but there are lots of not very useful complex devices being
+> produced every day that fail to capture market share.  Not having
+> reverse engineered drivers for them is no real loss.  If a device does
+> gain market share, it gains a huge pool of users some of whom become
+> interested in reverse engineering, so I think market forces actually
+> work in our favour: we get reverse engineering mostly where the devices
+> are actually interesting and capture market share.  It's self scaling.
 
-Yes, but there are lots of not very useful complex devices being
-produced every day that fail to capture market share.  Not having
-reverse engineered drivers for them is no real loss.  If a device does
-gain market share, it gains a huge pool of users some of whom become
-interested in reverse engineering, so I think market forces actually
-work in our favour: we get reverse engineering mostly where the devices
-are actually interesting and capture market share.  It's self scaling.
+I agree with this. If a small vendor with low market share has a
+proprietary device where they could easily port to Linux via a pass
+through, they may do that. But if they don't have that, and require
+engineering resources to port to Linux, they will not bother. As they would
+only care about the Windows market. So the device becomes useless for the
+Linux system. There's not enough Linux users to make a small vendor care
+about losing us. That just shrinks the number of devices that are available
+to Linux.
 
-> Second, I think there's a fear of regression. For some categories of
-> devices, we have made slow but real progress to try and convince the
-> industry to be more open. This sometimes took a decade of work,
-> patiently building bridges and creating ecosystems brick by brick.
-> Some of those ecosystems are sturdy, some not so. Giving pass-through
-> a blank check will likely have very different effects in different
-> areas. I don't personally believe it will shatter everything, but I'm
-> convinced it carries risk in areas where cooperation with vendors is
-> in its infancy or is fragile for any other reason.
+My guess is that vendors want to write one piece of code. If it they only
+need to modify a small portion to get it to another OS, they would do that.
+But if it takes more effort than that, there's not enough cost incentive to
+bother.
 
-I also think we're on the rise in this space.  Since most cloud
-workloads are on Linux, there's huge market pressure on most "found in
-the cloud" devices (like accelerators and GPUs) to have an easy to
-consume Linux story.  Nvidia is a case in point.  When it only cared
-about fast games on some other OS, we get shafted with a proprietary
-graphics drivers.  Now it's under pressure to be the number one AI
-accelerator provider for the cloud it's suddenly wondering about open
-source drivers to make adoption easier.
+For devices with a larger market share, it would make it more worth their
+while to open source their work, otherwise there's more incentive for us to
+reverse engineer it anyway.
 
-> Finally, let's not forget that pass-through APIs are not an all or
-> nothing option. To cite that example only, DRM requires GPU drivers
-> to have an open-source userspace implementation to merge the kernel
-> driver, and the same subsystems strongly pushes for API
-> standardization for display controllers. We can set different rules
-> for different cases.
-
-I certainly think we can afford to experiment here, yes.
-
-James
-
+-- Steve
 
