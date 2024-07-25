@@ -1,62 +1,63 @@
-Return-Path: <ksummit+bounces-1476-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1477-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6B1993C2B5
-	for <lists@lfdr.de>; Thu, 25 Jul 2024 15:14:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C922393C2DA
+	for <lists@lfdr.de>; Thu, 25 Jul 2024 15:21:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 873B328258C
-	for <lists@lfdr.de>; Thu, 25 Jul 2024 13:14:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 849EE281D83
+	for <lists@lfdr.de>; Thu, 25 Jul 2024 13:21:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E00C19AD73;
-	Thu, 25 Jul 2024 13:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F6719D06C;
+	Thu, 25 Jul 2024 13:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M9Q6rbiV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WQATLw6H"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8FE1132492
-	for <ksummit@lists.linux.dev>; Thu, 25 Jul 2024 13:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED2D19CCFC;
+	Thu, 25 Jul 2024 13:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721913268; cv=none; b=HAIHaidDw1/ejQwsI7a1Wrr0gfDFQk+HPmydxcSbUJ4ZuXSodN15rnP0gK4gCGSzmpzxM0sPkFOlpc1wNThcnDTYS8V9imZXQrryj/Sp+kSJ1NhB1oma7s5bEI/x/lSY8d73OSTTJRVV8+Hja4ryDvlFrUkNUlteHC7PR+SQ8m4=
+	t=1721913641; cv=none; b=d3WtUR+lBiPFOAsaqnYbi/DjCS0CKpXI3r0eAFdUBTRtVEzGOBY/iUj/JBkhCm/zNPK2J4InCiuWL6kdVXxBPLP0WiVOzFNVAhwpKJi61+A6bg2F3e/hSZdj1urWr40Dm9jj/Apu2oxju21wKdGR6D/filFYwAfIbofyuVf8Wso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721913268; c=relaxed/simple;
-	bh=GQNUAy9smaBfC0emFUGiVO3wOvQ+72rMXfclbcNwZpc=;
+	s=arc-20240116; t=1721913641; c=relaxed/simple;
+	bh=BmN7iV9wcpqqgQhGKBwK/OUJL+8kNs8M4kyoFh/EA5U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Mapj4dy2s4+uJ7bF4Up66Doni1QJHDQCgU2N9Dd2HBWEFJGkZtdbX+PsjHnzQGWtqCIRJZHbz7r1jZJ2mBJZ8m79VpSl9HlcMfQjnkB70B1MjH1zqvrh3T/aBCZ1iFTINRDVfk8i5IyxBFvcXwzSvFREisf/QJaRMuKozKNaHds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M9Q6rbiV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E785EC116B1;
-	Thu, 25 Jul 2024 13:14:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721913268;
-	bh=GQNUAy9smaBfC0emFUGiVO3wOvQ+72rMXfclbcNwZpc=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=NFO2Hvtd/1j1t7KrcvG82EbuCHvR+27Sl2pcdcpS3THXh/YWlfzqzmRwCrBbrneOQuuRxXs8lnqt2pnLHmcsoxEc4nI8tl7Gz2vZLRui0Jpd/+2LaZII0S/XWsYnordub8C9Ks1VB9HzGi/iROB0i40RRIpDpahCHlbM62mn2yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WQATLw6H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF3A5C116B1;
+	Thu, 25 Jul 2024 13:20:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721913640;
+	bh=BmN7iV9wcpqqgQhGKBwK/OUJL+8kNs8M4kyoFh/EA5U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=M9Q6rbiVrT/IPVjEG0zYAX28YKVX+buW6BKXYeEutnAofyGEDwysF6UcOLQhidUz7
-	 v21/fk6hhK9ghKFebtDndIk3SPL8cUVUx28a90JBHObrbv3Y7wwE5JHm3lfGG87OC3
-	 fZZc27SU4PvBwkaLyf4elCpIAEr5rx3jAR28r9pw=
-Date: Thu, 25 Jul 2024 15:14:25 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Thorsten Leemhuis <linux@leemhuis.info>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
+	b=WQATLw6HWeqgFz9KizJ2ajfn87+VrCK09Eirr/Pz15fWJ9VV4aV+poDrKBrWY0SYl
+	 c1/UbHfxG+5jraTqOBv27qpfbzfEUariScd5geaihQ1+6LrUq54CxMuYpwFnB302HL
+	 XQfkoakUP56rA3Ei3jnBb46V7phCRB4EXspQR2cKEqHFvu7RzYLVRNZfHDBZrubPl5
+	 gEvOojZXqbVtiif2y1XdYpHhPUSkKPbq6wyRE8a5gBS7Ggz4TSBaIq1XyljBjXyhsj
+	 CHy+y87owApN4Q3NJs8vt8om/S/a1zyHiKjAxBBDRXb8W9nQ33P2We64mt5/l/RKE0
+	 g39OA3pfY7Mhg==
+Date: Thu, 25 Jul 2024 16:20:35 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Mark Brown <broonie@kernel.org>, ksummit@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [MAINTAINERS SUMMIT] [0/4] Common scenario for four proposals
- regarding regressions
-Message-ID: <2024072530-clubhouse-polyester-091e@gregkh>
-References: <54f26c0959f796c52f04da9e831899f6482686ac.camel@HansenPartnership.com>
- <c4db6faa-89ac-4f1c-ac87-1db8f91ac480@leemhuis.info>
- <ead819d8bc59bd188bf4c07b3604a4aa5a194d8d.camel@HansenPartnership.com>
- <c3071fa8-e64a-40a6-a725-4be1c668346f@sirena.org.uk>
- <d1b85ab5a4363457eef65096c7c1d0efe28b5e41.camel@HansenPartnership.com>
- <710867cc-fcc1-42e4-8946-34448a784afa@sirena.org.uk>
- <32489d2e9b88f0353e97f28bf1d8018aa7dd4265.camel@HansenPartnership.com>
- <20240625175131.672d14a4@rorschach.local.home>
- <2024062651-skyward-stowaway-6ea6@gregkh>
- <813a6d1d-586b-467a-b4db-30d3b5e022cf@leemhuis.info>
+	Jiri Kosina <jikos@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>, ksummit@lists.linux.dev,
+	linux-cxl@vger.kernel.org, linux-rdma@vger.kernel.org,
+	netdev@vger.kernel.org, jgg@nvidia.com
+Subject: Re: [MAINTAINERS SUMMIT] Device Passthrough Considered Harmful?
+Message-ID: <20240725132035.GF7022@unreal>
+References: <668c67a324609_ed99294c0@dwillia2-xfh.jf.intel.com.notmuch>
+ <nycvar.YFH.7.76.2407231320210.11380@cbobk.fhfr.pm>
+ <1e82a5c97e915144e01dd65575929c15bc0db397.camel@HansenPartnership.com>
+ <20240724200012.GA23293@pendragon.ideasonboard.com>
+ <CAPybu_0SN7m=m=+z5hu_4M+STGh2t0J-hFEmtDTgx6fYWKzk3A@mail.gmail.com>
+ <20240725122315.GE7022@unreal>
+ <CAPybu_1XsNq=ExrO+8XLqnV_KvSaqooM=yNy5iuzcD=-k5CdGA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -66,50 +67,83 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <813a6d1d-586b-467a-b4db-30d3b5e022cf@leemhuis.info>
+In-Reply-To: <CAPybu_1XsNq=ExrO+8XLqnV_KvSaqooM=yNy5iuzcD=-k5CdGA@mail.gmail.com>
 
-On Thu, Jul 25, 2024 at 12:14:34PM +0200, Thorsten Leemhuis wrote:
-> On 26.06.24 09:36, Greg KH wrote:
-> > On Tue, Jun 25, 2024 at 05:51:31PM -0400, Steven Rostedt wrote:
-> >> On Thu, 20 Jun 2024 12:02:21 -0400
-> >> James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
-> >>
-> >>> After all, given that stable is now delaying backports in the merge
-> >>> window, there should be at least a 2 week period where .0 is it
-> >>> (although it's also the two week period where we're not paying
-> >>> attention ...)
-> >>
-> >> I'm curious. Is there a stable branch that adds the stable patches in
-> >> continuously? That is, during the merge window, to have a branch that
-> >> adds the stable patches as they come in and then when the merge window
-> >> closes, to post the rc series with all the patches that have landed in
-> >> that branch?
-> > 
-> > Yes, it's in the stable-queue git tree.  And in the linux-stable-rc tree
-> > for those that can not consume quilt trees.  Been there for years...
+On Thu, Jul 25, 2024 at 03:02:13PM +0200, Ricardo Ribalda Delgado wrote:
+> On Thu, Jul 25, 2024 at 2:23 PM Leon Romanovsky <leon@kernel.org> wrote:
+> >
+> > On Thu, Jul 25, 2024 at 11:26:38AM +0200, Ricardo Ribalda Delgado wrote:
+> > > On Wed, Jul 24, 2024 at 10:02 PM Laurent Pinchart
+> > > <laurent.pinchart@ideasonboard.com> wrote:
+> >
+> > <...>
+> >
+> > >
+> > > It would be great to define what are the free software communities
+> > > here. Distros and final users are also "free software communities" and
+> > > they do not care about niche use cases covered by proprietary
+> > > software.
+> >
+> > Are you certain about that?
 > 
-> Out of curiosity, as I seem to be missing something here:
+> As a user, and as an open source Distro developer I have a small hint.
+> But you could also ask users what they think about not being able to
+> use their notebook's cameras. The last time that I could not use some
+> basic hardware from a notebook with Linux was 20 years ago.
+
+Lucky you, I still have consumer hardware (speaker) that doesn't work
+with Linux, and even now, there is basic hardware in my current
+laptop (HP docking station) that doesn't work reliably in Linux.
+
 > 
-> Steven afaics asked for "continuously […] during the merge window" and
-> the answer apparently made a few people (including myself) happy. But I
-> can't see anything like that. Were you just busy with other stuff this
-> merge window and didn't get around to pick up the changes, or did I look
-> at the wrong place?
+> >
+> > > They only care (and should care) about normal workflows.
+> >
+> > What is a normal workflow?
+> > Does it mean that if user bought something very expensive he
+> > should not be able to use it with free software, because his
+> > usage is different from yours?
+> >
+> > Thanks
+> 
+> It means that we should not block the standard usage for 99% of the
+> population just because 1% of the users cannot do something fancy with
+> their device.
 
-Ah, no, I read this wrong.  THere is no such tree that happens "during
-the merge window", sorry, we are off doing other merge-window work and
-not queueing up fixes then.
+Right, the problem is that in some areas the statistics slightly different.
+99% population is blocked because 1% of the users don't need it and
+don't think that it is "normal" flow.
 
-> I occasionally kept an eye on the trees you mentioned during in the past
-> few days and the branches/directories for 6.10.y in stable-queue and the
-> linux-stable-rc afaics have afaics been non existent until a few days
-> ago before you started to prepare 6.10.1 -- and since that one was
-> released ~20 hours ago those branches/directories do not contain any
-> additional changes.
+> 
+> Let me give you an example. When I buy a camera I want to be able to
+> do Video Conferencing and take some static photos of documents. I do
+> not care about: automatic makeup, AI generated background, unicorn
+> filters, eyes recentering... But we need to give a way to vendors to
+> implement those things closely, without the marketing differentiators,
+> vendors have zero incentive to invest in Linux, and that affects all
+> the population.
+> 
+> This challenge seems to be solved for GPUs. I am using my AMD GPU
+> freely and my nephew can install the amdgpu-pro proprietary user space
+> driver to play duke nukem (or whatever kids play now) at 2000 fps.
+> 
+> There are other other subsystems that allow vendor passthrough and
+> their ecosystem has not collapsed.
 
-You are correct, I missed the "during merge window" portion.
+Yes, I completely agree with you on that.
 
-thanks,
+> 
+> Can we have some general guidance of what is acceptable? Can we define
+> together the "normal workflow" and focus on a *full* open source
+> implementation of that?
 
-greg k-h
+I don't think that is possible to define "normal workflow". Requirement
+to have open-source counterpart to everything exposed through UAPI is a
+valid one. I'm all for that.
+
+Thanks
+
+> 
+> -- 
+> Ricardo Ribalda
 
