@@ -1,69 +1,69 @@
-Return-Path: <ksummit+bounces-1490-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1491-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D04DA93CF2F
-	for <lists@lfdr.de>; Fri, 26 Jul 2024 10:04:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55A6693CF39
+	for <lists@lfdr.de>; Fri, 26 Jul 2024 10:05:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2C481C21BC5
-	for <lists@lfdr.de>; Fri, 26 Jul 2024 08:04:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CE54283137
+	for <lists@lfdr.de>; Fri, 26 Jul 2024 08:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10573176FB2;
-	Fri, 26 Jul 2024 08:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B1C177982;
+	Fri, 26 Jul 2024 08:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NEaaA6Rb"
-Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P06C0rYg"
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4F7176AD6
-	for <ksummit@lists.linux.dev>; Fri, 26 Jul 2024 08:03:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA65176258
+	for <ksummit@lists.linux.dev>; Fri, 26 Jul 2024 08:04:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721981036; cv=none; b=bujxYx51XyAeEoaeWZeu9ZWFltwYAF7Z/6fY9leqqSaoGc3tnw1w8+DslKEWirsHqtvjG6hyqx/szsMy86xtvDYq3B15CernG2iseJvvWSzOVn1ki8Vyno8EL8p9r8aU3tO6AUOElvrXb9XrK48uyT+9Hheew5SD1aMh8RqedgA=
+	t=1721981095; cv=none; b=Z8Er6qYIezOv/aC6/YXAccrsG46y9EEl/NvNPS0YxU0jVVxtjMqqw72m9innj7PR+L5pkXBxi04V6lo0KdYrhReqA7Yy6f5Im2T0D/Fge07dnEOwCfqsSCNWP/rjeriJSmDWHQraiWeoPGWRD7nEo0TMwbLLL6SSA/7RULbVF+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721981036; c=relaxed/simple;
-	bh=BTt5Us5dm7G8K+LbZQHVtBk6uxr8bOQKlh2I6b//vKM=;
+	s=arc-20240116; t=1721981095; c=relaxed/simple;
+	bh=3rCcaIKzprH0B1YUM6DsKtCcvO13lgaECYjxqPkORVc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OoRqycRFh44CBQSBpEkZ4nwVtxaqUKktkYMgQSNS9mMiw6PT+J/+1FgWKdth3w0s6mMut5/EQ79TKCewQ2lW9wMjrLctZVWH6Fr7o4QwjxfqOOAc5mMMom4UGHnPiTeULoHFosypbJmFpIML+Scr6v3aRbBSa9NS+K5/5EW2VTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NEaaA6Rb; arc=none smtp.client-ip=209.85.221.171
+	 To:Cc:Content-Type; b=hj+ToX7owYA555XjUQbIuRu5GigeXp668f+6rlu3b0ehXRkqNOWYdsyl4/63lYy1tuBQeWcC6SBWM/AHjJkj3Wy3T5wAqh3e8HUQn/PHQ7CwgPOBNQAIfoZ5OsuAyPhhB2YorkeEhQ67QRNAwP28IsUP7+hR42p8BKTbxiB4M74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P06C0rYg; arc=none smtp.client-ip=209.85.221.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-4e1c721c040so145424e0c.3
-        for <ksummit@lists.linux.dev>; Fri, 26 Jul 2024 01:03:54 -0700 (PDT)
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-4f527c0c959so175855e0c.1
+        for <ksummit@lists.linux.dev>; Fri, 26 Jul 2024 01:04:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721981034; x=1722585834; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1721981092; x=1722585892; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qO8PgoBu3Ddw0Sv6NYJhLole57AvnJIcGz5QbvN/cQo=;
-        b=NEaaA6RbTkgfy44GtSw0uo/+GkbOHFuk98pB6T8ZNC+dFpB7sxaF20g5wieYt709qS
-         0O1WzcpyCJ1lLeZKLrxRH+Thip7sCm9PNUEWA+YDEmQaBVc39dpKiJN57N1bjVe/YhFU
-         R4jxNnwjyO3gwVE+OiZTfyZR8IP1i4suHdaAXUXnM4mwlJjgD65WNTDjNvYSokyiGLtM
-         i6SUPI8ygXJZSCBY6okyjCtySwajrENju0dQ7vt4ojyrRRQX8EOONwhrKHNaLFojCnyT
-         ovhR0puu3jWBx2V32cepw8nHwy+cBCNmKYtBAkEejZeA05eWfCQ/3sVBlvJrPzRirQdP
-         t0SA==
+        bh=3rCcaIKzprH0B1YUM6DsKtCcvO13lgaECYjxqPkORVc=;
+        b=P06C0rYg9gx3cIG/Iy1uA49vJB691U9lUzqyc97s26WwYyqCD8KPszJ7q4Zwp68mg5
+         a37bfEfNPxrIRcZajo0cgcmndyl4SLvd1LLnMQEdOAiyybpOVgFQ+kPcgMtqPrqc3VdX
+         SMPCynN/DvYSZX7WgZaPeEIyNNJyl17bWXcoIAojH6K4npz1uhIU2Qh6Dn2PX4W3GNIN
+         5HaBPN6BCWKJP+XdmFsLvyMnInaK59NRjzSN7loskbvscjEw4+/lkoDVYkg/NUfLCcXt
+         uiJzdUjLIvJItudydaOlOYjokqA4YrnyoAaX1xXWz98sQWPA7A7uliSUbQuwP4/lihRW
+         Zsfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721981034; x=1722585834;
+        d=1e100.net; s=20230601; t=1721981092; x=1722585892;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qO8PgoBu3Ddw0Sv6NYJhLole57AvnJIcGz5QbvN/cQo=;
-        b=IvGULR4rH6PdHxaShVLmvaW9+/WcWaD0e9DiOrr6pVUbSWos6v1e0Z9gA87vPnWvql
-         +K/2xY4UCh8g1XoImJrSNXZDFRpxh8ocSVASPCZT6aPX3Ri0dQBdY1xL0dzLTE/lmsqk
-         MyhBbYm9OmxjxjRrz8mBdxVJy7nhvIu9v0IGPQ/D63x0oW50BtBNo6KtyB5XhI5swaKx
-         RzlHq1bopagm/NY3K+JgI5T23jUf/vB4yb1UlV6kRUm+8wHcP7jyiXFipovtkVtrT+3r
-         bB0TpcXOdKU7HVzTC1ZhrtYEtg1kVSmJt3IU/AbkSC4ymPAF6DtTYhLy79VH6mM7uk7N
-         bBMg==
-X-Forwarded-Encrypted: i=1; AJvYcCUAlwAKvuAw92DmJfv7YQDr2IdJspSKarowgnbrC1hsnJ6k8SZSQD2idmPYOoZc76eJcQxMIVyhRcxRiGjGPbR5SKZhJ+JbcQ==
-X-Gm-Message-State: AOJu0YxB6tt5t4z8wpLeYI9Zv9+MJXvigCsKmtc0rtf4e64LCdAFn2Bb
-	JMq3SlgZWp5l2MbfOl3x7gTyKm2bAbRl/H2XQzGCAL9XiXAGdAsPEZp//Qaqyx3taAH7sPPCpT8
-	tn5gIbsui0K0KNnCeGK7lFEScyXMjz/togd4=
-X-Google-Smtp-Source: AGHT+IEwviavYtndhM/zpbHVcDNyNXdiW4qOQcD+2MfGjbhH7FYJ8xuzbXvbXxwryJxaDAUU7MfovoniuEMn60/iyAE=
-X-Received: by 2002:a05:6122:3c8f:b0:4f6:b240:4af8 with SMTP id
- 71dfb90a1353d-4f6ca57f693mr5756432e0c.11.1721981033546; Fri, 26 Jul 2024
- 01:03:53 -0700 (PDT)
+        bh=3rCcaIKzprH0B1YUM6DsKtCcvO13lgaECYjxqPkORVc=;
+        b=Qej10NuwVxkkO7Y5er9nhC/FjutLnpzzg787iWrLusZEpR1MHufGxJVdh7qqLwK/JT
+         e1tcstxRAIHkeYsFMCSp5B/TdqkCMGzUlhJVEjAUVkGj2QPULuS1leErMolVeoeE+Jta
+         W5BfeOFF1kTZYwtxLONkvF8c9dVy8ASbgd9E5Dqx+66uSsb9NRoM+QIzeHSQ3ZqD9pX4
+         6B7NhYDSt5AWok22NGBQx7ZdAqvKmsNgxw4E0lpIyazk4xdze3bjL0xXO3fWNzvXMVvQ
+         hVjOvUPRiBoLcttnwb9slGkEGIOnjsFsjY70FKHq2dTk70v5UIJLw52usRq19AfKg/L8
+         sCtg==
+X-Forwarded-Encrypted: i=1; AJvYcCUnc+ABcY5MVbf1h2RqmrGN9CVA+IpfCR/P6+oElj/XDtxrFTVatS5D7sN1PzomO8pymwEmlntKLgZHiett5y9rHH/E89B60Q==
+X-Gm-Message-State: AOJu0Yx0VEEtecTn5X07Gu8d+S0HZwx/Pvsj1N4Vj07eeKxKZTRM0mcT
+	hnIvgXPfWCunyjuOixN1xDdjdDcO0aXU9FKWnQsgMPy1eaWVhG10xBUl8aQMdpU7oR8Tu5XZZt6
+	k49wC/APXTu3P0gSEWdi4C0Fonn0=
+X-Google-Smtp-Source: AGHT+IHAgEHkTed+iTxJYkjK6Lc6SKUhzp889QWaP7H+G0eNF/WSvKeCMUoix3SK8LBJobMWRbeeDiJOVMNy/vPSSd4=
+X-Received: by 2002:a05:6122:2901:b0:4f3:207a:c664 with SMTP id
+ 71dfb90a1353d-4f6c5c9455bmr6315323e0c.14.1721981092053; Fri, 26 Jul 2024
+ 01:04:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -71,156 +71,317 @@ List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <668c67a324609_ed99294c0@dwillia2-xfh.jf.intel.com.notmuch>
- <nycvar.YFH.7.76.2407231320210.11380@cbobk.fhfr.pm> <1e82a5c97e915144e01dd65575929c15bc0db397.camel@HansenPartnership.com>
- <20240724200012.GA23293@pendragon.ideasonboard.com> <a75782218f34ae3cff725cbcfb321527f6aa2e14.camel@HansenPartnership.com>
- <20240725193125.GD14252@pendragon.ideasonboard.com>
-In-Reply-To: <20240725193125.GD14252@pendragon.ideasonboard.com>
+ <3b9631cf12f451fc08f410255ebbba23081ada7c.camel@HansenPartnership.com>
+ <668db67196ca3_1bc8329416@dwillia2-xfh.jf.intel.com.notmuch>
+ <20240721192530.GD23783@pendragon.ideasonboard.com> <CAPybu_2tUmYtNiSExNGpsxcF=7EO+ZHR8eGammBsg8iFh3B3wg@mail.gmail.com>
+ <20240722111834.GC13497@pendragon.ideasonboard.com> <CAPybu_1SiMmegv=4dys+1tzV6=PumKxfB5p12ST4zasCjwzS9g@mail.gmail.com>
+ <20240725200142.GF14252@pendragon.ideasonboard.com>
+In-Reply-To: <20240725200142.GF14252@pendragon.ideasonboard.com>
 From: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
-Date: Fri, 26 Jul 2024 10:03:36 +0200
-Message-ID: <CAPybu_3GkgcORm0Jbp8ze_rjfXDws8xWT_sQcs_39KY54zpnQg@mail.gmail.com>
+Date: Fri, 26 Jul 2024 10:04:33 +0200
+Message-ID: <CAPybu_1hZfAqp2uFttgYgRxm_tYzJJr-U3aoD1WKCWQsHThSLw@mail.gmail.com>
 Subject: Re: [MAINTAINERS SUMMIT] Device Passthrough Considered Harmful?
 To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, Jiri Kosina <jikos@kernel.org>, 
-	Dan Williams <dan.j.williams@intel.com>, ksummit@lists.linux.dev, 
+Cc: Dan Williams <dan.j.williams@intel.com>, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, ksummit@lists.linux.dev, 
 	linux-cxl@vger.kernel.org, linux-rdma@vger.kernel.org, netdev@vger.kernel.org, 
 	jgg@nvidia.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Laurent
-
-On Thu, Jul 25, 2024 at 9:32=E2=80=AFPM Laurent Pinchart
+On Thu, Jul 25, 2024 at 10:02=E2=80=AFPM Laurent Pinchart
 <laurent.pinchart@ideasonboard.com> wrote:
 >
-> On Wed, Jul 24, 2024 at 04:37:21PM -0400, James Bottomley wrote:
-> > On Wed, 2024-07-24 at 23:00 +0300, Laurent Pinchart wrote:
-> > [...]
-> > > What I get from the discussions I've followed or partcipated in over
-> > > the years is that the main worry of free software communities is
-> > > being forced to use closed-source userspace components, whether that
-> > > would be to make the device usable at all, or to achieve decent level
-> > > of performance or full feature set. We've been through years of
-> > > mostly closed-source GPU support, of printer "windrivers", and quite
-> > > a few other horrors. The good news is that we've so far overcome lots
-> > > (most) of those challenges. Reverse engineering projects paid off,
-> > > and so did working hand-in-hand with industry actors in multiple ways
-> > > (both openly and behind the scenes). One could then legitimately ask
-> > > why we're still scared.
-> >
-> > I don't think I am.  We're mostly fully capable of expounding at length
-> > on the business rationale for being open if the thing they're hiding
-> > isn't much of a differentiator anyway (or they're simply hiding it to
-> > try to retain some illusion of control), so we shouldn't have any fear
-> > of being able to make our case in language business people understand.
-> >
-> > I also think this fear is partly a mindset problem on our part.  We
-> > came out of the real fight for openness and we do embrace things like a
-> > licence that forces open code (GPL) and symbols that discourage
-> > proprietary drivers (EXPORT_SYMBOL_GPL), so we've somewhat drunk the
-> > FSF coolaid that if we don't stand over manufacturers every second and
-> > force them they'll slide back to their old proprietary ways.  However,
-> > if you look at the entirely permissive ecosystem that grew up after we
-> > did (openstack, docker, kubernetes, etc.) they don't have any such fear
-> > and yet they still have large amounts of uncompelled openness and give
-> > back.
+> Hi Ricardo,
 >
-> I don't think those are necessarily relevant examples, as far as device
-> pass-through goes. Vendors have many times reverted to proprietary ways,
-> and they still do, at least in the areas of the kernel I'm most active
-> in. I've seen first hand a large SoC vendor very close to opening a
-> significant part of their camera stack and changing their mind at the
-> last minute when they heard they could possibly merge their code through
-> a different subsystem with a pass-through blank cheque.
-
-Without knowing who that large SoC vendor is, and what they will be
-willing to open, it is difficult to know what opportunity has been
-lost. I would argue that if they have cancelled their open plans based
-on an hypothesis, their willingness to open was not that high.
-
-It would be more healthy for the ecosystem, if those discussions were
-done more openly, at least all the core maintainers should be
-involved.
-
->
-> I'm willing to believe it can be different in other areas, which may
-> partly explain why different subsystems and different developers have
-> different biases and have trouble understand each other's point of view.
-
-It is not different in other areas, it is the same area. At the end of
-the day it is the same chip manufacturers, with the same legal teams.
-It is our attitude that is different.
-
-
->
-> > > I can't fully answer that question, but there are two points that I
-> > > think are relevant. Note that due to my background and experience,
-> > > this will be heavily biased towards consumer and embedded hardware,
-> > > not data centre-grade devices. Some technologies from the latter
-> > > however have a tendency to migrate to the former over time, so the
-> > > distinction isn't necessarily as relevant as one may consider.
+> On Mon, Jul 22, 2024 at 01:56:11PM +0200, Ricardo Ribalda Delgado wrote:
+> > On Mon, Jul 22, 2024 at 1:18=E2=80=AFPM Laurent Pinchart wrote:
+> > > On Mon, Jul 22, 2024 at 12:42:52PM +0200, Ricardo Ribalda Delgado wro=
+te:
+> > > > On Sun, Jul 21, 2024 at 9:25=E2=80=AFPM Laurent Pinchart wrote:
+> > > > > On Tue, Jul 09, 2024 at 03:15:13PM -0700, Dan Williams wrote:
+> > > > > > James Bottomley wrote:
+> > > > > > > > The upstream discussion has yielded the full spectrum of po=
+sitions on
+> > > > > > > > device specific functionality, and it is a topic that needs=
+ cross-
+> > > > > > > > kernel consensus as hardware increasingly spans cross-subsy=
+stem
+> > > > > > > > concerns. Please consider it for a Maintainers Summit discu=
+ssion.
+> > > > > > >
+> > > > > > > I'm with Greg on this ... can you point to some of the contra=
+ry
+> > > > > > > positions?
+> > > > > >
+> > > > > > This thread has that discussion:
+> > > > > >
+> > > > > > http://lore.kernel.org/0-v1-9912f1a11620+2a-fwctl_jgg@nvidia.co=
+m
+> > > > > >
+> > > > > > I do not want to speak for others on the saliency of their poin=
+ts, all I
+> > > > > > can say is that the contrary positions have so far not moved me=
+ to drop
+> > > > > > consideration of fwctl for CXL.
+> > > > > >
+> > > > > > Where CXL has a Command Effects Log that is a reasonable protoc=
+ol for
+> > > > > > making decisions about opaque command codes, and that CXL alrea=
+dy has a
+> > > > > > few years of experience with the commands that *do* need a Linu=
+x-command
+> > > > > > wrapper.
+> > > > > >
+> > > > > > Some open questions from that thread are: what does it mean for=
+ the fate
+> > > > > > of a proposal if one subsystem Acks the ABI and another Naks it=
+ for a
+> > > > > > device that crosses subsystem functionality? Would a cynical ha=
+rdware
+> > > > > > response just lead to plumbing an NVME admin queue, or CXL mail=
+box to
+> > > > > > get device-specific commands past another subsystem's objection=
+?
+> > > > >
+> > > > > My default answer would be to trust the maintainers of the releva=
+nt
+> > > > > subsystems (or try to convince them when you disagree :-)). Not o=
+nly
+> > > > > should they know the technical implications best, they should als=
+o have
+> > > > > a good view of the whole vertical stack, and the implications of
+> > > > > pass-through for their ecosystem. This may result in a single NAK
+> > > > > overriding ACKs, but we could also try to find technical solution=
+s when
+> > > > > we'll face such issues, to enforce different sets of rules for th=
+e
+> > > > > different functions of a device.
+> > > > >
+> > > > > Subsystem hopping is something we're recently noticed for camera =
+ISPs,
+> > > > > where a vendor wanted to move from V4L2 to DRM. Technical reasons=
+ for
+> > > > > doing so were given, and they were (in my opinion) rather excuses=
+. The
+> > > > > unspoken real (again in my opinion) reason was to avoid documenti=
+ng the
+> > > > > firmware interface and ship userspace binary blobs with no way fo=
+r free
+> > > > > software to use all the device's features. That's something we ha=
+ve been
+> > > > > fighting against for years, trying to convince vendors that they =
+can
+> > > > > provide better and more open camera support without the world
+> > > > > collapsing, with increasing success recently. Saying amen to
+> > > > > pass-through in this case would be a huge step back that would hu=
+rt
+> > > > > users and the whole ecosystem in the short and long term.
+> > > >
+> > > > In my view, DRM is a more suitable model for complex ISPs than V4L2=
+:
 > > >
-> > > The first point is that hardware gets more complicated over time, and
-> > > in some markets there's also an increase in the number of vendors and
-> > > devices. There's a perceived (whether true or not) danger that we
-> > > won't be able to keep up with just reverse engineering and a
-> > > development model relying on hobyists. Getting vendors involved is
-> > > important if we want to scale.
+> > > I know we disagree on this topic :-) I'm sure we'll continue the
+> > > conversation, but I think the technical discussion likely belongs to =
+a
+> > > different mail thread.
+> > >
+> > > > - Userspace Complexity: ISPs demand a highly complex and evolving A=
+PI,
+> > > > similar to Vulkan or OpenGL. Applications typically need a framewor=
+k
+> > > > like libcamera to utilize ISPs effectively, much like Mesa for
+> > > > graphics cards.
+> > > >
+> > > > - Lack of Standardization: There's no universal standard for ISPs;
+> > > > each vendor implements unique features and usage patterns. DRM
+> > > > addresses this through vendor-specific IOCTLs
+> > > >
+> > > > - Proprietary Architectures: Vendors often don't fully disclose the=
+ir
+> > > > hardware architectures. DRM cleverly only necessitates a Mesa
+> > > > implementation, not comprehensive documentation.
+> > >
+> > > This point isn't technical and is more on-topic for this mail thread.
+> > >
+> > > V4L2 doesn't require hundreds of pages of comprehensive documentation=
+ in
+> > > text form. An open-source userspace implementation that covers the
+> > > feature set exposed by the driver is acceptable in place of
+> > > documentation (provided, of course, that the userspace code wouldn't =
+be
+> > > deliberately obfuscated). This is similar in spirit to the rule for G=
+PU
+> > > DRM drivers.
 > >
-> > Yes, but there are lots of not very useful complex devices being
-> > produced every day that fail to capture market share.  Not having
-> > reverse engineered drivers for them is no real loss.  If a device does
-> > gain market share, it gains a huge pool of users some of whom become
-> > interested in reverse engineering, so I think market forces actually
-> > work in our favour: we get reverse engineering mostly where the devices
-> > are actually interesting and capture market share.  It's self scaling.
->
-> I can't agree with that, sorry. Not only is the difficulty to
-> reverse-engineer some classes of devices increasing, but saying that
-> only devices that make it to the top of the market share chart are worth
-> considering will leave many users on the side of the road.
-
-Today we have left BILLIONS of users at the other side of the road.
-
-
->
-> > > Second, I think there's a fear of regression. For some categories of
-> > > devices, we have made slow but real progress to try and convince the
-> > > industry to be more open. This sometimes took a decade of work,
-> > > patiently building bridges and creating ecosystems brick by brick.
-> > > Some of those ecosystems are sturdy, some not so. Giving pass-through
-> > > a blank check will likely have very different effects in different
-> > > areas. I don't personally believe it will shatter everything, but I'm
-> > > convinced it carries risk in areas where cooperation with vendors is
-> > > in its infancy or is fragile for any other reason.
+> > In DRM vendors typically define a custom IOCTL per driver to pass
+> > command buffers.
+> > Only the command buffer structure, and a mesa implementation using
+> > that command buffer to support the standard features is required.
 > >
-> > I also think we're on the rise in this space.  Since most cloud
-> > workloads are on Linux, there's huge market pressure on most "found in
-> > the cloud" devices (like accelerators and GPUs) to have an easy to
-> > consume Linux story.  Nvidia is a case in point.  When it only cared
-> > about fast games on some other OS, we get shafted with a proprietary
-> > graphics drivers.  Now it's under pressure to be the number one AI
-> > accelerator provider for the cloud it's suddenly wondering about open
-> > source drivers to make adoption easier.
+> > In V4l2 custom IOCTLs are discouraged. Random command buffers cannot
+> > be passed from userspace, they are typically formed in the driver from
+> > a strictly checked struct.
 >
-> I can't comment on Nvidia and their inference engines in particular. The
-> server market may be in a better position that the consumer and embedded
-> market, and if that's the case, I'm happy for the servers. That doesn't
-> solve the issues in other markets though.
+> V4L2 has a mechanism to pass buffers between userspace and kernelspace,
+> and that mechanism is used in mainline drivers to pass camera ISP
+> parameters. They're not called "command buffers" but that's just a
+> difference in terminology. The technical means to pass command buffers
+> to the driver is thus there, I see no meaningful difference with DRM.
+> Where things can differ is in the contents of those buffers, and the
+> requirements for documentation or open userspace implementations, but
+> that's not a technical question.
+
+There are two things here:
+
+- The political/strategic/philosophical/religious aspect: The industry
+definitely prefers the strategic requirements imposed by DRM. In fact
+some vendors had some huge legal troubles when they had tried to
+follow v4l2 requirements.
+- The technical aspect: DRM is more mature when it comes to
+sending/receiving buffers to the hardware, and an ISP looks *much*
+more similar to an accel device or a GPU than a UVC camera.
+
+
 >
-> > > Finally, let's not forget that pass-through APIs are not an all or
-> > > nothing option. To cite that example only, DRM requires GPU drivers
-> > > to have an open-source userspace implementation to merge the kernel
-> > > driver, and the same subsystems strongly pushes for API
-> > > standardization for display controllers. We can set different rules
-> > > for different cases.
+> > > > Our current approach of pushing back against vendors, instead of
+> > > > seeking compromise, has resulted in the vast majority of the market
+> > > > (99% if not more) relying on out-of-tree drivers. This leaves users
+> > > > with no options for utilizing their cameras outside of Android.
+> > > >
+> > > > DRM allows a hybrid model, where:
+> > > > - Open Source Foundation: Standard use cases are covered by a fully
+> > > > open-source stack.
+> > > > - Vendor Differentiation: Vendors retain the freedom to implement
+> > > > proprietary features (e.g., automatic makeup) as closed source.
+> > >
+> > > V4L2 does as well, you can implement all kind of closed-source ISP
+> > > control algorithms in userspace, as long as there's an open-source
+> > > implementation that exercises the same hardware features. A good anal=
+ogy
 > >
-> > I certainly think we can afford to experiment here, yes.
+> > Is it really mandatory to have an open-source 3A algorithm? I thought
+> > defining the input and output from the algorithm was good enough.
+>
+> What really matters is documenting the ISP parameters with enough
+> details to allow for the implementation of open-source userspace code.
+> Once you have that, 3A is quite simple. You can refine it (especially
+> AWB) to great length, for instance using NPUs to compute parameters, and
+> there's absolutely no issue with such userspace implementations being
+> closed.
+>
+> In practice, some vendors prefer documenting the parameters by writing
+> an open-source userspace implementation, partly maybe because developers
+> are more familiar writing code than formal documentation. I would be
+> fine either way, as long as there's enough information to make use of
+> the ISP.
+>
+
+Even with vendor passthrough there is still a need to provide a full
+open source implementation (probably based on libcamera).
+
+So you will have enough information to use all the common
+functionality of a camera.
+
+> > AFAIK for some time there was no ipu3 open source algorithm, and the
+> > driver has been upstream.
+>
+> It sneaked in before we realized we had to enforce rules :-) That's
+> actually a good example, when we wrote open-source userspace support, we
+> realized that the level of documentation included in the IPU3 kernel
+> header was nowhere close to what was needed to make use of the device.
+>
+> > > for people less familiar with ISPs is shader compilers, GPU vendors a=
+re
+> > > free to ship closed-source implementations that include more
+> > > optimizations, as long as the open-source, less optimized implementat=
+ion
+> > > covers the same GPU ISA, so that open-source developers can also work=
+ on
+> > > optimizing it.
+> >
+> > I believe a more accurate description is that in v4l2 is that we
+> > expect that all the registers, device architecture and behaviour to be
+> > documented and accessed with standard IOCTLs. Anything not documented
+> > cannot be accessed by userspace.
+> >
+> > In DRM their concern is that there is a fully open source
+> > implementation that the user can use. Vendors have custom IOCTLs and
+> > they can offer proprietary software for some use cases.
+>
+> Custom ioctls are not closed secrets in DRM, so comparing custom ioctls
+> vs. standard ioctls isn't very relevant to this discussion. I really
+> don't see how this would be about ioctls, it's about making the featured
+> exposed by the drivers, through whatever means a particular subsystem
+> allows, usable by open userspace.
+>
+> > > Thinking that DRM would offer a free pass-through path compared to V4=
+L2
+> > > doesn't seem realistic to me. Both subsystems will have similar rules=
+.
+> >
+> > DRM does indeed allow vendors to pass random command buffers and they
+> > will be sent to the hardware. We cannot do that in v4l2.
+>
+> You can pass a command buffer to a V4L2 device and have the driver send
+> it to the device firmware (ISPs using real command buffers usually run a
+> firmware). If you want the driver to be merged upstream, you have to
+> document the command buffer in enough details.
+
+Documenting with "enough details" is not enough. In V4L2, we have to
+deeply inspect every single buffer to make sure that it is not sending
+an unknown combination of command+arguments, or in other situations we
+construct the command buffer in the driver.
+
+>
+> > I might be wrong, but GPU drivers do not deeply inspect the command
+> > buffers to make sure that they do not use any feature not covered by
+> > mesa.
+>
+> That's correct, but I don't think that's relevant. The GPU market has
+> GLSL and Vulkan. An open-source compliant implementation will end up
+> exercising a very very large part of the device ISA, command submission
+> mechanism and synchronization primitives, if not all of it. There's
+> little a vendor would keep under the hood and use in closed-source
+> userspace only. For cameras, there's no standard userspace API that
+> covers by design a very large part of what is the ISP equivalent of a
+
+Libcamera supports Camera HAL3, gstreamer, v4l2, pipewire...
+
+If we are afraid of vendors providing "toy" implemententations to pass
+the openness requirements, we can add more features/tests to
+libcamera.
+
+And at the end of the day, there will be humans deciding if what a
+vendor has provided is good enough or not.
+
+> GPU ISA. Even "command buffers" are not a proper description of the
+> parameters the vast majority of ISPs consume.
+
+Modern ISPs are definitely going in the direction of "command buffers"
+
+
+>
+> > > > This approach would allow billions of users to access their hardwar=
+e
+> > > > more securely and with in-tree driver support. Our current stubborn
+> > > > pursuit of an idealistic goal has already negatively impacted both
+> > > > users and the ecosystem.
+> > > >
+> > > > The late wins, in my opinion, cannot scale to the consumer market, =
+and
+> > > > Linux will remain a niche market for ISPs.
+> > > >
+> > > > If such a hybrid model goes against Linux goals, this is something
+> > > > that should be agreed upon by the whole community, so we have the s=
+ame
+> > > > criteria for all subsystems.
 >
 > --
 > Regards,
 >
 > Laurent Pinchart
->
+
 
 
 --
