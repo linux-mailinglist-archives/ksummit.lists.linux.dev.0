@@ -1,125 +1,147 @@
-Return-Path: <ksummit+bounces-1551-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1552-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B82D949CAF
-	for <lists@lfdr.de>; Wed,  7 Aug 2024 02:13:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E5EF95023F
+	for <lists@lfdr.de>; Tue, 13 Aug 2024 12:17:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CB03B20B07
-	for <lists@lfdr.de>; Wed,  7 Aug 2024 00:13:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 266BA281B51
+	for <lists@lfdr.de>; Tue, 13 Aug 2024 10:17:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430401C3D;
-	Wed,  7 Aug 2024 00:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 035A918A6A3;
+	Tue, 13 Aug 2024 10:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="pdw2tj/1";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="IquJ2VbS"
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YBwpdxCS"
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC447372
-	for <ksummit@lists.linux.dev>; Wed,  7 Aug 2024 00:13:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2AF17C228
+	for <ksummit@lists.linux.dev>; Tue, 13 Aug 2024 10:17:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722989608; cv=none; b=UJtLoNooY6/Yn430vbrwWIxeBiv9Oaqvsug30bM3dtFFRe8Rhe8+SREaiFtS2zNuSj6xn3y78F+4mFqfWneRqbhftKg7/zHqeMNtw3Ex3ZexWMXtqEUo2Jm98+kc9mAQolmWl0V/CP3fLcbmXRI9/10FDZ8UrZVDPIOhI3pglw0=
+	t=1723544249; cv=none; b=CLvX2ymASS7Xl3A3NMykVxhmrPNX9sH/UYtcM92/pdkDpp6r0T9K0T2QwCRDwYmGi+VpVC1jA5zOcQgybXbDgYtJZBdn7kLRiDKf8zieyJjZv/WcaXjpficg3ssQ6Kef3M3ibxMTNlaS59JjZlqZI20pB2/i5cEVFqxkolrPrxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722989608; c=relaxed/simple;
-	bh=pWY8kLMzQJ5yjAJwQI9LxYd4wKj8auV2/jFjArIg7Sk=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=MXgdpIWA/sUBqHc+9u+6+u3jGf7XqFU3BEF3GGO9YfOKK18EA3Z5ubbxsKkQiY0rR/sXz3zhtWSxdKsCc4Bk3kIoxQ4pnSaatBCrf9B1mudrPOdABmwU4PFyGcMaa6ylmFOc05Agzn+ZKpA4bTTSkkn1YmMG6sPTVigooYYhgaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=pdw2tj/1; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=IquJ2VbS; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1722989605;
-	bh=pWY8kLMzQJ5yjAJwQI9LxYd4wKj8auV2/jFjArIg7Sk=;
-	h=Date:From:To:Subject:In-Reply-To:References:Message-ID:From;
-	b=pdw2tj/1Fqd0lo2/wI3FAzaTYDdFobrvoVdwcI1d7IbuClBo1cYy835n3aGr5kreW
-	 RsrXWszgfsLcMbNgc2XxNLTAo3BV8tDkLmEDCy6PouOj6KFKBCCqPsNCYJzvOyFNrf
-	 kOeGoeTCgXq/E7GbBBfB2epRNFdG0u5L/a8m6cPE=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 1D4DA1281E30;
-	Tue, 06 Aug 2024 20:13:25 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id u4ZFp3uHMyH6; Tue,  6 Aug 2024 20:13:25 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1722989604;
-	bh=pWY8kLMzQJ5yjAJwQI9LxYd4wKj8auV2/jFjArIg7Sk=;
-	h=Date:From:To:Subject:In-Reply-To:References:Message-ID:From;
-	b=IquJ2VbSdCmnoW7UZVKs1NB9r3MqBX1tc+w7wOycpGwFb1VY228YEUOPaasj8uJCT
-	 p3KyuLMt6wMFQ7WUjoQu+J8syo7Q4HJ+AQJRQhfR0p/ee6hxAy9ZpEAw5Os1QQxLEL
-	 iUIApDFpQ8QjjqzlQxQ059GsNBOoT3w1PRnmKjt0=
-Received: from [127.0.0.1] (wsip-70-191-149-15.dc.dc.cox.net [70.191.149.15])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 546B012806C0;
-	Tue, 06 Aug 2024 20:13:24 -0400 (EDT)
-Date: Tue, 06 Aug 2024 20:13:18 -0400
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Dan Williams <dan.j.williams@intel.com>, Jason Gunthorpe <jgg@nvidia.com>
-CC: Greg KH <gregkh@linuxfoundation.org>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- ksummit@lists.linux.dev, linux-cxl@vger.kernel.org,
- linux-rdma@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [MAINTAINERS SUMMIT] Device Passthrough Considered Harmful?
-User-Agent: K-9 Mail for Android
-In-Reply-To: <66b2ba7150128_c1448294fe@dwillia2-xfh.jf.intel.com.notmuch>
-References: <668c67a324609_ed99294c0@dwillia2-xfh.jf.intel.com.notmuch> <20240726142731.GG28621@pendragon.ideasonboard.com> <66a43c48cb6cc_200582942d@dwillia2-mobl3.amr.corp.intel.com.notmuch> <20240728111826.GA30973@pendragon.ideasonboard.com> <2024072802-amendable-unwatched-e656@gregkh> <2b4f6ef3fc8e9babf3398ed4a301c2e4964b9e4a.camel@HansenPartnership.com> <2024072909-stopwatch-quartet-b65c@gregkh> <206bf94bb2eb7ca701ffff0d9d45e27a8b8caed3.camel@HansenPartnership.com> <20240801144149.GO3371438@nvidia.com> <66b2ba7150128_c1448294fe@dwillia2-xfh.jf.intel.com.notmuch>
-Message-ID: <328C1186-268E-49E9-A31C-40BFF9554C49@HansenPartnership.com>
+	s=arc-20240116; t=1723544249; c=relaxed/simple;
+	bh=KmX/8SPO59kZCItf8lFjsmaMIQZs6UpEn4Kx0JHZWT0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=p9Nsh6O2DUg9lJ1pAYk/mQggXbpx3XWhd9t0UThIAe4DiJ7DmP47ZF+9bMw1g59lthK8OD9gSYIyl+X3rxis7J+9HsJH1izPWQYp3EBsFRNcZxQj6rembuC+UBya7JLMuXpiZnlDQqpFfLlwCpUFusaDkh4tmeive39Ek3PJMoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YBwpdxCS; arc=none smtp.client-ip=209.85.208.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2ef2c56da6cso57410061fa.1
+        for <ksummit@lists.linux.dev>; Tue, 13 Aug 2024 03:17:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723544245; x=1724149045; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KmX/8SPO59kZCItf8lFjsmaMIQZs6UpEn4Kx0JHZWT0=;
+        b=YBwpdxCSFydbcg3i8J7Pl042l2ULEH9eKEYyHIPHyy4EH9T6x4QmKI2cpVSGa7G3DW
+         uzfuoOBHpelV5Rp2ucUq8f6J27w3dj7h4ydyYCbsuoeq9b7/WzlCMOFfo5Wr9ECPlGcW
+         Zj25gcVhJaqMJQzqIGR3XMO5FYtHGqnren6zwCI1lXkEzK6dvkQQlh99VvW2Dx9PrkwJ
+         O7hUGwlthwIRLaqr4JzEr46aenon4kre7jjOCrpF6fDijujn+6v+jsv0ZB5AeTdOaeVU
+         vrnuIXs/0oR+YeH0QGvk8pOMnYcbKFjxElJ3VJ0Z3Bg5IEpCs8erAIJv4+2M+t+kTHnn
+         anbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723544245; x=1724149045;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KmX/8SPO59kZCItf8lFjsmaMIQZs6UpEn4Kx0JHZWT0=;
+        b=Buw+M9Jic10rTiCMRbw4n0Y6mvX8GGUC+kvd5cUrMvg9Fk7tVBlP0MpMaMmHygWhx+
+         k1MztYlvCPo7KGn6uEmLoG8enIxLrStG8vFojmMqntkr5b+lxGo+m4+yvwN99lGyVaZr
+         y4ahgQ/CtGFmV0+DjTbFHY2M86yozaZQRrYQw4v5HPEMGAzISJ1RORk5MtmW/NBn6wb5
+         mEHzZ78IhAzkmznEeWvEcyEfV1GqADGDGt5yaYUyp3bbidfHDLatbC6KWd7v9eJse03q
+         3HUGmGY8pgxtsQQjz/a5d4k4brXP9KsOZNSCFssn0Qz/jJUcXq7yAralFuMAJYCaNeMl
+         4iXw==
+X-Forwarded-Encrypted: i=1; AJvYcCXIpjkm/KNZJkqycK87s24aA3pUsEHyEShtJ1Qz0Mbt7z0bDaAaAbcZfUb/FtPJsYpph4GygXAFoA8IimQH/bUpIxBHckHyoQ==
+X-Gm-Message-State: AOJu0YzL6qr6l6HIFnxSyuBlTpF2oF0mkCoJkF1mcbAqkNOMR+YDkkaB
+	6ovl5DskNf942byTw4GsqyM2RyXbXGUPKkrvDMqNRKrnxS9iza428W+T5qRzwffhNfeYNlwx8L1
+	tt0y950sX6c2OTdBoHjAK/WBt/3E=
+X-Google-Smtp-Source: AGHT+IFKjzuQaaf7e6bx4QvZ27kpa0HEv9KUIhMC9T4vRSl72ApvXVH6j9YQ6g0WwTQ5j/N7cDwtQbTX3PXfdwV5l1A=
+X-Received: by 2002:a2e:be8e:0:b0:2ef:1b93:d2b6 with SMTP id
+ 38308e7fff4ca-2f2b71482d5mr23578061fa.8.1723544244394; Tue, 13 Aug 2024
+ 03:17:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+References: <20240721192530.GD23783@pendragon.ideasonboard.com>
+ <CAPybu_2tUmYtNiSExNGpsxcF=7EO+ZHR8eGammBsg8iFh3B3wg@mail.gmail.com>
+ <20240722111834.GC13497@pendragon.ideasonboard.com> <CAPybu_1SiMmegv=4dys+1tzV6=PumKxfB5p12ST4zasCjwzS9g@mail.gmail.com>
+ <20240725200142.GF14252@pendragon.ideasonboard.com> <CAPybu_1hZfAqp2uFttgYgRxm_tYzJJr-U3aoD1WKCWQsHThSLw@mail.gmail.com>
+ <20240726105936.GC28621@pendragon.ideasonboard.com> <CAPybu_1y7K940ndLZmy+QdfkJ_D9=F9nTPpp=-j9HYpg4AuqqA@mail.gmail.com>
+ <20240728171800.GJ30973@pendragon.ideasonboard.com> <CAPybu_3M9GYNrDiqH1pXEvgzz4Wz_a672MCkNGoiLy9+e67WQw@mail.gmail.com>
+ <Zqol_N8qkMI--n-S@valkosipuli.retiisi.eu> <CAKMK7uGx=VjHCo90htuTE6Oi0b8rt_0NrPsfbZwFKA304m7BdA@mail.gmail.com>
+In-Reply-To: <CAKMK7uGx=VjHCo90htuTE6Oi0b8rt_0NrPsfbZwFKA304m7BdA@mail.gmail.com>
+From: Tomasz Figa <tomasz.figa@gmail.com>
+Date: Tue, 13 Aug 2024 19:17:07 +0900
+Message-ID: <CA+Ln22E1YXGykjKqVO+tT8d_3-GYSEf-zY0TEHJq3w7HQEhFhA@mail.gmail.com>
+Subject: Re: [MAINTAINERS SUMMIT] Device Passthrough Considered Harmful?
+To: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Sakari Ailus <sakari.ailus@iki.fi>, 
+	Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Dan Williams <dan.j.williams@intel.com>, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, ksummit@lists.linux.dev, 
+	linux-cxl@vger.kernel.org, linux-rdma@vger.kernel.org, netdev@vger.kernel.org, 
+	jgg@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On August 6, 2024 8:06:09 PM EDT, Dan Williams <dan=2Ej=2Ewilliams@intel=2E=
-com> wrote:
->Jason Gunthorpe wrote:
->> On Wed, Jul 31, 2024 at 08:33:36AM -0400, James Bottomley wrote:
->>=20
->> > For the specific issue of discussing fwctl, the Plumbers session woul=
-d
->> > be better because it can likely gather all interested parties=2E
->>=20
->> Keep in mind fwctl is already at the end of a long journey of
->> conference discussions and talks spanning 3 years back now=2E It now
->> represents the generalized consensus between multiple driver
->> maintainers for at least one side of the debate=2E
->>=20
->> There was also a fwctl presentation at netdev conf a few weeks ago=2E
->>=20
->> In as far as the cross-subsystem NAK, I don't expect more discussion
->> to result in any change to people's opinions=2E RDMA side will continue
->> to want access to the shared device FW, and netdev side will continue
->> to want to deny access to the shared device FW=2E
+2024=E5=B9=B47=E6=9C=8831=E6=97=A5(=E6=B0=B4) 22:16 Daniel Vetter <daniel.v=
+etter@ffwll.ch>:
 >
->As I mentioned before, this is what I hoped to mediate=2E The on-list
->discussion has seem to hit a deficit of trust roadblock, not a deficit
->of technical merit=2E
+> On Wed, 31 Jul 2024 at 13:55, Sakari Ailus <sakari.ailus@iki.fi> wrote:
+> > This is also very different from GPUs or accel devices that are built t=
+o be
+> > user-programmable. If I'd compare ISPs to different devices, then the
+> > closest match would probably be video codecs -- which also use V4L2.
 >
->All I can say is the discussion is worth a try=2E With respect to a
->precedent for a stalemate moving forward, I point to the MGLRU example=2E
->That proposal had all of the technical merit on the list, but was not
->making any clear progress to being merged=2E It was interesting to watch
->that all thaw in real time at LSF/MM (2022) where in person
->collaboration yielded strategy concessions, and mutual understanding
->that email was never going to produce=2E
+> Really just aside, but I figured I should correct this. DRM supports
+> plenty of video codecs. They're all tied to gpus, but the real reason
+> really is that the hw has decent command submission support so that
+> running the entire codec in userspace except the basic memory and
+> batch execution and synchronization handling in the kernel is a
+> feasible design.
 
-Well, plumbers stands ready=2E  We're out of A/V rooms, but if you can do =
-your own A/V with one of the owl cameras we can do a BoF session that can b=
-e open to remote participants as well=2E  I'll be happy to do the setup=2E
+FWIW, V4L2 also has an interface for video decoders that require
+bitstream processing in software, it's called the V4L2 Stateless
+Decoder interface [1]. It defines low level data structures that map
+directly to the particular codec specification, so the kernel
+interface is generic and the userspace doesn't need to have
+hardware-specific components. Hardware that consumes command buffers
+can be supported simply by having the kernel driver fill the command
+buffers as needed (as opposed to writing the registers directly).
+On the other hand, DRM also has the fixed function (i.e. V4L2-alike)
+KMS interface for display controllers, rather than a command buffer
+passthrough, even though some display controllers actually are driven
+by command buffers.
+So arguably it's possible and practical to do both command
+buffer-based and fixed interfaces for both display controllers and
+video codecs. Do you happen to know some background behind why one or
+the other was chosen for each of them in DRM?
 
-Regards,
+For how it applies to ISPs, there are both types of ISPs out in the
+wild, some support command buffers, while some are programmed directly
+via registers. For the former, I can see some loss of flexibility if
+the command buffers are hidden behind a fixed function API, because
+the userspace would only be able to do what the kernel driver supports
+internally, which could make some use case-specific optimizations very
+challenging if not impossible.
 
-James
+[1] https://www.kernel.org/doc/html/latest/userspace-api/media/v4l/dev-stat=
+eless-decoder.html
 
---=20
-Sent from my Android device with K-9 Mail=2E Please excuse my brevity=2E
+> And actually good, because your kernel wont ever blow
+> up trying to parse complex media formats because it just doesn't.
+> -Sima
+> --
+> Daniel Vetter
+> Software Engineer, Intel Corporation
+> http://blog.ffwll.ch
+>
 
