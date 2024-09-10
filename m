@@ -1,135 +1,90 @@
-Return-Path: <ksummit+bounces-1557-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1558-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 377F4967716
-	for <lists@lfdr.de>; Sun,  1 Sep 2024 16:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED0F3973593
+	for <lists@lfdr.de>; Tue, 10 Sep 2024 12:53:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6988281DAA
-	for <lists@lfdr.de>; Sun,  1 Sep 2024 14:33:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD9EF28DB8A
+	for <lists@lfdr.de>; Tue, 10 Sep 2024 10:53:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F6D8180A81;
-	Sun,  1 Sep 2024 14:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61398178367;
+	Tue, 10 Sep 2024 10:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="BGkjPyw1"
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+	dkim=pass (2048-bit key) header.d=arinc9.com header.i=@arinc9.com header.b="ez5UInKF"
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0384D8AF;
-	Sun,  1 Sep 2024 14:33:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF99C8DF
+	for <ksummit@lists.linux.dev>; Tue, 10 Sep 2024 10:52:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725201185; cv=none; b=JSCGhKWf0D/4NGGrNpSVvhnppJHFJFZlz4GHHRGkQeVXPce+gwDPLLKhNDXcEqXuBFsstr+mA995y+iqhiXwbvP6+IVpwulfpdf2O5w1bdeI37S+gnlsRqegOiP+kwD0LdMkxEn5EnuuqblaWnD3Cw0QxvM4DYb+DBqchhwakPg=
+	t=1725965578; cv=none; b=eAOiCxSBUcxDbcIVHccwodf3ElYpE443XIzM+FvDbcwKQI37SZVx655gOvlKFnqyTLwvpU+vLYyQj62AEcmxvGLHocmi670RPZB3qYd1vP03tBYqSvYF5WkNOsUu1gA2ZeJYSlEnL/z13gHiFwDlvnwtn+Ozz4tXv9+QtSfnaYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725201185; c=relaxed/simple;
-	bh=Qnho+P7/rrraXQouXon4x/RffWJR5iD4eKYRb+pQmDo=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eV/a+tlEfvuLSEmVHZAZcfVq8ihPmo4wxq03YJwLVAfI6jI7+jWNBreiWT43qZn6N7kN/Sk+9tCIVACGPPQfzbuPUCG8Qfp/I/ppNHSTd+7pBHS2OiPTQuJuQjuX434ZXpu3mC6PRsCS+YiHFiZqezWUSy+az9bcIdaq7C1nkwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=BGkjPyw1; arc=none smtp.client-ip=45.79.88.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net ACA4A41ABE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1725201176; bh=Wb4qVt4qrjof3WhfYa/l6tQKLywCYPwwIAXqNw7TYWI=;
-	h=From:To:Subject:Date:From;
-	b=BGkjPyw1LkBmVP6fnUKXPMPe3UGUlrNBiW+iTtpXe5IdN6ffPWFz21XciklFa6/ES
-	 JORrFwHgH2PkrL4oZJmQqP2c2DwB9Pc6LeEoVG72cEqHm4J9yxnBfXTRcAvNwoq0iw
-	 JQkW5IACV64dS7+4RrsEaDuurl6DOYphcigecRzYCGEd5R4u5m2wQ5C4pEE1n1rRJd
-	 BWZWlbHgNcJvAJ2STAzlGVXlRmm5ajVOQeSjVgIUNjhy/yZYtcsU2jnXsmeRgnySZd
-	 ttwmfq7/XjXG18bEE8yYrJjENEIx2uV/PmvNyXKaDWnc3ls40rblxnGdqPMSVtjrGk
-	 OAJugad5zeDOw==
-Received: from localhost (unknown [IPv6:2601:280:5e00:625::1fe])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id ACA4A41ABE;
-	Sun,  1 Sep 2024 14:32:56 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: tab-elections@lists.linux.dev, tech-board-discuss@lists.linux.dev,
- linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
-Subject: 2024 LF Technical Advisory Board election - call for candidates
-Date: Sun, 01 Sep 2024 08:32:55 -0600
-Message-ID: <87zforv3zc.fsf@trenco.lwn.net>
+	s=arc-20240116; t=1725965578; c=relaxed/simple;
+	bh=WdaLVYGugrq06HlW6mwl952gy+qYVIf3Fv0x+fewd30=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type; b=eqzMO6zBpVAK0acFhja9nCESR3FsPeHWSvQtxufVCqPIaA0aOwCokT1rfrN6FT7VTekrWt/dTY8/lwduePe6UdNQs3vWCy9Oz+bGi86mIpTFH2xwiFn88bskhbYFaDRfYWhQTRdCvDjzdqoYIUX0Z46EbnRtQ0eW8eGyg56xLKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arinc9.com; spf=pass smtp.mailfrom=arinc9.com; dkim=pass (2048-bit key) header.d=arinc9.com header.i=@arinc9.com header.b=ez5UInKF; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arinc9.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arinc9.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 0C1A540004
+	for <ksummit@lists.linux.dev>; Tue, 10 Sep 2024 10:52:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arinc9.com; s=gm1;
+	t=1725965574;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=WdaLVYGugrq06HlW6mwl952gy+qYVIf3Fv0x+fewd30=;
+	b=ez5UInKF4rWydn95b9wEZCJYpt8H3NO/76foGwzqnOPqaJQL++gWU16lKD861UjJsZF0/3
+	NkldsTDWB65+ZvCAN4KoQP5BxGJ4FRgB4oQMqV5DnAONBZo/q2MS2oibPAfOCMDE4lJFIR
+	iyVWLcjD4NfplKSQeaGhO8ub1c4/ko3Jh0rF66us8MQOY1VS0648CffSJWjeN007T0079d
+	kC0D7BrJga3pM+qazX4pA2DsbW5FmppIy0rQsDAhzkaovGyFsSBuw2wy/u+zoLZNxKCtIC
+	u4b4fWMc5uO4eASN8i8EKan6fWBrah/elZJmWpYj4ROi4JiaMNfxUFwsY3CT2A==
+Message-ID: <972ed553-c917-41d1-be6e-b8a3ab90b66a@arinc9.com>
+Date: Tue, 10 Sep 2024 13:52:52 +0300
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+From: =?UTF-8?B?QXLEsW7DpyDDnE5BTA==?= <arinc.unal@arinc9.com>
+Subject: [MAINTAINERS SUMMIT] State of dt-bindings and DT source files, and
+ invitation request
+To: ksummit@lists.linux.dev
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: arinc.unal@arinc9.com
 
-The 2024 election for membership on the Linux Foundation Technical
-Advisory Board (TAB) will be held electronically after the 2024 Linux
-Plumbers Conference, from September 20 to 27.  This announcement covers
-both the call for candidates and the details of voting in this election.
+Hello.
 
-The TAB exists to provide advice from the kernel community to the Linux
-Foundation and holds a seat on the LF's board of directors; it also serves
-to facilitate interactions both within the community and with outside
-entities.  Over the last year, the TAB has overseen the organization of the
-Linux Plumbers Conference, advised on the setup of the kernel CVE numbering
-authority, worked behind the scenes to help resolve a number of contentious
-community discussions, worked with the Linux Foundation on community
-conference planning, and more.
+I maintain the MediaTek DSA subdriver and some devicetree bindings and
+source files for MediaTek hardware.
 
-The public minutes from TAB meetings can be found in this repository:
-https://git.kernel.org/pub/scm/docs/tab/tab.git/.
+I am especially interested in the best practices of maintaining dt-bindings
+and DT source files.
 
-Note that there will be an "ask us anything" session with the current TAB
-at the Linux Plumbers Conference; it is currently scheduled for 9:00 on
-Friday, September 20.
+There's this false impression with some maintainers that, as the
+dt-bindings and the DT source files are being hosted on the Linux
+repository, Linux drivers have influence over the design of bindings or
+fixing DT source files that did not comply with the bindings.
 
-CALL FOR NOMINATIONS
+I'd be very interested to be involved in or kick start the efforts to take
+dt-bindings and DT source files out of the Linux repository into its own,
+separate repository. I believe, this would be a great step in addressing
+all the project-dependent bindings of Linux, U-Boot, OpenWrt, and all other
+projects, to have a single, unified repository to describe all the hardware
+that exists in the world. I am already working towards this goal by
+improving the dt-bindings and DT source files on the Linux repository
+whenever I can.
 
-The TAB has ten members serving two-year terms; half of the board is
-elected each year.  The members whose terms are expiring this year are:
+I must be quite late to make a topic suggestion but I'd be very happy to be
+able to attend to the maintainers summit. I've already registered for the
+Linux Plumbers Conference 2024.
 
- - Christian Brauner
- - Kees Cook
- - Dave Hansen
- - Jakub Kicinski
- - Dan Williams
-
-The members whose terms expire next year are:
-
- - Jonathan Corbet
- - Greg Kroah-Hartman
- - Sasha Levin
- - Steve Rostedt
- - Ted Ts'o
-
-Anybody who meets the voting criteria (described below) may
-self-nominate to run in this election.  To nominate yourself, please
-send an email to:
-
-	tech-board-discuss@lists.linux.dev
-
-Please include a short (<= 200 words) statement describing why you are
-running and what you would like to accomplish on the TAB; these
-statements will be collected and made publicly available.
-
-The nomination deadline is 17:00 CET (GMT + 2) on September 20.
-
-VOTING IN THE TAB ELECTION
-
-The criteria for voting in this year's TAB election are unchanged from last
-year.  To be eligible to vote, you must have at least three commits in a
-released mainline or stable kernel that:
-
- - Have a commit date in 2023 or later
- - List your email in a Signed-off-by, Tested-by, Reported-by, Reviewed-
-   by, or Acked-by tag.
-
-Everybody with at least 50 commits meeting this description will receive
-a ballot automatically; they will receive an email confirming this
-status shortly.  Eligible voters with less than 50 commits can receive a
-ballot by sending a request to tab-elections@lists.linuxfoundation.org.
-
-We will, once again, be using the Condorcet Internet Voting Service
-(CIVS) https://civs1.civs.us/ . This is a voting service focused on
-security and privacy. There are sample polls on the website if you would
-like to see what a ballot will look like.
-
-Please contact tab-elections@lists.linux.dev if you have any questions.
+Arınç
 
