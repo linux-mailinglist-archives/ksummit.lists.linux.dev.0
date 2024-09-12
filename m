@@ -1,51 +1,51 @@
-Return-Path: <ksummit+bounces-1563-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1564-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D0229769D7
-	for <lists@lfdr.de>; Thu, 12 Sep 2024 15:01:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE820976ABF
+	for <lists@lfdr.de>; Thu, 12 Sep 2024 15:34:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 216E11F224EC
-	for <lists@lfdr.de>; Thu, 12 Sep 2024 13:01:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E35BD1C23A48
+	for <lists@lfdr.de>; Thu, 12 Sep 2024 13:34:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE9F4185B60;
-	Thu, 12 Sep 2024 13:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594781AB6F9;
+	Thu, 12 Sep 2024 13:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arinc9.com header.i=@arinc9.com header.b="fqJkxKKJ"
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="E5VPX/l1"
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883119476
-	for <ksummit@lists.linux.dev>; Thu, 12 Sep 2024 13:01:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C58E1A4E84
+	for <ksummit@lists.linux.dev>; Thu, 12 Sep 2024 13:34:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726146087; cv=none; b=WPFI2xXKHilItvrnm1cPKS/hkPTNnWTdAXVKnZ4mGM3Dbr/rT9O6hj9LxTJgwr2VPKNLHwVHwE0D4CELEfTWKKPVpVOjcg0B+XlctgLOktDhPiQXW60mKKpR9oQyr4V7+Tt0cpfZF2MS9pDUmjNZoT/odxCxKkQG+V7crT8SKsQ=
+	t=1726148044; cv=none; b=szQg2y9uc55Pm3qnUmhAKrvC9VaZ/rT/c7OCmdyAZS5INFjbqBZsAyQbeKVgl//l8mFxpyt2e1D2txifwimRwGJgIcSon3aTv7G3cptsXeBLQSE0eFfA59E4MdfsV1OoXwyGzX9m38miNsNG399kDFlOHPrvS8KRkUB47YLiSSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726146087; c=relaxed/simple;
-	bh=YfJdTYRPbgIqEbnheFvYeY9ZtM5ACtQgJwW3W9s0s3E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o9Q8C1DEKJpN05ZkHsEak69f9EaA/7hfwlWmIy81rDy679hNQjyYn6oT2TMOaOumvSIx9El/QdB+xoImAOFJnJDVvUGlCOAeIYJ4kUfV7rvHDVOxBMhupnpCYrC90DAPonajU60aih9jMJDqwFFVEdwWUg6zERG9OCqhGw9WQkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arinc9.com; spf=pass smtp.mailfrom=arinc9.com; dkim=pass (2048-bit key) header.d=arinc9.com header.i=@arinc9.com header.b=fqJkxKKJ; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arinc9.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arinc9.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0A0091BF205;
-	Thu, 12 Sep 2024 13:01:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arinc9.com; s=gm1;
-	t=1726146082;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/cyXadJiB+wPt4OUGMa84KBMUZSYFt/u5ImAPafE4+8=;
-	b=fqJkxKKJbjTVFuJmhvz1w3EeixaeewHUcTRbuKP/D5guH658JikBnvs4C7oqfFt1ZyRr3+
-	8U4ieJdwji4tskyF6KabZLxGRZ/cQ7ndiYs9YFor7IF0HlxT9Wv0LWTNGQiu5MphSFu/zg
-	WbW5WMhl2Y0QjHdwZM5LE0z2blIvRThM2sXxjesRsogpPv4EhqCCciFWHt46MBwS+c4Nyy
-	JAwLU+pgrSGlOSBGceVSLhDBKe6MBO0zfbxIAHdmCZe4InYffaM+s7aA7QQELDqhRFa9Rs
-	0aHcgGXwdovd7AutPlA+I8YI/Hl99QUKTV9+Ic1wXZQ40ZEcV01mQJeWjhsQ3A==
-Message-ID: <9d1af9dd-680a-4df8-a6c7-49a6f809d6f2@arinc9.com>
-Date: Thu, 12 Sep 2024 16:01:20 +0300
+	s=arc-20240116; t=1726148044; c=relaxed/simple;
+	bh=Kc7g0E6m4ouNjunBgc1qiNTrNr1k99g9RiznQ7nKQBw=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=ZT9etLd20u2WOYnQC/4jM9PWZamohhkNlF997JfdSlbN0WQ4kR0WypvwvSNYIiPEROaYhXQBtUu+0Q+0keqGlOtBtV0ERBU8y0fXnIo8J3yTbHQVDS6ooclFItytRu6uskndWtbx0K0zSuSHa0Jx6+MzwgMHKMgEOKY7zpx0oYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=E5VPX/l1; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:References:To:From:Subject:MIME-Version:Date:Message-ID:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=Q2dV7QDnW53fgCFqbqjaOaEfFktqmm2VjHbxZgp8vy4=; t=1726148042;
+	x=1726580042; b=E5VPX/l1nThMeQSpox/+7GI5WfbZtJnF64inAUv/+nHGSVkEGCwqQ4QAF3fL0
+	2aErWdfd8OusjFOZzxRbWpkr7bb5NkhnhfYqSyKWDYkZ0ikKh37t8yNsZKTGmqqTxdZau2IRUUT2/
+	P/xucmEXnSdqDWpTeoxLVRIH3/0LPQ+pYHYeqExhSWeoGka7PjOrgVrZxKz8UHfZ4CtLZGIhuiCmw
+	3Z7PZIgbb6ZEdhjwumDep/ci8pXNVnsun1fD1/JcRjwk43hXcL42Dz090rSGhl7wrmSoBBipCkZ9P
+	tveOGssTzhrkUqDcTlNveEWFO/IQ0qGs2lBMBS5KzdR+kqZQdw==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1sojxQ-0001cZ-8Y; Thu, 12 Sep 2024 15:34:00 +0200
+Message-ID: <aea2022a-e2b4-4d38-95db-c0006e6a7146@leemhuis.info>
+Date: Thu, 12 Sep 2024 15:33:59 +0200
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -53,86 +53,229 @@ List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [MAINTAINERS SUMMIT] State of dt-bindings and DT source files,
- and invitation request
-To: Conor Dooley <conor@kernel.org>, Rob Herring <robherring2@gmail.com>
-Cc: ksummit@lists.linux.dev, Krzysztof Kozlowski <krzk@kernel.org>
-References: <972ed553-c917-41d1-be6e-b8a3ab90b66a@arinc9.com>
- <CAL_JsqJ8JUZi1YUNv2rB-4PqrLvykm+OATkg6zb5q6E2_WPqdw@mail.gmail.com>
- <20240910-specked-rigging-e255283d1f99@spud>
-Content-Language: en-US
-From: =?UTF-8?B?QXLEsW7DpyDDnE5BTA==?= <arinc.unal@arinc9.com>
-In-Reply-To: <20240910-specked-rigging-e255283d1f99@spud>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: arinc.unal@arinc9.com
+Subject: Re: [MAINTAINERS SUMMIT] [1/4] Create written down guidelines for
+ handling regressions
+From: Thorsten Leemhuis <linux@leemhuis.info>
+To: "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
+References: <c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info>
+ <e44af14b-1c5d-479c-8752-8f4d52a00c63@leemhuis.info>
+Content-Language: en-US, de-DE
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 n7RI
+In-Reply-To: <e44af14b-1c5d-479c-8752-8f4d52a00c63@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1726148042;74033932;
+X-HE-SMSGID: 1sojxQ-0001cZ-8Y
 
-On 11/09/2024 00:53, Conor Dooley wrote:
-> On Tue, Sep 10, 2024 at 10:46:03AM -0500, Rob Herring wrote:
->> On Tue, Sep 10, 2024 at 5:53 AM Arınç ÜNAL <arinc.unal@arinc9.com> wrote:
->>>
->>> Hello.
->>>
->>> I maintain the MediaTek DSA subdriver and some devicetree bindings and
->>> source files for MediaTek hardware.
->>>
->>> I am especially interested in the best practices of maintaining dt-bindings
->>> and DT source files.
->>>
->>> There's this false impression with some maintainers that, as the
->>> dt-bindings and the DT source files are being hosted on the Linux
->>> repository, Linux drivers have influence over the design of bindings or
+On 13.06.24 10:26, Thorsten Leemhuis wrote:
+> Different assumptions about the appropriate handling of regressions
+> frequently lead to friction and time consuming discussions during my
+> regression tracking and prodding work. That is frustrating, demotivating
+> and exhausting for everyone involved and even brought us to situations
+> like "then I'm stepping down as maintainer". To avoid things like this,
+> I propose we try to pin down guidelines together and ideally make Linus
+> bless them.
 > 
->>> fixing DT source files that did not comply with the bindings.
+> The "Expectations and best practices for fixing regressions" in
+> Documentation/process/handling-regressions.rst (
+> https://docs.kernel.org/process/handling-regressions.html#expectations-and-best-practices-for-fixing-regressions
+> ) could be a start for such guidelines -- but I'm obviously biased here,
+> as I wrote that text, so feel free to propose something new.
 > 
-> What does "fixing DT source files that did not comply" have to do with
-> Linux, I'm afraid I do not understand what your point is there. The
-> bindings are the ABI, and fixing incorrect source files would happen
-> regardless of how the project is hosted?
-
-That's exactly what I think. I had a maintainer that argued otherwise is my
-point. Which is why I want to strengthen the Linux documentation.
-
+> That text is based on generalized interpretations of statements and
+> actions from Linus while keeping practical application and our workflows
+> in mind -- including the maintenance of stable trees. I have no idea if
+> I went too far somewhere: the submission of that text was addressed to
+> Linus, but he did not react; otoh he merged it later after Greg ACKed it
+> and it came to his doorstep through the docs tree.
 > 
->>> I'd be very interested to be involved in or kick start the efforts to take
->>> dt-bindings and DT source files out of the Linux repository into its own,
->>> separate repository. I believe, this would be a great step in addressing
->>> all the project-dependent bindings of Linux, U-Boot, OpenWrt, and all other
->>> projects, to have a single, unified repository to describe all the hardware
->>> that exists in the world.
->>
->> This! This is precisely why we don't move things out of the kernel.
->> The kernel is the location that has the most hardware support in the
->> world by far. It is not even close. Really, the only h/w missing are
->> things too small to run Linux. And with all that h/w support, comes
->> the people who understand the various classes of h/w. Those people are
->> not going to come along to a separate project. It would be more work
->> and there aren't any maintainers looking for extra work.
->>
->> We already have a separate repository[1]. U-boot has recently
->> incorporated it and is happily (AFAIK) using it. It happens to be
->> generated from the kernel tree, but what doesn't work for you there?
->> I'm happy to discuss what it needs to work better.
->>
->>> I am already working towards this goal by
->>> improving the dt-bindings and DT source files on the Linux repository
->>> whenever I can.
->>
->> That's great, still plenty of work to do there no matter what
->> repository is hosting it.
->>
->>> I must be quite late to make a topic suggestion but I'd be very happy to be
->>> able to attend to the maintainers summit. I've already registered for the
->>> Linux Plumbers Conference 2024.
->>
->> This is probably not a maintainers summit topic. There's a DT BoF
->> scheduled already that Krzysztof is running and supporting other
->> projects is on the agenda already. I won't be there in person nor will
->> I be awake at the scheduled time.
-> 
-> FWIW, I will be there.
+> But in the end it seems most people do not know about this text or do
+> not take it for real. [...]
 
-Me too, I'd be very happy to meet you!
+Lo! The discussion here rightfully exposed that the wording regarding
+the stable tag was way to strong. Sorry for that, not sure how that
+happened, that was not my intend. That and a few other aspects (some
+from the discussions here) made me revisit the text regarding
+"Expectations and best practices for fixing regressions". See below for
+my current draft (the diff view is not really helpful, sorry). Note,
+should be easy to add a week or two to any sections regarding the
+timing aspects; guess that is best discussed on the summit.
 
-Arınç
+As I said earlier, the text is based on generalized interpretations of
+statements and actions from Linus with some interpolation. But in some
+areas what I wrote might be not what Linus wants. To sort this out I'm
+currently also preparing a few scenarios with related questions for the
+maintainers summit audience (incl. Linus) that hopefully will help to
+keep the discussion fruitful, targeted, and as short as possible. More
+on that on Tuesday.
+
+Ciao, Thorsten
+---
+
+Expectations and best practices for fixing regressions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Try to quickly resolve regressions in mainline while applying reasonable care to
+prevent additional problems. The appropriate balance depends on the situation;
+most regressions should ideally be resolved through a fix or a revert by the
+last Sunday within the next two or three weeks after the culprit was identified.
+
+The rules of thumb below outline the appropriate procedure in more detail. The
+overall goal is to prevent situations where a regression caused by a recent
+change leaves users only three bad options: use a kernel with a regression that
+impacts usage, switch to a different kernel series, or run an outdated and thus
+potentially insecure kernel for more than two or three weeks. 
+
+In general:
+
+ * Prioritize work on providing, reviewing, and mainlining regression fixes over
+   other upstream Linux kernel work, unless the latter concerns severe issues
+   (e.g. acute security vulnerabilities, data loss, or bricked hardware).
+
+ * Do not consider fixing regressions from the current development cycle as
+   something that can wait till its end: the issue possibly prevents users or
+   CI systems from testing, which might drive testers away and mask other bugs.
+
+ * When developing a fix, apply the required care to avoid additional damage. Do
+   so even when resolving a regression might take longer than outlined below --
+   at least unless a revert could resolve it, as then you should opt for one.
+
+ * Reviewers and maintainers likewise should apply the required care, but at the
+   same time should try to route regression fixes quickly through the ranks.
+
+On timing once the change causing the regression became known:
+
+ * If the regression is severe, aim to mainline a fix within two or three work
+   days and ideally before the next Sunday; do the same it its is bothering many
+   users in general or most people in prevalent environments (say a widespread 
+   hardware device, a popular Linux distribution, or a stable/longterm series).
+
+ * Aim to mainline a fix by Sunday after the next, if the culprit made it into
+   a kernel deemed for end users during the past three months -- either directly
+   through a mainline release or through backports to stable or longterm series.
+   If the culprit became known early during a week while being simple to resolve
+   using a low-risk patch, try to mainline the fix within the same week instead.
+
+ * For other regressions introduced during the past twelve months, aim to
+   mainline a fix before the hindmost Sunday within the next three weeks. One or
+   two weeks later are acceptable, if the regression is unlikely to bother more
+   than a user or two or is something people can easily live with temporarily.
+
+ * Try your best to mainline a fix before the current development cycle ends,
+   unless the culprit was committed more than a year ago: then it is acceptable
+   to queue a fix for the next merge window, which definitely should be done in
+   case it bear bigger risks.
+
+On patch flow to mainline:
+
+ * Developers, when trying to reach the time periods mentioned above, remember
+   to account for the time it will take to test, review, commit, and mainline
+   fixes, ideally with them being in linux-next at least briefly. Hence, if
+   fixes are urgent, make it obvious to ensure others handle them appropriately.
+
+ * Reviewers, you are kindly asked to assist developers in reaching the time
+   periods mentioned above by reviewing regression fixes in a timely manner.
+
+ * Maintainers, you likewise are kindly asked to expedite the handling
+   of regression fixes. Thus when beneficial evaluate if skipping linux-next
+   might be an option. Also consider sending git pull requests more often than
+   usual when appropriate. And try to avoid holding onto regression fixes over
+   weekends -- especially when some are marked for backporting to stable series.
+
+On procedure:
+
+ * If a regression seems tangly, precarious or urgent, consider CCing Linus on
+   discussions or patch review; do the same if the responsible maintainers
+   suspected to be unavailable. 
+
+ * For an urgent regression, consider asking Linus to pick up a fix straight
+   from the mailing list: he is totally fine with that for uncontroversial
+   fixes. Such requests should ideally come directly from maintainers or happen
+   in accordance with them.
+
+ * In case you are unsure if a fix is worth the risk applying just days before
+   a new mainline release, send Linus a mail with the usual lists and developers
+   in CC; in it, summarize the situation while asking to pick up the fix
+   straight from the list. Linus then can make the call and when appropriate
+   even postpone the release. Such requests again should ideally come directly
+   from maintainers or happen in accordance with them.
+
+On tagging in the patch description:
+
+ * Include the tags Documentation/process/submitting-patches.rst mentions for
+   regressions; this usually means a "Reported-by:" tag followed by "Link:" or
+   "Closes:" tag pointing to the report as well as a "Fixes:" tag; if it's a
+   regression a later change exposed, add a "Fixes:" tag for that one, too.
+
+ * Did the culprit make it into a proper mainline release during the past twelve
+   months? Or is it a recent mainline commit backported to stable or longterm
+   releases in the past few weeks? Then you are kindly asked to ensure stable
+   inclusion as described by Documentation/process/stable-kernel-rules.rst, e.g.
+   by adding a "Cc: stable@vger.kernel.org" to the patch description. Note, a
+   "Fixes:" tag alone does not guarantee a backport: the stable team sometimes
+   silently drop such changes, for example when they do not apply cleanly.
+
+Regarding stable and longterm kernels:
+
+ * When receiving reports about regressions in recent stable or longterm kernel
+   series, please consider evaluating at least briefly, if the issue might
+   happen in current mainline as well -- and if that seems likely, take hold of
+   the report. If in doubt, ask the reporter to check mainline.
+
+ * You are free to leave handling regressions to the stable team, if the problem
+   at no point in time occurred with mainline or was fixed there already.
+
+ * Whenever you want to swiftly resolve a mainline regression that recently made
+   it into a mainline, stable, or longterm release, fix it quickly in mainline;
+   in urgent cases thus involve Linus to fast-track fixes (see above). That's
+   required, as the stable team normally does neither revert nor fix any changes
+   in their trees as long as those cause the same problem in mainline.
+
+ * In case of urgent fixes for regression affecting stable or longterm kernels,
+   you might want to ensure prompt backporting by dropping the stable team a
+   note once the fix was mainlined; this is especially advisable during merge
+   windows and shortly thereafter, as the fix otherwise might land at the end
+   of a huge patch queue.
 
