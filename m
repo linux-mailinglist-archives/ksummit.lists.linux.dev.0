@@ -1,198 +1,134 @@
-Return-Path: <ksummit+bounces-1569-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1570-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3DF697808E
-	for <lists@lfdr.de>; Fri, 13 Sep 2024 14:53:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E3AE978503
+	for <lists@lfdr.de>; Fri, 13 Sep 2024 17:39:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78DFD285E5B
-	for <lists@lfdr.de>; Fri, 13 Sep 2024 12:53:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D26CE281A10
+	for <lists@lfdr.de>; Fri, 13 Sep 2024 15:39:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC47B1DA62B;
-	Fri, 13 Sep 2024 12:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82EC7374FF;
+	Fri, 13 Sep 2024 15:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="kNToORVT"
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	dkim=pass (2048-bit key) header.d=arinc9.com header.i=@arinc9.com header.b="KMZ6IfPM"
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6021BAED2
-	for <ksummit@lists.linux.dev>; Fri, 13 Sep 2024 12:53:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF97DF60
+	for <ksummit@lists.linux.dev>; Fri, 13 Sep 2024 15:38:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726232002; cv=none; b=ro/l/8QIqxDwaw93t+rvJp63uDtEe2roqPMiHq8rj7BwHrjGIUAFJx63iR2fnHFLdA48432+gz0q2aBn/+2lV1htsdfHw7Gx+yiYxeV5DqkrZjoQ2XALan9vKqTch3f8fb2+MirngZhCOLyfDHUeo9i6PK4GXK0Hw7+HXkk8OdE=
+	t=1726241941; cv=none; b=pKDU93LjPrIfcpQDZ5xskqA0hZzadzZRlvYgHOH/LCmhf9aMAKqZcQ2s7BDvkygjPfLis8/AeHMP7gHdxDxtU76242ez9OsE9PAQe8alCQYVpHY7GQHct293zmwe2d8Chh+ENgAO0Xg/Xs853USgaXGo6pDfsAD2UJWJDwGtuIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726232002; c=relaxed/simple;
-	bh=9uoCslXWrUJtEkK7xGYlBEkVHPRAbh7t5j9cvgK0aHY=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=htG4PGeif8anXDJxgJNyNk0K3qggeejWxhe5RL4zpcngJkwgNgFE3O25mFaIx9AgP9EhVhN0OWq41bgz9Wg02/EgahEKlTG9CO21ItkD2yVywBKcvif7Gn0GRL78grXgBvP9W015mdVZaLoc7stekXtBOdkHRQdjpIEIff9lQqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=kNToORVT; arc=none smtp.client-ip=18.9.28.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
-Received: from cwcc.thunk.org (pool-173-48-114-215.bstnma.fios.verizon.net [173.48.114.215])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 48DCrAxT010618
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Sep 2024 08:53:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1726231992; bh=5wWozeTip8KWEDX/hyPIu4SKu6c7cS9YCDiwbp5J6x0=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=kNToORVTA0EwQf6+Y2dRBmPzVFNy630mDrPIEsspkulrOfgoi0sXXqSDDetoVV4dr
-	 iCdmUEbY0LxME05AT7IcfjJ+xSTtQVo0+vNterRyMVkD8C5Y+WvwNqcKK1sV39kyrF
-	 Fud3syAf5ZfPOx52hrdsZ5nN//AgqKlpZjumM7QNO/RYczG1ON5TLtRH5hnjyObkpp
-	 7+6xx3m7OS0Dc/VBChuEnvmJQ0ECVuTXj8Em/vzykYHg5nvzqFH11IGPDnw9yIiSeD
-	 W3M3BrMo3/+aVZeDmrPxyW8X3aFhF6KkJs0gcU0lUM47KzyFuIAPN79HMWt3Nmfnzi
-	 dtf08PIkSf5vg==
-Received: by cwcc.thunk.org (Postfix, from userid 15806)
-	id B0D8915C19A9; Fri, 13 Sep 2024 08:53:10 -0400 (EDT)
-Date: Fri, 13 Sep 2024 08:53:10 -0400
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: ksummit@lists.linux.dev
-Subject: Draft Agenda for the 2024 Maintainers Summit
-Message-ID: <20240913125310.GA1706848@mit.edu>
+	s=arc-20240116; t=1726241941; c=relaxed/simple;
+	bh=0MTxm8RIU8cBwqrxt0KrQMk9Pdz0FXXluditVDWKTwE=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=Efkigdxz5Jt75+lcL3OYcyVtQIR0LQR89wjYbcLErHDQdBayx5L93KMrOx/KPBsjMZnNOS4Li8i9U0LpOpP+ApkkVjoqXflgaqD/s0niVJMwZOkuR+p5ntgPCP7JD0JdYkpa7afzggu126xQzPaJJ+NxMRSeVUCBdEuDYdH++5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arinc9.com; spf=pass smtp.mailfrom=arinc9.com; dkim=pass (2048-bit key) header.d=arinc9.com header.i=@arinc9.com header.b=KMZ6IfPM; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arinc9.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arinc9.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 917A360002;
+	Fri, 13 Sep 2024 15:38:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arinc9.com; s=gm1;
+	t=1726241930;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0MTxm8RIU8cBwqrxt0KrQMk9Pdz0FXXluditVDWKTwE=;
+	b=KMZ6IfPMfI9fnboHcDzYxeuU33+bEb5l/7L6+uUfC3XRPnnnDqYU4+D275yq7bpWNhJy3t
+	VorSkIjNtSI948kM0NwJgrTXJYFahy5JWpY0JcTYuT/oMKpZh8Xy5VO3Szn4bEz0Hte1bd
+	vKQjGlFYtzkpCPIdYicfL1OZEnnDZaLBRvt7de8+AG03q5HrftQNr6VAscSEblqDGTiog5
+	LfVNW0mmN7px20fMM73JbTnj/woVkWTr190lo5Q3W+rijxfbarzL2IJ8yFs5h02k8gbKyf
+	/rNosY0XXfXyTAVys2lxqwEs/xlxZLyHz0wQxY/yjUtXNt11PakmeXb4iuQctQ==
+Date: Fri, 13 Sep 2024 17:38:44 +0200
+From: =?UTF-8?B?QXLEsW7DpyDDnE5BTA==?= <arinc.unal@arinc9.com>
+To: David Woodhouse <dwmw2@infradead.org>, Rob	Herring <robherring2@gmail.com>
+CC: ksummit@lists.linux.dev, Krzysztof Kozlowski <krzk@kernel.org>,
+ Conor	Dooley <conor@kernel.org>
+Subject: =?US-ASCII?Q?Re=3A_=5BMAINTAINERS_SUMMIT=5D_State_of_dt-binding?=
+ =?US-ASCII?Q?s_and_DT_source_files=2C_and_invitation_request?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <0ebbade1dd90305b4abf1315a2735f7f7caa81bd.camel@infradead.org>
+References: <972ed553-c917-41d1-be6e-b8a3ab90b66a@arinc9.com> <CAL_JsqJ8JUZi1YUNv2rB-4PqrLvykm+OATkg6zb5q6E2_WPqdw@mail.gmail.com> <32400a92-23c0-4ec3-9e42-29074e6db1f5@arinc9.com> <0ebbade1dd90305b4abf1315a2735f7f7caa81bd.camel@infradead.org>
+Message-ID: <074766B4-C125-4514-B57D-043473819A0B@arinc9.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: arinc.unal@arinc9.com
 
-This is the draft of the Maintaines Summit agenda which has been sent
-to all of the attendees.
+On 13 September 2024 10:08:41 CEST, David Woodhouse <dwmw2@infradead=2Eorg>=
+ wrote:
+>On Thu, 2024-09-12 at 15:57 +0300, Ar=C4=B1n=C3=A7 =C3=9CNAL wrote
+>> Over the course of years, I've had maintainers resisting to or complete=
+ly
+>> blocking my changes on the device tree definitions because of Linux dri=
+ver
+>> related reasons=2E I couldn't have patches that fixed incorrect hardwar=
+e
+>> definitions to be applied, because the maintainer would demand a change=
+ on
+>> Linux driver to happen beforehand=2E I've stumbled upon misconceptions =
+such
+>> as thinking that a Linux driver change could break ABI=2E In reality, t=
+hat is
+>> nonsense because a driver change represents the implementation being
+>> changed, not the bindings=2E The implementation change can only be so t=
+hat it
+>> breaks compliance with the bindings=2E
+>
+>
+>We should be careful here=2E
+>
+>The device-tree bindings are the definition of the ABI=2E But they are
+>only words; what matters is the interface between the DT blob itself
+>and the OS drivers which interpret them=2E
+>
+>If we want to *change* that ABI in a way which breaks users of it, then
+>of *course* we have to consider a transition path for those users=2E
+>
+>That's true of *any* ABI, be it a command line, a library ABI, or the
+>device-tree bindings=2E
 
-				   
-			 Maintainers Summit
-			  September 17, 2024
-			    Austria Center
+First, let's agree on the two cases of changing the ABI=2E You either add
+new properties and rules (let's call them definitions) to describe the
+hardware more in detail, or you change the existing definitions which
+would break the ABI=2E As it's irrelevant to my point, I'll simplify the
+valid reasons to break the ABI as: The existing definitions wouldn't allow
+the hardware to be properly described=2E
 
-8:00  Hot breakfast and morning refreshments
-9:00  Welcome and Agenda Bashing - Ted Ts'o
-9:30  Regression Tracking (Thorsten Lemmhuis)
-10:00 Passthrough Considered Harmful? (Dan Willims, Jason Gunthorpe)
-10:30 Break
-11:00 Are we ready to Commit to Rust?
-11:30 Development Tooling 
-12:00 Lunch
-1:30  OFAC and Maintainers (Greg K-H)
-2:00  TBD
-2:30  Group Photograph
-3:00  Break
-3:30  Free time
-5:30  Transportation loads for dinner
-6:00  Dinner at Trattoria Martinelli
-          https://en.barbaro.at/trattoriamartinelli
+>
+>So where you say, "blocking my changes on the device tree definitions
+>because of Linux driver related reasons", that isn't necessarily wrong=2E
+>A breaking change to an ABI *needs* to have a transition plan for how
+>its users get from old to new without a flag day=2E
 
-------------------
+This is a concern for the Linux kernel=2E If we demand the compliance of t=
+he
+Linux kernel with the changed device tree definitions from the people that
+made the change, then we can't talk about a complete autonomy of the
+device tree development from the Linux kernel development=2E I should be
+able to submit patches with the only goal of adding or fixing hardware
+definitions=2E Either I've broken the ABI with a valid reason or added
+hardware definitions, I must not be forced to do Linux kernel development
+for my device tree patches to be applied=2E I should not need to know the =
+C
+language to do device tree work=2E If we want more folks to do device tree
+janitor work, let's not add in unnecessary requirements=2E
 
-Note:  To to make our limited time together more productive, we are
-asking the Maintainers Summit to do some "prework" this year.  This
-takes the form of reading some documentation / patches / email, and
-reflecting on the Prework Questions ahead of time.
+Device tree definitions are not just for being compiled into a blob for
+drivers to interpret=2E For example, I do regularly read device tree
+definitions to learn about the hardware being described=2E So it has a use
+for documentation as well=2E
 
-
-Regression Tracking (Thorsten Lemmhuis)
-======================================
-
-Proposal discussion threads:
-
-   https://lore.kernel.org/fa806468-17c5-4b65-8a1e-4509d4ed6ea5@leemhuis.info
-   https://lore.kernel.org/c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info
-
-Prework questions:
-
-a) Which subsystems do you think are doing a great job of handling
-regressions, and why?
-
-b)  Do you think regression tracking as performed by Thorsten with regzbot
-is worth it or more of a nuisance?
-
-c) What would you like to see changed or improved regarding regzbot or
-the regression tracking efforts as performed by Thorsten?
-     (Note: Thorsten is already aware that "subsystem specific views
-     into regressions regzbot tracks" is obviously needed and heavily
-     overdue, and is at the top of the todo list.)
-
-Handy links:
-   Regzbot:
-       https://gitlab.com/knurd42/regzbot/
-
-   Regressions Thorsten currently tracks using regzbot:
-       https://linux-regtracking.leemhuis.info/regzbot/mainline/
-
-
-Passthrough Considered Harmful? (Dan Willims, Jason Gunthorpe)
-===============================
-
-Original Proposal:
-    https://lore.kernel.org/668c67a324609_ed99294c0@dwillia2-xfh.jf.intel.com.notmuch
-
-Prework:
-
-Read the following links as background:
-
-[1] https://lore.kernel.org/all/6-v3-960f17f90f17+516-fwctl_jgg@nvidia.com/
-[2] https://lwn.net/Articles/955001/
-[3] https://lwn.net/Articles/969383/
-[4] http://lore.kernel.org/2fd48f87-2521-4c34-8589-dbb7e91bb1c8@suse.com
-
-Prework questions:
-
-a) Are the restrictions in scope and rules to assure appropriate use
-of fwctl as described in [2] sufficient?  If not, what are your
-specific concerns and how would you suggest that they be addressd?
-
-b) If fwctl is rejected will that increase hardware vendor upstream
-participation on kernel wrapped uAPI development, or increase
-shipment of out-of-tree bypasses that stress the ecosystem [4]?
-
-c) If fwctl is accepted will that lead to undermining subsystem
-development and injure end users, or will it result in better
-support for end user flows that do not fit in a kernel wrapped
-uAPI?
-
-d) How far does a maintainer's ability to NACK a patch extend beyond
-their core subsystem?  This question is equally relevant to the
-discussion around the P4TC subsystem (https://lwn.net/Articles/977310/).
-
-
-Are we ready to commit to Rust?
-===============================
-
-Prework questions:
-
-a) Do we think that the adoption of Rust is going well, and how can it
-be made to go better?
-
-b) There are some definite disconnects between the Rust folks and
-maintainers in various subsystems; how do we come closer to a common
-vision of what we are trying to do?
-
-
-Development Tooling for the Kernel
-==================================
-
-Prework:
-
-If you haven't looked at them lately, please browse through the
-kernel.org docs [1] and [2].  And if you missed Konstantin's
-announcement, we can now use FIDO2 security keys to authenticate to
-kernel.org[3].
-
-[1] https://b4.docs.kernel.org
-[2] https://korg.docs.kernel.org
-[3] https://korg.docs.kernel.org/fido2.html
-
-Prework questions:
-
-a) Of the the current tools (b4, the lore kernel parchive, patchwork)
-work for you today, which tools work well?  What can be improved, and
-how?
-
-b) What functionality is currently missing that would improve
-maintainer and developer efficiency?
-
+Ar=C4=B1n=C3=A7
 
