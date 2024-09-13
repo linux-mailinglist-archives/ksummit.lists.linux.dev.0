@@ -1,225 +1,198 @@
-Return-Path: <ksummit+bounces-1568-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1569-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C7A9977AB0
-	for <lists@lfdr.de>; Fri, 13 Sep 2024 10:08:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3DF697808E
+	for <lists@lfdr.de>; Fri, 13 Sep 2024 14:53:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A26FF1C20AC4
-	for <lists@lfdr.de>; Fri, 13 Sep 2024 08:08:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78DFD285E5B
+	for <lists@lfdr.de>; Fri, 13 Sep 2024 12:53:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35F81D589E;
-	Fri, 13 Sep 2024 08:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC47B1DA62B;
+	Fri, 13 Sep 2024 12:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="eGAaSUr4"
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="kNToORVT"
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBAC1BFDF6
-	for <ksummit@lists.linux.dev>; Fri, 13 Sep 2024 08:08:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6021BAED2
+	for <ksummit@lists.linux.dev>; Fri, 13 Sep 2024 12:53:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726214937; cv=none; b=Pl5Mi3QLkna89kNIxni1dmDbDk3GKdD1LyLyirfgHUckpi6VPWuIceJDc0L8EYaZOv3UIle/bG6hRV+CWuOnfx11UmSuX7ClHCNZB42VSx/onBRpRhhb6RsZaCezyMEGKH6g7Lg24ktQB+8oIYDa0f/E1xMbMab3vhjo9ikO5HA=
+	t=1726232002; cv=none; b=ro/l/8QIqxDwaw93t+rvJp63uDtEe2roqPMiHq8rj7BwHrjGIUAFJx63iR2fnHFLdA48432+gz0q2aBn/+2lV1htsdfHw7Gx+yiYxeV5DqkrZjoQ2XALan9vKqTch3f8fb2+MirngZhCOLyfDHUeo9i6PK4GXK0Hw7+HXkk8OdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726214937; c=relaxed/simple;
-	bh=VrtmopJmgVFNb4vie+742ZEnTdMXVxBkK4TiYPVyBKA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=n/Kb367J3LCdPVH+eK4slOSf7JEuaGXpXSznVEgh4lx+q1yffU/Vf/8nkTRXG//jeGe8UJRdnTTYIH/0Pqsh7jeCjt5NGFsyBfI3DepdHVQ8+N7WrVprBNwmgo4eNgQvg1VRNK8bwisANuqVJMVHvnsA/QjEaROrEwyyyY4nbHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=eGAaSUr4; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=VrtmopJmgVFNb4vie+742ZEnTdMXVxBkK4TiYPVyBKA=; b=eGAaSUr4C2dqf0jAcAKrCIkFLm
-	FGvgXIwNd7+3vtkJ4F/PU6Ejjv/XQpYVdINiJ1PTRnGXJbEuPbcCHAf+UCw84meVuaEl9K7qlWf6A
-	/ANj0LTTOJvpCXZKCYgVTdcgzI5Ehqs4Jnl15SwRQSFtdCISI6DmEpE3ThGSS4SQ7rNublq0Hl87G
-	J2EAjaiPjNkfm1EJAxmTA0lJq+zUuVy9Tf0xsq9E6YvM9wvohyymnWEjNQywx48FRQDnVy+JcsnyI
-	L62iZ6RZi2d6PoWPS2xN8XJU1ljnDhKY31kLJj4zkMJ4ivJjDThg0tMZZYyWBRBtctOpA/eDzz6QJ
-	8SZuH2LQ==;
-Received: from [2001:8b0:10b:5:35f8:5375:2120:5b2f] (helo=u3832b3a9db3152.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1sp1MA-0000000GKKa-19hN;
-	Fri, 13 Sep 2024 08:08:42 +0000
-Message-ID: <0ebbade1dd90305b4abf1315a2735f7f7caa81bd.camel@infradead.org>
-Subject: Re: [MAINTAINERS SUMMIT] State of dt-bindings and DT source files,
- and invitation request
-From: David Woodhouse <dwmw2@infradead.org>
-To: =?UTF-8?Q?Ar=C4=B1n=C3=A7_=C3=9CNAL?= <arinc.unal@arinc9.com>, Rob
-	Herring <robherring2@gmail.com>
-Cc: ksummit@lists.linux.dev, Krzysztof Kozlowski <krzk@kernel.org>, Conor
-	Dooley <conor@kernel.org>
-Date: Fri, 13 Sep 2024 09:08:41 +0100
-In-Reply-To: <32400a92-23c0-4ec3-9e42-29074e6db1f5@arinc9.com>
-References: <972ed553-c917-41d1-be6e-b8a3ab90b66a@arinc9.com>
-	 <CAL_JsqJ8JUZi1YUNv2rB-4PqrLvykm+OATkg6zb5q6E2_WPqdw@mail.gmail.com>
-	 <32400a92-23c0-4ec3-9e42-29074e6db1f5@arinc9.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-4ssMbXuwUJnQkGZxFNeB"
-User-Agent: Evolution 3.44.4-0ubuntu2 
+	s=arc-20240116; t=1726232002; c=relaxed/simple;
+	bh=9uoCslXWrUJtEkK7xGYlBEkVHPRAbh7t5j9cvgK0aHY=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=htG4PGeif8anXDJxgJNyNk0K3qggeejWxhe5RL4zpcngJkwgNgFE3O25mFaIx9AgP9EhVhN0OWq41bgz9Wg02/EgahEKlTG9CO21ItkD2yVywBKcvif7Gn0GRL78grXgBvP9W015mdVZaLoc7stekXtBOdkHRQdjpIEIff9lQqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=kNToORVT; arc=none smtp.client-ip=18.9.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
+Received: from cwcc.thunk.org (pool-173-48-114-215.bstnma.fios.verizon.net [173.48.114.215])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 48DCrAxT010618
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Sep 2024 08:53:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1726231992; bh=5wWozeTip8KWEDX/hyPIu4SKu6c7cS9YCDiwbp5J6x0=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=kNToORVTA0EwQf6+Y2dRBmPzVFNy630mDrPIEsspkulrOfgoi0sXXqSDDetoVV4dr
+	 iCdmUEbY0LxME05AT7IcfjJ+xSTtQVo0+vNterRyMVkD8C5Y+WvwNqcKK1sV39kyrF
+	 Fud3syAf5ZfPOx52hrdsZ5nN//AgqKlpZjumM7QNO/RYczG1ON5TLtRH5hnjyObkpp
+	 7+6xx3m7OS0Dc/VBChuEnvmJQ0ECVuTXj8Em/vzykYHg5nvzqFH11IGPDnw9yIiSeD
+	 W3M3BrMo3/+aVZeDmrPxyW8X3aFhF6KkJs0gcU0lUM47KzyFuIAPN79HMWt3Nmfnzi
+	 dtf08PIkSf5vg==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+	id B0D8915C19A9; Fri, 13 Sep 2024 08:53:10 -0400 (EDT)
+Date: Fri, 13 Sep 2024 08:53:10 -0400
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: ksummit@lists.linux.dev
+Subject: Draft Agenda for the 2024 Maintainers Summit
+Message-ID: <20240913125310.GA1706848@mit.edu>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+This is the draft of the Maintaines Summit agenda which has been sent
+to all of the attendees.
+
+				   
+			 Maintainers Summit
+			  September 17, 2024
+			    Austria Center
+
+8:00  Hot breakfast and morning refreshments
+9:00  Welcome and Agenda Bashing - Ted Ts'o
+9:30  Regression Tracking (Thorsten Lemmhuis)
+10:00 Passthrough Considered Harmful? (Dan Willims, Jason Gunthorpe)
+10:30 Break
+11:00 Are we ready to Commit to Rust?
+11:30 Development Tooling 
+12:00 Lunch
+1:30  OFAC and Maintainers (Greg K-H)
+2:00  TBD
+2:30  Group Photograph
+3:00  Break
+3:30  Free time
+5:30  Transportation loads for dinner
+6:00  Dinner at Trattoria Martinelli
+          https://en.barbaro.at/trattoriamartinelli
+
+------------------
+
+Note:  To to make our limited time together more productive, we are
+asking the Maintainers Summit to do some "prework" this year.  This
+takes the form of reading some documentation / patches / email, and
+reflecting on the Prework Questions ahead of time.
 
 
---=-4ssMbXuwUJnQkGZxFNeB
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Regression Tracking (Thorsten Lemmhuis)
+======================================
 
-On Thu, 2024-09-12 at 15:57 +0300, Ar=C4=B1n=C3=A7 =C3=9CNAL wrote
-> Over the course of years, I've had maintainers resisting to or completely
-> blocking my changes on the device tree definitions because of Linux drive=
-r
-> related reasons. I couldn't have patches that fixed incorrect hardware
-> definitions to be applied, because the maintainer would demand a change o=
-n
-> Linux driver to happen beforehand. I've stumbled upon misconceptions such
-> as thinking that a Linux driver change could break ABI. In reality, that =
-is
-> nonsense because a driver change represents the implementation being
-> changed, not the bindings. The implementation change can only be so that =
-it
-> breaks compliance with the bindings.
+Proposal discussion threads:
 
+   https://lore.kernel.org/fa806468-17c5-4b65-8a1e-4509d4ed6ea5@leemhuis.info
+   https://lore.kernel.org/c6be1b86-f224-417c-a501-6c778999a04f@leemhuis.info
 
-We should be careful here.
+Prework questions:
 
-The device-tree bindings are the definition of the ABI. But they are
-only words; what matters is the interface between the DT blob itself
-and the OS drivers which interpret them.
+a) Which subsystems do you think are doing a great job of handling
+regressions, and why?
 
-If we want to *change* that ABI in a way which breaks users of it, then
-of *course* we have to consider a transition path for those users.
+b)  Do you think regression tracking as performed by Thorsten with regzbot
+is worth it or more of a nuisance?
 
-That's true of *any* ABI, be it a command line, a library ABI, or the
-device-tree bindings.
+c) What would you like to see changed or improved regarding regzbot or
+the regression tracking efforts as performed by Thorsten?
+     (Note: Thorsten is already aware that "subsystem specific views
+     into regressions regzbot tracks" is obviously needed and heavily
+     overdue, and is at the top of the todo list.)
 
-So where you say, "blocking my changes on the device tree definitions
-because of Linux driver related reasons", that isn't necessarily wrong.
-A breaking change to an ABI *needs* to have a transition plan for how
-its users get from old to new without a flag day.
+Handy links:
+   Regzbot:
+       https://gitlab.com/knurd42/regzbot/
+
+   Regressions Thorsten currently tracks using regzbot:
+       https://linux-regtracking.leemhuis.info/regzbot/mainline/
 
 
+Passthrough Considered Harmful? (Dan Willims, Jason Gunthorpe)
+===============================
+
+Original Proposal:
+    https://lore.kernel.org/668c67a324609_ed99294c0@dwillia2-xfh.jf.intel.com.notmuch
+
+Prework:
+
+Read the following links as background:
+
+[1] https://lore.kernel.org/all/6-v3-960f17f90f17+516-fwctl_jgg@nvidia.com/
+[2] https://lwn.net/Articles/955001/
+[3] https://lwn.net/Articles/969383/
+[4] http://lore.kernel.org/2fd48f87-2521-4c34-8589-dbb7e91bb1c8@suse.com
+
+Prework questions:
+
+a) Are the restrictions in scope and rules to assure appropriate use
+of fwctl as described in [2] sufficient?  If not, what are your
+specific concerns and how would you suggest that they be addressd?
+
+b) If fwctl is rejected will that increase hardware vendor upstream
+participation on kernel wrapped uAPI development, or increase
+shipment of out-of-tree bypasses that stress the ecosystem [4]?
+
+c) If fwctl is accepted will that lead to undermining subsystem
+development and injure end users, or will it result in better
+support for end user flows that do not fit in a kernel wrapped
+uAPI?
+
+d) How far does a maintainer's ability to NACK a patch extend beyond
+their core subsystem?  This question is equally relevant to the
+discussion around the P4TC subsystem (https://lwn.net/Articles/977310/).
 
 
---=-4ssMbXuwUJnQkGZxFNeB
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+Are we ready to commit to Rust?
+===============================
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
-ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
-EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
-FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
-aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
-EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
-VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
-aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
-AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
-ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
-QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
-rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
-ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
-U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
-DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
-BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
-dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
-BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
-QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
-CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
-xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
-IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
-kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
-eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
-KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
-1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
-OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
-x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
-5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
-DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
-VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
-UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
-MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
-ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
-oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
-SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
-xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
-RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
-bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
-NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
-KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
-5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
-C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
-gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
-VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
-by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
-b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
-BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
-QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
-c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
-AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
-qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
-v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
-Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
-tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
-Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
-YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
-ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
-IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
-ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
-GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
-h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
-9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
-P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
-2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
-BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
-7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
-lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
-lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
-AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
-Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
-FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
-BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
-cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
-aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
-LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
-BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
-cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
-Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
-lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
-WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
-hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
-IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
-dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
-NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
-xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjQwOTEzMDgwODQxWjAvBgkqhkiG9w0BCQQxIgQgmFHqrTwY
-79fgwQ1eRSzEDmvMNR2AYbOwjNFRLIgmAFkwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
-BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
-A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
-dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
-DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
-MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
-Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgB9XX0+TPbcn5vPACQgPwWVWkWb9h9I9oKb
-PcQn2NOobs0xS3U5PAIx/KcBEYa5x8Q45kjNnNFhutPu+sEhca0k571Jr9RtgkiaIhaZUKpUK7Wt
-O2C/aDTtr5G8voSmkZgZY52rkNVytC4w30p1v2ZxegCFIyUAEjZytZcTb1UEA5zvbgiDAp9qhgZn
-MoKo2IKbFH6zYLPG8yJBVXU5PmACsBmkPdxPojBx/KzhX4B3/H7sNVzydyC/cWUSszuXLE+Y1/A/
-xj0V9w497cinB67l8XSAfBAe7Deys/S5cXxGAYTRySQe1sAr6/EL17T4MicSHmVPahnDH8i9p3J1
-TqN5r/X5IkqDXnSnWJGNx2P7fmD2cNqgZRKlILLPdNOe6D57jHY29fO1BF0lCxs2JjCTvI4j7bri
-lnr+rSvWpK9CpatqBg9AbhV5eo4c3rhxctdMGdl6FAR/05Lf9Dc7A19z8lEJy1GsnAYPzVLi/llq
-CIrvZpD5cc3VlhbpXOpuYaf4fraDirObNOt0hgDhLZ8nRELqb9KvxfzMa3q1XEKSbFt8JF4SmNbF
-brDZndOKLgSVkWuLf79aD1RVEgO6z7lVA8hXH2piZubKCzU/yVcGdwfKokPlbNPNjBgyDaSjI5ud
-9n5/lOi30NK1kYlRxRk0zlUp7QfV4hTZaVKZfPRDoQAAAAAAAA==
+Prework questions:
+
+a) Do we think that the adoption of Rust is going well, and how can it
+be made to go better?
+
+b) There are some definite disconnects between the Rust folks and
+maintainers in various subsystems; how do we come closer to a common
+vision of what we are trying to do?
 
 
---=-4ssMbXuwUJnQkGZxFNeB--
+Development Tooling for the Kernel
+==================================
+
+Prework:
+
+If you haven't looked at them lately, please browse through the
+kernel.org docs [1] and [2].  And if you missed Konstantin's
+announcement, we can now use FIDO2 security keys to authenticate to
+kernel.org[3].
+
+[1] https://b4.docs.kernel.org
+[2] https://korg.docs.kernel.org
+[3] https://korg.docs.kernel.org/fido2.html
+
+Prework questions:
+
+a) Of the the current tools (b4, the lore kernel parchive, patchwork)
+work for you today, which tools work well?  What can be improved, and
+how?
+
+b) What functionality is currently missing that would improve
+maintainer and developer efficiency?
+
 
