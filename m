@@ -1,57 +1,59 @@
-Return-Path: <ksummit+bounces-1576-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1577-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 747D497D7E5
-	for <lists@lfdr.de>; Fri, 20 Sep 2024 17:52:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 027B7986D6B
+	for <lists@lfdr.de>; Thu, 26 Sep 2024 09:23:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 161E928387F
-	for <lists@lfdr.de>; Fri, 20 Sep 2024 15:52:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A5401C21927
+	for <lists@lfdr.de>; Thu, 26 Sep 2024 07:23:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B14317D35C;
-	Fri, 20 Sep 2024 15:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40FA18C00A;
+	Thu, 26 Sep 2024 07:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="rKApWm68"
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="naSGEHnf"
 Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3830417BEC5;
-	Fri, 20 Sep 2024 15:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A8D186298;
+	Thu, 26 Sep 2024 07:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726847525; cv=none; b=Z3ift/bSKgV0EO1vW97Vrg2ioc+mI5gTkc/UCt2V6VePU409WYMpr1wSshBQPLJ6LJR9cplo1bwc+vbPrlEeLDBitkfudc9/5sKJXKIEIGSsiN2y6pRCvuWhAS2gAOiK935uSyotTND3OngJZbRaBUcplb6OLbdsloFrSXN3cbE=
+	t=1727335415; cv=none; b=ERU8I9QwjcekitAJDJxTSOkUMW5XnuanLD4XLBA30njMyOQyds9z0dYKk9MknPsznB7vHhl8ZknaKMe26B5vKlNce3lXgL3uklc9W/CjbzXVr79UAYS73JwZRTxMGjLgOrLUMW0ZUXafYR9D0JUtR6qUHqXXBJ07LRhh7Dxhq2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726847525; c=relaxed/simple;
-	bh=T/4pn+cSl7tGAP+HD0Dh2nyIStNr6HnhwhEDKTr7Mgg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gOL99ylj2E1QEdYFgh/XKRqYIsUj+99mLRBM9QpsIpIyTYQFZtkI8fAa0xsTZz0Sp6Gzceq1KAWssVJcmSDHRYurl3hFRQBmFthux8SA+J2XW+zpMPH3r++kstlPwETQpV/C9OZ3GREJhw+Rr3UUYefQn/BrJKtBPtuMtQPHpTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=rKApWm68; arc=none smtp.client-ip=45.79.88.28
+	s=arc-20240116; t=1727335415; c=relaxed/simple;
+	bh=tYV2H5br9kWhzl96UUGjXTWhmlY2Pw4qsC37WMIpyJY=;
+	h=From:To:Cc:Subject:References:Date:Message-ID:MIME-Version:
+	 Content-Type; b=FyMz/HNfh5eleOL2+UiL2VyK6bsekcTNvJvWHbD4Ree6zu//w5roD0NWR964hUgV9rlC6Fs7bP0+nnObPLbsEG+Bvk9oxUyNVCfeGLLXx6wc3y8qLoEZHmdDelZwWFEQ62Ib/ilaXor7VpkQ6vXV/XCah6Q9x9o7oCelOzTP6+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=naSGEHnf; arc=none smtp.client-ip=45.79.88.28
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 7D23D418B6
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 62BD742B29
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1726847523; bh=VGgrd1YPrBsSpusS+KkslGgX0KPfCWAE2Unzj7dx4YM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=rKApWm68KneBr1s/BnUzoRwCO6j9mYlYpGGQZAjcP99GMiL5f0rapDeY3hiDzuymW
-	 MJ/5UoS5mnLZ70sNUe+KNO3ywPiGqymEF/GEhW8dUXUI5Rq0MWjrCBNtmFBcL9MNv3
-	 K8XJZI0g5WJtMauCXYyFM9knfZq0aAD5gXeLwLQ9fpngPsuZb4CKNmC8QZGN9RQpkG
-	 dCT/vLS+24LNOIw0r6v1JARFi1ZtRYUKst3rEclBA8jDzzOQQD3/8722mWPlNzAD60
-	 pcfueNklrT1Jp16sP2jBJhiC6BKyaGAIqtdd/ytPuZDBXuBCJmOY17ugqEgwioB64P
-	 XphtM7PWzmtYg==
+	t=1727335412; bh=djX+5aMk6cq7Bv8YpnuHUZZBh5ZZwldaGICdubCGOsQ=;
+	h=From:To:Cc:Subject:References:Date:From;
+	b=naSGEHnf3vNT7gz4mncLIHkOI/n5CcmMT6ToDgWAjCVYUgAXVtxHoS3RZF4ZSnTks
+	 fgu03mkJgh7zuo+PZCbMC5cu+kpbuA/CuRDDOjhM+6Q0UTAcqRu7PRdhpKGmgOZ2GC
+	 9AcCouBkNSLEYLFnPKfNrZJGAB9lwjIyrIzga5qO1QUGXiNCgc60jN5478ViUOiwrT
+	 Sr1YVbT94iSkli3iIJhnXW1QLtswvoeiV+ev/I2mpqmC+Fmalnn+pi9m2Cw8/1JJuj
+	 IfWTnw9CdZ/28ImEa2etgGTktuoTqqoSrX8TCrnbO5FyiuTLU4Zwa11LpdB9AFlyiP
+	 qNlsJe/w4zdug==
 Received: from localhost (mdns.lwn.net [45.79.72.68])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 7D23D418B6;
-	Fri, 20 Sep 2024 15:52:02 +0000 (UTC)
+	by ms.lwn.net (Postfix) with ESMTPSA id 62BD742B29;
+	Thu, 26 Sep 2024 07:23:31 +0000 (UTC)
 From: Jonathan Corbet <corbet@lwn.net>
 To: ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
  tech-board-discuss@lists.linuxfoundation.org
 Cc: tab-elections@lists.linux.dev
-Subject: TAB election 2024 voting started
-Date: Fri, 20 Sep 2024 09:51:59 -0600
-Message-ID: <871q1enx0g.fsf@trenco.lwn.net>
+Subject: Last reminder: TAB voting closes September 27
+References: <871q1enx0g.fsf@trenco.lwn.net>
+Date: Thu, 26 Sep 2024 01:23:28 -0600
+Message-ID: <874j62g9ov.fsf@trenco.lwn.net>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -60,9 +62,29 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain
 
+One last reminder that voting for members of the Linux Foundation
+Technical Advisory Board is open; it will end after September 27,
+anywhere on earth.  I'll post the results shortly thereafter, and then
+I'll stop spamming you all about this - honest.
+
+If you have not yet voted, you still have a bit more time to get it
+done.
+
+Thanks,
+
+jon
+
+-------------------- Start of forwarded message --------------------
+From: Jonathan Corbet <corbet@lwn.net>
+To: ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
+ tech-board-discuss@lists.linuxfoundation.org
+Cc: tab-elections@lists.linux.dev
+Subject: TAB election 2024 voting started
+Date: Fri, 20 Sep 2024 09:51:59 -0600
+
 In the end, we had eleven nominations for this year's TAB election:
 
- - Amit Shaw
+ - Amit Shah
  - Dan Williams
  - Daniel Borkmann
  - Dave Hansen
@@ -93,4 +115,5 @@ Voting will remain open through September 27.
 Thanks,
 
 The TAB elections team
+-------------------- End of forwarded message --------------------
 
