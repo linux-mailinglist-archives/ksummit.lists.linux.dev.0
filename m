@@ -1,100 +1,132 @@
-Return-Path: <ksummit+bounces-1581-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1582-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3353A989198
-	for <lists@lfdr.de>; Sat, 28 Sep 2024 23:44:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DED589A6F7C
+	for <lists@lfdr.de>; Mon, 21 Oct 2024 18:31:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A78B1C22FAA
-	for <lists@lfdr.de>; Sat, 28 Sep 2024 21:44:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9337A1F2480C
+	for <lists@lfdr.de>; Mon, 21 Oct 2024 16:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AEE5184532;
-	Sat, 28 Sep 2024 21:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FB441C7B81;
+	Mon, 21 Oct 2024 16:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sRXuH1Op"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nMvMrt/c"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D81446B4;
-	Sat, 28 Sep 2024 21:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50EA191F81;
+	Mon, 21 Oct 2024 16:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727559891; cv=none; b=i4DanZ9ffOqAadHBhc5nBCm4qjLlKKw6W+NLW5Z//2DRlkpOz+OaZdOlmCh57zXhz6WJh+vt8qwa4/nZMig2MkkyTfz8W5477wuFQxc3hIXptexwD+Dn46Ozmfb0v3HyN+FW35CMev+x8+J9rPsANOTP+qOdloE9BzHy011j6nY=
+	t=1729528311; cv=none; b=FlZSjDceTrV0AI1Z8vihDelnX3ky+Ht8HwV/YU9TBBfx333vggMZTgPFAhCsqPDFlRQSHjsTLQRGc0uhHVCIQwNtScjFSIxXqP51hgs/3pSOgaFttR8Usxrf135UuJnW9UqrU3fmrS9Ms0oa5Yqu+kykE4sqEPKSeBLtFOdHQ2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727559891; c=relaxed/simple;
-	bh=qQ5l8+kOSeo0inL9tnQ9NUsv8sYBzhL7D9r7Se+a3gc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oU1cy0GeVx4cuYeZ0hZQUQHexoz6vvYdmAOcUm1CvBSsAkrRGflJ3tI9ZFek+B5CB7o2ZYYDlpuRigf7wdT06WH7DDsa5z57SHRfXDPGI4q5qwBTsdXTBsmKrP3mnL29tHxLOQWFDXCFc2reM2uNwctFbJUVAfbKYeWK37tbA+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sRXuH1Op; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E06CC4CEC3;
-	Sat, 28 Sep 2024 21:44:50 +0000 (UTC)
+	s=arc-20240116; t=1729528311; c=relaxed/simple;
+	bh=sQ0x/Wz1DFne7tpBH3VPLt6J1dTHAYiRYKKRTRgEkIk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=SLjZB/uIzd8XOoqcM3CR4hSVIW0wvU4SZ8hySEoiJFYnXvbAgT4hoDsV7K1AMplOtzPjwrerHZ7X6C+rZJ9Y4gSSUPI1mBFFDNo92mtLjRYxhY5Xj/YBQSuU2QqpMd8L4V+5GTcjo7wfppW/3WvJ+YAakHnCZiCl6rWK7SXdsKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nMvMrt/c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54B47C4CEC3;
+	Mon, 21 Oct 2024 16:31:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727559890;
-	bh=qQ5l8+kOSeo0inL9tnQ9NUsv8sYBzhL7D9r7Se+a3gc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sRXuH1OpnHGGSUjBxJWfUiXBrHOOxygk5OSUy7eXOIBA+l+H4nCVIqGIggEaa7bzj
-	 pa8nrYujFcBlqT3XgYa74uofFuiJXg9QQ5dJQTNYJAwy88vCmvqNTtsBubPzdqKrQT
-	 qk4QWBernhH0Y6C5Y7rBSLVA//0EZ1TJ3Q3faMYLHaRQbwuSLhQhl7yRJwKhKAZQEu
-	 drXjFiqZ2OOH174MOcs6b7IrNjrs2RsE2bMctxax3zGlTi59EvZM8X9l896PCePPNQ
-	 lcymYDHrMibMv3gJzMJ3AoyswCLrEs4rlcvXt0z4C82a9K8RKHIvG/MUUkSOgt2Y2S
-	 YYSvk/NA6KHuQ==
-Date: Sat, 28 Sep 2024 14:44:49 -0700
-From: Kees Cook <kees@kernel.org>
-To: Shuah Khan <skhan@linuxfoundation.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, tech-board-discuss@lists.linux.dev,
-	linux-kernel@vger.kernel.org, ksummit@lists.linux.dev,
-	tab-elections@lists.linux.dev,
-	Dan Williams <dan.j.williams@intel.com>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Dave Hansen <dave.hansen@intel.com>, Shuah Khan <shuah@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Jiri Kosina <jikos@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Lorenzo Pieralisi <lorenzo.pieralisi@gmail.com>,
-	Amit Shah <amit@kernel.org>,
-	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Subject: Re: Results of the 2024 TAB election
-Message-ID: <202409281424.869DD58F4@keescook>
-References: <87y13bc05z.fsf@trenco.lwn.net>
- <a38ef481-b66e-49d8-bc74-56c1943c2527@linuxfoundation.org>
+	s=k20201202; t=1729528310;
+	bh=sQ0x/Wz1DFne7tpBH3VPLt6J1dTHAYiRYKKRTRgEkIk=;
+	h=Date:From:To:Cc:Subject:From;
+	b=nMvMrt/cBqrgCptZnLYecNbi9tfjjXyK3HLCoXUMOA3T6ChrcsP9tN3wTlZoC24jN
+	 8kH7CFV17oR3gr3ls3fEDUTGChbnDzEpqZi7xmgE8N0li1yqpEs2faeYRIx8Zz6FPr
+	 0RUR91AvP/IRItBePpePXmRrGuzByjoU8S1X8M1SF2fD//IQSGOzqdubSEV6sJnTas
+	 zeeXMGODpL6u1pCtm5OFWc4DrpL6fNsiHt4Vcv8u1rOqX9ICs/DnalCmj6wBBNoKOf
+	 nmxrOVErZ01W1xUnZvJE3JxoyXsSQO93Wonjmx7QGepJukscr699JUxYFIxgBYQQSM
+	 WVhjKmEeO0L6A==
+Date: Mon, 21 Oct 2024 12:07:13 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: torvalds@linux-foundation.org
+Cc: ksummit@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: linus-next: improving functional testing for to-be-merged pull
+ requests
+Message-ID: <ZxZ8MStt4e8JXeJb@sashalap>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <a38ef481-b66e-49d8-bc74-56c1943c2527@linuxfoundation.org>
 
-On Sat, Sep 28, 2024 at 12:15:42PM -0600, Shuah Khan wrote:
-> On 9/28/24 08:39, Jonathan Corbet wrote:
-> > There were 934 eligible voters in this year's TAB election; 229 of them
-> > cast ballots.  The results were (with the top five winning seats):
-> 
-> That is about < 25% turnout even after keeping the polls open for more
-> than week.
+Hi folks,
 
-This is normal; we're up from last year. I've been tracking these stats
-since we converted from in-person to online voting since our major concern
-was making sure we didn't disenfranchise anyone while increasing the
-number of eligible (and active) participants. It fluctuates a bit over
-the years:
+The linux-next tree we all know and love is widely used by the kernel
+community for integration work. It offers several advantages:
 
-2024: 229/934:	24.5%
-2023: 203/992:	20.5%
-2022: 267/960:	27.8%
-2021: 237/1012:	23.4%
-2020: 235/955:	24.6%
-2019: 174/?*		(first online)
-2018: 95/95      	(last in person)
+	1. Early detection of conflicts between matinainer trees
 
--Kees
+	2. Catching most new build errors/warnings
 
-*I can't find this year's data right now -- my brain is still half
-working after fighting covid this past week
+However, it faces significant testing challenges:
+
+	1. Contains a mix of "ready-to-go" code and experimental additions
+
+	2. A single "bad" piece of code can affect testing of everything else
+
+	3. Low barrier of entry, encouraging inclusion over exclusion
+
+	4. While linux-next offers early conflict resolution and
+	identifies build issues, it is very difficult to actually test
+	due to the abundance of runtime issues it tends to have
+
+These factors combine to make linux-next a valuable tool for integration
+but problematic for comprehensive testing.
+
+During the Maintainer's Summit, Linus Torvalds expressed concerns about
+the quality of testing that code receives before he pulls it. The
+subsequent discussion side-tracked to the testability of linux-next, but
+we didn't directly address Linus's original concern about pre-pull
+testing quality.
+
+In an attempt to address the concerns, we're trying out a new "linus-next"
+tree is being created and maintained with the following characteristics:
+
+	1. Composed of pull requests sent directly to Linus
+
+	2. Contains branches destined for imminent inclusion by Linus
+
+	3. Higher code quality expectation (these are pull requests that
+	maintainers expect Linus to pull)
+
+	4. Continuous tree (not daily tags like in linux-next),
+	facilitating easier bisection
+
+The linus-next tree aims to provide a more stable and testable
+integration point compared to linux-next, addressing the runtime issues
+that make testing linux-next challenging and focusing on code that's
+about to be pulled by Linus.
+
+linus-next is (expected to be) particularly effective before the merge
+window opens, as maintainers tend to send their pull requests early,
+allowing for more thorough testing of to-be-merged changes.
+
+We also want to avoid altering the existing workflow. In particular:
+
+	1. No increase in latency. If anything, the expectation is that
+	the cadence of merges would be improved given that Linus will
+	need to do less builds and tests.
+
+	2. Require "sign up" for the tree like linux-next does. Instead,
+	pull requests are monitored and grabbed directly from the
+	mailing list.
+
+Tree location: `git://git.kernel.org/pub/scm/linux/kernel/git/sashal/linus-next.git linus-next`
+
+Current testing:
+   - LKFT: https://qa-reports.linaro.org/lkft/sashal-linus-next/
+   - KernelCI: https://t.ly/KEW7F
+
+Feedback and suggestions for improving usability are welcome!
 
 -- 
-Kees Cook
+Thanks,
+Sasha
 
