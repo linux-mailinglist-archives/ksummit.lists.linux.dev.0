@@ -1,95 +1,92 @@
-Return-Path: <ksummit+bounces-1584-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1585-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 472C29A7102
-	for <lists@lfdr.de>; Mon, 21 Oct 2024 19:25:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D1179A7181
+	for <lists@lfdr.de>; Mon, 21 Oct 2024 19:57:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 765331C219CF
-	for <lists@lfdr.de>; Mon, 21 Oct 2024 17:25:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30DAE1C22F35
+	for <lists@lfdr.de>; Mon, 21 Oct 2024 17:57:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4D5D1EF93A;
-	Mon, 21 Oct 2024 17:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED571F9402;
+	Mon, 21 Oct 2024 17:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="CvA7NC5i"
-Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ClhW/BCh"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2EA11EB9F4
-	for <ksummit@lists.linux.dev>; Mon, 21 Oct 2024 17:25:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACEA81F8EE0;
+	Mon, 21 Oct 2024 17:56:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729531506; cv=none; b=Sata6YVuTmXOT9GdTbylOFOUpczkdv5jCNwXs/bmFwt2PXWT0F5rbWS7YK++45Kc0UKRT3n1+6srENT10tOtvV83HOWQ8hN4lumfKaldlL3wsspg4K6Q2TNVWxvnEewguTN1ig1YHYOrhpDB08RglJtzeik0WaOsPTAQcbt18lU=
+	t=1729533410; cv=none; b=AXNPfx4WpGxrQvJNZPO09k2WBo0gkA31teGoeC0hfL8FcGEKu4T8K3qOwPr0zwoAMkB8jBfBwTX2LsjEh41ZSPmRJq2z9puwNoHeob0uFnHyxeJ+N20asTG0XByWEWW1yj+lZvVneaJJZTaYLSs2+kqpnT3cPsNppsK1pFeLk2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729531506; c=relaxed/simple;
-	bh=aGV+q42G//4R3Eefg3TESg8PD+l9Z5g/MXEWDA2Elt4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ucYZH35Bt0jjTSGhNVtXEnO6eL17oaot3etPz/yhOxnNiUWu63s9G/LWhbQ/5yxB4igq1uEMEL+BXs5eyGtiEnTENoh7DUAwMD643Gn4GFZOLC9Ppj1GhZSEyXs+m2WHNtdVM1G6yLPdoHS6YfPSUAArUKE1dDLhSvSB81N1oUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=CvA7NC5i; arc=none smtp.client-ip=199.89.1.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 009.lax.mailroute.net (Postfix) with ESMTP id 4XXMd63hypzlgMVX;
-	Mon, 21 Oct 2024 17:24:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1729531495; x=1732123496; bh=hw8qZQAVa0fsEP4DqzqLzRK8
-	H4LDPIl1V6td3jsiGfM=; b=CvA7NC5iAVjAXRWFJpNTXBVcpbEkTy3K81Z2P7va
-	WZ2//RxUN1AG3pDDHOaLyYVmm9dTuwqtzUlQ+OBlph7rHwnzaSYSOfUP+4IZ7cBk
-	LQ/oQD31jFaWDW2us43yqFGHjR2isEyc8KqYR2kI9mLbWHoS9mYPStFMeS02X1t3
-	rorDpLCXyQB/Zx5BIi5z9wAOQ5rhZ7dt/LrsyIk6FNL17TlB3noWKrwNp7UipWUB
-	dGPVB8+wj+uOBnlvnxQ7WevsWjhBmaJwcsXxAvoGa08MJy3bCqXLGU3Z1BHyfz9R
-	eYFw37uIfGkZwIlSFQY3uZ5sQQuGZ8Sxr/1rAjE8OrVJZg==
-X-Virus-Scanned: by MailRoute
-Received: from 009.lax.mailroute.net ([127.0.0.1])
- by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id ukFOgu6KXAyK; Mon, 21 Oct 2024 17:24:55 +0000 (UTC)
-Received: from [192.168.50.14] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4XXMd20lZMzlgMVs;
-	Mon, 21 Oct 2024 17:24:53 +0000 (UTC)
-Message-ID: <e27ab2c0-ddee-4fc2-a41e-70b4a7775127@acm.org>
-Date: Mon, 21 Oct 2024 10:24:53 -0700
+	s=arc-20240116; t=1729533410; c=relaxed/simple;
+	bh=PoMYB0MBTluKGbrOcMZ2NG103OhIvWMsk4YgoHV9f70=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aGszTNrmjynGLvGj6m3L6PadO9l5pkdkw7VI9PWIFycEo+jOxqZZQavehdN5jt7pIzBDMYya+fbiyZ50yoQrU/g4ciLp3QQX5GzCr94WxIIS63o1cVZadOjZlP0GYOoO7HJYkbXu9x+XjVJx3FkD8+1Du5C2CqgToDmbqRlBVes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ClhW/BCh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC84C4CEE8;
+	Mon, 21 Oct 2024 17:56:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729533410;
+	bh=PoMYB0MBTluKGbrOcMZ2NG103OhIvWMsk4YgoHV9f70=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ClhW/BCheoLjCVUeO5Hrv+Aur7HSWu9EYLAi7inVvuP8oVd/KvwFmNfKgmkkRbsaF
+	 z+6ZybIESrdi+ullcxIg7R3Ftil8pZoSiu9/cSLe/FTQJIarUhfxivMrCrT8S99Z/J
+	 5mekzkdWxZfWDkm/6aMcl3dgIHErSqYmu4nHDRdf8od7tgcfz/as4KsEKqUxJEsSJL
+	 L9DREu6fgNlQe8ZnVAFg0/FJFaOo+5xvQhNM1akt9ybMNrIBPbBbo9MRuQrBUOBhf4
+	 7zKSdyn9Y/NtaIXKF592EvoFZcy/q3zjZjh1uVGu4u+SnOHN7maGcwH871lDW6Fm6G
+	 uaQ5FCMUKy0QQ==
+Date: Mon, 21 Oct 2024 13:30:06 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: torvalds@linux-foundation.org, ksummit@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Subject: Re: linus-next: improving functional testing for to-be-merged pull
+ requests
+Message-ID: <ZxaPnk-uC7-A-f_e@sashalap>
+References: <ZxZ8MStt4e8JXeJb@sashalap>
+ <e27ab2c0-ddee-4fc2-a41e-70b4a7775127@acm.org>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: linus-next: improving functional testing for to-be-merged pull
- requests
-To: Sasha Levin <sashal@kernel.org>, torvalds@linux-foundation.org
-Cc: ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
- Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-References: <ZxZ8MStt4e8JXeJb@sashalap>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <ZxZ8MStt4e8JXeJb@sashalap>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e27ab2c0-ddee-4fc2-a41e-70b4a7775127@acm.org>
 
-On 10/21/24 9:07 AM, Sasha Levin wrote:
-> Current testing:
->  =C2=A0 - LKFT: https://qa-reports.linaro.org/lkft/sashal-linus-next/
->  =C2=A0 - KernelCI: https://t.ly/KEW7F
+On Mon, Oct 21, 2024 at 10:24:53AM -0700, Bart Van Assche wrote:
+>On 10/21/24 9:07 AM, Sasha Levin wrote:
+>>Current testing:
+>>   - LKFT: https://qa-reports.linaro.org/lkft/sashal-linus-next/
+>>   - KernelCI: https://t.ly/KEW7F
+>
+>Hi Sasha,
+>
+>Is blktests included in any of the above? If not, please consider 
+>including it. During the past few years we have noticed that the
+>test failures reported by this test suite are most of the time caused
+>by kernel bugs. Sometimes issues in the tests are discovered but this
+>is rare. See also https://github.com/osandov/blktests/.
 
-Hi Sasha,
+Hey Bart,
 
-Is blktests included in any of the above? If not, please consider=20
-including it. During the past few years we have noticed that the
-test failures reported by this test suite are most of the time caused
-by kernel bugs. Sometimes issues in the tests are discovered but this
-is rare. See also https://github.com/osandov/blktests/.
+I don't plan on doing any tests on my own, but rather have our existing
+CI infra (kernelci, LKFT, etc) deal with the actual testing part of
+things.
 
+AFAIK KernelCI if working on adding blktests support!
+
+Thanks!
+
+-- 
 Thanks,
-
-Bart.
+Sasha
 
