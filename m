@@ -1,177 +1,124 @@
-Return-Path: <ksummit+bounces-1590-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1591-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12BA19A9236
-	for <lists@lfdr.de>; Mon, 21 Oct 2024 23:42:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE6309A9393
+	for <lists@lfdr.de>; Tue, 22 Oct 2024 00:56:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9027281644
-	for <lists@lfdr.de>; Mon, 21 Oct 2024 21:42:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3650BB21FD4
+	for <lists@lfdr.de>; Mon, 21 Oct 2024 22:56:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8C91FCC54;
-	Mon, 21 Oct 2024 21:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657E21FEFC0;
+	Mon, 21 Oct 2024 22:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eLIt4oHR"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Qh108Q7L"
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF52D1FE115;
-	Mon, 21 Oct 2024 21:41:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF051E04AB
+	for <ksummit@lists.linux.dev>; Mon, 21 Oct 2024 22:56:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729546918; cv=none; b=ngkqn9IscF78R4qhmhOA7mOMP4gT0C+I15CTyLGxHM3c55EFKm54Cb/K0nVhh5ZbbuOPpP7886poqCxj/9v9+Wbo/K0UBwnwVkrDnGM7CtrB5PYB6v0uIv7Wo7/Eb7PcYBwazArmuYIW9/mAXsyx+OLk9OhYU992fBHUhBVO/iI=
+	t=1729551394; cv=none; b=MBroex2fQYLRA4uJi6Jt65IAZlIrcs5zdnq3Ieh4O22/CKqkjFe9KGifnwP9wN1vpN98NVYX6RlIbLEi7VNhG9ZslvNwhHrJ+hRzXqxri80PDl+pX7qaD+cWmQvX2BNCbeNasisgvi93U1xPWsI5q0d1JoNiMZc9DVHT0gILzto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729546918; c=relaxed/simple;
-	bh=fWDT7/tqiHFxu6jARFHgw792ZtaMGHZPjKiSd/GLY7c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mEXHFJhANm5j09HKmEx6bGswtGcqcRrfxQswiFutIZiuY+foWbeECzHXBqyfsTjIOCaFVqRA84JvhC6Kei3uAwe60cfWtNSvVQnN+4luSBMLDqcWJtnqCsJnOrSXQanTrcgctgQXekp1T+rDCnsKND3YjDTg9C7wx3LZQT/pGKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eLIt4oHR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5001DC4CEE5;
-	Mon, 21 Oct 2024 21:41:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729546918;
-	bh=fWDT7/tqiHFxu6jARFHgw792ZtaMGHZPjKiSd/GLY7c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eLIt4oHRnLa5HXop2Jx8cVADa0x3s35Bro9lKmzhSRDBkvrCcsqdeIZbxQ99w4tVD
-	 +hB0WT6rRiTRUQC+se+DtPrteUwGcV1gX6VnwF6kW9EfMWLLzsVtutXRJn11LIkkZA
-	 LieNytP4rUs3bxTiGzgPbyJpPlbnBp55qJHGk0m5TuxnV7D80fkqUhce5plxwhyPzW
-	 2+HqmA3Cwv9eDrrvFtaID/feiBkze2Obxeqi3wSvps1BnvHCxi6nr1QS2olBxbJ7nr
-	 wNXUrKDbNhU2FG9VOGoo3kjYtDdXhLqxjmukIC8w43AaxwJf7EE1JOInbbAyKvIvFe
-	 gwyz2hpGaZXKw==
-Date: Mon, 21 Oct 2024 22:41:54 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: torvalds@linux-foundation.org, ksummit@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: linus-next: improving functional testing for to-be-merged pull
- requests
-Message-ID: <6dbbc85e-5a87-4605-8db6-92b191878d97@sirena.org.uk>
-References: <ZxZ8MStt4e8JXeJb@sashalap>
+	s=arc-20240116; t=1729551394; c=relaxed/simple;
+	bh=r8egg/Vf14/dqyN4kV4AetN5NUQl2M/4KMeQDZE3hfA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hRHCmRtVX0Eg8Opw1NOD0CUxcNyCSU/AryMd79RiZxdg1fJoCwKEBICgDp+7J47jbHjcXqVwE+oobCgb5Z+utU1FMmDRP8QgpbjNWZYMuXUZ43m/fGN4t0xgsnthyHhe9GnM6fmut7PLrZC71gTe8JGNyUawlOv3gYKpaISi6/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Qh108Q7L; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a9a0cee600aso630983266b.1
+        for <ksummit@lists.linux.dev>; Mon, 21 Oct 2024 15:56:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1729551391; x=1730156191; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=lGZ24lUdsgbUdWUq48cY+ttuhX+8F11TIe0DlZ2JCjI=;
+        b=Qh108Q7Lb4b9QbOrDbrLc6JCf7r/yyzGoE22LSCJSUVjOdLRiJCQP5HBBNjvqTUxaq
+         EIEu59VZwyk7bJ46d0VHHkZrwEH07anwbwwHJhLFdqMjYixKlyXwVSegrb9BK5+jpMxG
+         o5T7kKC5DctAgBp4ANOmxbJc+DzC4OIAjBjt0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729551391; x=1730156191;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lGZ24lUdsgbUdWUq48cY+ttuhX+8F11TIe0DlZ2JCjI=;
+        b=AmyCwB9AbBCLF8DHI9BPRXIRs2T39GF9yUa49Q5PteVnEe/H3Ouo2MwncQciHwZXZc
+         iu1P7HUQMGifyMKOSAaRkjmsBXnc6vrUA1EbzjcKnemATLoYd9XBPpwRDNsOal7Otik6
+         t2Gw7ayejXHJIX44Sww2a6f/5+KIONZyku+CrFS09K8HMWSqLRi728mYotqKzHGjI1fy
+         rbPY/cVwXKFO+AYelXC+/+58vgW0Jal/b1N5JOk0Uw2F6mVe9hdvMcOXmhNgmVNDczrP
+         3Cm3hdxnnAE8cL9i0r6OO+a5y2zAYHVf8pC8koxpb9BaIKeIH23KMYqpGeGQhKqs3PEe
+         eHrA==
+X-Forwarded-Encrypted: i=1; AJvYcCW1ZV9wQ0q7n9t5DIz+gwtxC7PbPwoZhVqnyRnnF1sIMuBQHoOCJkf3veJ9LZpK2/D3ecEwLq9B@lists.linux.dev
+X-Gm-Message-State: AOJu0YxNQQRUchf2aWHSRJKdyYzuMPEuxKnJe0EyzZz6zqwtbBGESdb1
+	1WuzVKiPgqmJhvPGYWxdYB4NlGyyx6nyQPwXpChJExIaIsPad6+t4D6yTo9xLGRL24JNinYplNc
+	h/Rpsng==
+X-Google-Smtp-Source: AGHT+IFHElNV+G/paRyAXXLl0RPQPGsbpmdSnwP2eFIbXV0F7yEz99i4PG+MGocq/AlW2VYsK3ot0A==
+X-Received: by 2002:a17:907:6d24:b0:a9a:13dd:272b with SMTP id a640c23a62f3a-a9aace24e10mr51926666b.2.1729551390766;
+        Mon, 21 Oct 2024 15:56:30 -0700 (PDT)
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com. [209.85.218.54])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a912ee592sm260750666b.79.2024.10.21.15.56.30
+        for <ksummit@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Oct 2024 15:56:30 -0700 (PDT)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a9932aa108cso737063166b.2
+        for <ksummit@lists.linux.dev>; Mon, 21 Oct 2024 15:56:30 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWOLS9DHr/omvYlMtMKlWdppTq4tUzgIx96rTk5T3mEmrRFFV9bhCm6hyqtVmBjtfDxQFFvEs/m@lists.linux.dev
+X-Received: by 2002:a17:907:31c2:b0:a9a:66a9:2c55 with SMTP id
+ a640c23a62f3a-a9aace25cb3mr45947166b.6.1729551389933; Mon, 21 Oct 2024
+ 15:56:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="XVFzAHx1LlJYtmMS"
-Content-Disposition: inline
-In-Reply-To: <ZxZ8MStt4e8JXeJb@sashalap>
-X-Cookie: Most people prefer certainty to truth.
+References: <ZxZ8MStt4e8JXeJb@sashalap> <xhjzj6kfgg2dxq6swurwaeyzqtd2sl4dat5pzg6jolirw5og6z@bmwdcuwsf2bv>
+ <ZxavDApnkMl2xZNA@sashalap>
+In-Reply-To: <ZxavDApnkMl2xZNA@sashalap>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Mon, 21 Oct 2024 15:56:13 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjDo9gr8gD+XcWBjvNCSZg=GbmfqtM13o0tAtWrGY8zQA@mail.gmail.com>
+Message-ID: <CAHk-=wjDo9gr8gD+XcWBjvNCSZg=GbmfqtM13o0tAtWrGY8zQA@mail.gmail.com>
+Subject: Re: linus-next: improving functional testing for to-be-merged pull requests
+To: Sasha Levin <sashal@kernel.org>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, ksummit@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+On Mon, 21 Oct 2024 at 12:44, Sasha Levin <sashal@kernel.org> wrote:
+>
+> On Mon, Oct 21, 2024 at 02:36:39PM -0400, Liam R. Howlett wrote:
+> >
+> >Would it be difficult to catch branches that change things outside their
+> >scope without correct SOB/RB/Acks?  Asking for a friend...
+>
+> Up to the guy in charge... I don't want to attempt and monitor a policy
+> that won't be enforced :)
+>
+> If Linus wants to add this to the workflow (which is doable), then an
+> explicit ack would be great.
 
---XVFzAHx1LlJYtmMS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Has this been a huge deal?  There are things like ABI changes
+(function renames, dropping or adding arguments etc etc) that will
+inevitably end up tree-wide, and honestly, it would often be totally
+frustrating trying to get acks from every maintainer.
 
-On Mon, Oct 21, 2024 at 12:07:13PM -0400, Sasha Levin wrote:
+Is it hugely common? No. But still, I'm not convinced there is a sane
+model for "outside their scope".
 
-> During the Maintainer's Summit, Linus Torvalds expressed concerns about
-> the quality of testing that code receives before he pulls it. The
-> subsequent discussion side-tracked to the testability of linux-next, but
-> we didn't directly address Linus's original concern about pre-pull
-> testing quality.
+I mean, sure, if the change comes from an individual driver or
+filesystem or something like that, then it generally has no business
+touching anything else. So it *can* be an issue, but I don't see how
+to sanely automate this kind of thing without it becoming a potential
+huge annoyance.
 
-> In an attempt to address the concerns, we're trying out a new "linus-next"
-> tree is being created and maintained with the following characteristics:
+Maybe other people don't mind, but I personally hate false positives
+that you are then supposed to ignore when appropriate. It just makes
+people ignore the things they *should* care about.
 
-> 	1. Composed of pull requests sent directly to Linus
-
-> 	2. Contains branches destined for imminent inclusion by Linus
-
-> 	3. Higher code quality expectation (these are pull requests that
-> 	maintainers expect Linus to pull)
-
-This feels kind of late for thorough testing, especially outside of the
-merge window where it's mostly fixes.
-
-> 	4. Continuous tree (not daily tags like in linux-next),
-> 	facilitating easier bisection
-
-Is this a pressing problem?  I routinely bisect -next, you have to base
-things on Linus' tree (or pending-fixes) but otherwise it's not
-especially problematic.  It is a bit helpful to remember commits that
-you've run a given test on before to speed things up a bit but that's
-not super essential.  The downside of not redoing the merge is that
-once problematic stuff ends up in history it doesn't go away which can
-itself be disruptive whenever there's multiple issues going on, you get
-a window you have to skip through when bisecting.
-
-> The linus-next tree aims to provide a more stable and testable
-> integration point compared to linux-next, addressing the runtime issues
-> that make testing linux-next challenging and focusing on code that's
-> about to be pulled by Linus.
-
-> linus-next is (expected to be) particularly effective before the merge
-> window opens, as maintainers tend to send their pull requests early,
-> allowing for more thorough testing of to-be-merged changes.
-
-How many people send pull requests in advance, as opposed to getting
-their tree stable, waiting for further testing, applying any fixes from
-that testing and then sending a pull request after the merge window has
-opened?
-
-One big concern I have with this is that for non-fix changes the testing
-coverage will be very heavily loaded to the end of the development cycle
-and the merge window, with a lot of changes in flight at the same time.
-That means it's going to be harder to effectively run more expensive
-tests, and we'll potentially be a month or two on from when the changes
-were landed by the time we actually get round to running whatever extra
-tests get run here.
-
-I do think it's useful to have coverage of specifically things actually
-sent in pull requests, but I'm not sure we'd get much more thorough
-testing than we already get via pending-fixes and -next.
-
-> We also want to avoid altering the existing workflow. In particular:
->=20
-> 	1. No increase in latency. If anything, the expectation is that
-> 	the cadence of merges would be improved given that Linus will
-> 	need to do less builds and tests.
-
-For fixes we do routinely have things landing within hours of the pull
-request being sent, that's pretty aggressive for CI.
-
-> 	2. Require "sign up" for the tree like linux-next does. Instead,
-> 	pull requests are monitored and grabbed directly from the
-> 	mailing list.
-
-Like I mentioned above what's the plan for handling bad changes?  If an
-issue is found in linus-next (BTW, I forsee confusion being caused by
-typos there).  If a problem is found and then fixed with an incremental
-patch which is sent in another pull request then the fix will eventually
-land but if the offending patch is rebased out or the pull request just
-dropped entirely then presumably someone will have to do something
-manual.  How will that happen, and on what sort of schedule?
-
-I do wonder if it's worth splitting the -next merge further and having
-another pending-fixes type split where maintainers can differentiate
-between changes where they're reasonably happy with the testing and
-those that are bleeding edge.  It is volunteering Stephen to do even
-more merges, and it does rely on people identifying what's stable, so
-I'm not sure how useful it'd be but seems like it would mesh well with
-the flow where people are doing their own stabalisation prior to sending
-pull requests.  That's a different thing to increasing the coverage of
-PRs like you're proposing here but it's another angle on the "-next is
-too unstable" issue.
-
---XVFzAHx1LlJYtmMS
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcWyqEACgkQJNaLcl1U
-h9CSLgf/YYiRGiitFXCegBQeROsMzJPCCZbMm/B1YzMU/4NTedpuKO7OnlVCgt82
-bD888+EM7//qNX0t7/ja4ZIFhGLGecTTQ7hXAvC8aSAq7/mPzhQyI/P7gF8PJsGS
-Dbzx7p4Xb83lNR81vWahFn3FVFfGOrrflxwTxUEdb+mvaJ5Mdif8rPIf6sFXCCxL
-ctoHoXXS/WARlHnA7BKCiGfsKyuE9uzn488MfpGahHiqt7UBLfeb2a+R2K8db3Hp
-7uoVre+ZmvQhru1+ayV+LSYgXXhjobv8e0GYrhxY4ewtRBMEmpV4TAGKUYwHRKAY
-q5RN//LLG1H1LEvToGhsgqQ23zH0EA==
-=c9we
------END PGP SIGNATURE-----
-
---XVFzAHx1LlJYtmMS--
+                 Linus
 
