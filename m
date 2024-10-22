@@ -1,139 +1,81 @@
-Return-Path: <ksummit+bounces-1604-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1605-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 449E59AA162
-	for <lists@lfdr.de>; Tue, 22 Oct 2024 13:51:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09C5E9AA1DC
+	for <lists@lfdr.de>; Tue, 22 Oct 2024 14:10:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C55A1C22303
-	for <lists@lfdr.de>; Tue, 22 Oct 2024 11:51:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38E151C21556
+	for <lists@lfdr.de>; Tue, 22 Oct 2024 12:10:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1281B19CC0B;
-	Tue, 22 Oct 2024 11:51:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DEDD19D8A3;
+	Tue, 22 Oct 2024 12:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="MLesC5Oy";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="IA0N0glH"
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U3TlkF0I"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0592645026
-	for <ksummit@lists.linux.dev>; Tue, 22 Oct 2024 11:51:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F9F19CD19;
+	Tue, 22 Oct 2024 12:06:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729597868; cv=none; b=gJzJKEig1SMYWUtGHcY5nq+HoHh09NjWIrcBSryb9fdPOP5A8dKC0TpsKJo6ubM/qvvj/7df1agkYqfuK5X6ebnLqdnjy6frW3LJdSFJ87hmJTkPldnSpV1HIxPNZiYF9qQXk0c9tcfXciyDMDJOidUgdVl4vcZX+R5MdBdJars=
+	t=1729598809; cv=none; b=spsNg9zZMYNdFteZsgpzNNe3isZmi3fmIfbit3V9LH7IHyi/XP40YfiarEHNIk5bkN3+KxZYczrbn8gJm/g1Ro5U90bHrdvFtT1sy8ONnGNIRZ6v0eoaovS+h9CFsMtT1NbQmvslPLfjjtsv6Q+RBaeytKwvuWZ5PEIy1RhIk5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729597868; c=relaxed/simple;
-	bh=+JmY5aroUpTHnfouqw30ucA6jG2HNk7WVTwD7G37o/M=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pqwDOyqjzcEy5Kis07NL12gP80RN69o0E9IECXJF8Tnf/sQdESbko69LAY35qd63T9M2ApEBaS3RULf5PDhsMQ6Y/UBdcbaO8TPto9d8EB1XpRwHnGzteI+8xijJbvzIdM3SacuLSm/hSfnCN3Zb34ysA2wRSrYurBM0ujGLnvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=MLesC5Oy; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=IA0N0glH; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1729597866;
-	bh=+JmY5aroUpTHnfouqw30ucA6jG2HNk7WVTwD7G37o/M=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=MLesC5OygRhMBCKtJ/meZypggNAlHNDiD8D/6IeujHZQ5SZ1O66Q2kQUdiJCEt/eH
-	 /UPv3MxIQDAFOcnF8ifdb/3caVmdCwsyhSW8jithcaufcgXlGNFrhsOrGu5QIgu+sq
-	 eteFFSbuqA6h9U9d3ssho/zbHkt/GCFhh6NG8LGE=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 174E01285CB9;
-	Tue, 22 Oct 2024 07:51:06 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id HPZybbUFZbvQ; Tue, 22 Oct 2024 07:51:05 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1729597865;
-	bh=+JmY5aroUpTHnfouqw30ucA6jG2HNk7WVTwD7G37o/M=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=IA0N0glHd3piZDHgHjolNdiHRHfZqzJrWJC2UgTcrZElBf97Cq1GZB1yDDvJi5ZHd
-	 DLy+pGr3gUvzrIrZZqahB4RrVtJcr5s/D0M2R8plqqijxuxaQO82tT3+mVqA8P0ps1
-	 8KSVV0sPaUsqaECaa1GVwzZ6uE1DDShdkm+b6U1w=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 0E1371281A31;
-	Tue, 22 Oct 2024 07:51:04 -0400 (EDT)
-Message-ID: <a4d7222ddb039a03a337fcfb047f5e804bc541d4.camel@HansenPartnership.com>
+	s=arc-20240116; t=1729598809; c=relaxed/simple;
+	bh=vZySYiC2JdFzOl2i+o8PxtaWucEWcO5Yd7FP34d0fQs=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=ctqxNWOmqDlu69X0CuU0K68J3WcRpA5jmf/8MuZVjZ8zHdc9jRmL285IIYJt6bq+uF1eWs/4duub0WxSCjmsYa+GxTA7xLLfsP+tbiiK/ug0zkSyt4K4AILs3OSPN2ALdVKOdRKKiInf2vnr0nC5dlhXE/ZgFo7usqNhoh7duDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U3TlkF0I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6455C4CEC3;
+	Tue, 22 Oct 2024 12:06:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729598809;
+	bh=vZySYiC2JdFzOl2i+o8PxtaWucEWcO5Yd7FP34d0fQs=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=U3TlkF0IQnvDoE6JkpU3bF9lMZIEhzYy1pc6VmHqr/eU1GXQVaBCFqNaDH+QKT//I
+	 ulsxkqBSyAFilIgbzBv91+ButMPRrzAnc1jTi9iREXFw7bDrLeeFTxCxI/4iRkBkhs
+	 pWq6PayEg4W+5C1KvXwoJFRPj1k3ojvswQqUV68D6XXp7s46khxDeswTfdgUr9oTmE
+	 cIaJW5mhDIeKQ0iTkVW6xd05vv821rfORkTN7SnA1J4VPvjlYVyN/yPqDzwd0SXcej
+	 Fwk7RuqwJ4SQftu+jOGAHiWlAWHEb55L+Gm/Q/CNYsM4ANhySJfS9R1k5BVnxTX3w3
+	 ZuO+Wj7Xw0Vqw==
+Date: Tue, 22 Oct 2024 14:06:46 +0200 (CEST)
+From: Jiri Kosina <jikos@kernel.org>
+To: "Paul E. McKenney" <paulmck@kernel.org>
+cc: Sasha Levin <sashal@kernel.org>, torvalds@linux-foundation.org, 
+    ksummit@lists.linux.dev, linux-kernel@vger.kernel.org
 Subject: Re: linus-next: improving functional testing for to-be-merged pull
  requests
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Steven Rostedt <rostedt@goodmis.org>, Christoph Hellwig
- <hch@infradead.org>
-Cc: Kees Cook <kees@kernel.org>, Sasha Levin <sashal@kernel.org>, 
-	torvalds@linux-foundation.org, ksummit@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Date: Tue, 22 Oct 2024 07:51:03 -0400
-In-Reply-To: <20241022041243.7f2e53ad@rorschach.local.home>
-References: <ZxZ8MStt4e8JXeJb@sashalap>
-	 <792F4759-EA33-48B8-9AD0-FA14FA69E86E@kernel.org>
-	 <ZxdKwtTd7LvpieLK@infradead.org>
-	 <20241022041243.7f2e53ad@rorschach.local.home>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+In-Reply-To: <53b980b3-6bdb-4331-a627-f6e775d23eb1@paulmck-laptop>
+Message-ID: <nycvar.YFH.7.76.2410221357140.20286@cbobk.fhfr.pm>
+References: <ZxZ8MStt4e8JXeJb@sashalap> <53b980b3-6bdb-4331-a627-f6e775d23eb1@paulmck-laptop>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 
-On Tue, 2024-10-22 at 04:12 -0400, Steven Rostedt wrote:
-> On Mon, 21 Oct 2024 23:48:34 -0700
-> Christoph Hellwig <hch@infradead.org> wrote:
+On Mon, 21 Oct 2024, Paul E. McKenney wrote:
+
+> I have to ask...
 > 
-> > > How about this, instead: no one sends -rc1 PRs to Linus that
-> > > didn't go through -next. Just have a bot that replies to all PRs
-> > > with a health check, and Linus can pull it if he thinks it looks
-> > > good.   
-> > 
-> > Not just -rc1, otherwise agreed.
-> 
-> You mean have everything go into linux-next before going to Linus
-> after -rc1?
+> Wouldn't more people testing -next result in more pressure to fix
+> linux-next problems quickly?
 
-I think that's a good goal, yes.  Most developers tend to send a fixes
-pull around once a week (or less) after the merge window, which means
-it could be soaked in -next.
+I believe I brought up pretty much exactly this at this year's maintainer 
+summit.
 
-> I'm one that doesn't do this. That's because my code in linux-next
-> after -rc1 is for the next merge window, and the code I send to Linus
-> is only fixes for code I sent before -rc1. I tend to keep an "urgent"
-> and "core" branch. My "core" branch is everything I plan to send in
-> the next merge window and goes into linux-next (via being pulled into
-> my for-next branch). After I send my pull request to Linus, and he
-> pulls it in the merge window, that "core" branch becomes my "urgent"
-> branch.
-> 
-> But when I find a bug that's in Linus's tree, I put the fix on top of
-> "urgent", run it through my test suite (takes 8 hours or so), then
-> send a pull request to Linus. My "urgent" branch doesn't go into
-> linux-next as it doesn't have changes that should affect others work,
-> which is what I think linux-next is mostly for.
+From the discussion it turned out the many people believe that this 
+investing into this is probably not worth it, as it will require much more 
+continous, never-ending effort (for which there are probably not enough 
+resources) than just dealing with the fallout once during the -rc1+ phase.
 
-That's not necessarily a safe assumption.  The reason we put scsi-fixes
-into -next is precisely to pick up if this happens.  I admit it happens
-very rarely because of the compact and local nature of the fixes, but
-the signal rate isn't zero.
-
->  I also find known bugs in Linus's tree to be high priority to be
-> fixed (I stop what I'm doing to get the fix out ASAP).
-> 
-> Now, if there was better testing from linux-next, maybe it would be
-> worth the time to push my urgent branch there for a bit. But so far I
-> haven't seen the benefit of doing that.
-
-It does at least get 0day running over it, although that can also be
-configured for your branches separately as well.  It's also not unwise
-to have some pause time before fixing and sending ... the fix you first
-thought of isn't always the best one (or even sometimes an actual fix).
-
-Regards,
-
-James
+-- 
+Jiri Kosina
+SUSE Labs
 
 
