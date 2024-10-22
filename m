@@ -1,113 +1,119 @@
-Return-Path: <ksummit+bounces-1593-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1594-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1CDB9A9813
-	for <lists@lfdr.de>; Tue, 22 Oct 2024 06:55:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33FD69A9A39
+	for <lists@lfdr.de>; Tue, 22 Oct 2024 08:48:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2687CB232AD
-	for <lists@lfdr.de>; Tue, 22 Oct 2024 04:55:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F80FB22187
+	for <lists@lfdr.de>; Tue, 22 Oct 2024 06:48:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A8C12BF32;
-	Tue, 22 Oct 2024 04:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73DA71448DC;
+	Tue, 22 Oct 2024 06:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uoKk0iLP"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="dMBk1o9s"
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B06384D12;
-	Tue, 22 Oct 2024 04:54:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBC0C8FE;
+	Tue, 22 Oct 2024 06:48:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729572897; cv=none; b=DnPTJgtqpc0beis2juraFsIX4NJptNtifZpvrW9LBYKKibB70lz0KXyJ2f4i6HaxY9DcXHRXW2VJX1tcmuQY8kbLQv5UYdbAmzhQ6Dmgbx0CSjxioAyr+HjBLvH8ZjJltjwradi7gfJvhU/GUOzFSB/kIC2ECttrDoj67a/+HYE=
+	t=1729579717; cv=none; b=Wsm2XM+7NRfoJLAkNxVKtH9Se5wpTYAVBXJMV4/2hyS4i4gDoEIWFcDH6Tg+bXH7Zm4Ums/ptpchCeGHW/aH7b2DBDXHqSXtPfjE0ElljclhKjXTpYOdJMZpsuCvvSnfoxf+ZERuFjcJRlTXnPWkbOi4eCC13AzqPiqeCPl/qIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729572897; c=relaxed/simple;
-	bh=Rg3jB1KUu3XeJP2mAoDRzVSH/rz4K/4b/bxmVMIHKks=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=hxYd3n4VvoAq+It3A0/htGqLUKdGYM0YYmEjNSPXrqdcDqXJFDO6EqV/MtwsZrgLPqsRTj5KquYCt2upsiJGZI5sGJJZOrXo7rRv/2q287nj5nwhN6O/dj/TJcPoDbaQKqL31Tp+ddDlSENCy9qoPJg2VlbwUlpDnopHNrwJt1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uoKk0iLP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC3EC4CEC3;
-	Tue, 22 Oct 2024 04:54:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729572897;
-	bh=Rg3jB1KUu3XeJP2mAoDRzVSH/rz4K/4b/bxmVMIHKks=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=uoKk0iLPuaeFI3qxBnug9MizLCRR2+0OgUO5cRhuaVbrFMxuyE0bI3NAKI0DIHLa3
-	 vUxBgVi8crkKHBSxC7+p+G1oT/MJ84Db/8XIjRYne6mim3IrRZL5vvK/rvHHlt3Xdu
-	 cayyLiNZIDxdswtTQ1idN+4rKjjNGZjkQB3q+wgt4X1Sms4F7Y+wV9NN93+v5gdBt4
-	 3fShg2F67HmzxOGLt+jIkuQqSSP3q+IwwHdc8xf0iOmV/UUILDEXUeBqd6xdr4V9vS
-	 klW9040RgddyzQCbmtPppSDuDgJoENEV7uzOorcSO6YO/16V/+qoavPKW1rGIxPeh5
-	 vb4qNIfK/B6RA==
-Date: Mon, 21 Oct 2024 21:54:53 -0700
-From: Kees Cook <kees@kernel.org>
-To: Sasha Levin <sashal@kernel.org>, torvalds@linux-foundation.org
-CC: ksummit@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_linus-next=3A_improving_functional_?=
- =?US-ASCII?Q?testing_for_to-be-merged_pull_requests?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <ZxZ8MStt4e8JXeJb@sashalap>
+	s=arc-20240116; t=1729579717; c=relaxed/simple;
+	bh=v4Pn30n3gbCI/ekr3UiSt2uBdJPfTaiva2V8mh8TzSY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I8GfCYlVz0rhBso7uvoiRIMMAViA+Ae+FNtx/SDVc097VbPfGTKTaCiECGdnY577/sJgD+xS9coKJTzeoQNI60E1YvYH7GXEToRJ2gzdQf2WeXwwo5XsExtLPHuT6EHtoaX4TbXF6Q/fjvkYaDFijo9Z1TeDK6GwaAEiDxZbOF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=dMBk1o9s; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=OGeAcum0O5iLJmsWuzSw/XxgU1ysQE6PoSfFkLPPEx0=; b=dMBk1o9sU8/NYWzwq5LmYinfq0
+	MW8uVEKty6TJtgO+2YgucBZSBiilHu1rualTO2vowxhp23Z8h9ytjjpD3Q+7SvbjOC99Ls42HHV3h
+	7XFL17w6Y1RLaAH/0EtJLABSK1BTLUejzLNJr3t7GyL3dg6dHS+PnMIoiz+1rYhDufXCDjS0ZNzbX
+	2/CoHN5n/zgok2t/g7Ms5P4Eco7Bn45+P3CKJ083gU1N0pUK0IXTli+B0zE0JTVLkYH1pwFDAuUlP
+	EferR7FwJ9xVDoksz6HkTNSnfdrkEAzxzJkndqt5hip6xoFx6h/tYEXKizhNNIQEBwXzMVZCdvwI2
+	q7BNiHuw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1t38h0-00000009s92-3fDa;
+	Tue, 22 Oct 2024 06:48:34 +0000
+Date: Mon, 21 Oct 2024 23:48:34 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Kees Cook <kees@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, torvalds@linux-foundation.org,
+	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: linus-next: improving functional testing for to-be-merged pull
+ requests
+Message-ID: <ZxdKwtTd7LvpieLK@infradead.org>
 References: <ZxZ8MStt4e8JXeJb@sashalap>
-Message-ID: <792F4759-EA33-48B8-9AD0-FA14FA69E86E@kernel.org>
+ <792F4759-EA33-48B8-9AD0-FA14FA69E86E@kernel.org>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <792F4759-EA33-48B8-9AD0-FA14FA69E86E@kernel.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
+On Mon, Oct 21, 2024 at 09:54:53PM -0700, Kees Cook wrote:
+> >	1. Composed of pull requests sent directly to Linus
+> >
+> >	2. Contains branches destined for imminent inclusion by Linus
+> 
+> But this means hours or a day or 2 at most.
 
+Yeah.
 
-On October 21, 2024 9:07:13 AM PDT, Sasha Levin <sashal@kernel=2Eorg> wrot=
-e:
->In an attempt to address the concerns, we're trying out a new "linus-next=
-"
->tree is being created and maintained with the following characteristics:
->
->	1=2E Composed of pull requests sent directly to Linus
->
->	2=2E Contains branches destined for imminent inclusion by Linus
+> 
+> >	3. Higher code quality expectation (these are pull requests that
+> >	maintainers expect Linus to pull)
+> 
+> Are people putting things in linux-next that they don't expect to send to Linus? That seems like the greater problem.
 
-But this means hours or a day or 2 at most=2E
+They shouldn't.  If they do we do indeed have a problem.
 
->	3=2E Higher code quality expectation (these are pull requests that
->	maintainers expect Linus to pull)
+> >	4. Continuous tree (not daily tags like in linux-next),
+> >	facilitating easier bisection
+> 
+> I'm not sure how useful that is given the very small time window to find bugs.
 
-Are people putting things in linux-next that they don't expect to send to =
-Linus? That seems like the greater problem=2E
+Same.
 
->	4=2E Continuous tree (not daily tags like in linux-next),
->	facilitating easier bisection
+> >The linus-next tree aims to provide a more stable and testable
+> >integration point compared to linux-next,
+> 
+> Why not just use linux-next? I don't understand how this is any
+> different except that it provides very little time to do testing and
+> will need manual conflict resolutions that have already been done in
+> linux-next.
 
-I'm not sure how useful that is given the very small time window to find b=
-ugs=2E
+Exactly!
 
->The linus-next tree aims to provide a more stable and testable
->integration point compared to linux-next,
+> How about this, instead: no one sends -rc1 PRs to Linus that didn't go
+> through -next. Just have a bot that replies to all PRs with a health
+> check, and Linus can pull it if he thinks it looks good. 
 
-Why not just use linux-next? I don't understand how this is any different =
-except that it provides very little time to do testing and will need manual=
- conflict resolutions that have already been done in linux-next=2E
+Not just -rc1, otherwise agreed.
 
-How about this, instead: no one sends -rc1 PRs to Linus that didn't go thr=
-ough -next=2E Just have a bot that replies to all PRs with a health check, =
-and Linus can pull it if he thinks it looks good=2E=20
+> For example, for a given PR, the bot can report:
+> 
+> - Were the patches CCed to a mailing list?
+> - A histogram of how long the patches were in next (to show bake times)
+> - Are any patches associated with test failures? (0day and many other
+> CIs are already running tests against -next; parse those reports)
+> 
+> We could have a real pre-submit checker! :)
 
-For example, for a given PR, the bot can report:
+That would be very useful.  Items 1 and 2 should be trivial, 3 would
+require a bit of work but would still be very useful.
 
-- Were the patches CCed to a mailing list?
-- A histogram of how long the patches were in next (to show bake times)
-- Are any patches associated with test failures? (0day and many other CIs =
-are already running tests against -next; parse those reports)
-
-We could have a real pre-submit checker! :)
-
--Kees
-
---=20
-Kees Cook
 
