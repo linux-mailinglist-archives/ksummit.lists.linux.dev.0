@@ -1,104 +1,94 @@
-Return-Path: <ksummit+bounces-1607-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1608-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A6F79AA2E6
-	for <lists@lfdr.de>; Tue, 22 Oct 2024 15:19:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A28249AB0B6
+	for <lists@lfdr.de>; Tue, 22 Oct 2024 16:22:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 699D91C2234A
-	for <lists@lfdr.de>; Tue, 22 Oct 2024 13:19:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6C4CB234D8
+	for <lists@lfdr.de>; Tue, 22 Oct 2024 14:22:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47DC419E7E0;
-	Tue, 22 Oct 2024 13:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD721A08B1;
+	Tue, 22 Oct 2024 14:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NBvi+bP9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ojA/1PjE"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6F219DF5F;
-	Tue, 22 Oct 2024 13:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3D91A01D4;
+	Tue, 22 Oct 2024 14:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729603152; cv=none; b=uFoCxQhUg5U62astLMmkkJNzgiUJOWUR7vSaKFp06IcD2DzGKJlsyyp27r1rbSjUfyRBhuZq3X93kW+/LrY+lr5pYwHpGytpudv3niiVLa4SKKRL0E6aK9pUgmJzLzDShBzTO/qQt2KS7FLyXHmdr1rcnoOJCmbf5s5bBwWCteA=
+	t=1729606933; cv=none; b=CJb7red29kWrsHkSl3TuPeAtxtU+ZrKVQIidhDefCwuP17dg+P0T5Em/u7FpZbLi+RXuP2di54pvGqLbzWMrxxGWRGyzE9ZC58L2D3YZtQFwBdF8Gziby/9owvjlz0X80uslxDOHcRrr06ZDuAXOXDCU0VZpVQej//4FSmLlKG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729603152; c=relaxed/simple;
-	bh=7ESKou5zq9IymgraonECnbSiIZTp74/vzkwxutW5rZc=;
+	s=arc-20240116; t=1729606933; c=relaxed/simple;
+	bh=iJHn87vkgLfnLIDakzLFyyojgl+FR5MWtZ4S4LA8uu0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ad5pe1gCzfimf0aify93Av3795UchSZ/F53btNQvfr5Epv9g0L2Y/yxqmo6cptchiCyyU9e0yDx6EkdYDgjnGzHb5GFOUDiaA/BIKtF0wEs6g8qtmJ1LmYCmhnA84Yfu9dQaJKO0et/ve+LlyUEjgQbwB3ZQBp6WH0RzJSY5qvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NBvi+bP9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27420C4CEC3;
-	Tue, 22 Oct 2024 13:19:10 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=o0xOFut8QwdB/vLG3gdCmFxp++lHaInX8ctsVgJoqUPLLrQKFeqhIm1qtyPSWaMLOw7LVZxPX90ROgJwWy/0a45kUGkA+6oTpXeWInb3M4onVp2QS0tQ7VethSyHvM0R1+LrS9lhwasvLPaQyFaoxmHZNMf+ZMPwjybO26U7Ey0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ojA/1PjE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 171B8C4CEC3;
+	Tue, 22 Oct 2024 14:22:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729603152;
-	bh=7ESKou5zq9IymgraonECnbSiIZTp74/vzkwxutW5rZc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NBvi+bP9EkC87XImGyMUF2UsV4sfqV1aqgOIrAVZYSr78doeF+HXqqZraYKRhLI5H
-	 5O9szzhiKPLvRM/lriLYEbQGC3T+xx+VrFooqKvsPVWH7dOXFtb9oL9wESWXbAdC0n
-	 OW2tStH4uO8vBDKHBt5r2qR918N8j18Nm1AmKGBpm8wnR21ymA/vSdteMH2gB7Mft6
-	 rIHPym3R8KouaHUF69SNknDd/2s1MCjVoRqEqWUz6z7FSiHsALU9x0JsCeU6RutqEQ
-	 bPq4mbGcuJSpajFEoNxE16rDigvI2ISE3x8+GukhJwSojk3WO/vigdG02Z5gQd7hdP
-	 AJwFuTWyywOlA==
-Date: Tue, 22 Oct 2024 14:19:08 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Thorsten Leemhuis <linux@leemhuis.info>
-Cc: torvalds@linux-foundation.org, ksummit@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+	s=k20201202; t=1729606933;
+	bh=iJHn87vkgLfnLIDakzLFyyojgl+FR5MWtZ4S4LA8uu0=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=ojA/1PjEnyx1rfQ3GVzJOw02VyesI9Bz7AfnoncfATKyX71SqlPSTvMeEoMMsyYXg
+	 E3I9OH/J9iq5K6BVxd9VckKoMg3SwbGsZY7WZv1gwQ/KmBzw6rWO1hXZPtlfjFqjaV
+	 3y+D+irhXyfHPw8EXvFufUGcrTl2oqa2i6yVwy2ptrNtDK0yMmUUqfH1g2dtLf/iLg
+	 bwebjQjhFLBjTS4rpjZ3d5QV+CRo7PMLk32pGOEBFzs8F4RD5dWkGJVd24DkMX65kt
+	 xxwq/xVjncY5slaPBXAKLsPJuJ0GGGW943+Ucm83bMKF86L4X93qeKLuDlTHVsCH0M
+	 NZnZjWyy0/l8g==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id B0818CE0A48; Tue, 22 Oct 2024 07:22:12 -0700 (PDT)
+Date: Tue, 22 Oct 2024 07:22:12 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Jiri Kosina <jikos@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, torvalds@linux-foundation.org,
+	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org
 Subject: Re: linus-next: improving functional testing for to-be-merged pull
  requests
-Message-ID: <ca2ca07c-33c9-4d67-80b3-f8c506938ba5@sirena.org.uk>
+Message-ID: <a627c5bd-e219-4d0e-a2d9-8dda44143d8c@paulmck-laptop>
+Reply-To: paulmck@kernel.org
 References: <ZxZ8MStt4e8JXeJb@sashalap>
- <6dbbc85e-5a87-4605-8db6-92b191878d97@sirena.org.uk>
- <bae547a8-0a16-4173-9aa3-5c31e0a0b1e1@leemhuis.info>
+ <53b980b3-6bdb-4331-a627-f6e775d23eb1@paulmck-laptop>
+ <nycvar.YFH.7.76.2410221357140.20286@cbobk.fhfr.pm>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="F3L4+Uj0eovB8ftm"
-Content-Disposition: inline
-In-Reply-To: <bae547a8-0a16-4173-9aa3-5c31e0a0b1e1@leemhuis.info>
-X-Cookie: Surprise due today.  Also the rent.
-
-
---F3L4+Uj0eovB8ftm
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <nycvar.YFH.7.76.2410221357140.20286@cbobk.fhfr.pm>
 
-On Tue, Oct 22, 2024 at 11:10:36AM +0200, Thorsten Leemhuis wrote:
+On Tue, Oct 22, 2024 at 02:06:46PM +0200, Jiri Kosina wrote:
+> On Mon, 21 Oct 2024, Paul E. McKenney wrote:
+> 
+> > I have to ask...
+> > 
+> > Wouldn't more people testing -next result in more pressure to fix
+> > linux-next problems quickly?
+> 
+> I believe I brought up pretty much exactly this at this year's maintainer 
+> summit.
+> 
+> >From the discussion it turned out the many people believe that this 
+> investing into this is probably not worth it, as it will require much more 
+> continous, never-ending effort (for which there are probably not enough 
+> resources) than just dealing with the fallout once during the -rc1+ phase.
 
-> I wonder if part of this is a "don't know how to do that" aka "lack of
-> documentation" problem. I've recently seen some good guide or mailing
-> list post how to bisect -next somewhere, but I think it wasn't in our
-> Documentation/ directory. I need to search where that was (Mark, I might
-> misremember, but wasn't it you who posted it somewhere?) and could work
-> towards upstreaming that or some other guide. And don't worry, due to
-> the different target audience it would be much shorter text than other
-> documents I contributed. ;-)
+Thank you for the response and the information!
 
-I don't recall anything specific, though it's plausible I said something
-in a thread that was basically just the bit about bisecting between
-mainline<->pending-fixes<->-next rather than between -next versions.
-You're right that we should have that in the documentation somewhere,
-I'll look at sending a patch.
+But why won't this same issues apply just as forcefully to a new
+linus-next tree?
 
---F3L4+Uj0eovB8ftm
-Content-Type: application/pgp-signature; name="signature.asc"
+Full disclosure:  Testing and tracking down bugs in -next can be a bit of
+a hassle, to be sure, but I expect to continue to do so.  For one thing,
+dealing with -next is way easier than testing patches on the various
+mailing lists.
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcXpksACgkQJNaLcl1U
-h9BXAwf9HpeGav88rfe17V/DacJDvBA8PGtwWWcRTxpMwA4bNgZO8PlnS/yo87NU
-jE0WVtixjtG8AvCTCL5I8ibuHuV61EnDgR2I5McK9KvoJvHqlDpmFfB21RGl3aBr
-d63ey4Pn+JKp7MKGRxN6vhtY1QfrYYk5AzgRVPaYQBIdVGUx90WzmcpYXlRgPO4z
-I/+Dw6kOYRp2G1kKnBllxwAO44WJFmfcsnm21O/qU3Jag0WhInqzO703kl1Tmfn2
-9Q4WWt9BcHIWUGcsvS+o7UsI8pT8LwEZv8zxCvix/bLfsvDJKmwbS7lgqbD++4Tf
-SeL2Yqxr2gQexQdn2NLNYTAoUyei2A==
-=Gf0L
------END PGP SIGNATURE-----
-
---F3L4+Uj0eovB8ftm--
+							Thanx, Paul
 
