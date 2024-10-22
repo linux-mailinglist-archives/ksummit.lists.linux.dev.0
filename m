@@ -1,101 +1,108 @@
-Return-Path: <ksummit+bounces-1602-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1603-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29DB89AA062
-	for <lists@lfdr.de>; Tue, 22 Oct 2024 12:53:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AACF69AA160
+	for <lists@lfdr.de>; Tue, 22 Oct 2024 13:51:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93EFEB22687
-	for <lists@lfdr.de>; Tue, 22 Oct 2024 10:53:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D72861C223ED
+	for <lists@lfdr.de>; Tue, 22 Oct 2024 11:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB5A199EB7;
-	Tue, 22 Oct 2024 10:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592DE19CC05;
+	Tue, 22 Oct 2024 11:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mw70unA+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oZWs795M"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D1E18859B;
-	Tue, 22 Oct 2024 10:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D091945026;
+	Tue, 22 Oct 2024 11:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729594373; cv=none; b=NR4UcWG8qxDSkdDdrXgmqnycClwx4cPdtbREEmfxcruZI9Y1Hy9xsH/gQaWTA/zFVZJd4w5yadZ5fjt4KIhhqvJkzCHBNMEMPGTXknEw3ed6v73GkhWXxWgD97WMJ2nYWh9LO0bpiL1jfxuMcHTPpx8TeI5hxy8pHKT4CT6XMKk=
+	t=1729597856; cv=none; b=QRRudxyUJ6UA2R6177b/sTjHRg1ulYfTUEthbQTrhGXkfPtw8gN7CcnbdCTVKUQfHLMnthtVfVy9BKP1ORtSBw62D5HgenbmJHyC2ChMf54CcEUDvNl9hrDmoIBeVjd89lX6/VPGoeCuZDuxKiFDIXSpmCiaH4bzGBLzp6BFdIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729594373; c=relaxed/simple;
-	bh=MUKg4urYutSwi5MoxB33zsedV9rA3l8h/FZ4eS61Fv8=;
+	s=arc-20240116; t=1729597856; c=relaxed/simple;
+	bh=Sb8lVQfAJSsNdgUk7lhkAOkHqbSB9Nk8K7CiMvOOKpY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DnCoGnarr/tK4YVNfv9AUjX7wdi0uwuYbV6Qi90gIKLfMqOazaaRrwwH2s3ZF9hDjyOpSKYEk5bzipCceSzNl+xQGZ/mUjuotsKiUwXDqTPZVoHIWNoJcVLmk4+UyTMufGbbds4Ccv397znEwTzYp9ClT34iExiDBnb9D7W+HBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mw70unA+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E339CC4CEC3;
-	Tue, 22 Oct 2024 10:52:52 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=QOw4t2W9Fs3AjB5ALeau5dOKwDSxJ7KTIgUA2zMGzfEt88SF7HouA4NP7I/5+XzQn4DwOG4Y/Q/5TV+DIz/9r54EDGi5YHEMlqwtS/gyEMlsWlnrZndUVcoUvQSkXZmIz+6sEDUAPJCEoDagrOmX32bYBhH1hdw4Tf67vt69LVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oZWs795M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D763DC4CEC3;
+	Tue, 22 Oct 2024 11:50:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729594373;
-	bh=MUKg4urYutSwi5MoxB33zsedV9rA3l8h/FZ4eS61Fv8=;
+	s=k20201202; t=1729597856;
+	bh=Sb8lVQfAJSsNdgUk7lhkAOkHqbSB9Nk8K7CiMvOOKpY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mw70unA+Afn678+LGoS6u/4odcAkuw613pgN+BS62AOFtGnPLYXbJseJjPL62EJqF
-	 OR6oqReAlNdJY1hHzSHAfEj2oeNpw8nqYhTdsb1s18OWUe881plUv1wYSAyA3Ohre7
-	 /t+MJLeM3ZNdUCTeIT4U8LeZTi78doJeDh9Z4N9YSMC+EgsUACiLApNez7YsBVz/gJ
-	 F6RHDlFkvnhh2BTx6Z1RtYmzP9U2y8NTkeEui7gMV0DJ+D6kvqPlzHdSqs+OGB6O00
-	 NTRScPNMKqGI4n7ULwXGBgVzm6FTfoNkv4etDX/DuDZxOmjDdLNYKtkNzFgj7lk1uN
-	 DtmsefzKqF8Ww==
-Date: Tue, 22 Oct 2024 06:52:51 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Kees Cook <kees@kernel.org>, torvalds@linux-foundation.org,
-	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org
+	b=oZWs795MQT1w0DT6/2vpliOff8Mzn1UvpJfZNWo1wirdA7QuMtPxFoW/di5iYIB1w
+	 f/ibxuxchsGamv/70mBuIwEsleYrzQ8hwzpmCsKxJT1y3BLZ7ZgobfVGlRtQdoPt/e
+	 iufrbyO4FFHPDT+Y33rzp+qpsX++g0+87sLRoxgBADABHYJyjdvOb/FQbWt8pLK9Ho
+	 EunGArZFf85N4RH8mAiCwlB02gCR1oTNpfKYBr9muo4inIXVH6jpvdhGmEOwdqUva+
+	 N+4OHGe+a7udkNqK8XOKasDM6vOG50pmYwaHZClJXW8Wo8opqDIQc9fDkiGH7K7420
+	 LhQOQTeRUOo+Q==
+Date: Tue, 22 Oct 2024 12:50:50 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>, Kees Cook <kees@kernel.org>,
+	torvalds@linux-foundation.org, ksummit@lists.linux.dev,
+	linux-kernel@vger.kernel.org
 Subject: Re: linus-next: improving functional testing for to-be-merged pull
  requests
-Message-ID: <ZxeEA6i_xfBMxJm4@sashalap>
+Message-ID: <1e89542d-6f9e-4e85-8292-ebb49091433a@sirena.org.uk>
 References: <ZxZ8MStt4e8JXeJb@sashalap>
  <792F4759-EA33-48B8-9AD0-FA14FA69E86E@kernel.org>
  <ZxdKwtTd7LvpieLK@infradead.org>
+ <ZxeEA6i_xfBMxJm4@sashalap>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="tW+KPPurF5xfWQtX"
 Content-Disposition: inline
-In-Reply-To: <ZxdKwtTd7LvpieLK@infradead.org>
+In-Reply-To: <ZxeEA6i_xfBMxJm4@sashalap>
+X-Cookie: Surprise due today.  Also the rent.
 
-On Mon, Oct 21, 2024 at 11:48:34PM -0700, Christoph Hellwig wrote:
->On Mon, Oct 21, 2024 at 09:54:53PM -0700, Kees Cook wrote:
->> For example, for a given PR, the bot can report:
->>
->> - Were the patches CCed to a mailing list?
->> - A histogram of how long the patches were in next (to show bake times)
->> - Are any patches associated with test failures? (0day and many other
->> CIs are already running tests against -next; parse those reports)
->>
->> We could have a real pre-submit checker! :)
->
->That would be very useful.  Items 1 and 2 should be trivial, 3 would
->require a bit of work but would still be very useful.
 
-So I've ended up writing something hacky that does (1) and (2) above, and
-ran it on the existing (already merged) PRs on the mailing list to give
-it a spin.
+--tW+KPPurF5xfWQtX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The script tripped on the very first PR it looked at:
-https://lore.kernel.org/all/20241021171728.274997-1-pbonzini@redhat.com/
+On Tue, Oct 22, 2024 at 06:52:51AM -0400, Sasha Levin wrote:
+> On Mon, Oct 21, 2024 at 11:48:34PM -0700, Christoph Hellwig wrote:
 
-And in particular, this commit: afa9b48f327c ("KVM: arm64: Shave a few
-bytes from the EL2 idmap code")
+> The script tripped on the very first PR it looked at:
+> https://lore.kernel.org/all/20241021171728.274997-1-pbonzini@redhat.com/
 
-(sorry, not trying to pick on anyone/anything, just an example...)
+> And in particular, this commit: afa9b48f327c ("KVM: arm64: Shave a few
+> bytes from the EL2 idmap code")
 
-The commit can't be found on lore.kernel.org, it was never in -next, and
-yet Linus pulled it promptly without questioning anything.
+> (sorry, not trying to pick on anyone/anything, just an example...)
 
-So yes, we could argue that a bot sending out this information would
-have informed Linus of this issue, but somehow I suspect that Linus is
-not an idiot and he has enough scripts in place already to alert him of
-these issues, which he chooses to ignore in some cases.
+> The commit can't be found on lore.kernel.org, it was never in -next, and
+> yet Linus pulled it promptly without questioning anything.
 
--- 
-Thanks,
-Sasha
+That was on the list at least, but buried in the replies to a thread
+rather than posted separately:
+
+  https://lore.kernel.org/86msjc56mi.wl-maz@kernel.org
+
+--tW+KPPurF5xfWQtX
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcXkZkACgkQJNaLcl1U
+h9CjvAf+P1Mz5Z5SXtPL7pLvag2JEpEI4h5VZsmFHbx28rkfdwor/Ra2oz9Uw2Kf
+HaU4zJpMSMw/1SxmmQTfdmblIr7qabYuhORM4Bn9EsqaT+FI+Xo5A1zBpFiNBHyY
+51OOMuRu24FX+xoDVB+3o9wbyk/iMWeiSOOXBLyIDRESiqtWJf8N7rKEC2gqe8N4
+G1NGRDnAT31A2WAN5ULycBL2ZWk+qlMsoARp82M7PQ8mpJqlRfkxHu5/Gmonc+Fj
+0CZknwg19H71EVGRoVjVWQQ1+gfK5EAaWL2vGwcSbFReA6DAv0BN9+DHpNIZxSOW
+cAl3qvMNHp6rZk0G2wBSvtUucG6h3g==
+=KI/T
+-----END PGP SIGNATURE-----
+
+--tW+KPPurF5xfWQtX--
 
