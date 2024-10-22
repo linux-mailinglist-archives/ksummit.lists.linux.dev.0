@@ -1,144 +1,149 @@
-Return-Path: <ksummit+bounces-1597-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1598-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F269A9D35
-	for <lists@lfdr.de>; Tue, 22 Oct 2024 10:42:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10ACC9A9DF9
+	for <lists@lfdr.de>; Tue, 22 Oct 2024 11:10:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF94E1C21DA1
-	for <lists@lfdr.de>; Tue, 22 Oct 2024 08:42:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB437285CE2
+	for <lists@lfdr.de>; Tue, 22 Oct 2024 09:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75231198838;
-	Tue, 22 Oct 2024 08:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 089DB19538D;
+	Tue, 22 Oct 2024 09:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jUDhP4A5"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="t69YqJHg"
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E639018C325;
-	Tue, 22 Oct 2024 08:41:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1F883CD2;
+	Tue, 22 Oct 2024 09:10:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729586493; cv=none; b=ZL71zhkAT5oYTBn+YZocsn8ERG3+QVDHW8hc7fW2F5oueeTcrgsX3zzl01/Whm/mN7GmYjZnD2YWxZ+ijp8TVGVxB/OBT1kLJck0RNiq0PL5jvSMc16fwKCE+GIRQiZeY8XvmgLxskuWHbh/wFf1Yz4hUXOvUYUTke0hLyNnLYc=
+	t=1729588247; cv=none; b=sucddj38vUSV7h8HUI2V0/EnIxQ08aAJrLnsD7DulqUSYRYg8xBKjkOgFXmJl1H0Oyt8JSqzOvP39QhIZd+6BfsGY/84Tcn8dwR8FWrDnFmztMrPyXgXCKRyP9PUypFUASj0zznLEAVZf5qgiyG1z63bz14rwzp7MN866KlVLLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729586493; c=relaxed/simple;
-	bh=MP3D4NEWwnNkeEnf8yI9OHhF+zzjeUfIKTthqL9P3V4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S1ZU6U2IKYVNeHv+T4WzOA1jv8dTDir3ZmiTOBzfiOT5rsQyCqaLsyswPALd17Sxstqf4Vg576xfU2zQbpTVtEhP81UrEWw50/IE0Yf7eTwpdxan+Rrh9iIdQYUOgXaGBFp663ReP8wDpI5sJHMclYlBaVMl7fIqUjExLa6yqM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jUDhP4A5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39021C4CEE4;
-	Tue, 22 Oct 2024 08:41:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729586492;
-	bh=MP3D4NEWwnNkeEnf8yI9OHhF+zzjeUfIKTthqL9P3V4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jUDhP4A5F7tbL/OMnzOVYhN2Hpl7TryFUcVp9OlMAhK694EYHadarVcdJ1gZShOsg
-	 cuI8MHB+8WT8s9W2ix7VWsqUzyHYAV6/WUdyZIdKxiTc+fNWcr30uEebWAnX5YFpnu
-	 jepgzJ8mA8CVSXtYSuqlYon9/N29BFapplVh9f/QqgaVL7KrqpwHgHYQMz6lZDrdSB
-	 OeuKRpNzfnx7P2UgIocdhAJXoYWIry4WuK9QQgbyxqjouCND5AfeUrNI0/fe0Iyb5z
-	 di6NDmdhV885a0gu9sfZigreUJqR2Y7h4GZFtT82cQWIqv6Cd6Kqmp8E0N0YUGvpLH
-	 6Z2A/vJc1JtaA==
-Date: Tue, 22 Oct 2024 10:41:28 +0200
-From: Benjamin Tissoires <bentiss@kernel.org>
-To: Kees Cook <kees@kernel.org>
-Cc: Sasha Levin <sashal@kernel.org>, torvalds@linux-foundation.org, 
-	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: linus-next: improving functional testing for to-be-merged pull
- requests
-Message-ID: <ylfkxl3pxysnev6ll2byyzjbq5a6khwhzai5f3yupxc6fpiz5d@fv75pqj3gu5q>
-References: <ZxZ8MStt4e8JXeJb@sashalap>
- <792F4759-EA33-48B8-9AD0-FA14FA69E86E@kernel.org>
+	s=arc-20240116; t=1729588247; c=relaxed/simple;
+	bh=hVBS8b4fP3hl/WZoj7YoJ7c6KuvYKCu3TZuQsz4jNdM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=j2QZRHAJvazzc6JtQktjvujcLW4KfjU2kFPc4oSGgmvpNhNm+utg5cP0z+3eKphFG/88A2EsDwjubELzw+wGO+GcPyRfq3Zfwax5h/JOrPROePVxxT/YeXUxO/9wL0gdo6a4qYA1KZlW25/al3XMYDuBw9A2qLobL1rsvml0aSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=t69YqJHg; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=jKYcgmEgXqGre+0CRpn0bwoMoxZDfgRZMYvx9fzMpzw=; t=1729588245;
+	x=1730020245; b=t69YqJHgFaXp6GoB9VjGELIA16xvWRhpVtN1dZpICn2m2PEQ3dlXd0atGQ5RR
+	HWkhg8AUgLYO6AruCR1O4gPupGwdIl41bL7DtffXZASsDrnzbRJZiMgAeIbfVldOgfQCiC+4JtEa2
+	GVWv1ObTpJZGzcNC4+lZ4z0vuMD3XWTrzx3tOTPFO9sxu6xkBIcEEdal5OmoEE/Lf7JAYiht5hdiC
+	kRIMUjHOxsjkQRsfOOhbkf9GOv2f/b/Ldr8aDPlZD8tchgY99oovPqrYLL3t2KFN0ET4pe61ZG7Jc
+	0h+UiLQcdD/LIscOZnRdH027OCl1KV5QDPsU+yhXsHbCZZHPsw==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1t3AuT-0007Dy-Ju; Tue, 22 Oct 2024 11:10:37 +0200
+Message-ID: <bae547a8-0a16-4173-9aa3-5c31e0a0b1e1@leemhuis.info>
+Date: Tue, 22 Oct 2024 11:10:36 +0200
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <792F4759-EA33-48B8-9AD0-FA14FA69E86E@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: linus-next: improving functional testing for to-be-merged pull
+ requests
+To: Mark Brown <broonie@kernel.org>
+Cc: torvalds@linux-foundation.org, ksummit@lists.linux.dev,
+ linux-kernel@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+References: <ZxZ8MStt4e8JXeJb@sashalap>
+ <6dbbc85e-5a87-4605-8db6-92b191878d97@sirena.org.uk>
+From: Thorsten Leemhuis <linux@leemhuis.info>
+Content-Language: en-US, de-DE
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 n7RI
+In-Reply-To: <6dbbc85e-5a87-4605-8db6-92b191878d97@sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1729588245;791d3f6b;
+X-HE-SMSGID: 1t3AuT-0007Dy-Ju
 
-On Oct 21 2024, Kees Cook wrote:
-> 
-> 
-> On October 21, 2024 9:07:13 AM PDT, Sasha Levin <sashal@kernel.org> wrote:
-> >In an attempt to address the concerns, we're trying out a new "linus-next"
-> >tree is being created and maintained with the following characteristics:
-> >
-> >	1. Composed of pull requests sent directly to Linus
-> >
-> >	2. Contains branches destined for imminent inclusion by Linus
-> 
-> But this means hours or a day or 2 at most.
+On 21.10.24 23:41, Mark Brown wrote:
+> On Mon, Oct 21, 2024 at 12:07:13PM -0400, Sasha Levin wrote:
+>
+>> In an attempt to address the concerns, we're trying out a new "linus-next"
+>> tree is being created and maintained with the following characteristics:
 
-Yeah :/
+BTW, in case anyone cares: I fully agree with what Kees wrote earlier
+today elsewhere in this thread, e.g. things like "improve -next instead"
+and "pre-merge bot":
+http://lore.kernel.org/all/792F4759-EA33-48B8-9AD0-FA14FA69E86E%40kernel.org
 
-> 
-> >	3. Higher code quality expectation (these are pull requests that
-> >	maintainers expect Linus to pull)
-> 
-> Are people putting things in linux-next that they don't expect to send to Linus? That seems like the greater problem.
-> 
-> >	4. Continuous tree (not daily tags like in linux-next),
-> >	facilitating easier bisection
-> 
-> I'm not sure how useful that is given the very small time window to find bugs.
+Regarding that bot: a few of the CI folks and a developer or two told me
+they want regzbot to react to PRs for Linus as well, so it can send
+mails like "hey Linus, just so you know, this PR contains changes that
+cause the following regressions not yet fixed". I think I like the idea,
+but well, quite a few other improvements around regzbot and its use have
+a much higher priority currently.
 
-I think there is some value for this tree, but the target is not what
-Sasha explained (or what I understood at least). The linus-next (or
-whatever linus-pr) is seems to me to be solely targetting Linus, for
-running pre-merge checks.
+>> 	4. Continuous tree (not daily tags like in linux-next),
+>> 	facilitating easier bisection
+>
+> Is this a pressing problem?  I routinely bisect -next, you have to base
+> things on Linus' tree (or pending-fixes) but otherwise it's not
+> especially problematic.
 
-And that is *very* interesting for him, so yes, I'd vote for a plus one
-on this.
+I wonder if part of this is a "don't know how to do that" aka "lack of
+documentation" problem. I've recently seen some good guide or mailing
+list post how to bisect -next somewhere, but I think it wasn't in our
+Documentation/ directory. I need to search where that was (Mark, I might
+misremember, but wasn't it you who posted it somewhere?) and could work
+towards upstreaming that or some other guide. And don't worry, due to
+the different target audience it would be much shorter text than other
+documents I contributed. ;-)
 
-IMO this new tree shouldn't be advertised as a:
-"please run as many possible tests on this before Linus pulls it",
-but as a:
-"we are gathering all PR, run a dedicated sets of tests on it, and if
-they passes, Linus will look at your PR. If not, your PR will be
-automatically put on hold".
-
-Think of it as a pre-merge testing, and if a PR fails, the maintainer
-has to sort it out instead of having Linus to sort it out.
-
-> 
-> >The linus-next tree aims to provide a more stable and testable
-> >integration point compared to linux-next,
-> 
-> Why not just use linux-next? I don't understand how this is any different except that it provides very little time to do testing and will need manual conflict resolutions that have already been done in linux-next.
-
-Agree. Gathering general tests should not come *after* the PR has been
-sent, but before.
-
-It could be interesting IMO to have a linux-current-fixes tree which
-gather trees that are meant to be sent to this current cycle (fixes only
-basically).
-
-In my small subsystem we sometime gather fixes that are not urgent but
-could go into the current cycle but are not send them right away. They
-could be integrated in such a tree, but OTOH, they are tested in
-linux-next already, so it's more of a matter for testers to decide if
-they want to have a "current tree + upcoming fixes" or not.
-
-> 
-> How about this, instead: no one sends -rc1 PRs to Linus that didn't go through -next. Just have a bot that replies to all PRs with a health check, and Linus can pull it if he thinks it looks good. 
-> 
-> For example, for a given PR, the bot can report:
-> 
-> - Were the patches CCed to a mailing list?
-> - A histogram of how long the patches were in next (to show bake times)
-> - Are any patches associated with test failures? (0day and many other CIs are already running tests against -next; parse those reports)
-> 
-> We could have a real pre-submit checker! :)
-
-As long as it only helps making an educated guess (or catch obvious
-failures) I'm all for it.
-In the same way stable receives emails from testers before Greg tags the
-new tree.
-
-Cheers,
-Benjamin
+Ciao, Thorsten
 
