@@ -1,83 +1,92 @@
-Return-Path: <ksummit+bounces-1616-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1617-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6B229ABE24
-	for <lists@lfdr.de>; Wed, 23 Oct 2024 07:50:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C5469AC167
+	for <lists@lfdr.de>; Wed, 23 Oct 2024 10:20:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CF45B24245
-	for <lists@lfdr.de>; Wed, 23 Oct 2024 05:50:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C93331C244BC
+	for <lists@lfdr.de>; Wed, 23 Oct 2024 08:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940A614601C;
-	Wed, 23 Oct 2024 05:50:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Nzs/xrcu"
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 391C515854F;
+	Wed, 23 Oct 2024 08:20:09 +0000 (UTC)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C487482;
-	Wed, 23 Oct 2024 05:50:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD34D487BE;
+	Wed, 23 Oct 2024 08:20:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729662606; cv=none; b=FfSr0Ekg51/fttYMg9DdVHvOVIKfJagUQMeByQiqpBuCjoMN2MRxPVgd/1XbZRxWy+bKxFsTjHkS1dVGJTnpGt8++bFXB3eIMTkrzlJdA7QoGfZXcIDoaHeCxwzhnCp8+uMnUt6pnlg4ATvsjGLDukEplM0PchcPSB/5oFqLmf4=
+	t=1729671608; cv=none; b=Bhh68EKESAH7K6+kpj6aDb6AWzu4efVJouFOeCDORlN8V0CL1w4cLOrdHXaa/8K6PAASOLvrLox4H49hqiTeETPLTDT3MmqJT+D9WqB4ATKvQ1+BBMqAU8RK5QQYQ/s67xbPAVHguRW75PGnpieHYfhsn7OuqmMsNrgga0uS4As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729662606; c=relaxed/simple;
-	bh=d/n2Vt+6hn2xix8vmY7xEn3YMJBlN8+MoI2zLkc2M9U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qQMK6DIkdoEwErWysiemvPDPZ2G2m53quQ5oAP6/IJZMeJqkqiMWtr9v17KpwRW2LhLPurBNMlY+WpcIVsjlfvGtOnT0ZkbrB95Nh8WfRhsEO3yMPGBUcrojYeqcvqRu/G4YSwEuI4QYw8hfEzyuoPskpjDSVQ3TWzqALTGBMFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Nzs/xrcu; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=T2PL3JN2OrnUN8GJGZRZUS5IzLSw/mh0EOvKuZwt5wQ=; b=Nzs/xrcuQU59EJfLJxyWzBdAeN
-	pxX7DpRx1YLpXqn5Kz2mTGkq4S0Y0Xr3ETfcY06RV2r35hXipvEKlgSkE8Iy3rSHIrZ4/x+2VwXj9
-	oAFEI5ghxjGd7r+GPnhti/4+m5AjvF0SaGAgoKfgy9LECP3KJwP8MssIpEcfcI+lmzyanf5eZ1vNd
-	SR/2Td6jus6Gv57guKDulmtUh9rUYMjfcOs3H/TohOTcEzu+pPcsUnUxd/OHGXaiLZSXg7O11d79b
-	SbOY+msR7o/odfsnBla/PnSkCDeQOckXDHvaaBFBxr+lsKllHSOvyOy0eOBeF0IgszLX2YIgBTwob
-	LfJzfMeA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1t3UFw-0000000D6VQ-2H6c;
-	Wed, 23 Oct 2024 05:50:04 +0000
-Date: Tue, 22 Oct 2024 22:50:04 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>, Kees Cook <kees@kernel.org>,
-	torvalds@linux-foundation.org, ksummit@lists.linux.dev,
-	linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1729671608; c=relaxed/simple;
+	bh=Ifg5cy5wv3RinqCl8FuJgeZbnHwOnRvDW2jlSL9wohs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HANkYb1fqnf0GvL7IhfzzjqdpSJQ7oKU4O09XYK4NWO4js0e36NWGGzLpcZQyUWcmY4UYZmaartk3eTDb+TH4yyyxQoDKKAIF9GrBD9LcKNXp+MyJ6zr8H6AuDNTn5KtH9bF7SaSM9baeYknzDo+n5uL2dW6jZOWzQbfwTf1xfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 757ABC4CEC6;
+	Wed, 23 Oct 2024 08:20:07 +0000 (UTC)
+Date: Wed, 23 Oct 2024 04:20:04 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Kees Cook <kees@kernel.org>, Sasha Levin <sashal@kernel.org>,
+ torvalds@linux-foundation.org, ksummit@lists.linux.dev,
+ linux-kernel@vger.kernel.org
 Subject: Re: linus-next: improving functional testing for to-be-merged pull
  requests
-Message-ID: <ZxiOjBRdO6EMAY4H@infradead.org>
+Message-ID: <20241023042004.405056f5@rorschach.local.home>
+In-Reply-To: <ZxiN3aINYI4u8pRx@infradead.org>
 References: <ZxZ8MStt4e8JXeJb@sashalap>
- <792F4759-EA33-48B8-9AD0-FA14FA69E86E@kernel.org>
- <ZxdKwtTd7LvpieLK@infradead.org>
- <ZxdyYjzxSktk34Zz@sashalap>
+	<792F4759-EA33-48B8-9AD0-FA14FA69E86E@kernel.org>
+	<ZxdKwtTd7LvpieLK@infradead.org>
+	<20241022041243.7f2e53ad@rorschach.local.home>
+	<ZxiN3aINYI4u8pRx@infradead.org>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZxdyYjzxSktk34Zz@sashalap>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 22, 2024 at 05:37:38AM -0400, Sasha Levin wrote:
-> We could add a report for the above, but:
+On Tue, 22 Oct 2024 22:47:09 -0700
+Christoph Hellwig <hch@infradead.org> wrote:
+
+> On Tue, Oct 22, 2024 at 04:12:43AM -0400, Steven Rostedt wrote:
+> > You mean have everything go into linux-next before going to Linus after -rc1?
+> > 
+> > I'm one that doesn't do this. That's because my code in linux-next
+> > after -rc1 is for the next merge window, and the code I send to Linus
+> > is only fixes for code I sent before -rc1. I tend to keep an "urgent"
+> > and "core" branch. My "core" branch is everything I plan to send in the
+> > next merge window and goes into linux-next (via being pulled into my
+> > for-next branch). After I send my pull request to Linus, and he pulls
+> > it in the merge window, that "core" branch becomes my "urgent" branch.  
 > 
-> 1. Linus consistently pulls patches that haven't seen the light of day.
-> 2. Linus explicitly objected to making a linux-next a must have.
-> 
-> So unless these results would be actually used, what's the point in
-> writing all of that?
+> You can easily have two branches in linux-next.  Many trees do that.
+> It is also a really nice warning about self-conflicts.
 
-Yes, without Linus caring we're not going to get our process worked out.
-Not sure how a tree that probably won't have much better latency than
-linux-next is going to fix that, though.
+I actually do have several branches in linux-next. But they are all
+topic branches. My urgent branches usually mirror them (by naming
+convention). My scripts pull my for-next branches together and then I
+push them up.
 
+I did push urgent branches to linux-next some time back, but never
+found any advantage in doing so, so I stopped doing it. As the code in
+my urgent branches are just fixing the stuff already in Linus's tree,
+they seldom ever have any effect on other subsystems. My new work does
+benefit from being in linux-next. But since I don't find more testing
+in linux-next for things that are already in Linus's tree, I still
+don't see how its worth the time to put my urgent work there.
+
+To put it this way. The bugs I'm fixing was for code in linux-next
+where the bugs were never found. They only appeared when they went into
+Linus's tree. So why put the fixes in linux-next, if it didn't catch
+the bugs I fixed in the first place?
+
+-- Steve
 
