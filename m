@@ -1,106 +1,147 @@
-Return-Path: <ksummit+bounces-1622-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1623-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC1229AC782
-	for <lists@lfdr.de>; Wed, 23 Oct 2024 12:11:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEC239AC79B
+	for <lists@lfdr.de>; Wed, 23 Oct 2024 12:18:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 926021F23419
-	for <lists@lfdr.de>; Wed, 23 Oct 2024 10:11:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D28A81C20FA4
+	for <lists@lfdr.de>; Wed, 23 Oct 2024 10:18:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0481A0AF2;
-	Wed, 23 Oct 2024 10:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEBE81A0716;
+	Wed, 23 Oct 2024 10:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RmJdgob8"
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="bfznhxZJ"
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4811A01D8
-	for <ksummit@lists.linux.dev>; Wed, 23 Oct 2024 10:11:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F9019E97B;
+	Wed, 23 Oct 2024 10:18:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729678274; cv=none; b=MggjlKbFncl4pOd2PIab/ldGM4ERCfEBM89phkiMnRKfGoJScA+WsiKL6VvYe2IPpBHl6vzOpyd21NUCCpsJB1eNJ+RJDBC8fzhh1umrxdhUJshxZk+kqlLeRrRHc1P5XLI8Q1T6E03nYg5g/fENEMcB18W4ed8pvHHuYiczQ6w=
+	t=1729678716; cv=none; b=msV2W5Mc/oOfeRU4cCG4H+WhVO3rUiZmMTxqGEdKkcANkUJ0DKteCSqjt9BECze+RepfrPQyiCFfox6g0y1jBeWiggFr1Q0ddGjMjeS36Gw+RF1wzJR42o4QML+ir8LJhC7P3rXko/t09HPnFDRVHr9stoBcV7VKUcJ/l7bFh8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729678274; c=relaxed/simple;
-	bh=4xt+M1TKsijkRNzEk6gYKOj8U4y95Ey6HQdeI8L5ZHU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i1WP2L31D+4Wpgez+iAUSXVbRets+fUswevszttrbol7ZqMF1FoOFm1wuCfXQnNrHSTcP/OTkraPTlq+kYAzOMBC9qVp9jqUxV+LF8QtCA70cGB9iCpXu3zNQ9SqNZSkPsvw/a2wcSJPmWTyIneACi4odvXkUEFUmSA09TfsydE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RmJdgob8; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4315baa51d8so66225445e9.0
-        for <ksummit@lists.linux.dev>; Wed, 23 Oct 2024 03:11:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729678271; x=1730283071; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=sKJHAMKDVpw9bzSHGhrHWmLUI3HVm1NWR3Nb/36MQk8=;
-        b=RmJdgob8AcIbjvt1ygE7e1QPNh67+Ao51Ym0WD7x1JrTzILsfnv387D5rhzVK4193q
-         QSuluXImamuoUXOtNA5Qbet6H8FSZEGEMWafe/cvsXcAosid+MjEggKFJpc0hXuUA/Fi
-         J8iCcUUy6zYtIGdNp030r2khgFkv3LyCJPmstYiCdRYnNZh8wyAe1V9WMgZj4wJYHQc7
-         ODPiFPMloi5dcNtEos7nXsU+oBkRvXoATQj+7Pk/VsskiKwfXiY9AsLwlh3/MzufVlju
-         uWwuiVxAeg4t7wFJfepmgtU6q0+tgH0eJiNO2nVqmnAppzUaWUCFZ6XxpiGme8ynIIwU
-         A+zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729678271; x=1730283071;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sKJHAMKDVpw9bzSHGhrHWmLUI3HVm1NWR3Nb/36MQk8=;
-        b=ppq8MaK+5WtgTd4oum50F4W9POVyfzFPusushjRITnr+2oxiDU0ksuVd9KYvanEroa
-         BYZlbCA+VeFsLaAhOZjXHC0/EIBXH3hFtRkE9ECx8XaA1gUcfUCjx7liucrPqvC9S7n1
-         J8LKjAS9TTyoITR/3HNuXbOpkLxsx5E8a3f/eiZV5f6764jVisAkl6Z1iomzHbIt33NQ
-         yxzpRvivtK+7Z/0+M0eYF3SkonjsZVNH/1vOIyeBSNOG0JlnAPQxLbW7023Wakqe1A5K
-         rKrL+NEEthfIfESqNO4eV3r5Wo+7T3tqDwUCkS5iWSHTBIO7DPmk5nYWEIByb4WxFtea
-         jqsg==
-X-Forwarded-Encrypted: i=1; AJvYcCWXnyLQwLJSpWlATE8YssHK0WIcGy0B+OLIyK4cibCks+wSwH7BaPdULunSqBAaLziUB9ugt5Xy@lists.linux.dev
-X-Gm-Message-State: AOJu0YwDS6l+Oa2rOfLSnIDWGl6Sbl3USVCvlgiE5pOdsUdiZtFCNy7c
-	5nzKx2CAAPAfD6YItgzdKsFeFRrnXT6um2YmWwZmsYD5iKcpMhvFwPrvy0Dgvoo=
-X-Google-Smtp-Source: AGHT+IHFt3z0BuJR9H33ESobunGlzidwzdTNhACnSItxcjBr7HhF+l51ueyKrHzwmqDOM5LvN2Hcxw==
-X-Received: by 2002:a05:600c:1d9e:b0:431:52da:9d67 with SMTP id 5b1f17b1804b1-431841341d7mr19204965e9.3.1729678270707;
-        Wed, 23 Oct 2024 03:11:10 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43186c3a707sm12019145e9.33.2024.10.23.03.11.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Oct 2024 03:11:10 -0700 (PDT)
-Date: Wed, 23 Oct 2024 13:11:06 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-	Christoph Hellwig <hch@infradead.org>, Kees Cook <kees@kernel.org>,
-	Sasha Levin <sashal@kernel.org>, torvalds@linux-foundation.org,
-	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: linus-next: improving functional testing for to-be-merged pull
- requests
-Message-ID: <2b7d150d-a675-4a35-8f32-75d2da4b3302@stanley.mountain>
-References: <ZxZ8MStt4e8JXeJb@sashalap>
- <792F4759-EA33-48B8-9AD0-FA14FA69E86E@kernel.org>
- <ZxdKwtTd7LvpieLK@infradead.org>
- <20241022041243.7f2e53ad@rorschach.local.home>
- <ZxiN3aINYI4u8pRx@infradead.org>
- <20241023042004.405056f5@rorschach.local.home>
- <CAMuHMdUxrULbo=A77DFDE4ySbii3jSMuh8xVvUXaqyCnwEAU-w@mail.gmail.com>
- <20241023051914.7f8cf758@rorschach.local.home>
+	s=arc-20240116; t=1729678716; c=relaxed/simple;
+	bh=BlFj0qtlcO/WRwYPIic0a7DmqlSj/uGdkyQx75yGw6Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kce5XnS7Wsl6T2qOT8mAo5e2r4UNeULXRoOS1vK3xQ00XRJlurKqB+/Mhcqcy/4E1bRETIs0CYCSck+06oeEWB/NaxGGWk8+fThTGJmptmrlv8CVsv9QXzvBdkaveoZSILMCJ5ldidkGiZn15JR5EpCvClUF/z05ClEUsfzQMK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=bfznhxZJ; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=IvjB1xq0dUqO7B6i7fSTUoTtPHDQJmE9wtVBw9R2nsA=; t=1729678714;
+	x=1730110714; b=bfznhxZJJITQazPcUikHT8YQrPZh5EwxIkqLKSj1rm0OjjgFtiNqaWlK20H0T
+	6rFKA8aWsDo/G27xDbklb/IVpFQdY1OG+wZyRBGPOLP2tKTi9E2Eh+XOq1hWB/71kYrOlWrYvmQ5o
+	yl7LTXU/Yz6aMOI8lNblCe+b9bAI6TXV4UOiC6RCE8IijVP5HREb6RWRUM6YvCzjpga38BQaYEWgf
+	ZiFH/Yup3jK6rAAkOs1VBrM3N6nCxVnbjyWAD3B4BB+xDMoCrB5PJO12AFv/bTsZx2I+S6qdPvS9v
+	C5NQ2nSGwofnXOnoOOHbmWb5I7WKp1veH73gY7W5LwI6HpKWUQ==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1t3YRg-00028V-V9; Wed, 23 Oct 2024 12:18:29 +0200
+Message-ID: <0cf2898d-da29-470d-9b26-ff5f85ccd437@leemhuis.info>
+Date: Wed, 23 Oct 2024 12:18:28 +0200
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241023051914.7f8cf758@rorschach.local.home>
+User-Agent: Mozilla Thunderbird
+Subject: Re: linus-next: improving functional testing for to-be-merged pull
+ requests
+To: Vlastimil Babka <vbabka@suse.cz>, Steven Rostedt <rostedt@goodmis.org>,
+ Christoph Hellwig <hch@infradead.org>
+Cc: Kees Cook <kees@kernel.org>, Sasha Levin <sashal@kernel.org>,
+ torvalds@linux-foundation.org, ksummit@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <ZxZ8MStt4e8JXeJb@sashalap>
+ <792F4759-EA33-48B8-9AD0-FA14FA69E86E@kernel.org>
+ <ZxdKwtTd7LvpieLK@infradead.org>
+ <20241022041243.7f2e53ad@rorschach.local.home>
+ <ZxiN3aINYI4u8pRx@infradead.org>
+ <20241023042004.405056f5@rorschach.local.home>
+ <45f36bbd-f65a-4d92-aeca-52ddad835cd4@suse.cz>
+From: Thorsten Leemhuis <linux@leemhuis.info>
+Content-Language: en-US, de-DE
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 n7RI
+In-Reply-To: <45f36bbd-f65a-4d92-aeca-52ddad835cd4@suse.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1729678714;b67a9779;
+X-HE-SMSGID: 1t3YRg-00028V-V9
 
-On Wed, Oct 23, 2024 at 05:19:14AM -0400, Steven Rostedt wrote:
-> But pushing to linux-next for a day or two, what does that give me?
+On 23.10.24 11:32, Vlastimil Babka wrote:
+> On 10/23/24 10:20, Steven Rostedt wrote:
+>> To put it this way. The bugs I'm fixing was for code in linux-next
+>> where the bugs were never found. They only appeared when they went into
+>> Linus's tree. So why put the fixes in linux-next, if it didn't catch
+>> the bugs I fixed in the first place?
 > 
+> The fix might be in a different part of the code, one that's stressed by
+> -next testing even if the code with the original bug wasn't. So I don't
+> think you can always assume that -next not catching the original bug means
+> it can't catch a bug in the fix?
 
-Two days probably gives you 80% of the testing that people do on linux-next.
-I wouldn't run linux-next on real systems but it generally boots and runs LTP
-okay these days.
++1 to this and the "compile failures on obscure architectures or
+configs" from Geert.
 
-regards,
-dan carpenter
+A -fixes branch in -next also makes a few things easier for regression
+tracking:
+
+* I only have to check *one* place instead of one or two hundred to see
+if a regression fix is heading towards mainline or stuck somewhere.
+
+* I can see if people accidentally queued regression fix for the current
+or the next cycle when it should be the former (some subsystems make
+this hard or impossible).
+
+Ciao, Thorsten
 
