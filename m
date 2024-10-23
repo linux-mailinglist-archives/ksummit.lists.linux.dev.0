@@ -1,61 +1,54 @@
-Return-Path: <ksummit+bounces-1634-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1635-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC7C9AD683
-	for <lists@lfdr.de>; Wed, 23 Oct 2024 23:20:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 202E89AD6AA
+	for <lists@lfdr.de>; Wed, 23 Oct 2024 23:24:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AE531C21349
-	for <lists@lfdr.de>; Wed, 23 Oct 2024 21:20:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D743E285DD4
+	for <lists@lfdr.de>; Wed, 23 Oct 2024 21:24:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC8151FBC80;
-	Wed, 23 Oct 2024 21:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEAD91FE0FD;
+	Wed, 23 Oct 2024 21:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="OAduKOaI"
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MQw4TDJv"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986221FAC2C
-	for <ksummit@lists.linux.dev>; Wed, 23 Oct 2024 21:20:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58CD51FAC51;
+	Wed, 23 Oct 2024 21:24:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729718432; cv=none; b=hyy7Uczy3+hNa7aiE0MJEqGO2LmdSK0AXD5RvcQ1EtquraieuEHS2YN4A+B6cHh0oeYoqcq36bMcSDRzIY18Yly2jFtUSmnTZgQ8VZeHdubyi3NLLF1LGcDLWtEG7pJ92fr0vakEvU8G2F6ZZde41qYF7ke57+KWFGB4s9lS9A8=
+	t=1729718675; cv=none; b=JnHMkIJZgmHODKCfVHS5TyiMo/SM3mywBaUAujRP/3UR577K9NTmsg7O8Ti4dGkt2VwwUmefpzVJL5UKcuGxsf+h2Q6fj78L0+5r+82os94Wy4dvt8xyYoDY54jXoeeorxLdr/VqhddDNUtHc4rseebm+5mL6HtiiIUqIfzgBzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729718432; c=relaxed/simple;
-	bh=kfFlDE9MPz/0fdClr77dueFnalGhupl4YUXcN2ULA8c=;
+	s=arc-20240116; t=1729718675; c=relaxed/simple;
+	bh=Aqafuie2wrvB1s2PTxsikun42xUMGsN0qX0ch+2fzjs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R10uH1MAy8tBCjjUXwRwSZRvU/X+58849YYOE6dt9pHzjH88dxaSuQqnd1LBOMbPhFfmjXAByhY0HN9dah6G7ofdTtOEkC+MJHlu+/AuiXW/l8ZwamyR08VWiIKOTkyxU5ic5P/OfxNh+GKmPr9DFboSfjtGtayPB2ucYB2DfS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=OAduKOaI; arc=none smtp.client-ip=18.9.28.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
-Received: from cwcc.thunk.org (pool-173-48-115-113.bstnma.fios.verizon.net [173.48.115.113])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 49NLKD5u028264
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Oct 2024 17:20:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1729718416; bh=xjdsf4snNaltetIhylAgjdsDDEq2yp2mcjN9RQCGVZk=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=OAduKOaI5BzawxUbSLvtaNPKiPu/qiM57S8h+a44fV/6oIqIg/WbRZ/5tLKH3o9Lm
-	 pT0v0RDfXwQsB0I80PpI9XZGkxl0/Xrh8eyG/TslE/fX7ILjGzqdlrEQNHT+4uH61I
-	 +L2WcdLcYoSZk7hOpweABbaRYLZI0rv8BkEcqrRM2kuyfKCvea/iQkcWsjbWotuVYp
-	 C8JJWkd5jiJI3lAtpUzLnLHznMTnKE7O5jWpJQBVW/SalgrPmN2TPCpUe10N9Hlp9b
-	 4pktLp4OyBG9fT0a7oiauOILSfS6zn1TWXHaVnhheu7wxzbkOnwIyPrZJYys8BPpxn
-	 4kcVN16k0/aew==
-Received: by cwcc.thunk.org (Postfix, from userid 15806)
-	id 6EF6B15C0329; Wed, 23 Oct 2024 17:20:13 -0400 (EDT)
-Date: Wed, 23 Oct 2024 17:20:13 -0400
-From: "Theodore Ts'o" <tytso@mit.edu>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q+6EpGVHvZy9wT0kbXgo+DquWTKtvnnaiPu+gb/UeYIlCtZ+QAKvAfMjmRvSSn0ZRGtNB6hnbiTY85Pb0uYZxLx4r37tjeBO5TRezJEj+YHad5IveMHw+yp5YBnPmKEejGjnudWuH7p6vCciS0fZzOHykyC/9NtFhMmqplDL2+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MQw4TDJv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389CDC4CEC6;
+	Wed, 23 Oct 2024 21:24:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729718673;
+	bh=Aqafuie2wrvB1s2PTxsikun42xUMGsN0qX0ch+2fzjs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MQw4TDJvA99Cw7nLodbzIVrnkZ3dQSvB6AQ3wWDJwdYybCnotDf5bA1o7SHfH1U8f
+	 4YRTbXPh3rWo47RBuDt1pJfdX5eC+Uf7V4mmM6lzPBdN7gWiSpqc+cl0mw7uM0K+OX
+	 YrhGZ1HdHinJKHbEgn9rM+0fYS5zpO2CAtKZlQAO2NWJdAI3dHw3dDhOQTGvDN3yXT
+	 j/quEQxcn5cuLPP37y1rpBnPctZQ7bCf5O1Jont8gb/OQgCWk1GP0WRpjR4TU/P8Qx
+	 tYk3MAV7+WxuVAH5WuhZdyVw01ptRldvCqrgkpC5PQQa06CUS0w4j1dA5CxgjfPo7J
+	 i7F7YTiduyYzQ==
+Date: Wed, 23 Oct 2024 22:24:29 +0100
+From: Mark Brown <broonie@kernel.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: paulmck@kernel.org, Christoph Hellwig <hch@infradead.org>,
-        Sasha Levin <sashal@kernel.org>, Kees Cook <kees@kernel.org>,
-        ksummit@lists.linux.dev, linux-kernel@vger.kernel.org
+	Sasha Levin <sashal@kernel.org>, Kees Cook <kees@kernel.org>,
+	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org
 Subject: Re: linus-next: improving functional testing for to-be-merged pull
  requests
-Message-ID: <20241023212013.GI3204734@mit.edu>
+Message-ID: <bf42489f-4a86-4717-b367-d8be877b3036@sirena.org.uk>
 References: <ZxZ8MStt4e8JXeJb@sashalap>
  <792F4759-EA33-48B8-9AD0-FA14FA69E86E@kernel.org>
  <ZxdKwtTd7LvpieLK@infradead.org>
@@ -69,34 +62,58 @@ List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ioEWPPSyV9nWR8oK"
 Content-Disposition: inline
 In-Reply-To: <CAHk-=wj4aSJsVA6weV7u9KD1yA74JZq3dYZKbUtxp=3o_esnVA@mail.gmail.com>
+X-Cookie: A bachelor is an unaltared male.
+
+
+--ioEWPPSyV9nWR8oK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
 On Wed, Oct 23, 2024 at 11:06:59AM -0700, Linus Torvalds wrote:
-> 
-> So automation that says "this tree does not actually work" would very
-> much be appreciated. I'd prefer them to be the same kind of "before
-> the pull request has even been sent" situation, of course, but if
-> problems _remain_ in linux-next, and pr-bot sees the pull request, I'd
-> actually like automation that says "Oh, this tree has these issues:
-> ..."
 
-As I think I mentioned at the Maintainer's Summit, for the past 2 or 3
-months, I've been running xfstests autmation for ext4, xfs, f2fs, and
-btrfs on the fs-next branch of the linux-next tree, and it's actually
-been quite stable.  That's because most of the fs developers are
-pretty careful about running tests *before* publishing their branches
-to linux-next, so it hasn't had the boot failures whichhas caused fs
-testing on the full linux-next branch to be more painful.  Yes, I know
-that solution doesn't scale but it works for us.  :-)
+> And yes, I know some people do functional testing on linux-next
+> already. The message at the maintainer summit was a bit mixed with
+> some people saying linux-next tends to work even for that, others
+> saying it's often too broken to be useful.
 
-An example of how this has worked out is a regression which popped up
-a few days ago, causing generic/564 to fail for ext4, xfs, f2fs, and
-btrfs, and which was fixed by reverting "vfs: Fix implicit conversion
-problem when testing overflow case".  I expect Christian will be
-dropping that commit (or replacing it with a fixed patch) from the vfs
-tree long before he sends a pull request to you.
+It very much depends on what you're trying to get out of the testing -
+-next does work well most of the time, but it will absolutely just blow
+up catastrophically on you from time time to time so you have to be
+prepared to cope with loosing some or all of your coverage sometimes.
+Usually anything major gets fixed fairly promptly, but sometimes you'll
+be missing coverage for extended periods especially if it's something
+like a more niche platform that's been broken or there's some problem
+getting people to actually apply the fixes.  Submaintainer trees that
+people don't want to add to -next can be an issue too.
 
-       	    	    	      	     	- Ted
+You're also going to run into issues that are nothing to do with
+whatever you're actually working on yourself and need to consider what
+you're covering based on your tolerance for dealing with that.  The rate
+of change can also be an issue if the tests you're intersted in are
+expensive.  OTOH if you're doing things that are likely to be affected
+by changes in a broad set of trees (eg, maintaining some embedded
+platform where you care about all the various subsystems breaking
+platform specific drivers) it can be a lot easier to cover -next rather
+than all the individual subsystems.
+
+--ioEWPPSyV9nWR8oK
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcZaYwACgkQJNaLcl1U
+h9CBFwf/baQc1d+DPbHZkU7xPtesjhxW7lpotKMwoWrIucWWP0Ta3C7sxX3Lexcf
+iCJpJLtIMciJOh9eoA4kcuXi1PyvVvPewL38XFlrqstiIzUh2T+iWjLaUW5Kc+4l
+VPJ1jrUiLL3ydkWJO8C7TgsKefJ5fN/dQinYUHSP7bGM9v8I56wC0JIeQt2BBqME
+Q2sZiV3uopQt+xfrP4QZkbAhlHlM0JJANXwhnf9fO8vRkDHA0RGjLzhVB+oGmfEW
+Q2ldd5tzg7LEkBR+vl8AqI5vtdAlfbtf06SNxTg+pMWXw7Z1UaEWqWYOM19abvgV
+ga9eDAgQ2Qfhog1GSgpfHtHOkwj1Wg==
+=9nRl
+-----END PGP SIGNATURE-----
+
+--ioEWPPSyV9nWR8oK--
 
