@@ -1,106 +1,102 @@
-Return-Path: <ksummit+bounces-1637-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1638-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADD669ADABE
-	for <lists@lfdr.de>; Thu, 24 Oct 2024 05:59:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66EBE9ADB34
+	for <lists@lfdr.de>; Thu, 24 Oct 2024 07:01:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DE1D1F22AC9
-	for <lists@lfdr.de>; Thu, 24 Oct 2024 03:59:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9373C1C21B14
+	for <lists@lfdr.de>; Thu, 24 Oct 2024 05:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC351662EF;
-	Thu, 24 Oct 2024 03:59:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="jlymsq68"
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54E817334E;
+	Thu, 24 Oct 2024 05:01:08 +0000 (UTC)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883051EB3D
-	for <ksummit@lists.linux.dev>; Thu, 24 Oct 2024 03:59:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6527E1C01;
+	Thu, 24 Oct 2024 05:01:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729742362; cv=none; b=u/+4FkM6tgEdUpem4v2AbULkLvPHdRBhnAPh8ZwNLs6kvYUNzvEV8AiAlpVu4tqBojN/zXe4RfdbzKEHGHZEDPokBGoo2ssur8MykDHuub1RUg3ottulrPWiOYFPTiYBeq/zrZYuKo2V4Bzam2AE+a8oBuz1Tq8X4td5XepSsRQ=
+	t=1729746068; cv=none; b=bNChb+kItO0Rf51V+uG7YcvcMv/GqRIz5HzVJTgOBSPXsg+sCBeY1mj8wDVQozQ2qDueKHXslxPwdBNmoJEz9OOYeBBVV3+/+mNse/XYWzZNmJc3U3mylyFhkWnv8WLH6aZrb2vBfb8/kaj3svAb7yZXMuLkvUz/rv8XvKB/1es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729742362; c=relaxed/simple;
-	bh=DK9kvLofXnQggoD4zXHgb6qSNT8DNnvHfWY9tb/klE0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=SaQ5yLHU8FFULYSDvAD9exU4kKcfgbVsCE3MwVMPyFAoVkHifjKtX03mYgKmPjN1tdljzQrgKOTZ2Cg5McgjTASwUpRpLCLfGi9xdPhG6ze8wlRpXg8JQsXBIWL8k+LzYbKgLSZ799Zy9BxGxGGjbnmv3sYUzTb6MshyO+CBamM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=jlymsq68; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1729742357;
-	bh=/jN9f0RDBaZbD5WgikoRAFa/OR5++AgfVdHLbNCGRnw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=jlymsq68uuihBBn6NHG5RbifQBF5h16Q7Lu6y/VjdtNmIDrZljWgX4NdTWi1xXu5R
-	 LBvuPNlstCN6AWl3lM1kfvKPDgt88rkznmwAkkkR6JXdsKo3SIN7oEjsNK2gGo5TWJ
-	 iwr7ZS2Txe+ERnxiPFTfxu9dC39Xc1iDAAvUsV97tgXf5AKA1/gEeyAyMJgHRHTzBP
-	 x6ytQrB1+95L1QrQb7v+6UxBOWW4fBIa3VijXwQcfnO5s9Mfw7QkR7GpqewHh3zlXF
-	 sgSm3kh49VDoUZS1rqZdRBOYL62DEdDLi6Q43mmvpYvS/XMAOFT88dbhHofxVhYOhN
-	 OHFn0siSSkidg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XYsc419l4z4w2L;
-	Thu, 24 Oct 2024 14:59:15 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Steven Rostedt <rostedt@goodmis.org>, Geert Uytterhoeven
- <geert@linux-m68k.org>
-Cc: Christoph Hellwig <hch@infradead.org>, Kees Cook <kees@kernel.org>,
- Sasha Levin <sashal@kernel.org>, torvalds@linux-foundation.org,
+	s=arc-20240116; t=1729746068; c=relaxed/simple;
+	bh=Rqr1vNeJwxHKMB70g8KYLLLZlbbTn1NQ6ed6SEO4OfM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XNJzeyfJUMtHwQEYVDaikWbI0mQycwNSkX6ML4ZWmaGsmo6ahSF18EXDuW7JYXE3yG92yc1dmZkLBPsgrczl3Xg9m959WjOipoboIKrUwCQpLE7NBLHiHZ7zZjoqJRX/iT1h6FpDk/RBd4lgT+BxLGUJRN59tEMgtUP1fNx5J4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E375DC4CEC7;
+	Thu, 24 Oct 2024 05:01:06 +0000 (UTC)
+Date: Thu, 24 Oct 2024 01:01:03 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Christoph Hellwig
+ <hch@infradead.org>, Kees Cook <kees@kernel.org>, Sasha Levin
+ <sashal@kernel.org>, torvalds@linux-foundation.org,
  ksummit@lists.linux.dev, linux-kernel@vger.kernel.org
 Subject: Re: linus-next: improving functional testing for to-be-merged pull
  requests
-In-Reply-To: <20241023051914.7f8cf758@rorschach.local.home>
+Message-ID: <20241024010103.238ef40b@rorschach.local.home>
+In-Reply-To: <8734km2lt7.fsf@mail.lhotse>
 References: <ZxZ8MStt4e8JXeJb@sashalap>
- <792F4759-EA33-48B8-9AD0-FA14FA69E86E@kernel.org>
- <ZxdKwtTd7LvpieLK@infradead.org>
- <20241022041243.7f2e53ad@rorschach.local.home>
- <ZxiN3aINYI4u8pRx@infradead.org>
- <20241023042004.405056f5@rorschach.local.home>
- <CAMuHMdUxrULbo=A77DFDE4ySbii3jSMuh8xVvUXaqyCnwEAU-w@mail.gmail.com>
- <20241023051914.7f8cf758@rorschach.local.home>
-Date: Thu, 24 Oct 2024 14:59:16 +1100
-Message-ID: <8734km2lt7.fsf@mail.lhotse>
+	<792F4759-EA33-48B8-9AD0-FA14FA69E86E@kernel.org>
+	<ZxdKwtTd7LvpieLK@infradead.org>
+	<20241022041243.7f2e53ad@rorschach.local.home>
+	<ZxiN3aINYI4u8pRx@infradead.org>
+	<20241023042004.405056f5@rorschach.local.home>
+	<CAMuHMdUxrULbo=A77DFDE4ySbii3jSMuh8xVvUXaqyCnwEAU-w@mail.gmail.com>
+	<20241023051914.7f8cf758@rorschach.local.home>
+	<8734km2lt7.fsf@mail.lhotse>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Steven Rostedt <rostedt@goodmis.org> writes:
-> On Wed, 23 Oct 2024 10:36:20 +0200
-> Geert Uytterhoeven <geert@linux-m68k.org> wrote:
->
->> > To put it this way. The bugs I'm fixing was for code in linux-next
->> > where the bugs were never found. They only appeared when they went into
->> > Linus's tree. So why put the fixes in linux-next, if it didn't catch
->> > the bugs I fixed in the first place?  
->> 
->> Hmmm...
->> 
->> Your arguments sound very similar to those being used in recent
->> discussions about not posting patches for public review...
->> 
->> Please follow the process! ;-)
->
-> What process?
->
-...
->
-> But pushing to linux-next for a day or two, what does that give me?
+On Thu, 24 Oct 2024 14:59:16 +1100
+Michael Ellerman <mpe@ellerman.id.au> wrote:
 
-Several thousand build tests, across pretty much every architecture.
+> > But pushing to linux-next for a day or two, what does that give me?  
+> 
+> Several thousand build tests, across pretty much every architecture.
+> 
+> And a few hundred boot tests, lots virtualised, but some on real HW.
+> 
+> A single character typo in an #ifdef your testing doesn't cover can
+> break the build for lots of people ...
 
-And a few hundred boot tests, lots virtualised, but some on real HW.
+I use to get that from the zero-day bot from intel. Does that not run
+anymore? I noticed that I don't get notifications anymore.
 
-A single character typo in an #ifdef your testing doesn't cover can
-break the build for lots of people ...
+So yeah, my work flow is to push to my "urgent" branch, and wait a day
+for the zero-day bot. But if that's no longer the case, then maybe I
+can ask Stephen to take my urgent branches.
 
-cheers
+Now the issue here is that I push to my urgent branches *before* I run
+my tests. That's because my tests take 8 - 13 hours and I want the
+zero-day bot to get a head start. When a bug was in my code, both my
+tests and the zero-day bot would catch it. I would check to see which
+one found it first. Sometimes it was my tests, sometimes the bot.
+
+Now the issue is, if a bug is found. I don't change the branch I pushed
+up. Thus, if its broken, it will stay broken until I get around to
+fixing it. Depending on how badly it is broken, it may be several days
+before its fixed. I would imagine if this branch is now in next, it
+would break next and burden Stephen to revert my branch until its
+fixed. Or it will change my workflow to have to either push after it
+passes my tests or revert what I pushed first. I'm guessing I would
+have to now push after my tests pass (if zero-day is no longer working).
+
+As for the linus-next (linus-pr), this is a case that could work with
+my workflow. I would happily sign up, and when I do my git pull, have
+a bot pull my code into this tree (along with all the other pull
+request for the day) run all these tests, and then Linus can pull after
+they all passed.
+
+-- Steve
 
