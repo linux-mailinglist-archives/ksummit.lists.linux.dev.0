@@ -1,112 +1,106 @@
-Return-Path: <ksummit+bounces-1636-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1637-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A59029ADA1D
-	for <lists@lfdr.de>; Thu, 24 Oct 2024 04:51:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADD669ADABE
+	for <lists@lfdr.de>; Thu, 24 Oct 2024 05:59:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30D8B1F22B17
-	for <lists@lfdr.de>; Thu, 24 Oct 2024 02:51:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DE1D1F22AC9
+	for <lists@lfdr.de>; Thu, 24 Oct 2024 03:59:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 445541552ED;
-	Thu, 24 Oct 2024 02:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC351662EF;
+	Thu, 24 Oct 2024 03:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cysmbiHP"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="jlymsq68"
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12B1482EB;
-	Thu, 24 Oct 2024 02:51:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883051EB3D
+	for <ksummit@lists.linux.dev>; Thu, 24 Oct 2024 03:59:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729738265; cv=none; b=llPEOMygjtNLWXP6K1GvdeTRbIlpZ6M1czKMZTy/mWP0p2M8CJ8R6srWpaqETypuv7rjbPG0Ed+WigYAn1D8UhlYcftjWDzBIpIqunbQMQLNKoAjh4af13wMg+hbq7ojv4d0z9vjxaQoe7jT2jutU5VVLzToYmfINF5Hk33Ipsc=
+	t=1729742362; cv=none; b=u/+4FkM6tgEdUpem4v2AbULkLvPHdRBhnAPh8ZwNLs6kvYUNzvEV8AiAlpVu4tqBojN/zXe4RfdbzKEHGHZEDPokBGoo2ssur8MykDHuub1RUg3ottulrPWiOYFPTiYBeq/zrZYuKo2V4Bzam2AE+a8oBuz1Tq8X4td5XepSsRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729738265; c=relaxed/simple;
-	bh=s8oTUHO03fC/qI1d52y3DAo81DcFlugJmoOFYUFCsEo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MWmp6mdHY+A7WFZwaFBI6VzEkUZWGDBFuzHRE6mvgGpYH5iZRQ46z/gMwhRejgz9/Jh5wPrk99za00cVFBBm13GtNXAIl6RcuCMgHdFga2dsqbA3pcLoN9mCoGlmUjgl6QFabh7ZCa7DzN95DVQ/4yYn7kJWz9EiYq6xRts94uQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cysmbiHP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB2DC4CEC6;
-	Thu, 24 Oct 2024 02:51:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729738265;
-	bh=s8oTUHO03fC/qI1d52y3DAo81DcFlugJmoOFYUFCsEo=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=cysmbiHPBuSQvoyEFF6Q8ZtDnRmZQSx35Iw8AwcLamSae2bV0dvxv2rQSLPXNVgky
-	 7Pxw0BLhIl5n/a1TkkG+oK350pYCIuvmVXShSRcDKke+VSO1ITOUYxBm9XR7WLYpHV
-	 kCR9l7knXSgPoUmqXG+c/sTNRdppvxZoAgj8FOIjiwhbMczH+U0ibOHXgxGW+E5yUD
-	 Zvg2Fla3GxpJHJ+vckvH/0dlXg9ZkboeBOvA+j66VddriDtPzxc3dwBSV869HaqbZG
-	 5vOtxMGCBedeWUKqV9ZNFzTMT32OiPR3sUVyObT5DTAnJDznfm3TqnbKJUfwYw10fY
-	 RUwS99HRZR8Bw==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id BEA43CE0D0D; Wed, 23 Oct 2024 19:51:04 -0700 (PDT)
-Date: Wed, 23 Oct 2024 19:51:04 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Sasha Levin <sashal@kernel.org>, Kees Cook <kees@kernel.org>,
-	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1729742362; c=relaxed/simple;
+	bh=DK9kvLofXnQggoD4zXHgb6qSNT8DNnvHfWY9tb/klE0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=SaQ5yLHU8FFULYSDvAD9exU4kKcfgbVsCE3MwVMPyFAoVkHifjKtX03mYgKmPjN1tdljzQrgKOTZ2Cg5McgjTASwUpRpLCLfGi9xdPhG6ze8wlRpXg8JQsXBIWL8k+LzYbKgLSZ799Zy9BxGxGGjbnmv3sYUzTb6MshyO+CBamM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=jlymsq68; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1729742357;
+	bh=/jN9f0RDBaZbD5WgikoRAFa/OR5++AgfVdHLbNCGRnw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=jlymsq68uuihBBn6NHG5RbifQBF5h16Q7Lu6y/VjdtNmIDrZljWgX4NdTWi1xXu5R
+	 LBvuPNlstCN6AWl3lM1kfvKPDgt88rkznmwAkkkR6JXdsKo3SIN7oEjsNK2gGo5TWJ
+	 iwr7ZS2Txe+ERnxiPFTfxu9dC39Xc1iDAAvUsV97tgXf5AKA1/gEeyAyMJgHRHTzBP
+	 x6ytQrB1+95L1QrQb7v+6UxBOWW4fBIa3VijXwQcfnO5s9Mfw7QkR7GpqewHh3zlXF
+	 sgSm3kh49VDoUZS1rqZdRBOYL62DEdDLi6Q43mmvpYvS/XMAOFT88dbhHofxVhYOhN
+	 OHFn0siSSkidg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XYsc419l4z4w2L;
+	Thu, 24 Oct 2024 14:59:15 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Steven Rostedt <rostedt@goodmis.org>, Geert Uytterhoeven
+ <geert@linux-m68k.org>
+Cc: Christoph Hellwig <hch@infradead.org>, Kees Cook <kees@kernel.org>,
+ Sasha Levin <sashal@kernel.org>, torvalds@linux-foundation.org,
+ ksummit@lists.linux.dev, linux-kernel@vger.kernel.org
 Subject: Re: linus-next: improving functional testing for to-be-merged pull
  requests
-Message-ID: <d8087943-0a9c-4e1e-8873-48a15e1311dc@paulmck-laptop>
-Reply-To: paulmck@kernel.org
+In-Reply-To: <20241023051914.7f8cf758@rorschach.local.home>
 References: <ZxZ8MStt4e8JXeJb@sashalap>
  <792F4759-EA33-48B8-9AD0-FA14FA69E86E@kernel.org>
  <ZxdKwtTd7LvpieLK@infradead.org>
- <ZxdyYjzxSktk34Zz@sashalap>
- <ZxiOjBRdO6EMAY4H@infradead.org>
- <10b0cb74-2068-4819-ac91-fcf98ca8d96c@paulmck-laptop>
- <CAHk-=wj4aSJsVA6weV7u9KD1yA74JZq3dYZKbUtxp=3o_esnVA@mail.gmail.com>
- <bf42489f-4a86-4717-b367-d8be877b3036@sirena.org.uk>
+ <20241022041243.7f2e53ad@rorschach.local.home>
+ <ZxiN3aINYI4u8pRx@infradead.org>
+ <20241023042004.405056f5@rorschach.local.home>
+ <CAMuHMdUxrULbo=A77DFDE4ySbii3jSMuh8xVvUXaqyCnwEAU-w@mail.gmail.com>
+ <20241023051914.7f8cf758@rorschach.local.home>
+Date: Thu, 24 Oct 2024 14:59:16 +1100
+Message-ID: <8734km2lt7.fsf@mail.lhotse>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bf42489f-4a86-4717-b367-d8be877b3036@sirena.org.uk>
+Content-Type: text/plain
 
-On Wed, Oct 23, 2024 at 10:24:29PM +0100, Mark Brown wrote:
-> On Wed, Oct 23, 2024 at 11:06:59AM -0700, Linus Torvalds wrote:
-> 
-> > And yes, I know some people do functional testing on linux-next
-> > already. The message at the maintainer summit was a bit mixed with
-> > some people saying linux-next tends to work even for that, others
-> > saying it's often too broken to be useful.
-> 
-> It very much depends on what you're trying to get out of the testing -
-> -next does work well most of the time, but it will absolutely just blow
-> up catastrophically on you from time time to time so you have to be
-> prepared to cope with loosing some or all of your coverage sometimes.
-> Usually anything major gets fixed fairly promptly, but sometimes you'll
-> be missing coverage for extended periods especially if it's something
-> like a more niche platform that's been broken or there's some problem
-> getting people to actually apply the fixes.  Submaintainer trees that
-> people don't want to add to -next can be an issue too.
-> 
-> You're also going to run into issues that are nothing to do with
-> whatever you're actually working on yourself and need to consider what
-> you're covering based on your tolerance for dealing with that.  The rate
-> of change can also be an issue if the tests you're intersted in are
-> expensive.  OTOH if you're doing things that are likely to be affected
-> by changes in a broad set of trees (eg, maintaining some embedded
-> platform where you care about all the various subsystems breaking
-> platform specific drivers) it can be a lot easier to cover -next rather
-> than all the individual subsystems.
+Steven Rostedt <rostedt@goodmis.org> writes:
+> On Wed, 23 Oct 2024 10:36:20 +0200
+> Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+>
+>> > To put it this way. The bugs I'm fixing was for code in linux-next
+>> > where the bugs were never found. They only appeared when they went into
+>> > Linus's tree. So why put the fixes in linux-next, if it didn't catch
+>> > the bugs I fixed in the first place?  
+>> 
+>> Hmmm...
+>> 
+>> Your arguments sound very similar to those being used in recent
+>> discussions about not posting patches for public review...
+>> 
+>> Please follow the process! ;-)
+>
+> What process?
+>
+...
+>
+> But pushing to linux-next for a day or two, what does that give me?
 
-You said it much better than I did, thank you!
+Several thousand build tests, across pretty much every architecture.
 
-For me, -next is a convenient point to test much of what will be going in.
-Yes, it can be frustrating, finding problems just as someone else fixed
-them, finding problems irrelevant to any of my use cases, and so on.
-But sometimes I find something that would have been quite painful to
-deal with later in process that others don't find.  Overall, it is well
-worth the my effort.
+And a few hundred boot tests, lots virtualised, but some on real HW.
 
-							Thanx, Paul
+A single character typo in an #ifdef your testing doesn't cover can
+break the build for lots of people ...
+
+cheers
 
