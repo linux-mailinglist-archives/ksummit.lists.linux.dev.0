@@ -1,99 +1,113 @@
-Return-Path: <ksummit+bounces-1644-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1645-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7B5D9AE168
-	for <lists@lfdr.de>; Thu, 24 Oct 2024 11:49:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A59209AE372
+	for <lists@lfdr.de>; Thu, 24 Oct 2024 13:08:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67E74B21FC5
-	for <lists@lfdr.de>; Thu, 24 Oct 2024 09:49:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AEE91F22D2F
+	for <lists@lfdr.de>; Thu, 24 Oct 2024 11:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB97B1B6CF1;
-	Thu, 24 Oct 2024 09:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5611CACD4;
+	Thu, 24 Oct 2024 11:08:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jCyvV3+7"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594471B3935;
-	Thu, 24 Oct 2024 09:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD281B3944;
+	Thu, 24 Oct 2024 11:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729763354; cv=none; b=E4++/Rkk9DUUTrgSGmiHx52mLrJtoEJbk0cpt939iEF5IcqanB/WyArjjvMPVEmkGxQ61HA4gEKotAziNfHxxwviJKZaNBX/cHHiIfKauCBPohuaWdKiGzNWrf/41Xs5aMVIIOEAdo8t9B3RcK6ZFfTxD0qpkA2ASZuP2+uc/jU=
+	t=1729768114; cv=none; b=lH5YZ5Khot6pLp6apogEp3rBpSzSk8DNQXym+PuZgZG/5/g/v5B9CLb9DiYO33hDTxWhii5bRfSNMQalabTsz8Laynhf+u6aD1mkOfR3f0k8NKeyKSkazendmJjngWGV78Mk2LytTZnspXYKl9NMR9oqrcj4ixW3qQ8XuDf9+Zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729763354; c=relaxed/simple;
-	bh=aB2lRevzR8yR1hBpjnamd65HmUOLhBUzSa5mbuK6VI8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B98qNfJDjZInc43C7pOwozsvCWM7Mw8Xx+DT8vLSAYe1GVmA4KvvLFtdABaFxyJuZciOxvdMH29IE/uAa97Ut7W5ZWmXxLGnWDun+MojsaRba9TN55AqcKo4ZXkXrQjHqX/tsPl+fAXbwwE8E54RdKfFTJmK5aZbKUB20DpJID0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 999C9C4CECC;
-	Thu, 24 Oct 2024 09:49:12 +0000 (UTC)
-Date: Thu, 24 Oct 2024 05:49:09 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Guenter Roeck
- <linux@roeck-us.net>, Michael Ellerman <mpe@ellerman.id.au>, Kees Cook
- <kees@kernel.org>, Sasha Levin <sashal@kernel.org>,
- torvalds@linux-foundation.org, ksummit@lists.linux.dev,
- linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1729768114; c=relaxed/simple;
+	bh=9peKOBarqdpPkLjjJH9GEgF7N61JBW2Rmu4/0jGcnWk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jlho5pZmiML3kjQXda3q8JxW/VYca8CU1/t9fYLUw+O3Uz6hqzzFadGC7fQomm1bZdx6XaY5E+Kv/+C2vo9Ua7J5JxCsensGwHwW3bIIpwZxkKxnfnQIP0i4/87jKnk5ptsFpdd9kl2mniF4R3FZpyNZosNASAey8Wy3jSRdLOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jCyvV3+7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65987C4CECC;
+	Thu, 24 Oct 2024 11:08:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729768113;
+	bh=9peKOBarqdpPkLjjJH9GEgF7N61JBW2Rmu4/0jGcnWk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jCyvV3+7tJi19rgCFZNXGlpaG2Fvdv0drAf/gQJlTbO/kQLUSKy3dIuhbZkJLTwh3
+	 +A15YkZgZM+T6HTGYBKSrS/lmucRuGPrSJ6hrrYVT/Xd4piwcfNOi8XdxxrSkZVULD
+	 Vj4NQ9xistEbkcSfhIwKDmzPvrhR6sR24MTP9FUTuoFYWJpkxWI4MNAjUDoU39bSxs
+	 Au1zPkeRq/in99JZFyLyf7QrenIWEEp6u39Hji84AyIhDHVEgq3TQZsHJJlRPnyqtx
+	 kqp/fRT4/18p7G0Nq4hqwMER4KqYHuNFzM4YBtV2+cK0EPN75LJLyr45/UP00t73HS
+	 ueuQeAVndxEIw==
+Date: Thu, 24 Oct 2024 12:08:28 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Christoph Hellwig <hch@infradead.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Michael Ellerman <mpe@ellerman.id.au>, Kees Cook <kees@kernel.org>,
+	Sasha Levin <sashal@kernel.org>, torvalds@linux-foundation.org,
+	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org
 Subject: Re: linus-next: improving functional testing for to-be-merged pull
  requests
-Message-ID: <20241024054909.49ae9faa@rorschach.local.home>
-In-Reply-To: <ZxoSZQSw0z6AdgaU@infradead.org>
-References: <ZxiN3aINYI4u8pRx@infradead.org>
-	<20241023042004.405056f5@rorschach.local.home>
-	<CAMuHMdUxrULbo=A77DFDE4ySbii3jSMuh8xVvUXaqyCnwEAU-w@mail.gmail.com>
-	<20241023051914.7f8cf758@rorschach.local.home>
-	<8734km2lt7.fsf@mail.lhotse>
-	<20241024010103.238ef40b@rorschach.local.home>
-	<07422710-19b2-412b-b8d5-7ec51b708693@roeck-us.net>
-	<20241024024928.6fb9d892@rorschach.local.home>
-	<CAMuHMdVLsLA97u4AVTA6=YKyfyWNrJOQk7S02s36AFTrFoUM3A@mail.gmail.com>
-	<20241024052139.2cf7397f@rorschach.local.home>
-	<ZxoSZQSw0z6AdgaU@infradead.org>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Message-ID: <658bb573-69f5-4873-98d3-9e9d6412966d@sirena.org.uk>
+References: <CAMuHMdUxrULbo=A77DFDE4ySbii3jSMuh8xVvUXaqyCnwEAU-w@mail.gmail.com>
+ <20241023051914.7f8cf758@rorschach.local.home>
+ <8734km2lt7.fsf@mail.lhotse>
+ <20241024010103.238ef40b@rorschach.local.home>
+ <07422710-19b2-412b-b8d5-7ec51b708693@roeck-us.net>
+ <20241024024928.6fb9d892@rorschach.local.home>
+ <CAMuHMdVLsLA97u4AVTA6=YKyfyWNrJOQk7S02s36AFTrFoUM3A@mail.gmail.com>
+ <20241024052139.2cf7397f@rorschach.local.home>
+ <ZxoSZQSw0z6AdgaU@infradead.org>
+ <20241024054909.49ae9faa@rorschach.local.home>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="k4/QeDWtOnPbDnaJ"
+Content-Disposition: inline
+In-Reply-To: <20241024054909.49ae9faa@rorschach.local.home>
+X-Cookie: Real programs don't eat cache.
 
-On Thu, 24 Oct 2024 02:24:53 -0700
-Christoph Hellwig <hch@infradead.org> wrote:
 
-> On Thu, Oct 24, 2024 at 05:21:39AM -0400, Steven Rostedt wrote:
-> > them as small as possible. That's not always the case, so maybe I could
-> > push it. But it will change my workflow quite a bit or burden Stephen
-> > with broken branches.
-> > 
-> > I'm still not convinced it's worth it.
-> > 
-> > We are not talking about new development code. We are talking about bug
-> > fixes for code that is in Linus's tree. The zero day bot and my tests
-> > appear to find most issues. Bugs that happened on my fixes patches are
-> > usually other use cases. For instance, cpu hotplug while tracing from
-> > rtla. That's not coverage I get from linux-next.  
-> 
-> Seriously, just add your damn fixes tree to linux-next.  If your fixes
-> are as perfect as you claim that one time setup is all you need to do,
-> and you have less work than you spent arguing on this thread already.
-> 
-> If it catches bugs eventually you will need to do more work, but save
-> others from deadling with your regression.  There is no downside for
-> you.
+--k4/QeDWtOnPbDnaJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-So basically, all I need to do to satisfy your request is to add fixes
-branch that I push to that is pushed after it passes my tests (and not
-the urgent branch that is still being tested and may have bugs) and
-then have that be added to linux-next?
+On Thu, Oct 24, 2024 at 05:49:09AM -0400, Steven Rostedt wrote:
 
-Now I have been batching changes and not send a pull request right
-after my tests pass. I've been sending a pull request at most now once
-a week. So I could have this branch hold the code that's already been
-tested.
+> So basically, all I need to do to satisfy your request is to add fixes
+> branch that I push to that is pushed after it passes my tests (and not
+> the urgent branch that is still being tested and may have bugs) and
+> then have that be added to linux-next?
 
--- Steve
+> Now I have been batching changes and not send a pull request right
+> after my tests pass. I've been sending a pull request at most now once
+> a week. So I could have this branch hold the code that's already been
+> tested.
+
+Yes, that's what pretty much everyone is doing here.  Generally we find
+very few issues this way but it's certainly a non-zero number.
+
+--k4/QeDWtOnPbDnaJ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcaKqsACgkQJNaLcl1U
+h9Dw9Qf/eOHIPV0pF/+EE1YW/VNkqtLBqTfT5ASltXbCel7CT84ZLvIwaKUC5s/0
+d/zALFEN2Kwnko0Q29GdjdpQ0z3ZkjJPDhq12Mr3YQ5Mqa3Z1EmTkH8rXeH1U0Jv
+a9sUhwvut8dNDXBg522E3fABjlB+NnW7yi1a6GlYNhW13tYINqBbKdKtRnYqx5wt
+lnHrRH9dbGyEt5n0fZ0QrU0ej+9BNXnjlUHbNRhy9ZHbMDXGBZCVpAp5wvGlGJDk
+2Xo5uFR+j2EjubrDOaVRwVkSJMvAOH4BzCDICz7n1MoUgLseOJpncYPN/EDnwLAs
+BXr/knfq+eusKEuJQsxz+pmCM9qaUg==
+=y6xr
+-----END PGP SIGNATURE-----
+
+--k4/QeDWtOnPbDnaJ--
 
