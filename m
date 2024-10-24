@@ -1,100 +1,99 @@
-Return-Path: <ksummit+bounces-1643-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1644-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5995B9AE089
-	for <lists@lfdr.de>; Thu, 24 Oct 2024 11:25:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7B5D9AE168
+	for <lists@lfdr.de>; Thu, 24 Oct 2024 11:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19C622847FB
-	for <lists@lfdr.de>; Thu, 24 Oct 2024 09:25:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67E74B21FC5
+	for <lists@lfdr.de>; Thu, 24 Oct 2024 09:49:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E3961B4F0C;
-	Thu, 24 Oct 2024 09:25:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="4pU1CwVb"
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB97B1B6CF1;
+	Thu, 24 Oct 2024 09:49:14 +0000 (UTC)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7D51B3929;
-	Thu, 24 Oct 2024 09:24:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594471B3935;
+	Thu, 24 Oct 2024 09:49:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729761901; cv=none; b=Y6xEL1fixgkFbNfvdRxnft77simwa2HrxjLZjLdSWf7eHqZWcckzD1fQAW/fCe5Ydwy1B9zty+Ld6SCkOyKScPHJNGxecFrzXRBvUbN9Ha2tRwwxO4pE4ICq+bPfe8Z4ho9KodHb+keARvDLglvnfmR3RNW+EoWky3/9HkpZQuc=
+	t=1729763354; cv=none; b=E4++/Rkk9DUUTrgSGmiHx52mLrJtoEJbk0cpt939iEF5IcqanB/WyArjjvMPVEmkGxQ61HA4gEKotAziNfHxxwviJKZaNBX/cHHiIfKauCBPohuaWdKiGzNWrf/41Xs5aMVIIOEAdo8t9B3RcK6ZFfTxD0qpkA2ASZuP2+uc/jU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729761901; c=relaxed/simple;
-	bh=V2bqIBJBKNZHpaj9S1oaX/7xeY4aOrtvjdJfPa7IcrM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oqujFIiQoQssXKXyIWTyFlsD66I9wWzhfGBvcmKiVkstLNEtsSFEUxYy4JLGBhiPR76taFRZYehyfWV7o5LRZ6NEbSWYbe60WQlsZ7DO3abJeUkpb4nfUbscpAgZRhtDxqhWkD4CAsFVsgfCDP0mlfaJTNyGTgxWHBtEyfomPK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=4pU1CwVb; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Q7b3zRo7F5ZGBsioig3luyDrMko+mehs3AE6yBCh0dg=; b=4pU1CwVbQfr+woX2Lwf1BhwZuz
-	dSw541s2AYUXdvfpwcj5003w2M6/uUFsHr05d3TKj0HUdqGo9Xexo+15WPJfIUZyQUHsEIjNtLJlZ
-	VQxDonn7ilYCY8cVcs6gglrtOnn2nLb0PLhzsBi6g9oFfrMPrXxgsxjgqH9qIPkdwz7AhrVl/BKaW
-	2kr2nCiSoXtkw+nL+jJedkNJbsHc7z++zqj6v/Nlf52HN7Cfgsr8YqMmqJC7Q6UAmWhzybC5IPb9X
-	FX5XR6Rc9L8jpNw0wauLFo+BgGVRTRR72b7W4k3Yy4WVpKCLr0tQ6F+z/60xQ1i2lE1wYnIldTWNn
-	V4HlPhRA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1t3u5N-0000000HRWY-1bKn;
-	Thu, 24 Oct 2024 09:24:53 +0000
-Date: Thu, 24 Oct 2024 02:24:53 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Christoph Hellwig <hch@infradead.org>, Kees Cook <kees@kernel.org>,
-	Sasha Levin <sashal@kernel.org>, torvalds@linux-foundation.org,
-	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1729763354; c=relaxed/simple;
+	bh=aB2lRevzR8yR1hBpjnamd65HmUOLhBUzSa5mbuK6VI8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=B98qNfJDjZInc43C7pOwozsvCWM7Mw8Xx+DT8vLSAYe1GVmA4KvvLFtdABaFxyJuZciOxvdMH29IE/uAa97Ut7W5ZWmXxLGnWDun+MojsaRba9TN55AqcKo4ZXkXrQjHqX/tsPl+fAXbwwE8E54RdKfFTJmK5aZbKUB20DpJID0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 999C9C4CECC;
+	Thu, 24 Oct 2024 09:49:12 +0000 (UTC)
+Date: Thu, 24 Oct 2024 05:49:09 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Guenter Roeck
+ <linux@roeck-us.net>, Michael Ellerman <mpe@ellerman.id.au>, Kees Cook
+ <kees@kernel.org>, Sasha Levin <sashal@kernel.org>,
+ torvalds@linux-foundation.org, ksummit@lists.linux.dev,
+ linux-kernel@vger.kernel.org
 Subject: Re: linus-next: improving functional testing for to-be-merged pull
  requests
-Message-ID: <ZxoSZQSw0z6AdgaU@infradead.org>
+Message-ID: <20241024054909.49ae9faa@rorschach.local.home>
+In-Reply-To: <ZxoSZQSw0z6AdgaU@infradead.org>
 References: <ZxiN3aINYI4u8pRx@infradead.org>
- <20241023042004.405056f5@rorschach.local.home>
- <CAMuHMdUxrULbo=A77DFDE4ySbii3jSMuh8xVvUXaqyCnwEAU-w@mail.gmail.com>
- <20241023051914.7f8cf758@rorschach.local.home>
- <8734km2lt7.fsf@mail.lhotse>
- <20241024010103.238ef40b@rorschach.local.home>
- <07422710-19b2-412b-b8d5-7ec51b708693@roeck-us.net>
- <20241024024928.6fb9d892@rorschach.local.home>
- <CAMuHMdVLsLA97u4AVTA6=YKyfyWNrJOQk7S02s36AFTrFoUM3A@mail.gmail.com>
- <20241024052139.2cf7397f@rorschach.local.home>
+	<20241023042004.405056f5@rorschach.local.home>
+	<CAMuHMdUxrULbo=A77DFDE4ySbii3jSMuh8xVvUXaqyCnwEAU-w@mail.gmail.com>
+	<20241023051914.7f8cf758@rorschach.local.home>
+	<8734km2lt7.fsf@mail.lhotse>
+	<20241024010103.238ef40b@rorschach.local.home>
+	<07422710-19b2-412b-b8d5-7ec51b708693@roeck-us.net>
+	<20241024024928.6fb9d892@rorschach.local.home>
+	<CAMuHMdVLsLA97u4AVTA6=YKyfyWNrJOQk7S02s36AFTrFoUM3A@mail.gmail.com>
+	<20241024052139.2cf7397f@rorschach.local.home>
+	<ZxoSZQSw0z6AdgaU@infradead.org>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241024052139.2cf7397f@rorschach.local.home>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 24, 2024 at 05:21:39AM -0400, Steven Rostedt wrote:
-> them as small as possible. That's not always the case, so maybe I could
-> push it. But it will change my workflow quite a bit or burden Stephen
-> with broken branches.
+On Thu, 24 Oct 2024 02:24:53 -0700
+Christoph Hellwig <hch@infradead.org> wrote:
+
+> On Thu, Oct 24, 2024 at 05:21:39AM -0400, Steven Rostedt wrote:
+> > them as small as possible. That's not always the case, so maybe I could
+> > push it. But it will change my workflow quite a bit or burden Stephen
+> > with broken branches.
+> > 
+> > I'm still not convinced it's worth it.
+> > 
+> > We are not talking about new development code. We are talking about bug
+> > fixes for code that is in Linus's tree. The zero day bot and my tests
+> > appear to find most issues. Bugs that happened on my fixes patches are
+> > usually other use cases. For instance, cpu hotplug while tracing from
+> > rtla. That's not coverage I get from linux-next.  
 > 
-> I'm still not convinced it's worth it.
+> Seriously, just add your damn fixes tree to linux-next.  If your fixes
+> are as perfect as you claim that one time setup is all you need to do,
+> and you have less work than you spent arguing on this thread already.
 > 
-> We are not talking about new development code. We are talking about bug
-> fixes for code that is in Linus's tree. The zero day bot and my tests
-> appear to find most issues. Bugs that happened on my fixes patches are
-> usually other use cases. For instance, cpu hotplug while tracing from
-> rtla. That's not coverage I get from linux-next.
+> If it catches bugs eventually you will need to do more work, but save
+> others from deadling with your regression.  There is no downside for
+> you.
 
-Seriously, just add your damn fixes tree to linux-next.  If your fixes
-are as perfect as you claim that one time setup is all you need to do,
-and you have less work than you spent arguing on this thread already.
+So basically, all I need to do to satisfy your request is to add fixes
+branch that I push to that is pushed after it passes my tests (and not
+the urgent branch that is still being tested and may have bugs) and
+then have that be added to linux-next?
 
-If it catches bugs eventually you will need to do more work, but save
-others from deadling with your regression.  There is no downside for
-you.
+Now I have been batching changes and not send a pull request right
+after my tests pass. I've been sending a pull request at most now once
+a week. So I could have this branch hold the code that's already been
+tested.
 
+-- Steve
 
