@@ -1,48 +1,46 @@
-Return-Path: <ksummit+bounces-1649-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1650-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D675E9AF685
-	for <lists@lfdr.de>; Fri, 25 Oct 2024 03:12:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DDF29AF690
+	for <lists@lfdr.de>; Fri, 25 Oct 2024 03:17:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63D99B22003
-	for <lists@lfdr.de>; Fri, 25 Oct 2024 01:12:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 322F22830F0
+	for <lists@lfdr.de>; Fri, 25 Oct 2024 01:17:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9BBE433CA;
-	Fri, 25 Oct 2024 01:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCA0A1CAA6;
+	Fri, 25 Oct 2024 01:17:33 +0000 (UTC)
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5854312B64;
-	Fri, 25 Oct 2024 01:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B28E4C81;
+	Fri, 25 Oct 2024 01:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729818714; cv=none; b=kua0Yap8Ft3ShRnueyuFFqcQmmk1De88+oPhd7YJ4UObxg9ZjPU1fpG6NqEXH1bsIGqFgE+sxtBoeBV3rYxv0F3bOiKMElbdY8xTYNOqMr2kH3NrW8YDpzjdtlMq2ZcHiE7q5rbHFXYXJ+o6g2mr/5TQxyYsPxCthmsFBNz8QZs=
+	t=1729819053; cv=none; b=VExyPzkRrY9wYtaVe7l1yThsjs9z/vINnyhJLCG/BcoIAI3Nv5bnhoVlhEslsACRyWpooZIld087y1tIjyR3VuQxznB7OFP6H8lRq0azp4nPJIaZWz8yyPBKfAW+n+soe9rYJ+Uzfvsyo7s3gPWdXVOlTFGCzbiRUM5tlnSRpdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729818714; c=relaxed/simple;
-	bh=PdaiVY4mXaaatJcybm9KDwSVafXLmEfyqovSHj3l2GY=;
+	s=arc-20240116; t=1729819053; c=relaxed/simple;
+	bh=A4OHkC/Gy6/+k6+8VPRKb67Rjjjo9qvTamzKGDikBuE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TbpBJMT9/G837K/Lb59yCZOR9j8TWEdY6GX/mznRtLx69XxnjNEs8knGNRcUh8EnvQuPtcq2WWB0mLdgga2dEkNemtevVc8ujqBUUdeGtvnRP+iLDwN9lT5isXXI3i4tjkv6gtf5tQYllf+qkWBss50fCFKTLVpJaNVxvwl910E=
+	 MIME-Version:Content-Type; b=alNjE56fjts7PVy3ZJMdibdpc526CKbq9XQvT0PXj9vPMa8l5YOPMZfPb76ga3G7Pf1TMFuXQISK6kYsUbdZOWed1j3u76oKayQI4iMYWQyCAqmifWYlZ2D1D3EFRKajNWmyXyyzJu7sNG4UnY6n0yuG1mCFjbtH76sfaLgmei8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D501C4CEC7;
-	Fri, 25 Oct 2024 01:11:52 +0000 (UTC)
-Date: Thu, 24 Oct 2024 21:11:49 -0400
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFFB9C4CEC7;
+	Fri, 25 Oct 2024 01:17:31 +0000 (UTC)
+Date: Thu, 24 Oct 2024 21:17:28 -0400
 From: Steven Rostedt <rostedt@goodmis.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Michael Ellerman <mpe@ellerman.id.au>, Geert Uytterhoeven
- <geert@linux-m68k.org>, Christoph Hellwig <hch@infradead.org>, Kees Cook
- <kees@kernel.org>, Sasha Levin <sashal@kernel.org>,
- torvalds@linux-foundation.org, ksummit@lists.linux.dev,
- linux-kernel@vger.kernel.org
+To: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Guenter Roeck <linux@roeck-us.net>, Michael Ellerman
+ <mpe@ellerman.id.au>, Geert Uytterhoeven <geert@linux-m68k.org>, Christoph
+ Hellwig <hch@infradead.org>, Kees Cook <kees@kernel.org>, Sasha Levin
+ <sashal@kernel.org>, torvalds@linux-foundation.org,
+ ksummit@lists.linux.dev, linux-kernel@vger.kernel.org
 Subject: Re: linus-next: improving functional testing for to-be-merged pull
  requests
-Message-ID: <20241024211149.4f0b6138@rorschach.local.home>
-In-Reply-To: <82eecf18-0a71-4c16-8511-bc52fb61f421@roeck-us.net>
-References: <ZxZ8MStt4e8JXeJb@sashalap>
-	<792F4759-EA33-48B8-9AD0-FA14FA69E86E@kernel.org>
-	<ZxdKwtTd7LvpieLK@infradead.org>
+Message-ID: <20241024211728.0e2304fd@rorschach.local.home>
+In-Reply-To: <ZxqJj9IZ2GF3IStb@bombadil.infradead.org>
+References: <ZxdKwtTd7LvpieLK@infradead.org>
 	<20241022041243.7f2e53ad@rorschach.local.home>
 	<ZxiN3aINYI4u8pRx@infradead.org>
 	<20241023042004.405056f5@rorschach.local.home>
@@ -52,7 +50,7 @@ References: <ZxZ8MStt4e8JXeJb@sashalap>
 	<20241024010103.238ef40b@rorschach.local.home>
 	<07422710-19b2-412b-b8d5-7ec51b708693@roeck-us.net>
 	<20241024024928.6fb9d892@rorschach.local.home>
-	<82eecf18-0a71-4c16-8511-bc52fb61f421@roeck-us.net>
+	<ZxqJj9IZ2GF3IStb@bombadil.infradead.org>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
@@ -63,51 +61,37 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 24 Oct 2024 07:39:00 -0700
-Guenter Roeck <linux@roeck-us.net> wrote:
+On Thu, 24 Oct 2024 10:53:19 -0700
+Luis Chamberlain <mcgrof@kernel.org> wrote:
 
-> > 
+> On Thu, Oct 24, 2024 at 02:49:28AM -0400, Steven Rostedt wrote:
 > > Now I have to ask. What's the benefit of pushing to linux-next over
-> > waiting for the zero-day bot?
-> >   
+> > waiting for the zero-day bot?  
 > 
-> I push my changes into the same branches that are checked by 0-day
-> and pulled into linux-next. linux-next shows interference with other
-> branches. Once in a while I do get a notification telling me that
-> one or more of the patches interfere with other patches, so I know that
-> something happened, and I can prepare for that for the next commit window.
+> 0-day only does build tests by default, there are many places which have
+> actual run time tests which *run* off of linux-next, those are both bots
+> and human. Granted you can get your own run time tests out of your own
+> branches but that's on each developer to set up and a developer's test
+> exposure of just one branch is small compared to linux-next. For example
+> I've seen obscure bugs creep up on linux-next for modules which only some
+> odd arch or setup was able to capture before which no test we had during
+> development was able to capture. So more exposure to system variability
+> and test variability.
 
-Remember, this is about pushing to linux-next before sending fixes
-after -rc1. Not for things that are going to land in the next merge
-window. My fixes seldom ever interfere with others work as it's usually
-much more focused on code that is already in Linus's tree. Like adding
-a missing mutex_unlock() from an error path. How is it helpful to push
-something like that to linux-next?
+I have a test suite that takes 8 to 13 hours to run (depending on how
+many commits I'm testing) that I run before sending to Linus or linux-next.
 
 > 
-> Testing-wise, I do run build and boot tests on linux-next (the same tests
-> as those running on release candidates), so I do know what is wrong there
-> and (which did happen a couple of times) if a patch in one of my trees
-> is responsible.
+> The other benefit is you get to see *way ahead of time* possible merge
+> conflicts, and if you can coordinate with the respective maintainers
+> which your code conflicts with, you can prepare so that this is smooth
+> sailing upon pull request to Linus.
 > 
-> Yes, that means that in many cases I do know ahead of time which problems
-> are going to pop up in the mainline kernel. But I don't have the time
-> tracking those down when seen in linux-next - there are just too many
-> and, as already mentioned, that would be a full-time job on its own.
-> Also, it happens a lot that they have been reported but the report was
-> ignored or missed. On top of that I found that _if_ I am reporting them,
-> the receiving side is at least sometimes either not responsive to almost
-> abusive, so for the most part I gave up on it (and frankly I found that
-> people tend to be _much_ more responsive if one Linus Torvalds is listed
-> in Cc:).
-> 
-> Note that I do collect known fixes in my 'fixes' and 'testing' branches,
-> primarily to have something clean available to keep testing. Linus even
-> pulled my fixes branch once directly because the responsible maintainers
-> didn't send pull requests to him for weeks.
 
-Or are you saying that it's helpful to "fix" linux-next before fixing
-Linus's tree? That way others will have the fixes too?
+Remember, this is talking about fixes after -rc1 not for things heading
+to the merge window. I find linux-next extremely useful for that work.
+But for fixes, what benefit is it to push to linux-next before sending
+to Linus a fix that adds a missing mutex_unlock() in the error path?
 
 -- Steve
 
