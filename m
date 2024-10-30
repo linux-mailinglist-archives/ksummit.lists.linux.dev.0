@@ -1,107 +1,132 @@
-Return-Path: <ksummit+bounces-1663-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1664-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 315759B6554
-	for <lists@lfdr.de>; Wed, 30 Oct 2024 15:10:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BFE59B6AB0
+	for <lists@lfdr.de>; Wed, 30 Oct 2024 18:18:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA69A281876
-	for <lists@lfdr.de>; Wed, 30 Oct 2024 14:10:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CBF51C20891
+	for <lists@lfdr.de>; Wed, 30 Oct 2024 17:18:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163851EF0B0;
-	Wed, 30 Oct 2024 14:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20033218D9F;
+	Wed, 30 Oct 2024 17:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n+3hvxcq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bO5UXt6s"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2964315F;
-	Wed, 30 Oct 2024 14:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB05218D70;
+	Wed, 30 Oct 2024 17:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730297445; cv=none; b=sGr/0hXPuKyB7qWiw3kiSvHWlCx1zD3rBmlZ4/JdvGMpMvZ6PmJXo9vSwIw9Vwd2Lnz/CjOQ08/eRmfwBt8S9F069PvBrh2vjnh0js4oNdyKcDkosUHTfwyFSqfWWfh3Gh7RorW6qmIUC/pJVmGc9WK6GCiIu8g2rbIDbAGAHqE=
+	t=1730308138; cv=none; b=tIG2quGmSiWHMHSfNEihlsrCIeku0wacstTVafHoZ7OHVf27WeZjFSWcBWIYdgi2DCDDhnMGSdflmanA4A94F0gWMl46rqnS6Zv9W+k38uVtGt4VbfgcF+OGJnT5Z678b5pPt74XD/DnNlx+JP0ton37OSnYOJRult96REszzhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730297445; c=relaxed/simple;
-	bh=OJhQ9gBlsQ73BpdP0EXsX44L4OeKUEsuBQrGpOiGKxM=;
+	s=arc-20240116; t=1730308138; c=relaxed/simple;
+	bh=xwPA/BheIpqJrGKVfaK0TNdyl92ejYqRd7ZDMQChKbo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lGmFrhFn76DGuxSwlwUPDf0vKuXtCEz0aXn18jpdVpxgV1xpPo09YGTX3cF0Fcnd1GOWrnm3nXC04oAXVPgKuOYEb6ninjtgpNkotL/xmRLhh3Qq0uYG4b4ubbGCaHK7Z2OGd3FtpoTKK6GQf+/wuuCisA2fnBFU8F3kT44Yf0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n+3hvxcq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37306C4CECE;
-	Wed, 30 Oct 2024 14:10:45 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=n6kxNw1fjM6+CaFWalnYvhQ2S2HjlKJNVMtb67pzWCXn1xjtONn9Y7kG1m/y8IqSeEATqJxOetNMLoxd92EvZAVjrvy04K2SLAgzC2xr7WOP7M0i5PcHA00IZZEWMgJgWtmdS0TkeCy9dSzZVjr1hVZzZ3L7H1ItYhVOOYZWPBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bO5UXt6s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34CCDC4CECE;
+	Wed, 30 Oct 2024 17:08:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730297445;
-	bh=OJhQ9gBlsQ73BpdP0EXsX44L4OeKUEsuBQrGpOiGKxM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=n+3hvxcqcNThCHt5tCg/M05dkdlUOFtW8dSTvSZGVUOYz0eEVWIELd0IjwU7VPPxH
-	 Q4hG4qQXd86lkFKi9+uvgn5fUM8dPLElzxumpeSHp9tWy1IGirjATOqh3KTK0jflzl
-	 cwLoOKTCsYk/IVfF8THgxEZ80zVWBpu/cmg78xf3EpNyYI2mDVe2kJ9R34FZEx2CqN
-	 QS8t6qi/NK2lVTqvuquK0wr4GBLmuUx1PxpofXBoV9TsyPM7qXX1FmTtnhTSekRPLu
-	 4uTjIpVsEeS1dzkOZBb+2YqpWBydqZGzUzNcbGjU9mCPi3d/9lCS+3TINB32qmqv1p
-	 boxyPsLc2ARZw==
-Date: Wed, 30 Oct 2024 10:10:43 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Thorsten Leemhuis <linux@leemhuis.info>
+	s=k20201202; t=1730308138;
+	bh=xwPA/BheIpqJrGKVfaK0TNdyl92ejYqRd7ZDMQChKbo=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=bO5UXt6syOeOlJoUU+T0L5VLguCtj8x9unWn1UW4/e06emXPmd7GORjlMEFTfD3uB
+	 fvYzVbMLOVdJx01b57uf/onJKtE4v6Gte7kqWnvj4JI6Drfd5lI0eZHMUE20CLCCJ9
+	 ks809Xmp70LiCLGz7ahyP7XgTWPtehSTaWaJ2CksOaw2v88YcGoWzjvJYIcAXeJd6s
+	 m0elWyHBAGDrp3vD5bQqjPhyoTsekOQ+D3sHbgxcts9ZtO3Ib00ZgHNBTZhXmjLeYu
+	 tCxP+j5w3TZkpxLcpABgowbn6R+6VLYBPbM9fUe2Q2DM1q4SOjodZH8yhxcMdDfXOX
+	 Chpl6jW7C3Viw==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id D7A22CE0BB3; Wed, 30 Oct 2024 10:08:57 -0700 (PDT)
+Date: Wed, 30 Oct 2024 10:08:57 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
 Cc: Christoph Hellwig <hch@infradead.org>, Kees Cook <kees@kernel.org>,
 	torvalds@linux-foundation.org, ksummit@lists.linux.dev,
 	linux-kernel@vger.kernel.org
 Subject: Re: linus-next: improving functional testing for to-be-merged pull
  requests
-Message-ID: <ZyI-Y00J3DBUkon3@sashalap>
+Message-ID: <c936a7f6-e532-4f6a-b55a-bbf0fe6c6f32@paulmck-laptop>
+Reply-To: paulmck@kernel.org
 References: <ZxZ8MStt4e8JXeJb@sashalap>
  <792F4759-EA33-48B8-9AD0-FA14FA69E86E@kernel.org>
  <ZxdKwtTd7LvpieLK@infradead.org>
  <ZyAUO0b3z_f_kVnj@sashalap>
- <d75c9c2f-353f-464c-89d3-8c18dbfb4770@leemhuis.info>
- <ZyDHZHjxwmK1Ow9e@sashalap>
- <292de8f0-49e7-49c8-a327-b279924a5794@leemhuis.info>
- <ZyD6QioGPyJUXI5r@sashalap>
- <58c58550-532a-4cfa-947d-ed56c6c5ba4e@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <58c58550-532a-4cfa-947d-ed56c6c5ba4e@leemhuis.info>
+In-Reply-To: <ZyAUO0b3z_f_kVnj@sashalap>
 
-On Wed, Oct 30, 2024 at 07:46:40AM +0100, Thorsten Leemhuis wrote:
->On 29.10.24 16:07, Sasha Levin wrote:
->> On Tue, Oct 29, 2024 at 01:46:23PM +0100, Thorsten Leemhuis wrote:
->>> Hmmm. After all those mails in this thread improving (and maybe even
->>> separating & somewhat automating[1]) pending-fixes to me still sounds
->>> like time better spend, as then more things could tested before they
->>> even read a PR; but yes, I understand, the timing/order of merges can
->>> mess things up, so testing on PR time has benefits, too.
->> Automating how? Having it be generated more often?
->
->Have the list of -fixes trees which a "no rebases" policy somewhere and
->a script that regularly merges them into a tree. But as indicated, it's
->not that easy in practice and can't be fully automated, as there will be
->merge conflicts occasionally. But Linus wants to see them, so they will
->happen at pull requests time, too -- doing it constantly has the benefit
->that you can notice and resolve them ahead of time.
->
->How much work this is: no idea, maybe Stephen could help answering that
->from experiences for pending-fixes. But I expect conflicts should not
->happen as often as they do when it comes to merging -for-next branches.
->
->But that obviously only helps outside of merge windows.
+On Mon, Oct 28, 2024 at 06:46:19PM -0400, Sasha Levin wrote:
+> On Mon, Oct 21, 2024 at 11:48:34PM -0700, Christoph Hellwig wrote:
+> > On Mon, Oct 21, 2024 at 09:54:53PM -0700, Kees Cook wrote:
+> > > For example, for a given PR, the bot can report:
+> > > 
+> > > - Were the patches CCed to a mailing list?
+> > > - A histogram of how long the patches were in next (to show bake times)
+> > > - Are any patches associated with test failures? (0day and many other
+> > > CIs are already running tests against -next; parse those reports)
+> > > 
+> > > We could have a real pre-submit checker! :)
+> > 
+> > That would be very useful.  Items 1 and 2 should be trivial, 3 would
+> > require a bit of work but would still be very useful.
+> 
+> If you've been following so far, there is a bot that is capable of doing
+> most of the above
+> (https://git.kernel.org/pub/scm/linux/kernel/git/sashal/next-analysis.git/).
 
-Do you want to give it ago?
+Nice!!!
 
-I've pushed something to
-https://git.kernel.org/pub/scm/linux/kernel/git/sashal/linus-next.git/log/?h=auto-pending-fixes
-, and scripted a bit around it to try and keep it updated.
+What does this make of these commits of mine?
 
-We can try a model where it tries to avoid rebases as much as it can,
-and if it needs to rebase it will tag the old HEAD before re-creating
-the branch?
+744e87210b1ae rcu: Finer-grained grace-period-end checks in rcu_dump_cpu_stacks()
+cbe644aa6fe17 rcu: Stop stall warning from dumping stacks if grace period ends
+26ff1fb02991e rcu: Delete unused rcu_gp_might_be_stalled() function
 
--- 
-Thanks,
-Sasha
+> Here's a histogram that describes v6.12-rc4..v6.12-rc5 as far as how
+> long commits spent in -next:
+> 
+> Days in linux-next:
+> ----------------------------------------
+>  0 | +++++++++++++++++++++++++++++++++++++++++++++++++ (89)
+> <1 | +++++++++++ (21)
+>  1 | +++++++++++ (21)
+>  2 | +++++++++++++++++++++++++ (45)
+>  3 | ++++++++++++++ (25)
+>  4 | +++++ (10)
+>  5 |
+>  6 | + (2)
+>  7 |
+>  8 | + (3)
+>  9 | ++ (4)
+> 10 |
+> 11 | +++ (6)
+> 12 |
+> 13 |
+> 14+| ++++++++ (15)
+> 
+> This is where I think the value of linus-next comes during the -rc
+> cycles: the (89 + 21) commits that haven't gone through the -next
+> workflow before being pulled. I'm not looking to delay the process and
+> add latency, I'm looking to plug a hole where code would flow directly
+> to Linus's tree bypassing -next.
+> 
+> With linus-next, we can at least squeeze in build tests as well as some
+> rudimentary testing if we get a few hours before Linus pulls (and we
+> usually do).
+
+OK, if linus-next is only active just before the merge window opens,
+then I have fewer testing-bandwidth concerns.
+
+							Thanx, Paul
 
