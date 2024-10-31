@@ -1,51 +1,70 @@
-Return-Path: <ksummit+bounces-1667-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1668-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED48F9B7621
-	for <lists@lfdr.de>; Thu, 31 Oct 2024 09:14:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41A519B8312
+	for <lists@lfdr.de>; Thu, 31 Oct 2024 20:08:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7227B1F23144
-	for <lists@lfdr.de>; Thu, 31 Oct 2024 08:14:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DAEC1C21A28
+	for <lists@lfdr.de>; Thu, 31 Oct 2024 19:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D45C31553A7;
-	Thu, 31 Oct 2024 08:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B071CB304;
+	Thu, 31 Oct 2024 19:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="TqLnFzFR"
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BsQv05ze"
+Received: from mail-io1-f49.google.com (mail-io1-f49.google.com [209.85.166.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1471531D2;
-	Thu, 31 Oct 2024 08:14:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17FD813C8FF
+	for <ksummit@lists.linux.dev>; Thu, 31 Oct 2024 19:08:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730362453; cv=none; b=PDrxO75w8xYpcNjyD79rDyUPy22M7UGJpp9qWqy2moNK8njCOMz9ElG4Ly9YbZapO4II4woREQrc32h5sL+drU+koaITXgBkjJi1XaXN26W5+bitsh2Dk0ZjgMMGsMFDRlf2D7S8bm2VZ6yxR34tKd+jI/aLfyp+aygI0yz/CVE=
+	t=1730401696; cv=none; b=EVpC2PjomiOPjfj+jfR0v8zq0rXjFVU0bA++UEn+jTRdtc2HnPbTUIrCOu4sxagVhL+pT2RLwDe/MVKZB3JhmlmhASvOLZWVrd/7io6VLw6xdpLCNsWzKLqcdao6eTYb5fLPmVyTHs7iLfjQmS+yOVkCl+nSpXkXP+jNyiVPPWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730362453; c=relaxed/simple;
-	bh=8Ry/bqABZG9/VxfV7jo79ufYHQmfC1rvZ3bjnCixvNM=;
+	s=arc-20240116; t=1730401696; c=relaxed/simple;
+	bh=InZBgv+kFX0M1o8Ll1iRSk/5sbqiSGMb3mGm8OERP94=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=njjTJAKGZ5oOPOVW8fUd+J361JNT4+H4OD/5wsOfitmQou+rTVN4pR9WuqZhMm+guoNWW/Ow3OYQmxOVJttJ9QizX64hI60f9PNr6TuA760HIAcGemCODEHqqUUPiSsWJmpWZIVvbv3IbDHZAxl3HjhMzV1iIiOOoaGJOOCFLBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=TqLnFzFR; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=MsXxYYitRV1/mQ1Di2ImU1do9MFGuz/OZfNqgY/sfVY=; t=1730362449;
-	x=1730794449; b=TqLnFzFRxY8E7TEzmX1rmV0NwexfUkkY9KiTvovRObQFyfVod/lGaNbbpuqPP
-	Fr3WijM9Q3pHGZCaYjWOhxIqBUI6ctbxhKxA1cFn8pZRIv9WPnhCuWKc66OgBnfaVfaEV0cXoMjIt
-	hUmt9cBSWCJlMyTS1XMUXh9vNcvY8i0UHkiVHmCLimz6c734+LncP8z8m85UeH0uAJLFrY103E4kD
-	ffh84kceOZWLAE6Q1Zk0V2XA3AkpPwa2hsQb2RKArL7F66XM+yrTfboSmZCBZ8V9nMtAKrBYZC9of
-	bfAsbeQemMo5bqRrBqMT81TeoHL+grgjdkCHPMbpRf8sdZchrA==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1t6QJZ-0005pZ-Vq; Thu, 31 Oct 2024 09:13:58 +0100
-Message-ID: <e6aa8071-e204-45a1-8228-30533ef787bb@leemhuis.info>
-Date: Thu, 31 Oct 2024 09:13:57 +0100
+	 In-Reply-To:Content-Type; b=OHsMjneZfDHQqYTFbL8DiixHASixbKiAFvMkBmzIQHpTk5qog4le+P9BPfYKWrVvg1fcUF9kUs0k6m/jI6TV9KTDRWCtbSqg7FG7Rf/dRkt8EOLn9X9DMQ2I+0lisO4tRD44gKt1tbJRRLGD1gQ5t28ZcsOzicD1VS4EJdxtxxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BsQv05ze; arc=none smtp.client-ip=209.85.166.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-io1-f49.google.com with SMTP id ca18e2360f4ac-83abf71f244so41841939f.1
+        for <ksummit@lists.linux.dev>; Thu, 31 Oct 2024 12:08:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1730401693; x=1731006493; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cbq/ZEWacRJdHkw1gGMFiFwPYAsuKPdwhjOfwE9lyNs=;
+        b=BsQv05zeBXEXJuR2Wb0X0bl7vB0BQxAYN8SiK55NcGXLAvUIG3L2PvNKVP1ETZhM0S
+         zJpB81HAn4L3CEtqs/BSTgwLAlydHTLAW9gkBwCiZ1RwukhJlb8lHiN36GxGE/q/EAvx
+         VeQl+4Y2cqjBzI2LXXrRKsGy5l7wKOKHs7Hvo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730401693; x=1731006493;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cbq/ZEWacRJdHkw1gGMFiFwPYAsuKPdwhjOfwE9lyNs=;
+        b=fH9o5fjzuNVlHjxK0woSAO6RfjxbBD9LlJ4x4+H6LyVjtt+Seq5zRVOs4qtKcgtaTd
+         VcFfNZtf2cAfjHq2Oz855HGnop8SLiv4PZBtcSCnj4hKlcR8hOszqJ8ApGklXirAnOhH
+         o8v8zqbPyuOrBfi+t30kxRLAvRXFIFu454UW5ZjE9Fhk7RfLbPC2d9jug41JdhVu3wal
+         duhBkqHTPX51/j+dsVBQJUd4/TiqwzsFVXEO9OI8gxlyPab67VOOU6R4JD/4044z1h8x
+         dj2xcoBdzFrJ6jOXxOOSfa6jhkS1HO3rZOKf9YoRKo0pOhOS3MfR7dDDbr6t1sVsElhQ
+         asYA==
+X-Forwarded-Encrypted: i=1; AJvYcCXSPCLVyzZWf9rK0BPT778+Oh6MY7aC498/u77xrzMKk3kiP2CtvbvDy8cWN+19a+jTbKOFsZ+9@lists.linux.dev
+X-Gm-Message-State: AOJu0YzTGvK+p0IWLbzVXZ72r4DBhB4AjQb9ypCfEohqKV902w6tfwFV
+	GSyRUDH8PIT770GS/3ws/IpkgRwEx05BmtgfZZWTbZe05RlFolrBOmZ5YLG5rKE=
+X-Google-Smtp-Source: AGHT+IFJB6gk7rz/6qG7W/1JVxLTExwIHZPrU8sd4sVvWjmbAlGDJwlGUPH7LH6gUDcfZtyBoYurjw==
+X-Received: by 2002:a05:6602:6d1b:b0:83a:9820:f26b with SMTP id ca18e2360f4ac-83b64f7309dmr534498639f.2.1730401693242;
+        Thu, 31 Oct 2024 12:08:13 -0700 (PDT)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4de048c0150sm403742173.65.2024.10.31.12.08.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 31 Oct 2024 12:08:12 -0700 (PDT)
+Message-ID: <1cb27980-7679-43c7-92b5-48af6d711a1c@linuxfoundation.org>
+Date: Thu, 31 Oct 2024 13:08:12 -0600
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -55,118 +74,68 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: linus-next: improving functional testing for to-be-merged pull
  requests
-To: Sasha Levin <sashal@kernel.org>
+To: Steven Rostedt <rostedt@goodmis.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>
 Cc: Christoph Hellwig <hch@infradead.org>, Kees Cook <kees@kernel.org>,
- torvalds@linux-foundation.org, ksummit@lists.linux.dev,
- linux-kernel@vger.kernel.org
+ Sasha Levin <sashal@kernel.org>, torvalds@linux-foundation.org,
+ ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
 References: <ZxZ8MStt4e8JXeJb@sashalap>
  <792F4759-EA33-48B8-9AD0-FA14FA69E86E@kernel.org>
- <ZxdKwtTd7LvpieLK@infradead.org> <ZyAUO0b3z_f_kVnj@sashalap>
- <d75c9c2f-353f-464c-89d3-8c18dbfb4770@leemhuis.info>
- <ZyDHZHjxwmK1Ow9e@sashalap>
- <292de8f0-49e7-49c8-a327-b279924a5794@leemhuis.info>
- <ZyD6QioGPyJUXI5r@sashalap>
- <58c58550-532a-4cfa-947d-ed56c6c5ba4e@leemhuis.info>
- <ZyI-Y00J3DBUkon3@sashalap>
-From: Thorsten Leemhuis <linux@leemhuis.info>
-Content-Language: en-US, de-DE
-Autocrypt: addr=linux@leemhuis.info; keydata=
- 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 n7RI
-In-Reply-To: <ZyI-Y00J3DBUkon3@sashalap>
-Content-Type: text/plain; charset=UTF-8
+ <ZxdKwtTd7LvpieLK@infradead.org>
+ <20241022041243.7f2e53ad@rorschach.local.home>
+ <ZxiN3aINYI4u8pRx@infradead.org>
+ <20241023042004.405056f5@rorschach.local.home>
+ <CAMuHMdUxrULbo=A77DFDE4ySbii3jSMuh8xVvUXaqyCnwEAU-w@mail.gmail.com>
+ <20241023051914.7f8cf758@rorschach.local.home>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20241023051914.7f8cf758@rorschach.local.home>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1730362449;d626bb05;
-X-HE-SMSGID: 1t6QJZ-0005pZ-Vq
 
-On 30.10.24 15:10, Sasha Levin wrote:
-> On Wed, Oct 30, 2024 at 07:46:40AM +0100, Thorsten Leemhuis wrote:
->> On 29.10.24 16:07, Sasha Levin wrote:
->>> On Tue, Oct 29, 2024 at 01:46:23PM +0100, Thorsten Leemhuis wrote:
->>>> Hmmm. After all those mails in this thread improving (and maybe even
->>>> separating & somewhat automating[1]) pending-fixes to me still sounds
->>>> like time better spend, as then more things could tested before they
->>>> even read a PR; but yes, I understand, the timing/order of merges can
->>>> mess things up, so testing on PR time has benefits, too.
->>> Automating how? Having it be generated more often?
->>
->> Have the list of -fixes trees which a "no rebases" policy somewhere and
->> a script that regularly merges them into a tree. But as indicated, it's
->> not that easy in practice and can't be fully automated, as there will be
->> merge conflicts occasionally. But Linus wants to see them, so they will
->> happen at pull requests time, too -- doing it constantly has the benefit
->> that you can notice and resolve them ahead of time.
->>
->> How much work this is: no idea, maybe Stephen could help answering that
->> from experiences for pending-fixes. But I expect conflicts should not
->> happen as often as they do when it comes to merging -for-next branches.
->>
->> But that obviously only helps outside of merge windows.
+On 10/23/24 03:19, Steven Rostedt wrote:
+> On Wed, 23 Oct 2024 10:36:20 +0200
+> Geert Uytterhoeven <geert@linux-m68k.org> wrote:
 > 
-> Do you want to give it ago?
+>>> To put it this way. The bugs I'm fixing was for code in linux-next
+>>> where the bugs were never found. They only appeared when they went into
+>>> Linus's tree. So why put the fixes in linux-next, if it didn't catch
+>>> the bugs I fixed in the first place?
+>>
+>> Hmmm...
+>>
+>> Your arguments sound very similar to those being used in recent
+>> discussions about not posting patches for public review...
+>>
+>> Please follow the process! ;-)
 > 
-> I've pushed something to
-> https://git.kernel.org/pub/scm/linux/kernel/git/sashal/linus-next.git/
-> log/?h=auto-pending-fixes
-> , and scripted a bit around it to try and keep it updated.
+> What process?
+> 
+> Note, I probably post everything to mailing lists more than anyone
+> else (besides stable). All my commits come from mailing lists. Even
+> things I change myself. I always send out the change to a list. Then I
+> use patchwork to pull it into my tree.
+> 
+> After the changes are tested, I send out the patches *again* with my
+> [for-next] tags in the subject. If it's a fix for Linus, it goes out as
+> a "[for-linus]" tag. These emails automatically update my patchwork
+> status.
+> 
+> No change goes into Linus's tree from me that hasn't been sent out
+> publicly.
+> 
+> But pushing to linux-next for a day or two, what does that give me?
+> 
 
-Cool!
+I don't send pull requests without soaking it in next for 2 to 3 days.
+It helps me find problems related to things something breaking on an
+architecture and/or config.
 
-> We can try a model where it tries to avoid rebases as much as it can,
-> and if it needs to rebase it will tag the old HEAD before re-creating
-> the branch?
+I find next very helpful in finding merge conflicts and build/test
+breakages.
 
-So here is the thing: with regression tracking I'm already having a huge
-never ending and hard task that creates a lot of work every day -- work
-I'm not getting payed for now since months with no concrete funding
-solution yet on the horizon. So I don't want to put even more work on my
-shoulders with helping in other areas currently, sorry.
+thanks,
+-- Shuah
 
-That being said: I'm willing to help with creating improvements for our
-docs (something along the lines of "you should have a -fixes branches
-that is never rebased that is included in the -pending-fixes branch of
--next and -auto-pending-fixes") and even trying to talk maintainers into
-that do not yet have such a branch into maintaining one.
-
-Ciao, Thorsten
 
