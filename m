@@ -1,191 +1,209 @@
-Return-Path: <ksummit+bounces-1727-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1728-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3A72A3C8E0
-	for <lists@lfdr.de>; Wed, 19 Feb 2025 20:36:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99DDDA3C9C7
+	for <lists@lfdr.de>; Wed, 19 Feb 2025 21:30:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 621A0189CB67
-	for <lists@lfdr.de>; Wed, 19 Feb 2025 19:34:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8960217A96C
+	for <lists@lfdr.de>; Wed, 19 Feb 2025 20:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B10C22DFFC;
-	Wed, 19 Feb 2025 19:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86276234964;
+	Wed, 19 Feb 2025 20:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="WVNhvVUB"
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="K/yJCnYN"
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2047.outbound.protection.outlook.com [40.107.95.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA0F22B8A2;
-	Wed, 19 Feb 2025 19:34:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739993650; cv=none; b=tZsUdgt0wOgpWz6hDQDRvN0osXQEaLuZz2wa3KSa9SsfbZwhwV2DJ/oL16biJc4Rv6GWQmChUKoni1HaFL7NxZMFHDELPPuRe7EUSvz5+827e+vlkE8/Amd3g3TBN5XmYZKB6CjQcVdGPnnRuwcffExWZTnt1rliHsZAZeOrbE8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739993650; c=relaxed/simple;
-	bh=XlIf9FH7eU5x/gC5hcPZv4iP+c96kNd0sEyC8JE8+XM=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=i/TgWU/Lyjdxz/Bf+g4J5qghaiTGcPA85zbRtSFZdjPjwjblJoQx/gnCB32ZJni1YEkVJKBWMnf/l2XerVap3FnbCjIf3P++uym7b8KKmLWmKxmlhHoGjAnCCxYhY+RmI5mN0VnnQzPpYctzNPgUhiiQg8TsGU2cjZZX2G9Luf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=WVNhvVUB; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [127.0.0.1] ([76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 51JJXwMZ1903967
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Wed, 19 Feb 2025 11:33:58 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 51JJXwMZ1903967
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025021701; t=1739993639;
-	bh=CtgrdbzIhxbWzyFyksMQafZIrEzN/ovIGMP9JbUYNmo=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=WVNhvVUBIzEExfK6SoJNy/Bo0j0PYetaoI2jwI7offXONeH1cCiwigS9SFWU8/a90
-	 LsdoGmb7ewDEvC+mLLDJUgAJbSa1MENXUSOIeB4sSIqCqXhvaNCYR5CXL3+LwxQG8e
-	 Jtf4IEyE8pmCLXakkHZjnzvvLZbbhS3ONYT45CI1UZU7Y62/sptaO8EM5HXxe1jbTT
-	 za3n/a8aGhL5SUKbOciTTa3vydlW/KxAxHqbWdjc4GCwoZD33V8HRU5iaU14utkyAw
-	 B/zFxFc6LbMwUoqpuM08/69kC6Pahy89u0FwFJBBUQ5zwUrXEvA6orMBGivLYJhrGh
-	 YJy91u1S0q78A==
-Date: Wed, 19 Feb 2025 11:33:56 -0800
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Kees Cook <kees@kernel.org>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-CC: Christoph Hellwig <hch@infradead.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg KH <gregkh@linuxfoundation.org>, David Airlie <airlied@gmail.com>,
-        linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C44230988
+	for <ksummit@lists.linux.dev>; Wed, 19 Feb 2025 20:27:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739996877; cv=fail; b=CX1Lz94lFL8pZvTThoW8rYVtTkXF0KevWVqzz0sRFNIG4Z1v8y4OC8E+T38lFeJ7BToX/ObwMZ0NaknEofO8gZXfrJ31ZD+3zTh+oGkoQFS5mqPT0o95SUttohaCd3ZU6cbiSctkbrcttP193rFsxItCSZUr//hBKTQj2+IJmQQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739996877; c=relaxed/simple;
+	bh=M/QI8bEZvPBsw8Vge70kgDy057s2stt3LPOgeqSOLD4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=aNXmyR+/H70kWyGDgxyFrTKEvQDWWAlq5PjPotrmvcUGGhHM+jCw1RYbTUOqwG18yYiHtDj4XDrqxnAbtIPWs5tFAgFi6rhQevxJ5N9ABceQspBRSRp5CBCqjMul2YNtIXhIfHuJgaPBA4PEuEzxR4ODDKEHNZper4chWV/AYmQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=K/yJCnYN; arc=fail smtp.client-ip=40.107.95.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=O0Utmh/1HAc11pCqNvWA75nXSZQxn61twOvhoJbt1dCFVjInR6ZdS/l6VvECL8P2tUa6sg1sPN9wFx5NTsalIzI2cq7TCFcM1dufiNUz/nvHZFA6lRKABaMhyMNFop8x4BLiWP3tL6TttvleDEhpkuXxWeeUj2oPm/X0l5u0rq7pZ8fSVz8//g0X8DNVXPktJJX+J+4lKSmZh+4Nl86cua2mP3ylMGbOkaaZeFLTbtGbwSae25QmadXRSJLm/CpOJEjWQ/RCdZuQazCmTGaIa5a4HHrdtcK+Mm+dY/FRe2G1/R8qxtHOxPem7SLoRNxQnH5JnEmkySXQVA+JOL/TbA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=huHBAsoCys0m6qFxkPEWf8Z9c2pq62dT/tj9AWOxjes=;
+ b=d3I0/qddrDDHv44rvWN217uJt9I2GpkdCOJteaO4kx4cqJ7eVgsokgLQmWHwWoOL3YlcVFh9CniS75/GvEXBT7GnA8hUrv+OlkmhozaDCGssAC6ZNfJB/NYD6yDWu/V47qm7MLxdrFanO/ahrkg9GODkHXAqUNP+JjLDaVYh+rbdj7HRevK1ZaiIRhQ11RUYyE4y09VjhuXDebiQ45QVFh1B+Y0jDhIBERuTd9zoPRDfCnPmjwcM9MVx4uFwKG7zqlLyZx/TcSsqCCqm1mrti1h93JRf3jUyVvMnRmKukYkTJn120U1d27pXT5bt+3b3v4ZyaCFqhbs8ZTTz4pHHJw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=huHBAsoCys0m6qFxkPEWf8Z9c2pq62dT/tj9AWOxjes=;
+ b=K/yJCnYNeRIbpp5sacjxQuzh+Y4d3eCDjwy1GCrLlvSuycstV1HNfat+q+/lt4fHm73Np4dpayDLtYZ4a3pkEOIQ4im9nFOUj6IYJBmCjOcUP8LQo7y48Dgo0/e2XAha7+u+HEXybuEW5mCcpwwNjs5bIsG0DqWJLE0deAw0qMmIQxtbv638Bpad/vhfRh/cN7QjvoydM0tCCdH72aWSWqPlsRmW/XG/VMDZbW8J2XUt3YMrFuuw5R8zLL+5f5fdVMlEOT8T/sJZJJbvMrFuQ8vHduunTOGt7vDT7+nIAIzn32KTxsHU1mCDGa+wWUQrp3gXAQclH/VbR5MUTa9jPQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by DM6PR12MB4354.namprd12.prod.outlook.com (2603:10b6:5:28f::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.15; Wed, 19 Feb
+ 2025 20:27:52 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.8445.019; Wed, 19 Feb 2025
+ 20:27:52 +0000
+Date: Wed, 19 Feb 2025 16:27:51 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Kees Cook <kees@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	rust-for-linux <rust-for-linux@vger.kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
+	ksummit@lists.linux.dev
 Subject: Re: Rust kernel policy
-User-Agent: K-9 Mail for Android
-In-Reply-To: <202502191026.8B6FD47A1@keescook>
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com> <Z7SwcnUzjZYfuJ4-@infradead.org> <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com> <202502191026.8B6FD47A1@keescook>
-Message-ID: <785A9F60-F687-41DE-A116-34E37F5B407A@zytor.com>
+Message-ID: <20250219202751.GA42073@nvidia.com>
+References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
+ <Z7SwcnUzjZYfuJ4-@infradead.org>
+ <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
+ <202502191026.8B6FD47A1@keescook>
+ <20250219140821.27fa1e8a@gandalf.local.home>
+ <202502191117.8E1BCD4615@keescook>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202502191117.8E1BCD4615@keescook>
+X-ClientProxiedBy: BL1PR13CA0078.namprd13.prod.outlook.com
+ (2603:10b6:208:2b8::23) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|DM6PR12MB4354:EE_
+X-MS-Office365-Filtering-Correlation-Id: 884d747f-78a4-4194-b02e-08dd5123e260
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|1800799024|7416014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?L+6eJB3mDvzHFardTGV9i1ZmP/ouEYEfj2GMI6pLXDWgSBzNop2Xmd+PjiZF?=
+ =?us-ascii?Q?vd6UQZ2c+msMRxYBfeu5c1/tZi8xrDrcki4jEyt2gfR713fps7nh4XWdazzF?=
+ =?us-ascii?Q?uJ/S7JcfcIkJVGwmj93wnkPfBmpJPQtkKmBDQIE+voj8Pm4541XOPWMS/fHN?=
+ =?us-ascii?Q?YZ5V4F6E8altWTyqQVeGdesvNw1k+hq8zk3iu/uMZi0lSpKfveQXxi/R+Wuk?=
+ =?us-ascii?Q?k5fi66BNIZf+FfkwLzh/xWDLr3iOoAWiw0V2lq4oJ7VDjaeSSAH8cIRlczq7?=
+ =?us-ascii?Q?rTsltR8o13eGKIooeHJlq8gzd2vx4zWcynoS/M+aBWXeNZEUH17fGNHlhewT?=
+ =?us-ascii?Q?2lh1bdyxnX/I2MTsiDPjsF8P9RrYIh7xS9CFqRRrksu51xYFFLrLBLdztBbD?=
+ =?us-ascii?Q?dwQqidMA1O4of7NpniLCIw0zJJSanKuZsaYvveGPuMB9KEDqp5sc6vfT/kaA?=
+ =?us-ascii?Q?SXSmlPeV1Q43iKSRy+vktjeSzN72XHVPFtIRXMtBtSxFGMtENg6nXHH3FGQn?=
+ =?us-ascii?Q?hZ8+SJDE4Ox6BdBtpRf+qKWF7/blEn2oywhNcj6wdQV/bqLeIDiIWOpDGBhE?=
+ =?us-ascii?Q?UK61+Y6IUaIAoMJ+Rsh5R6DosHIsYNj1BgD069AZ2bDogY8OwAWOsqz5VNDg?=
+ =?us-ascii?Q?QNMSnDOaCRsD2CCtz504c9q0cEZSZfjceKFjnHc32K4Ea0nm9KdTBzGDj1eq?=
+ =?us-ascii?Q?2+H3faKEAPtA6u14lHCeMWjGxdBC+uYhcG5Zc6vI9oeVPqNAlck1YBsBAopa?=
+ =?us-ascii?Q?l3wvacO8JTYAfvIaFFI3hpdzrk2c6BguCDaLke9yTDv3el0XBQ1tXSba9cpy?=
+ =?us-ascii?Q?XqYQUk4XGnLnILjcaj6fLZjGmwEt2+FmqIzpaabCTl3DtlVaML23gq5fxGeG?=
+ =?us-ascii?Q?XliaMZcdHmsIL4Qecl0fQwOclPgrUh1jom8w5azBEq8FoHw5eqyOnq86euc7?=
+ =?us-ascii?Q?ExqDklOLmPWinnSs+2bZ/UUsE5WgRop/1MsU9A1r1yjDzrxdzPb3sEKedJk4?=
+ =?us-ascii?Q?pGeWNN0YVlZGOcbPM0jAa+mZvihL5rl1QMaET4F0ME8xwS4N1VdTpr3HoCRP?=
+ =?us-ascii?Q?YBC1RGRvZJQu6E0uvrLrjG6fp6muR3PaI2sB6/8+zgjFhAl0xoR7CbMVKzxj?=
+ =?us-ascii?Q?dA0vZ54yCaSKVYziUZNG958i2x9JhaMD7e+Zr2z9EuLGdci7YkhA5T32uNWs?=
+ =?us-ascii?Q?PNN0JnVcqX7Ao8uQCKQEsKy402eI2YKG/L9jVWXqN7zfkdi32VnBkFzBVUTT?=
+ =?us-ascii?Q?emGcI9sEsz4qq1JII0qVJn0jR2ICHND8l7ofhMKjd2OFKvGbtWdNtwYHt2Yo?=
+ =?us-ascii?Q?irl4d/mkCT7OSL7T2KZLZizeLvTxTcubeYXNlBp8YLUwwSxIMm9s2+J583ZS?=
+ =?us-ascii?Q?LCK+B3rIv/LZHXEvoo8oCczcXh1W?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?QUSB9dnsY7zFQpzE+GCEhCvsaFGmr5NPfNN/alO19gOpVJxQu65nc18EgdUK?=
+ =?us-ascii?Q?KCymJqX3ccXtp9HAlYC84LKxsfFUSp143xSjLm8rYIEa1PxoNAV3Tf3HS6hj?=
+ =?us-ascii?Q?LYtsb5DB22bHiSZJzZPpSyhNuCcX+CatDeim3FKz8epQXHi5fmcbZLRkDw3m?=
+ =?us-ascii?Q?e4hIrGwIMLwz6uRLr54OpWCDqd7ymAW3udk/375jCZXMDx5KjsA0LzZhZZG2?=
+ =?us-ascii?Q?CkgaGexcp3XkHO9RyLKppiROpT87O1wwg1pm3ewR5Ui7+hw9LHQ9KsVWwJb2?=
+ =?us-ascii?Q?kgcLAmOg9MxbdfNOmcwuX/BT9anxixITRv8vB6i+wl7xnDhz4i9OdV5ix3li?=
+ =?us-ascii?Q?TZ2z4iODC45pILTQUQp5rbZaEKiMabqoHzQ/jQdGJellblDQ4PiE1LXzNTIy?=
+ =?us-ascii?Q?htrLI6hjkfL9pShn1exZ7enfuKVvi1mmwO6DQQSXJaNsXqbg1+pKHGXUNTe+?=
+ =?us-ascii?Q?9Z+JsqXx5/sIgyN+xGGZVD/WfULFfDJ3j0krC66Hsa+Yp8dRCh4HmSWKdt0F?=
+ =?us-ascii?Q?a5XyuIH1U1PimNFYLAtkOJ3tR4PWc+4Q0B1TH5YRfSUXzq6vrQo/1IGlNUUL?=
+ =?us-ascii?Q?UDl409ObV0P64Ivw/ibuRNtQdMYwGTLXjoAvshpno0V7tK7KEqy+6KGMormk?=
+ =?us-ascii?Q?L1wmOWoek5gWxBws/dtON/AN0Sb1YJdj6EUru4GQ9atXpD0GGV9nWYQJrrkF?=
+ =?us-ascii?Q?NO+L7SLHY+TmC9H8cLZKV7Xb8g9P0bZSg7jEYA6MByuGToVMowrf+Ij+4Tp2?=
+ =?us-ascii?Q?H05L2G1kf3krGo9nz7RNIzf9WStby0lYvG+9U+Iv9TQqZHDMkb3w4J5s6Pjt?=
+ =?us-ascii?Q?tAx/TCvSowuJpdTmiEncoyCRmHnXEHqMS3R8AHABf0FRhbGRHSxz3XHFqb4T?=
+ =?us-ascii?Q?Krnd5vqCBP9cfGdK44pHqBntuGY9Pm8wfdmgAQlvJrxFHTygkl/0awySSuXi?=
+ =?us-ascii?Q?5e6uD33flQ+MeiAhQZfTddIk0qU/eSTC/wiL+84p/NdmKujetPNXRbYOK2F3?=
+ =?us-ascii?Q?qEie3x21ERMcRjWtTjEHPxB0G07GFB9EjeRmjNZr7BUMA1OSJbh2tQ2CaGi6?=
+ =?us-ascii?Q?Lnt5qTAwAmbkzQ1sX/UY+5Q+/VhyibJPI3+xTfuBWwTwZgqwjEsdRR9tVYPn?=
+ =?us-ascii?Q?M44lesjOjmTvoznkBvWyLEE22ORWxgG586OnY1MqWT9cXdcrMAMVtDd0FGOq?=
+ =?us-ascii?Q?rmRE+2OiYG0etxz9Hz0XXcnNH1MEeqgRBV41KFqqGNAp6OsfcpqISJdYBhet?=
+ =?us-ascii?Q?yDdYMSTQmbTcbQEmbXYqBkQf9ejrl/0NmvqRwdh1erY/2YhkhmG0d1RbAPZ8?=
+ =?us-ascii?Q?2VcyLWTuyL/t722K3ReOHbnEHl6XvAvtI0nzUC4tMlZJ3VTUtSCarJsS2vzG?=
+ =?us-ascii?Q?XpjnbwEaPMWOQC6kUI5/JoeshWzQyfuV6Hh2ZWkbfiaLB+sxEUEwX5v5I51s?=
+ =?us-ascii?Q?7/2z8aUS6rstLm7KyQdWLy9enCRmkeqs3FucQd2/+f+ONMRNS+FsEXQTIgDT?=
+ =?us-ascii?Q?u46t1LkHqqR+9UhZhTJmlMveKhVLS83fhJc+ppRObY5hYMwRoyWie5eOgSLo?=
+ =?us-ascii?Q?G0GKhr3yGTtuN8WWsyn7vMWks5lhXG8Bt9+kRctM?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 884d747f-78a4-4194-b02e-08dd5123e260
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2025 20:27:52.5303
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CxMBxJZSfrNsjJuuiJ48joxfJXI5t0EumQdTQNI5lTqJVmpunnUJa1bH5oN+Xoev
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4354
 
-On February 19, 2025 10:52:37 AM PST, Kees Cook <kees@kernel=2Eorg> wrote:
->On Tue, Feb 18, 2025 at 07:46:29PM +0100, Miguel Ojeda wrote:
->> On Tue, Feb 18, 2025 at 5:08=E2=80=AFPM Christoph Hellwig <hch@infradea=
-d=2Eorg> wrote:
->> > I'd like to understand what the goal of this Rust "experiment" is:  I=
-f
->> > we want to fix existing issues with memory safety we need to do that =
-for
->> > existing code and find ways to retrofit it=2E  A lot of work went int=
-o that
->> > recently and we need much more=2E  But that also shows how core maint=
-ainers
->> > are put off by trivial things like checking for integer overflows or
->> > compiler enforced synchronization (as in the clang thread sanitizer)=
-=2E
->>=20
->> As I replied to you privately in the other thread, I agree we need to
->> keep improving all the C code we have, and I support all those kinds
->> of efforts (including the overflow checks)=2E
->>=20
->> But even if we do all that, the gap with Rust would still be big=2E
->>=20
->> And, yes, if C (or at least GCC/Clang) gives us something close to
->> Rust, great (I have supported doing something like that within the C
->> committee for as long as I started Rust for Linux)=2E
->>=20
->> But even if that happened, we would still need to rework our existing
->> code, convince everyone that all this extra stuff is worth it, have
->> them learn it, and so on=2E Sounds familiar=2E=2E=2E And we wouldn't ge=
-t the
->> other advantages of Rust=2E
->
->Speaking to the "what is the goal" question, I think Greg talks about it
->a bit[1], but I see the goal as eliminating memory safety issues in new
->drivers and subsystems=2E The pattern we've seen in Linux (via syzkaller,
->researchers, in-the-wild exploits, etc) with security flaws is that
->the majority appear in new code=2E Focusing on getting new code written
->in Rust puts a stop to these kinds of flaws, and it has an exponential
->impact, as Android and Usenix have found[2] (i=2Ee=2E vulnerabilities dec=
-ay
->exponentially)=2E
->
->In other words, I don't see any reason to focus on replacing existing
->code -- doing so would actually carry a lot of risk=2E But writing *new*
->stuff in Rust is very effective=2E Old code is more stable and has fewer
->bugs already, and yet, we're still going to continue the work of hardenin=
-g
->C, because we still need to shake those bugs out=2E But *new* code can be
->written in Rust, and not have any of these classes of bugs at all from
->day one=2E
->
->The other driving force is increased speed of development, as most of
->the common bug sources just vanish, so a developer has to spend much
->less time debugging (i=2Ee=2E the "90/90 rules" fades)=2E Asahi Lina disc=
-ussed
->this a bit while writing the M1 GPU driver[3], "You end up reducing the
->amount of possible bugs to worry about to a tiny number"
->
->So I think the goal is simply "better code quality", which has two primar=
-y
->outputs: exponentially fewer security flaws and faster development speed=
-=2E
->
->-Kees
->
->[1] https://lore=2Ekernel=2Eorg/all/2025021954-flaccid-pucker-f7d9@gregkh
->[2] https://security=2Egoogleblog=2Ecom/2024/09/eliminating-memory-safety=
--vulnerabilities-Android=2Ehtml
->[3] https://asahilinux=2Eorg/2022/11/tales-of-the-m1-gpu/
->
+On Wed, Feb 19, 2025 at 11:17:59AM -0800, Kees Cook wrote:
+> On Wed, Feb 19, 2025 at 02:08:21PM -0500, Steven Rostedt wrote:
+> > On Wed, 19 Feb 2025 10:52:37 -0800
+> > Kees Cook <kees@kernel.org> wrote:
+> > 
+> > > In other words, I don't see any reason to focus on replacing existing
+> > > code -- doing so would actually carry a lot of risk. But writing *new*
+> > > stuff in Rust is very effective. Old code is more stable and has fewer
+> > > bugs already, and yet, we're still going to continue the work of hardening
+> > > C, because we still need to shake those bugs out. But *new* code can be
+> > > written in Rust, and not have any of these classes of bugs at all from
+> > > day one.
+> > 
+> > I would say *new drivers* than say *new code*. A lot of new code is written
+> > in existing infrastructure that doesn't mean it needs to be converted over
+> > to rust.
+> 
+> Sorry, yes, I was more accurate in the first paragraph. :)
 
-Let me clarify, because I did the bad thing of mixing not just two, but fo=
-ur separate topics:
+Can someone do some data mining and share how many "rust
+opportunities" are there per cycle? Ie entirely new drivers introduced
+(maybe bucketed per subsystem) and lines-of-code of C code in those
+drivers.
 
-a=2E The apparent vast gap in maturity required of Rust versus C=2E What i=
-s our maturity policy going to be? Otherwise we are putting a lot of burden=
- on C maintainers which is effectively wasted of the kernel configuration p=
-ulls in even one line of Rust=2E
+My gut feeling is that the security argument is not so strong, just
+based on numbers. We will still have so much code flowing in that will
+not be Rust introducing more and more bugs. Even if every new driver
+is Rust the reduction in bugs will be percentage small.
 
-This is particularly toxic given the "no parallel code" claimed in this po=
-licy document (which really needs references if it is to be taken seriously=
-; as written, it looks like a specific opinion=2E)
+Further, my guess is the majority of new drivers are embedded
+things. I strongly suspect entire use cases, like a hypervisor kernel,
+server, etc, will see no/minimal Rust adoption or security improvement
+at all as there is very little green field / driver work there that
+could be in Rust.
 
-b=2E Can we use existing mature tools, such as C++, to *immediately* impro=
-ve the quality (not just memory safety!) of our 37-year-old, 35-million lin=
-e code base and allow for further centralized improvements without the majo=
-r lag required for compiler extensions to be requested and implemented in g=
-cc (and clang) *and* dealing with the maturity issue?
+Meaning, if you want to make the security argument strong you must
+also argue for strategically rewriting existing parts of the kernel,
+and significantly expanding the Rust footprint beyond just drivers. ie
+more like binder is doing.
 
-Anyone willing to take bets that the kernel will still have plenty of C co=
-de in 2050?
+I think this is also part of the social stress here as the benefits of
+Rust are not being evenly distributed across the community.
 
-c=2E The desirability of being able to get new code written in a better wa=
-y=2E This is most definitely something Rust can do, although the maturity i=
-ssue and the syntactic gap (making it harder for reviewers used to C to rev=
-iew code without missing details) are genuine problems=2E One is technical-=
-procedural, the other is more training-aestetics=2E
-
-d=2E Any upcoming extensions to C or C++ that can provide increased memory=
- safety for the existing code base, or vice that due to (a) or author/maint=
-ainer preference cannot be written in Rust=2E
-
------
-
-Now, moving on:
-
-A "safe C" *would* require compiler changes, and I don't believe such a pr=
-oposal has even been fielded=2E C++, as far as I am concerned, lets us (at =
-least to some extent) decouple that and many other things we rely on with s=
-ome *really* fuggly combinations of macros and compiler extensions=2E
-
-Rust code, too, would benefit here,  because it would reduce the sematic g=
-ap *and* it would carry more information that would make the bindings both =
-more natural and more likely to be possible to automate=2E
-
-So I didn't intend to present this as much of an either/or as it came acro=
-ss (which was entirely my fault=2E) But I do think it is foolish to ignore =
-the existing 35 million lines of code and expect them to go away=2E=20
+Jason
 
