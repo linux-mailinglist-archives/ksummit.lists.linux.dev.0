@@ -1,130 +1,135 @@
-Return-Path: <ksummit+bounces-1712-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1713-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C70E4A3C442
-	for <lists@lfdr.de>; Wed, 19 Feb 2025 16:57:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E58EA3C468
+	for <lists@lfdr.de>; Wed, 19 Feb 2025 17:05:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87A3C7A6F63
-	for <lists@lfdr.de>; Wed, 19 Feb 2025 15:55:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 722573B632E
+	for <lists@lfdr.de>; Wed, 19 Feb 2025 16:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A90A1D5175;
-	Wed, 19 Feb 2025 15:56:27 +0000 (UTC)
-Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8284C1FCCF5
-	for <ksummit@lists.linux.dev>; Wed, 19 Feb 2025 15:56:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=163.172.96.212
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 211AC1FDE03;
+	Wed, 19 Feb 2025 16:03:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="jIEjzIXX"
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32C91FDE24
+	for <ksummit@lists.linux.dev>; Wed, 19 Feb 2025 16:03:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739980587; cv=none; b=jzS8pLE0FFWf7LQh8N21eXqTi+GCE9FRPNdQwjcpuyP9fag1sMTA9Mv6bq6YBMrQkTSyAdACdnVHaqkAWYA8epo1v1WpgeS5bR2RWQAALflCi1vZIRYrZ45t+tTUfsLeypbf6f0m38VzfrC9MCXkEtCXKDbCAX3nbmr2pg9g6Yw=
+	t=1739981012; cv=none; b=eg59Nw8JfrPBLJBEgv3Omm1XN68ZbNBnPeVvGUpg+jQKl5WY/gINGYP9lzivrwbBKl3cu/Dicc2+HIPKzFTecTMVNRBT6zCsQ64w/VK/E6+wmeLD8xibUjKgNbnsD0j9kazr/v2075JRCSCgTrZQs7xa2980WiPbdlYpy+fcJK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739980587; c=relaxed/simple;
-	bh=qPZnrOyaKEYq5hbsMRbqV7X6oIhpSL4apigxMYTnzfo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k7k3vMToJ1xZZ2zuQ/SLtLuxAraoPilbksBtI293ncffPEEhUJlRZVvV49ZKBDJVb1hMD3Auh+feZYAQfZZMfbv/jFkNIxpmSMt7FEhdv95DRHOFECRkp7q2ObQl54raAjQjerUYalMBUHr9+DTwO/KUGHdKbL7yUEiiZyqd/jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=1wt.eu; spf=pass smtp.mailfrom=1wt.eu; arc=none smtp.client-ip=163.172.96.212
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=1wt.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1wt.eu
-Received: (from willy@localhost)
-	by pcw.home.local (8.15.2/8.15.2/Submit) id 51JFuHFe022922;
-	Wed, 19 Feb 2025 16:56:17 +0100
-Date: Wed, 19 Feb 2025 16:56:17 +0100
-From: Willy Tarreau <w@1wt.eu>
-To: James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg KH <gregkh@linuxfoundation.org>, David Airlie <airlied@gmail.com>,
-        linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
+	s=arc-20240116; t=1739981012; c=relaxed/simple;
+	bh=eDaowLk9u711gWU4IoVBOR9PiROZhzla/cX3KdS4Nx4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=SkPV/FzL/JzmDHRQPD+DcnUH1l9Xpv174KkdKcVFD25Nhh/rU4CS+bed/xrtTgtH1VMJX2BNfRuxfH19OA7M/D9sZp8u08yZMnUHVvcIvdoQyiT3Qsf/E+wJ28CNS9lBwvTAG+1kD66LWCABeAvz2v28qHuND8GbPIVMQTsnZDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=jIEjzIXX; arc=none smtp.client-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1739981009;
+	bh=eDaowLk9u711gWU4IoVBOR9PiROZhzla/cX3KdS4Nx4=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=jIEjzIXXjbrpZ7YD8W7UnpaaD+KA6QHhlbN3c7nqYUK/B/gv+khxhrApCJQ8B0CGr
+	 R+pBakMnX/5yrbTg671aGpdi6fxwwD2jvGmdKGpIi5Vae1xqAfjlt2piAEpaufhaw2
+	 oedd0TpmZfeegB7/hNAHSJr+UR3sXG6j+ye8Z4dY=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::db7])
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 409001C254A;
+	Wed, 19 Feb 2025 11:03:29 -0500 (EST)
+Message-ID: <a627845f73f2f7bedc7a820cfdf476be9993e30f.camel@HansenPartnership.com>
 Subject: Re: Rust kernel policy
-Message-ID: <20250219155617.GH19203@1wt.eu>
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
- <Z7SwcnUzjZYfuJ4-@infradead.org>
- <b7a3958e-7a0a-482e-823a-9d6efcb4b577@stanley.mountain>
- <2bcf7cb500403cb26ad04934e664f34b0beafd18.camel@HansenPartnership.com>
- <yq1mseim24a.fsf@ca-mkp.ca.oracle.com>
- <c1693d15d0a9c8b7d194535f88cbc5b07b5740e5.camel@HansenPartnership.com>
- <20250219153350.GG19203@1wt.eu>
- <e42e8e79a539849419e475ef8041e87b3bccbbfe.camel@HansenPartnership.com>
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Christoph Hellwig <hch@infradead.org>, rust-for-linux
+ <rust-for-linux@vger.kernel.org>, Linus Torvalds
+ <torvalds@linux-foundation.org>,  Greg KH <gregkh@linuxfoundation.org>,
+ David Airlie <airlied@gmail.com>,  linux-kernel@vger.kernel.org,
+ ksummit@lists.linux.dev
+Date: Wed, 19 Feb 2025 11:03:28 -0500
+In-Reply-To: <CANiq72nnnOsGZDrPDm8iWxYn2FL=wJqx-P8aS63dFYez3_FEOg@mail.gmail.com>
+References: <Z7SwcnUzjZYfuJ4-@infradead.org>
+	 <b0a8ee53b767b7684de91eeb6924ecdf5929d31e.camel@HansenPartnership.com>
+	 <CANiq72nnnOsGZDrPDm8iWxYn2FL=wJqx-P8aS63dFYez3_FEOg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <e42e8e79a539849419e475ef8041e87b3bccbbfe.camel@HansenPartnership.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Wed, Feb 19, 2025 at 10:46:03AM -0500, James Bottomley wrote:
-> > > > I like using cleanup attributes for some error handling. However,
-> > > > I'm finding that in many cases I want to do a bit more than a
-> > > > simple kfree(). And at that point things get syntactically messy
-> > > > in the variable declarations and harder to read than just doing a
-> > > > classic goto style unwind.
-> > > 
-> > > So the way systemd solves this is that they define a whole bunch of
-> > > _cleanup_<type>_ annotations which encode the additional logic.� It
-> > > does mean you need a globally defined function for each cleanup
-> > > type, but judicious use of cleanup types seems to mean they only
-> > > have a few dozen of these.
+On Wed, 2025-02-19 at 16:08 +0100, Miguel ol9 wrote:
+> On Wed, Feb 19, 2025 at 3:05 PM James Bottomley
+> <James.Bottomley@hansenpartnership.com> wrote:
 > > 
-> > I may be missing something obvious, but this seems super dangerous to
-> > me to perform lightly without reference counting, as it increases the
-> > risks of use-after-free and double-free in case one of the allocated
-> > objects in question can sometimes be returned.
+> > So here's a proposal to fix this: could we not annotate the C
+> > headers with the API information in such a way that a much improved
+> > rust bindgen can simply generate the whole cloth API binding from
+> > the C code?  We would also need an enhanced sparse like tool for C
+> > that checked the annotations and made sure they got updated. 
+> > Something like this wouldn't solve every unintentional rust build
+> > break, but it would fix quite a few of them.  And more to the
+> > point, it would allow non-rust developers to update the kernel API
+> > with much less fear of breaking rust.
 > 
-> Who said anything about not reference counting?
-
-Nobody, but it was not said either that they were used at all!
-
->  One the things the
-> _cleanup_X annotations can do is drop references (or even locks).
-
-OK then!
-
-> >  Users of such mechanisms must be extremely cautious never to ever
-> > return a pointer derivated from a variable tagged as such, or to
-> > properly NULL-assign the original object for it not to double-free.
-> > So it might in the end require to be careful about null-setting on
-> > return instead of explicitly freeing what was explicitly allocated.
-> > I'm not sure about the overall benefit.
-> > Also I suspect it encourages to multiply the return points, which
-> > makes it even more difficult to possibly fix what needs to be fixed
-> > without coming from a locally allocated variable (e.g. restore a
-> > state in a parser etc). Maybe it's just me not seeing the whole
-> > picture, but as a general case I prefer to forget a free() call
-> > (worst case: memory leak) than forget a foo=NULL that may result in a
-> > double free, and the description here makes me think the latter might
-> > more easily happen.
+> This has come up a few times, and we indeed would like to have some
+> annotations in the C headers so that we can generate more (and to
+> keep the information local).
 > 
-> Well we could all speculate about the mess we'll make with any new
-> tool.  All I'm saying is that another project with a large code base
-> (systemd), which you can go an look at, managed to use these
-> annotations very successfully to simplify their error legs. Perhaps
-> there are reasons why the kernel can't be as successful, but I think
-> assuming failure from the outset isn't the best way to flush these
-> reasons out.
+> For instance, it would be nice to have bindgen's `__opaque` near the
+> C items, or being able to mark functions as `__safe`, or to have
+> other `enum`s-related annotations, or even custom attributes, as well
+> as "formatted-formally-enough" docs so that can be rendered properly
+> on the Rust side, or even references/lifetimes with an eventual "Safe
+> C"-like approach, and so on and so forth.
+> 
+> However, even if we automate more and even reach a point where most C
+> APIs are e.g. "safe" (which would be great),
 
-I'm not trying to assume failure or anything, just saying that it's
-probably not always as simple as calling kfree() on anything locally
-allocated for error paths to be magically cleaned, and it actually is
-more subtle (and Laurent confirmed my concerns illustrating that this
-case is precisely covered in glib using transfer of ownership).
+I wouldn't say C API safety would be the main goal, although it might
+be a nice add on feature.
 
-And the temptation to return from everywhere since it's the only
-required statement (instead of a goto to a collecting place) becomes
-great and should sometimes be resisted to.
+>  it wouldn't prevent breakage -- the C APIs would still need to be
+> stable enough so that you don't break callers,
 
-Regardless I do understand how these cleanups can help in a number of
-case, at least to avoid some code duplication.
+Just so we're on the same page, kernel API stability can't be the goal.
+We can debate how valuable the current API instability is, but it's a
+fact of life.  The point of the proposal is not to stabilise the C API
+but to allow the instability to propagate more easily to the rust side.
+
+>  including C ones. It would still be great to have that information
+> formally expressed, though, of course, and it would help maintain the
+> Rust sid
+
+This very much depends on how the callers are coded, I think.  When I
+looked at Wedson's ideas on this, the C API contracts were encoded in
+the headers, so mostly only the headers not the body of the code had to
+change (so the headers needed updating when the C API contract
+changed). If the enhanced bindgen produces new headers then code like
+this will just update without breaking (I admit not all code will work
+like that, but it's still a useful property).
+
+> We have also discussed at times is documenting the C side more, e.g.
+> the pre/post/invariants we use on the Rust side. That would be useful
+> for the C side to know something is being relied upon from Rust (and
+> other C callers) and for the Rust side to document why something is
+> sound. Of course, it is a lot of work, and the more we can express as
+> code instead of as documentation, the better.
+
+So I do think this feeds into the documentation project as well.  We've
+already decided that the best way to document an API is in the code for
+it, so adding annotations that can be checked is better than adding
+docbook that not many people check; although hopefully we could still
+generate documentation from the annotations.
 
 Regards,
-Willy
+
+James
+
 
