@@ -1,104 +1,105 @@
-Return-Path: <ksummit+bounces-1722-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1723-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7194FA3C5A2
-	for <lists@lfdr.de>; Wed, 19 Feb 2025 18:06:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B18A3C750
+	for <lists@lfdr.de>; Wed, 19 Feb 2025 19:23:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4F307A83B5
-	for <lists@lfdr.de>; Wed, 19 Feb 2025 17:05:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 884827A6866
+	for <lists@lfdr.de>; Wed, 19 Feb 2025 18:22:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7508A214211;
-	Wed, 19 Feb 2025 17:06:40 +0000 (UTC)
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45815215044;
+	Wed, 19 Feb 2025 18:22:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GDn3RV1r"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71AE42862B2
-	for <ksummit@lists.linux.dev>; Wed, 19 Feb 2025 17:06:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACCC1E00BE;
+	Wed, 19 Feb 2025 18:22:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739984800; cv=none; b=jGajZ1yPuU/53vb9TBjTfi22k69cVQcO9c5U1QVo7nObVE6tWvXBRTEHICJ99P8GL1mAOhCi96+EcqoyCYKv/bTGdslVkAIBogyo9DwQxHAVV8lA2A6loPcNr3vbmqXByq24cT/IpbMP5BYh5tF+4jtEdiHD/bIW6wJ8ExVf0OU=
+	t=1739989366; cv=none; b=fwlxxX0mM8zlt82t1jTjmJ0qqkAkuXNxgAOseDW1RKUlezlAfzc+vd9ibUfJEucvNWy5Qi4c6FrYBNnoam992BtBJJifRr3OjOGSK0hcnjGHIfrfkRAtPFgo4IA5YAEeS/wMQ3n7Hoj6fky8XEDu2YNRrMv+6B8c+BbXQEZzxWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739984800; c=relaxed/simple;
-	bh=Vwkc4kdAV45hUA3h7Hf6neKlLMmm2gyPbfb7wCifIyA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uYvy5ACWHEIzMlMYTBkRknt2JDbbiYnMxifnXIKR2lAi+Jm1klTmmVIahde0tJ69Dr8P205nkB5IX2yyssyFdL8MiqGn5NXoRB03n/fj2UbhVsPm4gsvgQYir886ntIBaqhfj7Y5dw+c+F03hKmGCdhTE/KhuL2jAgDy6IlwajY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; arc=none smtp.client-ip=18.9.28.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
-Received: from trampoline.thunk.org (pool-173-48-127-146.bstnma.fios.verizon.net [173.48.127.146])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 51JH6NSu022319
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Feb 2025 12:06:24 -0500
-Received: by trampoline.thunk.org (Postfix, from userid 15806)
-	id A79B22E011A; Wed, 19 Feb 2025 12:06:23 -0500 (EST)
-Date: Wed, 19 Feb 2025 12:06:23 -0500
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg KH <gregkh@linuxfoundation.org>, David Airlie <airlied@gmail.com>,
-        linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
+	s=arc-20240116; t=1739989366; c=relaxed/simple;
+	bh=3cuVV+ZiWEkaHnhK7iDFTiWlorqOZJvAW3TN09roTdM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=pDiBjf2wzXiDR3k5xUwQfRROLIy2LmUqssjzffLadcLhBZImX8klSo959847InyQ0djjWHKCpcSj+uJYLad+5a3KWsYk7qKBt4dm0ynl6o4wDUZYCQvGqtURRdG0yvE6uF7Nsf0ylsiWfF7Zo7Civ/RRq3AUcAw2IIrLS1ozlT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GDn3RV1r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB15CC4CED1;
+	Wed, 19 Feb 2025 18:22:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739989366;
+	bh=3cuVV+ZiWEkaHnhK7iDFTiWlorqOZJvAW3TN09roTdM=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=GDn3RV1rg7bo71UO7nn8v0QAJJ9GG4IoUX5eujr7KsThEwyTLK/yAp0AcFjDiiIDq
+	 C+RbMwiQaUvTkrpnYhpfiOXpyeqg2ztady7goxVKr5b/nCXaVwDDEgeLbl/9m9i2BQ
+	 +bVFWaHB8aT8f4v1Vyw7US2cPjOXoiu8bTScT4icquaGHsU3dh41J+PTu9tZtI4nCv
+	 eQ/0zHBVOwRyN12pIPEQNyt6+EXIe5h9VJ46ojpRepF+5sOSn9gWrSLpWgxDqEmFP1
+	 fmcRAXFRc8lY+yEb6Thb8tUBwG25PAAutorjLjdHOjSKpLwn/NTSylenugUSQ5jNZ8
+	 J4FkKLwSZdL3g==
+Message-ID: <f9e01d23e0711c3a3ec17c251277c58ff8aa3657.camel@kernel.org>
 Subject: Re: Rust kernel policy
-Message-ID: <20250219170623.GB1789203@mit.edu>
-References: <Z7SwcnUzjZYfuJ4-@infradead.org>
- <b0a8ee53b767b7684de91eeb6924ecdf5929d31e.camel@HansenPartnership.com>
- <CANiq72nnnOsGZDrPDm8iWxYn2FL=wJqx-P8aS63dFYez3_FEOg@mail.gmail.com>
- <a627845f73f2f7bedc7a820cfdf476be9993e30f.camel@HansenPartnership.com>
- <CANiq72m5KB-X1zck1E43yffXOTeD4xRmZgDx_oUiNwR941ce0w@mail.gmail.com>
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Steven Rostedt <rostedt@goodmis.org>, Willy Tarreau <w@1wt.eu>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, James Bottomley	
+ <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"	
+ <martin.petersen@oracle.com>, Dan Carpenter <dan.carpenter@linaro.org>, 
+ Christoph Hellwig	 <hch@infradead.org>, Miguel Ojeda
+ <miguel.ojeda.sandonis@gmail.com>,  rust-for-linux
+ <rust-for-linux@vger.kernel.org>, Linus Torvalds
+ <torvalds@linux-foundation.org>, Greg KH	 <gregkh@linuxfoundation.org>,
+ David Airlie <airlied@gmail.com>, 	linux-kernel@vger.kernel.org,
+ ksummit@lists.linux.dev
+Date: Wed, 19 Feb 2025 20:22:41 +0200
+In-Reply-To: <20250219113331.17f014f4@gandalf.local.home>
+References: 
+	<CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
+		<Z7SwcnUzjZYfuJ4-@infradead.org>
+		<b7a3958e-7a0a-482e-823a-9d6efcb4b577@stanley.mountain>
+		<2bcf7cb500403cb26ad04934e664f34b0beafd18.camel@HansenPartnership.com>
+		<yq1mseim24a.fsf@ca-mkp.ca.oracle.com>
+		<c1693d15d0a9c8b7d194535f88cbc5b07b5740e5.camel@HansenPartnership.com>
+		<20250219153350.GG19203@1wt.eu>
+		<e42e8e79a539849419e475ef8041e87b3bccbbfe.camel@HansenPartnership.com>
+		<20250219155617.GH19203@1wt.eu>
+		<20250219160723.GB11480@pendragon.ideasonboard.com>
+		<20250219161543.GI19203@1wt.eu>
+	 <20250219113331.17f014f4@gandalf.local.home>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANiq72m5KB-X1zck1E43yffXOTeD4xRmZgDx_oUiNwR941ce0w@mail.gmail.com>
 
-On Wed, Feb 19, 2025 at 05:44:16PM +0100, Miguel Ojeda wrote:
-> Hmm... I am not sure exactly what you mean here. Are you referring to
-> Wedson's FS slides from LSF/MM/BPF? i.e are you referring to Rust
-> signatures?
-> 
-> If yes, those signatures are manually written, they are not the
-> generated bindings. We typically refer to those as "abstractions", to
-> differentiate from the generated stuff.
+On Wed, 2025-02-19 at 11:33 -0500, Steven Rostedt wrote:
+>=20
+> But we should be encouraging the use of:
+>=20
+> 	scoped_guard(mutex)(&my_mutex) {
+> 		/* Do the work needed for for my_mutex */
+> 	}
+>=20
+> Which does work out very well. And the fact that the code guarded by
+> the
+> mutex is now also indented, it makes it easier to review.
 
-The problem with the bindings in Wedson's FS slides is that it's
-really unreasonable to expect C programmers to understand them.  In my
-opinion, it was not necessarily a wise decision to use bindings as
-hyper-complex as a way to convince C developers that Rust was a net
-good thing.
+I just discovered this two days working while working on a new
+V4L2 driver. They are a gem! Definitely will decorate most of
+lock use with them for the RFC patch set.
 
-I do understand (now) what Wedson was trying to do, was to show off
-how expressive and powerful Rust can be, even in the face of a fairly
-complex interface.  It turns out there were some good reasons for why
-the VFS handles inode creation, but in general, I'd encourage us to
-consider whether there are ways to change the abstractions on the C
-side so that:
+Don't need must pitch with those tbh...
 
-   (a) it makes it easier to maintain the Rust bindings, perhaps even
-       using automatically generation tools,
-   (b) it allows Rust newbies having at least some *hope* of updating
-       the manually maintained bindings,
-   (c) without causing too much performance regressions, especially
-       on hot paths, and
-   (d) hopefully making things easier for new C programmers from
-       understanding the interface in question.
+>=20
+> -- Steve
+>=20
 
-So it might not be that increasing C safety isn't the primary goal, in
-general, one of the ways that we evaluate a particular patchset is
-whether addresses multiple problems at the same time.  If it does,
-that's a signal that perhaps it's the right direction for us to go.
+BR, Jarkko
 
-Cheers,
-
-						- Ted
 
