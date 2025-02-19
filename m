@@ -1,128 +1,206 @@
-Return-Path: <ksummit+bounces-1692-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1693-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35DF1A3B1B2
-	for <lists@lfdr.de>; Wed, 19 Feb 2025 07:35:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 800AEA3B1F6
+	for <lists@lfdr.de>; Wed, 19 Feb 2025 08:06:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06CA51890D50
-	for <lists@lfdr.de>; Wed, 19 Feb 2025 06:35:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BE371896E99
+	for <lists@lfdr.de>; Wed, 19 Feb 2025 07:05:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E65E1BC9FB;
-	Wed, 19 Feb 2025 06:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8941C07FA;
+	Wed, 19 Feb 2025 07:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KKNG/2ch"
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T8dMMtQ5"
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151691B6CFF
-	for <ksummit@lists.linux.dev>; Wed, 19 Feb 2025 06:35:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB061BFDFC
+	for <ksummit@lists.linux.dev>; Wed, 19 Feb 2025 07:05:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739946928; cv=none; b=kdPNarj8hYUhJ/rwboHvMSiLiQm2QBXCnCAQhRYw74GcaLgWZT4RRagDtlAvy/iCYnt+oyKOgEDmadOrR4NxFAfCQ+Iti/ExFsMMHyz/y88aZ6AoyzKHl9xlewgi1EFo7vasfbpMrVaCEog0Og2utowlQZgsiVoKeOFieIfwz8k=
+	t=1739948722; cv=none; b=l866UwWw+cVcil0+a9zop2aZ7w3uevASZ7ST7G4byKVF/ocF/7Q+vHm34L1GAzrOAouvLFAqml/sV7MOK/fpmGAH1tEiAswl3SG55IZVb3juQ62JyG02Amgp5I5ce3dhZqskD8LvDenRSxFkU/+IyLJQ092O9AnKGaq5Aw7U8GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739946928; c=relaxed/simple;
-	bh=7cszKDQt9XMv02a+ZwGltOu4Yj63M69diOpbFNtrAPw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tWHVWLK0I+pXTEMAhvImDWIWlGWEV47zYMKg0RXDCpbmCahMtt0vSHBAr8dbyBBm2RMKnwEhazvKSgwYwQnfsgQshh+Zgpk6PK/Gfh7q+wmtq3MiqSu1/YBSLYlVbxeENcDb3U1l9XU8GdLk1jiE6cftpflzgDDFgAYjTYhFox0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KKNG/2ch; arc=none smtp.client-ip=209.85.218.41
+	s=arc-20240116; t=1739948722; c=relaxed/simple;
+	bh=FEqzqA1JniSzrQgsbCgTp05lnoy3SxHbt9/3jeLjZDo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B0SuqaYomzmJK1EBbmL8kJKoXy3kyVzo5AIzgc96FkmGFdcovDtlILUDaEkFHhidfspOcuX2qbzlJ7agDoO/xiQEiOl7T1IsLLQuGiOJwY4XXW2eSKzN/c2Abc6jOW4GwQpalMBKg/iZ2se7CcDqZS89sO8XtA6pSvhx9gpzr90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T8dMMtQ5; arc=none smtp.client-ip=209.85.160.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-aaf900cc7fbso956890566b.3
-        for <ksummit@lists.linux.dev>; Tue, 18 Feb 2025 22:35:26 -0800 (PST)
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-471b5372730so81250931cf.1
+        for <ksummit@lists.linux.dev>; Tue, 18 Feb 2025 23:05:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739946925; x=1740551725; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=57W5SvEFGc40K4otu3jc8MLgWskx5YF0tVueFcEL808=;
-        b=KKNG/2ch7kzDYIvXBsDTF8TgAE92rrIJYZ+2rMktxmpTGM7EGKqLUFO/dgv+CvTJgp
-         OmvXVtnrn4JAYPKZIXJ69M6IyRUqlZlqqWmyUgPdveGmhZ0nPG4FZWjeR8p9YM5NeNLU
-         7856qLZ20tdyLIBd1woho7Seb8Ozl8k3vuuXzeTZjBfGnOCwEPwAuTiXYS8Qv7nTkCAT
-         6k2qJzGawzYFn8uiRZD17rimzION0+MGcIcJme630LguZKqypTbXktXY7o1J9TVMCONl
-         dAOsHa8ezJOEmMgcqKWI5vT8jHW21fN5CLSey/rVyH9agQjo/U6WDDVX9V/zFTupUtpP
-         R1gQ==
+        d=gmail.com; s=20230601; t=1739948720; x=1740553520; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3dpgoJ1SsdygRr/FpJ1lhm0fZp9b2UMRqLfRvgPfCdM=;
+        b=T8dMMtQ5JHtdRDNcWOToUP8ppHNWu4cVWejamLwLlveTFMz3H/3Wi0KiBaJRF6vkO9
+         kIvMEiqySQXJRn/ObH0imNuB7zcatNHSJyh1CnFmQj5bYUj+ofJXURrFsnnER3QJvhlw
+         fCXhI8BxniktJy7CX2UtJynYCZBqV9Ou8dn96YzAl1/vcmgDEG4UZ+CfDMDL1BdLPuj7
+         vcV2AtF0oGsUHNyAaBg+cm7Lc1xw9W4ejO2pIySb+494gsD5YodCrvg44vU1LzT6E2w6
+         OlXE9S/yNjkXSZY3VA4/Em5t48tdtkXhoY1ZDccDJ3+HyxGH2Nq2ZInR5vb+1lGdNBsl
+         PMDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739946925; x=1740551725;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=57W5SvEFGc40K4otu3jc8MLgWskx5YF0tVueFcEL808=;
-        b=q/qReaX0vRbvLtFHJxGgYwPpPp2G1jzOnCuUZHSjTZVVKy1Z2uRhclvFby5DjGr6N9
-         TwGtXyJitjvt18y7UVMRmB2nQnse0Ne+1lu732NEHRlAx42oSwJygtgnk550gZLVn7EQ
-         71HD6R5kAtaxZsAQGqP1uiCEz/ktOwxj4/Nc1WhMu4lFOBe38AMB1EaPgx64s9OL5hKR
-         2npLxFdSqmQ40rqrhU8x9bb/l+DgMmfJTodOzXUdwcX1+HStludO6sFDWR14z2PVnyTd
-         SiSQEt1B8DqZ69lxl6t7gYLg1bY2qunEgbwsXkOl+ysFN+74AXQKTl3lqJnK5zuz65kH
-         V6uA==
-X-Forwarded-Encrypted: i=1; AJvYcCUCd3JeySsP7dEOFh4hYgzj7toZ/GfZhVuGyj8XjqhZ22WadPB+T9ukMCVv0FlNqb/iPFVW6pr5@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzm+QFC6GupksptNfxR6pY5c94UmAtaJf4wt49zjlNFYEtP0aH/
-	moLK7jJzn5DIWi8fu4U6/WUvANjyvMXUizJ46QWuydI4jNfTRwjvVUfJOuKuT6m5lKJ6g4b57Uu
-	z+sfMqpsinYQjtuESZVc2yUNJa+A=
-X-Gm-Gg: ASbGncuf8hACYF7qpH7WCEu0JwlyJw3FqFwk+TKQlZxZ+gYRH/sfVMcWfHfXQ9nxxVG
-	wKZW8Hs+39VuAWLrn3+cnb3KwrUoojlcqQdyeoLDFTdkE7CIygyyuEt96uBD7EnZbW0OA9xg=
-X-Google-Smtp-Source: AGHT+IHM8K/ufJhZwysVLMejsQ7FWat25JMEeR9lhuWlXykaokUltSn4JDH67VDt6SmdhK2xCiK9VCOQHkX9jfG6si8=
-X-Received: by 2002:a17:906:370c:b0:abb:519e:d395 with SMTP id
- a640c23a62f3a-abb70a959d9mr1374646266b.20.1739946925026; Tue, 18 Feb 2025
- 22:35:25 -0800 (PST)
+        d=1e100.net; s=20230601; t=1739948720; x=1740553520;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3dpgoJ1SsdygRr/FpJ1lhm0fZp9b2UMRqLfRvgPfCdM=;
+        b=MGdnK9VER3V+IgXJ7kUI1fFcrkoXo9lcjDqnUgDEdjzYWBVMyUIU290aHwscWu3lW3
+         bQHPJeYbnf9c41pA4AbIdqUlIxq2/JrLlZJPMsObqsK39elqUfHGeG/ATfff0f0I4N9i
+         sD4WO+DzaO847zPkLRbCBcpTltXqFTwXsO5qG1dipCcE9XSfdwPguAzZ8Ec/jxFdGarU
+         I9XlXocsQF3mYZG5fzb0mBUqYz3WMAk1BZREcGnltDeUTHC6QJCpPgmmj/m2uMz37zKC
+         FvptlvChkNZHhg9k3X7L6dYikXUrdzihhi8FiHuYChib4iycfWK2+aX3saruxtbOeiBD
+         y0hw==
+X-Forwarded-Encrypted: i=1; AJvYcCVftuZBkaNmetPoKIK/AjHmIXTw1KlPlA9JVKcqmbOP4gGYaOu5FmSPB+LsXFTGNXZFykUhPd1a@lists.linux.dev
+X-Gm-Message-State: AOJu0YynkkBnpEjwk0XhbZS088f5RPPRnefxOwYPDiKoAu5LDL6ZJP0b
+	lzlPixnL6pfWE4qspkxqV6AKAwb6SDD9h/u0mbG6fIZRgSa1toek
+X-Gm-Gg: ASbGncvYH5O7cRVYb1eLdxvbxxdJewOmjo3pLKBTsQIE/RU4nolhj0+EFlqUZICQMHx
+	L3Mu5kyqO373i7PrFocyz0ZGE0Y+Pv/yMOG2ABUEFIWoCIqHUADhIf/38nvwxAneDHdBSW7l37n
+	KelhXHVYFRtBjOga+USfKijoaO26wPvnNTi4txvmOjBR9hG4cW4pqr7Iy20s2TwPheRyzACuEQe
+	b1UwvDvhcPIr3TJBhuqU4Fi8meYj5zs2FfFyzkKin7U2HlIeFua5X8p21bP9Y1LJ0vr1Env5YY1
+	X28TJKaIoQVUZ5t75JquchdhEgSBQzGdKBwygON3VtnUaAlKVrN5WH6U67a0nEJYazcTnqNP12I
+	l30KhLQ==
+X-Google-Smtp-Source: AGHT+IEu/xVTjGPkhCSiQcN/p/y1POCQeyzFKs71dvKS8dTXpXC+2tdA2RpTNjwOMD7M3vkWDPzXYw==
+X-Received: by 2002:a05:622a:59c6:b0:471:f5d8:5f56 with SMTP id d75a77b69052e-471f5d86142mr147882231cf.1.1739948719777;
+        Tue, 18 Feb 2025 23:05:19 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-47205063be2sm11789801cf.73.2025.02.18.23.05.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Feb 2025 23:05:19 -0800 (PST)
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id B7F721200043;
+	Wed, 19 Feb 2025 02:05:18 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Wed, 19 Feb 2025 02:05:18 -0500
+X-ME-Sender: <xms:roK1Z8C0MIONmz0qBttWukADNeAEySf-9pcOtCSX3dXvH1dPVJzs_Q>
+    <xme:roK1Z-iRFwd_Lhs9bO_HZwEJv3e1tn1EYDJPo_eAnoeJRa31R_NYsXxlH49m0200A
+    q46dpMn6N04L2JkZw>
+X-ME-Received: <xmr:roK1Z_nnX9thhFC3mDhRfsV1wlx5d31kfjTK4a5Ll4IeTf-HNEFNVhFYkw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeifeehkecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
+    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
+    drtghomheqnecuggftrfgrthhtvghrnhephfetvdfgtdeukedvkeeiteeiteejieehvdet
+    heduudejvdektdekfeegvddvhedtnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenuc
+    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhn
+    odhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejje
+    ekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhn
+    rghmvgdpnhgspghrtghpthhtohepuddtpdhmohguvgepshhmthhpohhuthdprhgtphhtth
+    hopehjrghrkhhkoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohephhgthhesihhnfhhr
+    rgguvggrugdrohhrghdprhgtphhtthhopehmihhguhgvlhdrohhjvggurgdrshgrnhguoh
+    hnihhssehgmhgrihhlrdgtohhmpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhig
+    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhorhhvrghlughssehlih
+    hnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehgrhgvghhkhheslhhi
+    nhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegrihhrlhhivggusehgmh
+    grihhlrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgv
+    rhhnvghlrdhorhhgpdhrtghpthhtohepkhhsuhhmmhhitheslhhishhtshdrlhhinhhugi
+    druggvvh
+X-ME-Proxy: <xmx:roK1Zyznrp4YrHTsb1XJFSyCEBnb0tTjE98T9y19GmWTgqr6quSvlw>
+    <xmx:roK1ZxS6_TRKxgL5Mx_quixPNmAp04jUCz1_nQJQgJXOh05yogRXEw>
+    <xmx:roK1Z9bOjOjTi97cg5Rc-u7_R77JX6UXsCVGloiMzbArvGUuzmIzFw>
+    <xmx:roK1Z6TmrTnJWkiOnMfCosImrWJsuwozsmoKWYqu5sJ9nfiWUMWawA>
+    <xmx:roK1Z7BYI6yyWzxSVYPoBmW_ZFVzv33uOCqHftUERnNAA3cD5okeEk43>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 19 Feb 2025 02:05:18 -0500 (EST)
+Date: Tue, 18 Feb 2025 23:05:16 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	rust-for-linux <rust-for-linux@vger.kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
+	ksummit@lists.linux.dev
+Subject: Re: Rust kernel policy
+Message-ID: <Z7WCrA_bbWR6PQQG@Mac.home>
+References: <Z7SwcnUzjZYfuJ4-@infradead.org>
+ <36783d51be7576fcdbf8facc3c94193d78240816.camel@kernel.org>
+ <4cbd3baf81ca3ff5e8c967b16fc13673d84139e8.camel@kernel.org>
+ <e63089e15c6f4d19e77d2920d576e0134d8b7aa7.camel@kernel.org>
+ <Z7T5_WGX_VXBby9k@boqun-archlinux>
+ <615ce44fa528ad7be28ba518e14a970f04481078.camel@kernel.org>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <Z7SwcnUzjZYfuJ4-@infradead.org> <36783d51be7576fcdbf8facc3c94193d78240816.camel@kernel.org>
- <4cbd3baf81ca3ff5e8c967b16fc13673d84139e8.camel@kernel.org>
- <e63089e15c6f4d19e77d2920d576e0134d8b7aa7.camel@kernel.org>
- <Z7T5_WGX_VXBby9k@boqun-archlinux> <615ce44fa528ad7be28ba518e14a970f04481078.camel@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <615ce44fa528ad7be28ba518e14a970f04481078.camel@kernel.org>
-From: Dave Airlie <airlied@gmail.com>
-Date: Wed, 19 Feb 2025 16:35:13 +1000
-X-Gm-Features: AWEUYZk1tP58mZwBWrZ_OnI_ofVylDGmguJN0E4-Lra6JB37GljlIo3vIoHrYPs
-Message-ID: <CAPM=9txBg1m=qp9=nHJXS1h2XB8TSL1tj6CF=Z802u=YX7hBDg@mail.gmail.com>
-Subject: Re: Rust kernel policy
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Christoph Hellwig <hch@infradead.org>, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
-	rust-for-linux <rust-for-linux@vger.kernel.org>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Greg KH <gregkh@linuxfoundation.org>, 
-	linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 19 Feb 2025 at 16:20, Jarkko Sakkinen <jarkko@kernel.org> wrote:
->
+On Wed, Feb 19, 2025 at 08:20:31AM +0200, Jarkko Sakkinen wrote:
 > On Tue, 2025-02-18 at 13:22 -0800, Boqun Feng wrote:
 > > FWIW, usually Rust code has doc tests allowing you to run it with
 > > kunit,
 > > see:
-> >
-> >       https://docs.kernel.org/rust/testing.html
->
+> > 
+> > 	https://docs.kernel.org/rust/testing.html	
+> 
 > I know this document and this was what I used to compile DMA patches.
 > Then I ended up into "no test, no go" state :-)
->
+> 
+
+Good to know, thanks for giving it a try!
+
 > I put this is way. If that is enough, or perhaps combined with
 > submitting-patches.rst, why this email thread exists?
+> 
+> > 
+> > , I took a look at the DMA patches, there is one doc test, but
+> > unfortunately it's only a function definition, i.e. it won't run
+> > these
+> > DMA bindings.
+> > 
+> > I agree that test payload should be provided, there must be something
+> > mentioning this in Documentation/process/submitting-patches.rst
+> > already?
+> 
+> Partly yes. This what was exactly what I was wondering when I read
+> through the thread, i.e. why no one is speaking about tests :-)
+> 
 
-There is users for the DMA stuff (now there should be some more
-tests), the problem is posting the users involves all the precursor
-patches for a bunch of other subsystems,
+In my opinion, about testing, code style check, commit log, etc. Rust
+patches should be the same as C patches, at least during my reviews, I
+treat both the same. Therefore I wasn't clear about why you want
+additional information about Rust patch only, or what you exactly
+proposed to add into kernel documentation for Rust patch.
 
-There's no nice way to get this all bootstrapped, two methods are:
+The policy documentation in this email clarifies some higher level
+stuffs than patch submission and development, such as "How is Rust
+introduced in a subsystem", this is for developers' information maybe
+even before development work. And I agree with Miguel, if we want this
+information in-tree, we can certainly do that.
 
-a) posting complete series crossing subsystems, people get pissed off
-and won't review because it's too much
-b) posting series for review that don't have a full user in the
-series, people get pissed off because of lack of users.
+Hope this can answer your question?
 
-We are mostly moving forward with (b) initially, this gets rust folks
-to give reviews and point out any badly thought out rust code, and
-give others some ideas for what the code looks like and that it exists
-so others don't reinvent the wheel.
+> > 
+> > Regards,
+> > Boqun
+> 
+> Thanks for responding, definitely not picking a fight here. I
 
-Maybe we can add more rust tests to that particular patch series? but
-this is the wrong thread to discuss it, so maybe ask on that thread
-rather on this generic thread.
+Oh, I didn't think it was picking a fight, just not sure what you
+exactly proposed, hence I had to ask.
 
-Dave.
+> actually just wanted to help, and doing kernel QA is the best
+> possible way to take the first baby steps on a new subsystem,
+
+Agreed! Appreciate the help.
+
+Regards,
+Boqun
+
+> and sort of area where I'm professional already as a kernel
+> maintainer.
+> 
+> BR, Jarkko
 
