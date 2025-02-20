@@ -1,149 +1,129 @@
-Return-Path: <ksummit+bounces-1769-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1770-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA854A3E157
-	for <lists@lfdr.de>; Thu, 20 Feb 2025 17:50:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A594A3E418
+	for <lists@lfdr.de>; Thu, 20 Feb 2025 19:40:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1F107A9DFC
-	for <lists@lfdr.de>; Thu, 20 Feb 2025 16:46:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E6E81889ABA
+	for <lists@lfdr.de>; Thu, 20 Feb 2025 18:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254D321325D;
-	Thu, 20 Feb 2025 16:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 195A424BD05;
+	Thu, 20 Feb 2025 18:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="M9xfZsZR"
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f7KOLN30"
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454BE212B14
-	for <ksummit@lists.linux.dev>; Thu, 20 Feb 2025 16:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB01124BCF5
+	for <ksummit@lists.linux.dev>; Thu, 20 Feb 2025 18:40:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740070040; cv=none; b=sjrr/iVoZzas6lwgLM7ErPozwGzIcgS1rleW0MgJ5MQOtVUOJSxQpChQbkc4IV2w3P7wDFe+cM5kx7U+RNCxZDMYDeLG8WbVeh/51FNDAnt7yADNzwO8jL8tUxwxuniBN0FJm7zHJNFtIgzS2E1TVCWlBKkJVV2qgDimmJ1E7k8=
+	t=1740076848; cv=none; b=h42jyVk7Lm0nSmWttzo/pcg6fcEe7RxmSHGaSYzS7hotJo1iRFleAE/VauJPx3sTLtyKdc18pbmsE3Q9OfAFrB9rbXlkpy094gDi6Dib6kWk5hoBq0Otq165EgPAC6Kv7yh9XloACW2PpBN306XFDqkfi3d+mcPasXyuBGZi5Cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740070040; c=relaxed/simple;
-	bh=dQbcpcb/Fr1fg1CoD0pZkGdNzzEl80AydjsiI1ZsQkE=;
+	s=arc-20240116; t=1740076848; c=relaxed/simple;
+	bh=E2DR+BJJfXCSeI1cfeXIx9bKllVF0rrNynMBB0GIgg8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XJeRND2ZZo2GnRxkkXm7kRaFQMGtAli21/OjlS8mplk2WE6UyhGKcUT5ZQcSG/0BnKUrzV69uPhV0iKL35DpuoO2KevDK/cVrIho8lV7dN9nsyL5qlNnClRqurIhL/eze2B6EjbjphZXMSj4/SN7DoKV82o2cREgSmdTTF76itA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=M9xfZsZR; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5e04064af07so457241a12.0
-        for <ksummit@lists.linux.dev>; Thu, 20 Feb 2025 08:47:17 -0800 (PST)
+	 To:Cc:Content-Type; b=mlR+OBExcUiECcGtGCQ5ojKxxY6Ce0F76tbGaOR8FUTtsnzOOF9mYeasEuzTaUrsGA3EFGb/kCgbp1fc1svS9AozEkB8rWBuCfKfbrmlksRDbcDgLSKmZvYObTh0OcXbEB7Nx0pZ3BtR6HymLPBHi+VSRNxuNDs0oDlNS1AAZrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f7KOLN30; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4393dc02b78so9231255e9.3
+        for <ksummit@lists.linux.dev>; Thu, 20 Feb 2025 10:40:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1740070036; x=1740674836; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=YZPfZYNg8NOtUAiK1S11L7/kf32fZfQ/BKwR+IkGA/Y=;
-        b=M9xfZsZRhyxMmJECNZ9YAFDIkcWQdly9A15hDAN6UZB8czrs/11QRkIcaz5n/0ZGzY
-         z5EMhdwRu5rfzFEHmUHqp8eI6TWJvNYEYhdi1dd6au4O6qFDEI8VS+Ri3IjdHEkKCKTk
-         ZWciSQLHwuHzXs8RkPe/gvhjwZKw5v1ilVTug=
+        d=gmail.com; s=20230601; t=1740076845; x=1740681645; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LDpYiKzs73InvLQsXoENmuSiu34F9WT8BsmsAiGCuxQ=;
+        b=f7KOLN30e3DmVZcWjhRjkkM/Wv5TVuem6hJye1uua7fBw5YvAw968f55eqzsOwBwTK
+         SIsB0AOtom6g16YBI5Vnvh3ZPFm0ZYtI1viLWvh9dbH0x1e/sM6cQvmDSrTI/S4FXRFQ
+         k2lGCYZV4wlULGJ9pxjO7QaAiVdZsQhz1hDfvhK3Df+khgMY2f3/CY81npIe00XPpDoq
+         3U0wMOJnfwsssJbsq0PcUImUlMKgDsgj929AWQKN9vLfP5scPq9VoRFEHDYGPFk9IeAA
+         IxqQktBKqq10Wct7RZ6hhc6KT6kNtJ9vSVxz/3Gi1gW0gawm2y7O24yYdzq4pBTIwENN
+         KjlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740070036; x=1740674836;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YZPfZYNg8NOtUAiK1S11L7/kf32fZfQ/BKwR+IkGA/Y=;
-        b=mpYcCr7hVQJLeB38LXQXM6q7r2EwJVPrkFsPOm6k4t5vc/SOZNYntKGdQ9OfL9bZpb
-         KIqp0orLxbZUmIrO8DFcXt2VQjY49K57lKV+sP0ZnJ46yXtcE+Z0JU0VZ2I7leZ6ZyPN
-         SL5kUfAY7ek02H0zlQyohxHFUgowTB4QOobPtqNR1B/v8GAbnSxJswds2YTW2DyKHB/M
-         fR2UDCJP6GF79zIO5YlifhAYzYd2D1e8ZW0+xP9HY+9KoeNpsYM91OpaHErJpJ9o1RHf
-         hhUIIkKj+JeXBNmJX1KBwxBqO+Gt7kUQtj1ibL1T/klY/10eoiDXBYGa48tGc/yNS9EK
-         33nA==
-X-Forwarded-Encrypted: i=1; AJvYcCUdZI/n69e+CyiII3tNwZS406SGUqFTigwNL/3k1+byjGUmmM1R7/gXVwRrjgCK7dvVKdCwjCs6@lists.linux.dev
-X-Gm-Message-State: AOJu0YzQxyymAcRsUKvZB19lrWmACjnab9W2LWmgYBhMqPP2C/Uy68z+
-	+KuOo2arg//gV43Gzq4FRAp+rdvQBNxku3G83xVmxxn1eEm+n3EO0ZMvCIwcU5OsQGfJcC8S3YT
-	MlGo=
-X-Gm-Gg: ASbGncsR9MDm2SsbVVpqFyMHXiwMpwI/4sIgAR+ml5CwqceNQrWWOj+HPFh9MHgJKEp
-	pXIRP77r0t7gQw3fyxNtmVZDvXpwejY5AnAs56KGm9bDIQBYCCdVJHnmxr5xluipHkjPnVjk49p
-	wjRaYDK76Y/mUCc1FO9ihVLd+2dTEEChlmtSHES0P9p5KfVqZurt5KC2LhJ1KDBu4MiJqId8HAS
-	QpLTUmCsiHwJH2k9mt/bfYEfZDr5NptTgcZiG8LhOu4nqDecm0JpuF19S2D7JtDbAhN+pbYOJiP
-	Dp/SHaNXje8xx9f2NXu1r3dQLu7jFwrXtJA0aCBosYDMfiV2EiSibqf/Fe5dYy4xxQ==
-X-Google-Smtp-Source: AGHT+IFKx8Dphcso2uPdpSzE0MSEblx2cvNMuFRraG6nNuQFNUuU54a520v0J3TgWailuosBEMMw4Q==
-X-Received: by 2002:a17:907:7f90:b0:abb:e958:2eb0 with SMTP id a640c23a62f3a-abc09c10e1amr392266b.39.1740070036158;
-        Thu, 20 Feb 2025 08:47:16 -0800 (PST)
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com. [209.85.218.46])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abbb297ccd6sm603300466b.160.2025.02.20.08.47.14
-        for <ksummit@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Feb 2025 08:47:14 -0800 (PST)
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-abbac134a19so196838666b.0
-        for <ksummit@lists.linux.dev>; Thu, 20 Feb 2025 08:47:14 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUx5YbSrw7mfvOUXXLyRN0/MzeqE2Qr6dI5ukhd2O8J52DMpsHE3NH21wEMSkqrXtPHenzo4qoC@lists.linux.dev
-X-Received: by 2002:a17:907:7743:b0:ab9:137d:f6e7 with SMTP id
- a640c23a62f3a-abc099ca6bfmr2068366b.7.1740070033907; Thu, 20 Feb 2025
- 08:47:13 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740076845; x=1740681645;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LDpYiKzs73InvLQsXoENmuSiu34F9WT8BsmsAiGCuxQ=;
+        b=mDkOxD0F8XyTPqwU1gfLe6/0pr/DCd177DNr3/LVcmrd08zscCulRzZfEp5PTGzCJN
+         W4pLbm/0b60LlvcWdsyQ1pjM2Hft0aqYAR6H/FEdUAwyz1MKAzz9uPDtfuFIh3yCaGoD
+         TIkNg1nO9RsBDyrr7gOM0wRqhzwlC2t9oyTGv4g2BAL8tlySCzEA4WuK717ar9K/shs4
+         +cuR/WVPy4FqFVjdFV1Z1R4PbI6OAO7J0mkvPSQNGioDlX+itcsMRYSvyLHRBkLFSHJD
+         6EDT+RnBLWDk8iOFU3gi0GsvRj8TiggvWPS5u9RKD6D9ISw0eLi+bX4ozFS27G/ll3+q
+         U6fA==
+X-Forwarded-Encrypted: i=1; AJvYcCWgtP5zNmOzsvgPZGUQzut+r1k2Er5oUf83KBpqMGVG4DzUSAQx0YrfkhO31m9spMFa56YRcwrd@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzo+9OEZHqcgfYgEOSpjGlhrpY1+BQDwzrbSd4fgVuKgP/0sQyL
+	U2k6wSXO0yj4CBgn2vObX0sMqgoeNccYtlmCH8nSebqxNbVpAVcqmyRSpoI2uAgvV1It9lzt0g4
+	jMgHar4FOiNZ5Do3979uebpxphppkTWNB
+X-Gm-Gg: ASbGnctiFNOvoWBAaG60rjrdAbmjhHoRBPSPylOyErM/Urnn58zDrF8hit682r4wG2R
+	G5igDdTb8Xd9ylNZWIDXKwXPrwe8cNYrDWA1K1QVw93ZcGKDpuf20GIHne6Ph9tH2Dd4Sp1UzEG
+	ouQb0qH4NphXvL
+X-Google-Smtp-Source: AGHT+IHkfgnrV+BJNL4baF5nekJSwGBo3ZopJ8YNhxStsP2Hf7g6+UzEp276HXeTQtpo/E5x2POhhtXsLL4/gCTqORA=
+X-Received: by 2002:adf:f3c9:0:b0:38f:2b59:3f78 with SMTP id
+ ffacd0b85a97d-38f6f0ac5a3mr257914f8f.45.1740076844972; Thu, 20 Feb 2025
+ 10:40:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
- <Z7SwcnUzjZYfuJ4-@infradead.org> <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
- <326CC09B-8565-4443-ACC5-045092260677@zytor.com> <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
- <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com> <Z7VKW3eul-kGaIT2@Mac.home>
- <2025021954-flaccid-pucker-f7d9@gregkh> <2nn05osp-9538-11n6-5650-p87s31pnnqn0@vanv.qr>
- <2025022052-ferment-vice-a30b@gregkh> <9B01858A-7EBD-4570-AC51-3F66B2B1E868@zytor.com>
- <n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr>
-In-Reply-To: <n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 20 Feb 2025 08:46:56 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wgb1g9VVHRaAnJjrfRFWAOVT2ouNOMqt0js8h3D6zvHDw@mail.gmail.com>
-X-Gm-Features: AWEUYZnMkN-x0Rtej4417GBTUm2ZZTOyavgfNoxIwCkZFobkcHssn8sD-O-61LI
-Message-ID: <CAHk-=wgb1g9VVHRaAnJjrfRFWAOVT2ouNOMqt0js8h3D6zvHDw@mail.gmail.com>
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: Jan Engelhardt <ej@inai.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>, Greg KH <gregkh@linuxfoundation.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
-	Christoph Hellwig <hch@infradead.org>, rust-for-linux <rust-for-linux@vger.kernel.org>, 
-	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
+References: <Z7SwcnUzjZYfuJ4-@infradead.org> <45rpsr92-4416-9no4-8o26-r0998nr77nr8@xreary.bet>
+ <Z7bMnpq1cUezsNDl@infradead.org>
+In-Reply-To: <Z7bMnpq1cUezsNDl@infradead.org>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Thu, 20 Feb 2025 10:40:32 -0800
+X-Gm-Features: AWEUYZlQ2ngnBUpsPvZmt-IUjjrYChxu8xuPgnYSqjT2MUxJIeYsrj1qt7MyBZU
+Message-ID: <CAADnVQ+cX_oH_0GcdYkixrMxyvwAKrvSnzx1uofD3BM2E+L6eg@mail.gmail.com>
+Subject: Re: Rust kernel policy
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Jiri Kosina <jikos@kernel.org>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+	rust-for-linux <rust-for-linux@vger.kernel.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Greg KH <gregkh@linuxfoundation.org>, 
+	David Airlie <airlied@gmail.com>, LKML <linux-kernel@vger.kernel.org>, 
+	ksummit@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 20 Feb 2025 at 07:17, Jan Engelhardt <ej@inai.de> wrote:
+On Wed, Feb 19, 2025 at 10:33=E2=80=AFPM Christoph Hellwig <hch@infradead.o=
+rg> wrote:
 >
->
-> On Thursday 2025-02-20 14:23, H. Peter Anvin wrote:
+> On Tue, Feb 18, 2025 at 06:36:55PM +0100, Jiri Kosina wrote:
+> > > [2] The idea of drivers in eBPF as done by HID also really doesn't he=
+lp
+> > > with that as much as I like eBPF for some use cases
 > >
-> >People writing C seem to have a real aversion for using structures
-> >as values (arguments, return values or assignments) even though that
-> >has been valid since at least C90 and can genuinely produce better
-> >code in some cases.
+> > I don't necessarily agree on this specific aspect, but what (at least t=
+o
+> > me personally) is the crucial point here -- if we at some point decide
+> > that HID-eBPF is somehow potentially unhealthy for the project /
+> > ecosystem, we can just drop it and convert the existing eBPF snippets t=
+o a
+> > proper simple HID bus drivers trivially (I'd even dare to say that to s=
+ome
+> > extent perhaps programatically).
 >
-> The aversion stems from compilers producing "worse" ASM to this
-> date, as in this case for example:
+> Well, Linus declared any bpf kfunc / helper program type change that
+> breaks userspace as a no-go.  And such a change very much does.
 
-We actually use structures for arguments and return values in the
-kernel, and it really does generate better code - but only for
-specific situations.
+Have to chime in into this rust thread to correct the facts.
 
-In particular, it really only works well for structures that fit in
-two registers. That's the magic cut-off point, partly due calling
-convention rules, but also due to compiler implementation issues (ie
-gcc has lots of special code for two registers, I am pretty sure clang
-does too).
+See the doc:
+https://github.com/torvalds/linux/blob/master/Documentation/bpf/kfuncs.rst#=
+3-kfunc-lifecycle-expectations
+TLDR:
+"A kfunc will never have any hard stability guarantees. BPF APIs
+cannot and will not ever hard-block a change in the kernel..."
 
-So in the kernel, we use this whole "pass structures around by value"
-(either as arguments or return values) mainly in very specific areas.
-The main - and historical: we've been doing it for decades - case is
-the page table entries. But there are other cases where it happens.
+git log proves the history of changing/removing kfuncs.
 
-The other problem with aggregate data particularly for return values
-is that it gets quite syntactically ugly in C. You can't do ad-hoc
-things like
-
-   { a, b } = function_with_two_return_values();
-
-like you can in some other languages (eg python), so it only tends to
-work cleanly only with things that really are "one" thing, and it gets
-pretty ugly if you want to return something like an error value in
-addition to some other thing.
-
-Again, page table entries are a perfect example of where passing
-aggregate values around works really well, and we have done it for a
-long long time because of that.
-
-            Linus
+hid-bpf iself is another example of that policy.
+It was redesigned from one way of hooking into hid core to
+a completely different approach.
+It may happen again, if necessary.
 
