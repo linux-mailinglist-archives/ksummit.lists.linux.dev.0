@@ -1,177 +1,94 @@
-Return-Path: <ksummit+bounces-1743-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1744-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFADBA3D3D0
-	for <lists@lfdr.de>; Thu, 20 Feb 2025 09:57:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38EFCA3D581
+	for <lists@lfdr.de>; Thu, 20 Feb 2025 10:55:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7632F3AFD2D
-	for <lists@lfdr.de>; Thu, 20 Feb 2025 08:57:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 561A27A6148
+	for <lists@lfdr.de>; Thu, 20 Feb 2025 09:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4761EBFF8;
-	Thu, 20 Feb 2025 08:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7A01F03C9;
+	Thu, 20 Feb 2025 09:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b="iHI39HL9"
-Received: from mailrelay.tugraz.at (mailrelay.tugraz.at [129.27.2.202])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GQijEXKe"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415D51B3927
-	for <ksummit@lists.linux.dev>; Thu, 20 Feb 2025 08:57:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.27.2.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB6A101DE;
+	Thu, 20 Feb 2025 09:55:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740041862; cv=none; b=gp3jxy0Zja4SeAh779dT8AbQrn1doOgsPFFNfGU9Hg/onk23Yn5LNpjQcjlH01bPsY99zF14clGSE5kBeD6Ar9MnM8q/smtaFpoH4sZcT8PNQx+G2rXyeDgtmcxfLGvfz+++HztLqZGkRaHY8xXHsDbf1MUH+gBx/THaK2xpD2k=
+	t=1740045326; cv=none; b=lIPwk/EjeNSWfa/EgR6bL1BHcI4DPbd++RFamg20VwoDx+ql1Wd50B+YXSByqOWQdFjumiKQ3ywdvb8IjYuXVJ6pir6BJjQCOcFoBqit0NxbK5X+So7Q57/jryHFDk/6jywdsJ2vis8UPOyRa6hXwPk3WA8FLUammKDNStzYZ+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740041862; c=relaxed/simple;
-	bh=G/gVJPNMpPDZIVUs4ZDdcewvmRtxv1X63Vhw+bB/80c=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=AqTk9ty7JUTZF3xEhebEATFiXgDgFY3t7evfd+sMfK8QZ75yJjFQdQG0vxbiQHkzC5cMjr6o1Rz9tM3ixTE/XVdXDry/vAKXVfSKvTa4alPUArZ+ZFw8Rg23xeNbgdNYHo3sKjB9hp4vEVZzb8QKBJ6PYPkxSDTaPkF2jKQq184=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at; spf=pass smtp.mailfrom=tugraz.at; dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b=iHI39HL9; arc=none smtp.client-ip=129.27.2.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tugraz.at
-Received: from vra-171-197.tugraz.at (vra-171-197.tugraz.at [129.27.171.197])
-	by mailrelay.tugraz.at (Postfix) with ESMTPSA id 4Yz6bG0M1fz1JJCX;
-	Thu, 20 Feb 2025 09:57:29 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailrelay.tugraz.at 4Yz6bG0M1fz1JJCX
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tugraz.at;
-	s=mailrelay; t=1740041851;
-	bh=534sbKTPRc7qHLB2YPR/YBjYkUkFE06mby8ks5Lw8Ew=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=iHI39HL91aLUMbJnTq4yXwFllS62GrBQfohmv+pnMIj/wTJM5uoySVWEhL2NEUs+1
-	 x0QBcWAmPMfKMET/U6IjWAxNvwF3c9zHw1KfDsTZB8St6knyJQXn13oyTno6KG9was
-	 4oxDoyM5+3vFKVa2NDgtvBBX/OfZHM4Er0hNoss8=
-Message-ID: <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
+	s=arc-20240116; t=1740045326; c=relaxed/simple;
+	bh=xzS6h5KnBHNIoiPvclSQAAioVfZWDom2cKt1SBCr86w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JROAdKQB0WVRzoIqc5GsdByD/+p75oZCH/ffUPQDZI1a1EQBNULTe2Br4cDH2I1XlejiBd3UWmBZLZmfPD9MGfkyPqAbu+fGGKnFDhCRoaqlvRwUKV3MWVKrQwcPk0cGwq8QMRlC+1PePSr+SpNeNKYxPdk5tL2HnypsIxwJR34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GQijEXKe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66189C4CED1;
+	Thu, 20 Feb 2025 09:55:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740045325;
+	bh=xzS6h5KnBHNIoiPvclSQAAioVfZWDom2cKt1SBCr86w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GQijEXKeznE+q3VYmV/ySgRAcUNRB/51FmRor5HU8HyTJ3he5KdezGi+spOmHeliF
+	 5WJztNXBI3+pRk/+clHPp1xkjFbR7mWFJTAaThQiRxU+Zokb/f9l6py4MrygtBJOIA
+	 xY+LVJWNm3+LWMTNnzUZO4s9juml8nZRkdy+hYlrclOHP/TTI9LyaKcSDxl+Ex3k4k
+	 b7kBy2G3zpcNHuQJQsWqLcuAZA0L3sqhqJLH0d/tsuqNCJTH6nm9a1mRNZ6eYPtEOz
+	 hAWsjq8i2wLqcTjPxUmeZGMxdIHWnOiThX6P8ipeM5NHdIffN8pXboohgClckt0Y79
+	 fzOmjWhuP9F/A==
+Date: Thu, 20 Feb 2025 11:55:21 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Jason Gunthorpe <jgg@nvidia.com>,
+	Kees Cook <kees@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	rust-for-linux <rust-for-linux@vger.kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
+	ksummit@lists.linux.dev
 Subject: Re: Rust kernel policy
-From: Martin Uecker <uecker@tugraz.at>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, 
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Christoph Hellwig
- <hch@infradead.org>, rust-for-linux <rust-for-linux@vger.kernel.org>, Linus
- Torvalds <torvalds@linux-foundation.org>,  David Airlie
- <airlied@gmail.com>, linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
-Date: Thu, 20 Feb 2025 09:57:29 +0100
-In-Reply-To: <2025022024-blooper-rippling-2667@gregkh>
-References: 
-	<CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
-	 <Z7SwcnUzjZYfuJ4-@infradead.org>
-	 <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
-	 <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
-	 <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
-	 <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
-	 <Z7VKW3eul-kGaIT2@Mac.home> <2025021954-flaccid-pucker-f7d9@gregkh>
-	 <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
-	 <2025022024-blooper-rippling-2667@gregkh>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+Message-ID: <20250220095521.GP53094@unreal>
+References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
+ <Z7SwcnUzjZYfuJ4-@infradead.org>
+ <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
+ <202502191026.8B6FD47A1@keescook>
+ <20250219140821.27fa1e8a@gandalf.local.home>
+ <202502191117.8E1BCD4615@keescook>
+ <20250219202751.GA42073@nvidia.com>
+ <20250219154610.30dc6223@gandalf.local.home>
+ <97841173-1de8-4221-8bf3-3470a5ac98a7@acm.org>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-TUG-Backscatter-control: G/VXY7/6zeyuAY/PU2/0qw
-X-Spam-Scanner: SpamAssassin 3.003001 
-X-Spam-Score-relay: 0.0
-X-Scanned-By: MIMEDefang 2.74 on 129.27.10.116
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <97841173-1de8-4221-8bf3-3470a5ac98a7@acm.org>
 
-Am Donnerstag, dem 20.02.2025 um 08:10 +0100 schrieb Greg KH:
-> On Thu, Feb 20, 2025 at 08:03:02AM +0100, Martin Uecker wrote:
-> > Am Mittwoch, dem 19.02.2025 um 06:39 +0100 schrieb Greg KH:
-> > > On Tue, Feb 18, 2025 at 07:04:59PM -0800, Boqun Feng wrote:
-> > > > On Tue, Feb 18, 2025 at 04:58:27PM -0800, H. Peter Anvin wrote:
-> > > > [...]
-> > > > > > >=20
-> > ...
-> > >=20
-> > >=20
-> > > I'm all for moving our C codebase toward making these types of proble=
-ms
-> > > impossible to hit, the work that Kees and Gustavo and others are doin=
-g
-> > > here is wonderful and totally needed, we have 30 million lines of C c=
-ode
-> > > that isn't going anywhere any year soon.  That's a worthy effort and =
-is
-> > > not going to stop and should not stop no matter what.
-> >=20
-> > It seems to me that these efforts do not see nearly as much attention
-> > as they deserve.
->=20
-> What more do you think needs to be done here?  The LF, and other
-> companies, fund developers explicitly to work on this effort.  Should we
-> be doing more, and if so, what can we do better?
+On Wed, Feb 19, 2025 at 12:52:14PM -0800, Bart Van Assche wrote:
+> On 2/19/25 12:46 PM, Steven Rostedt wrote:
+> > I do feel that new drivers written in Rust would help with the
+> > vulnerabilities that new drivers usually add to the kernel.
+> 
+> For driver developers it is easier to learn C than to learn Rust. I'm
+> not sure that all driver developers, especially the "drive by"
+> developers, have the skills to learn Rust.
 
-Kees communicates with the GCC side and sometimes this leads to
-improvements, e.g. counted_by (I was peripherily involved in the
-GCC implementation). But I think much much more could be done,
-if there was a collaboration between compilers, the ISO C working
-group, and the kernel community to design and implement such
-extensions and to standardize them in ISO C.
+From what I saw, copy-paste is a classical development model for new
+drivers. Copy-paste from C drivers is much more easy than from Rust
+ones, simply because there are much more C drivers.
 
->=20
-> > I also would like to point out that there is not much investments
-> > done on C compiler frontends (I started to fix bugs in my spare time
-> > in GCC because nobody fixed the bugs I filed), and the kernel=C2=A0
-> > community also is not currently involved in ISO C standardization.
->=20
-> There are kernel developers involved in the C standard committee work,
-> one of them emails a few of us short summaries of what is going on every
-> few months.  Again, is there something there that you think needs to be
-> done better, and if so, what can we do?
->=20
-> But note, ISO standards work is really rough work, I wouldn't recommend
-> it for anyone :)
+Thanks
 
-I am a member of the ISO C working group. Yes it it can be painful, but
-it is also interesting and people a generally very nice.
-
-There is currently no kernel developer=C2=A0actively involved, but this wou=
-ld
-be very helpful.
-
-(Paul McKenney is involved in C++ regarding atomics and Miguel is
-also following what we do.)
-
->=20
-> > I find this strange, because to me it is very obvious that a lot more
-> > could be done towards making C a lot safer (with many low hanging fruit=
-s),
-> > and also adding a memory safe=C2=A0subset seems possible.
->=20
-> Are there proposals to C that you feel we should be supporting more?
-
-There are many things.
-
-For example, there is an effort to remove cases of UB.  There are about
-87 cases of UB in the core language (exlcuding preprocessor and library)
-as of C23, and we have removed 17 already for C2Y (accepted by WG14 into
-the working draft) and we have concrete propsoals for 12 more. =C2=A0This
-currently focusses on low-hanging fruits, and I hope we get most of the
-simple cases removed this year to be able to focus on the harder issues.
-
-In particulary, I have a relatively concrete plan to have a memory safe
-mode for C that can be toggled for some region of code and would make
-sure there is no UB or memory safety issues left (I am experimenting with
-this in the GCC FE).=C2=A0 So the idea is that one could start to activate =
-this
-for certain critical=C2=A0regions of code to make sure there is no signed
-integer overflow or OOB access in it.   This is still in early stages, but
-seems promising. Temporal memory safety is harder and it is less clear
-how to do this ergonomically, but Rust shows that this can be done.
-
-
-I also have a proposal for a length-prefixed string type and for=C2=A0
-polymorhic types / genericity, but this may not be so relevant to the
-kernel at this point.
-
-Even more important than ISO C proposals would be compiler extensions
-that can be tested before standardization.
-
-
-Martin
-
-
-
+> 
+> Bart.
+> 
 
