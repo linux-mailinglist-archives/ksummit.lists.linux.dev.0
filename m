@@ -1,93 +1,103 @@
-Return-Path: <ksummit+bounces-1751-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1752-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4BC2A3DA33
-	for <lists@lfdr.de>; Thu, 20 Feb 2025 13:38:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61435A3DA96
+	for <lists@lfdr.de>; Thu, 20 Feb 2025 13:57:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C20BB3B1F1D
-	for <lists@lfdr.de>; Thu, 20 Feb 2025 12:37:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7B5C17FA0F
+	for <lists@lfdr.de>; Thu, 20 Feb 2025 12:56:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB401F3FD7;
-	Thu, 20 Feb 2025 12:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F18EC1F7575;
+	Thu, 20 Feb 2025 12:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynP4yddS"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="mr7m4nGM"
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FA117BD9;
-	Thu, 20 Feb 2025 12:37:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BCF1F5839
+	for <ksummit@lists.linux.dev>; Thu, 20 Feb 2025 12:56:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740055070; cv=none; b=O/Fcqi/5gxEqKsPyZ39sCqGMf6Jna01QcPfKVCd9DXvXfhNiBYehd3HXdPyUCrjbFGL23OFpNrf4DOwej5J/Jpi6mzWF9H2GOFCejCLltEU8H7X3H4fblYSo+ij2QVGuChZiaPc0JL2b3mrLdUtrh9ht5HsRmsTpkS5zaUputA4=
+	t=1740056210; cv=none; b=NuRAkZntm6ahjvKc4lAo12U+NayGiL2/+NygGjf0S1m4KE2kmS6ss3HI75GXB0WirOrodCJVJbC/nBsdTsbS6BPdvomXIa6YNGB2ubTZBNVMfLUcgs38albLTeiiDvtypInHAFGDnYKFdVuvnYUtRoqCtqfcPXBqlDWORQPWVLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740055070; c=relaxed/simple;
-	bh=giOkKYSWvXP5XpSwiqiqP2R17fK2x7YAHCFDt+x1ZxU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fokAVsf4xq946CmJV2Lz1gJHg8FPY1FTSjk6SVhXpSN8m/GQkxWKJXKKNCs6Goo0qFiOtJiz/bqruts+HldrJnBdzlEY3IXJhTlLvROd6BOnmKapkAJkMQZ6yXvbb6pvFX9auFekmKDQrqgmFL1oTzFeTuj7WZvfrOc6T6DPFkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ynP4yddS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26BACC4CED1;
-	Thu, 20 Feb 2025 12:37:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740055069;
-	bh=giOkKYSWvXP5XpSwiqiqP2R17fK2x7YAHCFDt+x1ZxU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ynP4yddSXKFK/K9mc/U5Yn7NVo480h1xiEIN1UuRYkR0Kr+JnS+6BLV/ekCTWjvD2
-	 +ki998if/ulYG3k4rXsEWgOJnO5JPyES8gEgRjDkPjG9l8eXFfWphbIMc6r7WKdN/o
-	 fzn+ebNHRKZ5UWGHiN+u9G0zS1ku74l17oGJteYs=
-Date: Thu, 20 Feb 2025 13:37:46 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jan Engelhardt <ej@inai.de>
-Cc: Boqun Feng <boqun.feng@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	rust-for-linux <rust-for-linux@vger.kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
-	ksummit@lists.linux.dev
+	s=arc-20240116; t=1740056210; c=relaxed/simple;
+	bh=cQIhLi26tFIrH6kBJV8dUrYUU3ZnLxK7Why21ahopxc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=s4vqqT2iM4/AuqFodRxqtfnR5+EhnAepVeD8+aE1AFaX1793EfPZ1pQKGSk4k4U2dGiPI2JXshg9AjPafePrMlYInzHUvn/7f6gyRKikBxLPjCoX+1FrPWEtMOW0R57+A5aVRXtECMictKR97ACs7e4Rie9+3gtkRFxqhHqs3S0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=mr7m4nGM; arc=none smtp.client-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1740056207;
+	bh=cQIhLi26tFIrH6kBJV8dUrYUU3ZnLxK7Why21ahopxc=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=mr7m4nGMHy5Ec0f7MeshFTLsebdq7j3mA86NUB/Y+8M8d+G+wS13LnwQQnyhNf62B
+	 RXQJu3AZJDnUeRTNJAY5EZL0mAuQHiJC37wx7iiy7WnoPYfucij+i/JWAnK3f/SDfA
+	 iY6dp4njEwpkZZdW5gj+zrhL1BgbZMBvgmuttnQg=
+Received: from [IPv6:2601:5c4:4302:c21::db7] (unknown [IPv6:2601:5c4:4302:c21::db7])
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id EBE621C254F;
+	Thu, 20 Feb 2025 07:56:46 -0500 (EST)
+Message-ID: <1f52fa44062e9395d54ed6733780aea0830ee6a5.camel@HansenPartnership.com>
 Subject: Re: Rust kernel policy
-Message-ID: <2025022052-ferment-vice-a30b@gregkh>
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
- <Z7SwcnUzjZYfuJ4-@infradead.org>
- <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
- <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
- <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
- <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
- <Z7VKW3eul-kGaIT2@Mac.home>
- <2025021954-flaccid-pucker-f7d9@gregkh>
- <2nn05osp-9538-11n6-5650-p87s31pnnqn0@vanv.qr>
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, rust-for-linux
+ <rust-for-linux@vger.kernel.org>, Linus Torvalds
+ <torvalds@linux-foundation.org>,  Greg KH <gregkh@linuxfoundation.org>,
+ David Airlie <airlied@gmail.com>,  linux-kernel@vger.kernel.org,
+ ksummit@lists.linux.dev
+Date: Thu, 20 Feb 2025 07:56:46 -0500
+In-Reply-To: <Z7bQRvHNcK_MmDQn@infradead.org>
+References: <Z7SwcnUzjZYfuJ4-@infradead.org>
+	 <b0a8ee53b767b7684de91eeb6924ecdf5929d31e.camel@HansenPartnership.com>
+	 <CANiq72nnnOsGZDrPDm8iWxYn2FL=wJqx-P8aS63dFYez3_FEOg@mail.gmail.com>
+	 <a627845f73f2f7bedc7a820cfdf476be9993e30f.camel@HansenPartnership.com>
+	 <Z7bQRvHNcK_MmDQn@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2nn05osp-9538-11n6-5650-p87s31pnnqn0@vanv.qr>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Feb 20, 2025 at 01:28:58PM +0100, Jan Engelhardt wrote:
+On Wed, 2025-02-19 at 22:48 -0800, Christoph Hellwig wrote:
+> On Wed, Feb 19, 2025 at 11:03:28AM -0500, James Bottomley wrote:
+> > > This has come up a few times, and we indeed would like to have
+> > > some annotations in the C headers so that we can generate more
+> > > (and to keep the information local).
+> > > 
+> > > For instance, it would be nice to have bindgen's `__opaque` near
+> > > the C items, or being able to mark functions as `__safe`, or to
+> > > have other `enum`s-related annotations, or even custom
+> > > attributes, as well as "formatted-formally-enough" docs so that
+> > > can be rendered properly on the Rust side, or even
+> > > references/lifetimes with an eventual "Safe C"-like approach, and
+> > > so on and so forth.
+> > > 
+> > > However, even if we automate more and even reach a point where
+> > > most C APIs are e.g. "safe" (which would be great),
+> > 
+> > I wouldn't say C API safety would be the main goal, although it
+> > might be a nice add on feature.
 > 
-> On Wednesday 2025-02-19 06:39, Greg KH wrote:
-> >
-> >The majority of bugs (quantity, not quality/severity) we have are due to
-> >the stupid little corner cases in C that are totally gone in Rust.
-> 
-> If and when Rust receives its own corner cases in the future,
-> I will happily point back to this statement.
+> Why not?  Why is safety suddenly less a goal when you don't use the
+> right syntactic sugar?
 
-I'm not saying that rust has no such issues, I'm saying that a huge
-majority of the stupid things we do in C just don't happen in the same
-code implemented in rust (i.e. memory leaks, error path cleanups, return
-value checking, etc.)
+Well a) because of the way C works, I don't believe you can get memory
+safety with just header annotations and b) even if we got safe C it
+still doesn't fix the unstable API propagation to rust problem, which
+is why I don't think it should be a goal in a project aiming to fix the
+unstable API issue. If we got it, I'd like it, which is why I listed it
+as a nice add on feature.
 
-So sure, let's make different types of errors in the future, not
-continue to make the same ones we should have learned from already
-please :)
+Regards,
 
-thanks,
+James
 
-greg k-h
 
