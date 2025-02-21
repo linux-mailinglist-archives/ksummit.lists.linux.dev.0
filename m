@@ -1,132 +1,183 @@
-Return-Path: <ksummit+bounces-1797-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1798-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8437A3FEDA
-	for <lists@lfdr.de>; Fri, 21 Feb 2025 19:31:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AC63A3FEE5
+	for <lists@lfdr.de>; Fri, 21 Feb 2025 19:35:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD9FD4224C8
-	for <lists@lfdr.de>; Fri, 21 Feb 2025 18:31:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F175D189BCA1
+	for <lists@lfdr.de>; Fri, 21 Feb 2025 18:34:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E372512F8;
-	Fri, 21 Feb 2025 18:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 073DA2512C3;
+	Fri, 21 Feb 2025 18:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b="JCg4unUf"
-Received: from mailrelay.tugraz.at (mailrelay.tugraz.at [129.27.2.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XanFkZIh"
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19E51F7561
-	for <ksummit@lists.linux.dev>; Fri, 21 Feb 2025 18:31:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.27.2.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0AB1F03F2
+	for <ksummit@lists.linux.dev>; Fri, 21 Feb 2025 18:34:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740162690; cv=none; b=taaqg06K6KdM6kFELQrsLYPb1LPxTcOzCCKQ5ll75QWUe4Q/NcWggjLEp5/hb9rYFRW7jgVXFnBR0mA4eDvRoTmfTxFpcVx7ziHf5xT72axTFC099OmjuxndF42S9yIt29Rw4ZTrAXwFjKZsqVAp5/0MlJ8GgeVVOIFInh1DrGw=
+	t=1740162882; cv=none; b=aPQFTYRRIaMSkXyJ7gyNhoGZSrVNFgcdUJwv9btOq0d2yej5cGQ9+09JvilcjehiFp36tfYQ/Cqu40CtN3kNyN7kU2vw25MJsUsZcr5Z9sPgbYVdOZrpP+Lm99dJ+XHhfYxPRSIpelikyurqQ5wvrh58td0HB+uphNDxZXIKY9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740162690; c=relaxed/simple;
-	bh=MxpumlDwhnylpkxHEgoZ0MXmhXAvcnQNyZqB93PA5AY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Zb7Am+3APyH9gL9t/cHQJ8u3GCY2vDBbXCft6S8PrK2mfwxkBu/2xSl9Zxf0P/MaVTk3NGqk63OtKLSZfnn9sz7Dj6heJp6pw0/t/LeynRBg1nYgiBopcNTyM8I5BtmzG5Llg6e+975r/eyU8NlRbSi2HhZuI6Ai/tmc6lO7sx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at; spf=pass smtp.mailfrom=tugraz.at; dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b=JCg4unUf; arc=none smtp.client-ip=129.27.2.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tugraz.at
-Received: from vra-171-233.tugraz.at (vra-171-233.tugraz.at [129.27.171.233])
-	by mailrelay.tugraz.at (Postfix) with ESMTPSA id 4YzzGl5gKZz1LLyr;
-	Fri, 21 Feb 2025 19:31:11 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailrelay.tugraz.at 4YzzGl5gKZz1LLyr
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tugraz.at;
-	s=mailrelay; t=1740162672;
-	bh=/+dtQ4s+qGuePICY9AN+id1kJcoRIC7mJUtJi5sAuCs=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=JCg4unUf2mZWL8AqlPSBPf7kO5cMjGm1uMeqrNChJEUDiE6EO5aEjL3cb6NxkwiHj
-	 zqWdd3XRmYeg2I1Stxr9SLA94cPZVze+lrjna6OXiGdb2wJR5XgLjKEJj+8MAOxU1A
-	 dZ8b1YyhZIduyrlFpYyw4EW21v41/gep59bbslSg=
-Message-ID: <6b3e4d3bdc9b6efd69068e5b22cfd05d370aed19.camel@tugraz.at>
-Subject: Re: Rust kernel policy
-From: Martin Uecker <uecker@tugraz.at>
-To: Linus Torvalds <torvalds@linux-foundation.org>, Steven Rostedt
-	 <rostedt@goodmis.org>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>, Greg KH
- <gregkh@linuxfoundation.org>, Boqun Feng <boqun.feng@gmail.com>, "H. Peter
- Anvin" <hpa@zytor.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Christoph Hellwig <hch@infradead.org>, rust-for-linux
- <rust-for-linux@vger.kernel.org>, David Airlie <airlied@gmail.com>,
+	s=arc-20240116; t=1740162882; c=relaxed/simple;
+	bh=K1euvi218QtGDVfU+jRQE7kWk0UjLLsjTd5RBkDtOKs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=I+/uFoVWmpt4rnjrpB054L9t002fyPlDEM7ruiFezNvhSJjoniTasmW45U0Li4wKZh4ImP24MJtD3wiCmMJaFad3/jwyS66e3jOouD2O5x7vpzWFqtrOgo1m63+JlLHtnT5nA6xio51OHvxRwzLOSIw9hNOF6A4/DomajDKX5Zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XanFkZIh; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-38f1e8efe82so2699785f8f.0
+        for <ksummit@lists.linux.dev>; Fri, 21 Feb 2025 10:34:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740162879; x=1740767679; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZrGiJcdjwdCBMTHzMbFP8clEmCxmNCyAUHf0UccRpxQ=;
+        b=XanFkZIhruusFO6KNh4+bMuI+FAHLwQmKJP91leCJiFIknMlFEmMZQ8Z3vZURx6lWu
+         KlHXCKa4N7MgK0jpfw6z1Zjb9YmfcynqGzDDnJPQSar4M0TgTWW1HZq8qxgP0nYF3IvL
+         wt17+EU1OWqvIYUeVbKPJualNUMQjwUgurxOdciuIUTfKcYHQn+P4Ll7rfjLcWjR+Ra8
+         hz3hNiHEHbHHwh20q9aXrj8fnU9eMToEqkTwlXi0/XL94eNWKmMGodr819lg0lS/dtoE
+         9P74vXg7LLHWM3EZfZTtk+C068+hIh5YAoPdu5JBeZDh379jys+BuWRvCtzhOSETSMBY
+         58jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740162879; x=1740767679;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZrGiJcdjwdCBMTHzMbFP8clEmCxmNCyAUHf0UccRpxQ=;
+        b=hjsz0ZtYJndbzp4hGr/ODHavGN/g0npGGFGzzC1kXNTlZ7PU+caMAsGbZ0btrr8pHJ
+         14lk5WokdrQd6lf8ECqw6bPbOW0BDdZ8dP2DOKFdX38g1KPhzoahQuio1qPrWMDPHciB
+         0vecniR/Y48hAUNvA8W1xbPWdQhKnLNAwObPifr4ek6NGK2WqXnqMKkZ1xb9rJHr1Ym0
+         gLkrIpUI35K740fzRVhGK7tZ5LT3wfB+H8PfFkVobZmyF+0Bob2mphSYDAjyRQbBqgeY
+         QwcwjpCZZ57LmWJnEZVEkE5H+3BIaYK2WfnnQFIjGds1KqCsQyD9c51ivQNsP9NAQdzq
+         PAXg==
+X-Forwarded-Encrypted: i=1; AJvYcCWUWtAzvP9JqmdyYclTr/iKG7SNIwlpqD8VrML+2Bl83twTMH0WGbXB8hp8qhl4ajEGnP5mZF3E@lists.linux.dev
+X-Gm-Message-State: AOJu0YwDMpjKOk/S6T/XR/MaBFf5eFxqu5QRJEq/AObL0bP1MQGhxBVO
+	mpcpbhd+4owVsI6A79/elZ+5KJNtqZqU+6jigAFkg8H7baXu+KyC
+X-Gm-Gg: ASbGncv4v3tunKP+NbpQos4imfOG9FejWOk8e4CYHNrx+WkJ/sl9oL9m6qVDIf3AD5y
+	kmPmU9ABme+t+xC0KqrS/tB1Nnf00otqGI3F2gXL+qYth2WcNDzh3HpFdICo9jNRqyzt3oM9McD
+	VELm5CMczzOeTP+XSVzaMKrnw1p0zX+DfXWvwq3PlaA08LccRSyPvmpsq1UVDOvP24RESG7Xqyx
+	B5HPMx8h7BTcFb2YWQ22cX8SHJStNweVPDXw88NN2fqTf/T4J7Lhe32n2hU8GbTClwCnQlrC2sW
+	g8As+RHFYwJs0i3anx4oFIBzwHJWLOiZA+YRns7aUHtbzlGwnYLuq2x55jL43uvf
+X-Google-Smtp-Source: AGHT+IFu3pBLM4BG9HpyDU3xaz6bWoZ/qR4n4K+OaxFPRhle1mo7ALTGO5sJuO7n6dg9d922Pza9WQ==
+X-Received: by 2002:a5d:4c81:0:b0:38e:48a6:280b with SMTP id ffacd0b85a97d-38f6f096a76mr2806405f8f.34.1740162878585;
+        Fri, 21 Feb 2025 10:34:38 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f258ddbb2sm23668086f8f.40.2025.02.21.10.34.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Feb 2025 10:34:38 -0800 (PST)
+Date: Fri, 21 Feb 2025 18:34:37 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Jan Engelhardt <ej@inai.de>
+Cc: "H. Peter Anvin" <hpa@zytor.com>, Greg KH <gregkh@linuxfoundation.org>,
+ Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda
+ <miguel.ojeda.sandonis@gmail.com>, Christoph Hellwig <hch@infradead.org>,
+ rust-for-linux <rust-for-linux@vger.kernel.org>, Linus Torvalds
+ <torvalds@linux-foundation.org>, David Airlie <airlied@gmail.com>,
  linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
-Date: Fri, 21 Feb 2025 19:31:11 +0100
-In-Reply-To: <CAHk-=wgg2A_iHNwf_JDjYJF=XHnKVGOjGp50FzVWniA2Z010bw@mail.gmail.com>
-References: <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
-	 <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
-	 <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
-	 <Z7VKW3eul-kGaIT2@Mac.home> <2025021954-flaccid-pucker-f7d9@gregkh>
-	 <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
-	 <2025022024-blooper-rippling-2667@gregkh>
-	 <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
-	 <2025022042-jot-favored-e755@gregkh>
-	 <b9a5de64fe1ded2ad3111763f35af9901bd81cc4.camel@tugraz.at>
-	 <caea3e79-78e6-4d98-9f3b-f8e7f6f00196@stanley.mountain>
-	 <61a7e7db786d9549cbe201b153647689cbe12d75.camel@tugraz.at>
-	 <20250221124304.5dec31b2@gandalf.local.home>
-	 <CAHk-=wgg2A_iHNwf_JDjYJF=XHnKVGOjGp50FzVWniA2Z010bw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+Subject: Re: C aggregate passing (Rust kernel policy)
+Message-ID: <20250221183437.1e2b5b94@pumpkin>
+In-Reply-To: <n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr>
+References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
+	<Z7SwcnUzjZYfuJ4-@infradead.org>
+	<CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
+	<326CC09B-8565-4443-ACC5-045092260677@zytor.com>
+	<CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
+	<a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
+	<Z7VKW3eul-kGaIT2@Mac.home>
+	<2025021954-flaccid-pucker-f7d9@gregkh>
+	<2nn05osp-9538-11n6-5650-p87s31pnnqn0@vanv.qr>
+	<2025022052-ferment-vice-a30b@gregkh>
+	<9B01858A-7EBD-4570-AC51-3F66B2B1E868@zytor.com>
+	<n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-TUG-Backscatter-control: G/VXY7/6zeyuAY/PU2/0qw
-X-Spam-Scanner: SpamAssassin 3.003001 
-X-Spam-Score-relay: 0.0
-X-Scanned-By: MIMEDefang 2.74 on 129.27.10.117
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Am Freitag, dem 21.02.2025 um 10:07 -0800 schrieb Linus Torvalds:
-> On Fri, 21 Feb 2025 at 09:42, Steven Rostedt <rostedt@goodmis.org> wrote:
-> >=20
-> > Because they are arcane and even the gcc documentation recommends avoid=
-ing
-> > them.
-> >=20
-> >  "Note that in general we do not recommend the use of pragmas"
-> >  https://gcc.gnu.org/onlinedocs/gcc/Pragmas.html
->=20
-> Yeah, #pragma is complete garbage and should never be used. It's a
-> fundamentally broken feature because it doesn't work AT ALL with a
-> very core piece of C infrastructure: the pre-processor.
->=20
-> Now, we all hopefully know that the C pre-processor is the _real_
-> fundamental problem here in how limited it is, but it is what it is.
-> Given the fact of how weak C pre-processing is, adding a feature like
-> #pragma was a complete failure.
+On Thu, 20 Feb 2025 16:17:07 +0100 (CET)
+Jan Engelhardt <ej@inai.de> wrote:
 
-Isn't this what _Pragma() is for? =20
+> On Thursday 2025-02-20 14:23, H. Peter Anvin wrote:
+> >
+> >People writing C seem to have a real aversion for using structures
+> >as values (arguments, return values or assignments) even though that
+> >has been valid since at least C90 and can genuinely produce better
+> >code in some cases.  
+> 
+> The aversion stems from compilers producing "worse" ASM to this
+> date, as in this case for example:
+> 
+> ```c
+> #include <sys/stat.h>
+> extern struct stat fff();
+> struct stat __attribute__((noinline)) fff()
+> {
+>         struct stat sb = {};
+>         stat(".", &sb);
+>         return sb;
+> }
+> ```
+> 
+> Build as C++ and C and compare.
+> 
+> $ g++-15 -std=c++23 -O2 -x c++ -c x.c && objdump -Mintel -d x.o
+> $ gcc-15 -std=c23 -O2 -c x.c && objdump -Mintel -d x.o
+> 
+> Returning aggregates in C++ is often implemented with a secret extra
+> pointer argument passed to the function. The C backend does not
+> perform that kind of transformation automatically. I surmise ABI reasons.
 
->=20
-> So gcc - and other compilers - have figured out alternatives to pragma
-> that actually work within the context of the C pre-processor. The main
-> one tends to be to use __attribute__(()) to give magical extra
-> context.
+Have you really looked at the generated code?
+For anything non-trivial if gets truly horrid.
 
-The issue with __attribute__ is that it is always tied to a specific
-syntactic construct.  Possible it could be changed, but then I do
-not see a major difference to _Pragma, or?
+To pass a class by value the compiler has to call the C++ copy-operator to
+generate a deep copy prior to the call, and then call the destructor after
+the function returns - compare against passing a pointer to an existing
+item (and not letting it be written to).
 
-...[Linus' rant]...
+Returning a class member is probably worse and leads to nasty bugs.
+In general the called code will have to do a deep copy from the item
+being returned and then (quite likely) call the destructor for the
+local variable being returned (if a function always returns a specific
+local then the caller-provided temporary might be usable).
+The calling code now has a temporary local variable that is going
+to go out of scope (and be destructed) very shortly - I think the
+next sequence point.
+So you have lots of constructors, copy-operators and destructors
+being called.
+Then you get code like:
+	const char *foo = data.func().c_str();
+very easily written looks fine, but foo points to garbage.
 
->=20
-> This is non-negotiable. Anybody who thinks that a compiler is valid
-> warning about
->=20
->          if (x < 0 || x >=3D 10) {
->=20
-> just because 'x' may in some cases be an unsigned entity is not worth
-> even discussing with.
+I've been going through some c++ code pretty much removing all the
+places that classes get returned by value.
+You can return a reference - that doesn't go out of scope.
+Or, since most of the culprits are short std::string, replace them by char[].
+Code is better, shorter, and actually less buggy.
+(Apart from the fact that c++ makes it hard to ensure all the non-class
+members are initialised.)
 
-Do you think the warning is useless in macros, or in general?
+As Linus said, most modern ABI pass short structures in one or two registers
+(or stack slots).
+But aggregate returns are always done by passing a hidden pointer argument.
+It is annoying that double-sized integers (u64 on 32bit and u128 on 64bit)
+are returned in a register pair - but similar sized structures have to be
+returned by value.
+It is possible to get around this with #defines that convert the value
+to a big integer (etc) - but I don't remember that actually being done.
 
-Martin
-
+	David
 
 
 
