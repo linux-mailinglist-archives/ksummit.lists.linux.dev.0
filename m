@@ -1,184 +1,139 @@
-Return-Path: <ksummit+bounces-1798-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1799-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AC63A3FEE5
-	for <lists@lfdr.de>; Fri, 21 Feb 2025 19:35:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C18D5A3FF77
+	for <lists@lfdr.de>; Fri, 21 Feb 2025 20:12:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F175D189BCA1
-	for <lists@lfdr.de>; Fri, 21 Feb 2025 18:34:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 608C13A3D10
+	for <lists@lfdr.de>; Fri, 21 Feb 2025 19:12:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 073DA2512C3;
-	Fri, 21 Feb 2025 18:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4832D2528E5;
+	Fri, 21 Feb 2025 19:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XanFkZIh"
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="fvshzesT"
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0AB1F03F2
-	for <ksummit@lists.linux.dev>; Fri, 21 Feb 2025 18:34:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9836E1F3FE2
+	for <ksummit@lists.linux.dev>; Fri, 21 Feb 2025 19:12:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740162882; cv=none; b=aPQFTYRRIaMSkXyJ7gyNhoGZSrVNFgcdUJwv9btOq0d2yej5cGQ9+09JvilcjehiFp36tfYQ/Cqu40CtN3kNyN7kU2vw25MJsUsZcr5Z9sPgbYVdOZrpP+Lm99dJ+XHhfYxPRSIpelikyurqQ5wvrh58td0HB+uphNDxZXIKY9k=
+	t=1740165169; cv=none; b=jOZgjFoPcvrLVb/CYxWVV2E2bBSPF/6cVfgWoDeIY8wyeIuqMQdrBnSbKLxAQ1EK4urWJnGm6NUUW7QVws16aomLWLsqUayUJieX+zcL1FBnXXX8tfNgcUb9sR40oRQ1/lMguM0aJQuQANYDl+Icr+IyxKL/bpOkJxY8FImNvA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740162882; c=relaxed/simple;
-	bh=K1euvi218QtGDVfU+jRQE7kWk0UjLLsjTd5RBkDtOKs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I+/uFoVWmpt4rnjrpB054L9t002fyPlDEM7ruiFezNvhSJjoniTasmW45U0Li4wKZh4ImP24MJtD3wiCmMJaFad3/jwyS66e3jOouD2O5x7vpzWFqtrOgo1m63+JlLHtnT5nA6xio51OHvxRwzLOSIw9hNOF6A4/DomajDKX5Zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XanFkZIh; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-38f1e8efe82so2699785f8f.0
-        for <ksummit@lists.linux.dev>; Fri, 21 Feb 2025 10:34:40 -0800 (PST)
+	s=arc-20240116; t=1740165169; c=relaxed/simple;
+	bh=ycAq18Hl2Osak2ytc9YhbxBtTZWY1af4b1+0AgXoSAY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QEhPQ2G2j8zxZifKrlye5TjQi/oQNGiNscnhEL7ppTKoMiqToKc1nu8xUMyJLJV8pqxcItqCdy1e0cZIv7NrvSzZHbHs2y3sUwMjqf10IWbQnoTJir93TpUQ8XYTWb7t7SYh73hEiHkf0rgOliKDlrSgjXa1EjTLEFTVLycTGHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=fvshzesT; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ab744d5e567so430119266b.1
+        for <ksummit@lists.linux.dev>; Fri, 21 Feb 2025 11:12:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740162879; x=1740767679; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZrGiJcdjwdCBMTHzMbFP8clEmCxmNCyAUHf0UccRpxQ=;
-        b=XanFkZIhruusFO6KNh4+bMuI+FAHLwQmKJP91leCJiFIknMlFEmMZQ8Z3vZURx6lWu
-         KlHXCKa4N7MgK0jpfw6z1Zjb9YmfcynqGzDDnJPQSar4M0TgTWW1HZq8qxgP0nYF3IvL
-         wt17+EU1OWqvIYUeVbKPJualNUMQjwUgurxOdciuIUTfKcYHQn+P4Ll7rfjLcWjR+Ra8
-         hz3hNiHEHbHHwh20q9aXrj8fnU9eMToEqkTwlXi0/XL94eNWKmMGodr819lg0lS/dtoE
-         9P74vXg7LLHWM3EZfZTtk+C068+hIh5YAoPdu5JBeZDh379jys+BuWRvCtzhOSETSMBY
-         58jg==
+        d=linux-foundation.org; s=google; t=1740165165; x=1740769965; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=PpPO+UoqYur20fhUIihwHOS5iBey4AF8c1A/KbY6wDQ=;
+        b=fvshzesTXYrRuiJD3AhVYWcIlw1pUuSkO/j91a63Tze54oo/jTMMXTlJz4v1LQer9v
+         XH8j2Dz/Pch3jgsheKsoeDffrPudFamoLa+WgV+kI5kKa5/43J7oVsbmLw6p0WR8L/Ra
+         Hyrqs1MutBzShjQFPTMchnkpwO4OHkQ0lO9LA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740162879; x=1740767679;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZrGiJcdjwdCBMTHzMbFP8clEmCxmNCyAUHf0UccRpxQ=;
-        b=hjsz0ZtYJndbzp4hGr/ODHavGN/g0npGGFGzzC1kXNTlZ7PU+caMAsGbZ0btrr8pHJ
-         14lk5WokdrQd6lf8ECqw6bPbOW0BDdZ8dP2DOKFdX38g1KPhzoahQuio1qPrWMDPHciB
-         0vecniR/Y48hAUNvA8W1xbPWdQhKnLNAwObPifr4ek6NGK2WqXnqMKkZ1xb9rJHr1Ym0
-         gLkrIpUI35K740fzRVhGK7tZ5LT3wfB+H8PfFkVobZmyF+0Bob2mphSYDAjyRQbBqgeY
-         QwcwjpCZZ57LmWJnEZVEkE5H+3BIaYK2WfnnQFIjGds1KqCsQyD9c51ivQNsP9NAQdzq
-         PAXg==
-X-Forwarded-Encrypted: i=1; AJvYcCWUWtAzvP9JqmdyYclTr/iKG7SNIwlpqD8VrML+2Bl83twTMH0WGbXB8hp8qhl4ajEGnP5mZF3E@lists.linux.dev
-X-Gm-Message-State: AOJu0YwDMpjKOk/S6T/XR/MaBFf5eFxqu5QRJEq/AObL0bP1MQGhxBVO
-	mpcpbhd+4owVsI6A79/elZ+5KJNtqZqU+6jigAFkg8H7baXu+KyC
-X-Gm-Gg: ASbGncv4v3tunKP+NbpQos4imfOG9FejWOk8e4CYHNrx+WkJ/sl9oL9m6qVDIf3AD5y
-	kmPmU9ABme+t+xC0KqrS/tB1Nnf00otqGI3F2gXL+qYth2WcNDzh3HpFdICo9jNRqyzt3oM9McD
-	VELm5CMczzOeTP+XSVzaMKrnw1p0zX+DfXWvwq3PlaA08LccRSyPvmpsq1UVDOvP24RESG7Xqyx
-	B5HPMx8h7BTcFb2YWQ22cX8SHJStNweVPDXw88NN2fqTf/T4J7Lhe32n2hU8GbTClwCnQlrC2sW
-	g8As+RHFYwJs0i3anx4oFIBzwHJWLOiZA+YRns7aUHtbzlGwnYLuq2x55jL43uvf
-X-Google-Smtp-Source: AGHT+IFu3pBLM4BG9HpyDU3xaz6bWoZ/qR4n4K+OaxFPRhle1mo7ALTGO5sJuO7n6dg9d922Pza9WQ==
-X-Received: by 2002:a5d:4c81:0:b0:38e:48a6:280b with SMTP id ffacd0b85a97d-38f6f096a76mr2806405f8f.34.1740162878585;
-        Fri, 21 Feb 2025 10:34:38 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f258ddbb2sm23668086f8f.40.2025.02.21.10.34.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Feb 2025 10:34:38 -0800 (PST)
-Date: Fri, 21 Feb 2025 18:34:37 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Jan Engelhardt <ej@inai.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>, Greg KH <gregkh@linuxfoundation.org>,
- Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda
- <miguel.ojeda.sandonis@gmail.com>, Christoph Hellwig <hch@infradead.org>,
- rust-for-linux <rust-for-linux@vger.kernel.org>, Linus Torvalds
- <torvalds@linux-foundation.org>, David Airlie <airlied@gmail.com>,
- linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
-Subject: Re: C aggregate passing (Rust kernel policy)
-Message-ID: <20250221183437.1e2b5b94@pumpkin>
-In-Reply-To: <n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr>
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
-	<Z7SwcnUzjZYfuJ4-@infradead.org>
-	<CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
-	<326CC09B-8565-4443-ACC5-045092260677@zytor.com>
-	<CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
-	<a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
-	<Z7VKW3eul-kGaIT2@Mac.home>
-	<2025021954-flaccid-pucker-f7d9@gregkh>
-	<2nn05osp-9538-11n6-5650-p87s31pnnqn0@vanv.qr>
-	<2025022052-ferment-vice-a30b@gregkh>
-	<9B01858A-7EBD-4570-AC51-3F66B2B1E868@zytor.com>
-	<n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        d=1e100.net; s=20230601; t=1740165165; x=1740769965;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PpPO+UoqYur20fhUIihwHOS5iBey4AF8c1A/KbY6wDQ=;
+        b=nuypWCs9W1aFfYw2BGgs6/7/sqlFqDOlm9beihJAK2qBo10OoWnnpudkwnxLLxjwJQ
+         cCzrURLQDSEG4bHonpTC4KFf3gaxGDOwtirtJEqtUhk7DMYIh5OaeE3Ys/tSNpXn6INM
+         lt1vZwaL/8OXeKBTTIXSg2YThay/bKQXKWIj5C6q5coYguN9gDTRd1xQO5Mn0XM47twZ
+         9z6NnBcL1SN5N6jlw95j8IKr3g0RbvS4eKlYAj/tcbSIsJJ4r8CwwouJGEEi0R0VHoRT
+         Uwc6pVvFPeLw7Dyc4dEahQmRyZ1dJ0kvt7lxNC0J+xN3UAdMUzQflfD4v5AJYKwgCD+q
+         24aQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXqwq97pA2hS41cZRACIyzuvEvhllW8pY7oUUOgTAjDPuZHNvr/0AaYvSjDPKh1NKEVL5AH/9vq@lists.linux.dev
+X-Gm-Message-State: AOJu0YyXMQ+6lfbBSbroErHRcxOC7EKm6blKSmS42JgVu707hhS7pFkH
+	i4apMrknse18XrBHt/hhWEcGxN80Uxn35q0LuATUqsBNz3cvhfk9kyPHuzrrwGyG7zQ/XRkX03c
+	VpCo=
+X-Gm-Gg: ASbGncuQ1gJaqWFloioDXArjIrXY2NXDEcsCobdlJzd0Dr6DYV0O6hHdR/F2hgrpYrk
+	2gOo8x2Z0OSfdBtbpCf1b1Za7AZVSn41grX1xxzeDGV2+jLpfS0QY4Lh+MOBU0+NM3HwrGo7eri
+	XoDBFO5ecN6BCGLUIhIPK/f6AYdiQJErnJ2mFjuEu+FmB2kzKXZWTtFyniUxigQ0HgnFjJak4H2
+	XUxX0idS3eKjnFrj5MbBC7P4os2Tvs3l44QVhvsw6YI8QK9h8Fci5kMSVN7iUrp0sDWUQT72WLL
+	IkbxdQfbD5IRJd6v8CiAE0VSF1res9ILbQ+oth90y6Uatun7OSa7bCqV2B9A7bD0YtPXwERezzk
+	G
+X-Google-Smtp-Source: AGHT+IGoPTCDq6d8RRuYtEFMK4LNsE5ZKgT+RBzcC43HYYhj8bydN+FJdv5O1dfo8HzvlJWHB0BCzg==
+X-Received: by 2002:a17:907:c48f:b0:ab6:f0d3:9687 with SMTP id a640c23a62f3a-abc0b038c4dmr398638266b.21.1740165165482;
+        Fri, 21 Feb 2025 11:12:45 -0800 (PST)
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com. [209.85.218.52])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aba53281cfcsm1697418066b.79.2025.02.21.11.12.44
+        for <ksummit@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 21 Feb 2025 11:12:44 -0800 (PST)
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ab771575040so619486566b.1
+        for <ksummit@lists.linux.dev>; Fri, 21 Feb 2025 11:12:44 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXzt3gi/FwppCOGW13hGR0pD/y9ujTHd7Wc0ffZJJKUveMc24nqWpu+Oi1sOPlU1RTf1CFxwHrM@lists.linux.dev
+X-Received: by 2002:a17:907:97d0:b0:abb:ec29:d40f with SMTP id
+ a640c23a62f3a-abc0ae8ac7bmr518893266b.13.1740165164023; Fri, 21 Feb 2025
+ 11:12:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
+ <Z7SwcnUzjZYfuJ4-@infradead.org> <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
+ <326CC09B-8565-4443-ACC5-045092260677@zytor.com> <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
+ <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com> <Z7VKW3eul-kGaIT2@Mac.home>
+ <2025021954-flaccid-pucker-f7d9@gregkh> <2nn05osp-9538-11n6-5650-p87s31pnnqn0@vanv.qr>
+ <2025022052-ferment-vice-a30b@gregkh> <9B01858A-7EBD-4570-AC51-3F66B2B1E868@zytor.com>
+ <n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr> <20250221183437.1e2b5b94@pumpkin>
+In-Reply-To: <20250221183437.1e2b5b94@pumpkin>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Fri, 21 Feb 2025 11:12:27 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wjF0wjD4ko7MgrZ1wBZ9QOrQd_AnyhDDUJQ1L5+i-o22A@mail.gmail.com>
+X-Gm-Features: AWEUYZmM9QfL00hwgEM8sBRcCKHPzsXEZopO9LOxfzNGM8PLhnN7fh_mlPWpfF8
+Message-ID: <CAHk-=wjF0wjD4ko7MgrZ1wBZ9QOrQd_AnyhDDUJQ1L5+i-o22A@mail.gmail.com>
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Jan Engelhardt <ej@inai.de>, "H. Peter Anvin" <hpa@zytor.com>, Greg KH <gregkh@linuxfoundation.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+	Christoph Hellwig <hch@infradead.org>, rust-for-linux <rust-for-linux@vger.kernel.org>, 
+	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 20 Feb 2025 16:17:07 +0100 (CET)
-Jan Engelhardt <ej@inai.de> wrote:
+On Fri, 21 Feb 2025 at 10:34, David Laight <david.laight.linux@gmail.com> wrote:
+>
+> As Linus said, most modern ABI pass short structures in one or two registers
+> (or stack slots).
+> But aggregate returns are always done by passing a hidden pointer argument.
+>
+> It is annoying that double-sized integers (u64 on 32bit and u128 on 64bit)
+> are returned in a register pair - but similar sized structures have to be
+> returned by value.
 
-> On Thursday 2025-02-20 14:23, H. Peter Anvin wrote:
-> >
-> >People writing C seem to have a real aversion for using structures
-> >as values (arguments, return values or assignments) even though that
-> >has been valid since at least C90 and can genuinely produce better
-> >code in some cases.  
-> 
-> The aversion stems from compilers producing "worse" ASM to this
-> date, as in this case for example:
-> 
-> ```c
-> #include <sys/stat.h>
-> extern struct stat fff();
-> struct stat __attribute__((noinline)) fff()
-> {
->         struct stat sb = {};
->         stat(".", &sb);
->         return sb;
-> }
-> ```
-> 
-> Build as C++ and C and compare.
-> 
-> $ g++-15 -std=c++23 -O2 -x c++ -c x.c && objdump -Mintel -d x.o
-> $ gcc-15 -std=c23 -O2 -c x.c && objdump -Mintel -d x.o
-> 
-> Returning aggregates in C++ is often implemented with a secret extra
-> pointer argument passed to the function. The C backend does not
-> perform that kind of transformation automatically. I surmise ABI reasons.
+No, they really don't. At least not on x86 and arm64 with our ABI.
+Two-register structures get returned in registers too.
 
-Have you really looked at the generated code?
-For anything non-trivial if gets truly horrid.
+Try something like this:
 
-To pass a class by value the compiler has to call the C++ copy-operator to
-generate a deep copy prior to the call, and then call the destructor after
-the function returns - compare against passing a pointer to an existing
-item (and not letting it be written to).
+  struct a {
+        unsigned long val1, val2;
+  } function(void)
+  { return (struct a) { 5, 100 }; }
 
-Returning a class member is probably worse and leads to nasty bugs.
-In general the called code will have to do a deep copy from the item
-being returned and then (quite likely) call the destructor for the
-local variable being returned (if a function always returns a specific
-local then the caller-provided temporary might be usable).
-The calling code now has a temporary local variable that is going
-to go out of scope (and be destructed) very shortly - I think the
-next sequence point.
-So you have lots of constructors, copy-operators and destructors
-being called.
-Then you get code like:
-	const char *foo = data.func().c_str();
-very easily written looks fine, but foo points to garbage.
+and you'll see both gcc and clang generate
 
-I've been going through some c++ code pretty much removing all the
-places that classes get returned by value.
-You can return a reference - that doesn't go out of scope.
-Or, since most of the culprits are short std::string, replace them by char[].
-Code is better, shorter, and actually less buggy.
-(Apart from the fact that c++ makes it hard to ensure all the non-class
-members are initialised.)
+        movl $5, %eax
+        movl $100, %edx
+        retq
 
-As Linus said, most modern ABI pass short structures in one or two registers
-(or stack slots).
-But aggregate returns are always done by passing a hidden pointer argument.
-It is annoying that double-sized integers (u64 on 32bit and u128 on 64bit)
-are returned in a register pair - but similar sized structures have to be
-returned by value.
-It is possible to get around this with #defines that convert the value
-to a big integer (etc) - but I don't remember that actually being done.
+(and you'll similar code on other architectures).
 
-	David
+But it really is just that the two-register case is special.
+Immediately when it grows past that size then yes, it ends up being
+returned through indirect memory.
 
-
-
+               Linus
 
