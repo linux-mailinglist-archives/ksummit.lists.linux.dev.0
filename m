@@ -1,98 +1,117 @@
-Return-Path: <ksummit+bounces-1811-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1815-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2E98A4027E
-	for <lists@lfdr.de>; Fri, 21 Feb 2025 23:14:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 625DAA40342
+	for <lists@lfdr.de>; Sat, 22 Feb 2025 00:03:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09E011883289
-	for <lists@lfdr.de>; Fri, 21 Feb 2025 22:14:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4694B7AE980
+	for <lists@lfdr.de>; Fri, 21 Feb 2025 23:02:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5974253F3B;
-	Fri, 21 Feb 2025 22:14:29 +0000 (UTC)
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 638F01FF1AF;
+	Fri, 21 Feb 2025 23:03:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=mailo.com header.i=@mailo.com header.b="L1d/3uHk"
+Received: from mailo.com (msg-1.mailo.com [213.182.54.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F61253F06;
-	Fri, 21 Feb 2025 22:14:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6932C1FBC99
+	for <ksummit@lists.linux.dev>; Fri, 21 Feb 2025 23:03:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.182.54.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740176069; cv=none; b=Ulg6S/G2zTfI2uKyoNP7qO4g3CKL+7W9WVJUex3thr7ChSo3roosdpiM1ZBUs+jyb8OMLzmviLqgJq6Ku4bOqUXSKFMIDj7Qp0nQtVqfIpSvGV6MnDOmkDe3rmAH0gITrW7DFRbp7E9PLiB27yCzqILPFXuxubhQ6CjyGVFQgdg=
+	t=1740179027; cv=none; b=ZgFfZMRCYYhr8khlhWMXEOtAkKuaezbIaycmJgwIqsMZ+UPkzO0JH8dDZwdWL2nyE9Hv0Txtf5m1WMG5AqzuRQlrqP/frfANbXTahYIc/NTcBCrCi5EaeGOwqbgLB0Pr2a8MKq7I7FR9P1253oPQuwNWz/ja2Par0UX3DITInwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740176069; c=relaxed/simple;
-	bh=yAwMXOjaJN6z1tn8eId8KeQM2ziqySE7/svPkNvVY1Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tHZYwsFSvCmc/X3Phk+f79dgebTyGuk5HKgVP/wkws9qKUUCvr4xw7MMYFCFbDMTeMzdUmR71c0yNKbMFZ3Duq3bvzmAesX6RfOY3gcb5CCeVhprqgPn/qYG81A+2jbQaCeoaBv1VuFBGvR+mLDCtNIXaOX2hCETvk8yDL8JK4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF3FC4CED6;
-	Fri, 21 Feb 2025 22:14:27 +0000 (UTC)
-Date: Fri, 21 Feb 2025 17:14:55 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Martin Uecker <uecker@tugraz.at>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>, Greg KH
- <gregkh@linuxfoundation.org>, Boqun Feng <boqun.feng@gmail.com>, "H. Peter
- Anvin" <hpa@zytor.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Christoph Hellwig <hch@infradead.org>, rust-for-linux
- <rust-for-linux@vger.kernel.org>, Linus Torvalds
- <torvalds@linux-foundation.org>, David Airlie <airlied@gmail.com>,
- linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
-Subject: Re: Rust kernel policy
-Message-ID: <20250221171455.19b5be06@gandalf.local.home>
-In-Reply-To: <59a4f3f7641c47494b53f788684aa703a02acca1.camel@tugraz.at>
-References: <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
-	<CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
-	<a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
-	<Z7VKW3eul-kGaIT2@Mac.home>
-	<2025021954-flaccid-pucker-f7d9@gregkh>
-	<4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
-	<2025022024-blooper-rippling-2667@gregkh>
-	<1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
-	<2025022042-jot-favored-e755@gregkh>
-	<b9a5de64fe1ded2ad3111763f35af9901bd81cc4.camel@tugraz.at>
-	<caea3e79-78e6-4d98-9f3b-f8e7f6f00196@stanley.mountain>
-	<61a7e7db786d9549cbe201b153647689cbe12d75.camel@tugraz.at>
-	<20250221124304.5dec31b2@gandalf.local.home>
-	<59a4f3f7641c47494b53f788684aa703a02acca1.camel@tugraz.at>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1740179027; c=relaxed/simple;
+	bh=3uNsCd93qtPZ60J+7z/ITN1DstOm4oM2Au/IBQ2iWNg=;
+	h=From:To:Cc:Date:Subject:MIME-Version:Message-ID:In-Reply-To:
+	 Content-Type; b=EbjXpNZzPT1mC5ZDw4MQlCyR0Rxo4Z183gft7rQrgOEU6xH+FwVNQyD05vrJOoKRzVh+vW2WL71b7QX1Ze1OAmjXYoJiX3yBljznh/5Rl+cYlQhn4io3mFYRSpxUoQCZKev+Z2CALcutZbiMmq8+vuUoHWyQdoQb5+kSaQ0yYDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mailo.com; spf=pass smtp.mailfrom=mailo.com; dkim=pass (1024-bit key) header.d=mailo.com header.i=@mailo.com header.b=L1d/3uHk; arc=none smtp.client-ip=213.182.54.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mailo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailo.com
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailo.com; s=mailo;
+	t=1740176350; bh=3uNsCd93qtPZ60J+7z/ITN1DstOm4oM2Au/IBQ2iWNg=;
+	h=X-EA-Auth:From:To:Cc:Date:Subject:MIME-Version:X-Mailer:
+	 Message-ID:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	b=L1d/3uHklkhK8ADWQOVyoSEtpItIWSwcgLAKjehZaLBM+IeAknbZw27JGQTWvqYe7
+	 n3OC9T357MUWKUzuv3wWG9yyU+d2BKTfg5yl9290UXy/36cMMAxLc2by/51FFTdAwD
+	 xEFQyuhEqoNDq2mWYVDhXcRnI4wgfRr+0kifDI8A=
+Received: by www.mailo.com with http webmail; Fri, 21 Feb 2025
+  23:19:05 +0100 (CET)
+X-EA-Auth: yCvXEICkzd/F+ueWyXr7Du7hGifP/xADp5si9oIDqEdqeV9l3o6aSTx7w1HLHBLm/UaDqX1rU+NCaupw9nKi9vGZKpkgrk+o
+From: henrychurchill@mailo.com
+To: torvalds@linux-foundation.org,
+ "Jan Engelhardt" <ej@inai.de>
+Cc: "David Laight" <david.laight.linux@gmail.com>,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ "Greg KH" <gregkh@linuxfoundation.org>,
+ "Boqun Feng" <boqun.feng@gmail.com>,
+ "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>,
+ "Christoph Hellwig" <hch@infradead.org>,
+ "rust-for-linux" <rust-for-linux@vger.kernel.org>,
+ "David Airlie" <airlied@gmail.com>,
+ linux-kernel@vger.kernel.org,
+ ksummit@lists.linux.dev
+Date: Fri, 21 Feb 2025 23:19:05 +0100 (CET)
+Subject: Re: C aggregate passing (Rust kernel policy)
+X-Priority: 3
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-Mailer: COMS/EA24.10/r20241127
+Message-ID: <ea-mime-67b8fbd9-4d24-7169ab18@www.mailo.com>
+In-Reply-To: <CAHk-=whZwXK9shqeV5fpRF9CRqApVy5wz6myNeAkyuFm-ERTpQ@mail.gmail.com>
+Content-Type: text/plain;
+ charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 21 Feb 2025 19:23:38 +0100
-Martin Uecker <uecker@tugraz.at> wrote:
 
-> > where func is defined as:
-> > 
-> > 	void func(void) { return ; }  
-> 
-> Calling a function declared in this way with arguments
-> would be rejected by the compiler, so I am not sure how
-> this works now.
-> 
-> If you used 
-> 
-> void func();
-> 
-> to declare the function, this is not possible anymore in C23.
+---- Original message ----
+> From: Linus Torvalds <torvalds@linux-foundation.org>
+> To: Jan Engelhardt <ej@inai.de>
+> Subject: Re: C aggregate passing (Rust kernel policy)
+> Date: 02/21/2025 21:26:02 Europe/Paris
+> Cc: David Laight <david.laight.linux@gmail.com>;
+>       H. Peter Anvin <hpa@zytor.com>;
+>       Greg KH <gregkh@linuxfoundation.org>;
+>       Boqun Feng <boqun.feng@gmail.com>;
+>       Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>;
+>       Christoph Hellwig <hch@infradead.org>;
+>       rust-for-linux <rust-for-linux@vger.kernel.org>;
+>       David Airlie <airlied@gmail.com>;
+>       linux-kernel@vger.kernel.org;
+>       ksummit@lists.linux.dev
+>=20
+> On Fri, 21 Feb 2025 at 12:06, Jan Engelhardt <ej@inai.de>=20
+wrote:
+> >
+> > >(Apart from the fact that c++ makes it hard to ensure all=20
+the non-class
+> > >members are initialised.)
+> >
+> >         struct stat x{};
+> >         struct stat x =3D {};
+> >
+> > all of x's members (which are scalar and thus non-class)=20
+are
+> > initialized. The second line even works in C.
+>=20
+> Yeah. People love to talk about "safe C", but compiler people=20
+have
+> actively tried to make C unsafer for decades. The C=20
+standards
+> committee has been complicit. I've ranted about the crazy C=20
+alias
+> rules before.
+>=20
 
-As the comment in the code states:
+The unsafe subset of Rust has way stricter aliasing rules than=20
+C. You should read up on unsafe before touching it in Rust, it=20
+can get gnarly.
 
-include/linux/static_call.h:
 
- *   This feature is strictly UB per the C standard (since it casts a function
- *   pointer to a different signature) and relies on the architecture ABI to
- *   make things work. In particular it relies on Caller Stack-cleanup and the
- *   whole return register being clobbered for short return values. All normal
- *   CDECL style ABIs conform.
-
-Basically it's assigned via casts.
-
--- Steve
 
