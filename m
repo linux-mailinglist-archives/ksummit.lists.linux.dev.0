@@ -1,80 +1,194 @@
-Return-Path: <ksummit+bounces-1790-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1791-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BEB8A3FA67
-	for <lists@lfdr.de>; Fri, 21 Feb 2025 17:12:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06731A3FB7C
+	for <lists@lfdr.de>; Fri, 21 Feb 2025 17:37:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8744424E0D
-	for <lists@lfdr.de>; Fri, 21 Feb 2025 16:05:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 257B5163E01
+	for <lists@lfdr.de>; Fri, 21 Feb 2025 16:29:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A4D214A96;
-	Fri, 21 Feb 2025 15:59:33 +0000 (UTC)
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A911EF08D;
+	Fri, 21 Feb 2025 16:28:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b="Q+oy6TDV"
+Received: from mailrelay.tugraz.at (mailrelay.tugraz.at [129.27.2.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B271214814;
-	Fri, 21 Feb 2025 15:59:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D770C1EE03D
+	for <ksummit@lists.linux.dev>; Fri, 21 Feb 2025 16:28:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.27.2.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740153573; cv=none; b=EBEQMKUeiF1z07REGQ3Udt2Xl0XZ/iNJrJyqs8iqjbEE4dIAsdfz+wnNyKEL+0pEypKWLiE1TLgM2pfvaq9bXYhiTmRwOYqCNT98BpVbPMns0txCmG9mnngBHnqPLJiQ7gPmoFdTY5w3abvXtgpykbe9goWCJyQH44s6Jw6CIO8=
+	t=1740155331; cv=none; b=Oxt+HubVihIiQ6YLZa98Qy62x5xxJjw2GVL2e2zb7mO2iBjM2zZ3+N21Re6t+CatgfEeaSrlUeB5d29+lrbJfpWelsc8AuawyMPiyl4+E2DyYO5qrFFJlz3O2TTyzZ6IDPmlRmV2k+AtGwHVXXN5ub8AfQ3E92DlS+yWwb4cvn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740153573; c=relaxed/simple;
-	bh=1hlqcRC6YPxthZJkmFYUrMczitlkPHb6ZjAmnP94Iuw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sTVQBJs9bxDPCx3Wdxv8bxlJSfiTokX/FeFMkF1XZfiff/AoPcjJIT5QD4yvqWSsD5Of/yockZHgDs99XRKRh2UQM2GmVqHyqcg6ys7w9P8f3kN1xYlSHixK5ouyVysr35h7smInkpzkBYYYXEJGRpJS1SP1UwRilBxV5NyGUKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777ECC4CEE2;
-	Fri, 21 Feb 2025 15:59:31 +0000 (UTC)
-Date: Fri, 21 Feb 2025 10:59:59 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Christoph Hellwig
- <hch@infradead.org>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- rust-for-linux <rust-for-linux@vger.kernel.org>, Greg KH
- <gregkh@linuxfoundation.org>, David Airlie <airlied@gmail.com>,
- linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
+	s=arc-20240116; t=1740155331; c=relaxed/simple;
+	bh=itDtkLuv9PHUCMQ37TmiQonIka0iF299AgH2m8mj9vU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dvzSXt0p9Ah/CLLHlmEVevFQm1Nv1vgv8VLr5V0SbdWqJ6H2x4wmTws+c2s703FQfgmNUHT5l4uU3oYardL7qMydL0E6rbsvqgqnQZeyYm+UdqiPkT3D3B2hSicfg4PKEBL1vsDE86wyPL0Q6CRE/fb7pDy6dQEQs9PjcnWy3Kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at; spf=pass smtp.mailfrom=tugraz.at; dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b=Q+oy6TDV; arc=none smtp.client-ip=129.27.2.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tugraz.at
+Received: from vra-171-233.tugraz.at (vra-171-233.tugraz.at [129.27.171.233])
+	by mailrelay.tugraz.at (Postfix) with ESMTPSA id 4YzwYC00wkz3xGX;
+	Fri, 21 Feb 2025 17:28:30 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tugraz.at;
+	s=mailrelay; t=1740155313;
+	bh=A5/Vf9HW8Yy4Pzv/cgrk4LjgVOJx+yDRb5XqnCH19cE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Q+oy6TDVd8IkqCcuadMv4XLA6bxeK3zaqbOiqeIQAFY9VTMYpH1ZH3ZxEESZSTfwx
+	 yfz6jMoqGbDsTMDzmnqYAS61rxBYftoAlgIk8CgNw/y49LIlPkWQlChtLPItqSa/7N
+	 +tqxUwRjicObCRyXPzym8v7FecEKkIRcOTuOOJ5I=
+Message-ID: <61a7e7db786d9549cbe201b153647689cbe12d75.camel@tugraz.at>
 Subject: Re: Rust kernel policy
-Message-ID: <20250221105959.071b9504@gandalf.local.home>
-In-Reply-To: <Z7hulnJ4fwslRILy@pollux>
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
-	<Z7SwcnUzjZYfuJ4-@infradead.org>
-	<CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
-	<Z7bO1jT2onZFZwgH@infradead.org>
-	<CAHk-=wgLbz1Bm8QhmJ4dJGSmTuV5w_R0Gwvg5kHrYr4Ko9dUHQ@mail.gmail.com>
-	<Z7hulnJ4fwslRILy@pollux>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+From: Martin Uecker <uecker@tugraz.at>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Boqun Feng <boqun.feng@gmail.com>,
+  "H. Peter Anvin" <hpa@zytor.com>, Miguel Ojeda
+ <miguel.ojeda.sandonis@gmail.com>, Christoph Hellwig <hch@infradead.org>,
+ rust-for-linux <rust-for-linux@vger.kernel.org>, Linus Torvalds
+ <torvalds@linux-foundation.org>, David Airlie <airlied@gmail.com>, 
+ linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
+Date: Fri, 21 Feb 2025 17:28:30 +0100
+In-Reply-To: <caea3e79-78e6-4d98-9f3b-f8e7f6f00196@stanley.mountain>
+References: <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
+	 <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
+	 <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
+	 <Z7VKW3eul-kGaIT2@Mac.home> <2025021954-flaccid-pucker-f7d9@gregkh>
+	 <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
+	 <2025022024-blooper-rippling-2667@gregkh>
+	 <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
+	 <2025022042-jot-favored-e755@gregkh>
+	 <b9a5de64fe1ded2ad3111763f35af9901bd81cc4.camel@tugraz.at>
+	 <caea3e79-78e6-4d98-9f3b-f8e7f6f00196@stanley.mountain>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-TUG-Backscatter-control: G/VXY7/6zeyuAY/PU2/0qw
+X-Spam-Scanner: SpamAssassin 3.003001 
+X-Spam-Score-relay: 0.0
+X-Scanned-By: MIMEDefang 2.74 on 129.27.10.117
 
-On Fri, 21 Feb 2025 13:16:22 +0100
-Danilo Krummrich <dakr@kernel.org> wrote:
+Am Freitag, dem 21.02.2025 um 12:48 +0300 schrieb Dan Carpenter:
+> On Thu, Feb 20, 2025 at 04:40:02PM +0100, Martin Uecker wrote:
+> > I mean "memory safe" in the sense that you can not have an OOB access
+> > or use-after-free or any other UB.  The idea would be to mark certain
+> > code regions as safe, e.g.
+> >=20
+> > #pragma MEMORY_SAFETY STATIC
+>=20
+> Could we tie this type of thing to a scope instead?  Maybe there
+> would be a compiler parameter to default on/off and then functions
+> and scopes could be on/off if we need more fine control.
 
-> However, I also want to clarify that I think that maintainers *do* have a veto
-> when it comes to how the API they maintain is used in the kernel. For instance,
-> when an API is abused for things it has not been designed for, which may hurt
-> the kernel as a whole.
+At the moment my feeling is that tying it to a specific scope
+would not be flexible enough.=20
 
-I believe that the maintainer should have the right to define what the API
-is. And as long as users follow the use cases of the API, it should be
-perfectly fine.
+The model I have in my mind are the pragmas GCC has
+to turn on and off diagnostics for regions of code=20
+(i.e. #pragma GCC diagnostic warning, etc.). These memory
+safety modes would still be based on many different individual
+warnings that are can then be jointly toggled using these
+pragmas but which could also individually be toggled as usual.
 
-This isn't a user space API, where Linus has basically said if you expose
-something to user space and user space starts using it in a way you didn't
-expect, that's your problem.
+>=20
+> This kind of #pragma is basically banned in the kernel.  It's used
+> in drivers/gpu/drm but it disables the Sparse static checker.
 
-But I hope that doesn't go with the kernel. To make things faster, I do
-expose internals of the tracing in the header files. If someone starts
-using those internals for things that they were not made for, I hope I have
-the right as a maintainer to tell them they can't do that.
+Why is this?
 
--- Steve
+>=20
+> > unsigned int foo(unsigned int a, unsigned int b)
+> > {
+> >   return a * b;
+> > }
+> >=20
+> > static int foo(const int a[static 2])
+> > {
+> >   int r =3D 0;
+> >   if (ckd_mul(&r, a[0], a[1]))
+> >     return -1;
+> >   return r;
+> > }
+> >=20
+> > static int bar(int x)
+> > {
+> >   int a[2] =3D { x, x };
+> >   return foo(a);
+> > }
+> >=20
+> >=20
+> > and the compiler would be required to emit a diagnostic when there
+> > is any operation that could potentially cause UB.
+>=20
+> I'm less convinced by the static analysis parts of this...  The kernel
+> disables checking for unsigned less than zero by default because there
+> are too many places which do:
+>=20
+> 	if (x < 0 || x >=3D 10) {
+>=20
+> That code is perfectly fine so why is the compiler complaining?  But at
+> the same time, being super strict is the whole point of Rust and people
+> love Rust so maybe I have misread the room.
+
+What is a bit weird is that on the one side there are people
+who think we absolutely need=C2=A0 compiler-ensured memory safety
+and this might be even worth rewriting code from scratch and
+on the other side there are people who think that dealing with
+new false positives in existing code when adding new warnings
+is already too much of a burden.
+
+> >=20
+> > I would also have a DYNAMIC mode that traps for UB detected at
+> > run-time (but I understand that this is not useful for the kernel).=20
+>=20
+> No, this absolutely is useful.  This is what UBSan does now.
+>=20
+
+Yes, it is similar to UBSan. The ideas to make sure that in the
+mode there is *either* a compile-time warning *or* run-time
+trap for any UB.  So if you fix all warnings, then any remaining
+UB is trapped at run-time.
+
+>   You're
+> basically talking about exception handling.  How could that not be
+> the most useful thing ever?
+
+At the moment, I wasn't thinking about a mechanism to catch those
+exceptions, but just to abort the program directly (or just emit
+a diagnostic and continue. =20
+
+
+BTW: Another option I am investigating it to have UBsan insert traps
+into the code and then have the compiler emit a warning only when
+it actually emits the trapping instruction after optimization. So
+you only get the warning if the optimizer does not remove the trap. =20
+Essentially, this means that one can use the optimizer to prove that
+the code does not have certain issues. For example, you could use the=20
+signed-overflow sanitizer to insert a conditional trap everywhere
+where there could be signed overflow, and if the optimizer happens
+to remove all such traps because they are unreachable, then it is
+has shown that the code can never have a signed overflow at run-time.
+This is super easy to implement (I have a patch for GCC) and
+seems promising.  One problem with this is that any change in the
+optimizer could change whether you get a warning or not.
+
+Martin
+
+
+
+
+
+>=20
+> regards,
+> dan carpenter
+>=20
+
 
