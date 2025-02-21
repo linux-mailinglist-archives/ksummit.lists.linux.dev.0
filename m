@@ -1,210 +1,161 @@
-Return-Path: <ksummit+bounces-1779-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1780-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AF48A3E938
-	for <lists@lfdr.de>; Fri, 21 Feb 2025 01:40:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3F8CA3E94D
+	for <lists@lfdr.de>; Fri, 21 Feb 2025 01:46:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC630421F33
-	for <lists@lfdr.de>; Fri, 21 Feb 2025 00:40:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E0561730B2
+	for <lists@lfdr.de>; Fri, 21 Feb 2025 00:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0D2DB67E;
-	Fri, 21 Feb 2025 00:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3ADF1CAA4;
+	Fri, 21 Feb 2025 00:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="QadirOvb"
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="icJzk58E"
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F497B673
-	for <ksummit@lists.linux.dev>; Fri, 21 Feb 2025 00:40:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66B6AD27
+	for <ksummit@lists.linux.dev>; Fri, 21 Feb 2025 00:46:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740098422; cv=none; b=XH44KvZ9LhhuC7/uZrtGhqDXrXY5k4YceprlFEH58MjLUA2FcJ0ouwq2lnlxiO7ka3EWpoIFpjSsZNeCx3srcyEuYFMtHnkVV4cCNDhMZ5JDj0h8Cg8mpo7mg3u3u6HYK2GIoW3MCb5iah4IgkB9i32pwgwelhAofeV+sy+VYuw=
+	t=1740098776; cv=none; b=Q7K0Yy2I9aaNNTVPZuFIBUdLdZQRywdvmiGiYDHUjs13w8nlDVklGEz8OTt5GgLvylFV9qxpbAB8LzBH2ojq2dKLhOwfSfIUw6VCUyRuy9uHJ4LN9UVsyWZN8p+roIHm1fAzCo2UQ7d2GLHUSDEwXEcKC1v/2LXj6nTcD2tVUjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740098422; c=relaxed/simple;
-	bh=4TZmT0OVj6lmyqRooEpFA8ZqX8x6sU7ElubS1e40FT8=;
+	s=arc-20240116; t=1740098776; c=relaxed/simple;
+	bh=aO8Xvx4su+rrOkLBVhdTRpg0nABeS7pNS7fV9lTQ+xk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Mhapdg8Y58IUc70RNzCp/UXceGW3tPm4crgHT3qIH7zKu3RnXHYURyHrig3qKMKBmjNZtWV1Gb7p5dLp1QsATzvEcVLzQ8fnU1m5NM9pGN2a9c6sPVispQDRtrL7sWOrhZUwgvrymMeLAKTsP6ftn0JiCx2Vrx6Lp9hq3n+cZ7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=QadirOvb; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-abadccdfe5aso267180066b.0
-        for <ksummit@lists.linux.dev>; Thu, 20 Feb 2025 16:40:19 -0800 (PST)
+	 To:Cc:Content-Type; b=norGHo+NE5VOsrSMrbDY6Lt4/+4s23q76oR5UcvcvN5iPWF+GDjnGLSrhlrTkS8hhKK3VPPuhfd0utK5wPdK8DWNyubJsobr412HBte22Fcj/U3yrum2dTPkw8R8vcvFeerZUl/SV9M/Y9uE04E7GfIi5p1d5LxM1QtaLzKTHLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=icJzk58E; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-220ea8ed64eso3923585ad.1
+        for <ksummit@lists.linux.dev>; Thu, 20 Feb 2025 16:46:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1740098418; x=1740703218; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=IIRyFU8js5MTrYu3kLLDCqOpLqxeTQMOioCoscja6X0=;
-        b=QadirOvb2ef4OFwr8jmeGQBnSwrB9vi97eel4jPPygH6MEeGEZOXBeYEDVsbde9QUJ
-         MGPFFxqpjNO12duZas/E4/hKP60HSTE3v9eDO2AJCtR7OAoPb58Qbk1f+8h8xNbghUUA
-         yS9eZzG/O3gLtruTQQMyeFbBCjRqayJv67m7s=
+        d=gmail.com; s=20230601; t=1740098774; x=1740703574; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sxG/RNLQp22AVUKc+QumMOAnx3QaLoDvmSz51dLFex0=;
+        b=icJzk58E8hHOzrswTxJ0wGweCGRtaOdgq1VK5OLVcW1/EFXfjmo/OFJ1VbD6NFda2V
+         kNuvH4iyhTduhZJdhcQrBPEjXQfxUwRJBRq5tu19ED5QAqq2AmpnC/VkQ6k7ddwp9pFA
+         v4hxybB4OQuVlbcGgA6wX3tOiJLgHZtYZxRtT8lVOR0UMjTFA7bpZDdis/SDiTWMrnCH
+         06GfNVhIXspMTdqfBg7Vj208/pdY44212dX8DXrSUMaqP8amHNun6luqqhAXDAVhhWTI
+         uRj7V/N3g+JnyuZEDTtKHRQBf7japoZeba+ThbXwft/xo9mW3wZR/Lprr9MuAZpecI5m
+         fKoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740098418; x=1740703218;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IIRyFU8js5MTrYu3kLLDCqOpLqxeTQMOioCoscja6X0=;
-        b=vVvutKYnjQhO5EN/JuThkNDDeUXflcpjJBd8pB7xfptQUJklyiSomfhIdPR2IWhzmM
-         2YsLxjQ6SMEtIO9XJjtyP+0EeJmhIIZeH2aFyQfy7wCrCollspM1aIZS8URGZqn7xGsk
-         LAAbnRpuPBTyjALaNTgkBAuLxEsev5vkNsIjgyUcJ/XyZHUbJAh5aUcc7a5OlPFlJf7g
-         molcAO9KrsF5fu38OgvhkGLRXpIJFwNdUviecjEAeoD/sQ3hXTXK+oM3RRQdYnxJmRLL
-         fBjNv5c20PIGZisJDidK1kaFRs7AqAz5UkqBLvOel4WtPT2N3uyrDoqQ14MTdYF9+Se7
-         76uQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWVybimgiO/woanGKLBxF3saqkkrVM1IWzAR5+2YyJtZWCSHa47FNmtSLz6RwdHoeTXMU1uRAaf@lists.linux.dev
-X-Gm-Message-State: AOJu0YxmgwgivpeJ1vbNbKDiHwmr+8/d8ol83EXYS53olczRXUzcdzU+
-	ejibjsgppiUQY3n9eNMZ7GHjD5i78TDWNoi3gQcOaE6drfl+g9rj24mKpR+KBPd5ojK/4E9X3Q8
-	1Wes=
-X-Gm-Gg: ASbGncsibokXyIinNYQl0uLAgKIy3CyWNsIH0Qp+IoCzhjgbixvqUKuMTHKnKJfIp8m
-	yapPV+4zIJAufF7cGqV0r9ISd5lmhn4TjFgD0tiMcBMdNysudUzoJKENPFsdDL6fMPJVRvZRCt0
-	Nc1gANKqvjXvAFzhHcC+Svmf/Vs7EvYOVqylmbOYtv/1RXFZTiR01kT6fRptpb1FEP3kRRaNNCx
-	XtZaTk0Jpp7fEi2ZzVcK1mpqtwzGXl6tXMxdUWILArg0LdPBboc11jpos2n3Cvkd5eJ5CXhGrqW
-	H3mQ4zH0L/1VnwnXOwecxQHjq14wfv7SlLlEcEHYxL53Nrhy+loD8kNpmtu44uVKvA==
-X-Google-Smtp-Source: AGHT+IHcr7DB7YzJrrs+En72jY752XklMw2tn5yUyDQFqty+H0XIsqohOBGOdaGzlZdmwZrXoMpM7g==
-X-Received: by 2002:a17:907:7216:b0:ab7:ef49:23a7 with SMTP id a640c23a62f3a-abc0de5bd55mr68079066b.51.1740098417456;
-        Thu, 20 Feb 2025 16:40:17 -0800 (PST)
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com. [209.85.218.48])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aba5323202dsm1542697066b.6.2025.02.20.16.40.15
-        for <ksummit@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Feb 2025 16:40:16 -0800 (PST)
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-abadccdfe5aso267176466b.0
-        for <ksummit@lists.linux.dev>; Thu, 20 Feb 2025 16:40:15 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWR1smt0K8zUGp/fr2JokskPw0c2LJ82os/TCCyXpq5XyM2ed+1bXqs7NpW8U6bklJUGTEcU1ER@lists.linux.dev
-X-Received: by 2002:a17:906:f5a9:b0:abb:a88d:ddaf with SMTP id
- a640c23a62f3a-abc0df5d5a1mr76770566b.55.1740098415082; Thu, 20 Feb 2025
- 16:40:15 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740098774; x=1740703574;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sxG/RNLQp22AVUKc+QumMOAnx3QaLoDvmSz51dLFex0=;
+        b=HeBgmzhzxGcUO1lMEl12DAnlCj3wyKVM27td7WbCvhIqW3eMEmjR2Wxc7JmnTrDxNn
+         gsgEKu1nrQlIZfLDjR2sO6oBeJ3M87DvmcRlfT0WTgbnTm8Y81j1K8/2Q6bhnOTuUIbP
+         OSUn7ZrmzPvEfECIIGuiSYJnI4M9oC4MatyvXrIdLvtMILF/kkbR0W7DtatPuGZCiRtC
+         pxhbUKKcgs2IqXiMUXndEFCmIplsXrqbYE61ejjm/+a98IX0coUVJ2Pzl/bha0Jkq/cp
+         2hskP99oADC6kHh50rmbIEF1eZ+vWqeAcVA+2IeKsx14dvliHrU+N9oE5AwP6J5K0IyF
+         p+lg==
+X-Forwarded-Encrypted: i=1; AJvYcCUqkqaXYCWXkKrMJcIP/iFbeZG3oEO+FBA8riWW61kl+Bmv93B3SqUdSUT/6ISpaVriL+OUy30V@lists.linux.dev
+X-Gm-Message-State: AOJu0YyiGZSKX3Pv07QPGmK0VOlYJ7HL/0XWsEmlyxJS+Q/usbdzu1me
+	6tfrCNxqV0VnwgueNVmAAuk/oaHwHwE7GX9ss6C8Sxhyh8cDtm+nYeaN01bI3EmpctCZtoScYGZ
+	JNjsHxIKs9kQMA7/UxEP0T5HPS7I=
+X-Gm-Gg: ASbGncvAEcjGuitR3dU2ABErvifxJjH6jOwnyHrtN9SONYpVriEBDFuupcWnq42c5w/
+	aqwc1TlMpTiQ/1S4OE/gR1psMVaqsMyEXxB3SB0l2YrkxhIUUHBJQN7rn2BAesSfia8Ef+Uf+
+X-Google-Smtp-Source: AGHT+IGxosJw3SIjvkmueAMZ2sxLNNWROWh+qNp1JsJKSr8xuqLbeZoOcMwOlB3TiXnPGMD4jUzRll2ClxpX6Ejstgk=
+X-Received: by 2002:a17:903:2351:b0:221:7b4a:4774 with SMTP id
+ d9443c01a7336-2219ff61f54mr7228845ad.8.1740098773903; Thu, 20 Feb 2025
+ 16:46:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
- <Z7SwcnUzjZYfuJ4-@infradead.org> <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
- <Z7bO1jT2onZFZwgH@infradead.org>
-In-Reply-To: <Z7bO1jT2onZFZwgH@infradead.org>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 20 Feb 2025 16:39:58 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wgLbz1Bm8QhmJ4dJGSmTuV5w_R0Gwvg5kHrYr4Ko9dUHQ@mail.gmail.com>
-X-Gm-Features: AWEUYZl110dqtgnPbf_5O23eqr6Efb1z5WIykrA3dNVGStovQIgnPSeO4hmGu6I
-Message-ID: <CAHk-=wgLbz1Bm8QhmJ4dJGSmTuV5w_R0Gwvg5kHrYr4Ko9dUHQ@mail.gmail.com>
+References: <Z7SwcnUzjZYfuJ4-@infradead.org> <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
+ <326CC09B-8565-4443-ACC5-045092260677@zytor.com> <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
+ <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com> <Z7VKW3eul-kGaIT2@Mac.home>
+ <2025021954-flaccid-pucker-f7d9@gregkh> <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
+ <2025022024-blooper-rippling-2667@gregkh> <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
+ <2025022042-jot-favored-e755@gregkh> <b9a5de64fe1ded2ad3111763f35af9901bd81cc4.camel@tugraz.at>
+In-Reply-To: <b9a5de64fe1ded2ad3111763f35af9901bd81cc4.camel@tugraz.at>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 21 Feb 2025 01:46:00 +0100
+X-Gm-Features: AWEUYZl45jzwIAE7pLlufABx1iKVOUGFki2L5DbKNmMd1LqvTb-ZtnMqsJ7KLak
+Message-ID: <CANiq72mQ7YafHd6cZWZv27c9ajkF8Kz=F2kYxeQuA2FoGhsmMA@mail.gmail.com>
 Subject: Re: Rust kernel policy
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
-	rust-for-linux <rust-for-linux@vger.kernel.org>, Greg KH <gregkh@linuxfoundation.org>, 
-	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
+To: Martin Uecker <uecker@tugraz.at>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Christoph Hellwig <hch@infradead.org>, 
+	rust-for-linux <rust-for-linux@vger.kernel.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, David Airlie <airlied@gmail.com>, 
+	linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 19 Feb 2025 at 22:42, Christoph Hellwig <hch@infradead.org> wrote:
+On Thu, Feb 20, 2025 at 9:57=E2=80=AFAM Martin Uecker <uecker@tugraz.at> wr=
+ote:
 >
-> The document claims no subsystem is forced to take Rust.  That's proven
-> to be wrong by Linus.  And while you might not have known that when
-> writing the document, you absolutely did when posting it to the list.
+> There is currently no kernel developer actively involved, but this would
+> be very helpful.
+>
+> (Paul McKenney is involved in C++ regarding atomics and Miguel is
+> also following what we do.)
 
-I was hopeful, and I've tried to just see if this long thread results
-in anything constructive, but this seems to be going backwards (or at
-least not forwards).
+I do not attend the meetings anymore (mainly due to changes in ISO
+rules and lack of time), but I try to read the discussions and reply
+from time to time.
 
-The fact is, the pull request you objected to DID NOT TOUCH THE DMA
-LAYER AT ALL.
 
-It was literally just another user of it, in a completely separate
-subdirectory, that didn't change the code you maintain in _any_ way,
-shape, or form.
+On Thu, Feb 20, 2025 at 3:09=E2=80=AFPM Martin Uecker <uecker@tugraz.at> wr=
+ote:
+>
+> (BTW: Rust is also not perfectly immune to such errors:
+> https://rustsec.org/advisories/RUSTSEC-2023-0080.html)
 
-I find it distressing that you are complaining about new users of your
-code, and then you keep bringing up these kinds of complete garbage
-arguments.
+That is called a soundness issue in Rust.
 
-Honestly, what you have been doing is basically saying "as a DMA
-maintainer I control what the DMA code is used for".
+Virtually every non-trivial C function would have an advisory like the
+one you just linked if you apply the same policy.
 
-And that is not how *any* of this works.
 
-What's next? Saying that particular drivers can't do DMA, because you
-don't like that device, and as a DMA maintainer you control who can
-use the DMA code?
+On Thu, Feb 20, 2025 at 4:40=E2=80=AFPM Martin Uecker <uecker@tugraz.at> wr=
+ote:
+>
+> Essentially, the idea is that we can start with the existing subset
+> of C that is already memory safe but very limited, and incrementally
+> grow this subset.   From a user perspectice, you would do the
 
-That's _literally_ exactly what you are trying to do with the Rust code.
+As I said in the C committee, we need Rust-style memory safety -- not
+just the ability to "disallow UB in a region".
 
-You are saying that you disagree with Rust - which is fine, nobody has
-ever required you to write or read Rust code.
+That is, we need the ability to write safe abstractions that wrap unsafe co=
+de.
 
-But then you take that stance to mean that the Rust code cannot even
-use or interface to code you maintain.
+You claimed recently that Rust is not memory safe if one uses
+abstractions like that. But designing those is _precisely_ what we
+need to do in the kernel and other C projects out there, and that
+ability is _why_ Rust is successful.
 
-So let me be very clear: if you as a maintainer feel that you control
-who or what can use your code, YOU ARE WRONG.
+Your proposal is useful in the same way something like Wuffs is, i.e.
+where it can be applied, it is great, but it is not going to help in
+many cases.
 
-I respect you technically, and I like working with you.
+For instance, in places where we would need an `unsafe` block in Rust,
+we would not be able to use the "disallow UB in a region" proposal,
+even if the subset is extended, even up to the point of matching the
+safe Rust subset.
 
-And no, I am not looking for yes-men, and I like it when you call me
-out on my bullshit. I say some stupid things at times, there needs to
-be people who just stand up to me and tell me I'm full of shit.
+This is not to say we should not do it -- Rust has
+`forbid(unsafe_code)`, which is similar in spirit and nice, but it is
+not what has made Rust successful.
 
-But now I'm calling you out on *YOURS*.
+That is why something like the "Safe C++" proposal is what C++ should
+be doing, and not just "Profiles" to forbid X or Y.
 
-So this email is not about some "Rust policy". This email is about a
-much bigger issue: as a maintainer you are in charge of your code,
-sure - but you are not in charge of who uses the end result and how.
+If someone out there wants to help getting things into C that can be
+used in the Linux kernel and other projects, please ping me.
 
-You don't have to like Rust. You don't have to care about it. That's
-been made clear pretty much from the very beginning, that nobody is
-forced to suddenly have to learn a new language, and that people who
-want to work purely on the C side can very much continue to do so.
-
-So to get back to the very core of your statement:
-
-   "The document claims no subsystem is forced to take Rust"
-
-that is very much true.
-
-You are not forced to take any Rust code, or care about any Rust code
-in the DMA code. You can ignore it.
-
-But "ignore the Rust side" automatically also means that you don't
-have any *say* on the Rust side.
-
-You can't have it both ways. You can't say "I want to have nothing to
-do with Rust", and then in the very next sentence say "And that means
-that the Rust code that I will ignore cannot use the C interfaces I
-maintain".
-
-Maintainers who *want* to be involved in the Rust side can be involved
-in it, and by being involved with it, they will have some say in what
-the Rust bindings look like. They basically become the maintainers of
-the Rust interfaces too.
-
-But maintainers who are taking the "I don't want to deal with Rust"
-option also then basically will obviously not have to bother with the
-Rust bindings - but as a result they also won't have any say on what
-goes on on the Rust side.
-
-So when you change the C interfaces, the Rust people will have to deal
-with the fallout, and will have to fix the Rust bindings. That's kind
-of the promise here: there's that "wall of protection" around C
-developers that don't want to deal with Rust issues in the promise
-that they don't *have* to deal with Rust.
-
-But that "wall of protection" basically goes both ways. If you don't
-want to deal with the Rust code, you get no *say* on the Rust code.
-
-Put another way: the "nobody is forced to deal with Rust" does not
-imply "everybody is allowed to veto any Rust code".
-
-See?
-
-And no, I don't actually think it needs to be all that
-black-and-white. I've stated the above in very black-and-white terms
-("becoming a maintainer of the Rust bindings too" vs "don't want to
-deal with Rust at all"), but in many cases I suspect it will be a much
-less harsh of a line, where a subsystem maintainer may be *aware* of
-the Rust bindings, and willing to work with the Rust side, but perhaps
-not hugely actively involved.
-
-So it really doesn't have to be an "all or nothing" situation.
-
-                  Linus
+Cheers,
+Miguel
 
