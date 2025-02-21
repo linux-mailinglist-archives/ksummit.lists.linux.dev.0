@@ -1,84 +1,175 @@
-Return-Path: <ksummit+bounces-1795-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1796-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6936A3FE9B
-	for <lists@lfdr.de>; Fri, 21 Feb 2025 19:20:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E422A3FEB0
+	for <lists@lfdr.de>; Fri, 21 Feb 2025 19:25:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B48318932C8
-	for <lists@lfdr.de>; Fri, 21 Feb 2025 18:19:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18D55860AFE
+	for <lists@lfdr.de>; Fri, 21 Feb 2025 18:23:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 301602512D8;
-	Fri, 21 Feb 2025 18:19:13 +0000 (UTC)
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7012512E2;
+	Fri, 21 Feb 2025 18:23:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b="DCM21qme"
+Received: from mailrelay.tugraz.at (mailrelay.tugraz.at [129.27.2.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF17E21128F;
-	Fri, 21 Feb 2025 18:19:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8EBF1D5AA7
+	for <ksummit@lists.linux.dev>; Fri, 21 Feb 2025 18:23:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.27.2.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740161952; cv=none; b=sSldo94E+BXYXhQy+QePJK9z2eDEbE+b1VImAFu+ZHWGdltoVmaJ9JeGUeKoqgwl+DLXcqQtut0h2rIpZ0pwDPHN3Y/sJUiA66XK6V2XoEW8dXpOXFC+9c9RDxg2Hbc5H9HGqy+6Qv5xVnpQJ/njoIgukNvOHCZD7QqpN2ZSGSI=
+	t=1740162234; cv=none; b=E51uctd2RN2Y6vJTuW2bTEXiXA4GequuZN+AET8cMzliITJi3Iubp1yqG5KBqUd9vM0WPww+5PdObX+wQIIqOxkZDpjCw44nacEx7U8kZo3zmOhZB892PqPfltoc6pG9MMD7Gxwub1O1aAf4XmRHlPrnqOUpSBWxvU8gD5QeqlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740161952; c=relaxed/simple;
-	bh=Es7ghDygD2xkMuhK4aDVfA9oFbdQaNPrdep7ueQDqz4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Jwmt3toh0YlCZKpMInM7Z7o6JOitZPYWnL4XlY7vUCVNjouKOdL+6Blmcm5y6GH/vTsXFUpICMeA3SCrXnzvlb0IP/Up+VdIRvC/MduMWKrU5q5IuoeERAfUpDX3DRw6TcCnNVacHmCf/5qY1kc4pRTzh6wvGi6bpaCrjpETu7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B6CCC4CED6;
-	Fri, 21 Feb 2025 18:19:10 +0000 (UTC)
-Date: Fri, 21 Feb 2025 13:19:10 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Martin Uecker <uecker@tugraz.at>, Dan Carpenter
- <dan.carpenter@linaro.org>, Greg KH <gregkh@linuxfoundation.org>, Boqun
- Feng <boqun.feng@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, Miguel Ojeda
- <miguel.ojeda.sandonis@gmail.com>, Christoph Hellwig <hch@infradead.org>,
- rust-for-linux <rust-for-linux@vger.kernel.org>, David Airlie
- <airlied@gmail.com>, linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
+	s=arc-20240116; t=1740162234; c=relaxed/simple;
+	bh=JJS7QruWUFJ8IeCrfzhQBFz5px6Z310Jl8emUW2sx0g=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QaaQDsOtQ2ioguDQMG+3i4YBFDbVO5ODZqf8LgCLQqJdB8es3paCddCuSPBxSAi3jPRlfpDhKooVvYc0DsNuc0ReKVomOxXKwkqYxjWSu+f77UYd2cKW4daHR0Rr4hefGNJyQY8NfByCERFSHaeMd6Vokjha0+CZ6bdTjYLmTN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at; spf=pass smtp.mailfrom=tugraz.at; dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b=DCM21qme; arc=none smtp.client-ip=129.27.2.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tugraz.at
+Received: from vra-171-233.tugraz.at (vra-171-233.tugraz.at [129.27.171.233])
+	by mailrelay.tugraz.at (Postfix) with ESMTPSA id 4Yzz625GkKz3wgg;
+	Fri, 21 Feb 2025 19:23:38 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tugraz.at;
+	s=mailrelay; t=1740162219;
+	bh=ddA/arXohRuHGlkh46j54jfFS3gTQITB9tdWH3dQ5Lw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=DCM21qmecSKhNZWipPsk23RCL9gQnFwN3GWXMkfpyRX89+1clbKf8PBdYoSPdaxVE
+	 qoliRK/3fjbOUPsx4eI/xWuT6rdhRyzPUj0yKg1kWLGPihm9JWUS2F8HWHhByvv0dv
+	 I2s8e1jxKibPB/pPeYO2d9COznu5QhGepBzkZ6gA=
+Message-ID: <59a4f3f7641c47494b53f788684aa703a02acca1.camel@tugraz.at>
 Subject: Re: Rust kernel policy
-Message-ID: <20250221131910.5ddac0f3@batman.local.home>
-In-Reply-To: <CAHk-=wgg2A_iHNwf_JDjYJF=XHnKVGOjGp50FzVWniA2Z010bw@mail.gmail.com>
+From: Martin Uecker <uecker@tugraz.at>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>, Greg KH
+ <gregkh@linuxfoundation.org>, Boqun Feng <boqun.feng@gmail.com>, "H. Peter
+ Anvin" <hpa@zytor.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Christoph Hellwig <hch@infradead.org>, rust-for-linux
+ <rust-for-linux@vger.kernel.org>, Linus Torvalds
+ <torvalds@linux-foundation.org>, David Airlie <airlied@gmail.com>, 
+ linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
+Date: Fri, 21 Feb 2025 19:23:38 +0100
+In-Reply-To: <20250221124304.5dec31b2@gandalf.local.home>
 References: <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
-	<CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
-	<a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
-	<Z7VKW3eul-kGaIT2@Mac.home>
-	<2025021954-flaccid-pucker-f7d9@gregkh>
-	<4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
-	<2025022024-blooper-rippling-2667@gregkh>
-	<1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
-	<2025022042-jot-favored-e755@gregkh>
-	<b9a5de64fe1ded2ad3111763f35af9901bd81cc4.camel@tugraz.at>
-	<caea3e79-78e6-4d98-9f3b-f8e7f6f00196@stanley.mountain>
-	<61a7e7db786d9549cbe201b153647689cbe12d75.camel@tugraz.at>
-	<20250221124304.5dec31b2@gandalf.local.home>
-	<CAHk-=wgg2A_iHNwf_JDjYJF=XHnKVGOjGp50FzVWniA2Z010bw@mail.gmail.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	 <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
+	 <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
+	 <Z7VKW3eul-kGaIT2@Mac.home> <2025021954-flaccid-pucker-f7d9@gregkh>
+	 <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
+	 <2025022024-blooper-rippling-2667@gregkh>
+	 <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
+	 <2025022042-jot-favored-e755@gregkh>
+	 <b9a5de64fe1ded2ad3111763f35af9901bd81cc4.camel@tugraz.at>
+	 <caea3e79-78e6-4d98-9f3b-f8e7f6f00196@stanley.mountain>
+	 <61a7e7db786d9549cbe201b153647689cbe12d75.camel@tugraz.at>
+	 <20250221124304.5dec31b2@gandalf.local.home>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-TUG-Backscatter-control: G/VXY7/6zeyuAY/PU2/0qw
+X-Spam-Scanner: SpamAssassin 3.003001 
+X-Spam-Score-relay: 0.0
+X-Scanned-By: MIMEDefang 2.74 on 129.27.10.116
 
-On Fri, 21 Feb 2025 10:07:42 -0800
-Linus Torvalds <torvalds@linux-foundation.org> wrote:
+Am Freitag, dem 21.02.2025 um 12:43 -0500 schrieb Steven Rostedt:
+> On Fri, 21 Feb 2025 17:28:30 +0100
+> Martin Uecker <uecker@tugraz.at> wrote:
+>=20
+>=20
+> > >=20
+> > > This kind of #pragma is basically banned in the kernel.  It's used
+> > > in drivers/gpu/drm but it disables the Sparse static checker. =20
+> >=20
+> > Why is this?
+>=20
+> Because they are arcane and even the gcc documentation recommends avoidin=
+g
+> them.
+>=20
+>  "Note that in general we do not recommend the use of pragmas"
+>  https://gcc.gnu.org/onlinedocs/gcc/Pragmas.html
 
->          if (x < 0 || x >= 10) {
-> 
-> just because 'x' may in some cases be an unsigned entity is not worth
-> even discussing with.
-> 
-> Educate yourself. The "unsigned smaller than 0" warning is not valid.
+If you click on the link that provides the explanation, it says
 
-Bah, you're right. I wasn't looking at the x >= 10 part, and just fixed
-a bug in user space that was caused by an unsigend < 0, and my mind was
-on that.
+"It has been found convenient to use __attribute__ to achieve a natural
+attachment of attributes to their corresponding declarations, whereas
+#pragma is of use for compatibility with other compilers or constructs
+that do not naturally form part of the grammar. "
 
-Sorry for the noise here.
+Regions of code do not naturally form part of the grammar, and
+this is why I would like to use pragmas here. =20
 
--- Steve
+
+But I still wonder why it affects sparse?
+
+...
+
+
+> >=20
+> > > >=20
+> > > > I would also have a DYNAMIC mode that traps for UB detected at
+> > > > run-time (but I understand that this is not useful for the kernel).=
+  =20
+> > >=20
+> > > No, this absolutely is useful.  This is what UBSan does now.
+> > >  =20
+> >=20
+> > Yes, it is similar to UBSan. The ideas to make sure that in the
+> > mode there is *either* a compile-time warning *or* run-time
+> > trap for any UB.  So if you fix all warnings, then any remaining
+> > UB is trapped at run-time.
+>=20
+> As long as we allow known UB. We have code that (ab)uses UB behavior in g=
+cc
+> that can't work without it. For instance, static calls. Now if the compil=
+er
+> supported static calls, it would be great if we can use that.
+>=20
+> What's a static call?
+>=20
+> It's a function call that can be changed to call other functions without
+> being an indirect function call (as spectre mitigations make that horribl=
+y
+> slow). We use dynamic code patching to update the static calls.
+>=20
+> It's used for functions that are decided at run time. For instance, are w=
+e
+> on AMD or Intel to decide which functions to implement KVM.
+>=20
+> What's the UB behavior? It's calling a void function with no parameters
+> that just returns where the caller is calling a function with parameters.
+> That is:
+>=20
+> 	func(a, b, c)
+>=20
+> where func is defined as:
+>=20
+> 	void func(void) { return ; }
+
+Calling a function declared in this way with arguments
+would be rejected by the compiler, so I am not sure how
+this works now.
+
+If you used=20
+
+void func();
+
+to declare the function, this is not possible anymore in C23.
+
+
+But in any case, I think it is a major strength of C that you can
+escape its rules when necessary. I do not intend to change this.
+I just want to give people a tool to prevent unintended consequences
+of UB.
+
+Martin
+
 
