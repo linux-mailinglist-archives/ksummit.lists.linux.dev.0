@@ -1,174 +1,127 @@
-Return-Path: <ksummit+bounces-1822-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1823-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D2C7A40611
-	for <lists@lfdr.de>; Sat, 22 Feb 2025 08:20:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77EA8A4066F
+	for <lists@lfdr.de>; Sat, 22 Feb 2025 09:41:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C74A5177917
-	for <lists@lfdr.de>; Sat, 22 Feb 2025 07:20:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 619A63A87AA
+	for <lists@lfdr.de>; Sat, 22 Feb 2025 08:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF8AF20127A;
-	Sat, 22 Feb 2025 07:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBF942066ED;
+	Sat, 22 Feb 2025 08:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b="J16ksXje"
-Received: from mailrelay.tugraz.at (mailrelay.tugraz.at [129.27.2.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GERqCj6w"
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D341F75AC
-	for <ksummit@lists.linux.dev>; Sat, 22 Feb 2025 07:20:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.27.2.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1572063EE
+	for <ksummit@lists.linux.dev>; Sat, 22 Feb 2025 08:41:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740208832; cv=none; b=tMxTscY2h0Jc1U75FPoq4juAb/farlP9WAdk7Ta6EUQKvZis9yMsyIwHObLxndDzgWuY+6jHtr+kos9fmAjtSY5JhZwq66SABtNdkxthq6t8IPOgG721K3IQyu1PY0Vw1E29afXs7G7N7QqEwzvgRZa6E3gd/lbvmGtLO3Wp8VE=
+	t=1740213677; cv=none; b=a4psbR2NywszoNHDeY+eFcsE/Il0QqskccG/bCDaWv9hv67nCXdx0Vzr3BgZjy42wGc4c3e19iVhD0610IBDLL3V8pzpGwaw1WHehvLhc7nNYb3KLs1XKv1hCzmuyq7ebRs5h2Ww7zalHSDRUb2PrgvEnGZthaaVP+uKTPGZjFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740208832; c=relaxed/simple;
-	bh=oagXNzkOV6KSuctkCl5gvSg2Z1l3eJ73jxyB1wAI6Js=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=burB0DDB2etN3k20H9/9WCyPsDHt0NV7kikJnmkTrRGMQyk9wQ/MfnOY09AnVoBI1sqDjZd/By+s3R5RpxLO2IPUiEpu/ems5vOy6q8uIZL2VXMhkefgLlrLXm+AyTn4wS4Smja8/C1XZT/mVxBXDMwBbcbytv6Z15OItul5zsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at; spf=pass smtp.mailfrom=tugraz.at; dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b=J16ksXje; arc=none smtp.client-ip=129.27.2.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tugraz.at
-Received: from vra-171-156.tugraz.at (vra-171-156.tugraz.at [129.27.171.156])
-	by mailrelay.tugraz.at (Postfix) with ESMTPSA id 4Z0JL519GMz3wGD;
-	Sat, 22 Feb 2025 08:20:12 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tugraz.at;
-	s=mailrelay; t=1740208815;
-	bh=SmYAkhIaHBL8Km4TDg1K0OIvSYnVEOYNlWg73OMrNRc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=J16ksXjeKtAfbR1UV3GeK0MInBhz4XIycAc3r+x7p1gbNeNMWCj6yyDv/bmwnRbGQ
-	 c2HavY7eNd08wsYSDkoMUvVXUbVS+n9Ankd5Kuvqz91qB4/DF2zmCyRp8UrTTlR00+
-	 ciEGzkM6mQ5YQeKzUQuKcquz/YNSFhwTw+aYNIEY=
-Message-ID: <e525cd59ebec54b153f56b602b545007fc03f12a.camel@tugraz.at>
-Subject: Re: Rust kernel policy
-From: Martin Uecker <uecker@tugraz.at>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Dan Carpenter
- <dan.carpenter@linaro.org>, Greg KH <gregkh@linuxfoundation.org>, Boqun
- Feng <boqun.feng@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, Miguel Ojeda
- <miguel.ojeda.sandonis@gmail.com>, Christoph Hellwig <hch@infradead.org>, 
- rust-for-linux <rust-for-linux@vger.kernel.org>, David Airlie
- <airlied@gmail.com>, linux-kernel@vger.kernel.org,  ksummit@lists.linux.dev
-Date: Sat, 22 Feb 2025 08:20:12 +0100
-In-Reply-To: <CAHk-=wj5Rt_xhp_n4_gEyGG9LKFOiTrsvN0ueo3q5PyjJPU+AQ@mail.gmail.com>
-References: <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
-	 <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
-	 <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
-	 <Z7VKW3eul-kGaIT2@Mac.home> <2025021954-flaccid-pucker-f7d9@gregkh>
-	 <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
-	 <2025022024-blooper-rippling-2667@gregkh>
-	 <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
-	 <2025022042-jot-favored-e755@gregkh>
-	 <b9a5de64fe1ded2ad3111763f35af9901bd81cc4.camel@tugraz.at>
-	 <caea3e79-78e6-4d98-9f3b-f8e7f6f00196@stanley.mountain>
-	 <61a7e7db786d9549cbe201b153647689cbe12d75.camel@tugraz.at>
-	 <20250221124304.5dec31b2@gandalf.local.home>
-	 <CAHk-=wgg2A_iHNwf_JDjYJF=XHnKVGOjGp50FzVWniA2Z010bw@mail.gmail.com>
-	 <6b3e4d3bdc9b6efd69068e5b22cfd05d370aed19.camel@tugraz.at>
-	 <CAHk-=wg=pZvE9cHJUPKGCajRUCtDoW73xwY5UfJApCWms_FgYw@mail.gmail.com>
-	 <008cc0939c130ee24fbc71a0407ff82772076668.camel@tugraz.at>
-	 <CAHk-=wj5Rt_xhp_n4_gEyGG9LKFOiTrsvN0ueo3q5PyjJPU+AQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	s=arc-20240116; t=1740213677; c=relaxed/simple;
+	bh=ipT8QGteDw5f/sH4Qq/CmGG+rJIDqYmTvgmdclMSeJk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HGkkeVB8Owr1+okg67p5/kzTkkZi5lf56kRvILf8SX4418sVCvIVOnRpdWunL9A5CRf9wzE32CGgRDSz4u7B74S0P4kqr+QGHmdG15Zk8GUzkzWTGiQjvdACgO/d0r5+3tD/2WGjl2B6hfwES++g4TLWAPaiceL+LSwGXizhUo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GERqCj6w; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-38f2f783e4dso2441899f8f.3
+        for <ksummit@lists.linux.dev>; Sat, 22 Feb 2025 00:41:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740213674; x=1740818474; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XaJV665AV3yPzU+JriL5zw7cJhNHTOrH7fZFwrVgwF8=;
+        b=GERqCj6wUxFNZDnILMGmuWNVL8671TednHENYKVE0+NuU8eN2CevU/mjhHuScwdexB
+         i44A6uCcg6IuqKPAO+MLEPoV6ENKv0fP0UhdpcQDAerw3twrSrdA+h0cOcSb+Fy2ba1R
+         FwADUSuMQL5TooHD0WLS2wQXmdOnsu4iva3+XRy139m2M9dhlIkN0RsULC/cETnDCcxd
+         6fjwQbnjzUfpW6YX2h15gS5c8vcFNEkIwgj+MYfMhIpNNxVysGvcYOgovKFKfwDwSBUw
+         +RC6bfCdmHgBMW59v90lGwj3ZUiTDwmqvng1kVE3RUWI7Ya/KIZVr+B9KbDuQDop3dbG
+         +zqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740213674; x=1740818474;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XaJV665AV3yPzU+JriL5zw7cJhNHTOrH7fZFwrVgwF8=;
+        b=AzNNqEwFHCOcmYn/oHnmUOS4sEXWiuL6VShxNHl0+QVl58jX0DBx+/De1uOhOhNBP0
+         SfkB2Ev1ZjLn3UmgXm/38wHDL7SpTpUQpH8eLBwaLn+A4BmDB/Y9INdYgvyjBoZ2MwGb
+         yvRcgytva4sl/PYWGY4HBQUNb/XW6rC+ExypCxrZmTAh4I24vG2wZkUkOjR2NUcTe4TH
+         rrrOkJwubWHTUIJ04OR74nRgGcbC5h6gIeLhOCdMb8GlILNgWqqU2jiZymtZvv1rDhWd
+         66FZLJDkBUv1XoKXdMvwaNufnrSI08AmCBncihuAgRouiHYtLZOO1uyz5E92YDbuNOf7
+         xDCg==
+X-Forwarded-Encrypted: i=1; AJvYcCVPkA1wtgs35zttn7HOP8oyoJl39qvBaEsyqk86dcHPE+wnJ7Wn1LZSbkhmLQuIhYnEvAYhXqoK@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw5MD17P3ceqSna/yiFHwcvpHjBHkhTjxwjS4d1qE2j0wkatSat
+	7KjIFoDsixUFpPUg111KgJ4TMEAuye9k35BCDZL+2Ulb5I6s2I74
+X-Gm-Gg: ASbGncsmzJn8lvndM4Vc8G6BdNZqCJb9sx2jFBhOToqbJYy/Sk8ZhAZ4I8XiRMAW1Lx
+	zwxe843x8MPCxGCwO8XEu3n82PwC6V4P82BRIdrT1+ojajDld9Fn1bt/Ls2CsXt4L/UAo2F9zyX
+	X0hpHLkappGxGQJaW0kfCZedFV+6RZogZ9H3+Rjb2qiBbcM+UA6ilHu/O/eup7sl3rIa57reurg
+	lTlTHJDiD3+afy1UtX7XhqDp1USyJDKCH2HVOmVoYj5YxC/4Tc536D2Pgr0adupxKGNrLSlDB9D
+	hyuHwavT5dTp9c4INzHqs8Hjf8BGuhaOvAqqyMUsOPBLCZur+Nfvr6LE30epsdy4
+X-Google-Smtp-Source: AGHT+IEXdU1fuHO8qIW2d1ilr9ZJTNlJ0Vo8IHgRtK33xwA9gvTMGEqNrn0XDDuoDvlxbx6680O3gA==
+X-Received: by 2002:a5d:5888:0:b0:38f:5120:129d with SMTP id ffacd0b85a97d-38f6f0bc676mr4633805f8f.49.1740213673840;
+        Sat, 22 Feb 2025 00:41:13 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-439b037213dsm40479475e9.40.2025.02.22.00.41.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 22 Feb 2025 00:41:13 -0800 (PST)
+Date: Sat, 22 Feb 2025 08:41:12 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Willy Tarreau <w@1wt.eu>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Jan Engelhardt
+ <ej@inai.de>, "H. Peter Anvin" <hpa@zytor.com>, Greg KH
+ <gregkh@linuxfoundation.org>, Boqun Feng <boqun.feng@gmail.com>, Miguel
+ Ojeda <miguel.ojeda.sandonis@gmail.com>, Christoph Hellwig
+ <hch@infradead.org>, rust-for-linux <rust-for-linux@vger.kernel.org>, David
+ Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
+ ksummit@lists.linux.dev
+Subject: Re: C aggregate passing (Rust kernel policy)
+Message-ID: <20250222084112.23eb2856@pumpkin>
+In-Reply-To: <20250222063730.GB11482@1wt.eu>
+References: <Z7VKW3eul-kGaIT2@Mac.home>
+	<2025021954-flaccid-pucker-f7d9@gregkh>
+	<2nn05osp-9538-11n6-5650-p87s31pnnqn0@vanv.qr>
+	<2025022052-ferment-vice-a30b@gregkh>
+	<9B01858A-7EBD-4570-AC51-3F66B2B1E868@zytor.com>
+	<n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr>
+	<20250221183437.1e2b5b94@pumpkin>
+	<CAHk-=wjF0wjD4ko7MgrZ1wBZ9QOrQd_AnyhDDUJQ1L5+i-o22A@mail.gmail.com>
+	<20250221214501.11b76aa8@pumpkin>
+	<20250222063210.GA11482@1wt.eu>
+	<20250222063730.GB11482@1wt.eu>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-TUG-Backscatter-control: G/VXY7/6zeyuAY/PU2/0qw
-X-Spam-Scanner: SpamAssassin 3.003001 
-X-Spam-Score-relay: 0.0
-X-Scanned-By: MIMEDefang 2.74 on 129.27.10.116
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Am Freitag, dem 21.02.2025 um 12:11 -0800 schrieb Linus Torvalds:
-> On Fri, 21 Feb 2025 at 11:59, Martin Uecker <uecker@tugraz.at> wrote:
-> >=20
-> > The standardized version of __attribute__(()) would look like
-> >=20
-> > [[safety(ON)]];
-> > ....
-> >=20
-> > [[safety(OFF)]];
-> >=20
-> > which is not bad (and what C++ seems to plan for profiles),
-> > but this also does not nest and is a bit more limited to where
-> > it can be used relative _Pragma.  I don't really see any advantage.
-> >=20
-> > GCC has
-> >=20
-> > #pragma GCC diagnostic push "-Wxyz"
-> > #pragma GCC diagnostic pop
-> >=20
-> > for nesting. Also not great.
->=20
-> I realize that the manual nesting model can be useful, but I do think
-> the "default" should be to aim for always associating these kinds of
-> things with actual code (or data), and use the normal block nesting
-> rules.
->=20
-> If you are writing safe code - or better yet, you are compiling
-> everything in safe mode, and have to annotate the unsafe code - you
-> want to annotate the particular *block* that is safe/unsafe. Not this
-> kind of "safe on/safe off" model.
->=20
-> At least with the __attribute__ model (or "[[..]]" if you prefer that
-> syntax) it is very much designed for the proper nesting behavior.
-> That's how attributes were designed.
+On Sat, 22 Feb 2025 07:37:30 +0100
+Willy Tarreau <w@1wt.eu> wrote:
 
-There is no way to attach a GCC attribute to
-a compound-statement.   For [[]] this is indeed allowed,
-so you could write
+...
+> Update: I found in my code a comment suggesting that it works when using
+> -freg-struct (which is in fact -freg-struct-return) which works both on
+> i386 and ARM.
 
-void f()
-{
-	[[safety(DYNAMIC)]] {
-	}
-}
+The problem is that you need it to be an __attribute__(()) so it can
+be per-function without breaking ABI.
 
-but then you also force the user to create compound-statement.
-Maybe this is what we want, but it seems restrictive.  But I
-will need to experiment with this anyhow to find out what works
-best.
+> I just didn't remember about this and couldn't find it when
+> looking at gcc docs.
 
->=20
-> Afaik #pragma has _no_ such mode at all (but hey, most of it is
-> compiler-specific random stuff, so maybe some of the #pragma uses are
-> "this block only"), and I don't think _Pragma() is not any better in
-> that respect (but again, since it has no real rules, again I guess it
-> could be some random thing for different pragmas).
+I can never find anything in there either.
+And then I wish they say when it was introduced.
 
-For all the STDC pragmas that already exist in ISO C, they are
-effective until the end of a compund-statement.  These pragmas
-are all for floating point stuff.
-
-void f()
-{
-#pragma STDC FP_CONTRACT ON
-}
-// state is restored
-
-but you also toggle it inside a compund-statement
-
-
-void f()
-{
-#pragma STDC FP_CONTRACT ON
-   xxx;
-#pragma STDC FP_CONTRACT OFF
-   yyy;
-}
-// state is restored
-
-
-The problem with those is currently, that GCC does not=C2=A0
-implement them. =20
-
-I will need to think about this more.
-
-Martin
-
+	David
 
 
