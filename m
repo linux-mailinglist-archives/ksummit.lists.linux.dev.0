@@ -1,114 +1,159 @@
-Return-Path: <ksummit+bounces-1845-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1846-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EC3CA40B7B
-	for <lists@lfdr.de>; Sat, 22 Feb 2025 20:42:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC8B0A40B83
+	for <lists@lfdr.de>; Sat, 22 Feb 2025 21:00:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D375176F3E
-	for <lists@lfdr.de>; Sat, 22 Feb 2025 19:42:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DA053BB0D5
+	for <lists@lfdr.de>; Sat, 22 Feb 2025 20:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0072046B2;
-	Sat, 22 Feb 2025 19:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE9F8201269;
+	Sat, 22 Feb 2025 20:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WJJ15WzU"
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="jym11DEO"
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F4C201026
-	for <ksummit@lists.linux.dev>; Sat, 22 Feb 2025 19:42:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3209F1EEA43
+	for <ksummit@lists.linux.dev>; Sat, 22 Feb 2025 20:00:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740253326; cv=none; b=Yw1R8sUdca3Bs9N9HVSiSPhd6Mrr6EqjsvH9G4nRenhjDAM5XRV2cIVVFCA366zISUWymhH2X0Scf+i1X/parU/o/+mYfhW+ckGohd1ftRgZh+SJ8YdkKQkZRSAYsldQd6xc6oUFOaFvbgz6uDJC2WqfSmbe3LXAis/5MC4jT84=
+	t=1740254424; cv=none; b=bcTypACvxlBPhZjjUAtXUU+tLRN4a9SMG44MyvbSmTjyButj6wJymDVqQ2faxUGXG02tCLRjozAnC4I5DumzukkgEXIkjUBMY5CQOoTCXXYrtfZ7+bIPl3uwsSfSW+UaGX6v2XWzLizIhxvfhGtpdAJnYEWGucwbb0Rt/V9isJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740253326; c=relaxed/simple;
-	bh=kITtiZ18+LO+sCHEc5eH+N7HF/ZLQrNdJwvZ+WL3fX8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Glw+r71ATdKj+hHg1olWVKlrYo8EVD57+SvgJmRkWEZjMvGmpR4NSBawk40zB4E77eSvhnboEKjE5PtE6vo6wlOMcCzr1oQOGcxeuD76EfGvRwpvtRW47wnnpeFVXfGXhw3s+2c9lCkFstsXNFd7UEXIbc9XJmtJ9ZDbs08TNhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WJJ15WzU; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2fc92215d15so839083a91.1
-        for <ksummit@lists.linux.dev>; Sat, 22 Feb 2025 11:42:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740253324; x=1740858124; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4CRvgQmR5ivMD1h4F3gokRfm2MjjJsLjsc4JEynmsAM=;
-        b=WJJ15WzUGkXstjQRqxMp3lwVkD/H6BHtigC+BT1xJ7rTNyYy/wms+WFApDjiR2e/D8
-         BmJdpd0aEPMzoGTOzNRJDgEParj0Ci87Gwr5npTsjm6zwG/tnmRrtiAg8BzmWwpkqYlO
-         I4NGqalcN7O42evTyY+VbBO7mEIRuYhP7nscUYcomwupQDeq4DsEeLLaQIU1I+duc5zN
-         2BIAwOys1b4D85yEi1l2fH+pQ47WcRCka5YMU9D19aLdryJl0WeMjl51BIgYhozkRzC5
-         Xl/Np+Wbmhyg2u8UtXlGo9HvualunFz9ii4Vf2iAM/cVpama+B8ZdVCPGWnyeq6tKHoo
-         lxMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740253324; x=1740858124;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4CRvgQmR5ivMD1h4F3gokRfm2MjjJsLjsc4JEynmsAM=;
-        b=Zro8Gtjx4NdD3SamNtLViVnsTuDYFgzoIR12KEAArNGBXCNxzRngvbnni0pYElj5+8
-         1bkX06zWGTb167dH0BYgK5gbUzFs5AzatlY5nh9ZeQQQFV6SMT6b+yEScplXVSiHrAqR
-         CVWnB2HHHIkrx/E4wYyvdpeTsrt2plZryTFOyFAzCjs/zQsI8mK0qKySofBKreCoJSKL
-         7U8Rd0i0kNyWLtX4XQ+ipkfPbekG/1sw3xVhXyMC40FMPhgesz+BsTTNumDUm/2xHgIb
-         Y6ozoxqvRPnkiuj1imrRT1Xuwy0iS1Mp+XPxxuwz/He6e87EcxW5cNBAwVY5so8XAYlU
-         sLrg==
-X-Forwarded-Encrypted: i=1; AJvYcCV7aAZfFDr7BaKQtRtshbqfOPT9GnHqmFfukwF7aauqILMRPnvrkq1UL7BwrMF81QF4NqAWjKLl@lists.linux.dev
-X-Gm-Message-State: AOJu0YyrbS152GW6HmNzPqL2d/p4aNMTc72NFFwSvFzq6r1vM7rL2POk
-	hPQwch2LCn6HEcvuSoLYWeBPAyglNnvLPMCvr9OZ0+oetZeg2ouquiaU91mMT91ioO28OjF8cp9
-	07OR5mBQHS/oQaNcSROEyphc8Nvg=
-X-Gm-Gg: ASbGncu4t1swWNMX27gXqmFuliaInHBNkdPs5+tQ3An8RNuaFmTgMRrGUxrjkWgffRS
-	i0qtaokyzQWNwBrKqlKgq/yQ9hfZk3RS4Pv4CNSEj0LTGJXx9cOuuZp08SPoLzJgFFStoADeY2G
-	vZ87jGnhs=
-X-Google-Smtp-Source: AGHT+IFgZq6EtapkL/u2tRyEnlmt3/Ly4MJg608kxKvNn8pDExIg8vwxtxcox28h6NSfSKflN7BU/IAH6EaBRdtBdDc=
-X-Received: by 2002:a17:90b:3907:b0:2fc:f63:4b6a with SMTP id
- 98e67ed59e1d1-2fce75f086bmr4985795a91.0.1740253324455; Sat, 22 Feb 2025
- 11:42:04 -0800 (PST)
+	s=arc-20240116; t=1740254424; c=relaxed/simple;
+	bh=g+Qy9acPNsiwG7iu1Ffc8KX4B7wsOwPH7BAz6GnIsZw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MLUS+MmJILEhiGtPkveaJgDxygYfxeD5Q1Uhi/slKAjQ35dJiiLwtkYWtehUEGAZ/v/F9kf1nNLBOXwwapBTViwwS8+hUuDrRJ3rbODXTb+hiaPaYT0IsMur+cI/I5xUmKANJkSq40X+BlYsOO/OVnhlHoeqfgOnyNjSWenT5/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jym11DEO; arc=none smtp.client-ip=95.215.58.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Sat, 22 Feb 2025 15:00:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1740254409;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VwyRu3h9CnMpA1IIRXrDpSkxZiYUzGbaEXD7Ynyx5C0=;
+	b=jym11DEO8x5s+FJUS7vuh40rsLYwfAFaquumZgoAqFT5upSqo2gqBXFBxUU1p2PTlrXKh7
+	wK7spvj1xMaycm6zx421/eqJCjh3wX3YQEX7BGjbQgp2RG3NfAv3tnG+hNhr+LoGcOTF/t
+	eXzHq//MlCr4IbedWgz5pss4pyI4Wow=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Ventura Jack <venturajack85@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	airlied@gmail.com, boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
+	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
+Subject: Re: C aggregate passing (Rust kernel policy)
+Message-ID: <yuwkqfbunlymofpd4kpqmzpiwbxxxupyj57tl5hblf7vsvebhm@ljz6u26eg5ft>
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+ <20250222141521.1fe24871@eugeo>
+ <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+ <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
- <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
-In-Reply-To: <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 22 Feb 2025 20:41:52 +0100
-X-Gm-Features: AWEUYZlCk95OYeQYgvv-2CpvGrLCm3JCYmLm7qyKFLs0_jdzIIGhbSshJZkxX-8
-Message-ID: <CANiq72mdzUJocjXhPRQEEdgRXsr+TEMt99V5-9R7TjKB7Dtfaw@mail.gmail.com>
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Ventura Jack <venturajack85@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	torvalds@linux-foundation.org, airlied@gmail.com, boqun.feng@gmail.com, 
-	david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, 
-	hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Ralf Jung <post@ralfj.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 
-On Sat, Feb 22, 2025 at 7:54=E2=80=AFPM Kent Overstreet
-<kent.overstreet@linux.dev> wrote:
->
-> I believe (Miguel was talking about this at one of the conferences,
-> maybe he'll chime in) that there was work in progress to solidify the
-> aliasing and ownership rules at the unsafe level, but it sounded like it
-> may have still been an area of research.
+On Sat, Feb 22, 2025 at 11:18:33AM -0800, Linus Torvalds wrote:
+> On Sat, 22 Feb 2025 at 10:54, Kent Overstreet <kent.overstreet@linux.dev> wrote:
+> >
+> > If that work is successful it could lead to significant improvements in
+> > code generation, since aliasing causes a lot of unnecessary spills and
+> > reloads - VLIW could finally become practical.
+> 
+> No.
+> 
+> Compiler people think aliasing matters. It very seldom does. And VLIW
+> will never become practical for entirely unrelated reasons (read: OoO
+> is fundamentally superior to VLIW in general purpose computing).
 
-Not sure what I said, but Cc'ing Ralf in case he has time and wants to
-share something on this (thanks in advance!).
+OoO and VLIW are orthogonal, not exclusive, and we always want to go
+wider, if we can. Separately, neverending gift that is Spectre should be
+making everyone reconsider how reliant we've become on OoO.
 
-From a quick look, Tree Borrows was submitted for publication back in Novem=
-ber:
+We'll never get rid of OoO, I agree on that point. But I think it's
+worth some thought experiments about how many branches actually need to
+be there vs. how many are there because everyone's assumed "branches are
+cheap! (so it's totally fine if the CPU sucks at the alternatives)" on
+both the hardware and software side.
 
-    https://jhostert.de/assets/pdf/papers/villani2024trees.pdf
-    https://perso.crans.org/vanille/treebor/
+e.g. cmov historically sucked (and may still, I don't know), but a _lot_
+of branches should just be dumb ALU ops. I wince at a lot of the
+assembly I see gcc generate for e.g. short multiword integer
+comparisons, there are a ton of places where it'll emit 3 or 5 branches
+where 1 is all you need if we had better ALU primitives.
 
-Cheers,
-Miguel
+> Aliasing is one of those bug-bears where compiler people can make
+> trivial code optimizations that look really impressive. So compiler
+> people *love* having simplistic aliasing rules that don't require real
+> analysis, because the real analysis is hard (not just expensive, but
+> basically unsolvable).
+
+I don't think crazy compiler experiments from crazy C people have much
+relevance, here. I'm talking about if/when Rust is able to get this
+right.
+
+> The C standards body has been much too eager to embrace "undefined behavior".
+
+Agree on C, but for the rest I think you're just failing to imagine what
+we could have if everything wasn't tied to a language with
+broken/missing semantics w.r.t. aliasing.
+
+Yes, C will never get a memory model that gets rid of the spills and
+reloads. But Rust just might. It's got the right model at the reference
+level, we just need to see if they can push that down to raw pointers in
+unsafe code.
+
+But consider what the world would look like if Rust fixes aliasing and
+we get a microarchitecture that's able to take advantage of it. Do a
+microarchitecture that focuses some on ALU ops to get rid of as many
+branches as possible (e.g. min/max, all your range checks that don't
+trap), get rid of loads and spills from aliasing so you're primarily
+running out of registers - and now you _do_ have enough instructions in
+a basic block, with fixed latency, that you can schedule at compile time
+to make VLIW worth it.
+
+I don't think it's that big of a leap. Lack of cooperation between
+hardware and compiler folks (and the fact that what the hardware people
+wanted was impossible at the time) was what killed Itanium, so if you
+fix those two things...
+
+> The kernel basically turns all that off, as much as possible. Overflow
+> isn't undefined in the kernel. Aliasing isn't undefined in the kernel.
+> Things like that.
+
+Yeah, the religion of undefined behaviour in C has been an absolute
+nightmare.
+
+It's not just the compiler folks though, that way of thinking has
+infected entirely too many people people in kernel and userspace -
+"performance is the holy grail and all that matters and thou shalt shave
+every single damn instruction".
+
+Where this really comes up for me is assertions, because we're not
+giving great guidance there. It's always better to hit an assertion than
+walk off into undefined behaviour la la land, but people see "thou shalt
+not crash the kernel" as a reason not to use BUG_ON() when it _should_
+just mean "always handle the error if you can't prove that it can't
+happen".
+
+> When 'integer overflow' means that you can _sometimes_ remove one
+> single ALU operation in *some* loops, but the cost of it is that you
+> potentially introduced some seriously subtle security bugs, I think we
+> know it was the wrong thing to do.
+
+And those branches just _do not matter_ in practice, since if one side
+leads to a trap they're perfectly predicted and to a first approximation
+we're always bottlenecked on memory.
 
