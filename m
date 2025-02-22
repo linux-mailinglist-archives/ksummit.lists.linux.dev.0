@@ -1,81 +1,72 @@
-Return-Path: <ksummit+bounces-1844-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1845-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9198AA40B5C
-	for <lists@lfdr.de>; Sat, 22 Feb 2025 20:20:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EC3CA40B7B
+	for <lists@lfdr.de>; Sat, 22 Feb 2025 20:42:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B7D719C1BF5
-	for <lists@lfdr.de>; Sat, 22 Feb 2025 19:19:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D375176F3E
+	for <lists@lfdr.de>; Sat, 22 Feb 2025 19:42:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF84211A36;
-	Sat, 22 Feb 2025 19:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0072046B2;
+	Sat, 22 Feb 2025 19:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="HY1LTexg"
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WJJ15WzU"
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E3914659A
-	for <ksummit@lists.linux.dev>; Sat, 22 Feb 2025 19:18:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F4C201026
+	for <ksummit@lists.linux.dev>; Sat, 22 Feb 2025 19:42:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740251936; cv=none; b=kJY019IpB5YXHt7rNQLP9/Q9Nfsm+MHLzJA1HwRK1Z3AWARJV3hInLofXBK+ZGvdTAidMQ0HkEf92h/b81S68+N7oOYVPFA4SL8frLbWte7Bpu+1u6/iXDaoSuy1Yp5ftmt+dMPJIBYObXmhnxLa6dIbYqEAufRVKaTn3l9Cbog=
+	t=1740253326; cv=none; b=Yw1R8sUdca3Bs9N9HVSiSPhd6Mrr6EqjsvH9G4nRenhjDAM5XRV2cIVVFCA366zISUWymhH2X0Scf+i1X/parU/o/+mYfhW+ckGohd1ftRgZh+SJ8YdkKQkZRSAYsldQd6xc6oUFOaFvbgz6uDJC2WqfSmbe3LXAis/5MC4jT84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740251936; c=relaxed/simple;
-	bh=EzT1g5FwFw69UDBYQDzjBiLobs2dYIYvZzFfhBYPdIw=;
+	s=arc-20240116; t=1740253326; c=relaxed/simple;
+	bh=kITtiZ18+LO+sCHEc5eH+N7HF/ZLQrNdJwvZ+WL3fX8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JLOVTnbmknUDIv/hPxSknBBD4juAD4IHJa5mrlC7xT79PPtUH2eaE1Lme9OA9syC8vS//04VVB2VPs4DD/Wm2I0oVc3j8qaBMKA+PQLmPjRKknZWy1dNjpcR2xBEkSLbr+lhGQtjE50tU2HtMhPityaGwAFhy5kpScdWT48vPjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=HY1LTexg; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-abbdc4a0b5aso595293766b.0
-        for <ksummit@lists.linux.dev>; Sat, 22 Feb 2025 11:18:54 -0800 (PST)
+	 To:Cc:Content-Type; b=Glw+r71ATdKj+hHg1olWVKlrYo8EVD57+SvgJmRkWEZjMvGmpR4NSBawk40zB4E77eSvhnboEKjE5PtE6vo6wlOMcCzr1oQOGcxeuD76EfGvRwpvtRW47wnnpeFVXfGXhw3s+2c9lCkFstsXNFd7UEXIbc9XJmtJ9ZDbs08TNhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WJJ15WzU; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2fc92215d15so839083a91.1
+        for <ksummit@lists.linux.dev>; Sat, 22 Feb 2025 11:42:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1740251933; x=1740856733; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=0Xzl2/w9nsMmIh5i8j2sKE6LkAdctHwz3MFgW7DcHyk=;
-        b=HY1LTexgxcvMgWX/HmiyEiD5kR1B0Ox5daAEdfRYNd8QtAFo0tAPuKDx/yRJM3rFEM
-         JLnv0QLx7ZbntzNatcpjCgoBK9Z00YZkJr6PB+4VR56A8YEe/a4sNp+QwqbjZwcI5mUG
-         9Ho0R91Sb+2cGv7PfPRtkZy+gBFdddcY+R+l0=
+        d=gmail.com; s=20230601; t=1740253324; x=1740858124; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4CRvgQmR5ivMD1h4F3gokRfm2MjjJsLjsc4JEynmsAM=;
+        b=WJJ15WzUGkXstjQRqxMp3lwVkD/H6BHtigC+BT1xJ7rTNyYy/wms+WFApDjiR2e/D8
+         BmJdpd0aEPMzoGTOzNRJDgEParj0Ci87Gwr5npTsjm6zwG/tnmRrtiAg8BzmWwpkqYlO
+         I4NGqalcN7O42evTyY+VbBO7mEIRuYhP7nscUYcomwupQDeq4DsEeLLaQIU1I+duc5zN
+         2BIAwOys1b4D85yEi1l2fH+pQ47WcRCka5YMU9D19aLdryJl0WeMjl51BIgYhozkRzC5
+         Xl/Np+Wbmhyg2u8UtXlGo9HvualunFz9ii4Vf2iAM/cVpama+B8ZdVCPGWnyeq6tKHoo
+         lxMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740251933; x=1740856733;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0Xzl2/w9nsMmIh5i8j2sKE6LkAdctHwz3MFgW7DcHyk=;
-        b=qvFZPH6wKR6zlYqMCt25ibfN1NqzgDZTfbMcVQkq7m5uJb5BmXLTGtrcOQDfLKGBvz
-         KAp83Po1g3dZHCovDajgg52CylUrq58njD6M6uRCTOouGd5j3mwN+5mdVw2FBGMetPKf
-         EQj89fS/7s/V9SQMIdYXg04Gfdh6xY2VFCOBKbtMt3RtACwaNWTwrdfSOrZ0Huv7JPkA
-         hILye3e1VhZbah5ETXB350gUtAqmu+v9SjNv0yfljx7os6dqPa7aPxcR6bHG/h5sD0n1
-         4tbnXoVnTHyRg33tTCz7nQdcJpSMyXpsumtdXB1b43gft6li9SVKCthoYMVqECHXMh7B
-         qHmA==
-X-Forwarded-Encrypted: i=1; AJvYcCVZ3tDf9WGplFcbo4vXK8uamdstesnx5DomiKN+dMrXgpjbXmWP0XJWBGgXJ6+7116XNdaDU4pS@lists.linux.dev
-X-Gm-Message-State: AOJu0YzyQ4VliuVHUUBC+kFLH8EyXrizQnKlqnLbamv9yewVhXxBH5Ho
-	uv+Yh6Bv2j6OKA2HLkYp0O7pxn0nHB1yrdm3rlwHdWWw2PxKQVrbS6fy8LfDy4aaTjFCbZY0nkx
-	0UYE=
-X-Gm-Gg: ASbGncvXUc1rZwJKb4lTHynS/JoJr/efX/OHiJb1aq1WXFaKqg4ggs3Rh+WH7cxAJhj
-	wFcX9faRRuJq0tEfmqv+RIilddqi94rbcoGZquIMMJmuUkeV5nvmCFoQDcES8lOaQy2fEO2XYlo
-	wEXO5s6pWIrsk2BgdnwqY+V2jYu6X8MXTPfS8aFXBAHXCFDWrVi3pA+F548BAr32/TIlGw0PoZF
-	t9dlXiLhbsqsaEOFmHQgSCtCeHkOArMQOk47Wet0j2Hms6gQTczt/OEJxRyL236hfrZH5JAbmjn
-	3ZXNGz3r/7feRi92BLLVpcGg0xWfJgde0AXmh3fWmoxUUd/ykeByaw6vvB/kajgy/56kIC7y40U
-	3
-X-Google-Smtp-Source: AGHT+IHW+Sml8eb6V33Tyh8822fS+R2/5/gdV6NezT8gYGnUlnMlEBEGCOnjSeWALIf/4gcfMs08DA==
-X-Received: by 2002:a17:907:784f:b0:abb:b24d:c63e with SMTP id a640c23a62f3a-abc0ae910famr652223166b.16.1740251932649;
-        Sat, 22 Feb 2025 11:18:52 -0800 (PST)
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com. [209.85.218.54])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aba532594a0sm1932183366b.68.2025.02.22.11.18.50
-        for <ksummit@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 22 Feb 2025 11:18:52 -0800 (PST)
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-abbdf897503so715341366b.0
-        for <ksummit@lists.linux.dev>; Sat, 22 Feb 2025 11:18:50 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWhT4FKj1DXA2NhmyzPhxH61fM9nLYYw7o6GiNdgcXHt59mbx4XE9QjIqbbHJkiqepNypOt8YiM@lists.linux.dev
-X-Received: by 2002:a17:907:7744:b0:ab7:d34a:8f83 with SMTP id
- a640c23a62f3a-abc0ae94ed6mr697861966b.17.1740251930006; Sat, 22 Feb 2025
- 11:18:50 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740253324; x=1740858124;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4CRvgQmR5ivMD1h4F3gokRfm2MjjJsLjsc4JEynmsAM=;
+        b=Zro8Gtjx4NdD3SamNtLViVnsTuDYFgzoIR12KEAArNGBXCNxzRngvbnni0pYElj5+8
+         1bkX06zWGTb167dH0BYgK5gbUzFs5AzatlY5nh9ZeQQQFV6SMT6b+yEScplXVSiHrAqR
+         CVWnB2HHHIkrx/E4wYyvdpeTsrt2plZryTFOyFAzCjs/zQsI8mK0qKySofBKreCoJSKL
+         7U8Rd0i0kNyWLtX4XQ+ipkfPbekG/1sw3xVhXyMC40FMPhgesz+BsTTNumDUm/2xHgIb
+         Y6ozoxqvRPnkiuj1imrRT1Xuwy0iS1Mp+XPxxuwz/He6e87EcxW5cNBAwVY5so8XAYlU
+         sLrg==
+X-Forwarded-Encrypted: i=1; AJvYcCV7aAZfFDr7BaKQtRtshbqfOPT9GnHqmFfukwF7aauqILMRPnvrkq1UL7BwrMF81QF4NqAWjKLl@lists.linux.dev
+X-Gm-Message-State: AOJu0YyrbS152GW6HmNzPqL2d/p4aNMTc72NFFwSvFzq6r1vM7rL2POk
+	hPQwch2LCn6HEcvuSoLYWeBPAyglNnvLPMCvr9OZ0+oetZeg2ouquiaU91mMT91ioO28OjF8cp9
+	07OR5mBQHS/oQaNcSROEyphc8Nvg=
+X-Gm-Gg: ASbGncu4t1swWNMX27gXqmFuliaInHBNkdPs5+tQ3An8RNuaFmTgMRrGUxrjkWgffRS
+	i0qtaokyzQWNwBrKqlKgq/yQ9hfZk3RS4Pv4CNSEj0LTGJXx9cOuuZp08SPoLzJgFFStoADeY2G
+	vZ87jGnhs=
+X-Google-Smtp-Source: AGHT+IFgZq6EtapkL/u2tRyEnlmt3/Ly4MJg608kxKvNn8pDExIg8vwxtxcox28h6NSfSKflN7BU/IAH6EaBRdtBdDc=
+X-Received: by 2002:a17:90b:3907:b0:2fc:f63:4b6a with SMTP id
+ 98e67ed59e1d1-2fce75f086bmr4985795a91.0.1740253324455; Sat, 22 Feb 2025
+ 11:42:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -86,90 +77,38 @@ References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
  <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
  <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
 In-Reply-To: <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sat, 22 Feb 2025 11:18:33 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
-X-Gm-Features: AWEUYZnYn9FC1D3iPga4e5fosxwJzgzYfFpxBBvQVXYxwhFF0dkV8v7eiQuqia8
-Message-ID: <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 22 Feb 2025 20:41:52 +0100
+X-Gm-Features: AWEUYZlCk95OYeQYgvv-2CpvGrLCm3JCYmLm7qyKFLs0_jdzIIGhbSshJZkxX-8
+Message-ID: <CANiq72mdzUJocjXhPRQEEdgRXsr+TEMt99V5-9R7TjKB7Dtfaw@mail.gmail.com>
 Subject: Re: C aggregate passing (Rust kernel policy)
 To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Ventura Jack <venturajack85@gmail.com>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
-	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
-	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, 
-	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
+Cc: Ventura Jack <venturajack85@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	torvalds@linux-foundation.org, airlied@gmail.com, boqun.feng@gmail.com, 
+	david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, 
+	hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Ralf Jung <post@ralfj.de>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, 22 Feb 2025 at 10:54, Kent Overstreet <kent.overstreet@linux.dev> wrote:
+On Sat, Feb 22, 2025 at 7:54=E2=80=AFPM Kent Overstreet
+<kent.overstreet@linux.dev> wrote:
 >
-> If that work is successful it could lead to significant improvements in
-> code generation, since aliasing causes a lot of unnecessary spills and
-> reloads - VLIW could finally become practical.
+> I believe (Miguel was talking about this at one of the conferences,
+> maybe he'll chime in) that there was work in progress to solidify the
+> aliasing and ownership rules at the unsafe level, but it sounded like it
+> may have still been an area of research.
 
-No.
+Not sure what I said, but Cc'ing Ralf in case he has time and wants to
+share something on this (thanks in advance!).
 
-Compiler people think aliasing matters. It very seldom does. And VLIW
-will never become practical for entirely unrelated reasons (read: OoO
-is fundamentally superior to VLIW in general purpose computing).
+From a quick look, Tree Borrows was submitted for publication back in Novem=
+ber:
 
-Aliasing is one of those bug-bears where compiler people can make
-trivial code optimizations that look really impressive. So compiler
-people *love* having simplistic aliasing rules that don't require real
-analysis, because the real analysis is hard (not just expensive, but
-basically unsolvable).
+    https://jhostert.de/assets/pdf/papers/villani2024trees.pdf
+    https://perso.crans.org/vanille/treebor/
 
-And they matter mainly on bad CPUs and HPC-style loads, or on trivial
-example code. And for vectorization.
-
-And the sane model for those was to just have the HPC people say what
-the aliasing rules were (ie the C "restrict" keyword), but because it
-turns out that nobody wants to use that, and because one of the main
-targets was HPC where there was a very clear type distinction between
-integer indexes and floating point arrays, some "clever" person
-thought "why don't we use that obvious distinction to say that things
-don't alias". Because then you didn't have to add "restrict" modifiers
-to your compiler benchmarks, you could just use the existing syntax
-("double *").
-
-And so they made everything worse for everybody else, because it made
-C HPC code run as fast as the old Fortran code, and the people who
-cared about DGEMM and BLAS were happy. And since that was how you
-defined supercomputer speeds (before AI), that largely pointless
-benchmark was a BigDeal(tm).
-
-End result: if you actually care about HPC and vectorization, just use
-'restrict'. If you want to make it better (because 'restrict'
-certainly isn't perfect either), extend on the concept. Don't make
-things worse for everybody else by introducing stupid language rules
-that are fundamentally based on "the compiler can generate code better
-by relying on undefined behavior".
-
-The C standards body has been much too eager to embrace "undefined behavior".
-
-In original C, it was almost entirely about either hardware
-implementation issues or about "you got your pointer arithetic wrong,
-and the source code is undefined, so the result is undefined".
-Together with some (very unfortunate) order of operations and sequence
-point issues.
-
-But instead of trying to tighten that up (which *has* happened: the
-sequence point rules _have_ actually become better!) and turning the
-language into a more reliable one by making for _fewer_ undefined or
-platform-defined things, many C language features have been about
-extending on the list of undefined behaviors.
-
-The kernel basically turns all that off, as much as possible. Overflow
-isn't undefined in the kernel. Aliasing isn't undefined in the kernel.
-Things like that.
-
-And making the rules stricter makes almost no difference for code
-generation in practice. Really. The arguments for the garbage that is
-integer overflow or 'strict aliasing' in C were always just wrong.
-
-When 'integer overflow' means that you can _sometimes_ remove one
-single ALU operation in *some* loops, but the cost of it is that you
-potentially introduced some seriously subtle security bugs, I think we
-know it was the wrong thing to do.
-
-             Linus
+Cheers,
+Miguel
 
