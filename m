@@ -1,122 +1,139 @@
-Return-Path: <ksummit+bounces-1818-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1819-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F6D4A4038E
-	for <lists@lfdr.de>; Sat, 22 Feb 2025 00:39:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 161F4A405BD
+	for <lists@lfdr.de>; Sat, 22 Feb 2025 06:56:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F5A87AA43A
-	for <lists@lfdr.de>; Fri, 21 Feb 2025 23:36:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE90642595A
+	for <lists@lfdr.de>; Sat, 22 Feb 2025 05:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 120F220F083;
-	Fri, 21 Feb 2025 23:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B23220010A;
+	Sat, 22 Feb 2025 05:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b="W1tsNPJT"
-Received: from mailrelay.tugraz.at (mailrelay.tugraz.at [129.27.2.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gj8s0Xtq"
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBDAD2066EE
-	for <ksummit@lists.linux.dev>; Fri, 21 Feb 2025 23:37:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.27.2.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350F617C2
+	for <ksummit@lists.linux.dev>; Sat, 22 Feb 2025 05:56:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740181041; cv=none; b=NLOp1TrI2krxTaS8jrSbaFUU2pstZ3D/n5Zhg73VfbSPcVN0i3sozA20bDscviE9KmwZVcp6emxUW45hqIKVFViOJmxgdEsE0Y6Eb9ks7swd5Ku/IBSi8/WNNfYjZr//HxP3D6IqP+V6vsK3nSgcODYqzUdMTxnMY+ec1uOV03w=
+	t=1740203798; cv=none; b=RslFYAPRu2U0OF4/KWKwdBXwwlyw5Pp7jSoii+JgP+a8QhDc4L3uqR8nwyfOvJfOE6DNVxC6qVZlTd5IMI+ZCU9HOzi44kmKPf4QF4M1M5wmxNbJp70kEQYEeXpfcV/UtrSiKqrqTIc9YZ0J273zRTQyr5fR1kbsn3lJKzVqb68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740181041; c=relaxed/simple;
-	bh=QuF+YyezZll4mS5fKCVTOeni9saCkm+aBxjihJ8FwDw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Nn9zgRPTcDJU6cznAsot65CV5D8wvuk0dUWiQLBtaYo7JlUJ55/1EebYKIBX13eH9xDI/TfL0b7mU65IWbfmns59b72a/1rYtxLwYqEaDTaysfLAd+Vq+amXr7NnyZZsQcehV+iYCQAipWDj3Ur8XSZDbJd8JRnTQacraOtSauE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at; spf=pass smtp.mailfrom=tugraz.at; dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b=W1tsNPJT; arc=none smtp.client-ip=129.27.2.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tugraz.at
-Received: from [192.168.0.221] (84-115-212-25.cable.dynamic.surfer.at [84.115.212.25])
-	by mailrelay.tugraz.at (Postfix) with ESMTPSA id 4Z063d5md0z1LM09;
-	Sat, 22 Feb 2025 00:37:01 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailrelay.tugraz.at 4Z063d5md0z1LM09
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tugraz.at;
-	s=mailrelay; t=1740181022;
-	bh=GNxPALT6bh+xjA6a7d7X+7z7j13roE7xzn3KU3dbAo4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=W1tsNPJT1j85pi/RTog1sdwJhpG92iWrusXw8Szw+27bdhzHK0O1jez4fwOruiSr7
-	 fLgRQoDRlsC8v75XC66IC3av0dpQCluscHTHFL4oIjOzDNjeQTXBilwOyI4nF2DZnt
-	 OKc84ejkKIwTXzL+SHkeEm6aKZsjZ53CVV/hmfUo=
-Message-ID: <fd053f18e3856d070d695ea969b3fd635272e8e0.camel@tugraz.at>
-Subject: Re: Rust kernel policy
-From: Martin Uecker <uecker@tugraz.at>
-To: Steven Rostedt <rostedt@goodmis.org>, Linus Torvalds
-	 <torvalds@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
-Date: Sat, 22 Feb 2025 00:37:01 +0100
-In-Reply-To: <20250221172415.5b632ae6@gandalf.local.home>
-References: <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
-	 <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
-	 <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
-	 <Z7VKW3eul-kGaIT2@Mac.home> <2025021954-flaccid-pucker-f7d9@gregkh>
-	 <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
-	 <2025022024-blooper-rippling-2667@gregkh>
-	 <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
-	 <2025022042-jot-favored-e755@gregkh>
-	 <b9a5de64fe1ded2ad3111763f35af9901bd81cc4.camel@tugraz.at>
-	 <caea3e79-78e6-4d98-9f3b-f8e7f6f00196@stanley.mountain>
-	 <61a7e7db786d9549cbe201b153647689cbe12d75.camel@tugraz.at>
-	 <20250221124304.5dec31b2@gandalf.local.home>
-	 <CAHk-=wgg2A_iHNwf_JDjYJF=XHnKVGOjGp50FzVWniA2Z010bw@mail.gmail.com>
-	 <6b3e4d3bdc9b6efd69068e5b22cfd05d370aed19.camel@tugraz.at>
-	 <CAHk-=wg=pZvE9cHJUPKGCajRUCtDoW73xwY5UfJApCWms_FgYw@mail.gmail.com>
-	 <20250221172415.5b632ae6@gandalf.local.home>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	s=arc-20240116; t=1740203798; c=relaxed/simple;
+	bh=C+stmj8U4y5ym21F+sMcdLbl+U7vfbBp14zzEbI48W4=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=D/wVCqcJPc8d9a1RP4XmbdqTcTtAKm4wDThjGfmN+GXhGsDo+0mGYdZEm0Nq5CNqahOEqvlnze4VRFSCY+yd+BRxETP8xW5ERnCGmm+8HXJrB46/6Fxa5xs9jzGYQDkTi8op6zNZv/OHD/Y3rVWZ8W/mKTSgCMayRcOSUYlnPIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gj8s0Xtq; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-220d132f16dso45168565ad.0
+        for <ksummit@lists.linux.dev>; Fri, 21 Feb 2025 21:56:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740203796; x=1740808596; darn=lists.linux.dev;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9toe4jz2yTh5fR2DruBYvXF93WBq57gFVoRlebFiqAk=;
+        b=Gj8s0Xtqh0kmIICywvA12kr6ixJl2sJls4753cMoFrnXmiBEWXIadV+dlCcHfNrTbR
+         WdSlW84Fi3iTyW7Jv9p0PXNE7cCCie7apFMz1N/+Ey3fsXvC/sq+7FnZ6qFsEh7Jc/u9
+         O2IxWIqn6ZStEfKzFxUKfaQNaOjgIL0wjo0DOs9ejju56x/ML4eZ+UcpFCrhcj5A0whR
+         bgxQqbFLuvV14VBDTU2gA/tx4SGIXlV8dFEOKXQkigI1VeSrL01S6L6SGwOU7rPiQ8oW
+         qMV9GxzFEhjQ/nfH+0SMi2CWy0GFuZSNfbnem2hyJzf20P3zGNG9ukNFn7nZQfVhbqSK
+         Sy7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740203796; x=1740808596;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9toe4jz2yTh5fR2DruBYvXF93WBq57gFVoRlebFiqAk=;
+        b=E75iMyxmApA7RDlsUmSZXaVrLVwDidmrp5Awzx0zJNCWvu8iVpsegAZXe4UkmYDXXb
+         JjC/bXadhtvZZq1CXNz29qYRatvz9GdUGiwCNtLZjA4HZ8PuOg/t3b+M+YUy2cyCoEAR
+         Nv29sWsXxTP1HYLJnlEixdZ9zcfR8MtxU2vtzjaebBMohkZ6HxWG23Ie/iMiL/sSHMIB
+         cC9PxGRsDUhRk2clbg92porjokuDlvvj1Po4T1eZ84XR1IL/vBpAPehB/C6AsIUHj0dd
+         W3XYnG3x2KJ/9DtjIqGs1pAsLTFtX4k/Saj+CaL6of9UUj6ymZGakimx7g+YAO4UfzQw
+         Me5w==
+X-Forwarded-Encrypted: i=1; AJvYcCVPsXp0JGLK1wIOxKcebqoukfRW9i0j9u1QPyLY2AUK99kBh80wPqueXanHb8sX4znCC11jDPoW@lists.linux.dev
+X-Gm-Message-State: AOJu0YxgNTvlNi9O5r4XwNhKbtxZ0GClYDDTT3S64oPY6c8CzdtVEBy+
+	RWSc2ry36M8p5A0ACjv2T8UhZBMLjdQkU7Ef5uS6Y6mw5muboR4c
+X-Gm-Gg: ASbGnctw+nGuUOI2GThh4Jd6TPIyFyxPkRCrVjPzml68YWW7u98pYOPsg7VidA0n9j3
+	y9uZcv2IMTmz/2h4WNAEuHOCVhKFU3Sor+BNVPmgB0C+Zwk2LvM+zxvjPpH6D+F7wbXSlbo/s2I
+	6VziL/95I+jk8lLR7b3a0xU2n3wRjAxYwkfk/qk3ckJzaYzVuZi6FjVIUwIELqj8fXnJQfGoyJr
+	Bu0cVHq30vkCuY1lBwG/eZ4HeJysMgK8bmJCH6yCFnyYnWS1uZq2J1VedRPaLwfOFlVQJvCRjoI
+	QBHbMYLjqfZpyheUyAoiylFmTOiAZ0a8buofw6+j6DFo2mnr
+X-Google-Smtp-Source: AGHT+IE4NzvtvNaLq+BC50x7+IEs35DdLd3D1KdoFJPlnLEPZKxkTfB0OERGN6Dm5auQQeaXxUuQrQ==
+X-Received: by 2002:a17:902:d4cf:b0:21d:cd54:c7ef with SMTP id d9443c01a7336-2219ff31902mr88562285ad.9.1740203796361;
+        Fri, 21 Feb 2025 21:56:36 -0800 (PST)
+Received: from smtpclient.apple ([2601:645:4300:5ca0:35f7:b1dc:26f7:f292])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d536439bsm145851455ad.81.2025.02.21.21.56.35
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 21 Feb 2025 21:56:35 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-TUG-Backscatter-control: G/VXY7/6zeyuAY/PU2/0qw
-X-Spam-Scanner: SpamAssassin 3.003001 
-X-Spam-Score-relay: 0.0
-X-Scanned-By: MIMEDefang 2.74 on 129.27.10.117
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.400.131.1.6\))
+Subject: Re: C aggregate passing (Rust kernel policy)
+From: comex <comexk@gmail.com>
+In-Reply-To: <917f49a5-dae4-4810-8116-9bc93ddcd9f5@acm.org>
+Date: Fri, 21 Feb 2025 21:56:24 -0800
+Cc: David Laight <david.laight.linux@gmail.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Jan Engelhardt <ej@inai.de>,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ Greg KH <gregkh@linuxfoundation.org>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Christoph Hellwig <hch@infradead.org>,
+ rust-for-linux <rust-for-linux@vger.kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ David Airlie <airlied@gmail.com>,
+ linux-kernel@vger.kernel.org,
+ ksummit@lists.linux.dev
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <57A4AE10-546F-402D-A04E-3EC323A86AC5@gmail.com>
+References: <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
+ <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com> <Z7VKW3eul-kGaIT2@Mac.home>
+ <2025021954-flaccid-pucker-f7d9@gregkh>
+ <2nn05osp-9538-11n6-5650-p87s31pnnqn0@vanv.qr>
+ <2025022052-ferment-vice-a30b@gregkh>
+ <9B01858A-7EBD-4570-AC51-3F66B2B1E868@zytor.com>
+ <n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr>
+ <20250221183437.1e2b5b94@pumpkin>
+ <p7946077-rn30-n3p3-ppp0-80o9n9p07718@vanv.qr>
+ <20250221202332.GA6576@pendragon.ideasonboard.com>
+ <20250221220201.7068dfa3@pumpkin>
+ <917f49a5-dae4-4810-8116-9bc93ddcd9f5@acm.org>
+To: Bart Van Assche <bvanassche@acm.org>
+X-Mailer: Apple Mail (2.3826.400.131.1.6)
 
-Am Freitag, dem 21.02.2025 um 17:24 -0500 schrieb Steven Rostedt:
-> On Fri, 21 Feb 2025 11:30:41 -0800
-> Linus Torvalds <torvalds@linux-foundation.org> wrote:
+
+
+> On Feb 21, 2025, at 2:13=E2=80=AFPM, Bart Van Assche =
+<bvanassche@acm.org> wrote:
 >=20
-> > And yes, it's wrong in general. The problems with "x < 0" warning for
-> > an unsigned 'x' are deep and fundamental, and macros that take various
-> > types is only one (perhaps more obvious) example of how brokent that
-> > garbage is.
->=20
-> The bug I recently fixed, and I still constantly make, where this does
-> help, is the difference between size_t vs ssize_t. I keep forgetting that
-> size_t is unsigned, and I'll check a return of a function that returns
-> negative on error with it.
->=20
-> If I could just get a warning for this stupid mistake:
->=20
-> 	size_t ret;
->=20
-> 	ret =3D func();
-> 	if (ret < 0)
-> 		error();
->=20
->=20
-> I'd be very happy.
->=20
+> Initially, early implementations of std::string may have used CoW or =
+reference counting techniques.
 
-GCC has this warning, it is called -Wtype-limits
+More accurately, you can=E2=80=99t have one without the other.  =
+std::string is mutable, so reference counting requires copy-on-write =
+(and of course copy-on-write wouldn=E2=80=99t make sense without =
+multiple references).
 
-https://godbolt.org/z/M787vjhfo
+> Notably, the C++11 standard explicitly banned CoW for std::string in =
+order to avoid its pitfalls.
+> [ ... ]
 
-It is activated by -Wextra.
+The C++11 spec doesn=E2=80=99t explicitly say =E2=80=98thou shalt not =
+copy-on-write=E2=80=99, but it requires std::string's operator[] to be =
+O(1), which effectively bans it because copying is O(n).
 
-(anyway, not at all related to my proposal)
-
-Martin
-
-
-
-
-
+Which forced libstdc++ to break their ABI, since they were using =
+copy-on-write before.=
 
