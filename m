@@ -1,225 +1,143 @@
-Return-Path: <ksummit+bounces-1867-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1868-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 943C0A4127F
-	for <lists@lfdr.de>; Mon, 24 Feb 2025 01:28:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97FBDA416FB
+	for <lists@lfdr.de>; Mon, 24 Feb 2025 09:13:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 555481698E4
-	for <lists@lfdr.de>; Mon, 24 Feb 2025 00:28:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3551A166D92
+	for <lists@lfdr.de>; Mon, 24 Feb 2025 08:13:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2096816419;
-	Mon, 24 Feb 2025 00:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B18924167A;
+	Mon, 24 Feb 2025 08:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="V9jDSFNc"
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020124.outbound.protection.outlook.com [52.101.195.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NOStbMZp"
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6779D515
-	for <ksummit@lists.linux.dev>; Mon, 24 Feb 2025 00:27:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740356880; cv=fail; b=eEdhpHyfC4YusCaKknx2EuUNa2t6FSu2AqImeI1NnK4BcnB0LAqM/fIgCNMwBsIR1xD8nPDVLTh3/FGkV7RAdZvZmcDsUlAzH2MpPzhLHbyw4j7Zgx142B8lb/6ryH9gTcrkSMpkSRjo2oGnCDRjItXI7KDs/s9yIfzss/Udxys=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740356880; c=relaxed/simple;
-	bh=OPAOE2jbDvoweIh9wMyM3T/qvA9Ptw2CiA7J0Qk7mcQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ap1IR0l16XoVbYnsYlyJXPWnzX3oGDirA6WBnMQ9xpKIijOf2XjA9Eemso5WUD/Vm65jHP9mw/A+SkuKwEX+mExH3anok2ULlMzkkvxrBBov12CbqQd68J4p6od2eNJ/hhGx4ybrv+1GdLRBoUY4btlBJdCzyEPJt41f4+JfVLg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=V9jDSFNc; arc=fail smtp.client-ip=52.101.195.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Tp1gNuill9GVb+qHIFSbGz/jstsXoBqvllT8fPm9KF5GSZPTBhuwDhMcVie6UIYMobMc3QGDw8dbZwWAhtDmaMOrHLKnyktyygdp9mFU0lK8/JK7Wi+eE6JVbzizD4pfZDIbkNXYOtdZplRNaMYIzy0bbhhFOmwnT56+hDtI1tESjE2rFQlzPSQSW560Op9aSAxJJdX84oPZRPwVkAfBIrn9Osc/hRFrbBlS6Qxxg/sNgFZOvlwvSJLoiMdL13xnao+GZwG+7OMhJeRyzA5Gnw/bZsDCNQYwMK+sZfnxCPBsGnWEeNg1t9w8g1N2H3tSLJkKmcX6QZvuzYQI9KjF/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jsRqGjDslaEvAnRYFgEE6B6BFBa7NJAwDcV02Fd9ce4=;
- b=pSPKZ4X2Y2+WB2FYAO01Rpwznt3l80sCHB7oSlVwAreMI9wdViNRKc7RzKLwZ0HKTjDnzGktVna+vcthxSWHZDkfo7y4R+4c64u8ThS5/Aai/w1GSIuMEXNvVq679FGiMfYKLAC7oJyo1ys5KRAYKBhiSyCh23GHzNNCOgd3n8k0iWKZuUXtQTtVx3jtDtfXXdXX6ttHjPVIRTjJ+Rd7f1W9IQniqn1abJa2y4T6+avqpGHzPWVkSDHYmS6DGxWuwhcNyAagWvEgtXaLBigSvvaiqUfjZc9uVStBltRgsQPuNLhel04D3x8PvlCxPhqcy9sEfA2zMkql4MuQraQ6cA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jsRqGjDslaEvAnRYFgEE6B6BFBa7NJAwDcV02Fd9ce4=;
- b=V9jDSFNcz0DQCIJl6XDFvnxH+XNoaE9U9/Kz96GTshJjttrnvmKUv/DaR+ClHlnlHYUw5fKgaM2MIFyiBCUBdcv55b7c0fiOs9/Ow2G4Yxh15Ht3YCsgenAI3kPOYIZZpfCCqGW9fjCrEDOSnepEOw7zoEn3el4DrhmXPdIrDTE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by CWLP265MB2707.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:a9::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.15; Mon, 24 Feb
- 2025 00:27:55 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7%5]) with mapi id 15.20.8489.014; Mon, 24 Feb 2025
- 00:27:55 +0000
-Date: Mon, 24 Feb 2025 00:27:45 +0000
-From: Gary Guo <gary@garyguo.net>
-To: Ventura Jack <venturajack85@gmail.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Kent Overstreet
- <kent.overstreet@linux.dev>, airlied@gmail.com, boqun.feng@gmail.com,
- david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org,
- hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev,
- linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com,
- rust-for-linux@vger.kernel.org
-Subject: Re: C aggregate passing (Rust kernel policy)
-Message-ID: <20250224002745.7d7460a7.gary@garyguo.net>
-In-Reply-To: <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
-	<20250222141521.1fe24871@eugeo>
-	<CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
-	<6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
-	<CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
-	<CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AS8PR04CA0085.eurprd04.prod.outlook.com
- (2603:10a6:20b:313::30) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A9E17548
+	for <ksummit@lists.linux.dev>; Mon, 24 Feb 2025 08:13:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740384783; cv=none; b=ctXFpihdsNnXjsfDiiBKXxZW5uTtsGqCycrye+x0lU1RojBUaBqGQXWjHj2nx6xokgOy4vNOONngNRSXnkq57uwqLX8tEwy4AnIMrkIUT5/sdbCWeyWzpqvmF++BbATtXOaLIb4bshGIZhuir2Z78uVGv7wbsjVK1CkSFGpVZ9g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740384783; c=relaxed/simple;
+	bh=zm1XGdW8b7MAbdzYL+ivC3Vm7Q33WGsikbRPl+MehKg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=czTwy8XJEesUdI3NslJe6yWOlLNxItyQLAuT8b3RoOtRXBhQFjubui0J8+RIQFicG6cpj5RvzF3GkBmc77J7c9FuL4EqbkeAcSWNCx2M2vxIUp1UO40Vj3sz6dJjN0sD9zNBRxGWRi3xmQbTGiyBh+XPCPWLyNMiyz958f+Tj5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NOStbMZp; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5ded6c31344so5879232a12.1
+        for <ksummit@lists.linux.dev>; Mon, 24 Feb 2025 00:13:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1740384780; x=1740989580; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Oy/VDejTz9+C/5BlUy0JQ2ySPwy1T3j7TGBJKfwzWTE=;
+        b=NOStbMZpwFBIVq8N5DoBZ8F8ymB8vLiSm3Ldhyh2cRFoXcAKCzWiPyhzkIR6nk3oYf
+         nYUUFsB19lRDr2x4LKvQBNfU8N7YYnnuahp9nSHlGMwefq8WxKPHcT7jBWLrOpTnd1av
+         VtaUxwcd4Y5SfFh3V/5uC5W14lJbEQ4YEIV/Yg/a9790jvxpJ9aK+GngtnBcEZ0VNSiL
+         zSoTD9W58pSy1HO8Cz1BSg5MrPoMsvKEraTU5ysOVos27NdDdyQN5Q5yHTAjzNwFEXMi
+         Mch8rgBXMuj0uVe3dfMcQwauQnfdaYHCyQzTPLublOELdFzN7UhOcHHc0cZSjzRKG27H
+         0rHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740384780; x=1740989580;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Oy/VDejTz9+C/5BlUy0JQ2ySPwy1T3j7TGBJKfwzWTE=;
+        b=t7cknN39VQ/VNfoHM6DxaGrjTq5SnTtT4znVRwdDGhrQr7yVl4xpK1qC+fIGiLojdf
+         pxwyPEPGTVGXuzS4k9d2f+FoeOof8meLHtW4VZ0IW3GYlWB4b2v71ONO0P8jiFXPYNmk
+         fftUJicFD6M4oCLwynl/YnlQA3hpFB5cYvSRPGORlEbpnpuvJ4Obv/J3Zt1qltfWCQQk
+         wO2M8x8xAc08QahiXsqlP37qgtLLSwuGG8X0xg8ewmHoZiIjyfqJBiw3tMmraXSalowb
+         JGhLiUmp+5WAa9/kWzhf+y72ym6pq7rCV+ArFsBeTkGYGEUNJt3ObTZ38dyEPMmwOvQh
+         UFfA==
+X-Forwarded-Encrypted: i=1; AJvYcCXlwrIy0xK7R8ubOyMI57uBq5W0E4a/vhveczynuQw7Cto5O13TNHl7ThX0e1gRzrdemxKfnmSg@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzoaled6uKNeeFYwFcNSAEVagQuRUZkHlSC32n2TfnK11eBrgOV
+	Hg/37jUgdDhIH6VauoXJ1rCxWEquKee/zVEv2g0vdIm2S4HmaSRsR661wpKREm0=
+X-Gm-Gg: ASbGncuwuw9F03uKltfuc0PBUoh6qU1nk7cijBRjLzlXpbS1eIGJp3i+UMqI0r2Q91+
+	AxOaKTY9iqpg0PiJRb89MP5D5odBU/ShLocACH47hK6kDhftFmyX7t0JGwbAL6RIQCViW0uKhbE
+	bq0QKMGlA0ubTVqvxocd2ebYmEbSKsZyS1hYk4J45yS/0BbfNYS93b9LX/4aKqgyP0QXBldenYH
+	uDFEvDLsgmmb4+ppEV+dCIaSDu+uz0rXxhV7YRAOC3Ef2wBRooKH8IxuZS3Lk/L5O+e812EbyiL
+	nxHRSD8dld099xtQ3KdFpq4IznPe2uQ=
+X-Google-Smtp-Source: AGHT+IHsJX9ApcHkuTvjiz8vGIYCMMUHA/6LWXZOxZXsrIXHc5WgXLFFAoSh0lWFQE/xDMuQC0Y3EQ==
+X-Received: by 2002:a05:6402:3815:b0:5de:b438:1fdb with SMTP id 4fb4d7f45d1cf-5e0b7266b9amr27595493a12.30.1740384780220;
+        Mon, 24 Feb 2025 00:13:00 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-abb7200144fsm1792040966b.184.2025.02.24.00.12.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Feb 2025 00:12:43 -0800 (PST)
+Date: Mon, 24 Feb 2025 11:12:39 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Theodore Ts'o <tytso@mit.edu>
+Cc: Martin Uecker <uecker@tugraz.at>, Greg KH <gregkh@linuxfoundation.org>,
+	Boqun Feng <boqun.feng@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	rust-for-linux <rust-for-linux@vger.kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
+	ksummit@lists.linux.dev
+Subject: Re: Rust kernel policy
+Message-ID: <9a134f1b-a661-4372-9336-289d5734bcab@stanley.mountain>
+References: <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
+ <Z7VKW3eul-kGaIT2@Mac.home>
+ <2025021954-flaccid-pucker-f7d9@gregkh>
+ <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
+ <2025022024-blooper-rippling-2667@gregkh>
+ <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
+ <2025022042-jot-favored-e755@gregkh>
+ <b9a5de64fe1ded2ad3111763f35af9901bd81cc4.camel@tugraz.at>
+ <caea3e79-78e6-4d98-9f3b-f8e7f6f00196@stanley.mountain>
+ <20250221181154.GB2128534@mit.edu>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB2707:EE_
-X-MS-Office365-Filtering-Correlation-Id: d6678cdc-33b6-42ba-0f32-08dd546a1526
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|10070799003|376014|1800799024|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?HUF10OjywrY7fg7xScUzA0hdracTbN98pn0WxUiqYSbk4fpNnUAV9C6HEA6r?=
- =?us-ascii?Q?w2WzTyb8J0L7JdqUNvOVO/VEJcOYD6jCHWAlirQGnIFTByaObOeOplS5nrFx?=
- =?us-ascii?Q?rwBZZbRtzdUT9r26w1+MH4kSNe1/sCQSHn/pW4pmiXyVNlxMwz6Y1Q/h3KK5?=
- =?us-ascii?Q?iUvhaHcOJoW+Wfy6U3K1/mai7y28AQyQ+fp/P9oSQgT4ILBFp40J4qz+Q7DM?=
- =?us-ascii?Q?BkdghqNhgIPq6KdOWD8ykBwaD41t+FNwGcNvyl2i0C7WL7MQeKdnxw1D9fTw?=
- =?us-ascii?Q?rKeESpVxm3FxPoryuGFqMeknhA/BaNXNb6pHgkUejrHDqiZSVn+QHNOS/wfW?=
- =?us-ascii?Q?+dBIAWjG5LPw/wPzxcqfv+X5OlB7i1o+x04jnlrfQ7jXk0HBZQJfv91aGPPq?=
- =?us-ascii?Q?E6QU7CgriGU8mDqXRmp0YvGfrrQqnC7M+KHCe7s8126mD0MXC90EFgSfxd/u?=
- =?us-ascii?Q?gPEgcelznj6LEb59/aolHYSe0P2S0gLdcMHuVbNf1g7Yu3EP75mz/ZCvoAKO?=
- =?us-ascii?Q?j3B/IjdDm7sGFsTdI9Phs2gdmGiwiIwS7T4g42rQ3YpTd92ni4SIm67lnJF/?=
- =?us-ascii?Q?pglAumn/GSvLtEwiVSgnBb668kneYUmYP8vxVUERFvQiUAUjdGvAUyCninDq?=
- =?us-ascii?Q?M6+/TsDLtwEBObKOY3XgvHDxPimeMCvkl6eZpMGRdSCxRWu3HjuvsRf8kWeH?=
- =?us-ascii?Q?ZUXF7XaCo8v/xvataQkIRa9hpUz5cSfHB9VaIPfCsujNaKmmIJdNFc7KecuE?=
- =?us-ascii?Q?ELWXyf0CiQMjXLKPO5/Mm+4kbS7ziaAeHR23thU8V+S8IMhg/dE2r1PBz0F6?=
- =?us-ascii?Q?HtQ18APe96VKRKog5fplO7V7HA+EOnwutvDtIoQO8AF3MyjIxaYdmTkRNDMC?=
- =?us-ascii?Q?LY0stVG2GbjPLEgENsG25p8+T+rDSEQy81dFY40aDybz0iEeskO8JVyAsMxn?=
- =?us-ascii?Q?+yYycO9VQyMSwp1T7jqjvXPGXlLKB4ZdMCkMGyqn3GjGCmp07jJyLxD5gau0?=
- =?us-ascii?Q?c+6Grx63NQ79Ii7qzlQeQbhgjWIAXlEAB5+eXIQQxHOrTcXTFADouW4hwIU8?=
- =?us-ascii?Q?g4E1t7gaG1EQTwr4dXgtatg9noXGUpxuKFzfHpz4C1Hl8HX9+udUM65ixYHH?=
- =?us-ascii?Q?eFranGzX0FKGcIVoaCqvlxGsZ90Shtr2GZEZxOX0lQyEjShxDCMQmSCVMPKz?=
- =?us-ascii?Q?LpLzcyP5S9L/utk/R/HxqZHKHxBB9xpOOfMKWOIQBNjoMD4p/jFqyCItUbwx?=
- =?us-ascii?Q?BiwCOtq+aeTVvB7QdA3a1stpgCZRwM4L4ddXnsQkNWM5Gi2Cq4mkqxxCNTMS?=
- =?us-ascii?Q?yS1JS2S+/e6cykbYV+hlXS7C?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(376014)(1800799024)(7416014)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?j0Wgr5bUnwXtaIBKtSCqNM/jd509hooTjThPQa1g83wDN9t0P5eauhtfB4bW?=
- =?us-ascii?Q?Qznj26XKozZ0THeuVv1dEHe7ASaB1fAvNAPfTR8P7BQJwo2Rj2jjyX3+Oi3v?=
- =?us-ascii?Q?g7c89mpWBWdgw7OM9/Xgtkweqoh7VwpOQd+eNP/L5gQntPFeOS+dWAiuDBzg?=
- =?us-ascii?Q?ckh1oCMgDefhrlSAmpIJBLH1oq6w2S37cU6J2sQcsEcQrCTff8d+8JTFAJRg?=
- =?us-ascii?Q?7eXOd/Q2KYxLfHRILCBzo3EKpoa2FlAluypp9z7NSmmYQMZ/3Wl7yrfpkmSO?=
- =?us-ascii?Q?6QEaXKXyxWVQi8ifuu4VMAs5Lk64+hU+SCLjAHrKWICchvE9o3fSPBmo+g2r?=
- =?us-ascii?Q?uWfjoEY/PjH/V4LYNsnZUt1SFCoGkydkDCH5nJMlXmSzmjLsXXMFMLc9k2tu?=
- =?us-ascii?Q?L+1ttP6SeRi3K6vuQcOlfjlVsjq7kV17rtLuEmJg73AISHpqFtE2FMO3aHGC?=
- =?us-ascii?Q?MjP/YNh8FCieXL89PbSypA0UJTRTT0yE+sUAIdUN3RKFEa4Yl48/eALxZCWC?=
- =?us-ascii?Q?S9BWXUmzHcztAR6CrbKpwZD5VFWAwXEsh+wrXKAHd8WHWJltuocoE479o1aG?=
- =?us-ascii?Q?CpV8Q2YW5XfTH618IUcMSSRvvSIDhqXg35Wc/LOh2QZh75mE+xUYCuWl2vx3?=
- =?us-ascii?Q?tfo9EfJB+ZEjYdv9R/3O4rlSo+gODkIM9SlUjSkPWmcUynC8gA/o/ZdHDg3g?=
- =?us-ascii?Q?ktmegcl9vH+ME5z1caHjz7HZqwXCTV3JVacaTSfebZwLv2SQor1i4DcoxLtV?=
- =?us-ascii?Q?GyjrvvSgfR2iqi5c13kHDieF5zPIRJHPbDXcm1ZwIhZsn3yiRCFJCFz1xRb1?=
- =?us-ascii?Q?/5NMuNppbrTc2xnrXPNTyEASzBHuS+hH6Rxlv00qamCqYDXIhOhcEPNK3WTa?=
- =?us-ascii?Q?BEjsyLRn9hTp500FEbAmhwGnP2v52pgClUq0+/M3Rk8J2NTplXijGK8DVn+W?=
- =?us-ascii?Q?JpDssgkoinIeB53KD0EBRu7Hl1uIrPaL0sx8bKwqEgt5+RfjTmCsNX3/I/8k?=
- =?us-ascii?Q?L+5iNlUSJlcDqrUOGkEto1DSIsYuw9vhRQlWdP/YE/mcTFN4OWpO2m3m1GrZ?=
- =?us-ascii?Q?6suKwDYAC6OvH9R+nYQlxVx1ojUmDRjH//SmerdpfyQOv75gSVR3rktdwq4Z?=
- =?us-ascii?Q?f8oZPwE0nOwhijzfcZUeOr/KhKSJZVB4RCHHfGZ8TLhxpYXKZJb73UeFwkzW?=
- =?us-ascii?Q?oKvOIz2Zfj2I8rhtl1IXOmSE2P/tzKZGCyeHTCgK1oPN7F9a+vX8eMc+lT3e?=
- =?us-ascii?Q?VY4rRAL4JqtEx9IscnQ3v+atwYzl7suzerde0OgCCbDhBtGDVY2yoeQKdk2u?=
- =?us-ascii?Q?RHYXy5nIJJ7vEEHbEK/hza3ax+9A5vkESWz9AbFbRL03+g+mulNiF/pWowQF?=
- =?us-ascii?Q?85IbnMXFT37+npZJd1TXRmQcpS3AI61n4h5jrODH3djMKkG+Caxe7t/acVJO?=
- =?us-ascii?Q?SZF/9uuqOHGs3VZsdnDBavFi6lXJERD9ekA0Hi9YQrXaIemhT7EUhorva0hH?=
- =?us-ascii?Q?7Uciolg8akAA3lAZ28/8soXB9Y/4R3WFGyUQGQ5bRF3LkvmgkjSBRDyw6EtI?=
- =?us-ascii?Q?0bKRvxPOWt95OIgulfbyeV/GTr2d//gJPvflApL9ZHDk1HrqP50XKGGYRxzG?=
- =?us-ascii?Q?CA=3D=3D?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: d6678cdc-33b6-42ba-0f32-08dd546a1526
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2025 00:27:55.5867
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Dd9rvC0i4BbBLhzmP2UM8apAzohRWcsnShscz307Ofen7U/HlMi1fuJ3jGBKUPRWb7cKGhO4P08hYi1431xmOw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB2707
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250221181154.GB2128534@mit.edu>
 
-On Sun, 23 Feb 2025 08:30:06 -0700
-Ventura Jack <venturajack85@gmail.com> wrote:
-
-> - In unsafe Rust, it is the programmer's responsibility
->     to obey the aliasing rules, though the type system
->     can offer limited help.
-> - The aliasing rules in Rust are possibly as hard or
->     harder than for C "restrict", and it is not possible to
->     opt out of aliasing in Rust, which is cited by some
->     as one of the reasons for unsafe Rust being
->     harder than C.
-
-The analogy is correct, you can more or less treat all Rust references
-a `restrict` pointers. However it is possible to opt out, and it is
-done at a per-type basis.
-
-Rust provides `UnsafeCell` to make a immutable reference mutable (i.e.
-"interior mutability"), and this makes `&UnsafeCell<T>` behaves like
-`T*` in C.
-
-There's another mechanism (currently under rework, though) that makes a
-mutable reference behave like `T*` in C.
-
-RfL provides a `Opaque` type that wraps these mechanisms so it
-absolutely cancel out any assumptions that the compiler can make about
-a pointer whatsoever. For extra peace of mind, this is used for all
-data structure that we share with C.
-
-This type granularity is very useful. It allows selective opt-out for
-harder to reason stuff, while it allows the compiler (and programmers!)
-to assume that, say, if you're dealing with an immutable sequence of
-bytes, then calling an arbitrary function will not magically change
-contents of it.
-
-Best,
-Gary
-
-> - It is necessary to have some understanding of the
->     aliasing rules for Rust in order to work with
->     unsafe Rust in general.
-> - Many find unsafe Rust harder than C:
->     https://chadaustin.me/2024/10/intrusive-linked-list-in-rust/
->     https://lucumr.pocoo.org/2022/1/30/unsafe-rust/
->     https://youtube.com/watch?v=DG-VLezRkYQ
->     Unsafe Rust being harder than C and C++ is a common
->     sentiment in the Rust community, possibly the large
->     majority view.
-> - Some Rust developers, instead of trying to understand
->     the aliasing rules, may try to rely on MIRI. MIRI is
->     similar to a sanitizer for C, with similar advantages and
->     disadvantages. MIRI uses both the stacked borrow
->     and the tree borrow experimental research models.
->     MIRI, like sanitizers, does not catch everything, though
->     MIRI has been used to find undefined behavior/memory
->     safety bugs in for instance the Rust standard library.
+On Fri, Feb 21, 2025 at 01:11:54PM -0500, Theodore Ts'o wrote:
+> On Fri, Feb 21, 2025 at 12:48:11PM +0300, Dan Carpenter wrote:
+> > On Thu, Feb 20, 2025 at 04:40:02PM +0100, Martin Uecker wrote:
+> > > I mean "memory safe" in the sense that you can not have an OOB access
+> > > or use-after-free or any other UB.  The idea would be to mark certain
+> > > code regions as safe, e.g.
+> > > 
+> > > #pragma MEMORY_SAFETY STATIC
+> > 
+> > Could we tie this type of thing to a scope instead?  Maybe there
+> > would be a compiler parameter to default on/off and then functions
+> > and scopes could be on/off if we need more fine control.
+> > 
+> > This kind of #pragma is basically banned in the kernel.  It's used
+> > in drivers/gpu/drm but it disables the Sparse static checker.
 > 
-> So if you do not wish to deal with aliasing rules, you
-> may need to avoid the pieces of code that contains unsafe
-> Rust.
+> I'm not sure what you mean by "This kind of #pragma"?  There are quite
+> a lot of pragma's in the kernel sources today; surely it's only a
+> specific #pragma directive that disables sparse?
 > 
-> Best, VJ.
+> Not a global, general rule: if sparse sees a #pragma, it exits, stage left?
+> 
+> 					- Ted
+
+Oh, yeah, you're right.  My bad.  Sparse ignores pragmas.
+
+I was thinking of something else.  In the amdgpu driver, it uses
+#pragma pack(), which Sparse ignores, then since structs aren't
+packed the build time assert fails and that's actually what disables
+Sparse.
+
+  CHECK   drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c: note: in included file (through drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h, drivers/gpu/drm/amd/amdgpu/amdgpu.h):
+drivers/gpu/drm/amd/amdgpu/amdgv_sriovmsg.h:414:49: error: static assertion failed: "amd_sriov_msg_vf2pf_info must be 1 KB"
+
+regards,
+dan carpenter
 
