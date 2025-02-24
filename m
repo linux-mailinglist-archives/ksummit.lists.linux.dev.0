@@ -1,139 +1,180 @@
-Return-Path: <ksummit+bounces-1869-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1870-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44B8EA41833
-	for <lists@lfdr.de>; Mon, 24 Feb 2025 10:09:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A0D3A419EB
+	for <lists@lfdr.de>; Mon, 24 Feb 2025 11:01:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35BE1189535E
-	for <lists@lfdr.de>; Mon, 24 Feb 2025 09:09:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3FD97A805D
+	for <lists@lfdr.de>; Mon, 24 Feb 2025 09:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DECD1244E8F;
-	Mon, 24 Feb 2025 09:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56802528EA;
+	Mon, 24 Feb 2025 09:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NFaE+Nd5"
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QqdZ8qt1"
+Received: from mail-qk1-f193.google.com (mail-qk1-f193.google.com [209.85.222.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8AC9243947
-	for <ksummit@lists.linux.dev>; Mon, 24 Feb 2025 09:08:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FCDA250C07
+	for <ksummit@lists.linux.dev>; Mon, 24 Feb 2025 09:57:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740388140; cv=none; b=l/YjnRnFpfkNXBAWUD/+h1oTX8qVYVuYrL8QfPAxpgQz3XDPoS7I9gjflDxWeO68rL1hdsSfJnECrXpTnqzopK6IXvc0+9pI9mKuJvbgFSyRboDjmPHeSeEslR20ra1Nm5C6seLE71Y3cDLQhOfHgjznMsk29JxmOqNVu8enJRA=
+	t=1740391070; cv=none; b=VSVNHNlX7Fxt39kqZi0zfMrjCxDlRW5VNSy8MoHjO/gW+uo6L4694bTxJT3/Ki8dhSI9iQbmwm/CyIvUQJfzou1PpcPx8VjPMUBXfr0OeSczQXoiwswnUKVPyia8m5od5C9u/ho+BjDgUBTzx//UcJBugH12nIyA+XuTwnXvN44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740388140; c=relaxed/simple;
-	bh=daM8eCpYsb21gX9QsirhUsHYuQ1YdkY3jqPS9x3ir38=;
+	s=arc-20240116; t=1740391070; c=relaxed/simple;
+	bh=s8OaGW99ppf2hWfSu+1vSCOUtbexOxS5yMUTM4p0Bc0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cLgpXfyRpRANC3j4lk6XZb7ilVMCLMcYgQtjmqyI8cBYvCxQ6iPhazTNzcVWYwDkMcTI42f9zcY32n7PhJypH6OJPnrKcYyELZw91qING5fw2/LEvjazggqNZOu8f3MgOzQSVjOIn/nVkoGoNQh4KKpMP9H1P5LjkyxXfW9HFt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NFaE+Nd5; arc=none smtp.client-ip=209.85.222.175
+	 To:Cc:Content-Type; b=bhpBjfPqQowPl2w7y8pOm/govDFNjneHEFAg6olrPPQqz2y0IvnZrJpnIrDAgRQphitIWH+BnvvJ2wez4ZfXi2M3XeXlZHOmwVGvWjZ4bvIs55Cf8Vab/NSDyoaO2Z7kHFUXcvbV/Q4ubhjKGMTZub8snh8EjcsZC6ESXw3LJa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QqdZ8qt1; arc=none smtp.client-ip=209.85.222.193
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7c0a5aa0f84so364867285a.1
-        for <ksummit@lists.linux.dev>; Mon, 24 Feb 2025 01:08:58 -0800 (PST)
+Received: by mail-qk1-f193.google.com with SMTP id af79cd13be357-7c0a974d433so494938885a.1
+        for <ksummit@lists.linux.dev>; Mon, 24 Feb 2025 01:57:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740388137; x=1740992937; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1740391067; x=1740995867; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=s8Z8QEwUCxkupWd1+3HNImprL2CAvRRP+kS3TrK5QZE=;
-        b=NFaE+Nd5ekfHCkuFk3YgNAsdJRPr0P9HZIk/amBDopF+2t9z/zq+Su9U1J/Qqs7RXa
-         MvGughfpXJdajj/DL+McEIZcrVv74LpW8QS0aH3W5yzvbRVI9XiCG8N3LeMW4Zp6d6IB
-         9qsCgBRBU+JT0uFYLHRRe5o5+tt9OK7rxiVpxGojfy/WkINumiPyeqH7BNpqaC/wRiMk
-         RdWHUIjxDXOhajZYNgN4uACp7ihGEgDEWL4rJj3zeS1eAksenLQX7A9dhyHCMnexDSaJ
-         tmp+nXatmtJqztPWNlEeQRX1dG73XTcjkOJ5r4POfi4tCP/dEHxtIrily1BwOHA8+7rU
-         KqDg==
+        bh=EE27tvEZr9+4KilAFSdeS60EG0pfp9dwkIWt3ppECpg=;
+        b=QqdZ8qt1xv8Gl7vPgEXBTlK/mQ4OVoLmzeP5fcAWrjYSDMAaLNePasLBltoL6D19Te
+         erDAuJY37xZ+m1Of9N/6tfHJKTZ0/t3bqRobn+2rA2Pyr2kCqCnrQ9UnLA1XhhlFjrmr
+         KSBTJFoz/aQszbKWy7JaenycgoFUQwBXZWSxhZhqepj0Ve5zo+nYb+BOTM6pHTIqAasJ
+         9plnbqt3mFAaZGx0fb9+qa0xQsI3VcVEaUgEg0ywkw0rB/cxO6E701m9xAJKajtkTkb4
+         UCPMrUtfqhVcJbnsIS84WTcFLaVk0wtAuVQERntyIZvU9FM+/2pH2ExHL/adNWzopINd
+         tf/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740388137; x=1740992937;
+        d=1e100.net; s=20230601; t=1740391067; x=1740995867;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=s8Z8QEwUCxkupWd1+3HNImprL2CAvRRP+kS3TrK5QZE=;
-        b=VZ0bKq0OKfOyYaJtIkQzBJRzQhHO06y/C22CPZowk2QVEqGWxT2IY0triDGvd4SFOr
-         /ExbXRhnRz86UrrDbNbvx3kr7tqcIORgkTztbn7ywezNdu8HHWA0lgNCxhu0oTwEaSCq
-         2M3UnA4YeptjepVh8lZCV5OOUaiBLwPh58E6vr7rImyzDunvVPHOPE9mj7YdnezKnRP9
-         gefbOdOAEzgF+nCYrJj0+5DbzVdbDSscSqKoPUE4+YSdeB4/iqlZ2SBLFwjoW1OZY7as
-         7M+7Yxo6H0ARJpHb3RTYudJKWkSJ855e/iusiwTUSfMhq3ymV55OCRYaeQHds8mCR1lt
-         slcw==
-X-Forwarded-Encrypted: i=1; AJvYcCUz0wN0RI5pjnvp4CX1QypxSKqEebaOF0dre9iE5hi0JVFKTQkk0hbv7eKMs1ROCqXUOZKD+7+4@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxl11NejFkeC2vAwaUb+wr0wWEiWUpxAJG0aIzBcokXaAU3qe+4
-	94nFw/zSFhB1tv2hdW87FIHhNDR1Kw4vAVb1d706FIxENtCcHdDx3D4Qaq816kMjZ9+PwPdlKlb
-	AVIDvloEZTSdoh+UV4a+VxYrRfdw6+vrf
-X-Gm-Gg: ASbGncsVCzkuIL8AeiaIWQFIfoTD3+v6c/NDEMZya1MPqeB8V6x9zqE09+WlMj6E5f6
-	zFl5j4v5BKpaOfdO/SWor+FpW3c8IRbo1ZIwJRbTAXT3qRqzvIyjzjRBChnGswU+8wUgZldQlUd
-	6pz/PdQ9Bz
-X-Google-Smtp-Source: AGHT+IGjG8I5drO+X1eEUiibGtzlCaFmdmDDWxEcy/DATfn0GZv0YcS1x2zAkBvkENKOLf26xD8UR2442xGniu3XVH8=
-X-Received: by 2002:a05:620a:4405:b0:7a8:554:c368 with SMTP id
- af79cd13be357-7c0c2164e93mr2368642885a.6.1740388137584; Mon, 24 Feb 2025
- 01:08:57 -0800 (PST)
+        bh=EE27tvEZr9+4KilAFSdeS60EG0pfp9dwkIWt3ppECpg=;
+        b=Llc7N1q1PzcxtvXLVSCONbg0kgfdFp5WHvVAcmCs+NN8oQNKDEMtYHJXTeBgw88BGm
+         fmZwmlV2vr4EWpp0jbbCWvSRoz/V4BND/x4WhSM2QhibHAuqVO+nTuXpA52a87NDoKuc
+         YNGnpkCAEtHzcXEyNZbA0oLJW5UBRSC6BaNvOfqpFmMpN7Ys2LIEimszBO5ae3eddmsV
+         sJniPNPEi5CvkpEyBEk+Cqf3zbHlJOph21wXdzq4srShwtgwheo3DUhUd4Q4dA2Mn1zT
+         GoXyok/8TTpE44Oo7/7uKxCMMhsFAX4tJZKbnK9/Dn4LZF7oP3chEJSq79uN6KJFw0WY
+         sWXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWkOcXp8txRZ5Hl3PDxPqMm1yK/DW7nFwf8AoyOepQby4xGw610udDl3RHS37mGdiHoJa3YQl1/@lists.linux.dev
+X-Gm-Message-State: AOJu0YxoY7wp6OlmFxQ3wheHk/7svfcBSOoqTiH7Za/Ny1dgmsGh7AuE
+	WXbkmxu7WQu430z7p1Z070l9OEZTFvIHB9mUCMucLasvR0PbluoQn1KKRhoy0pB95Nf/cFqTmsP
+	XxOtiBVNnJBvgr/XCpCQmBZosfHs=
+X-Gm-Gg: ASbGnct0MzlkDTy97+ndugBr8860x3zT9O5mMZuX8c/BUzjaWNq3qZLUZA1fOoHeiRW
+	SEyQRrKmPrVfjDVKuhhRJYGqI5s00FhSmH34EEE64AsDg+1gswTBcYtwiffI05ldIP/0HS+1X+C
+	KVSnzXK2vV
+X-Google-Smtp-Source: AGHT+IEiyTlMxnXD1UshSUQEKFq+P4LKtaQ419LnEHYH321oIBTcL/NjQ/kVZ4EfJbLVh4mLO+rdrNOxdDxtei5gAEg=
+X-Received: by 2002:a05:620a:1a18:b0:7c0:a944:c22b with SMTP id
+ af79cd13be357-7c0cf118597mr1720922085a.15.1740391067228; Mon, 24 Feb 2025
+ 01:57:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
- <Z7SwcnUzjZYfuJ4-@infradead.org> <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
- <326CC09B-8565-4443-ACC5-045092260677@zytor.com> <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
- <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com> <Z7VKW3eul-kGaIT2@Mac.home>
- <2025021954-flaccid-pucker-f7d9@gregkh> <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
- <2025022024-blooper-rippling-2667@gregkh> <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
- <D7ZDF8NZGPS3.3QBMAVC1NTUDM@maslowski.xyz> <E0BD1BDB-0EBC-4E27-9324-7CA70ACE194B@gmail.com>
-In-Reply-To: <E0BD1BDB-0EBC-4E27-9324-7CA70ACE194B@gmail.com>
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+ <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+ <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+ <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com> <20250224002745.7d7460a7.gary@garyguo.net>
+In-Reply-To: <20250224002745.7d7460a7.gary@garyguo.net>
 From: Ventura Jack <venturajack85@gmail.com>
-Date: Mon, 24 Feb 2025 02:08:45 -0700
-X-Gm-Features: AWEUYZnfy9opWscz-4jFfz1MccFJtXuWWbjaTV1FP0XPTI4GXNbYujZ-2jgW9oU
-Message-ID: <CAFJgqgSCW9XbVYr7yTa47Miax+LGM9jNNE5Yuw1xQE2BZ9gkTQ@mail.gmail.com>
-Subject: Re: Rust kernel policy
-To: comex <comexk@gmail.com>
-Cc: =?UTF-8?Q?Piotr_Mas=C5=82owski?= <piotr@maslowski.xyz>, 
-	Martin Uecker <uecker@tugraz.at>, Greg KH <gregkh@linuxfoundation.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Christoph Hellwig <hch@infradead.org>, 
-	rust-for-linux <rust-for-linux@vger.kernel.org>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, David Airlie <airlied@gmail.com>, 
-	linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
+Date: Mon, 24 Feb 2025 02:57:35 -0700
+X-Gm-Features: AWEUYZkXEmHOLDHI6rOFs3YyFgA2bH0xuZYKDQwMN5FBqg4lzIlviFarR_mQuDA
+Message-ID: <CAFJgqgSNjF=LfrCNTH3GdYssXz9YG-AeCtpibejJ7Ywtx0m3HQ@mail.gmail.com>
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: Gary Guo <gary@garyguo.net>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+	Kent Overstreet <kent.overstreet@linux.dev>, airlied@gmail.com, boqun.feng@gmail.com, 
+	david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, 
+	hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Feb 23, 2025 at 4:32=E2=80=AFPM comex <comexk@gmail.com> wrote:
+On Sun, Feb 23, 2025 at 5:27=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
 >
-> > On Feb 22, 2025, at 3:42=E2=80=AFPM, Piotr Mas=C5=82owski <piotr@maslow=
-ski.xyz> wrote:
-> >
-> > I'm sure you already know this, but the idea of safety in Rust isn't
-> > just about making elementary language constructs safe. Rather, it is
-> > primarily about designing types and code in such a way one can't "use
-> > them wrong=E2=80=9D.
+> On Sun, 23 Feb 2025 08:30:06 -0700
+> Ventura Jack <venturajack85@gmail.com> wrote:
 >
-> And importantly, it=E2=80=99s very hard to replicate this approach in C, =
-even in a hypothetical =E2=80=98C + borrow checker=E2=80=99, because C has =
-no generic types.  Not all abstractions need generics, but many do.
+> > - In unsafe Rust, it is the programmer's responsibility
+> >     to obey the aliasing rules, though the type system
+> >     can offer limited help.
+> > - The aliasing rules in Rust are possibly as hard or
+> >     harder than for C "restrict", and it is not possible to
+> >     opt out of aliasing in Rust, which is cited by some
+> >     as one of the reasons for unsafe Rust being
+> >     harder than C.
+>
+> The analogy is correct, you can more or less treat all Rust references
+> a `restrict` pointers. However it is possible to opt out, and it is
+> done at a per-type basis.
+>
+> Rust provides `UnsafeCell` to make a immutable reference mutable (i.e.
+> "interior mutability"), and this makes `&UnsafeCell<T>` behaves like
+> `T*` in C.
+>
+> There's another mechanism (currently under rework, though) that makes a
+> mutable reference behave like `T*` in C.
+>
+> RfL provides a `Opaque` type that wraps these mechanisms so it
+> absolutely cancel out any assumptions that the compiler can make about
+> a pointer whatsoever. For extra peace of mind, this is used for all
+> data structure that we share with C.
+>
+> This type granularity is very useful. It allows selective opt-out for
+> harder to reason stuff, while it allows the compiler (and programmers!)
+> to assume that, say, if you're dealing with an immutable sequence of
+> bytes, then calling an arbitrary function will not magically change
+> contents of it.
+>
+> Best,
+> Gary
 
-True, a more expressive and complex language like Rust, C++, Swift,
-Haskell, etc. will typically have better facilities for creating good
-abstractions. That expressiveness has its trade-offs. I do think the
-costs of expressive and complex languages can very much be worth it
-for many different kinds of projects. A rule of thumb may be that a
-language that is expressive and complex, may allow writing programs
-that are simpler relative to if those programs were written in a
-simpler and less expressive language. But one should research and be
-aware that there are trade-offs for a language being expressive and
-complex. In a simplistic view, a language designer will try to
-maximize the benefits from expressiveness of a complex language, and
-try to minimize the costs of that expressiveness and complexity.
+In regards to `UnsafeCell`, I believe that you are correct in regards
+to mutability. However, if I understand you correctly, and if I
+am not mistaken, I believe that you are wrong about `UnsafeCell`
+making it possible to opt-out of the aliasing rules. And thus that
+`UnsafeCell` does not behave like `T*` in C.
 
-Rust stands out due to its lifetimes and borrow checker, in addition
-to it being newer and having momentum.
+Documentation for `UnsafeCell`:
+    https://doc.rust-lang.org/std/cell/struct.UnsafeCell.html
 
-What are the trade-offs of a more complex language? One trade-off is
-that implementing a compiler for the language can be a larger and more
-difficult undertaking than if the language was simpler. As an example,
-to date, there is only one major Rust compiler, rustc, while gccrs is
-not yet ready. Another example is that it can be more difficult to
-ensure high quality of a compiler for a complex language than for a
-simpler language.
+    "Note that only the immutability guarantee for shared
+    references is affected by `UnsafeCell`. The uniqueness
+    guarantee for mutable references is unaffected. There is no
+    legal way to obtain aliasing `&mut`, not even with `UnsafeCell<T>`."
+
+    "Note that whilst mutating the contents of an `&UnsafeCell<T>`
+    (even while other `&UnsafeCell<T>` references alias the cell) is
+    ok (provided you enforce the above invariants some other way),
+    it is still undefined behavior to have multiple
+    `&mut UnsafeCell<T>` aliases."
+
+The documentation for `UnsafeCell` is long, and also mentions
+that the precise aliasing rules for Rust are somewhat in flux.
+
+    "The precise Rust aliasing rules are somewhat in flux, but the
+    main points are not contentious:"
+
+In regards to the `Opaque` type, it looks a bit like a C++
+"smart pointer" or wrapper type, if I am not mistaken.
+
+Documentation and related links for `Opaque`:
+    https://rust.docs.kernel.org/kernel/types/struct.Opaque.html
+    https://rust.docs.kernel.org/src/kernel/types.rs.html#307-310
+    https://github.com/Rust-for-Linux/pinned-init
+
+It uses `UnsafeCell`, Rust "pinning", and the Rust for Linux library
+"pinned-init". "pinned-init" uses a number of experimental,
+unstable and nightly features of Rust. Working with the library
+implementation requires having a good understanding of unsafe
+Rust and many advanced features of Rust.
+
+`Opaque` looks interesting. Do you know if it will become a more
+widely used abstraction outside the Linux kernel?
 
 Best, VJ.
 
