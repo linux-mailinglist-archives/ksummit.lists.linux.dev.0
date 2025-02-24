@@ -1,148 +1,175 @@
-Return-Path: <ksummit+bounces-1881-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1882-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC56EA42A99
-	for <lists@lfdr.de>; Mon, 24 Feb 2025 19:05:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98F83A42DC9
+	for <lists@lfdr.de>; Mon, 24 Feb 2025 21:29:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93F3D3A1EE4
-	for <lists@lfdr.de>; Mon, 24 Feb 2025 18:05:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6FC5174704
+	for <lists@lfdr.de>; Mon, 24 Feb 2025 20:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71BDA265CD5;
-	Mon, 24 Feb 2025 18:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80FE3263C7C;
+	Mon, 24 Feb 2025 20:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b="i8vU9Uug"
-Received: from mailrelay.tugraz.at (mailrelay.tugraz.at [129.27.2.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wf/tKCWj"
+Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com [209.85.217.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02C5265604
-	for <ksummit@lists.linux.dev>; Mon, 24 Feb 2025 18:03:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.27.2.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5560D262801
+	for <ksummit@lists.linux.dev>; Mon, 24 Feb 2025 20:27:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740420230; cv=none; b=ijBqcPWfeT9WI8YLE6rgJ6M1gnHi2fh7b5VETn2l0nXnvYjYBwPOW7w+4ZFbNAShhToXJLifyX9hyvNK7sMrz8CNontjjLj4y27KNSF9gCyDvNJj69x7WcsNpy1vRBpFJ+X1duEF5fUQNlKHyb4spTs51SOt/E2q59IQVz1GJOo=
+	t=1740428854; cv=none; b=uUojy0b+24AqQsK0JDMbj8Kb3AGaZrmqPIB9+8brCVtNVDtLBwBwfNVETBUjuZRcfD0ZUINF+IoI/7d4Olj6AUf17tgl+qXR/jsr9vomGb+PTgBnyurg5QMnbJMwp2tlJe/yoUdee4uNM1SjWFC+agzaD8OXk7qzZKU/1VbWJ2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740420230; c=relaxed/simple;
-	bh=kgS6tl3sjqYHu8Z2Hut86zbfzpe9Le99z3Oiy4gdsDo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OlTIsYtx1FW2QjS2o4WUe6Bf4iv0xwaTXrt0Y+sgKC5A/mER8IUAHA30TIq1sKM5VRcCR8PiPPj/3joCREnWCM7rJo/nQZpAA3/qNeDuEbMz/qfN20Q/V2KalZJyDHBTdoD6/tpjVrp5vsQc2fRgVZ0oIukFEJAWY6e4hs6afes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at; spf=pass smtp.mailfrom=tugraz.at; dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b=i8vU9Uug; arc=none smtp.client-ip=129.27.2.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tugraz.at
-Received: from vra-172-237.tugraz.at (vra-172-237.tugraz.at [129.27.172.237])
-	by mailrelay.tugraz.at (Postfix) with ESMTPSA id 4Z1pWJ4xJYz3wgT;
-	Mon, 24 Feb 2025 19:03:24 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tugraz.at;
-	s=mailrelay; t=1740420206;
-	bh=EhyQQ1r9GBwoAc8Pib4lGe285ISIQG0p+4Ce6uKE6+0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=i8vU9UugBItrV4jUcKhF7RmuHr3OUuTFxxDtiabiFBGf8k5ofeYMT9kU4r4GdDrcC
-	 xAPGSAsm4f5oKqSUpXoZDVPgNH5nLRMxmjcvdZrWGrm25B3Q8jMkbxYTHfpdDP4A4n
-	 zuBwSJMffYJWSlcBZFr1rHQPc+q2IwonUIjjH5/E=
-Message-ID: <636f5758062a5ba930e8a73454e15f2fe29fdccf.camel@tugraz.at>
-Subject: Re: Rust kernel policy
-From: Martin Uecker <uecker@tugraz.at>
-To: Ventura Jack <venturajack85@gmail.com>, comex <comexk@gmail.com>
-Cc: Piotr =?UTF-8?Q?Mas=C5=82owski?= <piotr@maslowski.xyz>, Greg KH
- <gregkh@linuxfoundation.org>, Boqun Feng <boqun.feng@gmail.com>, "H. Peter
- Anvin" <hpa@zytor.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Christoph Hellwig <hch@infradead.org>, rust-for-linux
- <rust-for-linux@vger.kernel.org>, Linus Torvalds
- <torvalds@linux-foundation.org>, David Airlie <airlied@gmail.com>, 
- linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
-Date: Mon, 24 Feb 2025 19:03:24 +0100
-In-Reply-To: <CAFJgqgSCW9XbVYr7yTa47Miax+LGM9jNNE5Yuw1xQE2BZ9gkTQ@mail.gmail.com>
-References: 
-	<CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
-	 <Z7SwcnUzjZYfuJ4-@infradead.org>
-	 <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
-	 <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
-	 <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
-	 <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
-	 <Z7VKW3eul-kGaIT2@Mac.home> <2025021954-flaccid-pucker-f7d9@gregkh>
-	 <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
-	 <2025022024-blooper-rippling-2667@gregkh>
-	 <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
-	 <D7ZDF8NZGPS3.3QBMAVC1NTUDM@maslowski.xyz>
-	 <E0BD1BDB-0EBC-4E27-9324-7CA70ACE194B@gmail.com>
-	 <CAFJgqgSCW9XbVYr7yTa47Miax+LGM9jNNE5Yuw1xQE2BZ9gkTQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	s=arc-20240116; t=1740428854; c=relaxed/simple;
+	bh=h10XZuVFeGOS+X8KDzOz2Otz9RUUWVYfl6at+9PXAOA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KeuXqwZTQxAFgx675MNZ9p5pu7UPPTp0hFlxhV8Qhabfm4swhZoofgqpl1mz4WPqkOTl2DeNTw+6aOebdGUiE16DL+BdD0Fp2zvLvozSHoj0HGmBwJPHxyUC2jWdOK0EvlFSHfa7sZPS+V4rl7Dse2e8TJ7bt39t5a7MqN1Df8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wf/tKCWj; arc=none smtp.client-ip=209.85.217.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-4ba0eb3b0f9so1433534137.0
+        for <ksummit@lists.linux.dev>; Mon, 24 Feb 2025 12:27:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740428851; x=1741033651; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=XEmC/kn2Zh+e/KhqBOkxIA63LvxRFsyvoI5so3k5p1c=;
+        b=Wf/tKCWjajNNB5nj32D6aIuEBLyEIkAjHK1R7/pK6U1BlXgMcJ9znQ/9xOk9S4Ik4b
+         rkkV7aY/0XkxV55XRcXIX8FqgGfS0Q2qwWGSO/Gh0U5t6NvDx9hHrc6lqhiBM/Kl7VwP
+         HqZpHbvZ7WfdE0rBEL+dQx5jbYN8ZK3vHixHhml4Jbqp7d5NNhwdKm+dM8xaoID2wsCT
+         GDjFQS9P1s4Bo5r61pRV2w+BD0GQw9JyY5ghl5cE9KA3gJ71k9uwJdYtsJdPsadQdqBv
+         Yu6qx9aAbArpRYA+lqGrvM1hwweNwBKWKW9LudrmUnCL401DoykDsnn4nON/vUTm36ZI
+         SDbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740428851; x=1741033651;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XEmC/kn2Zh+e/KhqBOkxIA63LvxRFsyvoI5so3k5p1c=;
+        b=IQxQ+ZjEe8dTlb6CdZbznnj1oSveQr+58dMcIPAhXRSEKE14ieZNvGONmgppeA3w6Y
+         jbwpfttqCfw3VAnQAFfExYqdBf7U2dIoAqXgNaNmjuRRJfTamUt9TmAtFV5xzk9jMxjG
+         q0Ich7MfFrVkirOzeimGCgmeJt0H2nN4tZlpLYpDK7AVQLdSZFyl9RTIy5G+2HP7uhL8
+         8O+7ezGUxuhzr7Wi4izah9mgtW2PkRPvBl6GxzQCbN+zIM1vZYCa0Y8FoRf2FjltrdOK
+         tYd99dsSnk+MvrZvbcpC8aCPoZF+cHiLKdgAiOszY9T6MZaCY08Jrd4kMQK/P7ifCaNO
+         Fmcw==
+X-Forwarded-Encrypted: i=1; AJvYcCXJY2uZPwuauP/J0uMbDSprZBDW+eISGpxQrfNehvdOeSkwyNb+mz74DUuqS9UGG+hk/tGyUWaP@lists.linux.dev
+X-Gm-Message-State: AOJu0YzMONetQKNSaqTCbHouG+7Uo5hlGu0yzCmsI5GKH8gmglWfWQjQ
+	RGHNLlCGh9GR9MD1PgEiVF6Nbs2qdlzXnBcivVslJR+83wJz7taXRG6Cwdtd9/j60KioSXjzLLj
+	iMbXZekMzNU/nWa2kWSuZI1dO+W0=
+X-Gm-Gg: ASbGnct2imyssMnowE2O/tFysft2hL7de9dLc5WZtJ5EOBH+w5vwe/T92SSClu5Ymvp
+	hgNWQZrHKcLD522MBI0C1JE9e0Xf6RA4r3/YOxQOg3zAZNlORY6vOSfHM8HmYp2142V5JMmfTzB
+	nfR/ih8QZ4q6zNj7mT+0MWxElPV10uxZr+lExjDqZ2
+X-Google-Smtp-Source: AGHT+IFEJ8VhdFJGx983dbCOSRUTa1r+mEgXJQjyfnmnU8udNafH9EsY1spL/R4LRNe6zh9h2AVIKwb4mPs7SFIJMh4=
+X-Received: by 2002:a05:6102:a54:b0:4bb:f0aa:b317 with SMTP id
+ ada2fe7eead31-4c00ad349a7mr388924137.9.1740428851234; Mon, 24 Feb 2025
+ 12:27:31 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-TUG-Backscatter-control: G/VXY7/6zeyuAY/PU2/0qw
-X-Spam-Scanner: SpamAssassin 3.003001 
-X-Spam-Score-relay: 0.0
-X-Scanned-By: MIMEDefang 2.74 on 129.27.10.116
+References: <2025021954-flaccid-pucker-f7d9@gregkh> <20250221051909.37478-1-felipe.contreras@gmail.com>
+ <Z7gQ3kSeCf7gY1i9@Mac.home> <CAMP44s1Ai5qMU4yV+Rwz4cY869ZA=cxBcTf2wuaUY1oyLKUNCg@mail.gmail.com>
+ <CAPM=9ty9KWFE+AkHi5FDrb8=O5bzbVEroT2fx7jLG5JK6HZ+tg@mail.gmail.com>
+In-Reply-To: <CAPM=9ty9KWFE+AkHi5FDrb8=O5bzbVEroT2fx7jLG5JK6HZ+tg@mail.gmail.com>
+From: Felipe Contreras <felipe.contreras@gmail.com>
+Date: Mon, 24 Feb 2025 14:27:20 -0600
+X-Gm-Features: AQ5f1Jrlgip45JggOoU7MpBqrGSxxSsSYL7JFZ8jQSB0BRa_C93J-emmek_cS9M
+Message-ID: <CAMP44s3DYzwnKbRoiUBAWBVGEc8M78wkkD-DAkJDK=qZmXNtZw@mail.gmail.com>
+Subject: Re: Rust kernel policy
+To: Dave Airlie <airlied@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, gregkh@linuxfoundation.org, hch@infradead.org, 
+	hpa@zytor.com, ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org, 
+	torvalds@linux-foundation.org
+Content-Type: text/plain; charset="UTF-8"
 
-Am Montag, dem 24.02.2025 um 02:08 -0700 schrieb Ventura Jack:
-> On Sun, Feb 23, 2025 at 4:32=E2=80=AFPM comex <comexk@gmail.com> wrote:
-> >=20
-> > > On Feb 22, 2025, at 3:42=E2=80=AFPM, Piotr Mas=C5=82owski <piotr@masl=
-owski.xyz> wrote:
-> > >=20
-> > > I'm sure you already know this, but the idea of safety in Rust isn't
-> > > just about making elementary language constructs safe. Rather, it is
-> > > primarily about designing types and code in such a way one can't "use
-> > > them wrong=E2=80=9D.
-> >=20
-> > And importantly, it=E2=80=99s very hard to replicate this approach in C=
-, even
-> > in a hypothetical =E2=80=98C + borrow checker=E2=80=99, because C has n=
-o generic types. =C2=A0
-> >=20
+Dave Airlie wrote:
+>
+> On Fri, 21 Feb 2025 at 15:59, Felipe Contreras
+> <felipe.contreras@gmail.com> wrote:
+> >
+> > Boqun Feng wrote:
+> > >
+> > > On Thu, Feb 20, 2025 at 11:19:09PM -0600, Felipe Contreras wrote:
+> > > > Greg KH wrote:
+> > > > > But for new code / drivers, writing them in rust where these types of
+> > > > > bugs just can't happen (or happen much much less) is a win for all of
+> > > > > us, why wouldn't we do this?
+> > > >
+> > > > *If* they can be written in Rust in the first place. You are skipping that
+> > > > very important precondition.
+> > >
+> > > Hmm.. there are multiple old/new drivers (not a complete list) already
+> > > in Rust:
+> >
+> > That is a black swan fallacy. Just because you've seen 4 white swans
+> > that doesn't mean all swans are white.
+> >
+> > > , so is there still a question that drivers can be written in Rust?
+> >
+> > I didn't say no driver can be written Rust, I questioned whether *all*
+> > drivers can be written in Rust.
+> >
+> > People are operating under that assumption, but it isn't necessarily true.
+>
+> That doesn't make sense, like you could make a statement that not all
+> drivers could be written in C, but it would be trash, so why do you
+> think rust is different?
 
-One can have generic types in C.  Here is an example
-for Option<T> (I called it "maybe").  I don't think
-it is too bad (although still an experiment):=20
+Because different languages are different?
 
-https://godbolt.org/z/YxnsY7Ted
+Just because B is in the same category as A doesn't mean that B can do
+everything A can.
 
-(The example can also be be proven safe statically)
+C has had more than 35 years of stability, Rust has had only 10, and
+I've stumbled upon many compatibility issues after it was supposedly
+stable.
 
-Here is an example for a vector type (with bounds
-checking):
+Even compiling linux on a compiler other than gcc has been a
+challenge, but somehow getting it to compile on an entirely new
+language would not be a problem?
 
-https://godbolt.org/z/7xPY6Wx1T
+I find it interesting that most senior linux developers say the same
+thing "I don't know much about Rust", but then they make the
+assumption that everything that can be done in C can be done in Rust.
+Why make that assumption?
 
-> > Not all abstractions need generics, but many do.
->=20
-> True, a more expressive and complex language like Rust, C++, Swift,
-> Haskell, etc. will typically have better facilities for creating good
-> abstractions. That expressiveness has its trade-offs. I do think the
-> costs of expressive and complex languages can very much be worth it
-> for many different kinds of projects. A rule of thumb may be that a
-> language that is expressive and complex, may allow writing programs
-> that are simpler relative to if those programs were written in a
-> simpler and less expressive language. But one should research and be
-> aware that there are trade-offs for a language being expressive and
-> complex. In a simplistic view, a language designer will try to
-> maximize the benefits from expressiveness of a complex language, and
-> try to minimize the costs of that expressiveness and complexity.
->=20
-> Rust stands out due to its lifetimes and borrow checker, in addition
-> to it being newer and having momentum.
->=20
-> What are the trade-offs of a more complex language? One trade-off is
-> that implementing a compiler for the language can be a larger and more
-> difficult undertaking than if the language was simpler. As an example,
-> to date, there is only one major Rust compiler, rustc, while gccrs is
-> not yet ready. Another example is that it can be more difficult to
-> ensure high quality of a compiler for a complex language than for a
-> simpler language.
+Especially when we already know that the Rust for Linux project has
+used many unstable features [1], precisely because compiling for linux
+isn't a walk in the park.
 
-I also point out that the way Rust and C++ implement generics
-using monomorphization has a substantial cost in terms of
-compile time and code size.
+But this is not how logic works. You don't get to say "god exists,
+prove me wrong". Anyone who claims that *all* drivers can be written
+in Rust has the burden of proof. I don't have the burden of proof
+because saying that something isn't necessarily true is the default
+position.
 
-Martin
+> if you said 100% safe rust I'd agree, but that isn't the goal.
 
+The *only* advantage that has been sold to linux developers is that a
+whole category of bugs would be gone -- that is in fact what Greg was
+arguing, but now you say maybe the code cannot be "100% safe". OK,
+what is the minimum you expect? 80% safe?
 
+But even if a driver is written in 80% safe Rust, that doesn't
+necessarily mean a whole category of bugs is gone for 80% of the code
+because compilers -- like all software -- aren't perfect, and the Rust
+compiler has been known to introduce memory-safety issues in the past.
 
+So who is to say some drivers aren't going to stumble into compiler
+bugs even in "100% safe" Rust code?
+
+I don't understand why I have to explain that theory isn't the same
+thing as practice, I thought the Linux project of all places would get
+that.
+
+[1] https://github.com/Rust-for-Linux/linux/issues/2
+
+-- 
+Felipe Contreras
 
