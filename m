@@ -1,175 +1,204 @@
-Return-Path: <ksummit+bounces-1883-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1884-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B29AEA42E08
-	for <lists@lfdr.de>; Mon, 24 Feb 2025 21:38:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5E27A42FBA
+	for <lists@lfdr.de>; Mon, 24 Feb 2025 23:03:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DB9C3B2981
-	for <lists@lfdr.de>; Mon, 24 Feb 2025 20:37:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17E977A7C75
+	for <lists@lfdr.de>; Mon, 24 Feb 2025 22:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60C7248892;
-	Mon, 24 Feb 2025 20:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2CD21F419C;
+	Mon, 24 Feb 2025 22:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hoNILy2s"
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=proton.me header.i=@proton.me header.b="lLhtkzS2"
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7373B2A0
-	for <ksummit@lists.linux.dev>; Mon, 24 Feb 2025 20:37:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E981C84BD
+	for <ksummit@lists.linux.dev>; Mon, 24 Feb 2025 22:03:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740429471; cv=none; b=O2itC36/YTGaHSvVigSfwyIAe7fLNmYulRDJT8jMGR2Nbs+fLjd46a7Ecdv1FkbtIXPQUY9WfplGAgm6QkztEyzZPqBAESYkjh92w8VME3osOdJtm5OcEUFmNp6YlmKnY6+Fd9GX64ds6itFE9M5g+gNSZ8HypTdJ8v5YYDrwhc=
+	t=1740434600; cv=none; b=lQacqxcg7nWA2JVxHfeVG1u7xH8vSPHTqiZmS6+6OdI0ZYsdvzHUhrwsitcx9L+UoIBRUKV03g3eH6mA1fDYTYFOcmfnnz4jlYgIWt2HfNGcpskqfdm9W3rC8I5r5dMmuBbUzmql5sY01G5RWKGufBRKlKnKx6F1k9u7PUNGiCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740429471; c=relaxed/simple;
-	bh=CSaM3CTsdB8VvBBuF2udjUi2OuNHmqw4SUCPz7jaLFs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bN2dSfvbcaSHCGzBPhcI+1Iic9PNC/lzlh7f4ABGQ8feSovI1DTP6GoDfyWTHH8TvLgVT0LjjasTlrxHp3fS4sWBRXNSjMx0YeHKxH962NZxuxc2xXvTNqwJxJYD9T/zOPcBY1Br1Id2I7BmqcVWHwvu95alM6DFi4mU3T/SkZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hoNILy2s; arc=none smtp.client-ip=209.85.222.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7be8f28172dso377368085a.3
-        for <ksummit@lists.linux.dev>; Mon, 24 Feb 2025 12:37:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740429468; x=1741034268; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hvTahac7VoN8UIfPPDTOy2XoASsmvBZhy0HRy4LhMqE=;
-        b=hoNILy2smb0UXcRmmgUu+qF3Pe6CbQgBc0HIEQW4fRdC5o6yH2wpIn1OOTB5bNReHz
-         kchU54whX7mQc1Z5qR2pS0w0IiMcP4li2yqfnyUOPvlqYnUQdRZrCPJzFMJbJMJncea1
-         NyrhycaV3RuqNaQexvh/poVRMPm+6N0uyHLh66bLmIZEJ1csJg4iLwB+l9M0Vg9pISSf
-         C0wZHkrW57Su2x0LFoNI2jxI57CeGglr3GYqKd3yYy6TM2gdabmo9bf7rzIeN/3wq4eT
-         BH0UH4WdBoz4YBMFJdVxUV4/ntpvb+ib4N89DzWlevzKYRs39bYJqxUJY9mTXfzxQPX/
-         gYtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740429468; x=1741034268;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hvTahac7VoN8UIfPPDTOy2XoASsmvBZhy0HRy4LhMqE=;
-        b=wx8rTCmUG7za5CyXJi9D1PfNyOvtuipzCmVfM5Xx2eJAV2PEXtdh2rGE8pME+Qk0er
-         jDdULhsMS1h+gMTpKoMNY80aaZKl0T2bmjYM9SkoSgAieOhyT1OslL38ZkgI6ZSUCjgQ
-         VZgIY6bWAsq2pnca5VRMt6vI0BY728QIoXO/fISYYa8Sa0EdcJebRIGMx2S7CWWUKGwM
-         ftSY0wL+ZtQkeIjIclud9cH4QRPNgdyfcN+kTrjf3ECY48zWXidM3xzTtygrMKhTLURO
-         K6pGMvHsDvh7jVF9XjRTCKtsrS0xQtp07TjCQ3gbFiTQ5Z9Dokj6yBDYWYy2rdp/+ey1
-         g6xg==
-X-Forwarded-Encrypted: i=1; AJvYcCWYjA68FU9/5mtrTYlc2PjMi8UwqEfKCwTF4dmztdwlROtYrxk77+/fSdl4MpU+atQ0JDq6kGgu@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy6cqGh5UX4CsXK5NLI2fW/Lc+NDceiRcn6kGC6ztH5mekzjgfJ
-	eGfGNqtbxTS9TO+hS1rlKSoZKO1jBjxl/EMT/ftOdGec0xawshc1
-X-Gm-Gg: ASbGncsTb+DYIXtqj6tTiZx8bcup4TMIH5Ja6wX/mA8Svjtdngig4+ZFZDxh/sr9/YN
-	UKXzar0+Mf+YAHWGgj69z5oYU0c8TCNc4YaJWgAVlarQz3px+3omruyoxqG4o6Wwa7PRriQvIuo
-	voHOZH/Me6SqCTRESZRd1yrIl6IJ+HmjcWVwOPPlmibUyKSLfUw+UikZR/IDnNt7UTyFU0t9IML
-	l/fia17k4gjMsZdLoUMFphk3h86VNqh5J//WO+tZAlF4iOwJcx3bGMSxaQ2peVdNHMJQ2lTqEOF
-	guTz4DdRyuVzzXVWD0DNBEsklcXVYaS8H8S1oggtwqLiVtTN3iMueoEQB3Ykzl01yrvFGqOVW5Z
-	eJWIxB/lkKwviOsqa
-X-Google-Smtp-Source: AGHT+IFT4gDG2ylFYDoxJMqAedimzIeqWHVtIBuyFpPAl0k5SuiVG6BEh2+gKDUkXECGw8juLszw+g==
-X-Received: by 2002:a05:620a:170f:b0:7c0:a5f4:4df with SMTP id af79cd13be357-7c0cef12528mr1893154985a.34.1740429468409;
-        Mon, 24 Feb 2025 12:37:48 -0800 (PST)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c23c329852sm16364385a.72.2025.02.24.12.37.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Feb 2025 12:37:48 -0800 (PST)
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 9E1EF1200068;
-	Mon, 24 Feb 2025 15:37:47 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Mon, 24 Feb 2025 15:37:47 -0500
-X-ME-Sender: <xms:m9i8Z3htkq1szULmKOCJ93b3ZDcZqF5GQYWy3ist86cWawfG9AyCwg>
-    <xme:m9i8Z0CISLhmKQZwUJoNh5An7DQbWTzOxWW__l3ngPsdTmDO9zC8tI-fRBATHF7wO
-    cwPFvt62hCGWM6I7A>
-X-ME-Received: <xmr:m9i8Z3Hbq7NL8kTiKhzQmPEfo_tcPPwW_yXp6yW3Jvoj17jO84rclhBNWU8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdejleejjecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
-    drtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleel
-    ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
-    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
-    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeduuddpmhho
-    uggvpehsmhhtphhouhhtpdhrtghpthhtohepfhgvlhhiphgvrdgtohhnthhrvghrrghsse
-    hgmhgrihhlrdgtohhmpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggr
-    thhiohhnrdhorhhgpdhrtghpthhtoheprghirhhlihgvugesghhmrghilhdrtghomhdprh
-    gtphhtthhopehhtghhsehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohephhhprges
-    iiihthhorhdrtghomhdprhgtphhtthhopehkshhumhhmihhtsehlihhsthhsrdhlihhnuh
-    igrdguvghvpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhn
-    vghlrdhorhhgpdhrtghpthhtohepmhhighhuvghlrdhojhgvuggrrdhsrghnughonhhish
-    esghhmrghilhdrtghomhdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhg
-    vghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:m9i8Z0RhY3borjabk8JHmynQuNN9pOs47w3GYNM0zdqMjWzgx3cjQw>
-    <xmx:m9i8Z0xGp5A9H-SE-jJX5OYR8HBG_lFTiI-LIBct7WSS8aMDWkznHw>
-    <xmx:m9i8Z67SVxfeJlSqQCo90n5QFPATcX0yuhcXqX2at_2Lxus7QFGH2Q>
-    <xmx:m9i8Z5yZsmZuS4_xuOcWgjQrM9QfxuKohipBko2pSxzAcnzIwfajBg>
-    <xmx:m9i8Z0hcjhwwU-R2TUr3LvYVUDj1M_dYx0ehe_xwlVxVTUwXBqkPvWiz>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 24 Feb 2025 15:37:47 -0500 (EST)
-Date: Mon, 24 Feb 2025 12:37:08 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Felipe Contreras <felipe.contreras@gmail.com>
-Cc: gregkh@linuxfoundation.org, airlied@gmail.com, hch@infradead.org,
-	hpa@zytor.com, ksummit@lists.linux.dev,
-	linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com,
-	rust-for-linux@vger.kernel.org, torvalds@linux-foundation.org
-Subject: Re: Rust kernel policy
-Message-ID: <Z7zYdEM5TkT2LNN1@boqun-archlinux>
-References: <2025021954-flaccid-pucker-f7d9@gregkh>
- <20250221051909.37478-1-felipe.contreras@gmail.com>
- <Z7gQ3kSeCf7gY1i9@Mac.home>
- <CAMP44s1Ai5qMU4yV+Rwz4cY869ZA=cxBcTf2wuaUY1oyLKUNCg@mail.gmail.com>
+	s=arc-20240116; t=1740434600; c=relaxed/simple;
+	bh=0+lZeYh5KRqhrNQ4J545nW8JrcC2WLfHJWxxmcCyMKQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QwosgnjAq5gWiTi3K3FCcJZPpeQH2Ov7xdDonzRv82rBWEVM8id9oNA5OGXkfqoG5kg7ZbocVSssavjBpVo/O1S3dy/GLqG1EEeRmNLGV+IgzQErdzw2y508hiGVpZXntagxc3EC2yHnS/D+sxLqreSJY/dy8d05XnpSnwyZcX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=lLhtkzS2; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1740434593; x=1740693793;
+	bh=olEumxK8qJ3sAV3kNUy7sNVzCLyVSpG2PZ8OZGIVLPc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=lLhtkzS2ihZNhyl7Ws23MV1aGiZWppJk1AwV07aMO8PZv5PbIEwJvj0+2CVfgmTie
+	 kEpejzjnxfBGmo+aQVYqKE8SP+KRrx8ILRWRN5vAgxM3UXTbab/xHpdbY3+H8d0YXm
+	 3O55B35NVLVL5I4PqdRRor4qdfyPUGYepYFbCfuOtV9qS5y+l/3VyiPeYkf6JPDqAZ
+	 oCxZIPTSMpGx642rCBVhWOPpE357Ee0Y56Ph3TErGl9POPG8y661WRK6ZZxomRsrQ0
+	 Ys7/XaJ+eDauU0ONWvgVZ957S9efDg/29kZ9hams+ATVwIYt+KrRZkSWcmOqPT7U/8
+	 ydaAu5L09U07g==
+Date: Mon, 24 Feb 2025 22:03:04 +0000
+To: Ventura Jack <venturajack85@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Gary Guo <gary@garyguo.net>, Linus Torvalds <torvalds@linux-foundation.org>, Kent Overstreet <kent.overstreet@linux.dev>, airlied@gmail.com, boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
+Subject: Re: C aggregate passing (Rust kernel policy)
+Message-ID: <c05cb400-969d-44a1-bd40-9b799ed894d7@proton.me>
+In-Reply-To: <CAFJgqgRdiQ29bWvwsu11yokZb4OFF7pYYUU=ES6CYv9847KgVg@mail.gmail.com>
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com> <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com> <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com> <20250224002745.7d7460a7.gary@garyguo.net> <CAFJgqgSNjF=LfrCNTH3GdYssXz9YG-AeCtpibejJ7Ywtx0m3HQ@mail.gmail.com> <4cb1d98b-f94b-410a-be90-4394c48bdbf2@proton.me> <CAFJgqgQ3P81-iskGu9R+T=c=wyB2K0JqUhx+Gj+6mkYeY8-ORg@mail.gmail.com> <a4b79751-f1c8-4476-98a5-c59fb2e545ad@proton.me> <CAFJgqgRdiQ29bWvwsu11yokZb4OFF7pYYUU=ES6CYv9847KgVg@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: f98767773a4618dd148240bae5aa0217d42042e2
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMP44s1Ai5qMU4yV+Rwz4cY869ZA=cxBcTf2wuaUY1oyLKUNCg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 20, 2025 at 11:59:10PM -0600, Felipe Contreras wrote:
-> Boqun Feng wrote:
-> >
-> > On Thu, Feb 20, 2025 at 11:19:09PM -0600, Felipe Contreras wrote:
-> > > Greg KH wrote:
-> > > > But for new code / drivers, writing them in rust where these types of
-> > > > bugs just can't happen (or happen much much less) is a win for all of
-> > > > us, why wouldn't we do this?
-> > >
-> > > *If* they can be written in Rust in the first place. You are skipping that
-> > > very important precondition.
-> >
-> > Hmm.. there are multiple old/new drivers (not a complete list) already
-> > in Rust:
-> 
-> That is a black swan fallacy. Just because you've seen 4 white swans
-> that doesn't mean all swans are white.
-> 
-> > , so is there still a question that drivers can be written in Rust?
-> 
-> I didn't say no driver can be written Rust, I questioned whether *all*
-> drivers can be written in Rust.
-> 
+On 24.02.25 17:57, Ventura Jack wrote:
+> On Mon, Feb 24, 2025 at 5:47=E2=80=AFAM Benno Lossin <benno.lossin@proton=
+.me> wrote:
+>>
+>> On 24.02.25 13:21, Ventura Jack wrote:
+>>>
+>>> From what I can see in the documentation, `&UnsafeCell<T>` also does no=
+t
+>>> behave like `T*` in C. In C, especially if "strict aliasing" is turned
+>>> off in the
+>>> compiler, `T*` does not have aliasing requirements. You can have multip=
+le
+>>> C `T*` pointers pointing to the same object, and mutate the same object=
+.
+>>
+>> This is true for `&UnsafeCell<T>`. You can have multiple of those and
+>> mutate the same value via only shared references. Note that
+>> `UnsafeCell<T>` is `!Sync`, so it cannot be shared across threads, so
+>> all of those shared references have to be on the same thread. (there is
+>> the `SyncUnsafeCell<T>` type that is `Sync`, so it does allow for
+>> across-thread mutations, but that is much more of a footgun, since you
+>> still have to synchronize the writes/reads)
+>>
+>>> The documentation for `UnsafeCell` conversely spends a lot of space
+>>> discussing invariants and aliasing requirements.
+>>
+>> Yes, since normally in Rust, you can either have exactly one mutable
+>> reference, or several shared references (which cannot be used to mutate
+>> a value). `UnsafeCell<T>` is essentially a low-level primitive that can
+>> only be used with `unsafe` to build for example a mutex.
+>>
+>>> I do not understand why you claim:
+>>>
+>>>     "`&UnsafeCell<T>` behaves like `T*` in C,"
+>>>
+>>> That statement is false as far as I can figure out, though I have taken=
+ it
+>>> out of context here.
+>>
+>> Not sure how you arrived at that conclusion, the following code is legal
+>> and sound Rust:
+>>
+>>     let val =3D UnsafeCell::new(42);
+>>     let x =3D &val;
+>>     let y =3D &val;
+>>     unsafe {
+>>         *x.get() =3D 0;
+>>         *y.get() =3D 42;
+>>         *x.get() =3D 24;
+>>     }
+>>
+>> You can't do this with `&mut i32`.
+>=20
+> I think I see what you mean. The specific Rust "const reference"
+> `&UnsafeCell<T>` sort of behaves like C `T*`. But you have to get a
+> Rust "mutable raw pointer" `*mut T` when working with it using
+> `UnsafeCell::get()`.
 
-Huh? Your previous reply is:
+Exactly, you always have to use a raw pointer (as a reference would
+immediately run into the aliasing issue), but while writing to the same
+memory location, another `&UnsafeCell<T>` may still exist.
 
-"*If* they can be written in Rust in the first place. You are skipping
-that very important precondition."
+> And you have to be careful with lifetimes if you
+> do any casts or share it or certain other things. And to dereference a
+> Rust "mutable raw pointer", you must use unsafe Rust. And you have to
+> understand aliasing.
 
-how does that imply you questioned whether *all* drivers can be written
-in Rust.
+Yes.
 
-Care to explain your logic?
+> One example I tested against MIRI:
+>=20
+>     use std::cell::UnsafeCell;
+>=20
+>     fn main() {
+>=20
+>         let val: UnsafeCell<i32> =3D UnsafeCell::new(42);
+>         let x: & UnsafeCell<i32> =3D &val;
+>         let y: & UnsafeCell<i32> =3D &val;
+>=20
+>         unsafe {
+>=20
+>             // UB.
+>             //let pz: & i32 =3D & *val.get();
+>=20
+>             // UB.
+>             //let pz: &mut i32 =3D &mut *val.get();
+>=20
+>             // Okay.
+>             //let pz: *const i32 =3D &raw const *val.get();
+>=20
+>             // Okay.
+>             let pz: *mut i32 =3D &raw mut *val.get();
+>=20
+>             let px: *mut i32 =3D x.get();
+>             let py: *mut i32 =3D y.get();
+>=20
+>             *px =3D 0;
+>             *py +=3D 42;
+>             *px +=3D 24;
+>=20
+>             println!("x, y, z: {}, {}, {}", *px, *py, *pz);
+>         }
+>     }
+>=20
+> It makes sense that the Rust "raw pointers" `*const i32` and `*mut
+> i32` are fine here, and that taking Rust "references" `& i32` and
+> `&mut i32` causes UB, since Rust "references" have aliasing rules that
+> must be followed.
 
-Regards,
-Boqun
+So it depends on what exactly you do, since if you just uncomment one of
+the "UB" lines, the variable never gets used and thus no actual UB
+happens. But if you were to do this:
 
-> People are operating under that assumption, but it isn't necessarily true.
-> 
-> -- 
-> Felipe Contreras
+    let x =3D UnsafeCell::new(42);
+    let y =3D unsafe { &mut *x.get() };
+    let z =3D unsafe { &*x.get() };
+    println!("{z}");
+    *y =3D 0;
+    println!("{z}");
+
+Then you have UB, since the value that `z` points at changed (this is
+obviously not allowed for shared references [^1]).
+
+
+[^1]: Except of course values that lie behind `UnsafeCell` inside of the
+      value. For example:
+
+      struct Foo {
+          a: i32,
+          b: UnsafeCell<i32>,
+      }
+
+      when you have a `&Foo`, you can be sure that the value of `a`
+      stays the same, but the value of `b` might change during the
+      lifetime of that reference.
+
+---
+Cheers,
+Benno
+
 
