@@ -1,165 +1,154 @@
-Return-Path: <ksummit+bounces-1888-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1889-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7397A445AC
-	for <lists@lfdr.de>; Tue, 25 Feb 2025 17:16:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26268A446D9
+	for <lists@lfdr.de>; Tue, 25 Feb 2025 17:50:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84E543AD2AE
-	for <lists@lfdr.de>; Tue, 25 Feb 2025 16:12:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22EB11888B50
+	for <lists@lfdr.de>; Tue, 25 Feb 2025 16:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F115B18C92F;
-	Tue, 25 Feb 2025 16:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74F6E189F39;
+	Tue, 25 Feb 2025 16:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Whve3CZp"
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BdaSRZBq"
+Received: from mail-lj1-f195.google.com (mail-lj1-f195.google.com [209.85.208.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A834B18B47E
-	for <ksummit@lists.linux.dev>; Tue, 25 Feb 2025 16:12:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FBB433CB
+	for <ksummit@lists.linux.dev>; Tue, 25 Feb 2025 16:45:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740499975; cv=none; b=j6//OYAFeI/4F1B5ynIGX4cYT9LNj2dJEy3UJRF18EhYYlfkBIkvz3QM/rmqHngVtIZmps5voYSV5t1tWe1/3vWwLYkS8+XUE1idt3SQfQWSG9huPhvkdlR47HPLadixzYhvNtedL0yQBhsdcm9lOZm+zJzGE8KKxYLXo2RGRlc=
+	t=1740501939; cv=none; b=LPTIcswECdvqx1yqNXWscmnZOo0P2STmmO+HexeIovve+2BU2AlqbQKrNyL/n7wAH0UdDsbE+s3uqZFYBYViGgdYybQmmk/Mm3SWjv0Vk+Ka59PyhguN6+dE6iKrO5MNzSXy0uPrt8WjfzRwjATuiqg/RsIq648YOa5PkUAPFWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740499975; c=relaxed/simple;
-	bh=JcbH6xbF+kVoY6mPq3WSvzHL/f+wVG6jHsP4CM8z2Xw=;
+	s=arc-20240116; t=1740501939; c=relaxed/simple;
+	bh=hwF6kbqLpp3QELXgKHrPeWegET4R6Y1jIN6cmKBZeuc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bG49y+MHzuq0po3c99jZsBZzVKY9QARTrdIjQjaqrA3wULzNL67VFsr+m0Qv9pvgZT6YB+0zKGobz3IxZUQd6FGG2yI03kWw4mF346+1qrl9E5xaW7HdO1p/MT4NwfUqwJSR6AWyXy00qLnHJrifZaqspusPoP7KhI9l5btl5Tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Whve3CZp; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-38f5fc33602so3367192f8f.0
-        for <ksummit@lists.linux.dev>; Tue, 25 Feb 2025 08:12:53 -0800 (PST)
+	 To:Cc:Content-Type; b=JqmzBn7YFv8AjQPofCaMMtbwpnanpKHPZzBvse1/RUEup/AGAXsR7H7kpCxafB1SqVcW1Mtsn1UpyM9Z+hmTMt+V3EAKPyjul3n1Ii5IohYKptexiYYJVBnz0ImMJemXc0rHzupIl+xoEPf0Er9YvApyMCbfGXXAQS6K+XkEfE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BdaSRZBq; arc=none smtp.client-ip=209.85.208.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f195.google.com with SMTP id 38308e7fff4ca-30a2594435dso67008831fa.1
+        for <ksummit@lists.linux.dev>; Tue, 25 Feb 2025 08:45:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740499972; x=1741104772; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1740501935; x=1741106735; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=p+IbGw1yOaO8wpgyinqYsYfkRN9BZ1H7KtNvprS9eFQ=;
-        b=Whve3CZpALEGF19te4d57l94kk/s8m/liRCWMBGCUAsTKIg+WzteF4NsqUhbJfKYFN
-         r2f1pwqeOTylC60DrFNDKuUf8JZD1L5PDW5d8j6smBUV0t9JXb1k2jPtrVwVcYjQ3MHQ
-         nVVb6KANa79bf+9xt0RugwCYmjv8cKFVFjwbFFfLpjvoHa63+j8X2ebDD+IUfebVOHF2
-         O9qefZztlSWNgEGm4rjSyaoDxY25d3u8mpy9iE+R5Ogwq2mNKuRc/UcVVAYEjjF57+w9
-         HUJp9Fvgz+urSZDybCnyqjlbFXmz12U0M/0rUs1NUW6BQz0vWCm43bjZ7WJKXJDA6m9u
-         OzUg==
+        bh=m7AjPiUKufcUCuCRwM7KdiACvN7KG8NT17WOPwc4KLM=;
+        b=BdaSRZBqIGQGUKf0XOfUbkoFuO0UVwCGhrU/iTfZEyow2qNcaiciMdeUjizYIZPn35
+         0ifjRs0Jl+QLXwCsoF4IuwX2ggB5BshblHcheejPEYJ61uuS/0H6jPBn0dhRzxOuCgiG
+         2MFSg0f4OMFzKHYern1b6K/CbLDuN3BK9+f+gHbxUKsweqeRM1Sa+OaIeE+5bzEHqGE3
+         /1dcjmua+BHGfjwljJArzuf/iefE4Th1DfeMygw5C5THASPp4Y6l03xy8j9+T6mr13CK
+         QYdeRlWPD7R/iB9kp9t4rtopSozuMVKJcEn2oI34vfunm6ky8BIQDZNOu16qbmyzzO65
+         b7ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740499972; x=1741104772;
+        d=1e100.net; s=20230601; t=1740501935; x=1741106735;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=p+IbGw1yOaO8wpgyinqYsYfkRN9BZ1H7KtNvprS9eFQ=;
-        b=J7t/NDgxLqUIC1Sl6ZVHFbWO0jZ8XUqCxdjRsBmq2tX9VUu8LxsbJS/HzQXMrU3CPo
-         t5+DvQNL60wyC94NN2qBDM7/RwFnKsdvNkdEx1tTJK3Dh8VLa68WpVn2TxpkOfBFRlJe
-         QYMwmvxoYdbtblS8I2ndWs37V1rtFHqDFEwQRZMuOHy2kAhvpZFBQ30rwxTbj+kS6W+F
-         z3KAqR6xUTmrWlqr/Brfw0Hkrwf51p2ByqGDGhI13yLwCmxKm+nApHrKfsltZGGMxq5F
-         lPXJdyu5r360z6k5pMzaZGur10BDhwd0B8TMKSlAw8/YiexK0+dzxash4OsUs88lea1T
-         6rQg==
-X-Forwarded-Encrypted: i=1; AJvYcCWb3tnRxES0UJkEM36JP6tQaaUaeKXsJBTSRUeuEhi4GwIy19bXy4zJoNSNFStqU1/GjYED8cFN@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz4lTrIreJjN2LK3a649qWwhXqAoobC0oApQi9lWsBa+MIpzJhS
-	cWet5qXLlT+tKfjDCEEdln5Ud9HFimpGZUiMcickLIFhJ3rr5wwjchKbi5GwyrIJjuY2xqE4gqD
-	3LBG/wdL1IwPQuqaxwO2ogdn8BBD3kfEbBTYR
-X-Gm-Gg: ASbGncurt7TRNIW1HMOHgAlVPLyg2t+7uG23QL2kR0PzzxkB8TcykE+/pBbBkZF6yWv
-	E2k2Iahmnju5OMKqt9dy1XAqBHv+I1gRYtqz1Oamul1HDuBNfiD3SpS60PjWIxuaJ0sbo5hKvKm
-	6QioV/Dmmjel4Kd1FvqC8BoRGK/hKN/s5bsOoaHg==
-X-Google-Smtp-Source: AGHT+IERrAzfsQ+2vuobOjf/H2nk2QFz1j28McsGB1U9oXx7WWKXyXxUSYxjItIeHzW3MoL6kdZmhf2JM57dNE5za7Q=
-X-Received: by 2002:a05:6000:1563:b0:386:374b:e8bc with SMTP id
- ffacd0b85a97d-38f615bc9dfmr16670217f8f.15.1740499971902; Tue, 25 Feb 2025
- 08:12:51 -0800 (PST)
+        bh=m7AjPiUKufcUCuCRwM7KdiACvN7KG8NT17WOPwc4KLM=;
+        b=Z0SETKCCQ7jXK7QSDdLzv3tPiNNISMQkJw1XgXYEbVJSis2HgPnMhkXzfqnwFXpsM4
+         vOcsVDjfVXN6WhY8ZQr+jf+hPJwHUPxEQBkTNtjvlaKV/j0duNemDP91aP/+ZPPOO927
+         eOA2TBuzudAyiZby0JYwvzLtWI3/TRzJoClK69Yz1AoC4ZE8kPfrwArjj98K+ORAOnCc
+         M4FoKjEQQrJZxOZ6Ws3K9qgyceksiKeK8QuXZ1UwYi9QFeJiFYuIRClNi3GR0vv2QbPv
+         dMrwJw/GzpFcJS/K6lhoWTnRET+nJCaufwwqThdd6YT3egBmshD9OHrRgooQZZoNtenP
+         owzA==
+X-Forwarded-Encrypted: i=1; AJvYcCVKcDueaWE1F/n+16Q5MftiJ4hJkIebgePxW+dTpAQhsFssd5IF+9/FhTKdi5S5fEdDpwOc4JAQ@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywm9D19sMdHJ94/mwGoAScSOdcjNrU1N/E5/uIBGeGQx8Xo9BWu
+	Ic5zpy2DboyId1m9gCApVyLYmSOyuX9ZRbTabgNjAjsoPVbPWCJXf08uO8fDEkcAzUMkAV83s2a
+	0rqb/hFb+sc+bzJMnQ6wZ4/6XTPw=
+X-Gm-Gg: ASbGnctaSb+rbPJnUjqUZvso0pTdLaKCfsj/SCRNdg2w65/q0+bVN7ue+5Ho9hFFAlE
+	grxcTaFamfzC4OL6lRiQTNgMOMVt+Nc4P239Gc68sF3ZEP0di+qRIWlMkHGfobHD8jRKdzJk/IB
+	zCSgbkOMEM
+X-Google-Smtp-Source: AGHT+IGPElTgJGuOIFhoQpvigEoyqAazYmo6oGpLNuo3kczlQ8IZTKJj1630KfSBCVkmPCJZM70leOjvb/aBqpDdaF4=
+X-Received: by 2002:a19:641d:0:b0:548:878b:ccb3 with SMTP id
+ 2adb3069b0e04-548878bd500mr1171731e87.25.1740501934971; Tue, 25 Feb 2025
+ 08:45:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
- <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com> <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
-In-Reply-To: <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 25 Feb 2025 17:12:39 +0100
-X-Gm-Features: AQ5f1JrjfQJh76BFqnmr7NKwuzVljSVd0iXKiJJ1_U95jYSuu4wa6KKMNxHfNZU
-Message-ID: <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
+References: <CAFJgqgRZ1w0ONj2wbcczx2=boXYHoLOd=-ke7tHGBAcifSfPUw@mail.gmail.com>
+ <9610C397-39C8-479B-A727-1091BB8548C9@zytor.com>
+In-Reply-To: <9610C397-39C8-479B-A727-1091BB8548C9@zytor.com>
+From: Ventura Jack <venturajack85@gmail.com>
+Date: Tue, 25 Feb 2025 09:45:22 -0700
+X-Gm-Features: AWEUYZli3Ui7LBmGdvVD9YHbwR1WaUThZgdEiI6e9ZyhcahuU4aeXJ5WC0fMPyI
+Message-ID: <CAFJgqgQZoG8VrLUFtCFaMtodvFZEZV-aeFvugCnF+w7WLbS_qQ@mail.gmail.com>
 Subject: Re: C aggregate passing (Rust kernel policy)
-To: Ventura Jack <venturajack85@gmail.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
-	Kent Overstreet <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
-	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
-	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, 
-	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: torvalds@linux-foundation.org, airlied@gmail.com, boqun.feng@gmail.com, 
+	david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, 
+	hch@infradead.org, ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
 	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Feb 23, 2025 at 4:30=E2=80=AFPM Ventura Jack <venturajack85@gmail.c=
-om> wrote:
+On Tue, Feb 25, 2025 at 8:42=E2=80=AFAM H. Peter Anvin <hpa@zytor.com> wrot=
+e:
 >
-> Just to be clear and avoid confusion, I would
-> like to clarify some aspects of aliasing.
-> In case that you do not already know about this,
-> I suspect that you may find it very valuable.
+> On February 22, 2025 2:03:48 AM PST, Ventura Jack <venturajack85@gmail.co=
+m> wrote:
+> >>Gcc used to initialize it all, but as of gcc-15 it apparently says
+> >>"Oh, the standard allows this crazy behavior, so we'll do it by
+> >default".
+> >>
+> >>Yeah. People love to talk about "safe C", but compiler people have
+> >>actively tried to make C unsafer for decades. The C standards
+> >>committee has been complicit. I've ranted about the crazy C alias
+> >>rules before.
+> >
+> >Unsafe Rust actually has way stricter rules for aliasing than C. For you
+> >and others who don't like C's aliasing, it may be best to avoid unsafe R=
+ust.
 >
-> I am not an expert at Rust, so for any Rust experts
-> out there, please feel free to point out any errors
-> or mistakes that I make in the following.
->
-> The Rustonomicon is (as I gather) the semi-official
-> documentation site for unsafe Rust.
->
-> Aliasing in C and Rust:
->
-> C "strict aliasing":
-> - Is not a keyword.
-> - Based on "type compatibility".
-> - Is turned off by default in the kernel by using
->     a compiler flag.
->
-> C "restrict":
-> - Is a keyword, applied to pointers.
-> - Is opt-in to a kind of aliasing.
-> - Is seldom used in practice, since many find
->     it difficult to use correctly and avoid
->     undefined behavior.
->
-> Rust aliasing:
-> - Is not a keyword.
-> - Applies to certain pointer kinds in Rust, namely
->     Rust "references".
->     Rust pointer kinds:
->     https://doc.rust-lang.org/reference/types/pointer.html
-> - Aliasing in Rust is not opt-in or opt-out,
->     it is always on.
->     https://doc.rust-lang.org/nomicon/aliasing.html
-> - Rust has not defined its aliasing model.
->     https://doc.rust-lang.org/nomicon/references.html
->         "Unfortunately, Rust hasn't actually
->         defined its aliasing model.
->         While we wait for the Rust devs to specify
->         the semantics of their language, let's use
->         the next section to discuss what aliasing is
->         in general, and why it matters."
->     There is active experimental research on
->     defining the aliasing model, including tree borrows
->     and stacked borrows.
-> - The aliasing model not being defined makes
->     it harder to reason about and work with
->     unsafe Rust, and therefore harder to avoid
->     undefined behavior/memory safety bugs.
+> From what I was reading in this tree, Rust doesn't actually have any rule=
+s at all?!
 
-I think all of this worrying about Rust not having defined its
-aliasing model is way overblown. Ultimately, the status quo is that
-each unsafe operation that has to do with aliasing falls into one of
-three categories:
+One way to describe it may be that Rust currently has no full
+official rules for aliasing, and no full specification. There are
+multiple experimental research models, including stacked
+borrows and tree borrows, and work on trying to officially
+figure out, model, and specify the rules. Currently, people
+loosely and unofficially assume some rules, as I understand
+it, often with conservative assumptions of what the rules
+are or could be, as Miguel Ojeda discussed. I do not know
+if there is any official partial specification of the aliasing
+rules, apart from the general Rust documentation.
 
-* This is definitely allowed.
-* This is definitely UB.
-* We don't know whether we want to allow this yet.
+The unofficial aliasing rules that a Rust compiler
+implementation uses, have to be followed when writing
+unsafe Rust, otherwise you may get undefined behavior
+and memory safety bugs. Some people have argued that
+a lack of specification of the aliasing rules for Rust is one
+reason why writing unsafe Rust is harder than C, among
+other reasons.
 
-The full aliasing model that they want would eliminate the third
-category. But for practical purposes you just stay within the first
-subset and you will be happy.
+A lot of Rust developers use MIRI, but MIRI cannot catch
+everything. One version of MIRI explicitly mentions that it
+uses stacked borrows as one rule set, and MIRI also
+mentions that its stacked borrow rules are still experimental:
 
-Alice
+    "=3D help: this indicates a potential bug in the program: it
+    performed an invalid operation, but the Stacked Borrows
+    rules it violated are still experimental
+
+    =3D help: see
+    https://github.com/rust-lang/unsafe-code-guidelines/blob/master/wip/sta=
+cked-borrows.md
+    for further information"
+
+There is only one major compiler for Rust so far, rustc,
+and rustc has LLVM as a primary backend. I do not know
+the status of rustc's other backends. gccrs is another
+compiler for Rust that is a work in progress, Philip
+Herron (read also his email in the tree) and others are
+working on gccrs as I understand it.
+
+Best, VJ.
 
