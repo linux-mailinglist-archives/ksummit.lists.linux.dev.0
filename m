@@ -1,236 +1,221 @@
-Return-Path: <ksummit+bounces-1892-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1893-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F9A2A448EC
-	for <lists@lfdr.de>; Tue, 25 Feb 2025 18:52:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9A64A449F9
+	for <lists@lfdr.de>; Tue, 25 Feb 2025 19:17:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA0ED8877C5
-	for <lists@lfdr.de>; Tue, 25 Feb 2025 17:38:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B8381894D1C
+	for <lists@lfdr.de>; Tue, 25 Feb 2025 18:17:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D5F1A7262;
-	Tue, 25 Feb 2025 17:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E527C19CC06;
+	Tue, 25 Feb 2025 18:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tW+l2X9p"
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="uBBdwVA6"
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6E819340B
-	for <ksummit@lists.linux.dev>; Tue, 25 Feb 2025 17:36:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B42D176FB0;
+	Tue, 25 Feb 2025 18:16:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740504983; cv=none; b=i8bGLbGc2jo3MPPo3+2XFt+GhMg3UVTZhlycrMeO2qf4apJQYArJ/wVfCOiwgSurD9gxXEBSb7cCsZZRmnGVAJFlGiTOXCwC60wWLtyiNwAR2zRlzrEfS5PzU18cpoEef7b9N6ybpLNAy9OquW4uAQANnHr+sAtBYBKvqCyxh1w=
+	t=1740507405; cv=none; b=rahhZNS/teNQhhVRYVZb4gJXtB8FX3KEy9gtJMaDYZuO7BJ6uwfvkgAB1PiE1/lL6Fc1QOWaLTyVNgcqINiTZiTOnYPdQLjkcjYytzy2DopqsTZDBf/cVJIrEXIO1eiqF0fG8otf1L1eKYVkb4LgWiSnXeFCafL3Ot+qqOV2oj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740504983; c=relaxed/simple;
-	bh=gOl/36Ytrp1zDSvgkiGrHn22n77JQLii4H7PNe1Rj8k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GM+1L8W0qxatG4tj1t1Msr5Kb5i0798PEJyxj6fUAJkLLFkgQ+5OPBIEYX7Kx2/82xSevit42on9h+KQEdYx967rq0E/f6K2Hg5x26T0k1VruCxdtme2pyN8ihFSpW4M192XKs/6cwYWeaeF7vrYP3CLQVPQfQDwJ/SQMg3TpXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tW+l2X9p; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-439a4fc2d65so57527315e9.3
-        for <ksummit@lists.linux.dev>; Tue, 25 Feb 2025 09:36:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740504979; x=1741109779; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jb7TDT/aVvgdtxg6kdFOwwgVqkaL6U92QY48yAXPGLY=;
-        b=tW+l2X9pZREsIga9MTCBl3WtWCb4zJXdOUOQ2XjISzjdrBAn/WLJOMEHxTczxOETV8
-         QweKjR8k80UEl4QBxRZ5O2B63cCRyZLoZy6OoBmzADz7gKvYr1F8NENuQ4+XkOV9giAQ
-         eHClWB8gPhxWzy9Jt6ELkXFzrO8ur36ZpxKo60ModFuuqXhGVjuUvzLUUqRZcxp2SU7O
-         +JPDWs5BZFDEa2M6W9sTcb8VCRErdDn2dglePsheyV0BNCkcdizde/AkkG2q92Q3iLWh
-         zKTsLuTJ4HSe9xVPL5JpDvJCn2QFLzM5IkofPdVB/siy2/BJ2yaWfzFRvMDf7zY5J+in
-         tkjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740504979; x=1741109779;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jb7TDT/aVvgdtxg6kdFOwwgVqkaL6U92QY48yAXPGLY=;
-        b=xBrNaClFV5adcEavNr/aGFFhHsPfle7jwTTe85XDJ+rIQuo1Vvqp7L6OqKuiatJQ5q
-         hD2AxVaF6ooQWZBxLJNELlWVgXnCCuGRcpErpnxVi0Vi+KadxzV41bRRZf+hdht7Sjn9
-         xu3nw0ZVSTuSxC6Jb91OeJrqoxOf5iPlJQ2uqypCGoIp/hcIxJ7BqTbCPuvBkcoo9vl9
-         I7Dkjn+3mtxbh/zsmBDQs4llTadQma5mYR8GHGQKifI7jlCAn3x9moDODQJ2w7P0ELd7
-         /JAnwVwhyCyGoFYvsHGgsns+1CpCfFU09bPK+JvyWq1rKz2rWVP4v1oomgAV5O2Mmb6N
-         /eYg==
-X-Forwarded-Encrypted: i=1; AJvYcCUfCFxkUa2D7iJvnmJuvaQPJ2JkuxraklvJRGo2aHflq/n1up+I6yVuU0cxFCrNyVj8FU44owzO@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyf18wdKHm6F8RBSmF3JRKUzz9/on8CaaFgw05y/FT3VDhwmsC8
-	7u92sENL/7jBo/5FCrg6NRBNGI4cDMRH9IXt1FTlHUK10JR64YOZkJu7ii7ZVXYcR7F4aCfTABr
-	ww00VFjLe7APlhihJOna92EQ2XijSV8YbmWft
-X-Gm-Gg: ASbGnctv5iRICHyEIiy2zpdFF56noMx2PlFDy4eQejx+/4lPpboBhIbGIBLFTHj47Cn
-	OzUye9/C0D4iUvGUVbeiG+wgX+FHF1YJbsoGNTwp2K1QfNv5q3zVwwyc9X3qDFy2I7TFIL0E7aZ
-	hSZ4oQAe7WGrhdQO31yp1Of2KuagZXcPUgi9UTpg==
-X-Google-Smtp-Source: AGHT+IEKeLbYDcWbkUCjv9WAAKpj5i9urIXFAIil9bTEvJFu6/6yC9kyIte/8TvLmHWUW8IDBAxxehZuyfy5A6xga1I=
-X-Received: by 2002:a05:600c:1d8c:b0:439:98ca:e39b with SMTP id
- 5b1f17b1804b1-43ab44b58c3mr31936975e9.29.1740504979330; Tue, 25 Feb 2025
- 09:36:19 -0800 (PST)
+	s=arc-20240116; t=1740507405; c=relaxed/simple;
+	bh=eoJLsORUr3+sG19g827exZFY9w4G8hTvu/Hliq9HRVk=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=TpaFDXIsnbzRsq/jrhLfN2JLRBJq4lNJZzeppJq1UL3LykYiTNZcu5vOff4xm8RnDKAXJy78STzAVBUSt/AIE91CrV8gUXiIcA9nmqj4s8X16CyoA/w9JL1LXlmjGMUopbXF0ANW/mMMeNXejiye8f+fNPyysSLEMIJu8xh3yiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=uBBdwVA6; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [127.0.0.1] ([76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 51PIGJhK1382724
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Tue, 25 Feb 2025 10:16:20 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 51PIGJhK1382724
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025021701; t=1740507382;
+	bh=mXZUNxkU+u+ykvS8KwB7Tu/GeSnEZCinpL/GVgJGwu8=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=uBBdwVA6JNXCBEE2cKEl5kXQV/tOVS6CQ1kl3UkuukMMYET8Jzu2YIi9YxWbEU7xv
+	 vVPRpgQp+oOUvvW99F3m74dXHWrjCMbTflsIcRMdqWbH1amqKgvNUM7gSvft8Vjhro
+	 BMC/hPaySRIhOlOYgDoU8CxyH9mh6fwRMRrtyocIDMtkOqIgzNX2H8HQFfekw/eh9W
+	 bVwO590dNpZtT6WlMApSxVI6GzrvBfNTecoeIKYZgKRnIgBr5VTTeqH9cmAIA5kw+p
+	 MFGEC12BpDZEY4XDL8iu82mXNiMIQxHFcQnPH3753aiD7TC40GFNbh5f5WWya58lm6
+	 uxs/Lkfq4T7Sw==
+Date: Tue, 25 Feb 2025 10:16:17 -0800
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Alice Ryhl <aliceryhl@google.com>, Ventura Jack <venturajack85@gmail.com>
+CC: Linus Torvalds <torvalds@linux-foundation.org>,
+        Kent Overstreet <kent.overstreet@linux.dev>,
+        Gary Guo <gary@garyguo.net>, airlied@gmail.com, boqun.feng@gmail.com,
+        david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org,
+        hch@infradead.org, ksummit@lists.linux.dev,
+        linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com,
+        rust-for-linux@vger.kernel.org
+Subject: Re: C aggregate passing (Rust kernel policy)
+User-Agent: K-9 Mail for Android
+In-Reply-To: <CAH5fLghEMtT663SNogAGad-qk7umefGeBKbm+QjKKzoskjOubw@mail.gmail.com>
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com> <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com> <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c> <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com> <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com> <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com> <CAFJgqgREAj-eP-d244WpqO-9H48ajZh83AxE31GqoONZ=DJe-g@mail.gmail.com> <CAH5fLghEMtT663SNogAGad-qk7umefGeBKbm+QjKKzoskjOubw@mail.gmail.com>
+Message-ID: <5E3FEDC4-DBE3-45C7-A331-DAADD3E7EB42@zytor.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
- <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
- <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
- <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com> <CAFJgqgREAj-eP-d244WpqO-9H48ajZh83AxE31GqoONZ=DJe-g@mail.gmail.com>
-In-Reply-To: <CAFJgqgREAj-eP-d244WpqO-9H48ajZh83AxE31GqoONZ=DJe-g@mail.gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 25 Feb 2025 18:36:07 +0100
-X-Gm-Features: AQ5f1Jrk5Ircg0d1PeSghOYiJs5Q14TTxoym4eosxDvw1DHTRuGD27YpgvptUqQ
-Message-ID: <CAH5fLghEMtT663SNogAGad-qk7umefGeBKbm+QjKKzoskjOubw@mail.gmail.com>
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: Ventura Jack <venturajack85@gmail.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
-	Kent Overstreet <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
-	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
-	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, 
-	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 25, 2025 at 6:21=E2=80=AFPM Ventura Jack <venturajack85@gmail.c=
-om> wrote:
+On February 25, 2025 9:36:07 AM PST, Alice Ryhl <aliceryhl@google=2Ecom> wr=
+ote:
+>On Tue, Feb 25, 2025 at 6:21=E2=80=AFPM Ventura Jack <venturajack85@gmail=
+=2Ecom> wrote:
+>>
+>> On Tue, Feb 25, 2025 at 9:12=E2=80=AFAM Alice Ryhl <aliceryhl@google=2E=
+com> wrote:
+>> >
+>> > On Sun, Feb 23, 2025 at 4:30=E2=80=AFPM Ventura Jack <venturajack85@g=
+mail=2Ecom> wrote:
+>> > >
+>> > > Just to be clear and avoid confusion, I would
+>> > > like to clarify some aspects of aliasing=2E
+>> > > In case that you do not already know about this,
+>> > > I suspect that you may find it very valuable=2E
+>> > >
+>> > > I am not an expert at Rust, so for any Rust experts
+>> > > out there, please feel free to point out any errors
+>> > > or mistakes that I make in the following=2E
+>> > >
+>> > > The Rustonomicon is (as I gather) the semi-official
+>> > > documentation site for unsafe Rust=2E
+>> > >
+>> > > Aliasing in C and Rust:
+>> > >
+>> > > C "strict aliasing":
+>> > > - Is not a keyword=2E
+>> > > - Based on "type compatibility"=2E
+>> > > - Is turned off by default in the kernel by using
+>> > >     a compiler flag=2E
+>> > >
+>> > > C "restrict":
+>> > > - Is a keyword, applied to pointers=2E
+>> > > - Is opt-in to a kind of aliasing=2E
+>> > > - Is seldom used in practice, since many find
+>> > >     it difficult to use correctly and avoid
+>> > >     undefined behavior=2E
+>> > >
+>> > > Rust aliasing:
+>> > > - Is not a keyword=2E
+>> > > - Applies to certain pointer kinds in Rust, namely
+>> > >     Rust "references"=2E
+>> > >     Rust pointer kinds:
+>> > >     https://doc=2Erust-lang=2Eorg/reference/types/pointer=2Ehtml
+>> > > - Aliasing in Rust is not opt-in or opt-out,
+>> > >     it is always on=2E
+>> > >     https://doc=2Erust-lang=2Eorg/nomicon/aliasing=2Ehtml
+>> > > - Rust has not defined its aliasing model=2E
+>> > >     https://doc=2Erust-lang=2Eorg/nomicon/references=2Ehtml
+>> > >         "Unfortunately, Rust hasn't actually
+>> > >         defined its aliasing model=2E
+>> > >         While we wait for the Rust devs to specify
+>> > >         the semantics of their language, let's use
+>> > >         the next section to discuss what aliasing is
+>> > >         in general, and why it matters=2E"
+>> > >     There is active experimental research on
+>> > >     defining the aliasing model, including tree borrows
+>> > >     and stacked borrows=2E
+>> > > - The aliasing model not being defined makes
+>> > >     it harder to reason about and work with
+>> > >     unsafe Rust, and therefore harder to avoid
+>> > >     undefined behavior/memory safety bugs=2E
+>> >
+>> > I think all of this worrying about Rust not having defined its
+>> > aliasing model is way overblown=2E Ultimately, the status quo is that
+>> > each unsafe operation that has to do with aliasing falls into one of
+>> > three categories:
+>> >
+>> > * This is definitely allowed=2E
+>> > * This is definitely UB=2E
+>> > * We don't know whether we want to allow this yet=2E
+>> >
+>> > The full aliasing model that they want would eliminate the third
+>> > category=2E But for practical purposes you just stay within the first
+>> > subset and you will be happy=2E
+>> >
+>> > Alice
+>>
+>> Is there a specification for aliasing that defines your first bullet
+>> point, that people can read and use, as a kind of partial
+>> specification? Or maybe a subset of your first bullet point, as a
+>> conservative partial specification? I am guessing that stacked
+>> borrows or tree borrows might be useful for such a purpose=2E
+>> But I do not know whether either of stacked borrows or tree
+>> borrows have only false positives, only false negatives, or both=2E
 >
-> On Tue, Feb 25, 2025 at 9:12=E2=80=AFAM Alice Ryhl <aliceryhl@google.com>=
- wrote:
-> >
-> > On Sun, Feb 23, 2025 at 4:30=E2=80=AFPM Ventura Jack <venturajack85@gma=
-il.com> wrote:
-> > >
-> > > Just to be clear and avoid confusion, I would
-> > > like to clarify some aspects of aliasing.
-> > > In case that you do not already know about this,
-> > > I suspect that you may find it very valuable.
-> > >
-> > > I am not an expert at Rust, so for any Rust experts
-> > > out there, please feel free to point out any errors
-> > > or mistakes that I make in the following.
-> > >
-> > > The Rustonomicon is (as I gather) the semi-official
-> > > documentation site for unsafe Rust.
-> > >
-> > > Aliasing in C and Rust:
-> > >
-> > > C "strict aliasing":
-> > > - Is not a keyword.
-> > > - Based on "type compatibility".
-> > > - Is turned off by default in the kernel by using
-> > >     a compiler flag.
-> > >
-> > > C "restrict":
-> > > - Is a keyword, applied to pointers.
-> > > - Is opt-in to a kind of aliasing.
-> > > - Is seldom used in practice, since many find
-> > >     it difficult to use correctly and avoid
-> > >     undefined behavior.
-> > >
-> > > Rust aliasing:
-> > > - Is not a keyword.
-> > > - Applies to certain pointer kinds in Rust, namely
-> > >     Rust "references".
-> > >     Rust pointer kinds:
-> > >     https://doc.rust-lang.org/reference/types/pointer.html
-> > > - Aliasing in Rust is not opt-in or opt-out,
-> > >     it is always on.
-> > >     https://doc.rust-lang.org/nomicon/aliasing.html
-> > > - Rust has not defined its aliasing model.
-> > >     https://doc.rust-lang.org/nomicon/references.html
-> > >         "Unfortunately, Rust hasn't actually
-> > >         defined its aliasing model.
-> > >         While we wait for the Rust devs to specify
-> > >         the semantics of their language, let's use
-> > >         the next section to discuss what aliasing is
-> > >         in general, and why it matters."
-> > >     There is active experimental research on
-> > >     defining the aliasing model, including tree borrows
-> > >     and stacked borrows.
-> > > - The aliasing model not being defined makes
-> > >     it harder to reason about and work with
-> > >     unsafe Rust, and therefore harder to avoid
-> > >     undefined behavior/memory safety bugs.
-> >
-> > I think all of this worrying about Rust not having defined its
-> > aliasing model is way overblown. Ultimately, the status quo is that
-> > each unsafe operation that has to do with aliasing falls into one of
-> > three categories:
-> >
-> > * This is definitely allowed.
-> > * This is definitely UB.
-> > * We don't know whether we want to allow this yet.
-> >
-> > The full aliasing model that they want would eliminate the third
-> > category. But for practical purposes you just stay within the first
-> > subset and you will be happy.
-> >
-> > Alice
+>In general I would say read the standard library docs=2E But I don't
+>know of a single resource with everything in one place=2E
 >
-> Is there a specification for aliasing that defines your first bullet
-> point, that people can read and use, as a kind of partial
-> specification? Or maybe a subset of your first bullet point, as a
-> conservative partial specification? I am guessing that stacked
-> borrows or tree borrows might be useful for such a purpose.
-> But I do not know whether either of stacked borrows or tree
-> borrows have only false positives, only false negatives, or both.
-
-In general I would say read the standard library docs. But I don't
-know of a single resource with everything in one place.
-
-Stacked borrows and tree borrows are attempts at creating a full model
-that puts everything in the two first categories. They are not
-conservative partial specifications.
-
-> For Rust documentation, I have heard of the official
-> documentation websites at
+>Stacked borrows and tree borrows are attempts at creating a full model
+>that puts everything in the two first categories=2E They are not
+>conservative partial specifications=2E
 >
->     https://doc.rust-lang.org/book/
->     https://doc.rust-lang.org/nomicon/
+>> For Rust documentation, I have heard of the official
+>> documentation websites at
+>>
+>>     https://doc=2Erust-lang=2Eorg/book/
+>>     https://doc=2Erust-lang=2Eorg/nomicon/
+>>
+>> And various blogs, forums and research papers=2E
+>>
+>> If there is no such conservative partial specification for
+>> aliasing yet, I wonder if such a conservative partial
+>> specification could be made with relative ease, especially if
+>> it is very conservative, at least in its first draft=2E Though there
+>> is currently no specification of the Rust language and just
+>> one major compiler=2E
+>>
+>> I know that Java defines an additional conservative reasoning
+>> model for its memory model that is easier to reason about
+>> than the full memory model, namely happens-before
+>> relationship=2E That conservative reasoning model is taught in
+>> official Java documentation and in books=2E
 >
-> And various blogs, forums and research papers.
+>On the topic of conservative partial specifications, I like the blog
+>post "Tower of weakenings" from back when the strict provenance APIs
+>were started, which I will share together with a quote from it:
 >
-> If there is no such conservative partial specification for
-> aliasing yet, I wonder if such a conservative partial
-> specification could be made with relative ease, especially if
-> it is very conservative, at least in its first draft. Though there
-> is currently no specification of the Rust language and just
-> one major compiler.
+>> Instead, we should have a tower of Memory Models, with the ones at the =
+top being =E2=80=9Cwhat users should think about and try to write their cod=
+e against=E2=80=9D=2E As you descend the tower, the memory models become in=
+creasingly complex or vague but critically always more permissive than the =
+ones above it=2E At the bottom of the tower is =E2=80=9Cwhatever the compil=
+er actually does=E2=80=9D (and arguably =E2=80=9Cwhatever the hardware actu=
+ally does=E2=80=9D in the basement, if you care about that)=2E
+>> https://faultlore=2Ecom/blah/tower-of-weakenings/
 >
-> I know that Java defines an additional conservative reasoning
-> model for its memory model that is easier to reason about
-> than the full memory model, namely happens-before
-> relationship. That conservative reasoning model is taught in
-> official Java documentation and in books.
+>You can also read the docs for the ptr module:
+>https://doc=2Erust-lang=2Eorg/stable/std/ptr/index=2Ehtml
+>
+>> On the topic of difficulty, even if there was a full specification,
+>> it might still be difficult to work with aliasing in unsafe Rust=2E
+>> For C "restrict", I assume that "restrict" is fully specified, and
+>> C developers still typically avoid "restrict"=2E And for unsafe
+>> Rust, the Rust community helpfully encourages people to
+>> avoid unsafe Rust when possible due to its difficulty=2E
+>
+>This I will not object to :)
+>
+>Alice
+>
+>
 
-On the topic of conservative partial specifications, I like the blog
-post "Tower of weakenings" from back when the strict provenance APIs
-were started, which I will share together with a quote from it:
-
-> Instead, we should have a tower of Memory Models, with the ones at the to=
-p being =E2=80=9Cwhat users should think about and try to write their code =
-against=E2=80=9D. As you descend the tower, the memory models become increa=
-singly complex or vague but critically always more permissive than the ones=
- above it. At the bottom of the tower is =E2=80=9Cwhatever the compiler act=
-ually does=E2=80=9D (and arguably =E2=80=9Cwhatever the hardware actually d=
-oes=E2=80=9D in the basement, if you care about that).
-> https://faultlore.com/blah/tower-of-weakenings/
-
-You can also read the docs for the ptr module:
-https://doc.rust-lang.org/stable/std/ptr/index.html
-
-> On the topic of difficulty, even if there was a full specification,
-> it might still be difficult to work with aliasing in unsafe Rust.
-> For C "restrict", I assume that "restrict" is fully specified, and
-> C developers still typically avoid "restrict". And for unsafe
-> Rust, the Rust community helpfully encourages people to
-> avoid unsafe Rust when possible due to its difficulty.
-
-This I will not object to :)
-
-Alice
+I do have to say one thing about the standards process: it forces a real s=
+pecification to be written, as in a proper interface contract, including th=
+e corner cases (which of course may be "undefined", but the idea is that ev=
+en what is out of scope is clear=2E)
 
