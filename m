@@ -1,81 +1,145 @@
-Return-Path: <ksummit+bounces-1906-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1907-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA389A450CF
-	for <lists@lfdr.de>; Wed, 26 Feb 2025 00:04:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE4AAA450F2
+	for <lists@lfdr.de>; Wed, 26 Feb 2025 00:35:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71988189FF5B
-	for <lists@lfdr.de>; Tue, 25 Feb 2025 23:04:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99F9C7AAF49
+	for <lists@lfdr.de>; Tue, 25 Feb 2025 23:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 066A62356D4;
-	Tue, 25 Feb 2025 23:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F9E523A9AA;
+	Tue, 25 Feb 2025 23:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=proton.me header.i=@proton.me header.b="lplbe7pz"
-Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="NOVOkcB8"
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E83235341
-	for <ksummit@lists.linux.dev>; Tue, 25 Feb 2025 23:03:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 950F42397B0
+	for <ksummit@lists.linux.dev>; Tue, 25 Feb 2025 23:34:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740524639; cv=none; b=GdU8oVWwL/Qekm3qEVw9bO/bpiSO2/pp1UVx2fxpNDkp8r51eTOckuwCsLTtbxd4+0Mv++TbociZHngoRaAg69ga0HKF250i5E8M59gvQeiqLAtHEe1mgkVeJ/o7VrIKBmjTcP4RKbhlQTrajgCNZsag2enOgJP59ozFMmzAQag=
+	t=1740526492; cv=none; b=X0IQl79kxR1BylQovS+VIheHgPSNutMEt9giq72KTDA6LOzZRjbWuBhD2gTU0rXacwsk6gv/k294yG6w4beYliPEsBFxO50WXImI6bPdao6pqUozsLEYzthLE0AtQY2+dSOBLYiGZBJtDwvduuAZa0/Ek3isGltqYQbB5AE5wR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740524639; c=relaxed/simple;
-	bh=pBz9I+KEaZOCbjA3ZwZoxg+hI8zX2LqoHPTGBpCbDpw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c2Az2s3pMguBey/2uUBK5uKnSsUh0ZecxQc3npm2nzvzelLwVMBv5Xe84N2E30YvttuYXXckbEyagqvw2GvOsVIovbKi3MMWmmZdo5SEMK1vji+ykK5gv20AninA06ym+seEZcop8HKaPZP6JAxfdHX362ZJFRy5QXCEeOZSe2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=lplbe7pz; arc=none smtp.client-ip=79.135.106.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1740524629; x=1740783829;
-	bh=pBz9I+KEaZOCbjA3ZwZoxg+hI8zX2LqoHPTGBpCbDpw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=lplbe7pzev/w97HAXcMMMF629/PR7plhtfwLzZZ6S2FhCJ+B1twvwwMoFHMubBxr/
-	 oGTYZlftNzw9ppNA8QIZ5/lZpwusmMar2uSmH2Os+um4gAULhWiHEZfKMB+J4/uzJF
-	 U1QFWWyqnm4rJ2Rp6YlGZKqCBJBGrhRNlJ0SpESLeUWQwUH8LnWyqBP15qlMeoGng0
-	 6Evjuw/G73Blw4DEPcdmzvtyXUAnb/nziyezdleWFjOPWUHIC5ExbIokVoea6Ie/u3
-	 iITUnOR0OuTsDadYK2Tx2cGJiXzsg8kMUKCbikBHFNWG/VJDIoiGrvhuGrvjtmRHBv
-	 3v9mdz2IE2eDg==
-Date: Tue, 25 Feb 2025 23:03:44 +0000
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Ventura Jack <venturajack85@gmail.com>, Gary Guo <gary@garyguo.net>, Linus Torvalds <torvalds@linux-foundation.org>, Kent Overstreet <kent.overstreet@linux.dev>, airlied@gmail.com, boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+	s=arc-20240116; t=1740526492; c=relaxed/simple;
+	bh=W2U3OCVP08ILGCN0pvTsVdLcGG7RpAJsKKWk8SJXRUE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HUIQH5wJwrR93jTWddz7nbuP0lyyxRhY/S+1dPWSbJsrYgHaK5EM6XTGwVorqrfQNkgwEoq39V+yhcEznl2+ype4X3TSVlX2osZ07VtTZRYquMg/pMohjD5v8wgm9Mvy/pfNYfSueVDbTiVriXW1cA4kdzxvkxpimyIql9GKxns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=NOVOkcB8; arc=none smtp.client-ip=91.218.175.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Tue, 25 Feb 2025 18:34:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1740526487;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ymij2cOzOeeGgSy9Fk623wKplb3B9+lyzrX4hrokkAY=;
+	b=NOVOkcB8k3QXQjujzoLxuI3ZDjaujT9CqT5eVInjhO62pBCuFgAs6wgq4DAHanidZjcrfM
+	fWHAoyNUKARiSxGxdZ1KLj7C4Ih1AZrZroIGrAs/TLnUG+ub0x3wmlG1wxZmX/8EWkRBro
+	Ptsku2BYZNxyigRS4TI3skGmtlzUWUY=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, 
+	Ventura Jack <venturajack85@gmail.com>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
+	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
+	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
 Subject: Re: C aggregate passing (Rust kernel policy)
-Message-ID: <ad82d675-80fc-4826-957b-6b6a66d4c9aa@proton.me>
-In-Reply-To: <CANiq72=L4AHq0dNYV-KBsYy_TJwfDRwR+GTJn81EXs=xefvdsQ@mail.gmail.com>
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com> <4cb1d98b-f94b-410a-be90-4394c48bdbf2@proton.me> <CAFJgqgQ3P81-iskGu9R+T=c=wyB2K0JqUhx+Gj+6mkYeY8-ORg@mail.gmail.com> <a4b79751-f1c8-4476-98a5-c59fb2e545ad@proton.me> <CAFJgqgRdiQ29bWvwsu11yokZb4OFF7pYYUU=ES6CYv9847KgVg@mail.gmail.com> <c05cb400-969d-44a1-bd40-9b799ed894d7@proton.me> <CAFJgqgTs3h5YagY1RU2AZf3wKWKfXiPTE2mx7CuWyzN=ee-k3g@mail.gmail.com> <137dd7ef-b8f6-43df-87e0-115f913d0465@proton.me> <CANiq72=L4AHq0dNYV-KBsYy_TJwfDRwR+GTJn81EXs=xefvdsQ@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: fc2b64091c08ed25fd75ed65619672fc39128744
+Message-ID: <hofm7mo46jzkevpr6fkqe2jnl3zrp5uxdux457hli3ywkneaij@yhhibsnuqfny>
+References: <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+ <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+ <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+ <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
+ <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
+ <gqw7cvclnfa7x4xdz4vkns2msf2bqrms5ecxp2lwzbws7ab6dt@7zbli7qwiiz6>
+ <CAHk-=whGY2uYcXog8kmuAAAPJy4R84Jy9rEfXfoHBe-evmuYDQ@mail.gmail.com>
+ <4l6xl5vnpulcvssfestsgrzoazoveopzupb32z5bv6mk23gazo@qn63k7rgsckv>
+ <CAHk-=wgMnSOnaddFzfAFwjT-dGO9yeSkv6Lt21LgWmCKYCM7cg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wgMnSOnaddFzfAFwjT-dGO9yeSkv6Lt21LgWmCKYCM7cg@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 
-On 25.02.25 23:47, Miguel Ojeda wrote:
-> On Tue, Feb 25, 2025 at 11:38=E2=80=AFPM Benno Lossin <benno.lossin@proto=
-n.me> wrote:
->>
->> I do not get UB when I comment out any of the commented lines. Can you
->> share the output of MIRI?
->=20
-> I think he means when only having one of the `pz`s definitions out of
-> the 4, i.e. uncommenting the first and commenting the last one that is
-> live in the example.
+On Tue, Feb 25, 2025 at 01:24:42PM -0800, Linus Torvalds wrote:
+> On Tue, 25 Feb 2025 at 12:55, Kent Overstreet <kent.overstreet@linux.dev> wrote:
+> >
+> > The problem isn't that "pointer aliasing is fundamentally unsafe and
+> > dangerous and therefore the compiler just has to stay away from it
+> > completely" - the problem has just been the lack of a workable model.
+> 
+> It's not entirely clear that a workable aliasing model exists outside
+> of "don't assume lack of aliasing".
+> 
+> Because THAT is the only truly workable model I know of. It's the one
+> we use in the kernel, and it works just fine.
+> 
+> For anything else, we only have clear indications that _unworkable_
+> models exist.
+> 
+> We know type aliasing is garbage.
 
-Ah of course :facepalm:, thanks for clarifying :)
+The C people thinking casting to a union was a workable escape hatch was
+hilarious, heh. But now we've got mem::transmute(), i.e. that can (and
+must be) annotated to the compiler.
 
----
-Cheers,
-Benno
+> We know "restrict" doesn't work very well: part of that is that it's
+> fairly cumbersome to use, but a large part of that is that a pointer
+> will be restricted in one context and not another, and it's just
+> confusing and hard to get right.
 
+And it only works at all in the simplest of contexts...
+
+> What we do know works is hard rules based on provenance. All compilers
+> will happily do sane alias analysis based on "this is a variable that
+> I created, I know it cannot alias with anything else, because I didn't
+> expose the address to anything else".
+
+Yep. That's what all this is based on.
+
+> So *provenance*-based aliasing works, but it only works in contexts
+> where you can see the provenance. Having some way to express
+> provenance across functions (and not *just* at allocation time) might
+> be a good model.
+
+We have that! That's exactly what lifetime annotations are.
+
+We don't have that for raw pointers, but I'm not sure that would ever be
+needed since you use raw pointers in small and localized places, and a
+lot of the places where aliasing comes up in C (e.g. memmove()) you
+express differently in Rust, with slices and indices.
+
+(You want to drop from references to raw pointers at the last possible
+moment).
+
+And besides, a lot of the places where aliasing comes up in C are
+already gone in Rust, there's a lot of little things that help.
+Algebraic data types are a big one, since a lot of the sketchy hackery
+that goes on in C where aliasing is problematic is just working around
+the lack of ADTs.
+
+> But in the absence of knowledge, and in the absence of
+> compiler-imposed rules (and "unsafe" is by *definition* that absence),
+> I think the only rule that works is "don't assume they don't alias".
+
+Well, for the vast body of Rust code that's been written that just
+doesn't seem to be the case, and I think it's been pretty well
+demonstrated that anything we can do in C, we can also do just as
+effectively in Rust.
+
+treeborrow is already merged into Miri - this stuff is pretty far along.
+
+Now if you're imagining directly translating all the old grotty C code I
+know you have in your head - yeah, that won't work. But we already knew
+that.
 
