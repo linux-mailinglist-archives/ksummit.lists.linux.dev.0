@@ -1,125 +1,140 @@
-Return-Path: <ksummit+bounces-1938-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1939-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D94A7A46725
-	for <lists@lfdr.de>; Wed, 26 Feb 2025 17:57:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E70AA467B2
+	for <lists@lfdr.de>; Wed, 26 Feb 2025 18:15:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAA237A4102
-	for <lists@lfdr.de>; Wed, 26 Feb 2025 16:55:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3ABB188720F
+	for <lists@lfdr.de>; Wed, 26 Feb 2025 17:12:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 426CB223322;
-	Wed, 26 Feb 2025 16:56:48 +0000 (UTC)
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE33224B0D;
+	Wed, 26 Feb 2025 17:12:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PURuY/CD"
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DDB8BE5;
-	Wed, 26 Feb 2025 16:56:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005DA224AFE
+	for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 17:12:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740589008; cv=none; b=dTNWlcn4TQUPESVrHjYIgk9zcIN4j7nxbZLaUDLSPOXU/XpeDMr3S4iyooo8xPWKqGFYyWGR9w7ZhTsYoc762Dag8sIaffqYVhriTmCWZp6Xd1vlnAMmRb7e0GrkB2QDmV2yQZil37bn776vpc0ZKful5aEkBtKC7pKYjOKKL6I=
+	t=1740589928; cv=none; b=Is7FmRpqgvD3sMjbR4ok7kAtzvJCyhfMs141iPhPJ8sY5qnfH/WZpjvm2rpRKTyyNj2ehwp/Rq6CzNPBZqXJC+ztXevlA7znLwTEgSiWUWNslMOlK5i4HrYRyEewNSBmU2qsgc1HLxmO1UMR3Lj/UUBlA4108JS6ppLRa1E1sUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740589008; c=relaxed/simple;
-	bh=aZDXeRG6Tv3oHJ75HiBSg1cMMCX7EbM0Tt8WZ07i38g=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fwccmc1zaVVNTglFJi4JKVQWFEijuX9zdXn4coEPND19CqCB/U1KavCGbmYv0Bn+bsO9jSEqUxE6/GUd4BZUp6Kn0kSkWY3zzyJT4CpxarfCUB63hyz04UDm1DTqvms7Uf1Nv26P1DBlJN9zCNKrkHaDY5o7OgKMVrhWP6RHgWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82C58C4CED6;
-	Wed, 26 Feb 2025 16:56:45 +0000 (UTC)
-Date: Wed, 26 Feb 2025 11:57:26 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, Greg KH
- <gregkh@linuxfoundation.org>, Miguel Ojeda
- <miguel.ojeda.sandonis@gmail.com>, Ventura Jack <venturajack85@gmail.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Alice Ryhl <aliceryhl@google.com>, Linus
- Torvalds <torvalds@linux-foundation.org>, Gary Guo <gary@garyguo.net>,
- airlied@gmail.com, boqun.feng@gmail.com, david.laight.linux@gmail.com,
- hch@infradead.org, ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, Ralf Jung <post@ralfj.de>, Josh Poimboeuf
- <jpoimboe@redhat.com>
-Subject: Re: C aggregate passing (Rust kernel policy)
-Message-ID: <20250226115726.27530000@gandalf.local.home>
-In-Reply-To: <ylsffirqsrogli5fqlyhklhy6s54ngolvk5hj5fnpn3ceglyii@cgcvtm4ohtra>
-References: <CAH5fLghEMtT663SNogAGad-qk7umefGeBKbm+QjKKzoskjOubw@mail.gmail.com>
-	<5E3FEDC4-DBE3-45C7-A331-DAADD3E7EB42@zytor.com>
-	<2rrp3fmznibxyg3ocvsfasfnpwfp2skhf4x7ihrnvm72lemykf@lwp2jkdbwqgm>
-	<CAFJgqgS-SMMEE2FktuCUimdGkPWMV3HB2Eg38SiUDQK1U8=rNg@mail.gmail.com>
-	<CANiq72mOp0q1xgAHod1Y_mX86OESzdDsgSghtQCwe6iksNt-sA@mail.gmail.com>
-	<f2bf76553c666178505cb9197659303a39faf7aa.camel@HansenPartnership.com>
-	<2025022611-work-sandal-2759@gregkh>
-	<16127450a24e9df8112a347fe5f6df9c9cca2926.camel@HansenPartnership.com>
-	<20250226110033.53508cbf@gandalf.local.home>
-	<9c443013493f8f380f9c4d51b1eeeb9d29b208a3.camel@HansenPartnership.com>
-	<ylsffirqsrogli5fqlyhklhy6s54ngolvk5hj5fnpn3ceglyii@cgcvtm4ohtra>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1740589928; c=relaxed/simple;
+	bh=CKmL45MF3D/cWpj4NBs+BRN2U4392XMuvZPpdtIhJCQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BpqlzplO99ePbc3NJWlRoJ/249PbSnSyLHQ9xI5pY4yM5wAfO4rXBV3JxhaYfwEEDW7at4dNU6wIgfY0RTh81WdrETacI+9drQ63gU/9bG1oYHiy03tDoighDIJzzc4POnhfIG8Dvc1mJQQoeX863wkBikaXKb1MLkFlIlOifc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PURuY/CD; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2fc29ac55b5so20322a91.2
+        for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 09:12:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740589926; x=1741194726; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=l0++ssa3KklqvkS2+TUnBgIYo9/l/jr1/yCcC6gaJdo=;
+        b=PURuY/CDSZFemW2Y5nb+jh0/PcpQfRzQ+eb1q2lZ5kdUMkDyNDmjdziEpwsrtA7mIy
+         GTs+JdYmxVOQ5D/RjMkcKFRn0q9shqxRn66x0O5ZAx+7BbDKQSscYq0Ssn7k5H+m0aWR
+         +5a5JU6odZb4SCyLUuGDWtTh6OialqViW9c6cCAvVcAl62nuzn5vwuwLpEdsq7o4ioUP
+         ssYo5Z6OyY1Seg0awc49ya1/cqyYsNfjbgzy7EaUXZEVpWI8qP0bfbFV5lhZqEx9eaD+
+         h4odqxYEF+Zot8xPLOsppZ9Uh0VLpmtPdjiovGEKuDBX9Mut/49aJ2FMa+P4HIgSMEhS
+         ClrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740589926; x=1741194726;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=l0++ssa3KklqvkS2+TUnBgIYo9/l/jr1/yCcC6gaJdo=;
+        b=nFB1WysuFZb6tjF0GDg0PViQ1tNwMZp4aUu8efz1fN53VLoWsvAmBVN6JOOiBCUGfG
+         6PtpDB+VdKpQe7tnJvLI/pqyraJ1SpmstDDsV3oBEKJUSFhwgq+9xuOBl70Yu8ISNGpM
+         daxLtrck3QnIKfmp8OXJk7qBYzxwJMgIh+6fItKC0os7DKaIBw/TLNjZq1054cEhiNU/
+         nNf0yoP5cpy4UcAfDYLt+5aZPg2xY9UdzQiSiitEgaXLHovj1bD8HJolifn6olsKvrOK
+         kDFn1jsmxqSF9lLyaaDCf/Gm89RKjXic/3KcnHJJC0ZscVeufdYvETBV7ermmuN1VfNX
+         Z2Zg==
+X-Forwarded-Encrypted: i=1; AJvYcCXNiSd8R2T9abVeugEwfcrlq+yP5iYacDXviY3dl7z3PckJuXc1V9zUWgAU51qrh3egn8Mh5ETj@lists.linux.dev
+X-Gm-Message-State: AOJu0YwLV8Ij/r4MgST2jphtKkWF/VjMUj0iDSysPBa+w924TciJ5fcg
+	4YcPOYdEPz1w1laIzLrpKExP81LEyGsOMEVimWf1HF0d+qMjONYDV/Mm9bZv+CMSmSoq8wHzIx/
+	hKUv/MOWpR2x3ZHIbMvTLz+Ml6To=
+X-Gm-Gg: ASbGncsHsAWWhgZfUqumMyEkRd2x/13fdyvTQL+QpEdJB5A40mZL7WJcAm6rzdSrRBM
+	OT3WpjMa3GiCcn/rQcJqeiaCnhUwfHBBnVdu3lRMqakPboA91uTH+OctqksoHkOooxBkf/l15Ri
+	wDWSAPybk=
+X-Google-Smtp-Source: AGHT+IEviEOnl0xfL1S6XtApmG3cyllnaIXmrMVdQ23v2GjWKaie4K7gOcLYfIO7VYOXTJQe89W5rpmlXx8fxPCy2w0=
+X-Received: by 2002:a17:90b:4d0d:b0:2ee:6563:20b5 with SMTP id
+ 98e67ed59e1d1-2fce75d75a7mr14266904a91.0.1740589926114; Wed, 26 Feb 2025
+ 09:12:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+ <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+ <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+ <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+ <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
+ <CAFJgqgREAj-eP-d244WpqO-9H48ajZh83AxE31GqoONZ=DJe-g@mail.gmail.com>
+ <CAH5fLghEMtT663SNogAGad-qk7umefGeBKbm+QjKKzoskjOubw@mail.gmail.com>
+ <5E3FEDC4-DBE3-45C7-A331-DAADD3E7EB42@zytor.com> <2rrp3fmznibxyg3ocvsfasfnpwfp2skhf4x7ihrnvm72lemykf@lwp2jkdbwqgm>
+ <CAFJgqgS-SMMEE2FktuCUimdGkPWMV3HB2Eg38SiUDQK1U8=rNg@mail.gmail.com>
+ <CANiq72mOp0q1xgAHod1Y_mX86OESzdDsgSghtQCwe6iksNt-sA@mail.gmail.com> <f2bf76553c666178505cb9197659303a39faf7aa.camel@HansenPartnership.com>
+In-Reply-To: <f2bf76553c666178505cb9197659303a39faf7aa.camel@HansenPartnership.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 26 Feb 2025 18:11:53 +0100
+X-Gm-Features: AQ5f1JomtzOpefkwmwH6LSFqWj2xlKQ1O2v116mBDbHDQFWRjp5xrC2xazyfcR0
+Message-ID: <CANiq72=_krDaFaF4t2oCEQQGqO1Z7RrjxD7ZRSL79A4FCLwi=A@mail.gmail.com>
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: Ventura Jack <venturajack85@gmail.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
+	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
+	gregkh@linuxfoundation.org, hch@infradead.org, ksummit@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Ralf Jung <post@ralfj.de>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
+On Wed, Feb 26, 2025 at 3:26=E2=80=AFPM James Bottomley
+<James.Bottomley@hansenpartnership.com> wrote:
+>
+> On Wed, 2025-02-26 at 14:53 +0100, Miguel Ojeda wrote:
+> > On Wed, Feb 26, 2025 at 2:03=E2=80=AFPM Ventura Jack
+> > <venturajack85@gmail.com> wrote:
+> [...]
+> > > Exception/unwind safety may be another subject that increases
+> > > the difficulty of writing unsafe Rust.
+> >
+> > Note that Rust panics in the kernel do not unwind.
+>
+> I presume someone is working on this, right?  While rust isn't
+> pervasive enough yet for this to cause a problem, dumping a backtrace
+> is one of the key things we need to diagnose how something went wrong,
+> particularly for user bug reports where they can't seem to bisect.
 
-[ Adding Josh ]
+Ventura Jack was talking about "exception safety", referring to the
+complexity of having to take into account additional execution exit
+paths that run destructors in the middle of doing something else and
+the possibility of those exceptions getting caught. This does affect
+Rust when built with the unwinding "panic mode", similar to C++.
 
-On Wed, 26 Feb 2025 11:47:09 -0500
-Kent Overstreet <kent.overstreet@linux.dev> wrote:
+In the kernel, we build Rust in its aborting "panic mode", which
+simplifies reasoning about it, because destructors do not run and you
+cannot catch exceptions (you could still cause mischief, though,
+because it does not necessarily kill the kernel entirely, since it
+maps to `BUG()` currently).
 
-> On Wed, Feb 26, 2025 at 11:42:41AM -0500, James Bottomley wrote:
-> > On Wed, 2025-02-26 at 11:00 -0500, Steven Rostedt wrote: =20
-> > > On Wed, 26 Feb 2025 09:45:53 -0500
-> > > James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
-> > >  =20
-> > > > > From some other rust boot system work, I know that the quality of
-> > > > > a=C2=A0  =20
-> > > > simple backtrace in rust where you just pick out addresses you
-> > > > think you know in the stack and print them as symbols can sometimes
-> > > > be rather misleading, which is why you need an unwinder to tell you
-> > > > exactly what happened. =20
-> > >=20
-> > > One thing I learned at GNU Cauldron last year is that the kernel
-> > > folks use the term "unwinding" incorrectly. Unwinding to the compiler
-> > > folks mean having full access to all the frames and variables and
-> > > what not for all the previous functions.
-> > >=20
-> > > What the kernel calls "unwinding" the compiler folks call "stack
-> > > walking". That's a much easier task than doing an unwinding, and that
-> > > is usually all we need when something crashes. =20
-> >=20
-> > Well, that's not the whole story.  We do have at least three unwinders
-> > in the code base.  You're right in that we don't care about anything
-> > other than the call trace embedded in the frame, so a lot of unwind
-> > debug information isn't relevant to us and the unwinders ignore it.  In
-> > the old days we just used to use the GUESS unwinder which looks for
-> > addresses inside the text segment in the stack and prints them in
-> > order.  Now we (at least on amd64) use the ORC unwinder because it
-> > gives better traces:
-> >=20
-> > https://docs.kernel.org/arch/x86/orc-unwinder.html =20
+In other words, Ventura Jack and my message were not referring to
+walking the frames for backtraces.
 
-Note, both myself and Josh (creator of ORC) were arguing with the GCC folks
-until we all figured out we were talking about two different things. Once
-they said "Oh, you mean stack walking. Yeah that can work" and the
-arguments stopped. Lessons learned that day was that compiler folks take
-the term "unwinding" to mean much more than kernel folks, and since we have
-compiler folks on this thread, I'd figure I would point that out.
+I hope that clarifies.
 
-We still use the term "unwinder" in the kernel, but during the sframe
-meetings, we need to point out that we all just care about stack walking.
-
->=20
-> More accurate perhaps, but I still don't see it working reliably - I'm x
-> still having to switch all my test setups (and users) to frame pointers
-> if I want to be able to debug reliably.
-
-Really? The entire point of ORC was to have accurate stack traces so that
-live kernel patching can work. If there's something incorrect, then please
-report it.
-
--- Steve
+Cheers,
+Miguel
 
