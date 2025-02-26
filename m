@@ -1,142 +1,132 @@
-Return-Path: <ksummit+bounces-1970-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1971-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6587FA46F01
-	for <lists@lfdr.de>; Thu, 27 Feb 2025 00:08:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 795E7A46F45
+	for <lists@lfdr.de>; Thu, 27 Feb 2025 00:17:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 684273AD499
-	for <lists@lfdr.de>; Wed, 26 Feb 2025 23:08:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7466416D721
+	for <lists@lfdr.de>; Wed, 26 Feb 2025 23:17:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0DBF23A9AE;
-	Wed, 26 Feb 2025 23:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC54F2702B5;
+	Wed, 26 Feb 2025 23:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BvOBdLfK"
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ASvYSL60"
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83C125E828
-	for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 23:08:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6632702A7
+	for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 23:17:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740611301; cv=none; b=iE3kJtLzoTgtL5xzuhVJRoCc4ht4NiH1sUk+JJOKQNQRyHPMhgHV/9ISGvnTY83Ypv6+s19ndTar+xdoEa8++GPArTcMhvcRl7XelHIFh8hjHNkqMldHK7isF1EuOjiNmBOgqec5To4wqUTjUJfWRmIvKJ1jUhqVl4WjWTqYXG0=
+	t=1740611836; cv=none; b=HtQgP5KFd/4SYmJQQZGsDOEpmXas862yRv4ZiQfXYDMEucaHsNaIOjkHzmtsPEQO98Wj4MdVNMrujMAps2nFC7nzHnPoytucZnz5IJvryOau85hjFCDglTReUVH3VsvW3wfB0Z4n91Vtjz3SRUhU+q6Fthbf00OF22L6e1fxRSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740611301; c=relaxed/simple;
-	bh=QwvGNkau5Bh+dIR6tn3UJPayr4vQX3G/2XwtNvuU3cA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zw27KsOii+qo8CMnlq3OF6Tz2Dwe2XTHgel7fFX0IaCYVcCS3t7946NIy+Vr9/Wsynao9Z45bSfYvubYq16cLRtRsOme9gtsuiTWQi4LqvPY8ZJV+8XLyVqdT9pfOopTkY65cYHsRsyggfO3IrDrelZI/Xr4Zq/bgli6eiACSaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BvOBdLfK; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-390cf7458f5so285421f8f.2
-        for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 15:08:19 -0800 (PST)
+	s=arc-20240116; t=1740611836; c=relaxed/simple;
+	bh=XarU5AoRc1EC+DeSSkq4KJpi/IJAWCVURI1rN1QDT3c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bZQZK9O2+VqnB3NthFMTbjjhJMHmXgacGJ1D6mQVqpckgJGShNUnm2VhyN6idMlinMR1JAwoqFvgHgIHwwTEU8ZoOp/qPi7Og2aE2V5pMFOXBHTY0y0enPDwEOI41vTzu3QEzX2Y36GgLGTy6PDPn9xdXWgRemOjD8bKdckXsgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ASvYSL60; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-aaf900cc7fbso45294766b.3
+        for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 15:17:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740611298; x=1741216098; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8kqHl6YqOGD3BSAVr59pspE1LiZ8g6APu3kUtEV0wPY=;
-        b=BvOBdLfKlEoCriQnllpC9PPe/pmlJ4zYWUvx22idmEd8dpX3BIr80kBw7Dv/PrgCZp
-         ygrWrQMM+EBbGhdRYLC6zryGih4HcGomescGPkWVH6PMhWAqkeenRMQ+p3PFn8kEdd7a
-         PX2BGTRJOv0qGXMzftvepyXHOS1AfCp85X+sy4Oahevr+n7miRL5hWHBBa+Vu4kRwD+t
-         5D616i+301/4kxq88Ud7zocl+/mEmtey1Z7IjEGvJeh8G3NK2NX7UGnB3VM22yLyo2hp
-         CpNkVvy4hxRV2mirXtjnAbdFBpVyM212AhmpZrUCyxqV9B1URsMw402JxAPO3E0G96PD
-         N8ng==
+        d=linux-foundation.org; s=google; t=1740611832; x=1741216632; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=IuzhV/0JqnZbj1q0brkRQlbfU2Wt+k1TRbEteuusQss=;
+        b=ASvYSL60mpxirr3fxaMq2o5f0iE3lY5EeROSRhgsf1UU9wg0vzqvf/vo8rLtWk4dqv
+         22b6jUe6GRD/j1r6dwL6GKjdttF21UEKnZGza4wlLGaVyGfBNL/vA9GJXc76e8mGP/3A
+         wc9gdCPhlgMygd5cHtdW0g5Exv6ZmNxlxBGP0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740611298; x=1741216098;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8kqHl6YqOGD3BSAVr59pspE1LiZ8g6APu3kUtEV0wPY=;
-        b=hY1lgNlY/JvINfI+g5Yf27SqLtM9LDya95caPF7J9s0QSJaPRKOiMEK5qwh/FHslgK
-         27e5keLtl5s59ljKBKMDmAN4nk6GXeTzf93vomdJOdOKuTGHsWLCxGlF1ypTfUnRE12w
-         FX4bgKDS13LMwkq35qYBIWYVUuRp0UZQJqvBWvbxZgKN3ll3LoqR5TAwtcKFu8kjRRK5
-         KItPhZ5TP/PNyMeFH1ehFL4R3XH/YhgOEXOPP1lOqc/RMycifr/MYRpWxHONsF3RZ9ea
-         M0zBG0kgfTkfaNnvq0QTyaRlLx4Woj3dXJXKl+dzKnD9zBUiJHTNrvI0zgSwWanDFv2X
-         Gi4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWl4BPDn7Id/t4fZWOfK8nx8E/1+XXxkfqXWoIuFBpaUKHL9Ett2mZYppDefmjZrkuRKp8yjoTQ@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx8lhzFKsOxNOQJsFHdd2DP5kSeWh6XEXAot4t98mXVWi5n6snJ
-	ptFl/ehQwtvocZjakph2zqlTheFCJ78rwuwuelPPNDCABMPwV5M5
-X-Gm-Gg: ASbGncv9HzVyX6Qp+D6Hry0QCCMGnaRtr9G0cD61SyQfPCTuLwT15VVtXZDvdXvcY1M
-	LydehGR33P+/EMu9vGu+ke3FblmCpvxr5GCk/TNWO2aXNnLxABigC+jzdEiY+hIPCORsesib2bQ
-	HFhPQ6vj7ZJy4phHh++VAjIcJJEyttWMPBmffpxhnxHJ258a4Q8CZzFSvieuScXLXtlQMzTwhXk
-	jj0cajsk+tk8wCB/UiUZhwlYav34PqoONDTMDOJQfQnVo+X75oxarh5XZxcdsQT5EUgFUC/tYTE
-	AesJmrLse9Rs1CRtj1xyDfJl2EaIFXCanbsYXfjq/G90EjnaB78/PbbSpfhAHilL
-X-Google-Smtp-Source: AGHT+IFb5vDf6eK/bH7+GTIOY122a6dwufeCuABNTioN79EKFgWyAgc0vc4m9UlnZFbwXhjvhwjBkQ==
-X-Received: by 2002:a5d:47cd:0:b0:390:d7c5:590a with SMTP id ffacd0b85a97d-390d7c55ddbmr5289864f8f.10.1740611298093;
-        Wed, 26 Feb 2025 15:08:18 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e485e03asm208817f8f.95.2025.02.26.15.08.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Feb 2025 15:08:17 -0800 (PST)
-Date: Wed, 26 Feb 2025 23:08:16 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Ralf Jung <post@ralfj.de>
-Cc: Ventura Jack <venturajack85@gmail.com>, Kent Overstreet
- <kent.overstreet@linux.dev>, Miguel Ojeda
- <miguel.ojeda.sandonis@gmail.com>, Gary Guo <gary@garyguo.net>,
- torvalds@linux-foundation.org, airlied@gmail.com, boqun.feng@gmail.com,
- ej@inai.de, gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com,
- ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Subject: Re: C aggregate passing (Rust kernel policy)
-Message-ID: <20250226230816.2c7bbc16@pumpkin>
-In-Reply-To: <7edf8624-c9a0-4d8d-a09e-2eac55dc6fc5@ralfj.de>
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
-	<20250222141521.1fe24871@eugeo>
-	<CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
-	<6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
-	<CANiq72mdzUJocjXhPRQEEdgRXsr+TEMt99V5-9R7TjKB7Dtfaw@mail.gmail.com>
-	<lz7hsnvexoywjgdor33mcjrcztxpf7lzvw3khwzd5rifetwrcf@g527ypfkbhp2>
-	<780ff858-4f8e-424f-b40c-b9634407dce3@ralfj.de>
-	<CAFJgqgRN0zwwaNttS_9qnncTDnSA-HU5EgAXFrNHoPQ7U8fUxw@mail.gmail.com>
-	<f3a83d60-3506-4e20-b202-ef2ea99ef4dc@ralfj.de>
-	<CAFJgqgR4Q=uDKNnU=2yo5zoyFOLERG+48bFuk4Dd-c+S6x+N5w@mail.gmail.com>
-	<7edf8624-c9a0-4d8d-a09e-2eac55dc6fc5@ralfj.de>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        d=1e100.net; s=20230601; t=1740611832; x=1741216632;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IuzhV/0JqnZbj1q0brkRQlbfU2Wt+k1TRbEteuusQss=;
+        b=PXHz8yc3a1H5yebyeQt+djPh8jpGGJRvRtE1or9r3eitjP79IGJZjYfTrDrW/ZrPn+
+         z/EQ0B1jMBzVWwz1KYmGXbPoBFwcNkMu2o1cVe9B6bpc7JvTh10V92F81DatcFY9ICgd
+         c1aPFyPMcg49V9Ic+VEKHz+cTV8SQ8X+FZDFs+PRQ2rogiw82tK4oQoVxa1Ir7YDs7Jr
+         2P15E1wNb+8SE6ZpKInrgcvofMOe0Sgq9gCdvDh9bmmiExaEiUHdiNjfWpZ14IxJSZat
+         BXKMhh20iFZmS0ELvPrvX2arVrqfdPez9J99KKlK1x/ZUhoFUZ0kH/tjoVxF2ZxD+ydA
+         SJHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX1RBvht6YXNhSh9Sf4orCYoxMHT2/YOE917pUXuBaTYLFWZBB4U+4/JnYV1kzi6giomN3lvioU@lists.linux.dev
+X-Gm-Message-State: AOJu0YwxWQCuhGZ1Nx5Nze4Jr245sCRnHJe/XAkVS40VO5rIkWHBLsxK
+	QX/u/hUsSnws1+8YZhvmGMHKnML8+AmivKGpszDzHAKnUticDNlQ9PAiWu9cvuMlNBU/QGi5R7y
+	B3k0xlg==
+X-Gm-Gg: ASbGncu965ERYwOrSCjehkm/8Ri8k+nwpRx0MmFMqXa0Ar0ZXZOij+Qc26q0FKR8Nm+
+	VqF47SsWoWmy+JH81sKD6Ct4damE71hID9u8C3BOdUdVZNw9nhUTwJg3HjutHzWeuROzHUzB6Hm
+	8pJTkhuukcs0g+hydgPG5LYXibkPOsmN+PvKxh0Jsu2WKNtTcwW5C8FBHtP6UtEU0VQFd5N71KM
+	mfDTS7UFu2OxNcN+18NPkKQ8y/yZ7JeN6nL2oSXyuzaModCZIaDX07WlU/1SuTkq5uvKGRewFT4
+	hOTXYPSUXXsb78CPO/ovFBHrg4C0VBtYg4E25299pNvqySFPetihQJhvMWsAPNoU7y+F+wLh93/
+	p
+X-Google-Smtp-Source: AGHT+IFqBU3l2GXBIwl51lq7o0FXfpwnOybcoLI616DvrTweKxhpAP400/cWumrG9bdu5jSqaAftzw==
+X-Received: by 2002:a17:907:3f8f:b0:abe:ee4f:f635 with SMTP id a640c23a62f3a-abeee50aae2mr645291566b.39.1740611832370;
+        Wed, 26 Feb 2025 15:17:12 -0800 (PST)
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com. [209.85.218.51])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abf0c755cc5sm18777866b.140.2025.02.26.15.17.11
+        for <ksummit@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Feb 2025 15:17:11 -0800 (PST)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-abbda4349e9so41663666b.0
+        for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 15:17:11 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUsQynIKZnojmxaOHwaL90J5DEVzTW44cPEeDb3ZdKDWcZwx4cGUQTw0huz8jmbnZCwrtsDrQso@lists.linux.dev
+X-Received: by 2002:a17:907:7758:b0:abb:519e:d395 with SMTP id
+ a640c23a62f3a-abc0d9da124mr1995246666b.20.1740611831430; Wed, 26 Feb 2025
+ 15:17:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+ <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+ <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+ <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
+ <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
+ <5d7363b0-785c-4101-8047-27cb7afb0364@ralfj.de> <CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com>
+ <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
+ <CAHk-=whLSWX=-5-z4Q8x1f_NLrHd0e3afbEwYPkkVSXj=xT-JQ@mail.gmail.com> <m4cbniqfsr5xpb2m7k53e7plc6he5ioyl2efiiftdmzod56usd@htwdppje6re5>
+In-Reply-To: <m4cbniqfsr5xpb2m7k53e7plc6he5ioyl2efiiftdmzod56usd@htwdppje6re5>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Wed, 26 Feb 2025 15:16:54 -0800
+X-Gmail-Original-Message-ID: <CAHk-=whEkEsGHWBMZ17v5=sq1uRe6g-BRHy5xNZK-2JBKRs=_A@mail.gmail.com>
+X-Gm-Features: AQ5f1JoyIv-1_glEa7tZi4ZthcHRhGP_dyEjdVPws-Ir7Wz4fXVxNYINjV-KbP0
+Message-ID: <CAHk-=whEkEsGHWBMZ17v5=sq1uRe6g-BRHy5xNZK-2JBKRs=_A@mail.gmail.com>
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Martin Uecker <uecker@tugraz.at>, Ralf Jung <post@ralfj.de>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Ventura Jack <venturajack85@gmail.com>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
+	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
+	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, 
+	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 26 Feb 2025 23:28:20 +0100
-Ralf Jung <post@ralfj.de> wrote:
+On Wed, 26 Feb 2025 at 14:27, Kent Overstreet <kent.overstreet@linux.dev> wrote:
+>
+> This is another one that's entirely eliminated due to W^X references.
 
-...
-> > Unions in C, C++ and Rust (not Rust "enum"/tagged union) are
-> > generally sharp. In Rust, it requires unsafe Rust to read from
-> > a union.  
-> 
-> Definitely sharp. At least in Rust we have a very clear specification though, 
-> since we do allow arbitrary type punning -- you "just" reinterpret whatever 
-> bytes are stored in the union, at whatever type you are reading things. There is 
-> also no "active variant" or anything like that, you can use any variant at any 
-> time, as long as the bytes are "valid" for the variant you are using. (So for 
-> instance if you are trying to read a value 0x03 at type `bool`, that is UB.)
+Are you saying rust cannot have global flags?
 
-That is actually a big f***ing problem.
-The language has to define the exact behaviour when 'bool' doesn't contain
-0 or 1.
-Much the same as the function call interface defines whether it is the caller
-or called code is responsible for masking the high bits of a register that
-contains a 'char' type.
+That seems unlikely. And broken if so.
 
-Now the answer could be that 'and' is (or may be) a bit-wise operation.
-But that isn't UB, just an undefined/unexpected result.
+> IOW: if you're writing code where rematerializing reads is even a
+> _concern_ in Rust, then you had to drop to unsafe {} to do it - and your
+> code is broken, and yes it will have UB.
 
-I've actually no idea if/when current gcc 'sanitises' bool values.
-A very old version used to generate really crap code (and I mean REALLY)
-because it repeatedly sanitised the values.
-But IMHO bool just shouldn't exist, it isn't a hardware type and is actually
-expensive to get right.
-If you use 'int' with zero meaning false there is pretty much no ambiguity.
+If you need to drop to unsafe mode just to read a global flag that may
+be set concurrently, you're doing something wrong as a language
+designer.
 
-	David
+And if your language then rematerializes reads, the language is shit.
 
+Really.
+
+             Linus
 
