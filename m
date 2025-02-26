@@ -1,72 +1,72 @@
-Return-Path: <ksummit+bounces-1945-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1946-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65634A46903
-	for <lists@lfdr.de>; Wed, 26 Feb 2025 19:10:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EEC0A469E7
+	for <lists@lfdr.de>; Wed, 26 Feb 2025 19:37:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B989B3B00CE
-	for <lists@lfdr.de>; Wed, 26 Feb 2025 18:10:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0F5B1889634
+	for <lists@lfdr.de>; Wed, 26 Feb 2025 18:37:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53B6A236A62;
-	Wed, 26 Feb 2025 18:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E36612356B7;
+	Wed, 26 Feb 2025 18:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TNBgx98W"
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m59D9Gag"
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF07022B8A0
-	for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 18:09:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94EC323536A
+	for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 18:37:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740593364; cv=none; b=PXT+q6e2wObcGjdO4XQL4FSU6X74qL+UC+4dHrWVtq2cZv7d7VOlnG0T/55GoKs+RKWmTnOgotbedrf+Ltb4YOiNm24ZhMiza6+nD5AMTqSik7EV4uc57PooA9zTpMd+TkHjzW+bibQ/cYnpEfu8022pIkWuOCnN13HhjbNfRA4=
+	t=1740595033; cv=none; b=m13M6pBOi1uJn6iSB87/zif0Y11+/wT0A3uVkciVBEpiJr/Mfk3fkcAnoXpMLQenfMwWgugAceqk/jvlHDe7qqL4m9jkaWupsa9Gh5gjYudt4coePtaTKMw9HvQgdOA7cu2D1ZForLJiJcSTarA3gu8kTjwYKuLEY4Fr7E963gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740593364; c=relaxed/simple;
-	bh=ghaLJqFogOvVe+OLYpjWEiRrvLS3b1151qU4t9x9ggU=;
+	s=arc-20240116; t=1740595033; c=relaxed/simple;
+	bh=k5ajxCLl2hy7Mwsz9QDoIJjT29KvjQa89jMM3NFwxSY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VOMErP0+hYb142inhi5qSfd9/RiwGhlsvNagJx8RzChiz+/svTenkcS6e1nvzTkok8WbtAdctzDEYPignMxEBqzRIMw3neeLkupkPiWVrvCaGBNIz4KWC2w4sbyqdG3LdWUVa9N51ei/X6Xn9WN97sqz93AFWsH3pRkm7emAgXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TNBgx98W; arc=none smtp.client-ip=209.85.208.178
+	 To:Cc:Content-Type; b=OxIlFtP3539YJG1zDdYhvbtmZVSibYauL2TmPNc+tvM4r4roxgdpQVa9Hjj1RajFeAebXr5UHfJaHGV6tcMFLNUJek23CAmz79r+FpBmB9kpOMA1JSDSGvy6cfcwFuFIi027FkpUPNxwjMpvRaz61o8Uio2qoCMD9agWw+aobZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m59D9Gag; arc=none smtp.client-ip=209.85.208.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-30b83290d39so1078561fa.0
-        for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 10:09:22 -0800 (PST)
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5e4b410e48bso52186a12.0
+        for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 10:37:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740593361; x=1741198161; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1740595030; x=1741199830; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=A6P8EkSd3yrtJe7fRrTsqN53CGSCMEbijuvinHNryBE=;
-        b=TNBgx98WftHK5WSbSOJrLj5RMme6vlFqlzg9GcaSRO/LaOqSeEPLg4fmdyq/Rntx3O
-         Z/Kjhl3IIcTd+YVXK8mNVCyXSe9QNbkEOjf99cCBiJ+Kb4mIFaLv6K8423iei9LfhSyB
-         Yjsi2ysimIQnUzJmktM9WA0VDz1+K5Qaf65tMcwPglUbIXGOFKgPIbALX1QaD+6t0l3M
-         cbJ/pwLDs/KYRNTuDTwsKuujTErTjn7Xw+hkEwITOb8UafQlbMN24lvdSC/lUs0cE/2e
-         fGMWCYLlX6f0txNrzZ7wOle6PfbSoPpOJM++ehxhhGCcC0Pona573DppG5+hi40yG9VM
-         GUAA==
+        bh=tDyTJwKN7xH8PBcSTb/l/mb6insdu/+iQsdQ5QiBDRo=;
+        b=m59D9GagRQi4UuT4mW08uQPzU4bYxPsS3WCkFBXSJhx4UNh7d10KRzjZEB+HBbS4no
+         ZkknEk2fwRp/aAOytG/0VHovJfbp6qNS5dfiebEhNtom8Nd0s0a12vFK7cK0wGeIgaOg
+         npa4MnL3ldygB9czf+GdVAqHCtLv0q2BC3HRjMqjsqm4i7Ur4qHZe8fZJ04N0I1Fc/i3
+         KC0f23iiR4bm4UMyz6turm0HGaTBCM8WS2s8u2IVeVzMsFXeovW9hoDItWcu7NBCKomG
+         MCFKlyHsZaboqH1gGg/HgY7rWsSQ2L2hO57Wns7iERkgIYk5VKPw8cNtNur7L/vKjnFe
+         qBtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740593361; x=1741198161;
+        d=1e100.net; s=20230601; t=1740595030; x=1741199830;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=A6P8EkSd3yrtJe7fRrTsqN53CGSCMEbijuvinHNryBE=;
-        b=XuPui2P8BxWXKjcY8AD2lKtQd84FuQj6IBoqM1RMGUzKNgFqRyie2pFaukiR0u9+Iz
-         1bMwSJ1KptcuRNfj4UbiGs3EJF/QJnd1WnGptQcoaSCcMU3GPvohzk882/nAItxj84hD
-         GoyzJaptgVWsYAQ0tDY6wS/InZtsuMvl1Uac5/obLTsVxq+0/t9ECHB6pzl+GYGBehZl
-         0LOcK5m/6D23mLE/EZkBBsSFCV1kP8p/XOgDrkSzYYlePz2UtI3fp1m7IOH6lp8sXIfz
-         b3Ofi8/9YTqCk39eSAxC82HX9211HcZes4YOCRVZ+9by5PQ+gppFBFfd8UBuC2A2fx5N
-         kDzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVBJAmD7o/8tljQUN984+GNRlhyhkp2pcwhyt6kqZJ3KdOVoz35X8AcwL8Eu3GYKE27OZpzOeK+@lists.linux.dev
-X-Gm-Message-State: AOJu0YwMjVwu+si+3KfjCZRVBv1vqm37WQOSAMYDSwO2dEpt3tAOvi1l
-	E8NitLXux8uTmMbVjklgjAjxxi155q68HS7cWpRdxcWuEsM2SUQrmeco7ncx6hn6N0U/nSSdQAe
-	7hvG23isw7/85QGU3/VFhbVcAom4=
-X-Gm-Gg: ASbGncthb1UEa57mVtmyadZGpJztqa4C5nEk+I9cKGV0uuNcJEqI+pYhP71k7k74KT7
-	wxF4Cdm0jg6gIxCvv0/60Lv9Np0FmO134KGQelwR/o9FFzRZ2T7PmR0/HzezR0RsUeyF/5eosTp
-	njJc2PM3Ii
-X-Google-Smtp-Source: AGHT+IGJNa+ri2Oao//go0VSlyRtOlg3wgaCSf6LWBeLXhaVuBr+YK/0oze/PXh/F38YbXkdqfmir870UMfoNc57uc8=
-X-Received: by 2002:a2e:9590:0:b0:307:e498:1269 with SMTP id
- 38308e7fff4ca-30a599a2963mr92116491fa.37.1740593360376; Wed, 26 Feb 2025
- 10:09:20 -0800 (PST)
+        bh=tDyTJwKN7xH8PBcSTb/l/mb6insdu/+iQsdQ5QiBDRo=;
+        b=ARtkmS+lt0nArWF5nc+DKjqsEySn1n5+ySnr1Tzr8n7ZldBnXN8IZeYRixJPkxs6bU
+         bkOY7rvauRLOX91Y8dXOKP6geB9+HAk3ZhQm9qBryMoylp5D6i+m0mpHbL1VJLpg1WsK
+         dqY0V/s5lFVo/eAADQQLNZKlbd4dAbJma2BTT1O9m8JYYOloda982VK7zf14qb3fF/5c
+         YFWt1hP5tzIHuP0suyRubasxXIFjUkD5lxA7IDX/BaBMmL7v7GLBVxNX/X9f5NwdUtIK
+         pV0qhmUYXev5yUq//kaSzP5qcAdc0hfmDKkiR+kQK8M49Gd0sb8y41D/z3348U2v0TbQ
+         /xXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVnKShBBLkiMQopf6gHL7fsIzA0/IQet+MOhy5Qip9A5emmd0nfNq/GnPCIYE1A6RnzznJoIjts@lists.linux.dev
+X-Gm-Message-State: AOJu0YzxJ2iGAeU5mukMaPIdQOZ5OdmHKJh27QooFWIkWnm1voguackf
+	hMmCAMu9FpweyY4L42AG6f0IugCzlA6K+vJntChrazcCCBM0B8TdqW4KBEhP3+vKrxe3kge6f59
+	h34pplTNFZYdZcA6yS0v0RNowcnw=
+X-Gm-Gg: ASbGncufQcZ9ih6jqHD07Amwtym+OGDVWFW1nljcfTDfk0Gd41FgdlCipmXFzLuHqtL
+	5vfkCl3NKzFCkU1+UFOc35L1Ts4DELG+9KAxFBhVe8h4IlYY64Xpdy5avHptm+xjs7t9AzQzSTZ
+	ELCTyafeIw
+X-Google-Smtp-Source: AGHT+IFwLcDUFQzoI6ZilFXHLns1F2OC4wA9RbEZ2yK1MOX7/UATdtevigNUWQXX1Z3qVM5GQ+e+CMmylXNmvo/pWiY=
+X-Received: by 2002:a05:6402:34cf:b0:5e4:96d6:c125 with SMTP id
+ 4fb4d7f45d1cf-5e496d6c286mr7924846a12.18.1740595029719; Wed, 26 Feb 2025
+ 10:37:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -76,183 +76,102 @@ MIME-Version: 1.0
 References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
  <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
  <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CANiq72mdzUJocjXhPRQEEdgRXsr+TEMt99V5-9R7TjKB7Dtfaw@mail.gmail.com>
- <lz7hsnvexoywjgdor33mcjrcztxpf7lzvw3khwzd5rifetwrcf@g527ypfkbhp2>
- <780ff858-4f8e-424f-b40c-b9634407dce3@ralfj.de> <CAFJgqgRN0zwwaNttS_9qnncTDnSA-HU5EgAXFrNHoPQ7U8fUxw@mail.gmail.com>
- <f3a83d60-3506-4e20-b202-ef2ea99ef4dc@ralfj.de>
-In-Reply-To: <f3a83d60-3506-4e20-b202-ef2ea99ef4dc@ralfj.de>
+ <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+ <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+ <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
+ <CAFJgqgREAj-eP-d244WpqO-9H48ajZh83AxE31GqoONZ=DJe-g@mail.gmail.com>
+ <CAH5fLghEMtT663SNogAGad-qk7umefGeBKbm+QjKKzoskjOubw@mail.gmail.com>
+ <CAFJgqgRxfTVxrWja=ZW=mTj1ShPE5s-atAqxzMOq5poajMh=4A@mail.gmail.com>
+ <CANiq72mA4Pbx1BeCZdg7Os3FtGkrwx6T8_+=+-=-o9+TOMv+EA@mail.gmail.com>
+ <CAFJgqgSzqGKdeT88fJzrFOex7i-yvVte3NiQDdgXeWEFtnq=9A@mail.gmail.com> <CANiq72m8zKABR0dXtkB-UiF-GeP5J4nAGqoabdmR=CfPsJejzg@mail.gmail.com>
+In-Reply-To: <CANiq72m8zKABR0dXtkB-UiF-GeP5J4nAGqoabdmR=CfPsJejzg@mail.gmail.com>
 From: Ventura Jack <venturajack85@gmail.com>
-Date: Wed, 26 Feb 2025 11:09:06 -0700
-X-Gm-Features: AQ5f1JpKwr8B5qkGZ9Z_bzqjhe0vCBiX0W_T_JL0hCE3Frc9QZXyZjcDXlFrTOQ
-Message-ID: <CAFJgqgR4Q=uDKNnU=2yo5zoyFOLERG+48bFuk4Dd-c+S6x+N5w@mail.gmail.com>
+Date: Wed, 26 Feb 2025 11:36:55 -0700
+X-Gm-Features: AQ5f1JoMsdSV_5Q6RV31sCAY_-vLSrZRd2z8Vs5ljTGycnjUxfCGKTNJLyBrya0
+Message-ID: <CAFJgqgREAtPkx+r_QNPnt-bOekjVjCNBv=tAuuEC6dT2HCA0jg@mail.gmail.com>
 Subject: Re: C aggregate passing (Rust kernel policy)
-To: Ralf Jung <post@ralfj.de>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	torvalds@linux-foundation.org, airlied@gmail.com, boqun.feng@gmail.com, 
-	david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, 
-	hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Kent Overstreet <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
+	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
+	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, 
+	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Ralf Jung <post@ralfj.de>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 26, 2025 at 9:32=E2=80=AFAM Ralf Jung <post@ralfj.de> wrote:
+On Wed, Feb 26, 2025 at 10:49=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> Hi VJ,
->
-> >>
-> >>> - Rust has not defined its aliasing model.
-> >>
-> >> Correct. But then, neither has C. The C aliasing rules are described i=
-n English
-> >> prose that is prone to ambiguities and misintepretation. The strict al=
-iasing
-> >> analysis implemented in GCC is not compatible with how most people rea=
-d the
-> >> standard (https://bugs.llvm.org/show_bug.cgi?id=3D21725). There is no =
-tool to
-> >> check whether code follows the C aliasing rules, and due to the aforem=
-entioned
-> >> ambiguities it would be hard to write such a tool and be sure it inter=
-prets the
-> >> standard the same way compilers do.
-> >>
-> >> For Rust, we at least have two candidate models that are defined in fu=
-ll
-> >> mathematical rigor, and a tool that is widely used in the community, e=
-nsuring
-> >> the models match realistic use of Rust.
+> On Wed, Feb 26, 2025 at 4:21=E2=80=AFPM Ventura Jack <venturajack85@gmail=
+.com> wrote:
 > >
-> > But it is much more significant for Rust than for C, at least in
-> > regards to C's "restrict", since "restrict" is rarely used in C, while
-> > aliasing optimizations are pervasive in Rust. For C's "strict aliasing"=
+> > I am not certain that I understand either you or Alice correctly.
+> > But Ralf Jung or others will probably help clarify matters.
+>
+> When you said:
+>
+>     "In a preprint paper, both stacked borrows and tree burrows
+>      are as far as I can tell described as having false positives."
+>
+> I think that you mean to say that the new model allows/rejects
+> something that unsafe code out there wants/doesn't want to do. That is
+> fine and expected, although of course it would be great to have a
+> model that is simple, fits perfectly all the code out there and
+> optimizes well.
+>
+> However, that is very different from what you say afterwards:
+>
+>     "Are you sure that both stacked borrows and tree borrows are
+>      meant to be full models with no false positives and false negatives,=
+"
+>
+> Which I read as you thinking that the new model doesn't say whether a
+> given program has UB or not.
+>
+> Thus I think you are using the phrase "false positives" to refer to
+> two different things.
+
+Ralf Jung explained matters well, I think I understood him. I found his
+answer clearer than both your answers and Alice's on this topic.
+
+> > You are right that I should have written "currently tied", not "tied", =
+and
+> > I do hope and assume that the work with aliasing will result
+> > in some sorts of specifications.
+> >
+> > The language reference directly referring to LLVM's aliasing rules,
+> > and that the preprint paper also refers to LLVM, does indicate a tie-in=
 ,
-> > I think you have a good point, but "strict aliasing" is still easier to
-> > reason about in my opinion than C's "restrict". Especially if you
-> > never have any type casts of any kind nor union type punning.
+> > even if that tie-in is incidental and not desired. With more than one
+> > major compiler, such tie-ins are easier to avoid.
 >
-> Is it easier to reason about? At least GCC got it wrong, making no-aliasi=
-ng
-> assumptions that are not justified by most people's interpretation of the=
- model:
-> https://bugs.llvm.org/show_bug.cgi?id=3D21725
-> (But yes that does involve unions.)
-
-For that specific bug issue, there is a GitHub issue for it.
-
-    https://github.com/llvm/llvm-project/issues/22099
-
-And the original test case appears to have been a compiler bug
-and have been fixed, at least when I run on Godbolt against
-a recent version of Clang. Another comment says.
-
-    "The original testcase seems to be fixed now but replacing
-    the union by allocated memory makes the problem come back."
-
-And the new test case the user mentions involves a void pointer.
-
-I wonder if they could close the issue and open a new issue
-in its stead that only contains the currently relevant compiler
-bugs if there are any. And have this new issue refer to the old
-issue. They brought the old issue over from the old bug tracker.
-But I do not have a good handle on that issue.
-
-Unions in C, C++ and Rust (not Rust "enum"/tagged union) are
-generally sharp. In Rust, it requires unsafe Rust to read from
-a union.
-
-> > [Omitted]
+> Ralf, who is pretty much the top authority on this as far as I
+> understand, already clarified this:
 >
-> Okay, fair. But it is easy to misunderstand the other items in your list =
-in
-> isolation.
-
-I agree, I should have made it unambiguous and made each item
-not require the context of other items, or have made the
-dependencies between items clearer, or some other way.
-I remember not liking the way I organized it, but did not
-improve it before sending, apologies.
-
-> >>
-> >> [Omitted].
-> >
-> > I do not believe that you are correct when you write:
-> >
-> >      "Unlike sanitizers, Miri can actually catch everything."
-> >
-> > Critically and very importantly, unless I am mistaken about MIRI, and
-> > similar to sanitizers, MIRI only checks with runtime tests. That means
-> > that MIRI will not catch any undefined behavior that a test does
-> > not encounter. If a project's test coverage is poor, MIRI will not
-> > check a lot of the code when run with those tests. Please do
-> > correct me if I am mistaken about this. I am guessing that you
-> > meant this as well, but I do not get the impression that it is
-> > clear from your post.
+>     "we absolutely do *not* want Rust to be tied to LLVM's aliasing rules=
+"
 >
-> Okay, I may have misunderstood what you mean by "catch everything". All
-> sanitizers miss some UB that actually occurs in the given execution. This=
- is
-> because they are inserted in the pipeline after a bunch of compiler-speci=
-fic
-> choices have already been made, potentially masking some UB. I'm not awar=
-e of a
-> sanitizer for sequence point violations. I am not aware of a sanitizer fo=
-r
-> strict aliasing or restrict. I am not aware of a sanitizer that detects U=
-B due
-> to out-of-bounds pointer arithmetic (I am not talking about OOB accesses;=
- just
-> the arithmetic is already UB), or UB due to violations of "pointer lifeti=
-me end
-> zapping", or UB due to comparing pointers derived from different allocati=
-ons. Is
-> there a sanitizer that correctly models what exactly happens when a struc=
-t with
-> padding gets copied? The padding must be reset to be considered "uninitia=
-lized",
-> even if the entire struct was zero-initialized before. Most compilers imp=
-lement
-> such a copy as memcpy; a sanitizer would then miss this UB.
+> The paper mentioning LLVM to explain something does not mean the model
+> is tied to LLVM.
 >
-> In contrast, Miri checks for all the UB that is used anywhere in the Rust
-> compiler -- everything else would be a critical bug in either Miri or the=
- compiler.
-> But yes, it only does so on the code paths you are actually testing. And =
-yes, it
-> is very slow.
-
-I may have been ambiguous again, or unclear or misleading,
-I need to work on that.
-
-The description you have here indicates that Miri is in many ways
-significantly better than sanitizers in general.
-
-I think it is more accurate of me to say that Miri in some aspects
-shares some of the advantages and disadvantages of sanitizers,
-and in other aspects is much better than sanitizers.
-
-Is Miri the only one of its kind in the programming world?
-There are not many system languages in mass use, and
-those are the languages that first and foremost deal
-with undefined behavior. That would make Miri extra impressive.
-
+> And the Rust reference, which you quote, is not the Rust specification
+> -- not yet at least. From its introduction:
 >
+>     "should not be taken as a specification for the Rust language"
+>
+> When the Rust specification is finally published, if they still refer
+> to LLVM (in a normative way), then we could say it is tied, yes.
 
-There are some issues in Rust that I am curious as to
-your views on. rustc or the Rust language has some type
-system holes, which still causes problems for rustc and
-their developers.
-
-    https://github.com/lcnr/solver-woes/issues/1
-    https://github.com/rust-lang/rust/issues/75992
-
-Those kinds of issues seem difficult to solve.
-
-In your opinion, is it accurate to say that the Rust language
-developers are working on a new type system for
-Rust-the-language and a new solver for rustc, and that
-they are trying to make the new type system and new solver
-as backwards compatible as possible?
+"Currently tied" is accurate as far as I can tell. Ralf Jung
+did explain it well. He suggested removing those links from the
+Rust reference, as I understand him. But, importantly, having
+more than 1 major Rust compiler would be very helpful in my opinion.
+It is easy to accidentally or incidentally tie language definition
+to compiler implementation, and having at least 2 major compilers
+helps a lot with this. Ralf Jung described it as a risk of overfitting I th=
+ink,
+and that is a good description in my opinion.
 
 Best, VJ.
 
