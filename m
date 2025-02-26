@@ -1,147 +1,207 @@
-Return-Path: <ksummit+bounces-1909-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1911-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36689A4533D
-	for <lists@lfdr.de>; Wed, 26 Feb 2025 03:43:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A34EA45D68
+	for <lists@lfdr.de>; Wed, 26 Feb 2025 12:42:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 882FF3AC2C4
-	for <lists@lfdr.de>; Wed, 26 Feb 2025 02:43:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEFAD16A20D
+	for <lists@lfdr.de>; Wed, 26 Feb 2025 11:42:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7382C21C9EE;
-	Wed, 26 Feb 2025 02:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852822163AD;
+	Wed, 26 Feb 2025 11:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NczGOzCS"
-Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="cM5hWEUY"
+Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3E921CA14
-	for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 02:43:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCA121505D
+	for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 11:42:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740537788; cv=none; b=J43fa8Rv9+py4OcrUk72OOp6eKH3hvsB0HFj+iKiuU5OwDWhjHBvNRkoyC6nszJhl8n2AcDUcg/3OCXP9/ObNVQ9y/ix9qhBW1FRg7ctXhEJFkyR0lcHpGb2xdC/6w+LUs2oidPWwD9D8lE+f3P4yCLDvFF/nlWElpFhhyKBkeM=
+	t=1740570133; cv=none; b=A+s064f6F2ncKhDh0lSfY2rBVUI5wwcTTpyphadh4xPLeds4fjqAtrcV/vn6Kb7pc8d8tGo8jkgnfOUtRs6HbAn7eI/gzzw4am9VDv6fc76G6E3T6Ftpuz+WygCkxoZ40RP6HknhXrmGU+EGjWLUBHYhOIvcK6nnuV/auobe904=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740537788; c=relaxed/simple;
-	bh=toH3LLJ4yEUPEFJJkeDUNtt+w5hsIt5RNXu0wUSkCEg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ItoZkAVM+dsL7fp5d2GQEXvvkMzARkXJSvdeuGnJ/jfKx29mSFeXgSA9QXmXYyULskGO1KAi9oKXamSdQ0uPRLA+LN3LY22rVSEozy7TzbBWjE4+payHn4wSTQemtx7/4Z6/SgjhPhahw9zqbmEO4iciaae7VaMAOrohKfOAJqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NczGOzCS; arc=none smtp.client-ip=209.85.217.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-4b68cb2abacso2062809137.3
-        for <ksummit@lists.linux.dev>; Tue, 25 Feb 2025 18:43:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740537785; x=1741142585; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=toH3LLJ4yEUPEFJJkeDUNtt+w5hsIt5RNXu0wUSkCEg=;
-        b=NczGOzCSibYh4Dyk2RTiJs3Or63157Zr+80YFZwCn4H1zqx01W16FRtvEtTIFd0z7J
-         FAqF/Bzllw2XpQwqAE0K/WfHphGabFFDijrcxMtngRWssLxyyV4xRZ06B+HMPeoIMtMc
-         WuDxIAahUfqezkNqHXrYXlY1Fkrrz89RbcU8+Yhd+z+HzPII0BVyx0kD0BSqc7narc6q
-         t28GqN523v7lThJBLi3D3uINnfqcQd+qdleBxbgLTuSzlMmBcnIAjcMlHpaeJEpk+3t3
-         himherS0FuyDfL3MVb2TVtkwMfhWZLUqdzszCaPpKIyi4517QLZHJylgs75wHcJH9DAQ
-         BD8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740537785; x=1741142585;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=toH3LLJ4yEUPEFJJkeDUNtt+w5hsIt5RNXu0wUSkCEg=;
-        b=EQyik95Hlq1EXKDBIGEpm5YJB8Y7YidfZJy2RbwCLhanMMFubRWuy2vFHTCYOuv2oZ
-         1u4HXs1gZH4BUHdFBCXy7nYXgaCViuliVSR+5HG+rrQpP/8XD17DQY2iZyHscd9LWjSd
-         CthunPs/Iir2kq4r7mdSozomL7NheOzKS3Q1gcivOWt+F0WC/436hpmEjaVCcxhqDRND
-         8e38JJefDGqiaHLDZlfcY0l0hdz5lYlJGa6mSHR9Bk0d60XU2MBYZ3gAm8zoTp6ZexfT
-         C5KhhN35Xo3iZT+7N2KI7+YULb/xTimINoEm182RqqC/WAegcNCP+ORH3CMBvLOsVhTu
-         ckUw==
-X-Forwarded-Encrypted: i=1; AJvYcCU1If1pu6jrrAgRvDL+VNCeGMl+guo5D8NWkAHQf1ASAHVu6MSuOBRV3CPud1B9o20ARvQx3NBs@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz8IQGABiI7oAOPvTIP2hRhTS+7hjU7uC9M+sdpLan4PFYNIBfT
-	JPJkW9UQiCW8JyHYQoWMezdvaaoYRws1pnPVnaVjIPSKX6rYJNgg34aqzm2RpOKEHlHC0SQD4Vs
-	4k4bcOATDFLU8y1mtvaoYI7Omg8E=
-X-Gm-Gg: ASbGncta2Z40/wkkFwJ0JCbp5mBH8367Nyne/jT5xb9QIbwSS44RkF/9eDuyfo1ctAs
-	071GhwIvYNRLxBbSjRJ2/v60P16WVcRODIZcqQ+j0PrvVXq3uybo/bNuHnMIx0iNS5jqrYbH8XT
-	tAt2//i6u1PArvqjjuoFMrUqp5s7+MXw6fuYszHB8y
-X-Google-Smtp-Source: AGHT+IFyTwJlrcVaI9Xt7UsNlvVNkw+pfbUmTO93JXE/w2WRLS6A9yWh/tpYZMvkzO//S3frbcvZZAjWp8KTSUoz2Yg=
-X-Received: by 2002:a05:6102:304a:b0:4bb:edc9:f94b with SMTP id
- ada2fe7eead31-4c00acf5903mr3329725137.5.1740537785120; Tue, 25 Feb 2025
- 18:43:05 -0800 (PST)
+	s=arc-20240116; t=1740570133; c=relaxed/simple;
+	bh=GOhTGczcTjfvMvpCsfS2BvZQ7Bz7cikultwN5meq4Jw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=f7J6cl5FGkPHn2MlbdhYp9nQOzjXiibZQaZ0UsWp7aSKs9wGFeTDfM0Jzc0eEi3GEd0vwqgYp1/51WlAZ3UzZX7eCtxLNkzifcTBeNSS+lVS9e+i2qR/UHABQa1ahImXUMceaK/8vVuB8qINNbNSDYmsmBV1u0Iwx/GxikV/2pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=cM5hWEUY; arc=none smtp.client-ip=109.230.236.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
+	t=1740569661; bh=GOhTGczcTjfvMvpCsfS2BvZQ7Bz7cikultwN5meq4Jw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=cM5hWEUYw2FTzMrtuHZC2t66ICTfpbYwbB2tSIL2buu59S0fRaIsNzy+qAdUh3EFw
+	 vGV+Zimv2DG1q0MuipQebSUV1SrnjSG0yU1ppTVlH1nSa047pL1KUaPtPb7/s6Z/jZ
+	 byJtkByqKVJX3K5rhprdvBb1jkH/CD+0+hYdyS+8=
+Received: from [IPV6:2001:67c:10ec:5784:8000::87] (2001-67c-10ec-5784-8000--87.net6.ethz.ch [IPv6:2001:67c:10ec:5784:8000::87])
+	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 18A262052D08;
+	Wed, 26 Feb 2025 12:34:21 +0100 (CET)
+Message-ID: <780ff858-4f8e-424f-b40c-b9634407dce3@ralfj.de>
+Date: Wed, 26 Feb 2025 12:34:14 +0100
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <2025021954-flaccid-pucker-f7d9@gregkh> <20250221051909.37478-1-felipe.contreras@gmail.com>
- <Z7gQ3kSeCf7gY1i9@Mac.home> <CAMP44s1Ai5qMU4yV+Rwz4cY869ZA=cxBcTf2wuaUY1oyLKUNCg@mail.gmail.com>
- <Z7zYdEM5TkT2LNN1@boqun-archlinux>
-In-Reply-To: <Z7zYdEM5TkT2LNN1@boqun-archlinux>
-From: Felipe Contreras <felipe.contreras@gmail.com>
-Date: Tue, 25 Feb 2025 20:42:53 -0600
-X-Gm-Features: AQ5f1JpIvNFnhj4Gl3DBpIQBv48BIC95sgeBSdxDcuyCbpdR3DNiyGlnB3PQEpM
-Message-ID: <CAMP44s3W1XUBma0AvTd5qeNaqZoScNd97m_aQUK=GqYYeMs-ag@mail.gmail.com>
-Subject: Re: Rust kernel policy
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: gregkh@linuxfoundation.org, airlied@gmail.com, hch@infradead.org, 
-	hpa@zytor.com, ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org, 
-	torvalds@linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: Kent Overstreet <kent.overstreet@linux.dev>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Ventura Jack <venturajack85@gmail.com>, Gary Guo <gary@garyguo.net>,
+ torvalds@linux-foundation.org, airlied@gmail.com, boqun.feng@gmail.com,
+ david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org,
+ hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+ <20250222141521.1fe24871@eugeo>
+ <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+ <CANiq72mdzUJocjXhPRQEEdgRXsr+TEMt99V5-9R7TjKB7Dtfaw@mail.gmail.com>
+ <lz7hsnvexoywjgdor33mcjrcztxpf7lzvw3khwzd5rifetwrcf@g527ypfkbhp2>
+Content-Language: en-US, de-DE
+From: Ralf Jung <post@ralfj.de>
+In-Reply-To: <lz7hsnvexoywjgdor33mcjrcztxpf7lzvw3khwzd5rifetwrcf@g527ypfkbhp2>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Feb 24, 2025 at 2:37=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> On Thu, Feb 20, 2025 at 11:59:10PM -0600, Felipe Contreras wrote:
-> > Boqun Feng wrote:
-> > >
-> > > On Thu, Feb 20, 2025 at 11:19:09PM -0600, Felipe Contreras wrote:
-> > > > Greg KH wrote:
-> > > > > But for new code / drivers, writing them in rust where these type=
-s of
-> > > > > bugs just can't happen (or happen much much less) is a win for al=
-l of
-> > > > > us, why wouldn't we do this?
-> > > >
-> > > > *If* they can be written in Rust in the first place. You are skippi=
-ng that
-> > > > very important precondition.
-> > >
-> > > Hmm.. there are multiple old/new drivers (not a complete list) alread=
-y
-> > > in Rust:
-> >
-> > That is a black swan fallacy. Just because you've seen 4 white swans
-> > that doesn't mean all swans are white.
-> >
-> > > , so is there still a question that drivers can be written in Rust?
-> >
-> > I didn't say no driver can be written Rust, I questioned whether *all*
-> > drivers can be written in Rust.
-> >
->
-> Huh? Your previous reply is:
->
-> "*If* they can be written in Rust in the first place. You are skipping
-> that very important precondition."
->
-> how does that imply you questioned whether *all* drivers can be written
-> in Rust.
->
-> Care to explain your logic?
+Hi all,
 
-People should really stop thinking in black-and-white terms.
+(For context, I am the supervisor of the Tree Borrows project and the main 
+author of its predecessor, Stacked Borrows. I am also maintaining Miri, a Rust 
+UB detection tool that was mentioned elsewhere in this thread. I am happy to 
+answer any questions you might have about any of these projects. :)
 
-If I say I'm not convinced the coin landed heads does that mean I'm
-convinced the coin landed tails? No. If I say I'm not convinced god
-exists does that mean I'm convinced god doesn't exist? No.
+>> Not sure what I said, but Cc'ing Ralf in case he has time and wants to
+>> share something on this (thanks in advance!).
+> 
+> Yeah, this looks like just the thing. At the conference you were talking
+> more about memory provenance in C, if memory serves there was cross
+> pollination going on between the C and Rust folks - did anything come of
+> the C side?
 
-Being skeptical of a claim is not the same thing as believing it's false.
+On the C side, there is a provenance model called pnvi-ae-udi (yeah the name is 
+terrible, it's a long story ;), which you can read more about at 
+<http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2676.pdf>. My understanding is 
+that it will not become part of the standard though; I don't understand the 
+politics of WG14 well enough to say what exactly its status is. However, my 
+understanding is that that model would require some changes to both clang and 
+gcc for them to be compliant (and likely most other C compilers that do any kind 
+of non-trivial alias analysis); I am not sure what the plans/timeline are for 
+making that happen.
 
-One can hope all drivers can be written in Rust while at the same time
-being skeptical that that is necessarily the case.
+The Rust aliasing model 
+(https://doc.rust-lang.org/nightly/std/ptr/index.html#strict-provenance) is 
+designed to not require changes to the backend, except for fixing things that 
+are clear bugs that also affect C code 
+(https://github.com/llvm/llvm-project/issues/33896, 
+https://github.com/llvm/llvm-project/issues/34577).
 
---=20
-Felipe Contreras
+I should also emphasize that defining the basic treatment of provenance is a 
+necessary, but not sufficient, condition for defining an aliasing model.
+
+>>  From a quick look, Tree Borrows was submitted for publication back in November:
+>>
+>>      https://jhostert.de/assets/pdf/papers/villani2024trees.pdf
+>>      https://perso.crans.org/vanille/treebor/
+> 
+> That's it.
+> 
+> This looks fantastic, much further along than the last time I looked.
+> The only question I'm trying to answer is whether it's been pushed far
+> enough into llvm for the optimization opportunities to be realized - I'd
+> quite like to take a look at some generated code.
+
+I'm glad you like it. :)
+
+Rust has informed LLVM about some basic aliasing facts since ~forever, and LLVM 
+is using those opportunities all over Rust code. Specifically, Rust has set 
+"noalias" (the LLVM equivalent of C "restrict") on all function parameters that 
+are references (specifically mutable reference without pinning, and shared 
+references without interior mutability). Stacked Borrows and Tree Borrows kind 
+of retroactively are justifying this by clarifying the rules that are imposed on 
+unsafe Rust, such that if unsafe Rust follows those rules, they also follow 
+LLVM's "noalias". Unfortunately, C "restrict" and LLVM "noalias" are not 
+specified very precisely, so we can only hope that this connection indeed holds.
+
+Both Stacked Borrows and Tree Borrows go further than "noalias"; among other 
+differences, they impose aliasing requirements on references that stay within a 
+function. Most of those extra requirements are not yet used by the optimizer (it 
+is not clear how to inform LLVM about them, and Rust's own optimizer doesn't use 
+them either). Part of the reason for this is that without a precise model, it is 
+hard to be sure which optimizations are correct (in the sense that they do not 
+break correct unsafe code) -- and both Stacked Borrows and Tree Borrows are 
+still experiments, nothing has been officially decided yet.
+
+Let me also reply to some statements made further up-thread by Ventura Jack (in 
+<https://lore.kernel.org/rust-for-linux/CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com/>):
+
+> - Aliasing in Rust is not opt-in or opt-out,
+>     it is always on.
+>     https://doc.rust-lang.org/nomicon/aliasing.html
+
+This is true, but only for references. There are no aliasing requirements on raw 
+pointers. There *are* aliasing requirements if you mix references and raw 
+pointers to the same location, so if you want to do arbitrary aliasing you have 
+to make sure you use only raw pointers, no references. So unlike in C, you have 
+a way to opt-out entirely within standard Rust.
+
+The ergonomics of working with raw pointers could certainly be improved. The 
+experience of kernel developers using Rust could help inform that effort. :) 
+Though currently the main issue here is that there's nobody actively pushing for 
+this.
+
+> - Rust has not defined its aliasing model.
+
+Correct. But then, neither has C. The C aliasing rules are described in English 
+prose that is prone to ambiguities and misintepretation. The strict aliasing 
+analysis implemented in GCC is not compatible with how most people read the 
+standard (https://bugs.llvm.org/show_bug.cgi?id=21725). There is no tool to 
+check whether code follows the C aliasing rules, and due to the aforementioned 
+ambiguities it would be hard to write such a tool and be sure it interprets the 
+standard the same way compilers do.
+
+For Rust, we at least have two candidate models that are defined in full 
+mathematical rigor, and a tool that is widely used in the community, ensuring 
+the models match realistic use of Rust.
+
+> - The aliasing rules in Rust are possibly as hard or
+>     harder than for C "restrict", and it is not possible to
+>     opt out of aliasing in Rust, which is cited by some
+>     as one of the reasons for unsafe Rust being
+>     harder than C.
+
+That is not quite correct; it is possible to opt-out by using raw pointers.
+
+>     the aliasing rules, may try to rely on MIRI. MIRI is
+>     similar to a sanitizer for C, with similar advantages and
+>     disadvantages. MIRI uses both the stacked borrow
+>     and the tree borrow experimental research models.
+>     MIRI, like sanitizers, does not catch everything, though
+>     MIRI has been used to find undefined behavior/memory
+>     safety bugs in for instance the Rust standard library.
+
+Unlike sanitizers, Miri can actually catch everything. However, since the exact 
+details of what is and is not UB in Rust are still being worked out, we cannot 
+yet make in good conscience a promise saying "Miri catches all UB". However, as 
+the Miri README states:
+"To the best of our knowledge, all Undefined Behavior that has the potential to 
+affect a program's correctness is being detected by Miri (modulo bugs), but you 
+should consult the Reference for the official definition of Undefined Behavior. 
+Miri will be updated with the Rust compiler to protect against UB as it is 
+understood by the current compiler, but it makes no promises about future 
+versions of rustc."
+See the Miri README (https://github.com/rust-lang/miri/?tab=readme-ov-file#miri) 
+for further details and caveats regarding non-determinism.
+
+So, the situation for Rust here is a lot better than it is in C. Unfortunately, 
+running kernel code in Miri is not currently possible; figuring out how to 
+improve that could be an interesting collaboration.
+
+Kind regards,
+Ralf
+
 
