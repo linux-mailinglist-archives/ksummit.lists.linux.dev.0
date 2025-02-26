@@ -1,72 +1,81 @@
-Return-Path: <ksummit+bounces-1943-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1944-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BDABA46868
-	for <lists@lfdr.de>; Wed, 26 Feb 2025 18:49:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 971DEA468C3
+	for <lists@lfdr.de>; Wed, 26 Feb 2025 19:00:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20A9F165CFC
-	for <lists@lfdr.de>; Wed, 26 Feb 2025 17:49:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 526FF7A5114
+	for <lists@lfdr.de>; Wed, 26 Feb 2025 17:59:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1271F22A1EC;
-	Wed, 26 Feb 2025 17:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A2122B5AC;
+	Wed, 26 Feb 2025 18:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aBVwMJlL"
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ctty3G6C"
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F85E229B18
-	for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 17:49:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53E92A8C1
+	for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 18:00:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740592169; cv=none; b=fp9OcQH/D4r/6oHX0n1nEcDAVdM58d6r6uv8xvrNPt6JvFsHZEkdxV68xmwTVrpUwfrPusw86xKlyqDbpo/Zo26fPXkrOM+DQ9hzjorVlL4dWyw7UgAK3WQ6GzD9hP9qu4n1rvBV/I+S5N8qmy7c3xCcCRf1mD34igCAwK2mRPc=
+	t=1740592804; cv=none; b=NlVU1Si/QKmNBIdVjsUUeOdxu9Eld1hDsm7Iuqi9nc74L0vFPp0chDNTpvXG1G38ZSJKz0J2bgiI0mN2/f5xRaXwsdPvlL5FoCMz7oQcgi5VbpO7/YslKdq3yp//TFOwF/rnInNrnIH8aDZku6vLOP0gEx4GKk1x4jkhVa1blcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740592169; c=relaxed/simple;
-	bh=pf1Ym/LYuPGVWFiM/lTbZoBgNa4GshyrvXq8DdYjCZs=;
+	s=arc-20240116; t=1740592804; c=relaxed/simple;
+	bh=OcHOvGQB/t3qwwXBib/RirE/KtrFLYIGCcrfx/cQcj0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HBGqJbzkwEghFwOISXSu4zUHFEa5FEbsB5X55f+bfBT8Te8Qb5bc/y/YCIKS5K/O/cS01dqiwwmnpMIht8eRTO6erqgN47ywqG0zI/TPObj4eWDAw0BXiZ97AB0cyb8NX7lgA18GJ9PgCSPqSuabqE+o+LeeEPICzy+HPggw2a8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aBVwMJlL; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2fe9fd5e7f8so27102a91.3
-        for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 09:49:27 -0800 (PST)
+	 To:Cc:Content-Type; b=Xe3rQ5u6n5LOZZYpeyRgeR3ydqiKBEWVcG7Vt6oQKWOsyNswLJPW102JxVhj8EzK938tWEGYCBpec84XWulCXB15h7vu3xf/5Pv8xqeYnfe+0yDbSEOF74r/1GWuET/Xxc/RqnBHgK29HpHTxTkc6w8YmNLtM4TLlT/6tZzgwHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ctty3G6C; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-aaecf50578eso1414763766b.2
+        for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 10:00:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740592167; x=1741196967; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0j14nTPHAtaZCMj0Cm4vQzM1gNJxu1aU5P8x9//E1lQ=;
-        b=aBVwMJlLzO1uQixF+9iVUrzPKaxOeJXJ6MQKrEQhYWv9L3T7xCdOFXFI1WwwXwzD2D
-         f14BHeN7iufzDjiu5W1ahYWhuniij+a+IqUAaD/jrDoWLbfa78lU/aqEMwEGq7X/G7Jd
-         PmUz0Vwru6WeB81n/zpjg5EJjHrKe60DB33fqNLi2Y9wW83HiB74/ZLfnfwC2/kh8vtz
-         VSg8BSwS3Y+yhYQADvnqTxWGoq9KzKOerfX93pPk1o+SfsHdCZJen+jGwnZBMDIi2sAI
-         gK3iF7HEhKkhBQKwiEtBCSWD1P8cGaLNiK7PRL2YJyui/P+36dGzOLur8Uig5VeSbI79
-         eBlA==
+        d=linux-foundation.org; s=google; t=1740592800; x=1741197600; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=K2pF5VtPLvizqkjhJdWgYLaGhWqd4Ef/Qdw8QfNuuuk=;
+        b=ctty3G6CxsSq/5DbstN9VK6WhAz55UhnnNejBAPbpYYgVQq3YWwA+IeIAy5E6HNJSi
+         goMl0HFz0YWuETIDUQOJ9svLS62N7PFsJLz269wcT24nDnHSLCgAuCdWWLrVRQpQd7Ek
+         WN/7CwCXVpw9/Six01No3du6tJM4n2dpyurkE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740592167; x=1741196967;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0j14nTPHAtaZCMj0Cm4vQzM1gNJxu1aU5P8x9//E1lQ=;
-        b=bsTl5OfnCnS0ypi8ysU6gunJmAeEgvlMFDA6ye9txXi+UQDuBayZDK7MFgIBO0EqTd
-         1MpILPr6MaxZ93o7K3HVVGxPsoITcWPq+y3RsaSWayFQiYfchLcMwhk0mTSdhvOoL6jA
-         K3Vvh47WV6He0zJ+/qIrOtxQIZp9i6PQgO9kJBQ4hEUi23f/lwTwBm8DZ31kDTHWsofm
-         AMvnPc+bPuTwUpgqCInWyCGcMatLlmk425WOBmtIWrvYFu8fFaBUMJ/6aCYaDYWTrHP9
-         wQUfeyJn01sPSaaTu3V9FfWh9fyTyWd7yvveCIN1f/he0sH7NDQIneFUogqawdk/HXB3
-         2KIA==
-X-Forwarded-Encrypted: i=1; AJvYcCWzqJC2FFVAKL/lBN0ZHRjPdtcMK49xf2cQk/gXTZ1skFh1u3yuZTfAITQ01o5Uimb4ByQ5SGpq@lists.linux.dev
-X-Gm-Message-State: AOJu0YzJEJdUwciWCEmdYjIH05hxMUX+zoYTNSK5C9graCMir7l8HQI2
-	8CE4Ep9DZPaH8NC2AZs/wcpqhm8hgv9ixl43YSYcw99ygpCX5wPphXbKuA+REew1NNMTmfvAK6F
-	S2NnnDNL2tQN7w8Sbel7hvYdnwHg=
-X-Gm-Gg: ASbGncsFBTs6nBGd49xNT4SHtp+Uyh/v/azym5qOZ9Y732eziEDnKirgFsEFuAJJWjM
-	WlrkX9LqcqAcra20Ew6GHGudziNrdukrj2b0VM/Me6jDbt4a0dmYUTc3PPKYO2Syg8kHfq5Fn5v
-	gvVytxBOA=
-X-Google-Smtp-Source: AGHT+IFW6GDWlGGpqjVzew7MkW1wPR2FwG46MyiXnmowTmnlMztbQM15bxmK//Vd/Upz5e/qpaEJMEC2Of8ep15DZMc=
-X-Received: by 2002:a17:90b:38c3:b0:2fb:f9de:9497 with SMTP id
- 98e67ed59e1d1-2fce7b0946fmr14733330a91.5.1740592167400; Wed, 26 Feb 2025
- 09:49:27 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740592800; x=1741197600;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=K2pF5VtPLvizqkjhJdWgYLaGhWqd4Ef/Qdw8QfNuuuk=;
+        b=vbXqbxXwC+UeJwkMq6Sb7DbJ9BMFwNUe+IYMvBI6iCCfzw6mB4kwDE0b9OPy7QUyWm
+         XOpBYRkcmLNeamnewScEaJIwhiKFB9r3E4CY9AukWlE2lN9EWDy38qZNGI9h0q3DRp9a
+         aFgmoshqjhselGHUuYJrYgedRTmpj8CqsrA0Ohgzqcsw85W/FWgqUmvM4je9WnHR52v+
+         K5HM6c0bN0wG5QI4oO6HDSF61bZd0Sb0O1okP/6AGv/QKvUKxmbG+QYuUa9HoETwsMKK
+         IQ/IP1JcK1jFTKYxd93hQ7Ohz51krGA/14auOxEdgsm/ITGxt3rdzlkC6SoAUQN1rJZF
+         C/kw==
+X-Forwarded-Encrypted: i=1; AJvYcCWCN2/LbAbu7+D46MGSc3BqxJADqPss7tBgOZoedgvkFQjgQ6/MWc2+EOeFd6aGGrgnf9bih2/h@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyd9QC9C1t629OZ2jcTj8+m7jz1y/ChDso7zMKj1uFh63xQfX6C
+	5Q2WbR8MR5etkLQFObMhAJoZs3m+rxrYHCO9zAekIarKo+4JFWNjdIxJZV9Mqurttb8Q9kF043s
+	OGjE=
+X-Gm-Gg: ASbGncuyQcH1x6l8tXnUsQxttsORLSjS+7hP+hHI6QE3rl3HkjT50jpAKPimL152zu3
+	9U5UDOXp2PPAm5injS6ztYk9AB2fA0D9WMuZRYS3+NpB36gxYLMg/ura+9CYygkQvCBMPlCqom1
+	9csAbjZtucJ5iaxtcHfekyWM2Cbz7QVuttDIfzBrZi4dXsVRl38pA7wziPFq6Rrr6NMCo/JMpFi
+	FLwqUYGs/Ppu5PkJJ8/+mtQqRlEOjw/E0zeMNY/KqX9bIN/BDHcnxmyCnkIKaSlz1I26W5VuvZv
+	eDWySw+VjRn6FN2Xdyb/7DC8nJOSWvUGnp20bcS4djC3BnNfncMXJC22qAMxlyWtnDxtlAUdQxL
+	V
+X-Google-Smtp-Source: AGHT+IHIqA/JyvOGkgzQUWJNR4BM6tDOwaTAOPIOC7LOw6ny276VlEr6Rza4dH6Z5PilkIdRj7V0oA==
+X-Received: by 2002:a17:906:32cb:b0:abf:2bb:13e5 with SMTP id a640c23a62f3a-abf02bb14cdmr146422066b.50.1740592799653;
+        Wed, 26 Feb 2025 09:59:59 -0800 (PST)
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com. [209.85.218.41])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abed2010d58sm368336866b.88.2025.02.26.09.59.58
+        for <ksummit@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Feb 2025 09:59:58 -0800 (PST)
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-aaecf50578eso1414758366b.2
+        for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 09:59:58 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCX5EOnhro84Zqn7oxXYss2PgIlo4/JoPpjrADuKsvCQzAgcvfYUVN2ioNXiMWZtqyot8OYXi5ET@lists.linux.dev
+X-Received: by 2002:a17:906:308e:b0:ab6:511d:8908 with SMTP id
+ a640c23a62f3a-abc0de19516mr1960252766b.40.1740592798401; Wed, 26 Feb 2025
+ 09:59:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -79,80 +88,130 @@ References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
  <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
  <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
  <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
- <CAFJgqgREAj-eP-d244WpqO-9H48ajZh83AxE31GqoONZ=DJe-g@mail.gmail.com>
- <CAH5fLghEMtT663SNogAGad-qk7umefGeBKbm+QjKKzoskjOubw@mail.gmail.com>
- <CAFJgqgRxfTVxrWja=ZW=mTj1ShPE5s-atAqxzMOq5poajMh=4A@mail.gmail.com>
- <CANiq72mA4Pbx1BeCZdg7Os3FtGkrwx6T8_+=+-=-o9+TOMv+EA@mail.gmail.com> <CAFJgqgSzqGKdeT88fJzrFOex7i-yvVte3NiQDdgXeWEFtnq=9A@mail.gmail.com>
-In-Reply-To: <CAFJgqgSzqGKdeT88fJzrFOex7i-yvVte3NiQDdgXeWEFtnq=9A@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 26 Feb 2025 18:49:12 +0100
-X-Gm-Features: AQ5f1JpctmKLQF0BCjDn8OovkDnRBgv6fuJL4nftVzeYKWrkU3F2aUL59QzVDxY
-Message-ID: <CANiq72m8zKABR0dXtkB-UiF-GeP5J4nAGqoabdmR=CfPsJejzg@mail.gmail.com>
+ <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com> <5d7363b0-785c-4101-8047-27cb7afb0364@ralfj.de>
+In-Reply-To: <5d7363b0-785c-4101-8047-27cb7afb0364@ralfj.de>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Wed, 26 Feb 2025 09:59:41 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com>
+X-Gm-Features: AQ5f1JqHaF8iBdXsZjiLGeP-Wg76QW9xhjWAhICZNldwiZDCjoY2SKOw5r5wwWM
+Message-ID: <CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com>
 Subject: Re: C aggregate passing (Rust kernel policy)
-To: Ventura Jack <venturajack85@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Linus Torvalds <torvalds@linux-foundation.org>, 
+To: Ralf Jung <post@ralfj.de>
+Cc: Alice Ryhl <aliceryhl@google.com>, Ventura Jack <venturajack85@gmail.com>, 
 	Kent Overstreet <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
 	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
 	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, 
 	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Ralf Jung <post@ralfj.de>
+	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 26, 2025 at 4:21=E2=80=AFPM Ventura Jack <venturajack85@gmail.c=
-om> wrote:
+On Wed, 26 Feb 2025 at 05:54, Ralf Jung <post@ralfj.de> wrote:
 >
-> I am not certain that I understand either you or Alice correctly.
-> But Ralf Jung or others will probably help clarify matters.
+>      The only approach we know that we can actually
+> pull through systematically (in the sense of "at least in principle, we can
+> formally prove this correct") is to define the "visible behavior" of the source
+> program, the "visible behavior" of the generated assembly, and promise that they
+> are the same.
 
-When you said:
+That's literally what I ask for with that "naive" code generation, you
+just stated it much better.
 
-    "In a preprint paper, both stacked borrows and tree burrows
-     are as far as I can tell described as having false positives."
+I think some of the C standards problems came from the fact that at
+some point the standards people decided that the only way to specify
+the language was from a high-level language _syntax_ standpoint.
 
-I think that you mean to say that the new model allows/rejects
-something that unsafe code out there wants/doesn't want to do. That is
-fine and expected, although of course it would be great to have a
-model that is simple, fits perfectly all the code out there and
-optimizes well.
+Which is odd, because a lot of the original C semantics came from
+basically a "this is how the result works". It's where a lot of the
+historical C architecture-defined (and undefined) details come from:
+things like how integer division rounding happens, how shifts bigger
+than the word size are undefined, etc. But most tellingly, it's how
+"volatile" was defined.
 
-However, that is very different from what you say afterwards:
+I suspect that what happened is that the C++ people hated the volatile
+definition *so* much (because of how they changed what an "access"
+means), that they then poisoned the C standards body against
+specifying behavior in terms of how the code *acts*, and made all
+subsequent C standards rules be about some much more abstract
+higher-level model that could not ever talk about actual code
+generation, only about syntax.
 
-    "Are you sure that both stacked borrows and tree borrows are
-     meant to be full models with no false positives and false negatives,"
+And that was a fundamental shift, and not a good one.
 
-Which I read as you thinking that the new model doesn't say whether a
-given program has UB or not.
+It caused basically insurmountable problems for the memory model
+descriptions. Paul McKenney tried to introduce the RCU memory model
+requirements into the C memory model discussion, and it was entirely
+impossible. You can't describe memory models in terms of types and
+syntax abstractions. You *have* to talk about what it means for the
+actual code generation.
 
-Thus I think you are using the phrase "false positives" to refer to
-two different things.
+The reason? The standards people wanted to describe the memory model
+not at a "this is what the program does" level, but at the "this is
+the type system and the syntactic rules" level. So the RCU accesses
+had to be defined in terms of the type system, but the actual language
+rules for the RCU accesses are about how the data is then used after
+the load.
 
-> You are right that I should have written "currently tied", not "tied", an=
-d
-> I do hope and assume that the work with aliasing will result
-> in some sorts of specifications.
->
-> The language reference directly referring to LLVM's aliasing rules,
-> and that the preprint paper also refers to LLVM, does indicate a tie-in,
-> even if that tie-in is incidental and not desired. With more than one
-> major compiler, such tie-ins are easier to avoid.
+(We have various memory model documentation in
+tools/memory-model/Documentation and that goes into the RCU rules in
+*much* more detail, but simplified and much shortened: a
+"rcu_dereference()" could be seen as a much weaker form of
+"load_acquire": it's a barrier only to accesses that are
+data-dependencies, and if you turn a data dependency into a control
+dependency you have to then add specific barriers.
 
-Ralf, who is pretty much the top authority on this as far as I
-understand, already clarified this:
+When a variable access is no longer about "this loads this value from
+memory", but is something much more high-level, trying to describe
+that is complete chaos. Plus the description gets to be so abstract
+that nobody understands it - neither the user of the language nor the
+person implementing the compiler.
 
-    "we absolutely do *not* want Rust to be tied to LLVM's aliasing rules"
+So I am personally - after having seen that complete failure as a
+by-stander - 100% convinced that the semantics of a language *should*
+be defined in terms of behavior, not in terms of syntax and types.
+Sure, you have to describe the syntax and type system *too*, but then
+you use those to explain the behavior and use the behavior to explain
+what the allowable optimizations are.
 
-The paper mentioning LLVM to explain something does not mean the model
-is tied to LLVM.
+> So the Rust compiler promises nothing about the shape of the assembly
+> you will get, only about its "visible" behavior
 
-And the Rust reference, which you quote, is not the Rust specification
--- not yet at least. From its introduction:
+Oh, absolutely. That should be the basic rule of optimization: you can
+do anything AT ALL, as long as the visible behavior is the same.
 
-    "should not be taken as a specification for the Rust language"
+> (and which exact memory access occurs when is generally
+> not considered "visible").
 
-When the Rust specification is finally published, if they still refer
-to LLVM (in a normative way), then we could say it is tied, yes.
+.. but this really has to be part of it. It's obviously part of it
+when there might be aliases, but it's also part of it when there is
+_any_ question about threading and/or memory ordering.
 
-Cheers,
-Miguel
+And just as an example: threading fundamentally introduces a notion of
+"aliasing" because different *threads* can access the same location
+concurrently. And that actually has real effects that a good language
+absolutely needs to deal with, even when there is absolutely *no*
+memory ordering or locking in the source code.
+
+For example, it means that you cannot ever widen stores unless you
+know that the data you are touching is thread-local. Because the bytes
+*next* to you may not be things that you control.
+
+It also *should* mean that a language must never *ever* rematerialize
+memory accesses (again, unless thread-local).
+
+Seriously - I consider memory access rematerialization a huge bug, and
+both a security and correctness issue. I think it should be expressly
+forbidden in *any* language that claims to be reliablel.
+Rematerialization of memory accesses is a bug, and is *hugely* visible
+in the end result. It introduces active security issues and makes
+TOCTOU (Time-of-check to time-of-use) a much bigger problem than it
+needs to be.
+
+So memory accesses need to be part of the "visible" rules.
+
+I claim that C got that right with "volatile". What C got wrong was to
+move away from that concept, and _only_ have "volatile" defined in
+those terms. Because "volatile" on its own is not very good (and that
+"not very good" has nothing to do with the mess that C++ made of it).
+
+              Linus
 
