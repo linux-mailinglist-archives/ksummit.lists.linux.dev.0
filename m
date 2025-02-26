@@ -1,173 +1,143 @@
-Return-Path: <ksummit+bounces-1915-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1916-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC7D9A46084
-	for <lists@lfdr.de>; Wed, 26 Feb 2025 14:18:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CF70A46152
+	for <lists@lfdr.de>; Wed, 26 Feb 2025 14:53:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86B231899724
-	for <lists@lfdr.de>; Wed, 26 Feb 2025 13:18:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFA1B3AEED8
+	for <lists@lfdr.de>; Wed, 26 Feb 2025 13:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D72218ABB;
-	Wed, 26 Feb 2025 13:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C88021E0BC;
+	Wed, 26 Feb 2025 13:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="i/maGwMa"
-Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lMnMcHi/"
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FCD7464
-	for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 13:17:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C385284A2B
+	for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 13:52:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740575879; cv=none; b=CSh5YlNHUYeVKdBA9qnfyrWlBC53bOI71MKRGICBcnovEbjsMos5dqqCJZi1CCbDUEuDdCFmGbfRt6E3iT+cD5TVLZQNmGCwhYYlRheQhbtRyJc6DOTDmNESJ0qOHw4esC/mIc7gF+o+r5cFqLJOuN20pWozsbTfg9bewejygGo=
+	t=1740577981; cv=none; b=RiuWp4cNUrgkgGojDqKpwHd0FREBU38BrEzlNfLdeoXUjYvAfm3/b1gkjSNJOk949GdqfUGkRdmY321r0+vzGEAF7XPjHYnS9bGxslh3DutbbDXR/j9qTZ8R7Z0E4VuTynxL4n6T4JjAKhqbZQWR+6p756soLQgAkJW4A0QCrLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740575879; c=relaxed/simple;
-	bh=2c7Bzmuc/iWViF51kYjotUVZN+DgZxmkN9bCCgaD3BI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=XXdG600BDYoQeIgTbvtzUQ5B7uRGV4bU7yiz0FAutFL1xWCHEla1koystopzLiOZJalBHlw9bmcN7QMY/Jwdd1sLdSOnHjZg3aSQLlj4D8l/TWGZUY0UE71s4bllr/S+Bc+HLdzx8rl+8cl5V167RkVzcyDcXYmr9wpfx4qjMiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=i/maGwMa; arc=none smtp.client-ip=49.12.72.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
-From: Fiona Behrens <me@kloenk.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1740575875; bh=2RKtFbPe77le4NhfF/Nc+zYGDNhfDzDomVRfDUW9gM8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=i/maGwMaFjn1V6YERlL0drSgp9jO8F0vnh5i9aRFQWCEIHEnEn+1WWeY6wC2e/b9R
-	 8S3nZZJGMlxj0wkEI3EEtY4nLyHnwnbtVzXe+pFN86UrdITYqr+zB2bCjfad5hK61T
-	 nDDsppFl98X6RlqJat6Z5RLUEfYx5OyAlDKb3VLE=
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Christoph Hellwig <hch@infradead.org>,  rust-for-linux
- <rust-for-linux@vger.kernel.org>,  Linus Torvalds
- <torvalds@linux-foundation.org>,  Greg KH <gregkh@linuxfoundation.org>,
-  David Airlie <airlied@gmail.com>,  linux-kernel@vger.kernel.org,
-  ksummit@lists.linux.dev
-Subject: Re: Rust kernel policy
-In-Reply-To: <Z7iav4U7k9AJDzay@phenom.ffwll.local> (Simona Vetter's message of
-	"Fri, 21 Feb 2025 16:24:47 +0100")
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
-	<Z7SwcnUzjZYfuJ4-@infradead.org>
-	<CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
-	<Z7bO1jT2onZFZwgH@infradead.org>
-	<CANiq72mM3tVmT6MQZqpzGEW4hJABVHRiODL0SnP2u+0ES4=pjw@mail.gmail.com>
-	<Z7iav4U7k9AJDzay@phenom.ffwll.local>
-Date: Wed, 26 Feb 2025 14:17:54 +0100
-Message-ID: <m234g0lu9p.fsf@kloenk.dev>
+	s=arc-20240116; t=1740577981; c=relaxed/simple;
+	bh=JIQw7BJUPcwv3MicIWTcVIfMUs8AGxVyXTCLAcwQkQs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OthfjH/GJeP43ZkRdh6vYjyudvP9wbdgKOvJUQW9AcjlmsmEB7TZJhRkrTwpUzh0Jy8K9GaxFM26aOdPUojq7LmUpqWHhnDF1xpZRFwBlYrPQiIC7sRTlSrrAHuXbipaiFOBnlXJWRqdPi7fQIvFmnN8ZQnepzRA4KBkvBiPGUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lMnMcHi/; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-220d27d490dso16139475ad.2
+        for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 05:52:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740577979; x=1741182779; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JIQw7BJUPcwv3MicIWTcVIfMUs8AGxVyXTCLAcwQkQs=;
+        b=lMnMcHi/Rk5zXkrSmmcmEpiXxCtB+xnRJGXDmQxw5aM2HLk2Ql3fX/haPlztLdNe66
+         e01ybaNHwjqHanCp80Rq5E8g3NT49Ipmq+Vc2j1KKxZsj22PSlVPI7UeUNDvCprBSO3y
+         i5vQKPTumLlWEJdG4E+R0Qz1i/XIhHoQnhz6ISCn5fh63lWacrLL8oU3TlvFny862Px8
+         yw0IjiFtBYeNb+fkjie1ath+TWXca52EE7Y3F7QJLnT99LtVlYfUDD8aj4jOFMmICUIM
+         FpWjPLR6dmhzAgcQtkxrLZymu5Q5o686n/mRk+wUtMjfTtcfwqp7k41RX74kZlXeXm1/
+         4U7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740577979; x=1741182779;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JIQw7BJUPcwv3MicIWTcVIfMUs8AGxVyXTCLAcwQkQs=;
+        b=R47KQS1m0PtMZyI0sm+yoEEhvD9o2qvhi/bUNQchIkzzOVstNmPYPbKWlOddCA8JEN
+         pKd3w8ry/iQtjMlJTqEL2j0+swGj9musGpg3f6lk0yoA1LkOGS9ZtJZfKNtCw5MDW+bU
+         cP37+WxbGeJI76mptZl/asCkLypm6S7615Ef1G/SDyWxeD1tXOJl+m/aNaT3TxEXUXRu
+         GMCgsTnY11shS65jhBu4RaezHQahPZmF8fWLXHyL2jtMGTp4NxgpAU9RaKC5q0cRbA36
+         4sS2PESiHJ94FSoV3SLB4OQSddvg/fOd570xWIQviBYvjZgi8QPbPz5+uwpVSRPhSB8m
+         ssog==
+X-Forwarded-Encrypted: i=1; AJvYcCXnACf0Ih9XoAUEgWC2BjKFYYvULZwKKlqFMUw+KHI/AVDVSVhaSncur0MwzKu68QqsDMRTGqGe@lists.linux.dev
+X-Gm-Message-State: AOJu0YzQpZNv9umZRRdPgxvRVnzW9DfvIOXpqS42cqZFBVBiB3c13+3/
+	C71miaSe4tD4Ht+QcJHPVS7YDDUuRKeQjvXxoQMEEc5KPFsK2sa37DRBsEHR33+0Hz/Ne1sxTMF
+	sCIs2yjfQeHxUlkKMRL7BTutfGNXsFGR6
+X-Gm-Gg: ASbGncvQgh+6OFOZjfr3h+xkZvnJgaLj1yzPq7K4LAhKkLSH2CFUSbJR0uA3lAl39+8
+	A5rOLmza1xiV4jm3rZvBihj01ARGf2ec9ObARS8RJKR9Cj0RsFfeczMtX5Ys0bZrIEiraMJ7nv1
+	SYFFPlVKo=
+X-Google-Smtp-Source: AGHT+IGyNP7dmuRW0tYnk3XLWBi3p+ESw1dXk4s/7QyJ5jvUAPUAW4M9pIGB3pYT1Jc+VKm/uOZMy3RV5rpaubS7JAw=
+X-Received: by 2002:a17:903:230e:b0:216:30f9:93c5 with SMTP id
+ d9443c01a7336-2219ff56b99mr134581255ad.6.1740577979041; Wed, 26 Feb 2025
+ 05:52:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+ <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+ <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+ <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+ <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
+ <CAFJgqgREAj-eP-d244WpqO-9H48ajZh83AxE31GqoONZ=DJe-g@mail.gmail.com>
+ <CAH5fLghEMtT663SNogAGad-qk7umefGeBKbm+QjKKzoskjOubw@mail.gmail.com> <CAFJgqgRxfTVxrWja=ZW=mTj1ShPE5s-atAqxzMOq5poajMh=4A@mail.gmail.com>
+In-Reply-To: <CAFJgqgRxfTVxrWja=ZW=mTj1ShPE5s-atAqxzMOq5poajMh=4A@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 26 Feb 2025 14:52:45 +0100
+X-Gm-Features: AQ5f1Jrt6D-MHqK_yymi1qP2f2dLOB4ls7cibDYNXeHA2afziYghxadGGv1x-Sw
+Message-ID: <CANiq72mA4Pbx1BeCZdg7Os3FtGkrwx6T8_+=+-=-o9+TOMv+EA@mail.gmail.com>
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: Ventura Jack <venturajack85@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Kent Overstreet <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
+	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
+	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, 
+	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Ralf Jung <post@ralfj.de>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Simona Vetter <simona.vetter@ffwll.ch> writes:
+On Wed, Feb 26, 2025 at 1:36=E2=80=AFPM Ventura Jack <venturajack85@gmail.c=
+om> wrote:
+>
+> In a preprint paper, both stacked borrows and tree burrows are as
+> far as I can tell described as having false positives.
+>
+> Are you sure that both stacked borrows and tree borrows are
+> meant to be full models with no false positives and false negatives,
+> and no uncertainty, if I understand you correctly? It should be
+> noted that they are both works in progress.
 
-> Hi Miguel
->
-> Disregarding the specific discussion here, but this just felt like a good
-> place to thank you for your work to bring rust to linux. Your calm and
-> understanding approach to figure out what fits best in each case, from "go
-> away, don't bother me with rust" through "I like this, but I have no clue"
-> all the way to "uh so we have four drivers now in progress, this is
-> getting messy" has and continues to enormously help in making this all a
-> success.
->
-> Thank you!
->
-> Obviously not diminishing everyone else's work here, just that Miguel's
-> effort on the culture and people impact of r4l stands out to me.
+I think you are mixing up two things: "a new model does not allow
+every single unsafe code pattern out there" with "a new model, if
+adopted, would still not be able to tell if something is UB or not".
 
-Also big thanks from me here. With coming via the rust side and having
-only briefly worked on the kernel before rust, having you (Miguel) to ask a=
-bout
-some ways on how can I aproach this to upstream my work is really really
-helpful and makes my working on the rust side much much easier.
+> The aliasing rules being tied to a specific compiler backend,
+> instead of a specification, might make it harder for other
+> Rust compilers, like gccrs, to implement the same behavior for
+> compiled programs, as what the sole major Rust compiler,
+> rustc, has of behavior for compiled programs.
 
-Thanks a lot for all the burocracy things that you also do next to also
-writing code.
-Thanks,
-Fiona
+It is not "tied to a specific compiler backend". The reference (or
+e.g. the standard library implementation, which you mentioned) may
+mention LLVM, as well as other backends, but that does not imply the
+final rules will (or need to) refer to the LLVM reference. And even if
+a spec refers to a given revision of another spec (it is not
+uncommon), that is different from being "tied to a specific compiler
+backend".
 
->
-> Cheers, Sima
->
-> On Fri, Feb 21, 2025 at 12:44:31AM +0100, Miguel Ojeda wrote:
->> On Thu, Feb 20, 2025 at 7:42=E2=80=AFAM Christoph Hellwig <hch@infradead=
-.org> wrote:
->> >
->> > The document claims no subsystem is forced to take Rust.  That's proven
->> > to be wrong by Linus.  And while you might not have known that when
->> > writing the document, you absolutely did when posting it to the list.
->> >
->> > That is a very dishonest way of communication.
->> >
->> > And while you might not have known that when
->> > writing the document, you absolutely did when posting it to the list.
->>=20
->> I did know -- Linus told both of us in the private thread. I am not
->> sure what that has to do with anything.
->>=20
->> As I told you in the previous reply, please read the next paragraph of
->> the document:
->>=20
->>     Now, in the Kernel Maintainers Summit 2022, we asked for flexibility
->>     when the time comes that a major user of Rust in the kernel requires
->>     key APIs for which the maintainer may not be able to maintain Rust
->>     abstractions for it. This is the needed counterpart to the ability
->>     of maintainers to decide whether they want to allow Rust or not.
->>=20
->> The point is that maintainers decide how to handle Rust (and some have
->> indeed rejected Rust), but that flexibility is needed if a maintainer
->> that owns a core API does not want Rust, because otherwise it blocks
->> everything, as is your case.
->>=20
->> In summary: you were in that meeting, you own a core API, you do not
->> want Rust, you are blocking everything. So flexibility is needed. Thus
->> we asked you what can be done, how we can help, etc. You did not
->> accept other maintainers, did not want to have the code anywhere in
->> the tree, nor wanted to work on a compromise at all. You, in fact,
->> said "I will do everything I can do to stop this.". So that is not
->> providing flexibility, quite the opposite of it. So Linus eventually
->> had to make a decision to provide that flexibility.
->>=20
->> I am not sure how that contradicts the document -- the document is
->> precisely talking about this situation.
->>=20
->> By the way, I do not take lightly that you accuse me of dishonesty.
->>=20
->> > Which given the binding creep means every single non-leaf subsystem
->> > eventually.
->>=20
->> If Rust keeps growing in the kernel, then obviously more and more
->> non-leaf maintainers get affected.
->>=20
->> But that just means more people is getting involved and more
->> subsystems are accepting Rust for their use cases. So that would just
->> mean it was, indeed, a good idea in the end.
->>=20
->> > I'm not sure how that matters.  Of course your Rust testimonials are
->> > going to like it, otherwise you would not have quoted it.  They
->>=20
->> Not at all. As I say in the talk, I included every single quote I got,
->> even up to the night before the keynote.
->>=20
->> It is nevertheless very biased, because I asked people we interacted
->> with, which were mostly positive or neutral. I acknowledged this bias
->> in the talk too.
->>=20
->> However, just so that others are aware, I did email others that are
->> negative about it too, such as you. And you did not reply.
->>=20
->> > Well, obviously you do.  But as in many other things I would usually
->> > not count corporate pressure as a good thing.
->>=20
->> Corporate pressure is not good. Corporate support is.
->>=20
->> And we need that support to accomplish something like this.
->>=20
->> Cheers,
->> Miguel
+Moreover, if it makes it easier, another compiler could always assume less.
+
+> I am also skeptical of the apparent reliance on MIRI in the
+> blog post and by some other Rust developers, since
+> MiRI according to its own documentation cannot catch
+> everything. It is better not to rely on a sanitizer for trying
+> to figure out the correctness of a program. Sanitizers are
+> useful for purposes like mitigation and debugging, not
+> necessarily for determining correctness.
+
+Please see the earlier reply from Ralf on this.
+
+Cheers,
+Miguel
 
