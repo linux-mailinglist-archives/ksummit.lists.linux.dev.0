@@ -1,72 +1,81 @@
-Return-Path: <ksummit+bounces-1954-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1955-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9887EA46C84
-	for <lists@lfdr.de>; Wed, 26 Feb 2025 21:35:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3740EA46D37
+	for <lists@lfdr.de>; Wed, 26 Feb 2025 22:15:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9562416ED7C
-	for <lists@lfdr.de>; Wed, 26 Feb 2025 20:35:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D801A3AC4F6
+	for <lists@lfdr.de>; Wed, 26 Feb 2025 21:14:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77BA9235377;
-	Wed, 26 Feb 2025 20:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE6925B675;
+	Wed, 26 Feb 2025 21:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amacapital-net.20230601.gappssmtp.com header.i=@amacapital-net.20230601.gappssmtp.com header.b="TSR/utGr"
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="L34wdAmE"
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA2019E98C
-	for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 20:34:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1102425A2DB
+	for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 21:14:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740602100; cv=none; b=AEQGYzmWcF3mZtaNrPHMnvXpg7k4VfTx9K9AVStCpBHoLhkLtLd3u9j9tVLp4j0TqjNn0Hat11zSNv+Rzq7nAwgf9vq7KPLbdbjqDAm6iPkVaWkHjE0YbUlS0GCKnUsU89+RurkxTKlzKqGhBDLwYeY38R64xFsAoXti1roxE+8=
+	t=1740604497; cv=none; b=cEvv7JOi5rFwmealmIJeK6OBrRz83sSxhvYY43GA4kmCfo6/MBvNISZVfQP9vx7E3pTbnCgS7b7kRxpWEoP4uyJQfvcY9bGNtDHXTBXmKuBQOgcbxiXX8SFhz/Dhx8MNw9R7MseUIHfmyAigsb5DqObKhuNLzOsG1Nc1vfwI72o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740602100; c=relaxed/simple;
-	bh=BsjkObCZOGJxyJ1E4M58vXDesam1iaUd49yxo0CQgKE=;
+	s=arc-20240116; t=1740604497; c=relaxed/simple;
+	bh=A5PaH4enkrbYDM7nXZ+Ass9AMQsZEd0mjSntP6Y0BCU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=irIB5eH+rnwOsJyj1VETmiRnHTqRHc8tNco67Or1oQIpMCLqA167mSrFEeOJFGb7Y9/ZItJWswGjXi+x1Y4HcobHGzGGPTmA8NB3BYu6dggduSbJ/PYMIzz5KPjjYaMd5+Hv029sI9++vF4PkBFD0YzEoMakHZKEC/yfcVOMhAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net; spf=pass smtp.mailfrom=amacapital.net; dkim=pass (2048-bit key) header.d=amacapital-net.20230601.gappssmtp.com header.i=@amacapital-net.20230601.gappssmtp.com header.b=TSR/utGr; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amacapital.net
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-abbec6a0bfeso26105566b.2
-        for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 12:34:57 -0800 (PST)
+	 To:Cc:Content-Type; b=d/JJZVm+eoPQ4iSSc4zT8xH+RQ7ST6UvCoziMqHvalkd46aCA4fL2VsFIuW27qRpCPHIEDYvY5hhB+SeAyRBNoiZmsnKOg32GgLUfENQ8qVWtjQFF2Yu5hCn7Q3XeAR7N7Dgvq+9xtr2RbAzgATHIiGVEZzZNyVFJu1nadKdopE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=L34wdAmE; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5e04861e7a6so267247a12.1
+        for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 13:14:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20230601.gappssmtp.com; s=20230601; t=1740602096; x=1741206896; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rNNBNCG63y+hw99CeSG36gYBSbxZTQ5PMbvNbhu7Ucs=;
-        b=TSR/utGrFKcoNxRzAJLb3dcPEgx8OOWwCf1yq2LOqClSUSKpYMhsxy0PitZ5Pz5+Iy
-         2uD80wEmdQOo3SsfADGnRAAkRA/3uGtRso8ETLC0quNdo43mJIfcUhwDLs0bvIoMU9n9
-         K6IgnAUPeRjhzJc6OUYr2nmDSwyQ2eViCiPFC51nX9yv6UJqlJhlZzreGmDbqDpuHyE/
-         sTqyBLKXlOarLEpArNou7t4byAYnVO64FmxakYHQ4vESNN/+S2u+gfZLBP7jkM6kNrBj
-         u4boX89YjOVuVmueoemMXm14m2a55bGMFq9otNQwpak6pUnleo/SCmP5SbvOn3qKkV0n
-         cZuw==
+        d=linux-foundation.org; s=google; t=1740604491; x=1741209291; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=plHH0IcN9eXsv1E/PqFvNYQwN4wb6pcqv5JKjVIOwQQ=;
+        b=L34wdAmEKN1RQe48uczlmzsn981dye5L6a8yaJJqQivEXSoMI8V2NEZ2rnfjR50hJW
+         MPUq75ai3Q7lwSwBwFYsNkgfGlV7VkCt2BInObCnRbwgfOJ2pLpMBnMjSi3MPa76scle
+         Zz4DPJa07KxpsDl/ufML1Pz5WPMCOfiizQEoU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740602096; x=1741206896;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rNNBNCG63y+hw99CeSG36gYBSbxZTQ5PMbvNbhu7Ucs=;
-        b=iABe5Vfk1zqK6JHMCSf0Ccn/7UeUI34KAyFQjySFQepp5J7QeWy4rq0pud/Z0dJ1KH
-         tQWWXQgW0+g760FnHmt+LjiB5tGHo8rYRsY4fM66ruvW4n3ntXlYF7AlsApRVmuXzqmK
-         HXkzxK5sAK1BHZBjh2MCrF2ZD6ZHSV0YGY/h+Ta6v2B6mkKYLmlolor5TTomJRzTqweN
-         +7/0aXAX9Cye+OfBWCTG5jXzOtqm8gn2j6Q1Y7GhHx7HslliKaGcx+3hIDj2iROcU6tW
-         /Aa4FrJlmHxboqF5TWyfCWl+cLuXdhm3Iapyu7v/Wjfi1kiKF+0MbzEhXECIRSHxRPyA
-         E1qg==
-X-Forwarded-Encrypted: i=1; AJvYcCUJrEoMutuvJWMmjzJG5uzbdnu5SBRG7EPjgSmKeZsuG6/0L70Wdl1B+NSoomg5FI74kBtsJ9Hs@lists.linux.dev
-X-Gm-Message-State: AOJu0YylJ6b+6nlnBW+SXtopSHgoI0JcFpoJJNidQQACfL1r342czYcM
-	6DvHKWcLol7AyqthjrJoNMlswQ9nY5OXqF1FLH5mU8+n4iGUNQ8VO1Nk4dM9ElwQmzez5izTVz+
-	evBB0thAoimsUZ1hTmBDmPA0XJuyB5YWswChf
-X-Gm-Gg: ASbGncunlWhG6QJ8y83cone3OeUGr1ZcEsaLHmUtC0kQ89wzdDMOhrjJ0/P+XXyUmY9
-	SHUJW3RaX/OsL4REAR/sblUFwVCrWFcwU8m74inTHkpyVIOxNPUHvzwxvfWDm6gN8hvygAyikQb
-	9wG0RExw==
-X-Google-Smtp-Source: AGHT+IEpD0bL4v9cVqbM+mXKhEESXlvA+VH0GzcrSUQIWZvKuDazTin9u4dr6k0WDBAgoL9Etj8BS5SONGwDZcdL8eM=
-X-Received: by 2002:a17:907:c29:b0:ab7:86ae:4bb8 with SMTP id
- a640c23a62f3a-abc09a0bc37mr2387353166b.23.1740602096179; Wed, 26 Feb 2025
- 12:34:56 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740604491; x=1741209291;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=plHH0IcN9eXsv1E/PqFvNYQwN4wb6pcqv5JKjVIOwQQ=;
+        b=MOe7z56E/lUfG64mrjapt3sC97w+AnNVVu3tQ33bmGO/pwtM9B8EgZllW/yVa09oyl
+         U2/J9h4pTz02Jae8sRyAN0yLrh9ealpLiAgAv0RcNPyBd+UHSzBAJpPBEWaAl3fgj5en
+         wJdLqJVBWT2OZi+WX7KHSOOYotMJBpkt16P9P1s7hl7FfaGLpRyHSzqGNM5za4uJNwvQ
+         k403sME2RBcn7ddYyvZXe3fF8ayyoC2ven9iK8jNS4ulXElThg8SxNI4ztLYK7QRxTms
+         aqy5ggdU46bhqRr2sUOV+2lvyQ395zQ4/RuRKkOGQquU7AemZLuJ2XkmSo+KRfBAkttp
+         ckPw==
+X-Forwarded-Encrypted: i=1; AJvYcCVktzizwwafQlqAU3VdGuNRmOI/v7HWe/GUKbGrPm01kwoeW2gm5+pTang2DvvxiIkFk//77p7f@lists.linux.dev
+X-Gm-Message-State: AOJu0YwqPxSSliqk/4zEU8iUOtw5bfjq3Krq6NAFnwFOl/CWK04RpLyl
+	Iqap37BaRia7d/RXJ/iC7ZrVicAttFQnr6KiindTOW6RQLcQy0ZqXX6sakI3iFQx1Nyim9KxdPp
+	+I+uPvw==
+X-Gm-Gg: ASbGncuP3xXlVemOYWemrE+qM3NU93YSQZmcoLW37BsoA1rFZmlX5VON2+9uB1QCBQN
+	LlKRanu5YYilN7wP0oOPHlxRKdbK6panvfSpUoN6H0poGNp3r4qi15YiAPGVItVGS/45+n6fM7W
+	iAFL1NyIY2hRmxA8VXh9TC7d2IHqUPjmfEGO6UGuyl2Ays3GPVF4hHCyPdXVNYLVOwUQqhQ+egd
+	7HQSWIAcIvZjLfyTu+Jovy4neCsJcLcjfg0LEGdhtE3by882+huX2onx5gy+zG/J0DCQBn08Oqf
+	+AXXG+QplgACOlEL6RWDzUbkk13oNacFrkAcXk3PZns0WNuB8hqMcSLDqw/X3F4ZnSNJLq6b3Mw
+	W
+X-Google-Smtp-Source: AGHT+IHHj7DCE+bWBwtbxHX1nX1/QGsIEYwUvfv+gZQYqOMSpCa3MnVddcjQZHFh/ENQBGx4CmxLGg==
+X-Received: by 2002:a05:6402:280f:b0:5e1:8604:9a2d with SMTP id 4fb4d7f45d1cf-5e44448116bmr9691987a12.4.1740604491022;
+        Wed, 26 Feb 2025 13:14:51 -0800 (PST)
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com. [209.85.218.44])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e4c3fb58f7sm33180a12.57.2025.02.26.13.14.48
+        for <ksummit@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Feb 2025 13:14:49 -0800 (PST)
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-abb9709b5b5so31305166b.2
+        for <ksummit@lists.linux.dev>; Wed, 26 Feb 2025 13:14:48 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVKVVO9Ld7N2YPI2Rhc/+nTgwefXxnrUzA8S5Sct1YpxQ7A5/CZX6y43PykEU8owIVlmv3SVU/M@lists.linux.dev
+X-Received: by 2002:a17:906:3150:b0:abe:c894:5986 with SMTP id
+ a640c23a62f3a-abed100adb1mr883763566b.39.1740604487746; Wed, 26 Feb 2025
+ 13:14:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -81,55 +90,96 @@ References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
  <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
  <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
  <5d7363b0-785c-4101-8047-27cb7afb0364@ralfj.de> <CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com>
- <amebiomyty3gw7gwgpz3sbztzdac6ce2pslq3jjfe3no4w72dn@sskvzdp6l67w>
-In-Reply-To: <amebiomyty3gw7gwgpz3sbztzdac6ce2pslq3jjfe3no4w72dn@sskvzdp6l67w>
-From: Andy Lutomirski <luto@amacapital.net>
-Date: Wed, 26 Feb 2025 12:34:44 -0800
-X-Gm-Features: AQ5f1Jq-YVyDssbhA7TUSjB18AyuOEnmF5EUBN1uZ8DJs3k5rbz-GioqT3VdMt4
-Message-ID: <CALCETrVc_eBjBSPy=nLHP7fh5h52u_wdT2YRnUZJDWmr-C2q_Q@mail.gmail.com>
+ <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
+In-Reply-To: <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Wed, 26 Feb 2025 13:14:30 -0800
+X-Gmail-Original-Message-ID: <CAHk-=whLSWX=-5-z4Q8x1f_NLrHd0e3afbEwYPkkVSXj=xT-JQ@mail.gmail.com>
+X-Gm-Features: AQ5f1Jq-snYj9HKjCJh9QYG9k368Ub3WE-vsH9QCuPSV36deSRojSaVqyhZUuTw
+Message-ID: <CAHk-=whLSWX=-5-z4Q8x1f_NLrHd0e3afbEwYPkkVSXj=xT-JQ@mail.gmail.com>
 Subject: Re: C aggregate passing (Rust kernel policy)
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Ralf Jung <post@ralfj.de>, 
-	Alice Ryhl <aliceryhl@google.com>, Ventura Jack <venturajack85@gmail.com>, 
+To: Martin Uecker <uecker@tugraz.at>
+Cc: Ralf Jung <post@ralfj.de>, "Paul E. McKenney" <paulmck@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Ventura Jack <venturajack85@gmail.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
 	Gary Guo <gary@garyguo.net>, airlied@gmail.com, boqun.feng@gmail.com, 
 	david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, 
 	hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
 	linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, 
 	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 26, 2025 at 12:27=E2=80=AFPM Kent Overstreet
-<kent.overstreet@linux.dev> wrote:
-
-> E.g. if you're doing a ringbuffer with head and tail pointers shared
-> between multiple threads, you no longer do that with bare integers, you
-> use atomics (even if you're not actually using any atomic operations on
-> them).
+On Wed, 26 Feb 2025 at 12:00, Martin Uecker <uecker@tugraz.at> wrote:
 >
+> The model is exactly the same as in C.  One defines "observable
+> behavior" (to use C terminology) and compiler can do whatever it
+> wants as long as it preserves this.
 
-FWIW, as far as I'm concerned, this isn't Rust-specific at all.  In my
-(non-Linux-kernel) C++ code, if I type "int", I mean an int that
-follows normal C++ rules and I promise that I won't introduce a data
-race.  (And yes, I dislike the normal C++ rules and the complete lack
-of language-enforced safety here as much as the next person.)  If I
-actually mean "a location in memory that contains int and that I
-intend to manage on my own", like what "volatile int" sort of used to
-mean, I type "atomic<int>".  And I like this a *lot* more than I ever
-liked volatile.  With volatile int, it's very very easy to forget that
-using it as an rvalue is a read (to the extent this is true under
-various compilers).  With atomic<int>, the language forces [0] me to
-type what I actually mean, and I type foo->load().
+The problem really is that memory accesses (outside of volatile, which
+is defined to be a side effect) aren't actually defined to be
+observable.
 
-I consider this to be such an improvement that I actually went through
-and converted a bunch of code that predated C++ atomics and used
-volatile over to std::atomic.  Good riddance.
+Yes, yes, the standard _allows_ that behavior, and even hass language
+to that effect ("The keyword volatile would then be redundant"), but
+nobody ever does that (and honestly, treating all memory accesses as
+volatile would be insane).
 
-(For code that doesn't want to modify the data structures in question,
-C++ has atomic_ref, which I think would make for a nicer
-READ_ONCE-like operation without the keyword volatile appearing
-anywhere including the macro expansion.)
+> As Ralf said, the difference is that Rust makes it much harder to
+> accidentally trigger UB.
 
-[0] Okay, C++ actually gets this wrong IMO, because atomic::operator
-T() exists.  But that doesn't mean I'm obligated to use it.
+Yes, but "accidental" is easy - unless the compiler warns about it.
+
+That's why I basically asked for "either warn about UB, or define the
+UB do the 'naive' thing".
+
+So this is literally the problem I'm trying to bring up: "aliasing" is
+defined to be UD _and_ the memory accesses are not defined to be
+observable in themselves, so a C compiler can take those two things
+and then say "you get random output".
+
+THAT is what I am asking you to consider.
+
+Pointing to the C standard doesn't help. The C standard GOT THIS WRONG.
+
+And yes, part of getting it wrong is that the standard was written at
+a time when threading wasn't a prime thing. So it was somewhat
+reasonable to claim that memory accesses weren't "observable".
+
+But dammit, doing things like "read the same variable twice even
+though the programmer only read it once" *IS* observable! It's
+observable as an actual security issue when it causes TOCTOU behavior
+that was introduced into the program by the compiler.
+
+So I claimed above that treating all memory accesses as volatile would
+be insane. But I do claim that all memory accesses should be treated
+as "USE the value of a read or write AT MOST as many times as the
+source code said".
+
+IOW, doing CSE on reads - and combining writes - when there aren't any
+aliasing issues (or when there aren't any memory ordering issues)
+should absolutely be considered ok.
+
+And doing speculative reads - even if you then don't use the value -
+is also entirely fine. You didn't introduce any observable behavior
+difference (we'll agree to dismiss cache footprint issues).
+
+But if the source code has sa single write, implementing it as two
+writes (overwriting the first one) IS A BUG. It damn well is visible
+behavior, and even the C standards committee has agreed on that
+eventually.
+
+Similarly, if the source code has a single read, the compiler had
+better not turn that into two reads (because of some register pressure
+issue). That would *ALSO* be a bug, because of the whole TOCTOU issue
+(ie the source code may have had one single access, done sanity
+testing on the value before using it, and if the compiler turned it
+all into "read+sanity test" and "read+use", the compiler is
+introducing behavioral differences).
+
+That "single read done as multiple reads" is sadly still accepted by
+the C standard, as far as I can tell. Because the standard still
+considers it "unobservable" unless I've missed some update.
+
+Please do better than that.
+
+              Linus
 
