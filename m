@@ -1,125 +1,98 @@
-Return-Path: <ksummit+bounces-1985-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1986-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A7C5A48296
-	for <lists@lfdr.de>; Thu, 27 Feb 2025 16:12:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4260CA482EB
+	for <lists@lfdr.de>; Thu, 27 Feb 2025 16:28:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04C773AC238
-	for <lists@lfdr.de>; Thu, 27 Feb 2025 15:12:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 130707A64DE
+	for <lists@lfdr.de>; Thu, 27 Feb 2025 15:27:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 433CE26A0E8;
-	Thu, 27 Feb 2025 15:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECAA325EF9C;
+	Thu, 27 Feb 2025 15:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CUhk0i8I"
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="w8gd+D68"
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E078825CC95
-	for <ksummit@lists.linux.dev>; Thu, 27 Feb 2025 15:12:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7664228F3
+	for <ksummit@lists.linux.dev>; Thu, 27 Feb 2025 15:28:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740669136; cv=none; b=IwzhRXx7O/iyc69lErFZFJDCy3++KYTU26qQ98DSgvwk7Gx13Cbux/P4u9Sb9oy1UQXiUbMoe/uEDZ4PY3s33Hv4BHUA7JUgxuRjtwLLUMzrbJkXGXuBtlMHTzOmrXsEh2v+EGAvqjtOO9NMS901OsLLlT0Arfmn3AQ/CbiQ63M=
+	t=1740670101; cv=none; b=BDm5uLHtzsVU8zUBk9q8VGIg/vk46Dn/Xn3xQMx9wF7U1opoai2tEdr6RB4RFkcEkz0FioZndxdH6O97AWdtwfkGJOAhdlzMuLCTgQEX6mT5tYlm8DI8WchG2+ns4eFyUbcnoximsy7P2cp17Gq0d84DV3CSyyBNpcZ1Ub3Z5bM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740669136; c=relaxed/simple;
-	bh=hJrwlkkUVzio2wpaktL0L/Hd3mV1lQuzrfSl9WaxFYk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZEo2MwDsthTWq7UTsq/Z77aRE2njcjDuPPv+Tzi3YaM9EaeiCCo3mata46c7CVP//9Q5ilnUIx/aHWn/0+0OjpVzwKO4KPBJAK/7lOTRxoQdGIaBGnY5n9QbieH7TVaMpu3HN+PIrE0pLmlD9dpjvWYWazTRCreEdoCJDVwcSy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CUhk0i8I; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-543e4bbcd86so1078750e87.1
-        for <ksummit@lists.linux.dev>; Thu, 27 Feb 2025 07:12:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740669133; x=1741273933; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Gfn+uCBojQ5GG4YhEtPCwqVqkPReqrK18jN+sTrUXsk=;
-        b=CUhk0i8IllC7sCYl0x8H2Wgmb0G1H47fRhhbU17xyOOVA3y/thLKbIlV6cLJczV4Mw
-         VNFyq+c1ofP1EGqbcICjGE3KTyU0IyKHrFSYCRFP9nO2K20IrhE1DNFDEM7nuGOljRW4
-         2IvcMRiQSuGK7kc8P3ucGPiWtFBfwu+QjUrZ/CdGc9QYiG59lgSAKuBx15xbGQZYII3w
-         wXmWC8fNfryqKKZtlm5K3oEfCRD1XHAxOgTLTRpSqUiBiJd7VJFd8Y4NUrVSjos2kKI4
-         1iwrP/64nAIsOEO92+sz3owKlpiE/w1QdYw/agrs7qU6+x7Z5PXLT/6atlfH5ZeI3oN6
-         xF8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740669133; x=1741273933;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Gfn+uCBojQ5GG4YhEtPCwqVqkPReqrK18jN+sTrUXsk=;
-        b=gVIxDpS30sfvg6eGt9BWUQ5dgUPsXxn2zwz9a2OnPcycDbBFUTxq6ABHJ6dvVeROOK
-         hZLmbx2dt65K53wM5jZlgAW2ErbjxOHrgjV9OhstIMksKz0OYziE2vYwxJfO9lsT3OWR
-         Dlt9NBbhtckQ5QOuwzsf8AoiYx/rVWfSzkuMSHm6Ssncl/ExzRVGpt0ImYD9xLzfKc2y
-         ZvBqTjQcg+ljv8Ui7wCQR0XsnUB7Ds/+i1rWkzyNLQ5hQZRis8KBuKPsmEhRgQUZAPEv
-         g2bZFEahuoTPCPLCnqjFmYLmJ19t2YZ1760mi4y0VKUwit6wXRymLe/wv/bZsFbItMOL
-         TPOA==
-X-Forwarded-Encrypted: i=1; AJvYcCW+pXa5gqy8Dmi0vHqcvhMWvI2C/CW5/c2+rD9wJsBi78CxKbl6sOmpudTMZ5e+2laa5LW0sSPi@lists.linux.dev
-X-Gm-Message-State: AOJu0YwwgVXv73lMvQTKKmBQ8PjbEV+jSJHubsb1PzJoRNK3lWAinRnq
-	hWg8ZSIobraEBFNheTK8t69yf6hy4uIxn1Hj7rJK3SXky7iJ1NEIVeTl/HT0UxToqOQOsl1rdhF
-	FUCr1NwhWMtCmmN2Ke09ed1/GIHE=
-X-Gm-Gg: ASbGncvgKBRIfR0SO1JSRw2kZKHUFtRwaS2jJGqnYab2WicnMSVPgeBIWvELfLwcA2g
-	R/Ad2SGKD6zf36EKZSHmkr3Q48g1/gxYMgFlhvvbNKQQwJOvZd9sU9usWki2DOQW22h6Nj+z/JN
-	xlQk2VH9BS
-X-Google-Smtp-Source: AGHT+IFYBk+YziZEk93I++dkzEEbDPv17C0AA2w6xghnGW4Zz4shpUZmiwyGABiKGPFGjhTpVLPMBVow9YrGLugSLhU=
-X-Received: by 2002:a05:6512:15a9:b0:540:1f75:1b05 with SMTP id
- 2adb3069b0e04-5493c57ab8amr5115849e87.19.1740669132707; Thu, 27 Feb 2025
- 07:12:12 -0800 (PST)
+	s=arc-20240116; t=1740670101; c=relaxed/simple;
+	bh=o0UvjLqBNiIoXova2cJYX5uoNI9jFerQg1JWrk0OAsk=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=GHCQjpYSjjcBYWWxTJXPjfblzsmQ5C06+rDv1nxmyxdkCAGpS7MxOmWDYknJeYdDp9RW87UaNcpsDi9Sm+QILebpBOYp93tpYK/rgmS5zQG8eZGSBXZZcADQLNCz3g+6Ue3gqRC8WNspqeI4XIisJrpcYAgzivV9u3RhVhxteZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=w8gd+D68; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [127.0.0.1] ([76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 51RFRn4l2204046
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Thu, 27 Feb 2025 07:27:49 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 51RFRn4l2204046
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025021701; t=1740670071;
+	bh=o0UvjLqBNiIoXova2cJYX5uoNI9jFerQg1JWrk0OAsk=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=w8gd+D686FERjp+qfzeIMQcKI8kUJJ94AXPZx/ikjhjHqb2nHRoFOXgA/1YD2biNY
+	 9oI1ZUJFhat1YOiHgL/qSIhmSuW4OVxBvgNBNXNZiKAIIxmfrzw0xQTdfJaZdC11cw
+	 29EjOCKplrI6Do4dE8PEUc/ViIlmcBnPXqSCRSWbY0R/gmYm59+k4BmVEnAA1A3tEv
+	 7kD/4/ZaG8Nwd9PW/jbuRkLDKE7fUBnQIRVRBSvTtqg3DydyCKG1Mqb2tGJ+lQv5Qy
+	 z+IZa80n1AhnRRmSRRq2zAUxy4vPReygOALrlyczwhP5RPxJ75YSbLkjU61rnO62tJ
+	 68/HdI+pV/RaQ==
+Date: Thu, 27 Feb 2025 07:27:48 -0800
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Ventura Jack <venturajack85@gmail.com>, Martin Uecker <uecker@tugraz.at>
+CC: Linus Torvalds <torvalds@linux-foundation.org>, Ralf Jung <post@ralfj.de>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Alice Ryhl <aliceryhl@google.com>,
+        Kent Overstreet <kent.overstreet@linux.dev>,
+        Gary Guo <gary@garyguo.net>, airlied@gmail.com, boqun.feng@gmail.com,
+        david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org,
+        hch@infradead.org, ksummit@lists.linux.dev,
+        linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com,
+        rust-for-linux@vger.kernel.org
+Subject: Re: C aggregate passing (Rust kernel policy)
+User-Agent: K-9 Mail for Android
+In-Reply-To: <CAFJgqgSjRwOUkcC5v6wGcfQ-53oWyWW+wBg3PZ-w7vRweHekpw@mail.gmail.com>
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com> <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com> <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c> <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com> <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com> <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com> <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com> <5d7363b0-785c-4101-8047-27cb7afb0364@ralfj.de> <CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com> <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at> <CAFJgqgSjRwOUkcC5v6wGcfQ-53oWyWW+wBg3PZ-w7vRweHekpw@mail.gmail.com>
+Message-ID: <75F703D5-5ECD-4DF5-97AA-0CBD5965F470@zytor.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
- <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
- <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
- <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
- <CAFJgqgREAj-eP-d244WpqO-9H48ajZh83AxE31GqoONZ=DJe-g@mail.gmail.com>
- <CAH5fLghEMtT663SNogAGad-qk7umefGeBKbm+QjKKzoskjOubw@mail.gmail.com>
- <CAFJgqgRxfTVxrWja=ZW=mTj1ShPE5s-atAqxzMOq5poajMh=4A@mail.gmail.com>
- <91dbba64-ade3-4e46-854e-87cd9ecaa689@ralfj.de> <CAFJgqgTTgy=yae68AE29oJQc7Bi+NvkgsrBtOkVUvRt1O0GzSQ@mail.gmail.com>
- <6983015e-4d6a-44d4-9f2e-203688263018@ralfj.de> <CAFJgqgTJ+GBvdkZf4bPHPoUgJj5ZzENZaLzVV2bnDOEG+3OMtw@mail.gmail.com>
- <7ab2de35-8fc8-42cf-9464-81384e227dba@ralfj.de>
-In-Reply-To: <7ab2de35-8fc8-42cf-9464-81384e227dba@ralfj.de>
-From: Ventura Jack <venturajack85@gmail.com>
-Date: Thu, 27 Feb 2025 08:11:59 -0700
-X-Gm-Features: AQ5f1JofZL_Q1A2kDOrsV-NIHTRm574zSmREXnrOEzf8tZhCp6mWng88DDVecc8
-Message-ID: <CAFJgqgTeq0Zer8b1Dk0D2Cvo3t5BUTqxh_7OF7eCkLtjmm8Mcg@mail.gmail.com>
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: Ralf Jung <post@ralfj.de>
-Cc: Alice Ryhl <aliceryhl@google.com>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Kent Overstreet <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
-	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
-	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, 
-	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 26, 2025 at 2:39=E2=80=AFPM Ralf Jung <post@ralfj.de> wrote:
-> > On the other hand, RefinedRust reuses code from Miri.
+On February 27, 2025 6:21:24 AM PST, Ventura Jack <venturajack85@gmail=2Eco=
+m> wrote:
+>On Wed, Feb 26, 2025 at 1:00=E2=80=AFPM Martin Uecker <uecker@tugraz=2Eat=
+> wrote:
+>>
+>> I think C++ messed up a lot (including time-travel UB, uninitialized
+>> variables, aliasing ules and much more), but I do not see
+>> the problem here=2E
 >
-> No, it does not use code from Miri, it is based on RustBelt -- my PhD the=
-sis
-> where I formalized a (rather abstract) version of the borrow checker in C=
-oq/Rocq
-> (i.e., in a tool for machine-checked proofs) and manually proved some pie=
-ces of
-> small but tricky unsafe code to be sound.
+>C++26 actually changes the rules of reading uninitialized
+>variables from being undefined behavior to being
+>"erroneous behavior", for the purpose of decreasing instances
+>that can cause UB=2E Though programmers can still opt-into
+>the old behavior with UB, on a case by case basis, for the
+>sake of performance=2E
+>
+>Best, VJ=2E
+>
+>
 
-I see, the reason why I claimed it was because
-
-    https://gitlab.mpi-sws.org/lgaeher/refinedrust-dev
-        "We currently re-use code from the following projects:
-        miri: https://github.com/rust-lang/miri (under the MIT license)"
-
-but that code might be from RustBelt as you say, or maybe some
-less relevant code, I am guessing.
-
-Best, VJ.
+Of course, that is effectively what one gets if one treats the compiler wa=
+rning as binding=2E
 
