@@ -1,74 +1,65 @@
-Return-Path: <ksummit+bounces-2009-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2010-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 598B5A48BDF
-	for <lists@lfdr.de>; Thu, 27 Feb 2025 23:43:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81EB7A48CB0
+	for <lists@lfdr.de>; Fri, 28 Feb 2025 00:21:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EC6E16FF15
-	for <lists@lfdr.de>; Thu, 27 Feb 2025 22:42:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6A331891E21
+	for <lists@lfdr.de>; Thu, 27 Feb 2025 23:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A288D27182D;
-	Thu, 27 Feb 2025 22:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36E921DB361;
+	Thu, 27 Feb 2025 23:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lGc9uz2E"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ChcZOHPr"
+Received: from out-176.mta0.migadu.com (out-176.mta0.migadu.com [91.218.175.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C66923E339;
-	Thu, 27 Feb 2025 22:40:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95739276D34
+	for <ksummit@lists.linux.dev>; Thu, 27 Feb 2025 23:18:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740696025; cv=none; b=STuW2aCdV49P7NMOSdljS6/HGoxDIc/X91m4Njgh01TB4VJXoZRF18I3Q5CRJ+2nCSyBHGxDSeXlu/3BplIWDjNCc6JpePX14/uU+G1OXovjRR4nYdwo8DP6fVzt83KWavOG6q1pa9k/Q+cYrrpiXX3tU+sVNsm4fVAac8yqa5o=
+	t=1740698328; cv=none; b=gIuPX10eFpd+orLyzTb7JsEMiLXqnIdaIaR2Z+W4My6Pchoq/zjGvqXsExEc2+uPg0PiCrAivvWKs9QiJEhqC228lFslj3xS2orYyEoEaVn6gl2vEaz4Kx0d4FPyGm9vC3Gk40Dc3BDKrcWC710HurD7NFrZkjnQj621vSNxiI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740696025; c=relaxed/simple;
-	bh=13NTXNZWcFnxPHI9L0mDYaLEzu0VRQ10xWOhuSITWTw=;
+	s=arc-20240116; t=1740698328; c=relaxed/simple;
+	bh=2KNho80fRUQmyvFM4uum3byTlGYESRBfiUdgSNrDgpY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZsjAJQoAI+2Upy7QKA3iBQ2o4KXQ0OCf2zrT/oj1lGJjXWkdVFQlOamygoGMj9JMddIIS3tPWzD8YbmccMijiOVtgtldQ8GMC3djar6PZ3mfnDElvfoxJ/K8ghW5OE4WXna4qCrP3ZcSQly8fhwSeRqI/JZvoG3KGT3QcpB0fh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lGc9uz2E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A473C4CEE4;
-	Thu, 27 Feb 2025 22:40:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740696024;
-	bh=13NTXNZWcFnxPHI9L0mDYaLEzu0VRQ10xWOhuSITWTw=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=lGc9uz2EpFAMbR1PZGUQV/E9W8uRLnwvFb+Col8euJh8/933xhTf226HhvjSUS3jY
-	 qFgpBcPGwbnWKhuViMRz2NbXIhDd7uXMU9wab6WPO64dEUjRRyqvSemeaFG6S+4iA9
-	 8YJy5ZEbAOCIXR6eMkyBO6/39Has2w7jp/qZpv3nSV+ED7gNE0goK/1uG8xXsD9pL0
-	 d5Lo0cwmsDup0cIL8CRThM+EedDmjaGC9JZh8U5QJ2om1XQynfibd/D4jqeEqgI9r3
-	 RFZsTFubqwH/LUbGZ/5BPTfFrxdk8E07e6iLK3QcAesPe1KAAVm9LeuIDU0AlSiA9f
-	 DpeuXI5s4smCQ==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 3225ECE04CA; Thu, 27 Feb 2025 14:40:24 -0800 (PST)
-Date: Thu, 27 Feb 2025 14:40:24 -0800
-From: "Paul E. McKenney" <paulmck@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=PS/S8QpkHUVo68LZormpuwzCYbz4OOKHxC/EadIXCKbG3HmMiqB/sRE3XgjviHpaxjwClaibMYu7TJNZC15Asw2R3RmMlCia1bG4eM4l+P8oqfHEcdNNKvSSbXmEW/A1gI21Wd7dmwzDnbqc+9qGPDNjua7GPeWY2SIVd7IxGWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ChcZOHPr; arc=none smtp.client-ip=91.218.175.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Thu, 27 Feb 2025 18:18:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1740698324;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Px9iU/bSTKRb95c4IADUmmmmBlA3gmjsTnQHWKRdExA=;
+	b=ChcZOHPrfKwq3ks2zO3MP6ETkhbpBuF0UTuxyjWqRsyIUpFHP6Ov3tV7WLqfOlkQfmpY/W
+	Dxy+6AY7NHIc5gvq1ciI3EStujR4KU6s8jkvcVgaunm6th1WvPY/6g1ejY+1uenytOfExQ
+	U9K7bFU1WHAFU+OBLYZPxJ0Q+dj5J/k=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
 To: David Laight <david.laight.linux@gmail.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Martin Uecker <uecker@tugraz.at>, Ralf Jung <post@ralfj.de>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Ventura Jack <venturajack85@gmail.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Gary Guo <gary@garyguo.net>, airlied@gmail.com,
-	boqun.feng@gmail.com, ej@inai.de, gregkh@linuxfoundation.org,
-	hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev,
-	linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com,
-	rust-for-linux@vger.kernel.org
+Cc: Ralf Jung <post@ralfj.de>, Ventura Jack <venturajack85@gmail.com>, 
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Gary Guo <gary@garyguo.net>, torvalds@linux-foundation.org, 
+	airlied@gmail.com, boqun.feng@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, 
+	hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Subject: Re: C aggregate passing (Rust kernel policy)
-Message-ID: <27b845e5-1db3-4c67-8cf4-11454df3a8b0@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <CAHk-=whLSWX=-5-z4Q8x1f_NLrHd0e3afbEwYPkkVSXj=xT-JQ@mail.gmail.com>
- <20250226162655.65ba4b51@gandalf.local.home>
- <CAHk-=wjAcA4KrZ-47WiPd3haQU7rh+i315ApH82d=oZmgBUT_A@mail.gmail.com>
- <20250226165619.64998576@gandalf.local.home>
- <20250226171321.714f3b75@gandalf.local.home>
- <CAHk-=wj8Btsn0zN5jT1nBsUskF8DJoZbMiK81i_wPBk82Z0MGw@mail.gmail.com>
- <20250226173534.44b42190@gandalf.local.home>
- <20250227204722.653ce86b@pumpkin>
- <72bd8dc3-8a46-47b1-ac60-6b9b18b54f69@paulmck-laptop>
- <20250227222030.3fd32466@pumpkin>
+Message-ID: <smghtqj4gnlo7dxo4t6u74c25e2qukhogsi5fysddputbuwbmg@lwuh2nipypqf>
+References: <CAFJgqgRN0zwwaNttS_9qnncTDnSA-HU5EgAXFrNHoPQ7U8fUxw@mail.gmail.com>
+ <f3a83d60-3506-4e20-b202-ef2ea99ef4dc@ralfj.de>
+ <CAFJgqgR4Q=uDKNnU=2yo5zoyFOLERG+48bFuk4Dd-c+S6x+N5w@mail.gmail.com>
+ <7edf8624-c9a0-4d8d-a09e-2eac55dc6fc5@ralfj.de>
+ <CAFJgqgS-S3ZbPfYsA-eJmCXHhMrzwaKW1-G+LegKJNqqGm31UQ@mail.gmail.com>
+ <d29ebda1-e6ca-455d-af07-ac1daf84a3d2@ralfj.de>
+ <CAFJgqgQ=dJk7Jte-aaB55_CznDEnSVcy+tEh83BwmrMVvOpUgQ@mail.gmail.com>
+ <651a087b-2311-4f70-a2d3-6d2136d0e849@ralfj.de>
+ <rps5yviwyghhalaqmib3seqj62efzweixiqwb5wglzor4gk75n@oxki5lhsvhrf>
+ <20250227221801.63371d19@pumpkin>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -77,66 +68,56 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250227222030.3fd32466@pumpkin>
+In-Reply-To: <20250227221801.63371d19@pumpkin>
+X-Migadu-Flow: FLOW_OUT
 
-On Thu, Feb 27, 2025 at 10:20:30PM +0000, David Laight wrote:
-> On Thu, 27 Feb 2025 13:41:15 -0800
-> "Paul E. McKenney" <paulmck@kernel.org> wrote:
+On Thu, Feb 27, 2025 at 10:18:01PM +0000, David Laight wrote:
+> On Thu, 27 Feb 2025 15:22:20 -0500
+> Kent Overstreet <kent.overstreet@linux.dev> wrote:
 > 
-> > On Thu, Feb 27, 2025 at 08:47:22PM +0000, David Laight wrote:
-> > > On Wed, 26 Feb 2025 17:35:34 -0500
-> > > Steven Rostedt <rostedt@goodmis.org> wrote:
+> > On Thu, Feb 27, 2025 at 08:45:09PM +0100, Ralf Jung wrote:
+> > > Hi,
 > > >   
-> > > > On Wed, 26 Feb 2025 14:22:26 -0800
-> > > > Linus Torvalds <torvalds@linux-foundation.org> wrote:
-> > > >   
-> > > > > > But if I used:
-> > > > > >
-> > > > > >         if (global > 1000)
-> > > > > >                 goto out;
-> > > > > >         x = global;      
+> > > > > > If C was willing to break code as much as Rust, it would be easier to
+> > > > > > clean up C.  
 > > > > > 
-> > > > > which can have the TUCTOU issue because 'global' is read twice.    
+> > > > > Is that true? Gcc updates do break code.  
 > > > > 
-> > > > Correct, but if the variable had some other protection, like a lock held
-> > > > when this function was called, it is fine to do and the compiler may
-> > > > optimize it or not and still have the same result.
-> > > > 
-> > > > I guess you can sum this up to:
-> > > > 
-> > > >   The compiler should never assume it's safe to read a global more than the
-> > > >   code specifies, but if the code reads a global more than once, it's fine
-> > > >   to cache the multiple reads.
-> > > > 
-> > > > Same for writes, but I find WRITE_ONCE() used less often than READ_ONCE().
-> > > > And when I do use it, it is more to prevent write tearing as you mentioned.  
+> > > > Surely not as much as Rust, right? From what I hear from users
+> > > > of Rust and of C, some Rust developers complain about
+> > > > Rust breaking a lot and being unstable, while I instead
+> > > > hear complaints about C and C++ being unwilling to break
+> > > > compatibility.  
 > > > 
-> > > Except that (IIRC) it is actually valid for the compiler to write something
-> > > entirely unrelated to a memory location before writing the expected value.
-> > > (eg use it instead of stack for a register spill+reload.)
-> > > Not gcc doesn't do that - but the standard lets it do it.  
+> > > Stable Rust code hardly ever breaks on a compiler update. I don't know which
+> > > users you are talking about here, and it's hard to reply anything concrete
+> > > to such a vague claim that you are making here. I also "hear" lots of
+> > > things, but we shouldn't treat hear-say as facts.
+> > > *Nightly* Rust features do break regularly, but nobody has any right to
+> > > complain about that -- nightly Rust is the playground for experimenting with
+> > > features that we know are no ready yet.  
 > > 
-> > Or replace a write with a read, a check, and a write only if the read
-> > returns some other value than the one to be written.  Also not something
-> > I have seen, but something that the standard permits.
+> > It's also less important to avoid ever breaking working code than it was
+> > 20 years ago: more of the code we care about is open source, everyone is
+> > using source control, and with so much code on crates.io it's now
+> > possible to check what the potential impact would be.
 > 
-> Or if you write code that does that, assume it can just to the write.
-> So dirtying a cache line.
+> Do you really want to change something that would break the linux kernel?
+> Even a compile-time breakage would be a PITA.
+> And the kernel is small by comparison with some other projects.
+> 
+> Look at all the problems because python-3 was incompatible with python-2.
+> You have to maintain compatibility.
 
-You lost me on this one.  I am talking about a case where this code:
+Those were big breaks.
 
-	x = 1;
+In rust there's only ever little, teeny tiny breaks to address soundness
+issues, and they've been pretty small and localized.
 
-gets optimized into something like this:
+If it did ever came up the kernel would be patched to fix in advance
+whatever behaviour the compiler is being changed to fix (and that'd get
+backported to stable trees as well, if necessary).
 
-	if (x != 1)
-		x = 1;
-
-Which means that the "x != 1" could be re-ordered prior to an earlier
-smp_wmb(), which might come as a surprise to code relying on that
-ordering.  :-(
-
-Again, not something I have seen in the wild.
-
-							Thanx, Paul
+It's not likely to ever come up since we're not using stdlib, and they
+won't want to break behaviour for us if at all possible.
 
