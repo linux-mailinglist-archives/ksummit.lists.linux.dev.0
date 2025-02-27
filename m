@@ -1,131 +1,171 @@
-Return-Path: <ksummit+bounces-1998-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1999-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACB0BA488D3
-	for <lists@lfdr.de>; Thu, 27 Feb 2025 20:17:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B403A488F2
+	for <lists@lfdr.de>; Thu, 27 Feb 2025 20:25:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45EFB3ABDE7
-	for <lists@lfdr.de>; Thu, 27 Feb 2025 19:17:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8378518877B9
+	for <lists@lfdr.de>; Thu, 27 Feb 2025 19:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF94926F47C;
-	Thu, 27 Feb 2025 19:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5EA26E968;
+	Thu, 27 Feb 2025 19:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ND5V2Ksq"
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fAkLoKYW"
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D37F26E97D
-	for <ksummit@lists.linux.dev>; Thu, 27 Feb 2025 19:16:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C6026E950
+	for <ksummit@lists.linux.dev>; Thu, 27 Feb 2025 19:25:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740683779; cv=none; b=HmquQxXrNuVJFLj7gHEe52WCOPAgxT3iPQkP95gZV1qatljTCBodtOiUL7ZjDx5NuzviZjBnGVjKJyLfUR+jeAuMQM5vqBdqe8wZOtcJoQmLHKzNjuiIK+pZiRuXKOnuOpaqUfZSZ9JuJ/u5hCmaVgNBU1yRTCeUJ4S/nOt3tdM=
+	t=1740684336; cv=none; b=Xh+EHnuVrd93F/i/fyFkeTTD6563eNVWUfT7QqU0wCF7+D2uxex+Xx/v3kNzsbRGDpzQfMfOiw6f+NzxkhusHwDb3QZDAYj5jGJCBWm994KADGkJwF9vXJvsloPGXV+3Fhvp2o3yYdU29XJlIvZzjByrNkUwmkExirk241ZLHD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740683779; c=relaxed/simple;
-	bh=mwTHVN620TX5ESULnZIeej/5etZx+q0PaqdGdgEQqhQ=;
+	s=arc-20240116; t=1740684336; c=relaxed/simple;
+	bh=I4osQ5RPj6E7bXAobrn2V0yGZ0kIauATo/Cf+WI8eCY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cjYl8+tEKoT/K+GrD/0TlRd+zeV7J59RWc08RjkJcu4r7o5SucM9661ptmVFUwhe5LLMPlX3APZ0VDwwnb9eDFch08ugprXyeVDHc5FhvOzM2DjKVu3Z1Vo5yoJBKICsli8Xds8O2Xfcj8t7vMBZNmUT2sBJboLK3CEfTQffVEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ND5V2Ksq; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-abec8c122e4so193361366b.1
-        for <ksummit@lists.linux.dev>; Thu, 27 Feb 2025 11:16:16 -0800 (PST)
+	 To:Cc:Content-Type; b=ciL1SMYOY2dyoRK5Hom0B8jyK888AwjsCPFgy3d7ngEHUEEXumVNSfxH/ftQALxMbQ9teSaRlr2bK0aPU/ojPW8pFn6Z6ANLXOHVac60M7bALcBx0pWYdLnfzrORJO9ECa4u3mCIOrRjSNHEQqZdLABkLH1lXtziOS10HbESaiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fAkLoKYW; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5485646441cso1401550e87.2
+        for <ksummit@lists.linux.dev>; Thu, 27 Feb 2025 11:25:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1740683775; x=1741288575; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=hvB+JZlfkgHPFuQYjc4Ck/8suSwxp4Qhz+OIGbF3Mns=;
-        b=ND5V2Ksq3JnbipHtiuDrwRiJfoonDuAbeL19ro4QFYOVNZdhKbSF+d6BJm2ymVgIzn
-         tisonLE/mi0lmSaIcfGvOsgIP6IlWg85wAAfUnNytphJFcLVRUpjZgx/NZ2mKWpHgfxw
-         1aJkaaFq/fznofRH8xtkSiGrZIRVOWVsRQMwo=
+        d=gmail.com; s=20230601; t=1740684333; x=1741289133; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cocSoxI0vBLolc8jUN8YVirpU/dxiOfgNogxYs9IIlU=;
+        b=fAkLoKYWbB1smb0MmWerQMnqZc2yXnz2LFwjANzYgv0g+P5P2HU6AQNpX2QZ6eSUPb
+         nX0AhH6K3cYmPb3WpDC8tYM7JVZrwjqZCFuxzSHZc5Q7g43J1kaAYpRzN+sQQZD3z5mA
+         F3BK1TT9EqMxeGaeAaLjMiYHXcE7P08IubaFw38QFqd0Ft/8pBBb2VuF6+Vk6ou9Qx2S
+         Sjmo+Mbi9agE9ycZQ1ZkWZctSK4vQnP9zwR5rq27ntL1aUOrNzeXssu3KwpFCaUMArIa
+         6fRCHMXEzyM2hH/gXdzCHEcW26PO6dL4DBoGt0yF3A+CWVHGRfImXvX9iItyQcZPGKuQ
+         USOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740683775; x=1741288575;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hvB+JZlfkgHPFuQYjc4Ck/8suSwxp4Qhz+OIGbF3Mns=;
-        b=FnNsA6BOZ3lRnsm55heG6POVAf7Rmtc1aheToHlpm0lrIrlN/4MURHN6C5w156prGh
-         0VJ3ITy0fhLgdtRbSllbAG6bmj1VOHbCX0VySlVstiY2Om0ySe63FP6c7U3MTgX24ME6
-         myLqiX268DRvhfg5AswF5ysKE3yIeSo4mlpYl834GBo/l/46wDv4sMjI9X67KqVYcSIH
-         FedjcsBIDee2DG8Mrn2bxAMwfZUv7kl9fTOxMEJiFjH5T9m12SS4DJxBpu2W65cyKaVy
-         Cc4nF2YKoAFxKKavI/3Gx7u9/ff3gFTm56bwxmx2advxC+2fjOM/AyYRX7HMmdQbcrqE
-         Nqtw==
-X-Forwarded-Encrypted: i=1; AJvYcCVVXI+Hx7fD+6zkT+VDOYR1F6BKlp14CF1zJY+ptKES3uVtS5QKrbQ27hc6zbpG7mILATzszFuO@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywkc6CQCNgAEhs08AXp61UKBkDZiEoQzodFwbBgENgESJUAjfOe
-	GKXlRVmYAEEnPnqq1KkDb/7mtiR+cppubigOSwJvf88sl9y1o3qsOgZmxB6O5BNXyswfrnwMsUn
-	po+uIAQ==
-X-Gm-Gg: ASbGncsuRYej11iI5KKVG/8OVWW6lqCklBEL3VAUKZ3wzqn3As03KdZNmIRNIWDU7OG
-	KE1GPCQp4CJK85oSiK6bWAdcg+TVGYWSVrLFZCPvn2cx8nwfzid4y5FQRHRyP+8pw/3CtdnUELG
-	d+qpLCUK9LeJsB3o1vtffgE404VsnAO4JlYeBF5EIiqfv6OiCp2+3WtszAxOEMmfyv/Qx2PFuw9
-	7VG/qhH5RM6r0MLI2pZ71+nnIXIfRmhMcUXksDQ9EobeoItpPJGNCPRdxx9bE38C1QLnaNDJR3q
-	lMxadEEGFya1w9ayexlg+QN9/e9gSi67sLjI2Ypj/9cGICJZGUFpSVGBJpXzDdX7oz4oeH0mcCH
-	N
-X-Google-Smtp-Source: AGHT+IHU6R44XXOuQhXsYkaHCgKICNriCTMLMEmEzmOeC4lsQdKrSmIUC35KttadVBT1xuGNprSaYA==
-X-Received: by 2002:a17:907:d92:b0:abf:692:40bd with SMTP id a640c23a62f3a-abf265a30bfmr57082566b.43.1740683775109;
-        Thu, 27 Feb 2025 11:16:15 -0800 (PST)
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com. [209.85.218.42])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abf0c7bbfb5sm167589666b.170.2025.02.27.11.16.11
-        for <ksummit@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Feb 2025 11:16:11 -0800 (PST)
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-abb7520028bso170514066b.3
-        for <ksummit@lists.linux.dev>; Thu, 27 Feb 2025 11:16:11 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUAOd9dzOlwXay5cUuz33dVqmvRj4f+lMqAA+WcbQYvVJLH36IikDXSgskU69jUSTrAF/RW3Fpe@lists.linux.dev
-X-Received: by 2002:a17:907:86ac:b0:ab6:df79:f577 with SMTP id
- a640c23a62f3a-abf25d945c1mr67115866b.9.1740683771357; Thu, 27 Feb 2025
- 11:16:11 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740684333; x=1741289133;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cocSoxI0vBLolc8jUN8YVirpU/dxiOfgNogxYs9IIlU=;
+        b=KZ8j9CnIpk2fz7pb6sUelw3ESr8ItutK/vd7smU+1/ez6pnFrdNV6kM2akaJeOQx5F
+         lyT825XHnyr6ec2ecGrGwG+HUVFwnjDssPUW7Hq54KFam4zOwxnQYa6zUcwDgh81eVZF
+         hT1XGaV4DY2zCPPWwm75EGSq5rx6quwwvY6vdfSn9JLAYarw1W8Tt3LNhsLmXj/swICy
+         L44egYA7GWFEm0WHWJWt/zpPHEqwqcXs0SLqTlgAAl2P6sAg8q1rXbYeVk87xOVZezk9
+         w0rMOzsi+WUJ7EtDvQuWDghW6BED1m+urPnEXvOxuQwQLb1YXkl9yZPqOlrXn/9K2FMG
+         E/Lg==
+X-Forwarded-Encrypted: i=1; AJvYcCVTqleOik9mUKg7VMDZz8tMpCJ8ZpHug7vAL3pfJEhgKDr83SwNs7LU0+zryx7WTxzpDXcj0016@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyu3WWR5IGIw2ooUiHvYqPCYpqQYePNO0GZZW08Va5ctjpJxEwz
+	TbG2GpqDQZFE00dlOmOkBm+O1+dopG9m7T3mbBX6BzupJ9melmeRTfALDSrjzKv7w/nXaDqR45Y
+	A+VBpwK56lQPNa95Kc9Rde1m8obc=
+X-Gm-Gg: ASbGncs5oWfhaz8lGB6HWUTpBQ1gYYohTCwsfuPHbxzdt4tO9uoSVbm7kZlQmbVaH03
+	fuY/Fq7r2FAFsAncuhzcrYOFxNV0MAgiL5Qlq90K1X7jwSBd+PU4ie/oNlOhY7rqhjBMMeWttri
+	CZDSgdoyiR
+X-Google-Smtp-Source: AGHT+IFSs2bI1kvd8svQvV0yYqC4L2f0QU31S933XS4fK48/mlI2CA8/SvzCilIe1uYB4dcFtVyxl2+NSdpFe8SrYp0=
+X-Received: by 2002:a05:6512:4021:b0:546:2f44:ee99 with SMTP id
+ 2adb3069b0e04-5494c11b5b0mr270889e87.17.1740684332213; Thu, 27 Feb 2025
+ 11:25:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+ <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
  <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
- <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
- <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
- <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
- <5d7363b0-785c-4101-8047-27cb7afb0364@ralfj.de> <CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com>
- <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
- <CAHk-=whLSWX=-5-z4Q8x1f_NLrHd0e3afbEwYPkkVSXj=xT-JQ@mail.gmail.com>
- <m4cbniqfsr5xpb2m7k53e7plc6he5ioyl2efiiftdmzod56usd@htwdppje6re5>
- <CAHk-=whEkEsGHWBMZ17v5=sq1uRe6g-BRHy5xNZK-2JBKRs=_A@mail.gmail.com> <0f3bc0e8-5111-4e2f-83b5-36b3aec0cbbd@ralfj.de>
-In-Reply-To: <0f3bc0e8-5111-4e2f-83b5-36b3aec0cbbd@ralfj.de>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 27 Feb 2025 11:15:54 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wj37zT4Fy+mBFVRKPy=NMKcB6xBzqOuFrW0jOTv8LKozg@mail.gmail.com>
-X-Gm-Features: AQ5f1Jptz1SWwyUusZnRoigWvZHElhRRDe0KZ_mwrHUSOFHPo4sqdKCJh4Qdo6A
-Message-ID: <CAHk-=wj37zT4Fy+mBFVRKPy=NMKcB6xBzqOuFrW0jOTv8LKozg@mail.gmail.com>
+ <CANiq72mdzUJocjXhPRQEEdgRXsr+TEMt99V5-9R7TjKB7Dtfaw@mail.gmail.com>
+ <lz7hsnvexoywjgdor33mcjrcztxpf7lzvw3khwzd5rifetwrcf@g527ypfkbhp2>
+ <780ff858-4f8e-424f-b40c-b9634407dce3@ralfj.de> <CAFJgqgRN0zwwaNttS_9qnncTDnSA-HU5EgAXFrNHoPQ7U8fUxw@mail.gmail.com>
+ <f3a83d60-3506-4e20-b202-ef2ea99ef4dc@ralfj.de> <CAFJgqgR4Q=uDKNnU=2yo5zoyFOLERG+48bFuk4Dd-c+S6x+N5w@mail.gmail.com>
+ <7edf8624-c9a0-4d8d-a09e-2eac55dc6fc5@ralfj.de> <CAFJgqgS-S3ZbPfYsA-eJmCXHhMrzwaKW1-G+LegKJNqqGm31UQ@mail.gmail.com>
+ <CANiq72mw_zo4ai7QWD5eLN_oFXE1RVkotFsGS+f=6LRmJoHM7Q@mail.gmail.com>
+In-Reply-To: <CANiq72mw_zo4ai7QWD5eLN_oFXE1RVkotFsGS+f=6LRmJoHM7Q@mail.gmail.com>
+From: Ventura Jack <venturajack85@gmail.com>
+Date: Thu, 27 Feb 2025 12:25:16 -0700
+X-Gm-Features: AQ5f1Jpv6efWrpBsz_NNHvYeXfkaD5e-40YnVta7Hcw-aWaliwo1gWLR8BsXl_0
+Message-ID: <CAFJgqgR+hFY3XkUusq0HkdgUEp54kpQH7zJi8WcgYNB7i33ygA@mail.gmail.com>
 Subject: Re: C aggregate passing (Rust kernel policy)
-To: Ralf Jung <post@ralfj.de>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>, Martin Uecker <uecker@tugraz.at>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Ventura Jack <venturajack85@gmail.com>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Ralf Jung <post@ralfj.de>, Kent Overstreet <kent.overstreet@linux.dev>, 
+	Gary Guo <gary@garyguo.net>, torvalds@linux-foundation.org, airlied@gmail.com, 
 	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
 	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, 
 	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 27 Feb 2025 at 10:33, Ralf Jung <post@ralfj.de> wrote:
+On Thu, Feb 27, 2025 at 10:59=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> The way you do global flags in Rust is like this:
+> On Thu, Feb 27, 2025 at 6:34=E2=80=AFPM Ventura Jack <venturajack85@gmail=
+.com> wrote:
+> >
+> > I have seen some Rust proponents literally say that there is
+> > a specification for Rust, and that it is called rustc/LLVM.
+> > Though those specific individuals may not have been the
+> > most credible individuals.
+>
+> These "Some say..." arguments are not really useful, to be honest.
 
-Note that I was really talking mainly about the unsafe cases, an din
-particular when interfacing with C code.
+I disagree, I think they are fine to mention, especially
+if I add any necessary and relevant caveats.
 
-Also, honestly:
+> > A fear I have is that there may be hidden reliance in
+> > multiple different ways on LLVM, as well as on rustc.
+> > Maybe even very deeply so. The complexity of Rust's
+> > type system and rustc's type system checking makes
+> > me more worried about this point. If there are hidden
+> > elements, they may turn out to be very difficult to fix,
+> > especially if they are discovered to be fundamental.
+>
+> If you have concrete concerns (apart from the ones you already raised
+> so far which are not really applicable), please explain them.
+>
+> Otherwise, this sounds a bit like an appeal to fear, sorry.
 
-> FLAG.store(true, Ordering::SeqCst); // or release/acquire/relaxed
+But the concrete concerns I raised are applicable, I am
+very sorry, but you are wrong on this point as far as I can tell.
 
-I suspect in reality it would be hidden as accessor functions, or
-people just continue to write things in C.
+And others also have fears in some related topics. Like the
+example I mentioned later in the email.
 
-Yes, I know all about the C++ memory ordering. It's not only a
-standards mess, it's all very illegible code too.
+>>[Omitted] several
+>> issues are labeled with "S-fear".
+>>
+>>      https://github.com/lcnr/solver-woes/issues
 
-             Linus
+Do you have any thoughts on those issues labeled
+with "S-fear"?
+
+And the argument makes logical sense. And Ralf Jung
+did discuss the issues of osssification and risk of
+overfitting.
+
+I am convinced that succeeding in having at least
+two major Rust compilers, gccrs being the most
+promising second one AFAIK, will be helpful directly, and
+also indirectly allay some concerns that some people have.
+
+> > You mention ossifying, but the more popular Rust becomes,
+> > the more painful breakage will be, and the less suited
+> > Rust will be as a research language.
+>
+> Rust is not a research language -- I guess you may be including
+> features that are not promised to be stable, but that means even C
+> would a research language... :)
+
+I have heard others describe Rust as experimental,
+and used that as one justification for not adopting
+Rust. On the other hand, companies like Amazon
+Web Services have lots of employed Rust developers,
+AWS more than 300, and Rust is probably among the
+20 most used programming languages. Comparable
+in usage to Scala AFAIK, if for instance Redmonk's
+rankings are used.
+
+Best, VJ.
 
