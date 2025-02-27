@@ -1,103 +1,407 @@
-Return-Path: <ksummit+bounces-1987-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1988-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD8B2A48302
-	for <lists@lfdr.de>; Thu, 27 Feb 2025 16:32:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58089A486B4
+	for <lists@lfdr.de>; Thu, 27 Feb 2025 18:34:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 371893B565D
-	for <lists@lfdr.de>; Thu, 27 Feb 2025 15:32:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9595C1888DF2
+	for <lists@lfdr.de>; Thu, 27 Feb 2025 17:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2805F25F790;
-	Thu, 27 Feb 2025 15:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E60EC1DE2C3;
+	Thu, 27 Feb 2025 17:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="H79bd2xU"
-Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BetAO8rU"
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBD32222BA
-	for <ksummit@lists.linux.dev>; Thu, 27 Feb 2025 15:32:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFAEC1DF73C
+	for <ksummit@lists.linux.dev>; Thu, 27 Feb 2025 17:34:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740670336; cv=none; b=l6H+uKllSrefsFmk5OmUKILPANX521j8mi64DmlCkuUwjz4g8SfQQeJPGdQJydAxjhDHq5XWrDUZRw4f7AnbiZrG0jVA9xKKaLXR+Wv8zknT45FmlqmVWxUXjRwSTl7keHaA8xKAwR5SssD99nrZsMaUrub5bzbGSQastKXUhvg=
+	t=1740677649; cv=none; b=D3PR9aq0+dOTxgNFauOb2d0fjeboy6oV6S3r6YGFXEegbvL99p8kigtGQt355VQynBo5YoBnfw9L83kybjiEe9yxhNZWlJV9P7ozBZb9wTP+6vHq5MjjgBjoBkH4CokFNvPNt89cZ1Pcowa/8vbX0aihO8RlA9SLFse5KjGkQLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740670336; c=relaxed/simple;
-	bh=4tvpGG2/rTSSeKadc3d4iKxqS1x8h4Q4lmIYmN9v9qE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iO7J8j98tME/tqu7rMTWdJ69JWKH11uh8PEBCZ+xC0O0BH1izWGJ8MR3PWHd0hWMZ6zjgHCq16t+ILCwGq5J8/OYPHDVnoR1n3eAkT2eRqVzJ/JOMKxRlLTuKYTQhL6uhem1sFvkuaeisywHM2PakM5/iN14kxNKhloF6pj0ec4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=H79bd2xU; arc=none smtp.client-ip=109.230.236.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
-	t=1740670332; bh=4tvpGG2/rTSSeKadc3d4iKxqS1x8h4Q4lmIYmN9v9qE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=H79bd2xUSHByuvJHJN4KofFphHqiYPygCLqEAnJIZOuo0TSmKwfv53vEmfXm4fAzr
-	 SKbBWus9gSnQMxDWBVqosa/fkLwfpMFWEmpWjVKyW/RkZ08xZdE4FAbp+M4qfsmqAQ
-	 lC6UGWKl+ImWUTvFxyiVFnrtJEtIesQm/Hl1vytg=
-Received: from [IPV6:2001:67c:10ec:5784:8000::87] (2001-67c-10ec-5784-8000--87.net6.ethz.ch [IPv6:2001:67c:10ec:5784:8000::87])
-	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 28CFE2052A91;
-	Thu, 27 Feb 2025 16:32:12 +0100 (CET)
-Message-ID: <43074b70-c421-411f-b0bd-969c45f01466@ralfj.de>
-Date: Thu, 27 Feb 2025 16:32:08 +0100
+	s=arc-20240116; t=1740677649; c=relaxed/simple;
+	bh=5io/u43OHyQ2ai/jTUAdQxiaUovK4D7VNZCRIf2uOfU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=K10XfSx/J8LmqtB0yAbHEgWeBdu0Y7D+CT3rBxwoqWzi1j6JGcD8Ju43Vo8KmVYevFLINxBvFhRtK27iByRuHzwkT4+ZftbWkHgjdSsPCw1E4NQARnpaqA4E49uq3nXNXnoHHJfkCiUOIXy9/OnA5wLwm+d1OC7knEKt7qH3EWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BetAO8rU; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-30918c29da2so13782761fa.0
+        for <ksummit@lists.linux.dev>; Thu, 27 Feb 2025 09:34:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740677645; x=1741282445; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zV0HMykXZypVpGQkkQGaLeN+qp7pfqOToj9ZBxVcMKY=;
+        b=BetAO8rUVauxKZCi8jVP/aoHvwVcT4XmUDdklEHq9SV20F8gbd8e5cprWC4b+xEEoB
+         Cb2OHLxD2bcdWxyAXszN3XnkfIg+p+6xAXI0R/w/Hn0uCnoKgeki0Ac0zHVz2UTzd5m3
+         xQyWL2ZtnQhbdJbbsHe+OQJQiq8AOJU0ohhEepM0Gden6Tk3W7KpEGO1CB8csmxeei6T
+         /w/o/tCgr2YeuKapiKNRp22MJxGG/u7nPDeG/0xjTl9wAAd4Vf/P138lIjRwY3OZk03Q
+         1paH3HsZWcWLp9TTzTY+hGYi16nDtPVaqUUH4ZKmqnM/Dbvein2MZwL4QWjfrGphfkwS
+         Kc0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740677645; x=1741282445;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zV0HMykXZypVpGQkkQGaLeN+qp7pfqOToj9ZBxVcMKY=;
+        b=eQbnk7/z/jdzOJYaZexmzRmxizyG91Df9nDi7a4GwVdIM8ZfW3nNhw5oSwYjbe5huB
+         N/6cFEZLd8jfeZDYtkGitk6SxJ3GLe3gfjAR199FzDqs6L2ZrbGl866wPdbqR1FghbzP
+         nCw7raaQKKjxrNXXkiTWZtTI6eMDWQ3I8IF4fDZ+7OgawSbFehbM8Uq0Px71K/KHVOqH
+         7vg1yNSLr87WEMfnRhLYOgOJ7N8nJkNcQdVlkJs7YdlE1Humx1g+f1l8uA0gZZOAFqA7
+         aiKqsU/mfKzUYJFkXVPAM9Xr4v8vxrRRZ10Sl9Q3tGkC4KDkYWeqQaRLdvigxFYSWoGd
+         u81w==
+X-Forwarded-Encrypted: i=1; AJvYcCUgbfyqX1uKZRHePiHc+5UIp+egtZfjP2OT+DajnIC8hBkGup/kIqufjn2M8IOAPH7Q9xXUnyBn@lists.linux.dev
+X-Gm-Message-State: AOJu0YxGqYW/pYW5DoCIhbD/GKTeOvFECsQlIlAv0urcB/5319VnkWWM
+	IT54bWne79xoxUtlf8tSGZfHkv528038LXtCoo6tBomQtGa/uH/lR8mz0sI7M8fHz5KcfCPYxWE
+	hA4oGGUbfBdXXUHdQDtozymgd4jM=
+X-Gm-Gg: ASbGncv7eXqUkZUFrwCfhJ0iFlP7FeWB8iAiTPOWqcmV86eJuwLu/zus9Ori2gRZE9N
+	3C3gz+S6I5OHgEQYY4FqXV3JvVjmSS6SVjqXf7aXlPo+GF1WroLOffSMErsWqA6Mz32DruUz/DE
+	D80mN84BTT
+X-Google-Smtp-Source: AGHT+IE2BH/1NSXRzDXlElgcsEfByXyUcbKRKGR78hEZv7EvEhyk5TgAq8IxZXZq0wHhsseeHK9uPd1WEEbhefpqOR4=
+X-Received: by 2002:a2e:3c0b:0:b0:308:ffa1:890b with SMTP id
+ 38308e7fff4ca-30a80be24bdmr57978641fa.2.1740677644588; Thu, 27 Feb 2025
+ 09:34:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: Ventura Jack <venturajack85@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Kent Overstreet <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>,
- airlied@gmail.com, boqun.feng@gmail.com, david.laight.linux@gmail.com,
- ej@inai.de, gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com,
- ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
- miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
 References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
  <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
- <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
- <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
- <CAFJgqgREAj-eP-d244WpqO-9H48ajZh83AxE31GqoONZ=DJe-g@mail.gmail.com>
- <CAH5fLghEMtT663SNogAGad-qk7umefGeBKbm+QjKKzoskjOubw@mail.gmail.com>
- <CAFJgqgRxfTVxrWja=ZW=mTj1ShPE5s-atAqxzMOq5poajMh=4A@mail.gmail.com>
- <91dbba64-ade3-4e46-854e-87cd9ecaa689@ralfj.de>
- <CAFJgqgTTgy=yae68AE29oJQc7Bi+NvkgsrBtOkVUvRt1O0GzSQ@mail.gmail.com>
- <6983015e-4d6a-44d4-9f2e-203688263018@ralfj.de>
- <CAFJgqgTJ+GBvdkZf4bPHPoUgJj5ZzENZaLzVV2bnDOEG+3OMtw@mail.gmail.com>
- <7ab2de35-8fc8-42cf-9464-81384e227dba@ralfj.de>
- <CAFJgqgTeq0Zer8b1Dk0D2Cvo3t5BUTqxh_7OF7eCkLtjmm8Mcg@mail.gmail.com>
-Content-Language: en-US, de-DE
-From: Ralf Jung <post@ralfj.de>
-In-Reply-To: <CAFJgqgTeq0Zer8b1Dk0D2Cvo3t5BUTqxh_7OF7eCkLtjmm8Mcg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+ <CANiq72mdzUJocjXhPRQEEdgRXsr+TEMt99V5-9R7TjKB7Dtfaw@mail.gmail.com>
+ <lz7hsnvexoywjgdor33mcjrcztxpf7lzvw3khwzd5rifetwrcf@g527ypfkbhp2>
+ <780ff858-4f8e-424f-b40c-b9634407dce3@ralfj.de> <CAFJgqgRN0zwwaNttS_9qnncTDnSA-HU5EgAXFrNHoPQ7U8fUxw@mail.gmail.com>
+ <f3a83d60-3506-4e20-b202-ef2ea99ef4dc@ralfj.de> <CAFJgqgR4Q=uDKNnU=2yo5zoyFOLERG+48bFuk4Dd-c+S6x+N5w@mail.gmail.com>
+ <7edf8624-c9a0-4d8d-a09e-2eac55dc6fc5@ralfj.de>
+In-Reply-To: <7edf8624-c9a0-4d8d-a09e-2eac55dc6fc5@ralfj.de>
+From: Ventura Jack <venturajack85@gmail.com>
+Date: Thu, 27 Feb 2025 10:33:51 -0700
+X-Gm-Features: AQ5f1JqN3AWgV8meR08A05wz9Nzi0d-mCixv49weqXaO89Jr7-WdZ80Dn-oXMRY
+Message-ID: <CAFJgqgS-S3ZbPfYsA-eJmCXHhMrzwaKW1-G+LegKJNqqGm31UQ@mail.gmail.com>
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: Ralf Jung <post@ralfj.de>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>, 
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	torvalds@linux-foundation.org, airlied@gmail.com, boqun.feng@gmail.com, 
+	david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, 
+	hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi VJ,
+On Wed, Feb 26, 2025 at 3:28=E2=80=AFPM Ralf Jung <post@ralfj.de> wrote:
+>
+> Hi all,
+>
+> On 26.02.25 19:09, Ventura Jack wrote:
+> > Is Miri the only one of its kind in the programming world?
+> > There are not many system languages in mass use, and
+> > those are the languages that first and foremost deal
+> > with undefined behavior. That would make Miri extra impressive.
+>
+> I am not aware of a comparable tool that would be in wide-spread use, or =
+that is
+> carefully aligned with the semantics of an actual compiler.
+> For C, there is Cerberus (https://www.cl.cam.ac.uk/~pes20/cerberus/) as a=
+n
+> executable version of the C specification, but it can only run tiny examp=
+les.
+> The verified CompCert compiler comes with a semantics one could interpret=
+, but
+> that only checks code for compatibility with CompCert C, which has a lot =
+less
+> (and a bit more) UB than real C.
+> There are also two efforts that turned into commercial tools that I have =
+not
+> tried, and for which there is hardly any documentation of how they interp=
+ret the
+> C standard so it's not clear what a green light from them means when comp=
+iling
+> with gcc or clang. I also don't know how much real-world code they can ac=
+tually run.
+> - TrustInSoft/tis-interpreter, mostly gone from the web but still availab=
+le in
+> the wayback machine
+> (https://web.archive.org/web/20200804061411/https://github.com/TrustInSof=
+t/tis-interpreter/);
+> I assume this got integrated into their "TrustInSoft Analyzer" product.
+> - kcc, a K-framework based formalization of C that is executable. The pub=
+lic
+> repo is dead (https://github.com/kframework/c-semantics) and when I tried=
+ to
+> build their tool that didn't work. The people behind this have a company =
+that
+> offers "RV-Match" as a commercial product claiming to find bugs in C base=
+d on "a
+> complete formal ISO C11 semantics" so I guess that is where their efforts=
+ go now.
+>
+> For C++ and Zig, I am not aware of anything comparable.
+>
+> Part of the problem is that in C, 2 people will have 3 ideas for what the
+> standard means. Compiler writers and programmers regularly have wildly
+> conflicting ideas of what is and is not allowed. There are many different=
+ places
+> in the standard that have to be scanned to answer "is this well-defined" =
+even
+> for very simple programs. (https://godbolt.org/z/rjaWc6EzG is one of my f=
+avorite
+> examples.) A tool can check a single well-defined semantics, but who gets=
+ to
+> decide what exactly those semantics are?
+> Formalizing the C standard requires extensive interpretation, so I am ske=
+ptical
+> of everyone who claims that they "formalized the C standard" and built a =
+tool on
+> that without extensive evaluation of how their formalization compares to =
+what
+> compilers do and what programmers rely on. The Cerberus people have done =
+that
+> evaluation (see e.g. https://dl.acm.org/doi/10.1145/2980983.2908081), but=
+ none
+> of the other efforts have (to my knowledge). Ideally such a formalization=
+ effort
+> would be done in close collaboration with compiler authors and the commit=
+tee so
+> that the ambiguities in the standard can be resolved and the formalizatio=
+n
+> becomes the one canonical interpretation. The Cerberus people are the one=
+s that
+> pushed the C provenance formalization through, so they made great progres=
+s here.
+> However, many issues remain, some quite long-standing (e.g.
+> https://www.open-std.org/jtc1/sc22/wg14/www/docs/dr_260.htm and
+> https://www.open-std.org/jtc1/sc22/wg14/www/docs/dr_451.htm, which in my =
+eyes
+> never got properly resolved by clarifying the standard). Martin and a few=
+ others
+> are slowly pushing things in the right direction, but it takes a long tim=
+e.
+> Rust, by having a single project in charge of the one canonical implement=
+ation
+> and the specification, and having an open process that is well-suited for
+> incorporating user concerns, can move a lot quicker here. C has a huge
+> head-start, Rust has nothing like the C standard, but we are catching up =
+-- and
+> our goal is more ambitious than that; we are doing our best to learn from=
+ C and
+> C++ and concluded that that style of specification is too prone to ambigu=
+ity, so
+> we are trying to achieve a formally precise unambiguous specification. Wa=
+sm
+> shows that this can be done, at industry scale, albeit for a small langua=
+ge --
+> time we do it for a large one. :)
+>
+> So, yes I think Miri is fairly unique. But please let me know if I missed=
+ something!
+>
+> (As an aside, the above hopefully also explains why some people in Rust a=
+re
+> concerned about alternative implementations. We do *not* want the current
+> de-factor behavior to ossify and become the specification. We do *not* wa=
+nt the
+> specification to just be a description of what the existing implementatio=
+ns at
+> the time happen to do, and declare all behavior differences to be UB or
+> unspecified or so just because no implementation is willing to adjust the=
+ir
+> behavior to match the rest. We want the specification to be prescriptive,=
+ not
+> descriptive, and we will adjust the implementation as we see fit to achie=
+ve that
+> -- within the scope of Rust's stability guarantees. That's also why we ar=
+e so
+> cagey about spelling out the aliasing rules until we are sure we have a g=
+ood
+> enough model.)
 
->> No, it does not use code from Miri, it is based on RustBelt -- my PhD thesis
->> where I formalized a (rather abstract) version of the borrow checker in Coq/Rocq
->> (i.e., in a tool for machine-checked proofs) and manually proved some pieces of
->> small but tricky unsafe code to be sound.
-> 
-> I see, the reason why I claimed it was because
-> 
->      https://gitlab.mpi-sws.org/lgaeher/refinedrust-dev
->          "We currently re-use code from the following projects:
->          miri: https://github.com/rust-lang/miri (under the MIT license)"
-> 
-> but that code might be from RustBelt as you say, or maybe some
-> less relevant code, I am guessing.
+Very interesting, thank you for the exhaustive answer.
 
-Ah, there might be some of the logic for getting the MIR out of rustc, or some 
-test cases. But the "core parts" of Miri (the actual UB checking and Abstract 
-Machine implementation) don't have anything to do with RefinedRust.
+Might it be accurate to categorize Miri as a
+"formal-semantics-based undefined-behavior-detecting interpreter"?
 
-; Ralf
+>https://godbolt.org/z/rjaWc6EzG
 
+That example uses a compiler-specific attribute AFAIK, namely
+
+    __attribute__((noinline))
+
+When using compiler-specific attributes and options, the
+original language is arguably no longer being used, depending
+on the attribute. Though a language being inexpressive and
+possibly requiring compiler extensions to achieve some goals,
+possibly like in this C example, can be a disadvantage in itself.
+
+> [On formalization]
+
+I agree that Rust has some advantages in regards to formalization,
+but some of them that I think of, are different from what you
+mention here. And I also see some disadvantages.
+
+C is an ancient language, and parsing and handling C is made
+more complex by the preprocessor. Rust is a much younger
+language that avoided all that pain, and is easier to parse
+and handle. C++ is way worse, though might become closer
+to Rust with C++ modules.
+
+Rust is more willing to break existing code in projects, causing
+previously compiling projects to no longer compile. rustc does this
+rarely, but it has happened, also long after Rust 1.0.
+
+From last year, 2024.
+
+    https://internals.rust-lang.org/t/type-inference-breakage-in-1-80-has-n=
+ot-been-handled-well/21374
+        "Rust 1.80 broke builds of almost all versions of the
+        very popular time crate (edit: please don't shoot the
+        messenger in that GitHub thread!!!)
+
+        Rust has left only a 4-month old version working.
+        That was not enough time for the entire Rust
+        ecosystem to update, especially that older
+        versions of time were not yanked, and users
+        had no advance warning that it will stop working.
+
+        A crater run found a regression in over 5000 crates,
+        and that has just been accepted as okay without
+        any further action! This is below the level of stability
+        and reliability that Rust should have."
+
+If C was willing to break code as much as Rust, it would be easier to
+clean up C.
+
+There is the Rust feature "editions", which is interesting,
+but in my opinion also very experimental from a
+programming language theory perspective. It does
+help avoid breakage while letting the languages developers
+clean up the language and improve it, but has some other
+consequences, such as source code having different
+semantics in different editions. Automated upgrade
+tools help with this, but does not handle all consequences.
+
+If C was made from scratch today, by experts at type theory,
+then C would likely have a much simpler type system and type
+checking than Rust, and would likely be much easier to formalize.
+Programs in C would likely still often be more complex than
+in C++ or Rust, however.
+
+>[Omitted] We do *not* want the
+> specification to just be a description of what the existing implementatio=
+ns at
+> the time happen to do, and declare all behavior differences to be UB or
+> unspecified or so just because no implementation is willing to adjust the=
+ir
+> behavior to match the rest. [Omitted]
+
+I have seen some Rust proponents literally say that there is
+a specification for Rust, and that it is called rustc/LLVM.
+Though those specific individuals may not have been the
+most credible individuals.
+
+A fear I have is that there may be hidden reliance in
+multiple different ways on LLVM, as well as on rustc.
+Maybe even very deeply so. The complexity of Rust's
+type system and rustc's type system checking makes
+me more worried about this point. If there are hidden
+elements, they may turn out to be very difficult to fix,
+especially if they are discovered to be fundamental.
+While having one compiler can be an advantage in
+some ways, it can arguably be a disadvantage
+in some other ways, as you acknowledge as well
+if I understand you correctly.
+
+You mention ossifying, but the more popular Rust becomes,
+the more painful breakage will be, and the less suited
+Rust will be as a research language.
+
+Using Crater to test existing Rust projects with, as you
+mention later in your email, is an interesting and
+possibly very valuable approach, but I do not know
+its limitations and disadvantages. Some projects
+will be closed source, and thus will presumably
+not be checked, as I understand it.
+
+Does Crater run Rust for Linux and relevant Rust
+kernel code?
+
+I hope that any new language at least has its
+language developers ensure that they have a type
+system that is formalized and proven correct
+before that langauge's 1.0 release.
+Since fixing a type system later can be difficult or
+practically impossible. A complex type system
+and complex type checking can be a larger risk in this
+regard relative to a simple type system and simple
+type checking, especially the more time passes and
+the more the language is used and have code
+written in it, making it more difficult to fix the language
+due to code breakage costing more.
+
+Some languages that broke backwards compatibility
+arguably suffered or died because of it, like Perl 6
+or Scala 3. Python 2 to 3 was arguably successful but painful.
+Scala 3 even had automated conversion tools AFAIK.
+
+> > There are some issues in Rust that I am curious as to
+> > your views on. rustc or the Rust language has some type
+> > system holes, which still causes problems for rustc and
+> > their developers.
+> >
+> >      https://github.com/lcnr/solver-woes/issues/1
+> >      https://github.com/rust-lang/rust/issues/75992
+> >
+> > Those kinds of issues seem difficult to solve.
+> >
+> > In your opinion, is it accurate to say that the Rust language
+> > developers are working on a new type system for
+> > Rust-the-language and a new solver for rustc, and that
+> > they are trying to make the new type system and new solver
+> > as backwards compatible as possible?
+>
+> It's not really a new type system. It's a new implementation for the same=
+ type
+> system. But yes there is work on a new "solver" (that I am not involved i=
+n) that
+> should finally fix some of the long-standing type system bugs. Specifical=
+ly,
+> this is a "trait solver", i.e. it is the component responsible for dealin=
+g with
+> trait constraints. Due to some unfortunate corner-case behaviors of the o=
+ld,
+> organically grown solver, it's very hard to do this in a backwards-compat=
+ible
+> way, but we have infrastructure for extensive ecosystem-wide testing to j=
+udge
+> the consequences of any given potential breaking change and ensure that a=
+lmost
+> all existing code keeps working. In fact, Rust 1.84 already started using=
+ the
+> new solver for some things
+> (https://blog.rust-lang.org/2025/01/09/Rust-1.84.0.html) -- did you notic=
+e?
+> Hopefully not. :)
+
+If it is not a new type system, why then do they talk about
+backwards compatibility for existing Rust projects?
+If the type system is not changed, existing projects would
+still type check. And in this repository of one of the main
+Rust language developers as I understand it, several
+issues are labeled with "S-fear".
+
+    https://github.com/lcnr/solver-woes/issues
+
+They have also been working on this new solver for
+several years. Reading through the issues, a lot of
+the problems seem very hard.
+
+Best, VJ.
 
