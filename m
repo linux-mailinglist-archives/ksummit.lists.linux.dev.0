@@ -1,112 +1,160 @@
-Return-Path: <ksummit+bounces-1993-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1994-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2FE0A4878E
-	for <lists@lfdr.de>; Thu, 27 Feb 2025 19:14:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE344A487DB
+	for <lists@lfdr.de>; Thu, 27 Feb 2025 19:33:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8070816D602
-	for <lists@lfdr.de>; Thu, 27 Feb 2025 18:14:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA9063B33CA
+	for <lists@lfdr.de>; Thu, 27 Feb 2025 18:33:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F084207A06;
-	Thu, 27 Feb 2025 18:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7ABF1DF97C;
+	Thu, 27 Feb 2025 18:33:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QY9aK830"
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="2ioeKNBd"
+Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8C81F5822
-	for <ksummit@lists.linux.dev>; Thu, 27 Feb 2025 18:13:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E4E270023
+	for <ksummit@lists.linux.dev>; Thu, 27 Feb 2025 18:33:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740680029; cv=none; b=q+dfI53a3KfOHZu4O1QxOWm3I198kMgHiGPtdaxkg7tcNXMIrn6Ah9RkzFZDHGE/p/ociEjS1VYRlASXhgVdmPlXHMzZTT8I7RsqyZV2d6XeykgPcbiz1hTCeF1QnNTGpu3yhDbUneoVmNuDlAT7eKh+rzdNhFSkrxUxfNqfigQ=
+	t=1740681191; cv=none; b=fR2caRVLO+wWMTAUkMe9czEqbbD219M8kk2PMbL3+A48S0kjmhNxNNJejC2Y7PptThC0iIQfHD0lhXUzzCLkBh+3+pnyVdZH/5THqRbVFx6ig1G62kuNO4t8FU1KDpJxgn4yjEMHs5uL0esVJVmpJIYVl8tissiEBS4/h2k7wyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740680029; c=relaxed/simple;
-	bh=7imsQZUmHAdh0eNzgSer2Z0qckCWf9otlLGyNA+uz/0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iNpBBBjvRsa0eXq9ULyM84eofEBH4qjCQ/C8IoX7dSwg1ecP+P7V1eotJ/z5ozPjS9xkLBPuBEefCftQUE9Wnsmo/66iM4sNsmT89m6IFuUkKnnCvd4f/W4bAuXeTJFzFRjIQ/d/IkRFuSGfBPX7XHyWk6zQIBw1rhZ33wPBXPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QY9aK830; arc=none smtp.client-ip=95.215.58.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Thu, 27 Feb 2025 13:13:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1740680026;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SDLHKCyT2rrolHtXm3DioQqLj/OwZed4ywF3mGt1m3k=;
-	b=QY9aK830EGCr7nXAJ0NuKY2XFe+53n+1RGSy8yoJZTVI4Luj+fJ+taJd7btgRmbXyZL4te
-	hI/d3ZLOqaPfqN5mjpflbtlh22CRuqCfhrbozHppNADeEnpPqVay7VRrIpQtcvscjeWjGQ
-	51lejRUI4eKECiyqI5toQxZgZ9kpqVw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Martin Uecker <uecker@tugraz.at>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Ralf Jung <post@ralfj.de>, Alice Ryhl <aliceryhl@google.com>, 
-	Ventura Jack <venturajack85@gmail.com>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
-	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
-	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
-Subject: Re: C aggregate passing (Rust kernel policy)
-Message-ID: <czke6xumgufksyvu7xgin2ygn2jx6uvgtgwfknafq4s4migccz@aih2ptkzw3jx>
-References: <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
- <5d7363b0-785c-4101-8047-27cb7afb0364@ralfj.de>
- <CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com>
- <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
- <CAHk-=whLSWX=-5-z4Q8x1f_NLrHd0e3afbEwYPkkVSXj=xT-JQ@mail.gmail.com>
- <09e282a9c02fb07ba4fc248f14c0173d9b19179a.camel@tugraz.at>
- <CAHk-=wjqmHD-3QQ_9o4hrkhH57pTs3c1zuU0EdXYW23Vo0KTmQ@mail.gmail.com>
- <2f5a537b895250c40676d122a08d31e23a575b81.camel@tugraz.at>
- <20250227092949.137a39e9@gandalf.local.home>
- <54b92e98-cabf-4ddc-b51b-496626ac3ccb@paulmck-laptop>
+	s=arc-20240116; t=1740681191; c=relaxed/simple;
+	bh=Qg2hTQXyOPi46wn0RplEcoz1yo9Al144uQ6GPuvSJjQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PfllS/xgl4/n8Mhykj5DhE4hrS2PsuptHs8XV28ZC+9wDPURrtZqGgII5GnL5olzpBBGvuVi53CEJqtdacwDEcj9je6/NT+9jcyP6XmbTRaF4nEaVHLT+QD7GaaSIAVyEVfuFr/zySx4dtYtYCd9gDO+ZKHo1V3Iq8bKQ0H7Nc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=2ioeKNBd; arc=none smtp.client-ip=109.230.236.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
+	t=1740681187; bh=Qg2hTQXyOPi46wn0RplEcoz1yo9Al144uQ6GPuvSJjQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=2ioeKNBdiHR+wK18hrjRnoRMkNP5WVIW2Em4/06QjN8/GHpZE+cWmonKn6nyOAR7a
+	 CEYae1Y3bCU1jUJ7ma59X7mtJH0g7I1en3P6tFrVL5GiVtQ6y9qFJK75tOngbNJLzK
+	 4DH5NHQhSI6OJtLZZ/xDALFNQg9iWTu3i/aHGcT4=
+Received: from [IPV6:2001:8e0:207e:3500:4ab6:48fe:df57:b084] (2001-8e0-207e-3500-4ab6-48fe-df57-b084.ewm.ftth.ip6.as8758.net [IPv6:2001:8e0:207e:3500:4ab6:48fe:df57:b084])
+	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 97CB92052A91;
+	Thu, 27 Feb 2025 19:33:07 +0100 (CET)
+Message-ID: <0f3bc0e8-5111-4e2f-83b5-36b3aec0cbbd@ralfj.de>
+Date: Thu, 27 Feb 2025 19:33:03 +0100
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <54b92e98-cabf-4ddc-b51b-496626ac3ccb@paulmck-laptop>
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+ Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Martin Uecker <uecker@tugraz.at>, "Paul E. McKenney"
+ <paulmck@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Ventura Jack <venturajack85@gmail.com>, Gary Guo <gary@garyguo.net>,
+ airlied@gmail.com, boqun.feng@gmail.com, david.laight.linux@gmail.com,
+ ej@inai.de, gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com,
+ ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
+ miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
+References: <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+ <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+ <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+ <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
+ <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
+ <5d7363b0-785c-4101-8047-27cb7afb0364@ralfj.de>
+ <CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com>
+ <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
+ <CAHk-=whLSWX=-5-z4Q8x1f_NLrHd0e3afbEwYPkkVSXj=xT-JQ@mail.gmail.com>
+ <m4cbniqfsr5xpb2m7k53e7plc6he5ioyl2efiiftdmzod56usd@htwdppje6re5>
+ <CAHk-=whEkEsGHWBMZ17v5=sq1uRe6g-BRHy5xNZK-2JBKRs=_A@mail.gmail.com>
+Content-Language: en-US, de-DE
+From: Ralf Jung <post@ralfj.de>
+In-Reply-To: <CAHk-=whEkEsGHWBMZ17v5=sq1uRe6g-BRHy5xNZK-2JBKRs=_A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Feb 27, 2025 at 09:35:10AM -0800, Paul E. McKenney wrote:
-> On Thu, Feb 27, 2025 at 09:29:49AM -0500, Steven Rostedt wrote:
-> > On Thu, 27 Feb 2025 07:56:47 +0100
-> > Martin Uecker <uecker@tugraz.at> wrote:
-> > 
-> > > Observable is I/O and volatile accesses.  These are things considered
-> > > observable from the outside of a process and the only things an
-> > > optimizer has to preserve.  
-> > > 
-> > > Visibility is related to when stores are visible to other threads of
-> > > the same process. But this is just an internal concept to give
-> > > evaluation of expressions semantics in a multi-threaded 
-> > > program when objects are accessed from different threads. But 
-> > > the compiler is free to change any aspect of it, as  long as the 
-> > > observable behavior stays the same.
-> > > 
-> > > In practice the difference is not so big for a traditional
-> > > optimizer that only has a limited local view and where
-> > > "another thread" is basically part of the "outside world".
-> > 
-> > So basically you are saying that if the compiler has access to the entire
-> > program (sees the use cases for variables in all threads) that it can
-> > determine what is visible to other threads and what is not, and optimize
-> > accordingly?
-> > 
-> > Like LTO in the kernel?
-> 
-> LTO is a small step in that direction.  In the most extreme case, the
-> compiler simply takes a quick glance at the code and the input data and
-> oracularly generates the output.
-> 
-> Which is why my arguments against duplicating atomic loads have been
-> based on examples where doing so breaks basic arithmetic.  :-/
+Hi Linus,
 
-Please tell me that wasn't something that seriously needed to be said...
+On 27.02.25 00:16, Linus Torvalds wrote:
+> On Wed, 26 Feb 2025 at 14:27, Kent Overstreet <kent.overstreet@linux.dev> wrote:
+>>
+>> This is another one that's entirely eliminated due to W^X references.
+> 
+> Are you saying rust cannot have global flags?
+
+The way you do global flags in Rust is like this:
+
+static FLAG: AtomicBool = AtomicBool::new(false);
+
+// Thread A
+FLAG.store(true, Ordering::SeqCst); // or release/acquire/relaxed
+
+// Thread B
+let val = FLAG.load(Ordering::SeqCst);
+if val { // or release/acquire/relaxed
+   // ...
+}
+println!("{}", val);
+
+If you do this, the TOCTOU issues you mention all disappear. The compiler is 
+indeed *not* allowed to re-load `FLAG` a second time for the `println`.
+
+If you try do to do this without atomics, the program has a data race, and that 
+is considered UB in Rust just like in C and C++. So, you cannot do concurrency 
+with "*ptr = val;" or "ptr2.copy_from(ptr1)" or anything like that. You can only 
+do concurrency with atomics. That's how compilers reconcile "optimize sequential 
+code where there's no concurrency concerns" with "give programmers the ability 
+to reliably program concurrent systems": the programmer has to tell the compiler 
+whenever concurrency concerns are in play. This may sound terribly hard, but the 
+Rust type system is pretty good at tracking this, so in practice it is generally 
+not a big problem to keep track of which data can be accessed concurrently and 
+which cannot.
+
+Just to be clear, since I know you don't like "atomic objects": Rust does not 
+have atomic objects. The AtomicBool type is primarily a convenience so that you 
+don't accidentally cause a data race by doing concurrent non-atomic accesses. 
+But ultimately, the underlying model is based on the properties of individual 
+memory accesses (non-atomic, atomic-seqcst, atomic-relaxed, ...).
+
+By using the C++ memory model (in an access-based way, which is possible -- the 
+"object-based" view is not fundamental to the model), we can have reliable 
+concurrent programming (no TOCTOU introduced by the compiler) while also still 
+considering (non-volatile) memory accesses to be entirely "not observable" as 
+far as compiler guarantees go. The load and store in the example above are not 
+"observable" in that sense. After all, it's not the loads and stores that 
+matter, it's what the program does with the values it loads. However, the 
+abstract description of the possible behaviors of the source program above 
+*does* guarantee that `val` has the same value everywhere it is used, and 
+therefore everything you do with `val` that you can actually see (like printing, 
+or using it to cause MMIO accesses, or whatever) has to behave in a consistent 
+way. That may sound round-about, but it does square the circle successfully, if 
+one is willing to accept "the programmer has to tell the compiler whenever 
+concurrency concerns are in play". As far as I understand, the kernel already 
+effectively does this with a suite of macros, so this should not be a 
+fundamentally new constraint.
+
+Kind regards,
+Ralf
+
+
+> 
+> That seems unlikely. And broken if so.
+> 
+>> IOW: if you're writing code where rematerializing reads is even a
+>> _concern_ in Rust, then you had to drop to unsafe {} to do it - and your
+>> code is broken, and yes it will have UB.
+> 
+> If you need to drop to unsafe mode just to read a global flag that may
+> be set concurrently, you're doing something wrong as a language
+> designer.
+> 
+> And if your language then rematerializes reads, the language is shit.
+> 
+> Really.
+> 
+>               Linus
+
 
