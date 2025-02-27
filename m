@@ -1,131 +1,117 @@
-Return-Path: <ksummit+bounces-1981-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-1982-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 634BEA48044
-	for <lists@lfdr.de>; Thu, 27 Feb 2025 15:02:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BFEEA480E2
+	for <lists@lfdr.de>; Thu, 27 Feb 2025 15:22:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D35D3166FC6
-	for <lists@lfdr.de>; Thu, 27 Feb 2025 13:55:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3B537A28A2
+	for <lists@lfdr.de>; Thu, 27 Feb 2025 14:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E66230242;
-	Thu, 27 Feb 2025 13:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF8D233D8D;
+	Thu, 27 Feb 2025 14:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="EmSqhOjV"
-Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mFFiCyI2"
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6B51E5210
-	for <ksummit@lists.linux.dev>; Thu, 27 Feb 2025 13:55:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592BB2309A8
+	for <ksummit@lists.linux.dev>; Thu, 27 Feb 2025 14:21:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740664539; cv=none; b=uxWkGmToA8Q4/MCxWp5CybtpSXjs6r2nLSrKNk48iLwFzXg3ocqIX/Dv/Zup3JeIVMBWQLE3tAgSoJ05j709hR17qpEDp3yNXdA96bKskTAJVuu5W8fjdnudq/L4iPW7RIYzs0T/fcl4oGrigvYa0xAE8wSdMa0xfnARknr7I8I=
+	t=1740666105; cv=none; b=eCl4nLtrsMnH4yDE/5243RylMMxO3Ik/jlLdPReh06b07dbGvmiXpWpdfe81xuQw9UZjx/U6p3DOTzpvIBlJyShJ9Dp/mFLAWfSAaSO6CFBPd+NCyXIcfh0koS0dO9PiQctWg8ISjZJVyq44HfcZfxHVBhhciMuKaXHZZeKqh9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740664539; c=relaxed/simple;
-	bh=MZ5feQNtisJgpeJy5xLzx0Y8Q+XnSBumrFimAbzZ9CM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=I+Pcq1A6JIUEL7mONV1k9pmiGik195G5LpNNi6a7/t/DF3T8B7vS8Bv2JMBn1bS1FupmHyAMK4OkF00cO1YW09CMsN7oq3L7yuhGCIPy3Ugtjm9qGUhEJJrHq3wfME9f9HhycJjku8a3V8B6Aulc7YQYNoiwX7lSdj9nyt8FDRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=EmSqhOjV; arc=none smtp.client-ip=109.230.236.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
-	t=1740664527; bh=MZ5feQNtisJgpeJy5xLzx0Y8Q+XnSBumrFimAbzZ9CM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=EmSqhOjVTv/5qycUfH0WaMucg+fhJaX+QaLJDaN7j5pv+AO3LHrkfHfhEz78bmFE8
-	 5Wmvn1X52+ZGUzV0+Stdk7alPHSvfNRXxNqy1bwepz5dx+8Bn1TEdqm3PBFf7I1NKc
-	 4yxnyQjNSmcPnthA3ukUCkq3/7nwB3yR/KSCtRhI=
-Received: from [IPV6:2001:67c:10ec:5784:8000::87] (2001-67c-10ec-5784-8000--87.net6.ethz.ch [IPv6:2001:67c:10ec:5784:8000::87])
-	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 62DA02052A91;
-	Thu, 27 Feb 2025 14:55:27 +0100 (CET)
-Message-ID: <f2c2d7ae-08c1-4122-a131-f5a65e9ed3d2@ralfj.de>
-Date: Thu, 27 Feb 2025 14:55:22 +0100
+	s=arc-20240116; t=1740666105; c=relaxed/simple;
+	bh=jDiKd5u/UNI0PpWyrmjqelJqvH1haIS0fYaKH/QWppw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rZL/t2ZWCJNSfx+K3Yo52xPxXJbzntfW4dxOrNlfAMlar90TIYFq5wCmvMN/y3teDDSJaSaAsHPD21hUyQil8csQ3HuXCVQNI/qHAUpHO47ryCuNKAEspbQBFO23KIEiVGMJj1hviChcZq8VryG4A+hoNInCbnP2AZjHX6VUmdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mFFiCyI2; arc=none smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-307c13298eeso12716811fa.0
+        for <ksummit@lists.linux.dev>; Thu, 27 Feb 2025 06:21:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740666101; x=1741270901; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jDiKd5u/UNI0PpWyrmjqelJqvH1haIS0fYaKH/QWppw=;
+        b=mFFiCyI28MeeMovcefPfPOUVFEqbQvYUVoz87sCwQG7vPF55XWCUSB5oZhmYD3mnqm
+         NKrJCxaP4Qo23wCsqqnfKcI54vQKXoodKbXhkvYyAn4SlL6p7vJkov/KMqCRaZUOWhD3
+         sMmndzJIrNmsiE+I2Uv4I7JgAlpIB0/hpUhjx3iFAt9V7g4rGAJSTqir5c5/JQTPFHbB
+         R2Jz05fPjFZgfIojvorTO/E8/4Z3Mtwzv63V9iDBFMfUyfMPgzXgWcCQnlFXam17e6y4
+         JhRG8mSQFUwyWp7e3HckyTeJdffYGOp4GE5+sfpWBenOe1RSuTQpTX/ECg3fvWpT/bqV
+         op2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740666101; x=1741270901;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jDiKd5u/UNI0PpWyrmjqelJqvH1haIS0fYaKH/QWppw=;
+        b=UfzJy1mhn58ToWxw1OdYNaXuebypayeAYUjQpoA4UiYUZ4ZN/y94/B34tYqWjOjJLx
+         NCq6AnB2MPj8srbwLlV6zXXiblLXzxy/v647RyuVBfEFLloi2KFHKKaMQzbmTc/k1cK7
+         IuOujgQBEhTaxvvEo34IlfHgsRbr2WsHlRN1shxego0bxVQO8YppAhUWWTguok2sj55Z
+         CfrtHl8mILR2zhsY9MF5SJAAoUWx7ria1DwbQI+o/euNPFAohePDCwjVYsLlI7ZBf58O
+         x7N7mX43lNtySTFJ1HPmwinKsQrU+p9gek0hz3PSDYmu4WMuvsSFbGZlibif6XMqV4Rs
+         W+zg==
+X-Forwarded-Encrypted: i=1; AJvYcCVoIboqJ5dr33xXJSXXTaoR03jBQj+JgRwR3ZWW6qvJcYZs++GgoEu97gv6kznUv9mL/s2aahy2@lists.linux.dev
+X-Gm-Message-State: AOJu0YxuFTRIgQ80shWnSk/SDjbvBAT0KM503XmigEOinQEhHbHATrp6
+	2O3RIPhkgvTK5A/pQEDmHhoZjVVAo0uVN+xWmlR36quXF2Sm+Rn5Vdgm3ZGgMFsfho/XJMclPpo
+	7UI0W5xDeIdwDlhI7dskRw97NUm+sEg==
+X-Gm-Gg: ASbGnctK9aBnyjjoIveJupgJ3vxkm/O2ht3BQuDEBNcdGesJbrf4hJbU52mdGW/lFN3
+	4l1wdlJcp6ojjosCMiZKQTKKbOAGuj72P5i+F6eKZBfjM6RPW2Qk5nO8+IyAs6JLBt+Ohd6Okly
+	ILGEb3ag0s
+X-Google-Smtp-Source: AGHT+IG8QcFnsM4lFejfj+y9wVmwF6dAuaeJdmE8EIPO23hcK5koKsJkkZMquT3UfIGMPD5V0moetP1n9GXZ3jY+Dv8=
+X-Received: by 2002:a2e:ad0b:0:b0:309:2999:77d4 with SMTP id
+ 38308e7fff4ca-30b84650d3dmr18509101fa.6.1740666101136; Thu, 27 Feb 2025
+ 06:21:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Ventura Jack <venturajack85@gmail.com>,
- Kent Overstreet <kent.overstreet@linux.dev>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Gary Guo <gary@garyguo.net>,
- torvalds@linux-foundation.org, airlied@gmail.com, boqun.feng@gmail.com,
- ej@inai.de, gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com,
- ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
 References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <20250222141521.1fe24871@eugeo>
- <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
  <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CANiq72mdzUJocjXhPRQEEdgRXsr+TEMt99V5-9R7TjKB7Dtfaw@mail.gmail.com>
- <lz7hsnvexoywjgdor33mcjrcztxpf7lzvw3khwzd5rifetwrcf@g527ypfkbhp2>
- <780ff858-4f8e-424f-b40c-b9634407dce3@ralfj.de>
- <CAFJgqgRN0zwwaNttS_9qnncTDnSA-HU5EgAXFrNHoPQ7U8fUxw@mail.gmail.com>
- <f3a83d60-3506-4e20-b202-ef2ea99ef4dc@ralfj.de>
- <CAFJgqgR4Q=uDKNnU=2yo5zoyFOLERG+48bFuk4Dd-c+S6x+N5w@mail.gmail.com>
- <7edf8624-c9a0-4d8d-a09e-2eac55dc6fc5@ralfj.de>
- <20250226230816.2c7bbc16@pumpkin>
-Content-Language: en-US, de-DE
-From: Ralf Jung <post@ralfj.de>
-In-Reply-To: <20250226230816.2c7bbc16@pumpkin>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+ <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+ <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+ <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
+ <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
+ <5d7363b0-785c-4101-8047-27cb7afb0364@ralfj.de> <CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com>
+ <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
+In-Reply-To: <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
+From: Ventura Jack <venturajack85@gmail.com>
+Date: Thu, 27 Feb 2025 07:21:24 -0700
+X-Gm-Features: AQ5f1Jp4j22pclUqXy_NRJGy5SyMDK7pivJm3KtHZ3o9BTX4Sjg-8m5F9ik4fjs
+Message-ID: <CAFJgqgSjRwOUkcC5v6wGcfQ-53oWyWW+wBg3PZ-w7vRweHekpw@mail.gmail.com>
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: Martin Uecker <uecker@tugraz.at>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Ralf Jung <post@ralfj.de>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Kent Overstreet <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
+	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
+	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, 
+	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi all,
+On Wed, Feb 26, 2025 at 1:00=E2=80=AFPM Martin Uecker <uecker@tugraz.at> wr=
+ote:
+>
+> I think C++ messed up a lot (including time-travel UB, uninitialized
+> variables, aliasing ules and much more), but I do not see
+> the problem here.
 
-> ...
->>> Unions in C, C++ and Rust (not Rust "enum"/tagged union) are
->>> generally sharp. In Rust, it requires unsafe Rust to read from
->>> a union.
->>
->> Definitely sharp. At least in Rust we have a very clear specification though,
->> since we do allow arbitrary type punning -- you "just" reinterpret whatever
->> bytes are stored in the union, at whatever type you are reading things. There is
->> also no "active variant" or anything like that, you can use any variant at any
->> time, as long as the bytes are "valid" for the variant you are using. (So for
->> instance if you are trying to read a value 0x03 at type `bool`, that is UB.)
-> 
-> That is actually a big f***ing problem.
-> The language has to define the exact behaviour when 'bool' doesn't contain
-> 0 or 1.
+C++26 actually changes the rules of reading uninitialized
+variables from being undefined behavior to being
+"erroneous behavior", for the purpose of decreasing instances
+that can cause UB. Though programmers can still opt-into
+the old behavior with UB, on a case by case basis, for the
+sake of performance.
 
-No, it really does not. If you want a variable that can hold all values in 
-0..256, use `u8`. The entire point of the `bool` type is to represent values 
-that can only ever be `true` or `false`. So the language requires that when you 
-do type-unsafe manipulation of raw bytes, and when you then make the choice of 
-the `bool` type for that code (which you are not forced to!), then you must 
-indeed uphold the guarantees of `bool`: the data must be `0x00` or `0x01`.
-
-> Much the same as the function call interface defines whether it is the caller
-> or called code is responsible for masking the high bits of a register that
-> contains a 'char' type.
-> 
-> Now the answer could be that 'and' is (or may be) a bit-wise operation.
-> But that isn't UB, just an undefined/unexpected result.
-> 
-> I've actually no idea if/when current gcc 'sanitises' bool values.
-> A very old version used to generate really crap code (and I mean REALLY)
-> because it repeatedly sanitised the values.
-> But IMHO bool just shouldn't exist, it isn't a hardware type and is actually
-> expensive to get right.
-> If you use 'int' with zero meaning false there is pretty much no ambiguity.
-
-We have many types in Rust that are not hardware types. Users can even define 
-them themselves:
-
-enum MyBool { MyFalse, MyTrue }
-
-This is, in fact, one of the entire points of higher-level languages like Rust: 
-to let users define types that represent concepts that are more abstract than 
-what exists in hardware. Hardware would also tell us that `&i32` and `*const 
-i32` are basically the same thing, and yet of course there's a world of a 
-difference between those types in Rust.
-
-Kind regards,
-Ralf
-
+Best, VJ.
 
