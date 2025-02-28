@@ -1,120 +1,112 @@
-Return-Path: <ksummit+bounces-2015-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2016-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 594E9A49396
-	for <lists@lfdr.de>; Fri, 28 Feb 2025 09:33:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99252A49DB2
+	for <lists@lfdr.de>; Fri, 28 Feb 2025 16:41:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBCF01894597
-	for <lists@lfdr.de>; Fri, 28 Feb 2025 08:33:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E335F3BCA55
+	for <lists@lfdr.de>; Fri, 28 Feb 2025 15:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F6FF2528F2;
-	Fri, 28 Feb 2025 08:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8FC618CC1D;
+	Fri, 28 Feb 2025 15:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b="aw7sxCaH"
-Received: from mailrelay.tugraz.at (mailrelay.tugraz.at [129.27.2.202])
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cPoiAauP"
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD32C1FC0E7
-	for <ksummit@lists.linux.dev>; Fri, 28 Feb 2025 08:33:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.27.2.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F4D18871F
+	for <ksummit@lists.linux.dev>; Fri, 28 Feb 2025 15:41:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740731592; cv=none; b=aKKneXTonUnfzJvg18kobvOh5ErotUK0VYSA0T5ZAEJ2dr9IN1fa9lOr1t5vrYDogx17KMVQvTu0lPVvI42xGI5sb085fUuyIxwuwIuC6h1BI5Ap05rTE6ssVoT4HFp/jZt7jcAaWJVbEawVjepSv/iI6nF/YzFBm1GouU3PCQs=
+	t=1740757284; cv=none; b=I0BTEjSwuPc7qBZWT3nf/UMhp4BMtxBxAY47nq8LQNdMMRdnvd0cEiWbPBLbMzlJK1o+KxSizVSBHqbwp8R7mj8Vqg3nFgkJkZYoSIeAuGa6nmfwj5V0dVuOx0hzJXnFLIkNAV0pymF5QknVAjqpk5s0QMo/1hGDvAaiXD9q3Mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740731592; c=relaxed/simple;
-	bh=FsVOmG+eOn25bBM3FLaDmS1bSRItCTyhAfkQr4QLaYc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=V7sGrlnxs6KPxIP86Qy7RcK3FsaxI5/MSXeIaIR0odVvjvSVYEUV8rWWyFsDDX7W78oONKVRRtD/iiARWwi27eWHELkyymlVSi1ZSsoqkvklY0G41YWmt3dXy+26LET8+QMsPSKpSgwM44nKVylU2FiUI/ejdcifbQYSrRtyvrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at; spf=pass smtp.mailfrom=tugraz.at; dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b=aw7sxCaH; arc=none smtp.client-ip=129.27.2.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tugraz.at
-Received: from vra-171-233.tugraz.at (vra-171-233.tugraz.at [129.27.171.233])
-	by mailrelay.tugraz.at (Postfix) with ESMTPSA id 4Z41gB0Bxhz1JJBs;
-	Fri, 28 Feb 2025 09:32:53 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailrelay.tugraz.at 4Z41gB0Bxhz1JJBs
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tugraz.at;
-	s=mailrelay; t=1740731576;
-	bh=FsVOmG+eOn25bBM3FLaDmS1bSRItCTyhAfkQr4QLaYc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=aw7sxCaH0qhEdPR8CbZIfrvPiH3FGpYjUrQmy1JII1+W+77aVTI44jmglapIsuu+0
-	 HZOOdkh0gL4xUM9Jj957zm1JDYS7VPx6RcxAjEGwcYVztEeFE6x2UWnZWd+9/fhICu
-	 wmpBMTqWDeXOfRyynJGu+nwnLRHttw3txVBjsMpQ=
-Message-ID: <d465e17bfc45e02b2bbd68a4235cc1c7fd7500e1.camel@tugraz.at>
+	s=arc-20240116; t=1740757284; c=relaxed/simple;
+	bh=Q8+BEVuZf0CNh/0XFWqDI26OHG6DDCW3PBnqoaUpeP4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WOgs38+H20BWUz5nex7khW0DGgcLFy67aqnrp9pkeiD2nXHha7IMsn22HamIF3TAf6kqx0kYv3za2JKqUHwlRF5ZXCkv6XbmbwUGrNEkBg+IWe+idbIlBMkzCXO1yir5onyRQ4k+N33f5k3wzI+PpM9hRmrwl/m29yrxZEW6atA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cPoiAauP; arc=none smtp.client-ip=95.215.58.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Fri, 28 Feb 2025 10:41:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1740757280;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2Fm63nDsheZS+DvKLr7F9z1D5v1N6a2uxGHZfV6AVEE=;
+	b=cPoiAauPiyLLHJmiPyvk4jwmh3iCvrZjeS13il8qLCJ3HERFwkTRGXdGwwwjYMvD5p5aDf
+	wsfAZB8RsA4B+FzVDFHSJJWDYaKo3w1xlkbyAJG9xfJvoTX2dZ6E90KOlvUYzxbrhCu71P
+	Oh8WAUg30CioZVUd0QeRwAfRElFRUc4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Ralf Jung <post@ralfj.de>
+Cc: David Laight <david.laight.linux@gmail.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Martin Uecker <uecker@tugraz.at>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Ventura Jack <venturajack85@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, airlied@gmail.com, boqun.feng@gmail.com, ej@inai.de, 
+	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
 Subject: Re: C aggregate passing (Rust kernel policy)
-From: Martin Uecker <uecker@tugraz.at>
-To: Ralf Jung <post@ralfj.de>, Linus Torvalds
- <torvalds@linux-foundation.org>,  "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Ventura Jack
- <venturajack85@gmail.com>,  Kent Overstreet <kent.overstreet@linux.dev>,
- Gary Guo <gary@garyguo.net>, airlied@gmail.com, boqun.feng@gmail.com, 
- david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, 
- hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
- linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, 
- rust-for-linux@vger.kernel.org
-Date: Fri, 28 Feb 2025 09:32:52 +0100
-In-Reply-To: <59c7a1aa-7ff8-4ed1-a83f-5db43094d3a8@ralfj.de>
-References: 
-	<CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
-	 <20250222141521.1fe24871@eugeo>
-	 <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
-	 <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
-	 <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
-	 <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
-	 <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
-	 <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
-	 <5d7363b0-785c-4101-8047-27cb7afb0364@ralfj.de>
-	 <CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com>
-	 <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
-	 <59c7a1aa-7ff8-4ed1-a83f-5db43094d3a8@ralfj.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+Message-ID: <fbwwitktndx6vpkyhp5znkxmdfpforylvcmimyewel6mett2cw@i5yxaracpso2>
+References: <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
+ <CAHk-=whLSWX=-5-z4Q8x1f_NLrHd0e3afbEwYPkkVSXj=xT-JQ@mail.gmail.com>
+ <20250226162655.65ba4b51@gandalf.local.home>
+ <CAHk-=wjAcA4KrZ-47WiPd3haQU7rh+i315ApH82d=oZmgBUT_A@mail.gmail.com>
+ <20250226165619.64998576@gandalf.local.home>
+ <20250226171321.714f3b75@gandalf.local.home>
+ <CAHk-=wj8Btsn0zN5jT1nBsUskF8DJoZbMiK81i_wPBk82Z0MGw@mail.gmail.com>
+ <20250226173534.44b42190@gandalf.local.home>
+ <20250227204722.653ce86b@pumpkin>
+ <07acc636-75d9-4e4b-9e99-9a784d88e188@ralfj.de>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-TUG-Backscatter-control: G/VXY7/6zeyuAY/PU2/0qw
-X-Spam-Scanner: SpamAssassin 3.003001 
-X-Spam-Score-relay: 0.0
-X-Scanned-By: MIMEDefang 2.74 on 129.27.10.116
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <07acc636-75d9-4e4b-9e99-9a784d88e188@ralfj.de>
+X-Migadu-Flow: FLOW_OUT
 
-Am Freitag, dem 28.02.2025 um 09:08 +0100 schrieb Ralf Jung:
+On Fri, Feb 28, 2025 at 08:44:58AM +0100, Ralf Jung wrote:
+> Hi,
+> 
+> > > I guess you can sum this up to:
+> > > 
+> > >    The compiler should never assume it's safe to read a global more than the
+> > >    code specifies, but if the code reads a global more than once, it's fine
+> > >    to cache the multiple reads.
+> > > 
+> > > Same for writes, but I find WRITE_ONCE() used less often than READ_ONCE().
+> > > And when I do use it, it is more to prevent write tearing as you mentioned.
+> > 
+> > Except that (IIRC) it is actually valid for the compiler to write something
+> > entirely unrelated to a memory location before writing the expected value.
+> > (eg use it instead of stack for a register spill+reload.)
+> > Not gcc doesn't do that - but the standard lets it do it.
+> 
+> Whether the compiler is permitted to do that depends heavily on what exactly
+> the code looks like, so it's hard to discuss this in the abstract.
+> If inside some function, *all* writes to a given location are atomic (I
+> think that's what you call WRITE_ONCE?), then the compiler is *not* allowed
+> to invent any new writes to that memory. The compiler has to assume that
+> there might be concurrent reads from other threads, whose behavior could
+> change from the extra compiler-introduced writes. The spec (in C, C++, and
+> Rust) already works like that.
+> 
+> OTOH, the moment you do a single non-atomic write (i.e., a regular "*ptr =
+> val;" or memcpy or so), that is a signal to the compiler that there cannot
+> be any concurrent accesses happening at the moment, and therefore it can
+> (and likely will) introduce extra writes to that memory.
 
->=20
-> (From a different email)
-> > It sounds you want to see the semantics strengthened in case
-> > of a data race from there being UB to having either the old
-> > or new value being visible to another thread, where at some
-> > point this could change but needs to be consistent for a
-> > single access as expressed in the source code.
->=20
-> This would definitely impact optimizations of purely sequential code. May=
-be that=20
-> is a price worth paying, but one of the goals of the C++ model was that i=
-f you=20
-> don't use threads, you shouldn't pay for them. Disallowing rematerializat=
-ion in=20
-> entirely sequential code (just one of the likely many consequences of mak=
-ing=20
-> data races not UB) contradicts that goal.=C2=A0
+Is that how it really works?
 
-This is the feedback I now also got from GCC, i.e. there are cases where
-register allocator would indeed rematerialize a load and they think this is
-reasonable.
-
-> Given that even in highly concurrent=20
-> programs, most accesses are entirely sequential, it doesn't seem unreason=
-able to=20
-> say that the exceptional case needs to be marked in the program (especial=
-ly if=20
-> you have a type system which helps ensure that you don't forget to do so)=
-.
-
-Martin
-
-
+I'd expect the atomic writes to have what we call "compiler barriers"
+before and after; IOW, the compiler can do whatever it wants with non
+atomic writes, provided it doesn't cross those barriers.
 
