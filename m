@@ -1,122 +1,120 @@
-Return-Path: <ksummit+bounces-2014-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2015-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C843FA492F4
-	for <lists@lfdr.de>; Fri, 28 Feb 2025 09:08:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 594E9A49396
+	for <lists@lfdr.de>; Fri, 28 Feb 2025 09:33:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29A52188C70E
-	for <lists@lfdr.de>; Fri, 28 Feb 2025 08:08:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBCF01894597
+	for <lists@lfdr.de>; Fri, 28 Feb 2025 08:33:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65DB51E1A31;
-	Fri, 28 Feb 2025 08:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F6FF2528F2;
+	Fri, 28 Feb 2025 08:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="Q+fkLti2"
-Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
+	dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b="aw7sxCaH"
+Received: from mailrelay.tugraz.at (mailrelay.tugraz.at [129.27.2.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D8E1E131A
-	for <ksummit@lists.linux.dev>; Fri, 28 Feb 2025 08:08:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD32C1FC0E7
+	for <ksummit@lists.linux.dev>; Fri, 28 Feb 2025 08:33:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.27.2.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740730086; cv=none; b=JYPBzpgCi+VLMLiat4mWxv9Aaa3VlwTJA+aWkde01nIiceRT/iWxDmk5PGsaAgOc8uxXUs3nXNvTyTLsHu+5GCoMJjUz2OrY3blbrpfozX3tBNxx3zCAz2nXmB4fBNNX2tyEM1amS8wkD/O4KTdOgK/cn7vV3Y2xvxVv64iEEZo=
+	t=1740731592; cv=none; b=aKKneXTonUnfzJvg18kobvOh5ErotUK0VYSA0T5ZAEJ2dr9IN1fa9lOr1t5vrYDogx17KMVQvTu0lPVvI42xGI5sb085fUuyIxwuwIuC6h1BI5Ap05rTE6ssVoT4HFp/jZt7jcAaWJVbEawVjepSv/iI6nF/YzFBm1GouU3PCQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740730086; c=relaxed/simple;
-	bh=Kf6mHkEL85gIyEws5lZxaWedBsN87cXo523g7xgNLnA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FD2P9KJ2Iq5A7oUtJZg1MJl4CTqfDqgKhKilV9mQtDYuxgwoAh/P6nPtbDCmP/PipaTglH0/War6LWJEl1/lsugCEPF0vU1hafYHQqHrPcfa7rIym8+e/RJ/nNYsy/azWiBsDM8x7ql6jaDgs1UpahTZBQ8zDIh50FKD9EDCCw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=Q+fkLti2; arc=none smtp.client-ip=109.230.236.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
-	t=1740730083; bh=Kf6mHkEL85gIyEws5lZxaWedBsN87cXo523g7xgNLnA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Q+fkLti2A7ioxWs8LjmxnZ/b6C178ZqZJnKlcfVeROTZUsOe0/s9RokbAcs6ZEniG
-	 P6PdVUcFIxYt/mvBFW5qRFQ5RJ3g+08o45VJF2nmTHqteivBrz1evyRCB/Hlv42/dj
-	 wTzdN50pkENNO/7KM2aj7vchJQJZpxJqxZRCK8vA=
-Received: from [IPV6:2001:8e0:207e:3500:4ab6:48fe:df57:b084] (2001-8e0-207e-3500-4ab6-48fe-df57-b084.ewm.ftth.ip6.as8758.net [IPv6:2001:8e0:207e:3500:4ab6:48fe:df57:b084])
-	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 72E7D2052A86;
-	Fri, 28 Feb 2025 09:08:03 +0100 (CET)
-Message-ID: <59c7a1aa-7ff8-4ed1-a83f-5db43094d3a8@ralfj.de>
-Date: Fri, 28 Feb 2025 09:08:03 +0100
+	s=arc-20240116; t=1740731592; c=relaxed/simple;
+	bh=FsVOmG+eOn25bBM3FLaDmS1bSRItCTyhAfkQr4QLaYc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=V7sGrlnxs6KPxIP86Qy7RcK3FsaxI5/MSXeIaIR0odVvjvSVYEUV8rWWyFsDDX7W78oONKVRRtD/iiARWwi27eWHELkyymlVSi1ZSsoqkvklY0G41YWmt3dXy+26LET8+QMsPSKpSgwM44nKVylU2FiUI/ejdcifbQYSrRtyvrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at; spf=pass smtp.mailfrom=tugraz.at; dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b=aw7sxCaH; arc=none smtp.client-ip=129.27.2.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tugraz.at
+Received: from vra-171-233.tugraz.at (vra-171-233.tugraz.at [129.27.171.233])
+	by mailrelay.tugraz.at (Postfix) with ESMTPSA id 4Z41gB0Bxhz1JJBs;
+	Fri, 28 Feb 2025 09:32:53 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailrelay.tugraz.at 4Z41gB0Bxhz1JJBs
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tugraz.at;
+	s=mailrelay; t=1740731576;
+	bh=FsVOmG+eOn25bBM3FLaDmS1bSRItCTyhAfkQr4QLaYc=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=aw7sxCaH0qhEdPR8CbZIfrvPiH3FGpYjUrQmy1JII1+W+77aVTI44jmglapIsuu+0
+	 HZOOdkh0gL4xUM9Jj957zm1JDYS7VPx6RcxAjEGwcYVztEeFE6x2UWnZWd+9/fhICu
+	 wmpBMTqWDeXOfRyynJGu+nwnLRHttw3txVBjsMpQ=
+Message-ID: <d465e17bfc45e02b2bbd68a4235cc1c7fd7500e1.camel@tugraz.at>
+Subject: Re: C aggregate passing (Rust kernel policy)
+From: Martin Uecker <uecker@tugraz.at>
+To: Ralf Jung <post@ralfj.de>, Linus Torvalds
+ <torvalds@linux-foundation.org>,  "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Ventura Jack
+ <venturajack85@gmail.com>,  Kent Overstreet <kent.overstreet@linux.dev>,
+ Gary Guo <gary@garyguo.net>, airlied@gmail.com, boqun.feng@gmail.com, 
+ david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, 
+ hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, 
+ rust-for-linux@vger.kernel.org
+Date: Fri, 28 Feb 2025 09:32:52 +0100
+In-Reply-To: <59c7a1aa-7ff8-4ed1-a83f-5db43094d3a8@ralfj.de>
+References: 
+	<CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+	 <20250222141521.1fe24871@eugeo>
+	 <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+	 <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+	 <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+	 <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+	 <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
+	 <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
+	 <5d7363b0-785c-4101-8047-27cb7afb0364@ralfj.de>
+	 <CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com>
+	 <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
+	 <59c7a1aa-7ff8-4ed1-a83f-5db43094d3a8@ralfj.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: Martin Uecker <uecker@tugraz.at>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Ventura Jack
- <venturajack85@gmail.com>, Kent Overstreet <kent.overstreet@linux.dev>,
- Gary Guo <gary@garyguo.net>, airlied@gmail.com, boqun.feng@gmail.com,
- david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org,
- hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev,
- linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com,
- rust-for-linux@vger.kernel.org
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <20250222141521.1fe24871@eugeo>
- <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
- <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
- <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
- <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
- <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
- <5d7363b0-785c-4101-8047-27cb7afb0364@ralfj.de>
- <CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com>
- <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
-Content-Language: en-US, de-DE
-From: Ralf Jung <post@ralfj.de>
-In-Reply-To: <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-TUG-Backscatter-control: G/VXY7/6zeyuAY/PU2/0qw
+X-Spam-Scanner: SpamAssassin 3.003001 
+X-Spam-Score-relay: 0.0
+X-Scanned-By: MIMEDefang 2.74 on 129.27.10.116
 
-Hi,
+Am Freitag, dem 28.02.2025 um 09:08 +0100 schrieb Ralf Jung:
 
->> The reason? The standards people wanted to describe the memory model
->> not at a "this is what the program does" level, but at the "this is
->> the type system and the syntactic rules" level. So the RCU accesses
->> had to be defined in terms of the type system, but the actual language
->> rules for the RCU accesses are about how the data is then used after
->> the load.
-> 
-> If your point is that this should be phrased in terms of atomic
-> accesses instead of accesses to atomic objects, then I absolutely
-> agree with you.  This is something I tried to get fixed, but it
-> is difficult. The concurrency work mostly happens in WG21
-> and not WG14.
-> 
-> But still, the fundamental definition of the model is in terms
-> of accesses and when those become visible to other threads, and
-> not in terms of syntax and types.
+>=20
+> (From a different email)
+> > It sounds you want to see the semantics strengthened in case
+> > of a data race from there being UB to having either the old
+> > or new value being visible to another thread, where at some
+> > point this could change but needs to be consistent for a
+> > single access as expressed in the source code.
+>=20
+> This would definitely impact optimizations of purely sequential code. May=
+be that=20
+> is a price worth paying, but one of the goals of the C++ model was that i=
+f you=20
+> don't use threads, you shouldn't pay for them. Disallowing rematerializat=
+ion in=20
+> entirely sequential code (just one of the likely many consequences of mak=
+ing=20
+> data races not UB) contradicts that goal.=C2=A0
 
-The underlying C++ memory model is already fully defined in terms of "this is 
-what the program does", and it works in terms of atomic accesses, not atomic 
-objects. The atomic objects are a thin layer that the C++ type system puts on 
-top, and it can be ignored -- that's how we do it in Rust.
+This is the feedback I now also got from GCC, i.e. there are cases where
+register allocator would indeed rematerialize a load and they think this is
+reasonable.
 
-(From a different email)
-> It sounds you want to see the semantics strengthened in case
-> of a data race from there being UB to having either the old
-> or new value being visible to another thread, where at some
-> point this could change but needs to be consistent for a
-> single access as expressed in the source code.
+> Given that even in highly concurrent=20
+> programs, most accesses are entirely sequential, it doesn't seem unreason=
+able to=20
+> say that the exceptional case needs to be marked in the program (especial=
+ly if=20
+> you have a type system which helps ensure that you don't forget to do so)=
+.
 
-This would definitely impact optimizations of purely sequential code. Maybe that 
-is a price worth paying, but one of the goals of the C++ model was that if you 
-don't use threads, you shouldn't pay for them. Disallowing rematerialization in 
-entirely sequential code (just one of the likely many consequences of making 
-data races not UB) contradicts that goal. Given that even in highly concurrent 
-programs, most accesses are entirely sequential, it doesn't seem unreasonable to 
-say that the exceptional case needs to be marked in the program (especially if 
-you have a type system which helps ensure that you don't forget to do so).
+Martin
 
-Kind regards,
-Ralf
 
 
