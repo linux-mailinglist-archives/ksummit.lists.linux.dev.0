@@ -1,137 +1,178 @@
-Return-Path: <ksummit+bounces-2030-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2031-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 961F8A4B172
-	for <lists@lfdr.de>; Sun,  2 Mar 2025 13:20:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72AB3A4DC66
+	for <lists@lfdr.de>; Tue,  4 Mar 2025 12:23:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2897916A8B9
-	for <lists@lfdr.de>; Sun,  2 Mar 2025 12:20:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA59E3B3325
+	for <lists@lfdr.de>; Tue,  4 Mar 2025 11:19:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C39C1E32BE;
-	Sun,  2 Mar 2025 12:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A274202C2D;
+	Tue,  4 Mar 2025 11:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vf6Y7r/m"
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="GeVFSe4M"
+Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E531DF733
-	for <ksummit@lists.linux.dev>; Sun,  2 Mar 2025 12:20:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98DF20296C
+	for <ksummit@lists.linux.dev>; Tue,  4 Mar 2025 11:17:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740918003; cv=none; b=jSJSVFrnzUsrw2+pxQJaY7vP7e4j+H6Hh6l7jz/l9cOb71Kb7ogfdl8EdXvWtVExaAuQVf5zfqMtD2QEOxL9A27j1DqU9FiJFnm0Cd7Fi7Q7zO90AXKaBoaDAgjmBDmJ9YzsV7RpuPQZg4CF3jdq4eHuPwCVjMKqdeQtclFhN3o=
+	t=1741087079; cv=none; b=Vofn5WDvLdwHRU75fb5ho6/JXR4LVHltxTN5bMPkmzb2+si7jMpdW8ouA0YiGII3+0FOSylDb8gW5jCk/jMKAZoAsw7p8N4C7JSbvsWqhVvffjvSFnZUy2mRk572in1eTrEjvyaCj7rY+F0snKkEsizlbxHulEYFVJ7QU7caIZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740918003; c=relaxed/simple;
-	bh=ZrBbCj0ibZn0HW4gHwjyxqJOkO6cqMU6RSDZLyfOTyo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KrrfhuROe15SPNPtoI7+AdOvegob15nch2aTxu/39UZz4fOgqSJC60YPpuQfSmqf3ZIsyfItiGG+FBc+fw0t1C7AIZPNUkgK8NhkqzHABelszfW0N5ypsh2497x04tZWGtvfnoc8vrDeiAVQLNa8C2qGWDSZk2GGtZelKuyZNU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vf6Y7r/m; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4399deda38cso22655745e9.1
-        for <ksummit@lists.linux.dev>; Sun, 02 Mar 2025 04:20:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740917999; x=1741522799; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CgCqjFsdmVPmkwwHKifVvYTCFuUFMQI0XhP4ZU/3jAA=;
-        b=Vf6Y7r/mgxDxYTgupqDeHuZ44D8K/xdpmKWAn5bvf9HBHV0I4uKhAghD+ISbgqm5A6
-         9iEkV4ls1giXJnuaerQ79xgXY0XF2Ear+hYItJ0lc9zLICL6eORHiCvZu5zVDk8YAP0V
-         BX99SrcbUHPBOaEd/iQEqdx8GkzatlKkdOSeZ7UyLVGeEP0W5Anp1ytgSoB0DQecn7eJ
-         RC02/WzI9eEcXjR1G/hYPNA4XeLV1U6+1iWPFy5meGrLA1KZnt0xabQ1lWEAKcMj8Iwi
-         jC0Qwb7aFIrWutVUgFCTIjJSxGWC485Lm1P/j4oPNspzTVLtYmG2MT1j5bURFyJETDJc
-         SJjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740917999; x=1741522799;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CgCqjFsdmVPmkwwHKifVvYTCFuUFMQI0XhP4ZU/3jAA=;
-        b=Lj1c5Yx0uhit7vbxs3rLDT0qa2oItCDlRg0JBjH+gtKVPH2nQpHCOo5ra5HpORz0LJ
-         m8EleS72MBTA/exyvAuD2Xhfgu2xvcClsZ8D6C4t829+m8PD9C62pVs5H37InQcvWRa8
-         k/tn0jD6vf9C/J+ul3hfFdw06nraEODTJ1cp9kGfNY0C6YsuiEwLSzvMXf+1fVwybDZ8
-         RblaqEu9L+rfrcPC/lsrgsF8eqjvLl7pRpTEsErbvhWJGs3INEeZC1FfWbJF5iC0Ax20
-         z27JdzsIms86QbDvNr8BL0YYQd4yc/7+N30STI+KSEEIIP1GV3n7eBvw0YB7DU6nDwFB
-         29jA==
-X-Forwarded-Encrypted: i=1; AJvYcCVFMKdmRnxpfo7jJVH20mOo8xzLw3VES55CJRth3vMS06FOXAmq8mi5ux3TZKy2S7i/7gcZkRU5@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy5Lt49U/iBV4IN0UZ3OkUHIaHnMdlaSxOLkvFu9ppq2Rt1e4rU
-	VJFLl2vUkw91OwKpWwmKsPAWy4ZE/czvgMdzCDOKwnduh+9iL0Yb
-X-Gm-Gg: ASbGncuAVMDitc3jRqBbYB2pgqo7KKujsRxR9XAtIasXTdjS3ZeZtu4+MoHwmCWbXYV
-	DaFKOozYgGbzOZsfRjw3MUgKvPO5yjocQkOeOdnKC4TPROwzuplTYtMoNIpVpDGzKMt868LkSDn
-	yo0JR1Z5DUfZuv39prC61uq9qq+oeOCG8suBdQldpR/cewbUU8FId410RUgf0dgpxLdgRip9EKg
-	AFm6uYLrI7DydMrVVGc8k/hAgb5GNuOgFQ0wVz5foljzntFmw2XSdfxgrKurMgV/z46DFyjU5gZ
-	Dv77hNM3+lnbm82iIMxEnzNCD+cmqRxp3H8Bxx1PeQvaSYn4XmyrBqrpBKdMMlRFZb8kDQATlOU
-	fIb5KaNA=
-X-Google-Smtp-Source: AGHT+IH9JKVSqwCY7/dPDG8HlygkblxfEWt0EgMvbXyn+Sth5sEwgJ69CNPda359PKer/OXo7j7gpA==
-X-Received: by 2002:a05:600c:a01:b0:439:9377:fa21 with SMTP id 5b1f17b1804b1-43ba6766be1mr76628105e9.19.1740917999301;
-        Sun, 02 Mar 2025 04:19:59 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bbfb7e280sm7560765e9.8.2025.03.02.04.19.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Mar 2025 04:19:58 -0800 (PST)
-Date: Sun, 2 Mar 2025 12:19:57 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>, James Bottomley
- <James.Bottomley@hansenpartnership.com>, Greg KH
- <gregkh@linuxfoundation.org>, Miguel Ojeda
- <miguel.ojeda.sandonis@gmail.com>, Ventura Jack <venturajack85@gmail.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Alice Ryhl <aliceryhl@google.com>, Linus
- Torvalds <torvalds@linux-foundation.org>, Gary Guo <gary@garyguo.net>,
- airlied@gmail.com, boqun.feng@gmail.com, hch@infradead.org,
- ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, Ralf Jung <post@ralfj.de>, Josh Poimboeuf
- <jpoimboe@redhat.com>
-Subject: Re: C aggregate passing (Rust kernel policy)
-Message-ID: <20250302121957.28f08504@pumpkin>
-In-Reply-To: <20250226124733.10b4b5fa@gandalf.local.home>
-References: <2rrp3fmznibxyg3ocvsfasfnpwfp2skhf4x7ihrnvm72lemykf@lwp2jkdbwqgm>
-	<CAFJgqgS-SMMEE2FktuCUimdGkPWMV3HB2Eg38SiUDQK1U8=rNg@mail.gmail.com>
-	<CANiq72mOp0q1xgAHod1Y_mX86OESzdDsgSghtQCwe6iksNt-sA@mail.gmail.com>
-	<f2bf76553c666178505cb9197659303a39faf7aa.camel@HansenPartnership.com>
-	<2025022611-work-sandal-2759@gregkh>
-	<16127450a24e9df8112a347fe5f6df9c9cca2926.camel@HansenPartnership.com>
-	<20250226110033.53508cbf@gandalf.local.home>
-	<9c443013493f8f380f9c4d51b1eeeb9d29b208a3.camel@HansenPartnership.com>
-	<ylsffirqsrogli5fqlyhklhy6s54ngolvk5hj5fnpn3ceglyii@cgcvtm4ohtra>
-	<20250226115726.27530000@gandalf.local.home>
-	<olxh7iwz5yjuuqwpbzgohrl3dkcurbmzij3o2dbha5mtkr2ipn@wtee4jjj7ope>
-	<20250226124733.10b4b5fa@gandalf.local.home>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	s=arc-20240116; t=1741087079; c=relaxed/simple;
+	bh=XgYmH0+OJwg4e3U1YtmHRre0O+sLoOFhVcee8+/rJQY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=EXTSoTN768wdXlCyVZgwa31/e5eMIPifYu8dPdXUQDQ8iuGF8MNvNYR9AspF5VRLkGIX9l389d/o+y/0EmrFxfB6D7l+LHgZIJgtygpUFqLKGhvybmvUuhyHjUfnREIF6zh2SsEBFaseb2GXKEs6jQaUl4HjpTF0fxbqWSYxpaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=GeVFSe4M; arc=none smtp.client-ip=49.12.72.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
+From: Fiona Behrens <me@kloenk.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
+	t=1741087075; bh=yYpiBJkawOAfe3NG34s2NRh6SN3BccAQUsJuyxfuq54=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=GeVFSe4MKE5MAfYHRXw944RUvEBnsSdfM3IghDSwPOeB3vtt7RVSlkabwpz7g+fAB
+	 DryDg2BYfCDEDA1yN9R4+0El0gPil15cr+KF5q6WqMayQmi2gq064aRRztqaxchGEg
+	 +Cr4um4sHjfHynUg9v10rfMbDWQ+zLaFwcLQlpFE=
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Bart Van Assche <bvanassche@acm.org>,  Steven Rostedt
+ <rostedt@goodmis.org>,  Jason Gunthorpe <jgg@nvidia.com>,  Kees Cook
+ <kees@kernel.org>,  Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+  Christoph Hellwig <hch@infradead.org>,  rust-for-linux
+ <rust-for-linux@vger.kernel.org>,  Linus Torvalds
+ <torvalds@linux-foundation.org>,  Greg KH <gregkh@linuxfoundation.org>,
+  David Airlie <airlied@gmail.com>,  linux-kernel@vger.kernel.org,
+  ksummit@lists.linux.dev
+Subject: Re: Rust kernel policy
+In-Reply-To: <Z7c3PguDn-sEl3gm@kernel.org> (Jarkko Sakkinen's message of "Thu,
+	20 Feb 2025 16:07:58 +0200")
+References: <Z7SwcnUzjZYfuJ4-@infradead.org>
+	<CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
+	<202502191026.8B6FD47A1@keescook>
+	<20250219140821.27fa1e8a@gandalf.local.home>
+	<202502191117.8E1BCD4615@keescook> <20250219202751.GA42073@nvidia.com>
+	<20250219154610.30dc6223@gandalf.local.home>
+	<97841173-1de8-4221-8bf3-3470a5ac98a7@acm.org>
+	<89f2547edcaaba53d9965cab9133d809607330ac.camel@kernel.org>
+	<87pljc6d7s.fsf@kloenk.dev> <Z7c3PguDn-sEl3gm@kernel.org>
+Date: Tue, 04 Mar 2025 12:17:54 +0100
+Message-ID: <m2cyexjb8d.fsf@kloenk.dev>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On Wed, 26 Feb 2025 12:47:33 -0500
-Steven Rostedt <rostedt@goodmis.org> wrote:
+Jarkko Sakkinen <jarkko@kernel.org> writes:
 
-> On Wed, 26 Feb 2025 12:41:30 -0500
-> Kent Overstreet <kent.overstreet@linux.dev> wrote:
-> 
-> > It's been awhile since I've looked at one, I've been just automatically
-> > switching back to frame pointers for awhile, but - I never saw
-> > inaccurate backtraces, just failure to generate a backtrace - if memory
-> > serves.  
-> 
-> OK, maybe if the bug was bad enough, it couldn't get access to the ORC
-> tables for some reason. Not having a backtrace on crash is not as bad as
-> incorrect back traces, as the former is happening when the system is dieing
-> and live kernel patching doesn't help with that.
+> On Thu, Feb 20, 2025 at 12:57:11PM +0100, Fiona Behrens wrote:
+>> Jarkko Sakkinen <jarkko@kernel.org> writes:
+>> 
+>> > On Wed, 2025-02-19 at 12:52 -0800, Bart Van Assche wrote:
+>> >> On 2/19/25 12:46 PM, Steven Rostedt wrote:
+>> >> > I do feel that new drivers written in Rust would help with the
+>> >> > vulnerabilities that new drivers usually add to the kernel.
+>> >> 
+>> >> For driver developers it is easier to learn C than to learn Rust. I'm
+>> >> not sure that all driver developers, especially the "drive by"
+>> >> developers, have the skills to learn Rust.
+>> >
+>> > IMHO, Rust is not that difficult to learn but it is difficult to
+>> > run.
+>> >
+>> > One point of difficulty for me still is the QA part, not really the
+>> > code. QuickStart discusses on how to install all the shenanigans
+>> > with distribution package managers.
+>> >
+>> > The reality of actual kernel development is that you almost never
+>> > compile/run host-to-host, rendering that part of the documentation
+>> > in the battlefield next to useless.
+>> >
+>> > Instead it should have instructions for BuildRoot, Yocto and
+>> > perhaps NixOS (via podman). It should really explain this instead
+>> > of dnf/apt-get etc.
+>> 
+>> What do you mean with via podman for NixOS?
+>
+> I sometimes use NixOS to test more complex kernel configurations. See
+>
+> https://social.kernel.org/notice/ArHkwNIVWamGvUzktU
+>
+> I'm planning to use this approach to check if I could use that to
+> build efficiently kernels with Rust.
+>
+> I've not been so far successful to do it with BuildRoot, which has
+> zeroed out any possible contributions for rust linux. Writing code
+> is like 5% of kernel development. Edit-compile-run cycle is the
+> 95%.
+>
+>> I do still have on my ToDo list to build and publish a better nix
+>> development shell for kernel with rust enabled, and could also add a
+>> section on how to build a NixOS iso in the same nix code.
+>> But sadly time is a finite resource and so did not yet got to it.
+>
+> Please do ping me if you move forward with this. IMHO, why wouldn't
+> you contribute that straight to the kernel documentation? Right no
+> there are exactly zero approaches in kernel documentation on how
+> test all of this.
 
-I bet to differ.
-With no backtrace you have absolutely no idea what happened.
-A list of 'code addresses on the stack' (named as such) can be enough
-to determine the call sequence.
-Although to be really helpful you need a hexdump of the actual stack
-and the stack addresses of each 'code address'.
+I do have a new pr open in the nix repo, it still needs some polishing
+and gcc and all that. but it does work for me to build using clang and
+also run kunit.
 
-	David
+https://github.com/Rust-for-Linux/nix/pull/8
+
+Thanks
+Fiona
+
+>
+> The best known method I know is to extend this type of example I
+> did year ago:
+>
+> #!/usr/bin/env bash
+>
+> set -e
+>
+> make defconfig
+> scripts/config --set-str CONFIG_INITRAMFS_SOURCE "initramfs.txt"
+> yes '' | make oldconfig
+>
+> cat > initramfs.txt << EOF
+> dir /dev 755 0 0
+> nod /dev/console 644 0 0 c 5 1
+> nod /dev/loop0 644 0 0 b 7 0
+> dir /bin 755 1000 1000
+> slink /bin/sh busybox 777 0 0
+> file /bin/busybox initramfs/busybox 755 0 0
+> dir /proc 755 0 0
+> dir /sys 755 0 0
+> dir /mnt 755 0 0
+> file /init initramfs/init.sh 755 0 0
+> EOF
+>
+> mkdir initramfs
+>
+> curl -sSf https://dl-cdn.alpinelinux.org/alpine/edge/main/x86_64/busybox-static-1.36.1-r25.apk | tar zx --strip-components 1
+> cp busybox.static initramfs/busybox
+>
+> cat > initramfs/init.sh << EOF
+> #!/bin/sh
+> mount -t proc none /proc
+> mount -t sysfs none /sys
+> sh
+> EOF
+>
+> and then qemu-system-x86_64 -kernel arch/x86/boot/bzImage
+>
+> It's sad really.
+>
+>> 
+>> Fiona
+>
+> BR, Jarkko
 
