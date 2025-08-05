@@ -1,195 +1,147 @@
-Return-Path: <ksummit+bounces-2048-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2049-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E53F7B1B91E
-	for <lists@lfdr.de>; Tue,  5 Aug 2025 19:17:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE70AB1B955
+	for <lists@lfdr.de>; Tue,  5 Aug 2025 19:24:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 439267A256A
-	for <lists@lfdr.de>; Tue,  5 Aug 2025 17:16:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6256D3B87AD
+	for <lists@lfdr.de>; Tue,  5 Aug 2025 17:24:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40BC5292B36;
-	Tue,  5 Aug 2025 17:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E28929A32D;
+	Tue,  5 Aug 2025 17:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="fTcrE2gW"
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="s5mVG9IU"
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7E81DE4E5
-	for <ksummit@lists.linux.dev>; Tue,  5 Aug 2025 17:17:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5404296170
+	for <ksummit@lists.linux.dev>; Tue,  5 Aug 2025 17:23:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754414253; cv=none; b=CvefXGTb+IU8CP5deFZ8ZcQroqT4C0Iuxcwe0y88xerYiDzF2P/y0IhMT6cvWt9SxJ9yjvBeLRrXbdSy5SBISFddT0zNYYiKn1U8JFWBiqOOIYJneyq+W3Sr7i4Nz7J9Wg4IL4kwbGTXBwvmCKoJW88ymJjdBZxdgNbmiTLc++g=
+	t=1754414603; cv=none; b=jQ4+D9VIPo8noDdMaorqPJCpjP8xOAk0Q1aCQCribVnn1qaiMKS2xnYJNWdp4AD08CVe8QbFu2IBkJ2KX/8dow5DTp58z/9hGAHzdV6U5Pb6fPmRrq1+zTa4AfisQY/oF9+SCYEQmTk7BLLkQgFbh3qe85R4Taw/zWmss0FxyLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754414253; c=relaxed/simple;
-	bh=XyLdHihx0ceM2bMf9YbbqfZP/FqhEkCBvULhOyNjgcI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XUKVBAQJyvxKJIWMNXNjecSn1gC9yIRT4s6hPwfgH+pg/e7UAZ0HADN25SJP82e32cYa882HCNGTa8aE1PUMTcbb4tWDIb/RaXI/7/a3pKahQrItf2FVlPKbOLFKtijWyIsD4QkDkZft/x/Ex54OmmmzpK01BxjxlMadbDTadmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=fTcrE2gW; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3b794a013bcso5044288f8f.2
-        for <ksummit@lists.linux.dev>; Tue, 05 Aug 2025 10:17:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1754414249; x=1755019049; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IhbKC5bHgMQ1+RoHKuFt7zlJpkg486eF0O9TfDWBhn0=;
-        b=fTcrE2gWmVFNW6KPYu7uYurHMetCZRwKIf0P55SRPNUuB1c/wwPtAqtsNdIXfCb0aV
-         JqvOVIM677P+1Xwpi1iFXW175X1XED3vvVrupHw9L98Nm0zMBCRnlO3r0UhaBzY3ZBEX
-         JYU7dEmzwchL8+JX+S6HGQ3ahL/Nolyt5iiYzIrq2zCGEvAM/KXVN48y+HD6twZ2UzfM
-         H5lxeSciP2trpIPbgeN5H6Fr9Vzji9HpqWaprg+hN11OhS40iEB+ahlV6E1u1YOAummH
-         MgVFX4zcU+jyVi3Elbsk+pbexFDkB3lLjs4yq3VMCbNjw8wGAB3NVxi6zShf3n6+R0JO
-         d2Xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754414249; x=1755019049;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IhbKC5bHgMQ1+RoHKuFt7zlJpkg486eF0O9TfDWBhn0=;
-        b=NVHUZ9u1UFFgXAtmJ9CJmTNN51HLN1lFhAPy2dfEw6rBXvbS8psAyPqP9j1knCtBGW
-         LQDOIOouuW9027pLvOLLb9TaQWph32MO9COsovutMAZKoWd0CbJ8DOeag1kAA6QqZgRA
-         miaE+vBosG1y2Nqr/gIAS9PaiaATTT3FbCV6HlwrTCfzA/diZmsiU+oMQegUf85fqRme
-         WYNF96T9R2AsnCL8FBlV6qrcFKhSx6shy7jnrpkANs5ueK+3BBI4SK8gcTz1TXLRnqrF
-         YiX+36jfoRsJGM1sw7rBSmTIydNiQYOwOZzo8w9KqDTQ2j10U3GZgqjE9nJteKrXIFrA
-         QPtA==
-X-Forwarded-Encrypted: i=1; AJvYcCXLZn6reN+JVLIBU4JD9zjEzoK7mDllr6zqobT+uwLJ+dfcDg0j4xHjJiw3pl4p1yFx1j9im75e@lists.linux.dev
-X-Gm-Message-State: AOJu0YxlwnsVnAXr91FP1xTL8gR4vOkqpLKEBBeryM+8Q7sYke2r48GL
-	xntwlXENDXJP8Z3Ukdnr4NTR8EfxKW2VqsG3BrXDzhoCzU1kyXCWscG56P5jvagUyhc=
-X-Gm-Gg: ASbGncv7MWzT8bSqVutenvk3VX5BmFpRyPEx8CEfa6/n1nrCvQLZai1g/9rrjF0B4cQ
-	cMEyRWa6F+lFCBwqZZIcpGayrn5G0qRALpcyEF/ZsfuJme0E4XE9Qq9Idk+mNt1uAaDX9ikTroO
-	0U1iU8LzCIGjqhHrKjTZSIHnyAN7i0m7ojnQX+BFF/5A0QBFMBkaExaS3xvvHcp3vCU7O3rtwep
-	+d0MID/iRuarnG7PbbMUVvpufIPZC70p5svslxp3xE004yj25Xyk31RNtE6YgR7O/WI987wi/AE
-	sqJ9ZDfDNehuMLPZ+LrSvTyqHId3Iu7dHY29GKc7J6wCNIvGepwVKCX8n5uXWrLcxUcfz6gSqu2
-	FSAYIK321WQPmk7tjGnaNSfQC3enFvgbdu2kuIowvZimFZeH0lKubbsxJ853XxKLnMo6h/ek/iW
-	c1ZfwNee3K5Q==
-X-Google-Smtp-Source: AGHT+IHhRxB4JoKCMy/ATBPtrZ1y+lMznRE1kagz2Vx8ie50AUKAcsr/bYCGML9FfhXZepadxr4I1A==
-X-Received: by 2002:a05:6000:2912:b0:3b7:9d87:97ad with SMTP id ffacd0b85a97d-3b8d94bc889mr11086893f8f.37.1754414249262;
-        Tue, 05 Aug 2025 10:17:29 -0700 (PDT)
-Received: from hermes.local (204-195-96-226.wavecable.com. [204.195.96.226])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458953cfeaesm276253335e9.16.2025.08.05.10.17.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Aug 2025 10:17:28 -0700 (PDT)
-Date: Tue, 5 Aug 2025 10:17:23 -0700
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, ksummit@lists.linux.dev
+	s=arc-20240116; t=1754414603; c=relaxed/simple;
+	bh=4cOLcwjvV8Zfaq/9zqOULpBjOi7slZYtceU0aVmyD60=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=vDQQ0Zapr+awQ99ZDwXmRnDWYZyeeZohmhu/yIVEtJWeIAn/8gFnSWdWOKPwAkfiJnn+Yu78fPLFFhRgkQ8M8Fpu4IRN51M6xcXQjpgFnf0MamehZOy+exSzLM1XSPUWWBAF3vKbq7DETh0lZuzTF9p4R2K9TijJUd4w58OB/Xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=s5mVG9IU; arc=none smtp.client-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1754414600;
+	bh=4cOLcwjvV8Zfaq/9zqOULpBjOi7slZYtceU0aVmyD60=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=s5mVG9IU3uaiqKaVRIkc1gjPJK2efe9Srk6ZytsSTEh/ZrGJZsSRu8BfjEaiUE7BN
+	 LL0l6UMM9tMfaMWeO9nqeyAUg8r4dR4GpChZVOEq8yjssmatGdUY/+Dzoe9YKlX+Jw
+	 vcSUBD4unWBTLdsVM4KuzMgpuSLlMIWAiqVUp5WI=
+Received: from lingrow.int.hansenpartnership.com (c-67-166-174-65.hsd1.va.comcast.net [67.166.174.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 82BD91C02FB;
+	Tue, 05 Aug 2025 13:23:20 -0400 (EDT)
+Message-ID: <e9902e53cd5c8ad444d6c62942e790b7ba5d756a.camel@HansenPartnership.com>
 Subject: Re: [MAINTAINERS SUMMIT] The role of AI and LLMs in the kernel
  process
-Message-ID: <20250805101723.2f87fdfc@hermes.local>
-In-Reply-To: <56e85d392471beea3322d19bde368920ba6323b6.camel@HansenPartnership.com>
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, ksummit@lists.linux.dev
+Date: Tue, 05 Aug 2025 13:23:18 -0400
+In-Reply-To: <ad8ea0a6-ca53-47f8-92ec-17e970184019@sirena.org.uk>
 References: <e3188fe2-4b6c-4cb2-b5ae-d36c27de6832@lucifer.local>
-	<56e85d392471beea3322d19bde368920ba6323b6.camel@HansenPartnership.com>
+	 <56e85d392471beea3322d19bde368920ba6323b6.camel@HansenPartnership.com>
+	 <ad8ea0a6-ca53-47f8-92ec-17e970184019@sirena.org.uk>
+Autocrypt: addr=James.Bottomley@HansenPartnership.com;
+ prefer-encrypt=mutual;
+ keydata=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
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-ci+H9jrEY8u/fGGu6H25"
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+
+
+--=-ci+H9jrEY8u/fGGu6H25
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 05 Aug 2025 12:43:38 -0400
-James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
+On Tue, 2025-08-05 at 18:11 +0100, Mark Brown wrote:
+> On Tue, Aug 05, 2025 at 12:43:38PM -0400, James Bottomley wrote:
+> > On Tue, 2025-08-05 at 17:03 +0100, Lorenzo Stoakes wrote:
+>=20
+> > > * On the other hand, there are use cases which are useful - test
+> > > data/code generation, summarisation, smart auto-complete - so
+> > > it'd perhaps be foolish to entirely dismiss AI.
+>=20
+> > Patch backporting is another such nice use.
+>=20
+> Patch backporting sounds pretty scary to me, it's the sort of thing
+> where extra context that needs to be accounted for is very likely to
+> come up (eg, assumptions you can make about existing state or
+> santisation).
 
-> On Tue, 2025-08-05 at 17:03 +0100, Lorenzo Stoakes wrote:
-> > Unavoidably, LLMs are the hot topic in tech right now, and are here
-> > to stay.
-> >=20
-> > This poses unique problems:
-> >=20
-> > * Never before have people been able to generate as much content that
-> > may, on a surface reading, seem valid whilst in reality being quite
-> > the opposite.
-> >=20
-> > * Equally, LLM's can introduce very subtle mistakes that humans find
-> > difficult to pick up upon - humans implicitly assume that the classes
-> > of errors they will encounter are the kinds other humans would make -
-> > AI defeats that instinct. =20
->=20
-> Do you have any examples of this?  I've found the opposite to be true:
-> AI is capable of really big stupid mistakes when it hasn't seen enough
-> of the pattern, but I can't recall seeing it make something you'd
-> classify as a subtle mistake (I assume it could copy subtle mistakes
-> from wrong training data, so I'm not saying it can't, just that I
-> haven't seen any).
->=20
-> I think the big mistakes could possibly be avoided by asking people who
-> submit patches to also append the AI confidence score:
->=20
-> https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence=
-/concept/accuracy-confidence?view=3Ddoc-intel-4.0.0
->=20
-> So we know how much similar training the model has seen before coming
-> to any conclusion about the value of the output.
->=20
-> > * The kernel is uniquely sensitive to erroneous (especially subtly
-> > erroneous) code - even small errors can be highly consequential. We
-> > use a programming language that can almost be defined by its lack of
-> > any kind =C2=A0 of safety, and in some subsystems patches are simply ta=
-ken
-> > if no obvious problems exist, making us rather vulnerable to this. =20
->=20
-> I think that's really overlooking the fact that if properly trained (a
-> somewhat big *if* depending on the model) AI should be very good at
-> writing safe code in unsafe languages.  However it takes C specific
-> training to do this, so any LLM that's absorbed a load of rust, python
-> and javascript from the internet will be correspondingly bad at writing
-> safe C code.  Hence the origin of the LLM and its training corpus would
-> be a key factor in deciding to trust it.
->=20
-> > * On the other hand, there are use cases which are useful - test
-> > data/code generation, summarisation, smart auto-complete - so it'd
-> > perhaps be foolish to entirely dismiss AI. =20
->=20
-> Patch backporting is another such nice use.
->=20
-> > A very important non-technical point we must consider is that, the
-> > second we even appear to be open to AI submission of _any_ kind, the
-> > press will inevitably report on it gleefully, likely with
-> > oversimplified headlines like 'Linux accepts AI patches'. =20
->=20
-> Oh, I think simply accepting AI patches is old news:
->=20
-> https://www.cnbc.com/2025/04/29/satya-nadella-says-as-much-as-30percent-o=
-f-microsoft-code-is-written-by-ai.html
->=20
-> > The moment that happens, we are likely to see a significant uptick in
-> > AI submissions whether we like it or not.
-> >=20
-> > I propose that we establish the broad rules as they pertain to the
-> > kernel, and would like to bring the discussion to the Maintainer's
-> > Summit so we can determine what those should be.
-> >=20
-> > It's important to get a sense of how maintainers feel about this -
-> > whether what is proposed is opt-in or opt-out - and how we actually
-> > implement this.
-> >=20
-> > There has been discussion on-list about this (see [0]), with many
-> > suggestions made including a 'traffic light' system per-subsystem,
-> > however many open questions remain - the devil is in the details.
-> >=20
-> > [0]:
-> > https://lore.kernel.org/all/20250727195802.2222764-1-sashal@kernel.or
-> > g/ =20
->=20
-> We're already getting AI generated bug reports from what I can tell.=20
-> It would be really helpful to see the AI confidence score for them as
-> well.
->=20
-> Regards,
->=20
-> James
->=20
->=20
->=20
+If you think about it, the git history contains the exact patch path
+between where the patch was applied and where you want to apply it.=20
+That's a finite data set which LLMs can be trained to work nicely with.
 
-I have been toying with AI for some things that got stuck on my TODO
-list for years (like writing tests). Have to agree with James, the errors
-in that code are not subtle. Mostly they are things that never work because
-AI has no context about what it is doing. Especially when porting between e=
-nvironments.
+> =C2=A0 That trips up humans often enough and doesn't seem like it's
+> playing to the strengths advertised for LLMs.
+
+Humans don't look at the patch path (or use something broad like a
+range scan).  The AI can be patient enough to actually go over it all.
+
+> TBH I'm not thrilled about the general test code is trivial
+> assumption either,
+
+I don't think anyone who trains AI thinks testing is trivial.  It does
+take special training for AI to be good at test writing.
+
+>  unstable test code or test code that doesn't cover what people think
+> it covers are both problems.
+
+Test coverage and constructing tests for coverage is another place AI
+can help.  Especially given coverage is a measurable quantity which
+makes training easier.
+
+> =C2=A0 The issues when things go wrong are less severe than the kernel
+> itself but things still need to be maintained and we already have
+> issues with people being dismissive of the selftests.
+
+Well our selftests, having just spent ages figuring out how to run a
+subset of the bpf tests, are very eccentric ... in that each test set
+runs in a completely different way from any of the others and knowledge
+from one selftest area doesn't apply to a different one.
+
+Regards,
+
+James
+
+
+--=-ci+H9jrEY8u/fGGu6H25
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABMIAB0WIQTnYEDbdso9F2cI+arnQslM7pishQUCaJI+BgAKCRDnQslM7pis
+hT0JAQDg7F13gaTc9HiHZlYhD41CnOVwHQ83tYmnqg/xVnSh1gEAzCUcH9A9SYZp
+a5w0a9Vemkeu7vQO64GSmqzOR+zL2H0=
+=Bjim
+-----END PGP SIGNATURE-----
+
+--=-ci+H9jrEY8u/fGGu6H25--
 
