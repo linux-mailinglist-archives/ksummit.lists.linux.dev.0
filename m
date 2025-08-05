@@ -1,56 +1,55 @@
-Return-Path: <ksummit+bounces-2044-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2045-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7918DB1B8B0
-	for <lists@lfdr.de>; Tue,  5 Aug 2025 18:43:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95F20B1B8C8
+	for <lists@lfdr.de>; Tue,  5 Aug 2025 18:49:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 338D33AE997
-	for <lists@lfdr.de>; Tue,  5 Aug 2025 16:43:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 380AC18A6E9A
+	for <lists@lfdr.de>; Tue,  5 Aug 2025 16:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52A7D2571D4;
-	Tue,  5 Aug 2025 16:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31713263F3C;
+	Tue,  5 Aug 2025 16:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="pRPHfSBs"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="ALS4mfiA"
 Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0830B291C2E
-	for <ksummit@lists.linux.dev>; Tue,  5 Aug 2025 16:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A202D29CE6
+	for <ksummit@lists.linux.dev>; Tue,  5 Aug 2025 16:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754412223; cv=none; b=DQJ7g34MfV6c84awJO8PcPEDlAXQjr15cSOTcE26B5H9k9Bwra41tJ7uaMsJuEskvMFltiZG13zTbC5jS9PmboVpJpEZkagx09qKRGBbWcSllDZ1hnuURbCZgHOcOaYsqeJfzYJya7cFiJ1mKqOBi5XQXFNEreNplGNk00tpJnI=
+	t=1754412546; cv=none; b=RkwFRNP479K092+ULBDlmJjBspe16Mm2xZzhQEVgtYUT5HM5daH7lBkKsz23R24JGkJMUhgcsMoSsRiB6gZLWLrM9+rDJnON3PsI1ofECYgW9ZngfmMC2v1/3z+k16+dy/hQI0g5PlsKxNQrqlU4kS+PajnLSnq7alROUdfvdQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754412223; c=relaxed/simple;
-	bh=Ehh5Z1oD+EQzlruSY16WYVdDtite9OjByEx8P6fEmHs=;
+	s=arc-20240116; t=1754412546; c=relaxed/simple;
+	bh=PRYhcuonSEowWIVwLPIqYclgUyyhA6dkIPA9AhnssnE=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lNBTLj3ZxDvnnxVx/yvh74uwxfEWrXl0sLCIZ7sJp3OW2nMUtphNngc5eLlY/7NaJJhDLhNMouW09a8uUzbMAOjIexmHNFxQDAIqRF+qYIzatIHAYQWG7tclhNAVLFyr2Afyi7fRJOHnjRyWtZemyJr1CGxVqzjKrf1u+s9aOU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=pRPHfSBs; arc=none smtp.client-ip=198.37.111.173
+	 Content-Type:MIME-Version; b=jdXMV2veoS0RoCWBPeK0hEic8jmldPNBsCtLCINpkHF6tJ4uxus4k9Lzu8tROMtVsUu/8lQbrefzcuyOAce2z8ZmAHh0GMw47uSOfWBPT80SV2fQbvruRlOoPuKnA9D0moknkNY1by1uKq7Wed/yAZu1ddzTtu+rxjzPyHGnJm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=ALS4mfiA; arc=none smtp.client-ip=198.37.111.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1754412219;
-	bh=Ehh5Z1oD+EQzlruSY16WYVdDtite9OjByEx8P6fEmHs=;
+	d=hansenpartnership.com; s=20151216; t=1754412543;
+	bh=PRYhcuonSEowWIVwLPIqYclgUyyhA6dkIPA9AhnssnE=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=pRPHfSBsJSs8xbrNkHp6w7Ga2/70yTNVFYxLqvID666pAsJ0rPdzz08SNvfJkwdFC
-	 JaK+amYFrs0QgTuZGeuLu1vn/ZPiCjCHD95cijZkYqF0jgGmh+jswO8n4l97YTuMU8
-	 nhQmEqUQYmGror/uZW5e/prJQ4dOhoFfujJtu9Ns=
+	b=ALS4mfiAgp7UrQxH7KQaXRChfU7iOMTKScyIc6CfYjBER6hMkJjtiQu0CSHM9Z/39
+	 CW/XzN+mi1JbzhJW22b69LButRsiuxmcgOQA7vFzksiUm0n/5sdYWghLQrHojYkofL
+	 1DcdYGjpQevMIVgdNb9SJ7kCs9ttKaiucwuduOI4=
 Received: from lingrow.int.hansenpartnership.com (c-67-166-174-65.hsd1.va.comcast.net [67.166.174.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 91DAC1C008C;
-	Tue, 05 Aug 2025 12:43:39 -0400 (EDT)
-Message-ID: <56e85d392471beea3322d19bde368920ba6323b6.camel@HansenPartnership.com>
-Subject: Re: [MAINTAINERS SUMMIT] The role of AI and LLMs in the kernel
- process
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 57A701C0192;
+	Tue, 05 Aug 2025 12:49:03 -0400 (EDT)
+Message-ID: <cb91ddf05b9ea48056765a9027ff9132e080df30.camel@HansenPartnership.com>
+Subject: Re: [MAINTAINERS SUMMIT] The amount of -stable emails
 From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, ksummit@lists.linux.dev
-Date: Tue, 05 Aug 2025 12:43:38 -0400
-In-Reply-To: <e3188fe2-4b6c-4cb2-b5ae-d36c27de6832@lucifer.local>
-References: <e3188fe2-4b6c-4cb2-b5ae-d36c27de6832@lucifer.local>
+To: Jiri Kosina <jkosina@suse.com>, ksummit@lists.linux.dev
+Date: Tue, 05 Aug 2025 12:49:02 -0400
+In-Reply-To: <162r47q9-rp56-67so-7032-2r1rn36p03n6@fhfr.pbz>
+References: <162r47q9-rp56-67so-7032-2r1rn36p03n6@fhfr.pbz>
 Autocrypt: addr=James.Bottomley@HansenPartnership.com;
  prefer-encrypt=mutual;
  keydata=mQENBE58FlABCADPM714lRLxGmba4JFjkocqpj1/6/Cx+IXezcS22azZetzCXDpm2MfNElecY3qkFjfnoffQiw5rrOO0/oRSATOh8+2fmJ6el7naRbDuh+i8lVESfdlkoqX57H5R8h/UTIp6gn1mpNlxjQv6QSZbl551zQ1nmkSVRbA5TbEp4br5GZeJ58esmYDCBwxuFTsSsdzbOBNthLcudWpJZHURfMc0ew24By1nldL9F37AktNcCipKpC2U0NtGlJjYPNSVXrCd1izxKmO7te7BLP+7B4DNj1VRnaf8X9+VIApCi/l4Kdx+ZR3aLTqSuNsIMmXUJ3T8JRl+ag7kby/KBp+0OpotABEBAAG0N0phbWVzIEJvdHRvbWxleSA8SmFtZXMuQm90dG9tbGV5QEhhbnNlblBhcnRuZXJzaGlwLmNvbT6JAVgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAhkBFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmBLmY0FCRs1hL0ACgkQgUrkfCFIVNaEiQgAg18F4G7PGWQ68xqnIrccke7Reh5thjUz6kQIii6Dh64BDW6/UvXn20UxK2uSs/0TBLO81k1mV4c6rNE+H8b7IEjieGR9frBsp/+Q01JpToJfzzMUY7ZTDV1IXQZ+AY9L7vRzyimnJHx0Ba4JTlAyHB+Ly5i4Ab2+uZcnNfBXquWrG3oPWz+qPK88LJLya5Jxse1m1QT6R/isDuPivBzntLOooxPk+Cwf5sFAAJND+idTAzWzslexr9j7rtQ1UW6FjO4CvK9yVNz7dgG6FvEZl6J/HOr1rivtGgpCZTBzKNF8jg034n49zGfKkkzWLuXbPUOp3/oGfsKv8pnEu1c2GbQpSmFtZXMgQm90dG9tbGV5IDxqZWpiQGxpbnV4LnZuZXQuaWJtLmNvbT6JAVYEEwEIAEACGwMHCwkIBwMCAQYVC
@@ -71,94 +70,32 @@ List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 
-On Tue, 2025-08-05 at 17:03 +0100, Lorenzo Stoakes wrote:
-> Unavoidably, LLMs are the hot topic in tech right now, and are here
-> to stay.
+On Tue, 2025-08-05 at 17:38 +0200, Jiri Kosina wrote:
+> This proposal is coming as a followup to the brief IRC discussion
+> that happened a few months back.
 >=20
-> This poses unique problems:
+> The amount of e-mails that are coming (with maintainers directly
+> CCed) as a result of patches being merged to -stable is so
+> overwhelming that I am not sure that people are making any productive
+> use of it whatsoever.
 >=20
-> * Never before have people been able to generate as much content that
-> may, on a surface reading, seem valid whilst in reality being quite
-> the opposite.
+> I am personally pretty much ignoring most of it, as (a) I wouldn't
+> have time to do anything else otherwise (b) I don't have a sufficient
+> motivation / time to invest effort into stable in the fist place.
 >=20
-> * Equally, LLM's can introduce very subtle mistakes that humans find
-> difficult to pick up upon - humans implicitly assume that the classes
-> of errors they will encounter are the kinds other humans would make -
-> AI defeats that instinct.
+> I feel it'd be beneficial to discuss this, and (depending on the
+> outcome)perhaps make it opt-in (or opt-out) at least, with
+> people/subsystems  having means how to be excluded from all that ...
+> ?
 
-Do you have any examples of this?  I've found the opposite to be true:
-AI is capable of really big stupid mistakes when it hasn't seen enough
-of the pattern, but I can't recall seeing it make something you'd
-classify as a subtle mistake (I assume it could copy subtle mistakes
-from wrong training data, so I'm not saying it can't, just that I
-haven't seen any).
-
-I think the big mistakes could possibly be avoided by asking people who
-submit patches to also append the AI confidence score:
-
-https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/c=
-oncept/accuracy-confidence?view=3Ddoc-intel-4.0.0
-
-So we know how much similar training the model has seen before coming
-to any conclusion about the value of the output.
-
-> * The kernel is uniquely sensitive to erroneous (especially subtly
-> erroneous) code - even small errors can be highly consequential. We
-> use a programming language that can almost be defined by its lack of
-> any kind =C2=A0 of safety, and in some subsystems patches are simply take=
-n
-> if no obvious problems exist, making us rather vulnerable to this.
-
-I think that's really overlooking the fact that if properly trained (a
-somewhat big *if* depending on the model) AI should be very good at
-writing safe code in unsafe languages.  However it takes C specific
-training to do this, so any LLM that's absorbed a load of rust, python
-and javascript from the internet will be correspondingly bad at writing
-safe C code.  Hence the origin of the LLM and its training corpus would
-be a key factor in deciding to trust it.
-
-> * On the other hand, there are use cases which are useful - test
-> data/code generation, summarisation, smart auto-complete - so it'd
-> perhaps be foolish to entirely dismiss AI.
-
-Patch backporting is another such nice use.
-
-> A very important non-technical point we must consider is that, the
-> second we even appear to be open to AI submission of _any_ kind, the
-> press will inevitably report on it gleefully, likely with
-> oversimplified headlines like 'Linux accepts AI patches'.
-
-Oh, I think simply accepting AI patches is old news:
-
-https://www.cnbc.com/2025/04/29/satya-nadella-says-as-much-as-30percent-of-=
-microsoft-code-is-written-by-ai.html
-
-> The moment that happens, we are likely to see a significant uptick in
-> AI submissions whether we like it or not.
->=20
-> I propose that we establish the broad rules as they pertain to the
-> kernel, and would like to bring the discussion to the Maintainer's
-> Summit so we can determine what those should be.
->=20
-> It's important to get a sense of how maintainers feel about this -
-> whether what is proposed is opt-in or opt-out - and how we actually
-> implement this.
->=20
-> There has been discussion on-list about this (see [0]), with many
-> suggestions made including a 'traffic light' system per-subsystem,
-> however many open questions remain - the devil is in the details.
->=20
-> [0]:
-> https://lore.kernel.org/all/20250727195802.2222764-1-sashal@kernel.or
-> g/
-
-We're already getting AI generated bug reports from what I can tell.=20
-It would be really helpful to see the AI confidence score for them as
-well.
+Actually, if stable emails just had a header tag, it would be easy for
+procmail to sort them out ... which is what I've been asking for for
+years.  X-Stable-Base: and X-Stable: seem to be reasonably common and
+catch most of it, but codifying the use in the kernel documentation and
+using them consistently would really help.
 
 Regards,
 
 James
-
 
 
