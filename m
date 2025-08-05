@@ -1,58 +1,53 @@
-Return-Path: <ksummit+bounces-2054-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2055-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3827CB1B98C
-	for <lists@lfdr.de>; Tue,  5 Aug 2025 19:43:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0BCEB1B999
+	for <lists@lfdr.de>; Tue,  5 Aug 2025 19:51:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45D1117588C
-	for <lists@lfdr.de>; Tue,  5 Aug 2025 17:43:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5946189E1AC
+	for <lists@lfdr.de>; Tue,  5 Aug 2025 17:51:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC09323C8A4;
-	Tue,  5 Aug 2025 17:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920B1293C58;
+	Tue,  5 Aug 2025 17:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IZBV6Dwn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pbpFIM5p"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676601F8EEC
-	for <ksummit@lists.linux.dev>; Tue,  5 Aug 2025 17:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185F321A928
+	for <ksummit@lists.linux.dev>; Tue,  5 Aug 2025 17:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754415783; cv=none; b=u71U5bV4+i0+HH95NpTOM7Bil9X6dUo6nxlqER2VcqUGt/jhH4PxblcWwwquJkUFsD9mXqEZBD5VVoW8rSsvp3na0m4mnSrQE2WZJWSO+pQlRcKiM7pUmY1i3TIwxe+bRniJnRlKKBCmos3hGaM6jUtOGI0wO3+P7ydl9A/iZ+M=
+	t=1754416260; cv=none; b=oUskPmTcho6+cdYcbFAtjdnGCl+hCmTqiEiQo3GEZ1IUbw/D82Tm+BS+NiPaSqI6NnOwXdU73iIB8zJ2TvazDLXrV0KU2iw7+HjslUEYv23LsYWk43fjSgeCVsSm3O/7rFvHL2kflSI7oVuwPfN53M22mLPt+J9EuQ5nwRTtoFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754415783; c=relaxed/simple;
-	bh=RNyF3c1cHOcdXzrTgmjBjPhzlReDWmRjmVh+QqYDyCk=;
+	s=arc-20240116; t=1754416260; c=relaxed/simple;
+	bh=kY6j/26ElAZZWmWcn0qA7GNC5+eoK64JTPocv/LQcgc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qh5IRmcUzSq//YpmytsV2DXdAr5Q8iRy9unsNidBNTugMiVeYzMv7uBJjlqpmbvfNQhvqaqQiucGOTtx0Bg9i8FlcRTURo/ktmd79TYXHwDGjluVxx4BrGBZSM/aEgAJSLruJxRd5AWrk++mUa+gbJuc4JWmwoBp/tny2/WEHnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IZBV6Dwn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8744C4CEF0;
-	Tue,  5 Aug 2025 17:43:02 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=BG3uGxy3vQ8c5N3yQixKJHAQ6GGRGYKW9FRFa8ZaljMbilehcDrHwXXRoGJnqUnvJ1Tr0Bz8GfIu0Vqtk+siMwb/32lq7jSOf0q3cYHvo9BF1kbXHL6fweWiNBjY/kFTfSGE30oBZW7uQSH3ItQr578vAJ24RUI/xZDOht6H4H8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pbpFIM5p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2882EC4CEF0;
+	Tue,  5 Aug 2025 17:50:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754415783;
-	bh=RNyF3c1cHOcdXzrTgmjBjPhzlReDWmRjmVh+QqYDyCk=;
+	s=k20201202; t=1754416259;
+	bh=kY6j/26ElAZZWmWcn0qA7GNC5+eoK64JTPocv/LQcgc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IZBV6Dwnamj8SDeHuLMmPsFnOi7Gk9Au8n0KsZ0bEhRw7rEiSP41zLTxokZV7/eq4
-	 OWD0hl19pIvXBJHMa7VKxliiLMmLlMUOy87SYUgPXMnOYyuWrfgArfIngih77NP9/Z
-	 QACMMFO/OjN6V1h3F/cHWvipR6F3zDstb8NoBXpH6tMqXOKVKeeyeiBhuhGmNW8mgb
-	 pJpDlfmrijiVo3pfuFbUbScmJP92O6ok/wxacZUKLgB6t6KdzgCwT7yUeWeFBO7prg
-	 mb0B0tfmsy/wHp4wYxmF4+95DxbJ8TwKMEDIx1WFDA6mLSlOHrpgPKXCjWq5Muo23j
-	 wPbqpPiPK9ZSQ==
-Date: Tue, 5 Aug 2025 13:43:00 -0400
+	b=pbpFIM5pDzzBaNDCScdV9iQaD2eMsI1zwv6rmoTMYAXiR+esduRk1kN69hjp7F6uX
+	 rUB6qd0pcBrSmtfzBBi8ATj9Z/3Eug7GjsZEiNFAMk7TqeP6Rqyv8qys39vm59ZHGK
+	 UcfZDqmi/p0K4NKRKHlG9gt17M4BpchqT6kGPTNoiurEXmv/Pn132YdBAEWxHyWVM8
+	 yR8Igv9PkDd+v9y+uqpSQ2KaIz9fflsdJ0gbSyzz6i1trMeLAPDiky2KTPh87wVmmB
+	 2ywc3WVyUJSeuivyj7Mj1Kw2x/jK+GUCP0Sf5R1QnzlygcBBicPQ+BO8eXAMLhNisM
+	 FD9/lZZG1ky3w==
+Date: Tue, 5 Aug 2025 13:50:57 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Mark Brown <broonie@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	ksummit@lists.linux.dev
-Subject: Re: [MAINTAINERS SUMMIT] The role of AI and LLMs in the kernel
- process
-Message-ID: <aJJCpFPuhIy_BKFa@lappy>
-References: <e3188fe2-4b6c-4cb2-b5ae-d36c27de6832@lucifer.local>
- <56e85d392471beea3322d19bde368920ba6323b6.camel@HansenPartnership.com>
- <ad8ea0a6-ca53-47f8-92ec-17e970184019@sirena.org.uk>
- <e9902e53cd5c8ad444d6c62942e790b7ba5d756a.camel@HansenPartnership.com>
+To: Jiri Kosina <jkosina@suse.com>
+Cc: ksummit@lists.linux.dev
+Subject: Re: [MAINTAINERS SUMMIT] Annotating patches containing AI-assisted
+ code
+Message-ID: <aJJEgVFXg4PRODEA@lappy>
+References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -61,38 +56,39 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <e9902e53cd5c8ad444d6c62942e790b7ba5d756a.camel@HansenPartnership.com>
+In-Reply-To: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
 
-On Tue, Aug 05, 2025 at 01:23:18PM -0400, James Bottomley wrote:
->On Tue, 2025-08-05 at 18:11 +0100, Mark Brown wrote:
->> On Tue, Aug 05, 2025 at 12:43:38PM -0400, James Bottomley wrote:
->> > On Tue, 2025-08-05 at 17:03 +0100, Lorenzo Stoakes wrote:
->>
->> > > * On the other hand, there are use cases which are useful - test
->> > > data/code generation, summarisation, smart auto-complete - so
->> > > it'd perhaps be foolish to entirely dismiss AI.
->>
->> > Patch backporting is another such nice use.
->>
->> Patch backporting sounds pretty scary to me, it's the sort of thing
->> where extra context that needs to be accounted for is very likely to
->> come up (eg, assumptions you can make about existing state or
->> santisation).
+On Tue, Aug 05, 2025 at 05:38:36PM +0200, Jiri Kosina wrote:
+>This proposal is pretty much followup/spinoff of the discussion currently
+>happening on LKML in one of the sub-threads of [1].
 >
->If you think about it, the git history contains the exact patch path
->between where the patch was applied and where you want to apply it.
->That's a finite data set which LLMs can be trained to work nicely with.
+>This is not really about legal aspects of AI-generated code and patches, I
+>believe that'd be handled well handled well by LF, DCO, etc.
+>
+>My concern here is more "human to human", as in "if I need to talk to a
+>human that actually does understand the patch deeply enough, in context,
+>etc .. who is that?"
+>
+>I believe we need to at least settle on (and document) the way how to
+>express in patch (meta)data:
+>
+>- this patch has been assisted by LLM $X
+>- the human understanding the generated code is $Y
+>
+>We might just implicitly assume this to be the first person in the S-O-B
+>chain (which I personally don't think works for all scenarios, you can
+>have multiple people working on it, etc), but even in such case I believe
+>this needs to be clearly documented.
 
-Most of the patches that fail to backport and get a "FAILED:" mail as a
-result are really just either a trivial context conflict ar a missing
-dependency.
+The above isn't really an AI problem though.
 
-Resolving those is within the realm of a "junior engineer" which I
-suspect AI would tackle fairly well.
+We already have folks sending "checkpatch fixes" which only make code
+less readable or "syzbot fixes" that shut up the warnings but are
+completely bogus otherwise.
 
-The other ~10-20% are indeed something more complex due to things like a
-major rewrite/refactor/etc of a subsystem, where I wouldn't trust the
-current state of the art AI to tackle. But mayble a few years from now?
+Sure, folks sending "AI fixes" could (will?) be a growing problem, but
+tackling just the AI side of it is addressing one of the symptoms, not
+the underlying issue.
 
 -- 
 Thanks,
