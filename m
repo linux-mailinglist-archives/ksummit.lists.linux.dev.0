@@ -1,126 +1,128 @@
-Return-Path: <ksummit+bounces-2037-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2038-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1D6DB1B6CE
-	for <lists@lfdr.de>; Tue,  5 Aug 2025 16:44:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58FC1B1B7AD
+	for <lists@lfdr.de>; Tue,  5 Aug 2025 17:39:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C3083AD804
-	for <lists@lfdr.de>; Tue,  5 Aug 2025 14:44:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE19E168E91
+	for <lists@lfdr.de>; Tue,  5 Aug 2025 15:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D36AB279792;
-	Tue,  5 Aug 2025 14:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B317926CE0E;
+	Tue,  5 Aug 2025 15:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="gpbfF/nK"
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="IYj9qkzc"
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E04278E53
-	for <ksummit@lists.linux.dev>; Tue,  5 Aug 2025 14:44:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D299205E2F
+	for <ksummit@lists.linux.dev>; Tue,  5 Aug 2025 15:38:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754405052; cv=none; b=YVVXUxaJ2o+XJL1LGdm0ZEETwuP6LIqzcBhU2VG8wkW1ZvcBeZAn9WfCe+OXqCQImY+S/73iwT5VJav9jU0TBg/YXUBvd9N3iTlU8ae3YzXez8hZ0rwQ6sdx1Sc9OiRS+Ze4eYLExnu62TvVOnAsnWIX2+mvHoMCLy+JaRPC2ro=
+	t=1754408326; cv=none; b=uUs+R6VF/CypsdD4tRLlZJJ6Q9Gb/y4g61DsKZoCqcDWuOfpcoVx9b3k3bDyEZS6toxsTY/In+JskaFPEyI5gslnjlq0NEXn6JOddCMvx3nYEjn7adhkZu6Fg2xB8YOWxrlSpbTNb1LxpSvLJk0pCYAoKlaqyO6a60VCLxVgxxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754405052; c=relaxed/simple;
-	bh=56zAqxQb+EXsLQfWV+Nv5mXSvAnpP+GR7TUF2q+RONE=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Rewmpuqvgsb7z/7GQA4yQLSgQD+gAfVryedG1UiiyemDEOuJNvIwQwd2o91XNzG6ukHpPtpqxnqCT8rWdcWAMGkyCNNrOroIbgTcbAOKhGKSqepgmCsNwYXIgLmfcfq9xAwz38Nyryk74v1WUI7AkwX1o1JtNTwl8DJb3q8YzWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=gpbfF/nK; arc=none smtp.client-ip=18.9.28.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
-Received: from trampoline.thunk.org (pool-173-48-114-137.bstnma.fios.verizon.net [173.48.114.137])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 575EhwY6023281
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 5 Aug 2025 10:43:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1754405040; bh=TB3k5YKrolHS/wGUjD2XWMujqEOA7pI1XujVrZoQ09I=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=gpbfF/nK3AA4Y1mnGA0hs/TfMSdbkijSUdIs273Q6zm9/psDK+utT8OHPH+gl46KP
-	 436vfh7zQOAzczzy5UfO8xFYFWy12q7HCXbWf5ZBOx8k+bDBlJXmb+yBV1k39yiWCS
-	 x7exXNqYDYucIGA3Ks6QpKCBjrqerdRty2vSCJ31kMpML94GdTisBXAxsvG5FkoWAP
-	 RIwfJ4syMf5yurVaLy8MKiNQQPQpF61rB/roGZvQYChjci/tSHFcqGTeCcIqvxP/mL
-	 2ibjIT2kfSg/BMwgBCzZepQB9YA88kj0iIQhbXEvpZuOh/leO+dGsa5vxt9rQWo/7w
-	 J74RKGlyqQoNg==
-Received: by trampoline.thunk.org (Postfix, from userid 15806)
-	id DEFF72E00D6; Tue, 05 Aug 2025 10:43:57 -0400 (EDT)
-Date: Tue, 5 Aug 2025 10:43:57 -0400
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: Linux Kernel Developers List <linux-kernel@vger.kernel.org>,
-        linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-mm@kvack.org, netdev@vger.kernel.org, ksummit@lists.linux.dev
-Subject: Maintainers Summit 2025 Call for Topics
-Message-ID: <20250805144357.GA762104@mit.edu>
+	s=arc-20240116; t=1754408326; c=relaxed/simple;
+	bh=2BIme8MCyZQlCnjcvSfO4OEqtOLHWS8pnCDGML9Cgdk=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=Rxel3o0zEaS3TW+ax51CpCsj85TfATm07IyWLZs77wA/848YakqH9HRAVev7SeSuODlF15UPtq/it0eHU7kdPGcZXckq8T31Rf/G4mnBHWyRQ6ResXHmyJryuheOo46DwlGY+1elO818sKzCzLHDKqyPn04lMAkw5n9vDwxgAuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=IYj9qkzc; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-459d44d286eso42955e9.0
+        for <ksummit@lists.linux.dev>; Tue, 05 Aug 2025 08:38:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1754408322; x=1755013122; darn=lists.linux.dev;
+        h=mime-version:message-id:subject:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=e2GsXWQZ4S7sO6fPbz1Q7nVgLXn28F695n2rWTmuLw8=;
+        b=IYj9qkzc+uSJa9bcdmR+cyveN+3FzYtj5/vizQEN15C0pNMxGoJuvIgxoSSjEIY8Ln
+         se56cQJvvuRhkRo0lB4IHllLxnTw4cSDcMUWrA+/4B2CpR4Zjdo+O596BtCDxZghzYbF
+         y5cmFKV5eFRN2ZAebXtVL5JhWLPrPmAqfzXHsS89cLZQzZsPe5arjbW02tbZMXo/Nntu
+         apxTQDorMP/VzRpSkEOk9jcrKNZhpm1NDS/+6G46oKKRGj+v70OGtztB/CB89xY/GKl0
+         VDxmfZGPiChhLgTVfaM+n1SQKzbaKatV+j423TAHDmphoNuY+wjq5huP3M/dGKADNBnP
+         kLwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754408322; x=1755013122;
+        h=mime-version:message-id:subject:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=e2GsXWQZ4S7sO6fPbz1Q7nVgLXn28F695n2rWTmuLw8=;
+        b=THnHfTtJSqMJB4F9cMGMmaFqtd3PyL4LbDprdVwSOZ71QEUri89Gj4qJtNxzE8nEcZ
+         n9JVXynnv9f0JsISPx2gsfa1J62siKL+qEr0J7/Gws6SWTQJ0kboCdRFGyouZTfMYZJn
+         ic6qMnB1W5fGWxDPpWcD2eXBqQ8QhdXa97LalqaWZNNeupRoT+y8tRBB/w+MkFwIMaf8
+         G1TRKxE1ny8d1Sw1855mQ92fliXAAvHt8x6zz8wQ/bi/xi/Bfh2JzIaUe5EBIUoUT1g6
+         qoPlnSLEsLr18aeMiiVvJMKbVNMeEtslzpW0nJeezQ1yOUn/zfmVC3UrPGaD351d+w69
+         Z+sA==
+X-Gm-Message-State: AOJu0YzLMdlbN1He77rFWHmyQwwAVHoMKM5R/iZ/QrKIsUlY67Xcmj0a
+	wjDn25jfkHiw9x4OhWGvjstCDbBJ/wIF2S6ZiXc3HKxrzLWOrnwhqF+SavGVnjBkSCVxVVPrSiS
+	00/zo
+X-Gm-Gg: ASbGnctfpKA1EYRtTG3rk4TsHg985rtqAJaGzQGbuCN0k1MRcOw/7uqEToc6H0eMas5
+	KUForMLjRsifHXKvvQmxy3d+tf6+YPY23sADDGkDr1N5n0L8iErLTMQwWjicrsM3lrposqYmgNO
+	DUTQa0wX2Sp1IvPm6UMn5XHHoRY02fV22jPo6A1GBYSECPETTbsAsj1oKhlykqzYwmi58IbOFDr
+	znf5K+RMvOum1bdnvVX7YZqEfnPFPSD58YpMzDzuldpDCIsmOjOZPxTWjT6Kgp/JK9UJS3qD+Cv
+	g6qLZM42jXaKOgN6YEAH8g03jTGvp1bdTHNVflT+TmaJ+GOi6w88WqzzGkGeEtN85QSePQ7gLZ7
+	kEhGEH5chtjS7xCr/aG96XZojH6d7LN8=
+X-Google-Smtp-Source: AGHT+IFqjuqEiDkCqJMb4rw6V3rkagngFRSLKeBGHeBaTPNMx8LypqsUOaksTLUk4Q8kCcPO5aEvUg==
+X-Received: by 2002:a5d:660a:0:b0:3b7:879c:c14e with SMTP id ffacd0b85a97d-3b8f3255007mr165859f8f.20.1754408322268;
+        Tue, 05 Aug 2025 08:38:42 -0700 (PDT)
+Received: from localhost (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76c0a952525sm4744569b3a.79.2025.08.05.08.38.40
+        for <ksummit@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Aug 2025 08:38:41 -0700 (PDT)
+Date: Tue, 5 Aug 2025 17:38:36 +0200 (CEST)
+From: Jiri Kosina <jkosina@suse.com>
+To: ksummit@lists.linux.dev
+Subject: [MAINTAINERS SUMMIT] Annotating patches containing AI-assisted
+ code
+Message-ID: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=US-ASCII
 
-This year, the Maintainers Summit will be held in Tokyo, Japan on
-Wednesday, December 10th, 2025, just before the Linux Plumber's Conference
-(December 11 -- 13th).
+This proposal is pretty much followup/spinoff of the discussion currently 
+happening on LKML in one of the sub-threads of [1].
 
-As in previous years, the Maintainers Summit is invite-only, where the
-primary focus will be process issues around Linux Kernel Development.
-It will be limited to 30 invitees and a handful of sponsored
-attendees.
+This is not really about legal aspects of AI-generated code and patches, I 
+believe that'd be handled well handled well by LF, DCO, etc.
 
-Linus has generated a list of people for the program committee to
-consider.  People who suggest topics that should be discussed at the
-Maintainers Summit will also be added to the list for consideration.
-To make topic suggestions for the Maintainers Summit, please send
-e-mail to ksummit@lists.linux.dev with a subject prefix of
-[MAINTAINERS SUMMIT].  Late submissions will be considered, but people
-submit submissions before September 10th will be considered for
-receiving an invite.  Invitations may be issued after that date, but
-only on a space-availale basis.
+My concern here is more "human to human", as in "if I need to talk to a 
+human that actually does understand the patch deeply enough, in context, 
+etc .. who is that?"
 
-For an examples of past Maintainers Summit topics, please see the
-these LWN articles:
+I believe we need to at least settle on (and document) the way how to 
+express in patch (meta)data:
 
- * 2025 https://lwn.net/Articles/990740/
- * 2024 https://lwn.net/Articles/951847/
- * 2022 https://lwn.net/Articles/908320/
+- this patch has been assisted by LLM $X
+- the human understanding the generated code is $Y
 
+We might just implicitly assume this to be the first person in the S-O-B 
+chain (which I personally don't think works for all scenarios, you can 
+have multiple people working on it, etc), but even in such case I believe 
+this needs to be clearly documented.
 
-Related to the Maintainer's Summit, the Kernel Summit is organized as
-a track which is run in parallel with the other tracks at the Linux
-Plumbers Conference (LPC), and is open to all registered attendees of
-LPC.  The goal of the Kernel Summit track will be to provide a forum
-to discuss specific technical issues that would be easier to resolve
-in person than over e-mail.  The program committee will also consider
-"information sharing" topics if they are clearly of interest to the
-wider development community (i.e., advanced training in topics that
-would be useful to kernel developers).
+Plus, to further quote Laurent from that very thread:
 
-To suggest a topic for the Kernel Summit, please do two things. by
-September 10th, 2025. First, please send e-mail with a subject prefix of
-[TECH TOPIC] to ksummit@lists.linux.dev.  As before, please use a separate
-e-mail for each topic.
+===
+I'm pretty sure every maintainer keeps a mental list of trust scores, and 
+uses them when reviewing patches. Patch submitter who doesn't perform due 
+diligence usually lose points, especially if the offences occur repeatedly 
+(newcomers often get a few free passes thanks to their inexperience and 
+the benefit of the doubt, at least with most maintainers).
 
-Secondly, please create a topic at the Linux Plumbers Conference
-proposal submission site and target it to the Kernel Summit track:
+LLMs increase the scale of the problem, and also makes it easier to fake 
+due diligence. I believe it's important to make it very clear to 
+contributors that they will suffer consequences if they don't hold up to 
+the standards we expect.
+===
 
-        https://lpc.events/event/19/abstracts
+[1] https://lore.kernel.org/all/20250727195802.2222764-1-sashal@kernel.org/
 
-Please do both steps.  I'll try to notice if someone forgets one or
-the other, but your chances of making sure your proposal gets the
-necessary attention and consideration are maximized by submitting both
-to the mailing list and the web site.
-
-The program committee this year is composed of the following people:
-
-Christian Brauner
-Jon Corbet
-Greg KH
-Ted Ts'o
-Rafael J. Wysocki
-
+-- 
+Jiri Kosina
+SUSE Labs
 
