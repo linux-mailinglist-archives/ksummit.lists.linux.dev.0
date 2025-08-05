@@ -1,90 +1,113 @@
-Return-Path: <ksummit+bounces-2077-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2078-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35486B1BB98
-	for <lists@lfdr.de>; Tue,  5 Aug 2025 23:04:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38922B1BBD4
+	for <lists@lfdr.de>; Tue,  5 Aug 2025 23:40:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF5CF188CE8E
-	for <lists@lfdr.de>; Tue,  5 Aug 2025 21:04:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A8DA18544C
+	for <lists@lfdr.de>; Tue,  5 Aug 2025 21:40:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA306222562;
-	Tue,  5 Aug 2025 21:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D9892561B6;
+	Tue,  5 Aug 2025 21:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DcAmh+tg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g+jQvFhu"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0AC78F2F
-	for <ksummit@lists.linux.dev>; Tue,  5 Aug 2025 21:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948662F2E
+	for <ksummit@lists.linux.dev>; Tue,  5 Aug 2025 21:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754427870; cv=none; b=c8DroAfZ4aQl+/XOi+OYVU5fp/IiTLFR8RBCmUBPRobgp5HtfaxsjMO0eyicKlOUoFwA6560PsKtfbRMpLbh8hYWF/2tejdxLwaOuM97sXJPOpnK2v4JET9EzEws1QHzIXNoiorXjliDrrgW+uziYf2oZEfpurpbqKFhQVTRf+o=
+	t=1754430001; cv=none; b=UFNLd2Mqi0YGpWAZYxwcZJRxh7EAscumALDpXrG9tGxgDyZju74/hRdD8uWUscEXRp8hB5g5hLmSJsV2IPK68LMdupr/TnCU7gytzrIrGLY0YdQyLtT9N1xCkTtGQvBdRheIN6C8hp86mB3I54DRSFf6GojLdKibOm14vn2qfOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754427870; c=relaxed/simple;
-	bh=bgQVS8Fcg2jCUfhUQctGoNr4AHjvpAWNO0oZoVqmU3Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WWO1Na+2Mv3D/Xgs25xprfhe1TJj8QyqRJU1WnKn2K3QmD1NqFBD5S1JsCZ8iOTOsJn83l5l2xBIalgi39QnVIwRpvtFABmwdCschqoqwICNgBqsMy2oQ0zLDwVlOnO2aoaAqiMpNCScDtPY7vozz7uwJlPpPkKqSSXW/aLKrKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DcAmh+tg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76500C4CEF0;
-	Tue,  5 Aug 2025 21:04:29 +0000 (UTC)
+	s=arc-20240116; t=1754430001; c=relaxed/simple;
+	bh=4QAHX0MI4rI777rVbUvMoLlv5fIszAL5jtH2hbOR2kI=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=Kgvzq537aYoGUpDc/sC+zPfiF1tfSkxKameQLJRQYbAm6V1xjK+idsGx+iAcJRUdbUbikspr5JFZ4+U+VHyt58lGIIJLMTamaqSm/E6PBj+aJRB6N2/AXFuNKGpR7BsoqgGQBnjvxE2adZYkEd58C00lv9EscxGfBPxkcZu+Gus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g+jQvFhu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE810C4CEF0;
+	Tue,  5 Aug 2025 21:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754427869;
-	bh=bgQVS8Fcg2jCUfhUQctGoNr4AHjvpAWNO0oZoVqmU3Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DcAmh+tg+MdehTJRpD5f1cvRuEet/GjIwpgF0/CcSTZWYPVBhHk7I/o6G8lB7r65o
-	 dkkkoEJju8A/lARH/mVggq0jbmfsEo4gvk2zCXMz46TRPhln/WG86ZaO/GHmNzxt8E
-	 TEsaz9JPgpl3bZ1MmB3S9AehP5mTGjTC1ckAP9JD3zuH/QBDYeS4uxCvYxCEsnmSq6
-	 GnQIy5DDT3Uu7A2GkK1JXNTLUYdj7wAAEnJInZWg1KLdIdbYz+hWRWdF6Rfj5B0Dot
-	 vo8LJ6WmCNeB2k7g2gg9ZHnUbg8qRvnHZ5xTvPzBmeE43ZrnaDW2jzxysklO1EDkqe
-	 ZBJFczH0VYbzQ==
-Date: Tue, 5 Aug 2025 17:04:27 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Mark Brown <broonie@kernel.org>,
-	Jiri Kosina <jkosina@suse.com>, ksummit@lists.linux.dev
+	s=k20201202; t=1754430001;
+	bh=4QAHX0MI4rI777rVbUvMoLlv5fIszAL5jtH2hbOR2kI=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=g+jQvFhuW5N5WjDCoekTRNAtmPll7FclRG8oMAfIaQ1g4c9KwwARu1QjlF8Keeruq
+	 5fjjFK6xAnZxe4kIKFhg69pxzWs9V+ULOxfx661brLI8am9Pb1bjxU5XrdIu4hF6qX
+	 DDkA5VaLDXrNhT1YQumOg8yhsIZwMUI3+kgzAig+t2vqpfNkOF6A9H+QreBQuVgo2l
+	 RGHNN5x3LIGN+neC3d13S9hLv4TlaVj+HYvZWqHBOXwo1Uxq7S2uOWhRBhGEZxuFhK
+	 vXwxXWEQ1SziMbZ7fhad5bZ16kNmF879VsLrqqBJAea9EigUUkGW5TMkeV69VZrNcB
+	 YuUKd14GHvmYg==
+Date: Tue, 5 Aug 2025 23:39:58 +0200 (CEST)
+From: Jiri Kosina <jikos@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+cc: James Bottomley <James.Bottomley@hansenpartnership.com>, 
+    ksummit@lists.linux.dev
 Subject: Re: [MAINTAINERS SUMMIT] The amount of -stable emails
-Message-ID: <aJJx21BMlFIN7KO7@lappy>
-References: <162r47q9-rp56-67so-7032-2r1rn36p03n6@fhfr.pbz>
- <9dbe8a42-e43a-4beb-acfa-3ed1c069fa47@sirena.org.uk>
- <20250805122828.68312a8d@gandalf.local.home>
- <aJI78KDWGq35K6W-@lappy>
- <20250805-mottled-granite-otter-3dadde@lemur>
+In-Reply-To: <2025080515-grandpa-prankster-ee83@gregkh>
+Message-ID: <p1886464-9p9n-4p0r-52r7-70sqprsoo32q@xreary.bet>
+References: <162r47q9-rp56-67so-7032-2r1rn36p03n6@fhfr.pbz> <cb91ddf05b9ea48056765a9027ff9132e080df30.camel@HansenPartnership.com> <2025080515-grandpa-prankster-ee83@gregkh>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20250805-mottled-granite-otter-3dadde@lemur>
+Content-Type: text/plain; charset=US-ASCII
 
-On Tue, Aug 05, 2025 at 01:59:10PM -0400, Konstantin Ryabitsev wrote:
->On Tue, Aug 05, 2025 at 01:14:24PM -0400, Sasha Levin wrote:
->> > Now, if something is marked for stable, I really don't want to be bothered
->> > that it made it to a stable tree. If I marked something for stable, sending
->> > me an email that it was applied is rather redundant.
->>
->> So I'd love to cancel the "Added to the stable tree" mails. I honestly
->> don't even know why they go out: my understanding that it was for
->> historical reasons where someone asked for those in the past, but I
->> really feel bad about sending those out because to me they are pure
->> spam.
->
->I can suggest that you write them to a public-inbox feed instead. We can then
->pull that into lore so they still show up for people performing context
->queries, but we don't ever deliver them via SMTP.
+On Tue, 5 Aug 2025, Greg KH wrote:
 
-I wish I knew who actually uses it, so maybe we could just drop it
-altogether :/
+> > > This proposal is coming as a followup to the brief IRC discussion
+> > > that happened a few months back.
+> > > 
+> > > The amount of e-mails that are coming (with maintainers directly
+> > > CCed) as a result of patches being merged to -stable is so
+> > > overwhelming that I am not sure that people are making any productive
+> > > use of it whatsoever.
+> > > 
+> > > I am personally pretty much ignoring most of it, as (a) I wouldn't
+> > > have time to do anything else otherwise (b) I don't have a sufficient
+> > > motivation / time to invest effort into stable in the fist place.
+> > > 
+> > > I feel it'd be beneficial to discuss this, and (depending on the
+> > > outcome)perhaps make it opt-in (or opt-out) at least, with
+> > > people/subsystems  having means how to be excluded from all that ...
+> > > ?
+> > 
+> > Actually, if stable emails just had a header tag, it would be easy for
+> > procmail to sort them out ... which is what I've been asking for for
+> > years.  X-Stable-Base: and X-Stable: seem to be reasonably common and
+> > catch most of it, but codifying the use in the kernel documentation and
+> > using them consistently would really help.
+> 
+> These "a patch has been added to the stable queue" has had the following
+> X- tags on them since August 2023:
+> 
+> 	X-stable: commit
+> 	X-Patchwork-Hint: ignore
+> 
+> and I'm sure I only added that because you, or someone else, asked :)
+> 
+> You can also filter on stable-commits@vger.kernel.org, which is what I
+> do locally.
+> 
+> So filter away!
 
-This predates the lei/lore days, so I'm a git concerned about making a
-change like that if anyone is actually relying on those mails.
+The question is whether it's really worth all the e-mail traffic this is 
+generating, if people are just filtering those away.
+
+For context searches if some particular information regarding stable 
+patch history is needed, we can still do lore/lei queries nicely and 
+easily.
+Is there any other usecase (that people are actually actively using) for 
+it?
+
+Thanks,
 
 -- 
-Thanks,
-Sasha
+Jiri Kosina
+SUSE Labs
+
 
