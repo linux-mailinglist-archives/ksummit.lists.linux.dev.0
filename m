@@ -1,131 +1,198 @@
-Return-Path: <ksummit+bounces-2086-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2087-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC575B1C014
-	for <lists@lfdr.de>; Wed,  6 Aug 2025 07:49:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20986B1C068
+	for <lists@lfdr.de>; Wed,  6 Aug 2025 08:27:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06BAE183E3D
-	for <lists@lfdr.de>; Wed,  6 Aug 2025 05:49:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCDAD18A0420
+	for <lists@lfdr.de>; Wed,  6 Aug 2025 06:27:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62DC420297B;
-	Wed,  6 Aug 2025 05:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AD05205E2F;
+	Wed,  6 Aug 2025 06:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=inria.fr header.i=@inria.fr header.b="HLPW2i5a"
-Received: from mail2-relais-roc.national.inria.fr (mail2-relais-roc.national.inria.fr [192.134.164.83])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="TYkrg34w";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="J9uYFkvE";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="OM8khHqi";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="zfr1ufai"
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E29D2E36ED
-	for <ksummit@lists.linux.dev>; Wed,  6 Aug 2025 05:49:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.134.164.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A561DAC95
+	for <ksummit@lists.linux.dev>; Wed,  6 Aug 2025 06:27:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754459376; cv=none; b=CTDhzJSsn8oXHY8S0S9BoicWVtDasHNiP3i/KHa2GU+1ZRqx9w1U+2/p9dBAVZSrzHTLxtmgr5FiWcMvaF5AfxcIgSXor/gvsd0GUV38tBY588Qjs6uSIPWZZZVbDTfs/91FBl8fWwjng1YlKcy+jCz5vO5r/qVcFrJ3/en1UNw=
+	t=1754461627; cv=none; b=TfD6zcQK/BaQs00wgLLxnJHXSKvLeDD6161m7ny7MbBnONZ9TQgtLnv8OJ+IBmKNQ4Y7wBXVRyysTp/pNDFnTtvcFwk6hlduUaBG7JLUSeaUqzA0y7PtNRxjOCYaIYiPs3Xz4HmkRnk6HANvaCKYy0L6P5JsoV1fAnHnHEW3RzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754459376; c=relaxed/simple;
-	bh=9VGr0t5cN1OHxGzAJOjhT81JbHXMlMRJfDeseHG8yz0=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=OdU7uNfyvy4JpOgz1AwGBezYcNkCfKcfs23a14MNkYefmSkvi+TqecTt+65K1S2PdZ5ZS1mZztsa8hkwXVJM3YwMFU1c8uex7U3PUxTIA7CtFt9r6MLTipDk4yGvXDMMb0cefxpYYG5uEWHomvgYpb3wvsIjRzcTO1sHVoztSr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inria.fr; spf=pass smtp.mailfrom=inria.fr; dkim=pass (1024-bit key) header.d=inria.fr header.i=@inria.fr header.b=HLPW2i5a; arc=none smtp.client-ip=192.134.164.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inria.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inria.fr
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=inria.fr; s=dc;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=XQd1Dw0z/PGLSLcZV8blyjGrECQ8Jb+Ug7HGdiRjjKw=;
-  b=HLPW2i5anX/c/Ql0yqZ0XNzy7UTW1uB+3EvcscVjEeSy0s9zX6JdHGS1
-   j0Pl8SKocGLeaPzdonzizoo4kZESh50fdTznkysjJ14STsb7KLrzS7l6U
-   muzCVDIAwxnYLyKGk/LMR9853teEXAa4qb90IayfldBElH/ebuy2OKMoR
-   E=;
-X-CSE-ConnectionGUID: jYhVRLQyRxaYhfKtAuiGOg==
-X-CSE-MsgGUID: NZcM/nyjSQu1VR4FejWFbQ==
-Authentication-Results: mail2-relais-roc.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=julia.lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
-X-IronPort-AV: E=Sophos;i="6.17,268,1747692000"; 
-   d="scan'208";a="234301746"
-Received: from 231.85.89.92.rev.sfr.net (HELO hadrien) ([92.89.85.231])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2025 07:49:25 +0200
-Date: Wed, 6 Aug 2025 07:49:24 +0200 (CEST)
-From: Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To: "H. Peter Anvin" <hpa@zytor.com>
-cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, ksummit@lists.linux.dev
-Subject: Re: [MAINTAINERS SUMMIT] The role of AI and LLMs in the kernel
- process
-In-Reply-To: <37BCAD5A-07C4-4119-89C2-D3A45C24DE18@zytor.com>
-Message-ID: <alpine.DEB.2.22.394.2508060747440.3518@hadrien>
-References: <e3188fe2-4b6c-4cb2-b5ae-d36c27de6832@lucifer.local> <37BCAD5A-07C4-4119-89C2-D3A45C24DE18@zytor.com>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+	s=arc-20240116; t=1754461627; c=relaxed/simple;
+	bh=J5MvxOu6GXmps628AZtgk1l0NLljH7C3423d8uBYFtE=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oJ9SEKTlx08xqsDD6FjrIKtZRaVTQWi152OrylE2aRzvgzuMq3Np0osuSmd5ZOkSh8BgGrciz5cN3+F2P0B7t6V4s8E/u68f5Yz1DGB81fPRjuqHjmZdgVdG/6yfHnFpgy1s2iAPa5+7AYxDfmvN852yw5admLM57u02ouC6XJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=TYkrg34w; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=J9uYFkvE; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=OM8khHqi; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=zfr1ufai; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E1F441F444;
+	Wed,  6 Aug 2025 06:27:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1754461624; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yLsdgpElcWflWYFzItBDCfLJwwFbvJZI6lIV5C1fGdA=;
+	b=TYkrg34wC8x9dJHPW68Ztv0dfoVS5PZtcQ+uRbYem4L/LykzQsUEWYtClS3H0XT+Gm3KuZ
+	pEozfT3snGdEA7Y+1WmPGbjuJry6iMtOcLDC4IEewf5WDdmJANCWtu75Nhgo4Xn+xhhgQu
+	CNYUePlzX/6ogoHuwTdaJ3K/rj6J1g0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1754461624;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yLsdgpElcWflWYFzItBDCfLJwwFbvJZI6lIV5C1fGdA=;
+	b=J9uYFkvEbrDhiYHa44oV0zf12KLhNDSPmjvfDJ8Fp/8x7SLIM/Z2RNaHDJj9v2n8Q/Ej/m
+	zH56NKnVkPeT40Bg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OM8khHqi;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zfr1ufai
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1754461623; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yLsdgpElcWflWYFzItBDCfLJwwFbvJZI6lIV5C1fGdA=;
+	b=OM8khHqiEJsTclXvrek++M+kfVC0zBqu3S9JpeAOqp17+nBbEj9VpsAs2hIyxHWHL1FkkG
+	uvOoLWI0xKGbT+hS7jHIUvxdH9NafpfBOvxdPqQpy7yXoauX92znYusbINzErUeno0Iznu
+	D9b8Kd/D3mMqXAbHHGiswd9vYmENCls=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1754461623;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yLsdgpElcWflWYFzItBDCfLJwwFbvJZI6lIV5C1fGdA=;
+	b=zfr1ufaiQ2JOvaPMcnXV8wFPxgzugtGbCQbegxmSyBABROwbk4WODE+JlY5QKZ+oxPwtKf
+	SREvSPkAGQrtreBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A2E8C13AB5;
+	Wed,  6 Aug 2025 06:27:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 6P2jJrf1kmi0YQAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Wed, 06 Aug 2025 06:27:03 +0000
+Date: Wed, 06 Aug 2025 08:27:03 +0200
+Message-ID: <87ectprmmg.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Jiri Kosina <jikos@kernel.org>
+Cc: Greg KH <gregkh@linuxfoundation.org>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	ksummit@lists.linux.dev
+Subject: Re: [MAINTAINERS SUMMIT] The amount of -stable emails
+In-Reply-To: <p1886464-9p9n-4p0r-52r7-70sqprsoo32q@xreary.bet>
+References: <162r47q9-rp56-67so-7032-2r1rn36p03n6@fhfr.pbz>
+	<cb91ddf05b9ea48056765a9027ff9132e080df30.camel@HansenPartnership.com>
+	<2025080515-grandpa-prankster-ee83@gregkh>
+	<p1886464-9p9n-4p0r-52r7-70sqprsoo32q@xreary.bet>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
 Content-Type: text/plain; charset=US-ASCII
+X-Spamd-Result: default: False [-3.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:mid,suse.de:dkim];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Rspamd-Queue-Id: E1F441F444
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -3.51
+
+On Tue, 05 Aug 2025 23:39:58 +0200,
+Jiri Kosina wrote:
+> 
+> On Tue, 5 Aug 2025, Greg KH wrote:
+> 
+> > > > This proposal is coming as a followup to the brief IRC discussion
+> > > > that happened a few months back.
+> > > > 
+> > > > The amount of e-mails that are coming (with maintainers directly
+> > > > CCed) as a result of patches being merged to -stable is so
+> > > > overwhelming that I am not sure that people are making any productive
+> > > > use of it whatsoever.
+> > > > 
+> > > > I am personally pretty much ignoring most of it, as (a) I wouldn't
+> > > > have time to do anything else otherwise (b) I don't have a sufficient
+> > > > motivation / time to invest effort into stable in the fist place.
+> > > > 
+> > > > I feel it'd be beneficial to discuss this, and (depending on the
+> > > > outcome)perhaps make it opt-in (or opt-out) at least, with
+> > > > people/subsystems  having means how to be excluded from all that ...
+> > > > ?
+> > > 
+> > > Actually, if stable emails just had a header tag, it would be easy for
+> > > procmail to sort them out ... which is what I've been asking for for
+> > > years.  X-Stable-Base: and X-Stable: seem to be reasonably common and
+> > > catch most of it, but codifying the use in the kernel documentation and
+> > > using them consistently would really help.
+> > 
+> > These "a patch has been added to the stable queue" has had the following
+> > X- tags on them since August 2023:
+> > 
+> > 	X-stable: commit
+> > 	X-Patchwork-Hint: ignore
+> > 
+> > and I'm sure I only added that because you, or someone else, asked :)
+> > 
+> > You can also filter on stable-commits@vger.kernel.org, which is what I
+> > do locally.
+> > 
+> > So filter away!
+> 
+> The question is whether it's really worth all the e-mail traffic this is 
+> generating, if people are just filtering those away.
+> 
+> For context searches if some particular information regarding stable 
+> patch history is needed, we can still do lore/lei queries nicely and 
+> easily.
+> Is there any other usecase (that people are actually actively using) for 
+> it?
+
+In rare cases, patches are incorrectly applied.  That can't be
+verified without the actual patch.
+
+Usually it happens with a cherry-pick with fuzz, so we might be able
+to catch suspected ones, but the inspection of the patch is still
+needed.
 
 
-
-On Tue, 5 Aug 2025, H. Peter Anvin wrote:
-
-> On August 5, 2025 9:03:18 AM PDT, Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
-> >Unavoidably, LLMs are the hot topic in tech right now, and are here to
-> >stay.
-> >
-> >This poses unique problems:
-> >
-> >* Never before have people been able to generate as much content that may,
-> >  on a surface reading, seem valid whilst in reality being quite the
-> >  opposite.
-> >
-> >* Equally, LLM's can introduce very subtle mistakes that humans find
-> >  difficult to pick up upon - humans implicitly assume that the classes of
-> >  errors they will encounter are the kinds other humans would make - AI
-> >  defeats that instinct.
-> >
-> >* The kernel is uniquely sensitive to erroneous (especially subtly
-> >  erroneous) code - even small errors can be highly consequential. We use a
-> >  programming language that can almost be defined by its lack of any kind
-> >  of safety, and in some subsystems patches are simply taken if no obvious
-> >  problems exist, making us rather vulnerable to this.
-> >
-> >* On the other hand, there are use cases which are useful - test data/code
-> >  generation, summarisation, smart auto-complete - so it'd perhaps be
-> >  foolish to entirely dismiss AI.
-> >
-> >A very important non-technical point we must consider is that, the second
-> >we even appear to be open to AI submission of _any_ kind, the press will
-> >inevitably report on it gleefully, likely with oversimplified headlines
-> >like 'Linux accepts AI patches'.
-> >
-> >The moment that happens, we are likely to see a significant uptick in AI
-> >submissions whether we like it or not.
-> >
-> >I propose that we establish the broad rules as they pertain to the kernel,
-> >and would like to bring the discussion to the Maintainer's Summit so we can
-> >determine what those should be.
-> >
-> >It's important to get a sense of how maintainers feel about this - whether
-> >what is proposed is opt-in or opt-out - and how we actually implement this.
-> >
-> >There has been discussion on-list about this (see [0]), with many
-> >suggestions made including a 'traffic light' system per-subsystem, however
-> >many open questions remain - the devil is in the details.
-> >
-> >[0]:https://lore.kernel.org/all/20250727195802.2222764-1-sashal@kernel.org/
-> >
->
-> It would seem to me to be far more useful  to get AI to help find hard-to-see but perhaps common problems, or tidying up code (like Coccinelle on steroids.)
->
-> Things that are easy to see post hoc are correct, but can be hard or laborious to do.
->
-> Another genuinely good usage for AI is for especially non-English speakers to tidy up their patch comments and other documentation.
-
-There are also some parts of the kernel that are supposed to have
-comments, such as memory barriers.  AI could help ensure that the comments
-are actually meaningful, and perhaps suggest to the developer how they
-could be improved (sort of a 0-day for comment quality).
-
-julia
+Takashi
 
