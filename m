@@ -1,97 +1,104 @@
-Return-Path: <ksummit+bounces-2095-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2096-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49CFEB1C384
-	for <lists@lfdr.de>; Wed,  6 Aug 2025 11:41:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99A2CB1C412
+	for <lists@lfdr.de>; Wed,  6 Aug 2025 12:13:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0358C18C0956
-	for <lists@lfdr.de>; Wed,  6 Aug 2025 09:41:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59A0D6239A0
+	for <lists@lfdr.de>; Wed,  6 Aug 2025 10:13:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0965328A1E6;
-	Wed,  6 Aug 2025 09:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 418B1289377;
+	Wed,  6 Aug 2025 10:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=inria.fr header.i=@inria.fr header.b="gW8D7Z6q"
-Received: from mail3-relais-sop.national.inria.fr (mail3-relais-sop.national.inria.fr [192.134.164.104])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xrti+rS9"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72398270540
-	for <ksummit@lists.linux.dev>; Wed,  6 Aug 2025 09:40:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.134.164.104
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEEA9632
+	for <ksummit@lists.linux.dev>; Wed,  6 Aug 2025 10:13:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754473239; cv=none; b=h0CKUHIHld2d5Lt3o9o99RkTjO17+1s5sZd3wh/bPm+88aVQj8CR7tNGYju3OSemfoQGcj5529Jq5b9iCo/YNlgA4QhNqPcuN9ddLTksuW7iTtSetHFAAQu5V8jdwAk8oYtE2NZlUzk9IsbsAPR7/IthbpuIqrODvwZymlbwgf0=
+	t=1754475212; cv=none; b=c/m2O0gP3EHow/cICTJPfhxi0PeZjm4lr5j1Cc4oFHApb5hvgeoY+a62OkGDidUCXCzS3BXsg6RJL9Cbgr7/5/VGMArttXCAqTNORGkEyUp4wHTHLjA4SdHoHNAPMd3fFq8+O9T9uf6n8FcWKmVapuIClSC+bcRtP9srwZBQdV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754473239; c=relaxed/simple;
-	bh=AJzmZ4tSeyqUND6BDQGIRPhUy7gsuic5ncgOLZx5jBk=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=dnUQ28pyQ9Z2OpEyh+2BkBT4c2uyXsykB6Q0NACpPXMf5da6SSXQtudGJuDsZC2n8d8eKDELBwzdlBsXLPrK0SWUXD8+c0g8vxEIaf3O8GExec5s0Ji6d6tMpzGiVt3DNosoL2L8vYV9b7UwDgrXcPLvHU536yMPO/ACoA1D0Ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inria.fr; spf=pass smtp.mailfrom=inria.fr; dkim=pass (1024-bit key) header.d=inria.fr header.i=@inria.fr header.b=gW8D7Z6q; arc=none smtp.client-ip=192.134.164.104
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inria.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inria.fr
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=inria.fr; s=dc;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=JYF5ASgguA+B3i0U37XmQP0aS0w+iGS+Eh3IpT1YI1o=;
-  b=gW8D7Z6qVGMwqi6WsgAKza4YAShjqRD8Su3kVYVo4ZCq//7D7zq8vNTn
-   FMbPoMto8rDfugY7FyjCBZHvs0OPT/z6R6ndavYS49NnquAidxGtWC1Ax
-   ZaeVm4HARG9dV8WlmIXxCAvKLJKUQsMIdDed9FR2rIh/oQCz8TZRbMHqF
-   U=;
-X-CSE-ConnectionGUID: Vac/xhqnTZyI4geV5SCwkA==
-X-CSE-MsgGUID: ocd8WNukTIOBANl7pkLfQA==
-Authentication-Results: mail3-relais-sop.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=julia.lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
-X-IronPort-AV: E=Sophos;i="6.17,268,1747692000"; 
-   d="scan'208";a="122867757"
-Received: from dt-lawall.paris.inria.fr ([128.93.67.65])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2025 11:39:26 +0200
-Date: Wed, 6 Aug 2025 11:39:25 +0200 (CEST)
-From: Julia Lawall <julia.lawall@inria.fr>
+	s=arc-20240116; t=1754475212; c=relaxed/simple;
+	bh=Hm1XBOm8Kaco4QpdzIro5iBHqj7Ay9SyR4QVm8nxRbQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sqoDXr7ci8MeiD1iXxhdk3Svn3+PbZo0kkBFoj6ZNqtME4t2kxGh6Yshw67oJZR+b6MA1dnt9r858G+GqCxggB8TKWGYHqZrobgDGw1AxHmSzQ17wSQ78WW5+h7vQnbrXCEUVssVdcezEvym3z73J9xhvLPgVhLJdlUDMYDVHIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xrti+rS9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74FC3C4CEE7;
+	Wed,  6 Aug 2025 10:13:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754475212;
+	bh=Hm1XBOm8Kaco4QpdzIro5iBHqj7Ay9SyR4QVm8nxRbQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Xrti+rS96Mr024in1JmponBLfCZMoDKGG87OQ7wN6OYqYbIrl9Z3W02w3SG7PApta
+	 I4trSZnac2uNiWUsZXKa224tOxrcEsB2gtHzoYGbCCBx5QqrVtU3/fZr99xS2S7YOk
+	 hbdlZxKISdKzoGw47+9CNCknvo60Pu35doLssIw1DVdC7obfd/nyG414VKvCOyBm3i
+	 ROMwBsIcsDAUJlXpzdDD9EYeTIvUP5L6Gw3uVtyZTbwR5WZadU15QGaGa3ADLJXUpX
+	 Vu1kG8CfcWV/ZQXD/bMfq/jJsRcUunf9nAvP2I4H++CsM8laN1P9BJA9OxH/XATcHA
+	 NSguS5NKKT2Jg==
+Date: Wed, 6 Aug 2025 11:13:28 +0100
+From: Mark Brown <broonie@kernel.org>
 To: Dan Carpenter <dan.carpenter@linaro.org>
-cc: "H. Peter Anvin" <hpa@zytor.com>, 
-    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, ksummit@lists.linux.dev
-Subject: Re: [MAINTAINERS SUMMIT] The role of AI and LLMs in the kernel
- process
-In-Reply-To: <e52df6bb-cee3-46e1-9e05-6abb42174c85@suswa.mountain>
-Message-ID: <d13bf260-7630-50b9-b3a6-fdf8bf8cd864@inria.fr>
-References: <e3188fe2-4b6c-4cb2-b5ae-d36c27de6832@lucifer.local> <37BCAD5A-07C4-4119-89C2-D3A45C24DE18@zytor.com> <alpine.DEB.2.22.394.2508060747440.3518@hadrien> <e52df6bb-cee3-46e1-9e05-6abb42174c85@suswa.mountain>
+Cc: Jiri Kosina <jkosina@suse.com>, ksummit@lists.linux.dev
+Subject: Re: [MAINTAINERS SUMMIT] Annotating patches containing AI-assisted
+ code
+Message-ID: <d7ddd076-3cf8-4604-82f3-7e18709484c3@sirena.org.uk>
+References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
+ <e03f2583-c149-4fcf-aadb-81fe40afee46@suswa.mountain>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="6ujcuVqBQ9Z8a8HA"
+Content-Disposition: inline
+In-Reply-To: <e03f2583-c149-4fcf-aadb-81fe40afee46@suswa.mountain>
+X-Cookie: New customers only.
 
 
+--6ujcuVqBQ9Z8a8HA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Wed, 6 Aug 2025, Dan Carpenter wrote:
+On Wed, Aug 06, 2025 at 11:17:23AM +0300, Dan Carpenter wrote:
 
-> On Wed, Aug 06, 2025 at 07:49:24AM +0200, Julia Lawall wrote:
-> >
-> >
-> > On Tue, 5 Aug 2025, H. Peter Anvin wrote:
-> > >
-> > > Another genuinely good usage for AI is for especially non-English
-> > > speakers to tidy up their patch comments and other documentation.
-> >
-> > There are also some parts of the kernel that are supposed to have
-> > comments, such as memory barriers.  AI could help ensure that the comments
-> > are actually meaningful, and perhaps suggest to the developer how they
-> > could be improved (sort of a 0-day for comment quality).
-> >
->
-> I feel like I have seen patches where people have generated AI
-> documentation for locking.  The problem is that if you ask AI to write
-> something it always has a very confident answer but normally it's vague
-> and slightly wrong.  It takes no time to generate these patches but it
-> takes a while to review them.
+> Just a "Patch generated with AI" under the --- cut off line would be
+> fine.
 
-I would have hoped for some tool that would somehow be designed to
-understand comments in a good way.  Random individual efforts to generate
-comments using AI would probably indeed produce something innocuous and
-useless.
+> We had a patch in staging from AI which "copy and pasted" from a spec
+> that it had hallucinated.  The language in the commit message is so
+> smooth and confident that it took a re-read to see that it's totally
+> nonsense.  A lot of the patches in staging are from newbies and
+> sometimes kids and I believe the person who sent the  AI assisted
+> patch did it with good intentions.  But, ugh, I don't want to deal
+> with that.
 
-julia
+I think the suggestion from an earlier thread that people should say
+what the AI they were using (as they tend to for static checkers and
+so on) was good - that's useful for both noticing tools that work well
+and tracking things down if we notice a pattern of errors with some
+tool.
+
+--6ujcuVqBQ9Z8a8HA
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmiTKscACgkQJNaLcl1U
+h9Dy9Af+LXnBWJGV6uUGrwsybjY46826MMXI9k/CK1EeUvuAwU4fLsbK3lkiZUmu
+3LXXJmj+1V3pXlCDuYMDpUc0xo4FnrnQYu1w0XMrZEjHsY4DdXfxU0m7sdosQi53
+XrVxEU+ogfp5DTobi4wG0aa7iJkVgnKhUtVm34sMwfE7xoaLNnCo3xuDbF+zHq0E
+h+m2nHYfgCx/XSd7AulTQ5QEWFb9CfehBSZMvkU3jb7CYqz5OyqIwjgVaWcl6hH9
+KRWRJUTxypkEJX18NYLnMStv2QUJHqFIWVcdkStlhqYZ5yX0a69Qs1tSjXsdPiv0
+OgUCfF9j4xj7zr6QahIn5Uixp1ZQaw==
+=YlGz
+-----END PGP SIGNATURE-----
+
+--6ujcuVqBQ9Z8a8HA--
 
