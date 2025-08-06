@@ -1,56 +1,89 @@
-Return-Path: <ksummit+bounces-2083-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2084-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2C9AB1BCC1
-	for <lists@lfdr.de>; Wed,  6 Aug 2025 00:42:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96739B1BF7A
+	for <lists@lfdr.de>; Wed,  6 Aug 2025 06:04:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2490B16D8C0
-	for <lists@lfdr.de>; Tue,  5 Aug 2025 22:42:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E37118A2F57
+	for <lists@lfdr.de>; Wed,  6 Aug 2025 04:04:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47C124679B;
-	Tue,  5 Aug 2025 22:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78EF81993B7;
+	Wed,  6 Aug 2025 04:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="hQ9lVj3r"
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cok4ycG1"
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0BB200127
-	for <ksummit@lists.linux.dev>; Tue,  5 Aug 2025 22:42:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DC641C63
+	for <ksummit@lists.linux.dev>; Wed,  6 Aug 2025 04:04:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754433730; cv=none; b=TcMy1XI+eA4C5bADIFGdxYbvnvYa1ekFFjsfO0n4kLadioQaaAwYtUHJbgJR35LXE6888u9A/cDX0ZfVV40McTx7DdMWt74x0zEhUA8dMwGshKbTT+BefwfPscUw9Mx8PaBnZvzmKhajQP275WR3H0hMg+BXznTKwpsAisYLaGY=
+	t=1754453044; cv=none; b=HvJm6dIo0Ya3Tj1hkAfhZIJ5mg5S5BsbdBiJLLnrXPHUbh9YvxC/ged5enmELjNz1x6itUWOV31rw4LD0wXJbAKIuT858UnzTbiCfakZWzu7+DOaBaz+yA+IuQhPDik6aUyD+GLhkLxnrdpRoO73KaZDaIdGLRYsDBujpCCtsKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754433730; c=relaxed/simple;
-	bh=T1u0yGIClswHTXx2QQrPQTkGEdgfnTQ81wv/rsI+tO0=;
+	s=arc-20240116; t=1754453044; c=relaxed/simple;
+	bh=hr5Xs4xvTFeEzA0DCxAYPzjQaY1LMUa7ktxspsNbScM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sBe2Z4MTWLq3aaIB4DyRZBaGMv0Yfg5guJ3Y4xGurIxY7EM18n7+z95yUMWkahM1OFEjOWI/3h03giHO95fF/U4nEEL+9pLhHmDePrfUyqZ/c+B1lcVI4xPaRThUCAot/3xeU4+8YP7W6Z36Mm6CSeFxrw2PC++f4Ji9Bc020UY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=hQ9lVj3r; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 8190AE91;
-	Wed,  6 Aug 2025 00:41:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1754433671;
-	bh=T1u0yGIClswHTXx2QQrPQTkGEdgfnTQ81wv/rsI+tO0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hQ9lVj3rpL+IwHnCJjgUK9TwlBIHnkqlVFF5I+kDKNTZxeB9ZsJbbHkjd1Cy8biVq
-	 JCfcan4UbPZH1lG8vm1RGj5ve3on4ZtAdb/Cg320YPB0oTH+9ckVAs5hyfLuLwRAMS
-	 ABzJPQ1/RhSERW9pniK0MMXS6/S5wJbt0TwhBfzQ=
-Date: Wed, 6 Aug 2025 01:41:45 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=h9qvd2r6GtVZASmP0dOYRcMGFRA3ZQcRJDr/MLblnOyeMaRTq/RaQs+v/dZpshsTJHbksUyU/oCL6vyMF8SHq1NoXfoG7gdY3ziFkmB4188cmFoa64OS5QUNuDNIYFKbb6eLzgjZGmI4FmirRNVzbGF8skGI7Lj8dyh6zIOCNME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cok4ycG1; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-615c8ca53efso10432831a12.2
+        for <ksummit@lists.linux.dev>; Tue, 05 Aug 2025 21:04:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754453041; x=1755057841; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hr5Xs4xvTFeEzA0DCxAYPzjQaY1LMUa7ktxspsNbScM=;
+        b=cok4ycG13MpFtbTuoH32YXZAwhbbEx80x+dqf3PjH4haCmbsKVc7zIVjMRIrn4gJgl
+         bfHbpd/4QnHhpqLPaJ6YDtWolfuN+VEVgEIPnQC7Xzxy5en+5aAp0LjqBDkvR4/TGw4R
+         BM3G6TsEJjDOqhVDSjCg8y4dI4cNr8ZU7sKZsRT8tXLAXd5NU+zolv0SOhBGoXmrI4c1
+         6lq91KrzKABHuf9CxKYY6I4q39kRmEZOdoJg+QmTjx0i97oPgHPML6lBQOfSS3yXX1gW
+         1jHE6x5U3LTS1xyDgKc8FHYJDaDyQiNySU+wBOLs6hx5CvUMDKKMncMzlWFmapiMWXcx
+         /ajA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754453041; x=1755057841;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hr5Xs4xvTFeEzA0DCxAYPzjQaY1LMUa7ktxspsNbScM=;
+        b=W5RIdgWoMSotTHIHJjF7UbfnqQzd7RWBV8Gect6hS4uhEODGJ/z42ORI9TE0ePSqXy
+         AKI7E0/GYVoL0sC7KY1/v+xPJBVUPMbPqdeT5vhsYoJJ4F4aGCJS91j4/bKNT3+wL7YE
+         L3Fq0zdUB4Vnpnt9S9rK2leL/KFdcB76TtKq2e0I7sXT1BZZHHoKYvttdLTLwD5BOxX7
+         CxS8VJo9OC4nufc6ppQYhSu13VMRBiAH1aWZYc/zJFOkl9R4vi2eVjJYnVrDEuUEo+J2
+         8w1tiP2yS1jrWuflhqxJVHuqo1X/ZUPaPUKYXHhsRieq+kvLrDPgmlLbb4nUKdbjHnkl
+         cV1w==
+X-Forwarded-Encrypted: i=1; AJvYcCVlDagwnQOH57x94Ib68HL0NbP6mkmsxSdivgeKqWgpqtsLITGS9+H9t9D5+dGxua2qYiEcVC6b@lists.linux.dev
+X-Gm-Message-State: AOJu0YwakHRvCQVq0SYX6c6ZLirHhOKJybYkAy4A3c/0cjQYBeinF6Ux
+	cXQGko33GbIFIXURZksUWvbpcOP4woqhmVCVd+Tb0jlYkfCUEK2b3cA=
+X-Gm-Gg: ASbGncvgfiqI33aoV+VH2iK4UnK4kXoszKqGv5VmdnSt/kdB4WsQY/mVtLdWymYY10Z
+	436eZz9D+BjGWQ/UWRg3Tb/QBYLXXMtLVpD/6N+4+ETMW3xoWNPCpd3iiffU16+qTZaE+h4QnbL
+	Bf/C7bLTy53GnN8LSTIXK752I64lR3/YGv1MlxTIQzpTPm8omQLTg6rOBddlSwt6+R2uFk423fV
+	8a6PMVuaVDRQt6T0ji2FCR+KHw+XK5cjUZal92CCf7DMTytNfbxDjDSz89SYmNMndbAu0gnC53z
+	OEM3iHcp14Ma2OhJw0oqfvRfI8mnCD29TDUhEdh8lw21Rark3HVRKFmKorDInc/v1fz4In6I/Ze
+	2iCu2LfByqumI2HOymp+Z
+X-Google-Smtp-Source: AGHT+IFzUBo2XZrmP2LbR7cBpOUgc4ZxUateFr56P4ANDxjcoovDpntL13AwV7ZiHK8KB2WRW8anvA==
+X-Received: by 2002:a17:907:7247:b0:ae4:a17:e6d2 with SMTP id a640c23a62f3a-af9900c26admr131544066b.24.1754453040482;
+        Tue, 05 Aug 2025 21:04:00 -0700 (PDT)
+Received: from p183 ([46.53.251.116])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a0a38aasm1021476566b.37.2025.08.05.21.03.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Aug 2025 21:03:59 -0700 (PDT)
+Date: Wed, 6 Aug 2025 07:04:02 +0300
+From: Alexey Dobriyan <adobriyan@gmail.com>
 To: Sasha Levin <sashal@kernel.org>
-Cc: Jiri Kosina <jkosina@suse.com>, ksummit@lists.linux.dev
-Subject: Re: [MAINTAINERS SUMMIT] Annotating patches containing AI-assisted
- code
-Message-ID: <20250805224145.GC16330@pendragon.ideasonboard.com>
-References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
- <aJJEgVFXg4PRODEA@lappy>
- <20250805180010.GA24856@pendragon.ideasonboard.com>
- <aJJKccsn_L0hGXoA@lappy>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	ksummit@lists.linux.dev
+Subject: Re: [MAINTAINERS SUMMIT] The role of AI and LLMs in the kernel
+ process
+Message-ID: <aJLUMuEhFsSxHgPM@p183>
+References: <e3188fe2-4b6c-4cb2-b5ae-d36c27de6832@lucifer.local>
+ <56e85d392471beea3322d19bde368920ba6323b6.camel@HansenPartnership.com>
+ <c8daa784-4c51-4d65-b134-244194dce300@lucifer.local>
+ <aJJP2BM658FYJdJv@lappy>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -59,103 +92,21 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aJJKccsn_L0hGXoA@lappy>
+In-Reply-To: <aJJP2BM658FYJdJv@lappy>
 
-On Tue, Aug 05, 2025 at 02:16:17PM -0400, Sasha Levin wrote:
-> On Tue, Aug 05, 2025 at 09:00:10PM +0300, Laurent Pinchart wrote:
-> > On Tue, Aug 05, 2025 at 01:50:57PM -0400, Sasha Levin wrote:
-> >> On Tue, Aug 05, 2025 at 05:38:36PM +0200, Jiri Kosina wrote:
-> >> > This proposal is pretty much followup/spinoff of the discussion currently
-> >> > happening on LKML in one of the sub-threads of [1].
-> >> >
-> >> > This is not really about legal aspects of AI-generated code and patches, I
-> >> > believe that'd be handled well handled well by LF, DCO, etc.
-> >> >
-> >> > My concern here is more "human to human", as in "if I need to talk to a
-> >> > human that actually does understand the patch deeply enough, in context,
-> >> > etc .. who is that?"
-> >> >
-> >> > I believe we need to at least settle on (and document) the way how to
-> >> > express in patch (meta)data:
-> >> >
-> >> > - this patch has been assisted by LLM $X
-> >> > - the human understanding the generated code is $Y
-> >> >
-> >> > We might just implicitly assume this to be the first person in the S-O-B
-> >> > chain (which I personally don't think works for all scenarios, you can
-> >> > have multiple people working on it, etc), but even in such case I believe
-> >> > this needs to be clearly documented.
-> >>
-> >> The above isn't really an AI problem though.
-> >>
-> >> We already have folks sending "checkpatch fixes" which only make code
-> >> less readable or "syzbot fixes" that shut up the warnings but are
-> >> completely bogus otherwise.
-> >>
-> >> Sure, folks sending "AI fixes" could (will?) be a growing problem, but
-> >> tackling just the AI side of it is addressing one of the symptoms, not
-> >> the underlying issue.
-> >
-> > Perfect, let's document a policy and kill two birds with one stone then.
-> 
-> So I've gone through some of our docs, and we already have the following
-> in submitting-patches.rst:
-> 
-> 	Your patch will almost certainly get comments from reviewers on
-> 	ways in which the patch can be improved, in the form of a reply
-> 	to your email. You must respond to those comments; ignoring
-> 	reviewers is a good way to get ignored in return. You can simply
-> 	reply to their emails to answer their comments. Review comments
-> 	or questions that do not lead to a code change should almost
-> 	certainly bring about a comment or changelog entry so that the
-> 	next reviewer better understands what is going on.
-> 
-> 	Be sure to tell the reviewers what changes you are making and to
-> 	thank them for their time.  Code review is a tiring and
-> 	time-consuming process, and reviewers sometimes get grumpy.
-> 	Even in that case, though, respond politely and address the
-> 	problems they have pointed out.  When sending a next version,
-> 	add a ``patch changelog`` to the cover letter or to individual
-> 	patches explaining difference against previous submission (see
-> 	:ref:`the_canonical_patch_format`).  Notify people that
-> 	commented on your patch about new versions by adding them to the
-> 	patches CC list.
-> 
-> In the context of this discussion it's a bit funny: we mandate that
-> reviews will be responded to, but we don't mandate that the response
-> will make any sense, which I think is Jiri's point.
+On Tue, Aug 05, 2025 at 02:39:20PM -0400, Sasha Levin wrote:
+> I don't think we should expect a bar for AI that is higher than the one
+> we set for humans.
 
-I would consider that strongly implied. Are there contributors who could
-in good faith consider that responses that don't make any sense are
-perfectly fine ? If we had to state that explicitly, there would be
-thousands of other assumptions we would need to document.
+We absolutely should.
 
-What I believe we need to document is the assumptions we make that may
-not be self-evident to contributors. I assume that patches I receive are
-understood by the author, as well as by the submitter unless stated
-otherwise. LLMs may empower new (or existing) contributors to submit
-more easily and in larger quantities patches that neither them nor
-anyone else understand. If we all think nobody in their right mind would
-do that, then there's nothing to document. I think the rule needs to be
-stated clearly, as I'm concerned we'll see an increase in such
-submissions.
+There is a thing with computers is that they are perfect. They are so
+infinitely perfect compared to humans that anything downgrading computers
+levels of perfection to humans level of perfection must be rejected
+because it can't be scaled back and thus will be permanent loss.
 
-> The TIP maintainer's handbook (maintainer-tip.rst) actually seems to
-> tackle this:
-> 
->     SOBs after the author SOB are from people handling and transporting
->     the patch, but were not involved in development. SOB chains should
->     reflect the **real** route a patch took as it was propagated to us,
->     with the first SOB entry signalling primary authorship of a single
->     author.
-> 
-> Should we clarify that this is true for any kernel patches?
+Would you install calculator application which you know reports wrong
+results 1% of the time?
 
-This seems to be related to
-https://lore.kernel.org/all/20250724072032.118554-1-hendrik.hamerlinck@hammernet.be/
-
--- 
-Regards,
-
-Laurent Pinchart
+Would you uninstall calculator after realizing it has 1% bug rate?
 
