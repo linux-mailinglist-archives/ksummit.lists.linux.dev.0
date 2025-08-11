@@ -1,112 +1,86 @@
-Return-Path: <ksummit+bounces-2118-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2119-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B555B218C6
-	for <lists@lfdr.de>; Tue, 12 Aug 2025 00:53:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B735B218C8
+	for <lists@lfdr.de>; Tue, 12 Aug 2025 00:54:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 698323A82EF
-	for <lists@lfdr.de>; Mon, 11 Aug 2025 22:53:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 755652A690B
+	for <lists@lfdr.de>; Mon, 11 Aug 2025 22:54:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A342264A3;
-	Mon, 11 Aug 2025 22:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371A622A4F4;
+	Mon, 11 Aug 2025 22:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l+gh3NX8"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="ReSbNpn1"
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E781EB1AF
-	for <ksummit@lists.linux.dev>; Mon, 11 Aug 2025 22:52:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9EF199FAC
+	for <ksummit@lists.linux.dev>; Mon, 11 Aug 2025 22:54:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754952778; cv=none; b=R4c0qY+dls3TgiNxv2h7Ez+mhmQf5GwjFbqkvkC8N+kb0TDQkfEc3FYJO7lQiStTlanoppTGjwyHYxx9Oxkj+jpgRwtX9feABD+r6Z5PfzSVYYVPQiV9DuZPcPhnif0QmqAVhb3WVdDUoiJC1g99IiWVYSxpphnRgyNtyF8J5pQ=
+	t=1754952881; cv=none; b=JDwjrFRRrcY9pYKS55NjtRdfqb6LItSt1RCnqdMYEXGGkeJS4PDLlmivaEZzJ5hQTJ3vzAccXif7QYO1tvL4n7dxZ4s6CiT5ary2x/6t08efgy0AG+k7nva3pGfrVKmT00hMiZNJs/LALAusRIZ7Zzub4K206DkK2xBl0NnexPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754952778; c=relaxed/simple;
-	bh=yazMtvRH+zpN8zBhsA+DO0nZDbDTyZlnL6+f/VPrynI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D81rg+2GlZaejmTmto4o3taBNsYYBjHMDir3GoVF8evMuTLsXdCF+9sPsDV1mIjcogk/8SUQIhsqK/WS2liy54TC8ShH1MgMjsBBapHkHX8xw9ePSt1A9uAVnQbvFNFebjBZrvxbEUX1hqsySI8ZAnoSJBcRavIYr19WqIRmsF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l+gh3NX8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E06B3C4CEED;
-	Mon, 11 Aug 2025 22:52:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754952777;
-	bh=yazMtvRH+zpN8zBhsA+DO0nZDbDTyZlnL6+f/VPrynI=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=l+gh3NX8/eS6MNLgZN2LKfHeKV57phhorzD5BG+1J7WmMf29U00DFxkGfEJysOtL2
-	 /e4YyAj9Sa6xsrkFbgomezWxnDvKtB7D0VlqF+qeoKJi3owpJvWvO2gN3vGXeScLUO
-	 Ml4NtIDxyisp1Y0ueOUXzhNv3MNnsGhqf1Dq7Otipgw3jD3s845htMUQFgjWGvX7Rd
-	 ABGCWHYi/dE5Q/w1jiS6rEdcr7oXAUMTnVhI8diwqzpOFR02Jivredjv6LYI4/IW7n
-	 7tGv9DITtYjSFQzwgEQNRZmOz0O/OOi1y2TWJ87ou1Pj653LwalqovdZDA/BNx77yA
-	 lM2GsQOtna33Q==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 906AECE0965; Mon, 11 Aug 2025 15:52:57 -0700 (PDT)
-Date: Mon, 11 Aug 2025 15:52:57 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: "H. Peter Anvin" <hpa@zytor.com>
-Cc: "Luck, Tony" <tony.luck@intel.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>, Jiri Kosina <jkosina@suse.com>,
-	ksummit@lists.linux.dev
+	s=arc-20240116; t=1754952881; c=relaxed/simple;
+	bh=UzRkIFph4Do4Ajr4k7uEZGSMzK/BvG0OpYw7EyAtp9M=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=CAq8cxQK7QJsCve0ZCqeoAGbH4segL/0f5hh22BfwPDpKxHMfesl9kA9pyoXNCFjWgwsyA5Ko8I1UbNs0X9X7f22Zv3P4U5wSO/WyaJs2w0XNOOm4GJ7QybvXPjsykyAn60hnXuvkyrheQY41rIDJ/rvJ7mveMNuFKuveDuy2ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=ReSbNpn1; arc=none smtp.client-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 404F840AD5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1754952879; bh=sFooeJ+XUufMe6DK0+zudrA3ohgQz7dwkniIi3c7LHU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=ReSbNpn1iKMtWfVh28pSCYwhzQ5j09VtALC6NQBFXLs7qrJaGXBoMA0+JnMFUvGQR
+	 Gsx9fKtOaQakFz0vtLtizkEVYe479zKHmWh+LoJPZ38WLzLOKAhhihvV4jO/Xnq06h
+	 ImPAxlUIATtERqV9Dc4ZkBKUf9YI3OjPayWMtVS/6GCA5HujU8DWVBk2Rj5XgqeoDK
+	 cYktHWyYQOAvs/UBcY6qeuj2HOsQkOUUXJ2UdktZ2lc0NvbKjeTVn6gLcA0sI5qq0x
+	 iNpXFlBFIcoPpSJpNPtZczGUJwQgCBjCCmnayvADSkLMDOvBNaqIzC7yhrgKvrqGeD
+	 3NsISHDhH14ZQ==
+Received: from localhost (unknown [IPv6:2601:280:4600:2da9::1fe])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id 404F840AD5;
+	Mon, 11 Aug 2025 22:54:39 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: paulmck@kernel.org, "Luck, Tony" <tony.luck@intel.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Sasha Levin <sashal@kernel.org>,
+ Jiri Kosina <jkosina@suse.com>, ksummit@lists.linux.dev
 Subject: Re: [MAINTAINERS SUMMIT] Annotating patches containing AI-assisted
  code
-Message-ID: <5b79d292-7a75-48f4-8303-9ecd5211fe99@paulmck-laptop>
-Reply-To: paulmck@kernel.org
+In-Reply-To: <cad0806b-3a87-4630-b19a-bbe8d9db1701@paulmck-laptop>
 References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
- <aJJEgVFXg4PRODEA@lappy>
- <12ded49d-daa4-4199-927e-ce844f4cfe67@kernel.org>
+ <aJJEgVFXg4PRODEA@lappy> <12ded49d-daa4-4199-927e-ce844f4cfe67@kernel.org>
  <f482c860-c6b2-4c5b-baa8-b546761debdf@paulmck-laptop>
  <aJpnStlxDUsGNPuA@agluck-desk3>
  <cad0806b-3a87-4630-b19a-bbe8d9db1701@paulmck-laptop>
- <A7310727-3DAF-4AF0-8E82-6AD17F5E94AC@zytor.com>
+Date: Mon, 11 Aug 2025 16:54:38 -0600
+Message-ID: <87o6slbhap.fsf@trenco.lwn.net>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <A7310727-3DAF-4AF0-8E82-6AD17F5E94AC@zytor.com>
+Content-Type: text/plain
 
-On Mon, Aug 11, 2025 at 03:45:54PM -0700, H. Peter Anvin wrote:
-> On August 11, 2025 3:12:25 PM PDT, "Paul E. McKenney" <paulmck@kernel.org> wrote:
-> >On Mon, Aug 11, 2025 at 02:57:30PM -0700, Luck, Tony wrote:
-> >> On Mon, Aug 11, 2025 at 02:46:11PM -0700, Paul E. McKenney wrote:
-> >> > On Fri, Aug 08, 2025 at 10:31:27AM +0200, Krzysztof Kozlowski wrote:
-> >> > > On 05/08/2025 19:50, Sasha Levin wrote:
-> >> > > With AI you do not have to even write it. It will hallucinate, create
-> >> > > some sort of C code and you just send it. No need to compile it even!
-> >> > 
-> >> > Completely agreed, and furthermore, depending on how that AI was
-> >> > trained, those using that AI's output might have some difficulty meeting
-> >> > the requirements of the second portion of clause (a) of Developer's
-> >> > Certificate of Origin (DCO) 1.1: "I have the right to submit it under
-> >> > the open source license indicated in the file".
-> >> 
-> >> Should the rules be:
-> >> 
-> >> 1) No submissions directly from an AI agent. The From: line must
-> >> always refer to a human.
-> >> 
-> >> 2) The human on the From: line takes full responsibilty for the
-> >> contents of the patch. If it is garbage, or broken in some way
-> >> there's no fall back on the "but AI wrote that bit".
-> >
-> >Another option is "The AI was trained only on input having a compatible
-> >license."  Which, to your point, would to the best of my knowledge cut
-> >out all of the popular and easily available AIs.
-> >
-> >There might well be less restrictive conditions on the AI training data,
-> >but I am not qualified to evaluate such conditions, let alone construct
-> >them.
-> 
-> I think we need legal advice on this, but I think this is a *really*
-> important issue. It could end up being a very ugly mess otherwise.
+"Paul E. McKenney" <paulmck@kernel.org> writes:
 
-Indeed, one of the reasonsss that I am not qualified is that I am
-no lawyer.  ;-)
+> Another option is "The AI was trained only on input having a compatible
+> license."  Which, to your point, would to the best of my knowledge cut
+> out all of the popular and easily available AIs.
 
-							Thanx, Paul
+That option, of course, opens a separate barrel of worms: if we are
+relying on the system having been trained only on compatibly licensed
+material, then our ability to distribute the result depends on our
+complying with the relevant licenses, right?  Including little details
+like preserving copyright notices...?
+
+Somehow, I don't really think that this option brings us much joy.
+
+jon
 
