@@ -1,61 +1,65 @@
-Return-Path: <ksummit+bounces-2117-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2118-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75AB4B218C3
-	for <lists@lfdr.de>; Tue, 12 Aug 2025 00:52:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B555B218C6
+	for <lists@lfdr.de>; Tue, 12 Aug 2025 00:53:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF82C1A20275
-	for <lists@lfdr.de>; Mon, 11 Aug 2025 22:52:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 698323A82EF
+	for <lists@lfdr.de>; Mon, 11 Aug 2025 22:53:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA5D21C187;
-	Mon, 11 Aug 2025 22:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A342264A3;
+	Mon, 11 Aug 2025 22:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eh+hJFCt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l+gh3NX8"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9411F0995
-	for <ksummit@lists.linux.dev>; Mon, 11 Aug 2025 22:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E781EB1AF
+	for <ksummit@lists.linux.dev>; Mon, 11 Aug 2025 22:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754952709; cv=none; b=pHMh2NICFkjFUq09USW626e7BC0kCfn8SXQuUNHAXYjIgrvZC2+PBSMVU67WuNPsKbY6LaR/bA3oy95451jI1oVXllLUOwRP0Gz5DXidIQdJFoxB6NoD+WF8wQzPvv6utTZ4C/1d+qbScylpL/GDIX5Dwlj7bcF9UUABSRdPgDw=
+	t=1754952778; cv=none; b=R4c0qY+dls3TgiNxv2h7Ez+mhmQf5GwjFbqkvkC8N+kb0TDQkfEc3FYJO7lQiStTlanoppTGjwyHYxx9Oxkj+jpgRwtX9feABD+r6Z5PfzSVYYVPQiV9DuZPcPhnif0QmqAVhb3WVdDUoiJC1g99IiWVYSxpphnRgyNtyF8J5pQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754952709; c=relaxed/simple;
-	bh=ngSGl7sdibFnNVh7SmMERfbJwy5W+fKrkkEMGvo/+mw=;
+	s=arc-20240116; t=1754952778; c=relaxed/simple;
+	bh=yazMtvRH+zpN8zBhsA+DO0nZDbDTyZlnL6+f/VPrynI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YFbCDEIXGiLds4/s2J+QzI8Ru4Zp7UvUfyJOBlbDj6ywUioO7E1irIVQkILIs+wEOfkJeErd9CGZxPgXXItgErum1OXqQDnxCgpUm9tZlat2PEHe/aKKpY/XqrsxX1DyaO/AroirRNp5WFrshlH+tbyuE4Gh2e6AXJRCDZLdWn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eh+hJFCt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B1B6C4CEED;
-	Mon, 11 Aug 2025 22:51:49 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=D81rg+2GlZaejmTmto4o3taBNsYYBjHMDir3GoVF8evMuTLsXdCF+9sPsDV1mIjcogk/8SUQIhsqK/WS2liy54TC8ShH1MgMjsBBapHkHX8xw9ePSt1A9uAVnQbvFNFebjBZrvxbEUX1hqsySI8ZAnoSJBcRavIYr19WqIRmsF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l+gh3NX8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E06B3C4CEED;
+	Mon, 11 Aug 2025 22:52:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754952709;
-	bh=ngSGl7sdibFnNVh7SmMERfbJwy5W+fKrkkEMGvo/+mw=;
+	s=k20201202; t=1754952777;
+	bh=yazMtvRH+zpN8zBhsA+DO0nZDbDTyZlnL6+f/VPrynI=;
 	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=Eh+hJFCtNJo21QAZsJLlMfDH0PkgwB56N5Md/HV73W8hcF6N189S1TiMorqTyx219
-	 Q+n84vA3Hh6i2wReqrG6D7IiO0nBjCG3EBMvXBb8FjQMNGrlWh22inZqR+l/yDT0tN
-	 xTke5PZhV+n++q+qIW5QEK2YEhI5xmAyqHB9IbvZR5+dhs4n9BdP9hKApXX/F5k2cb
-	 qp29GexgXE3rQGRrNwVmYeL1LK0wS44YbiuO1du00WXvDwmNVLKXEwaVtJRNeeoW6U
-	 UFn7xucIaDednDZn6w1ch7cKwL8oN8A1mzkIFx780Sd4dEx+UbSVwDsh4MoQ2qdCPJ
-	 vCxECcQB0H6bg==
+	b=l+gh3NX8/eS6MNLgZN2LKfHeKV57phhorzD5BG+1J7WmMf29U00DFxkGfEJysOtL2
+	 /e4YyAj9Sa6xsrkFbgomezWxnDvKtB7D0VlqF+qeoKJi3owpJvWvO2gN3vGXeScLUO
+	 Ml4NtIDxyisp1Y0ueOUXzhNv3MNnsGhqf1Dq7Otipgw3jD3s845htMUQFgjWGvX7Rd
+	 ABGCWHYi/dE5Q/w1jiS6rEdcr7oXAUMTnVhI8diwqzpOFR02Jivredjv6LYI4/IW7n
+	 7tGv9DITtYjSFQzwgEQNRZmOz0O/OOi1y2TWJ87ou1Pj653LwalqovdZDA/BNx77yA
+	 lM2GsQOtna33Q==
 Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id E1EB0CE0965; Mon, 11 Aug 2025 15:51:48 -0700 (PDT)
-Date: Mon, 11 Aug 2025 15:51:48 -0700
+	id 906AECE0965; Mon, 11 Aug 2025 15:52:57 -0700 (PDT)
+Date: Mon, 11 Aug 2025 15:52:57 -0700
 From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, Sasha Levin <sashal@kernel.org>,
-	Jiri Kosina <jkosina@suse.com>, ksummit@lists.linux.dev
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: "Luck, Tony" <tony.luck@intel.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>, Jiri Kosina <jkosina@suse.com>,
+	ksummit@lists.linux.dev
 Subject: Re: [MAINTAINERS SUMMIT] Annotating patches containing AI-assisted
  code
-Message-ID: <a9122886-701f-46b6-9616-24b31f2dd44c@paulmck-laptop>
+Message-ID: <5b79d292-7a75-48f4-8303-9ecd5211fe99@paulmck-laptop>
 Reply-To: paulmck@kernel.org
 References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
  <aJJEgVFXg4PRODEA@lappy>
  <12ded49d-daa4-4199-927e-ce844f4cfe67@kernel.org>
  <f482c860-c6b2-4c5b-baa8-b546761debdf@paulmck-laptop>
- <aJpqo48FgDLglg-p@bombadil.infradead.org>
+ <aJpnStlxDUsGNPuA@agluck-desk3>
+ <cad0806b-3a87-4630-b19a-bbe8d9db1701@paulmck-laptop>
+ <A7310727-3DAF-4AF0-8E82-6AD17F5E94AC@zytor.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -64,44 +68,45 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aJpqo48FgDLglg-p@bombadil.infradead.org>
+In-Reply-To: <A7310727-3DAF-4AF0-8E82-6AD17F5E94AC@zytor.com>
 
-On Mon, Aug 11, 2025 at 03:11:47PM -0700, Luis Chamberlain wrote:
-> On Mon, Aug 11, 2025 at 02:46:11PM -0700, Paul E. McKenney wrote:
-> > depending on how that AI was
-> > trained, those using that AI's output might have some difficulty meeting
-> > the requirements of the second portion of clause (a) of Developer's
-> > Certificate of Origin (DCO) 1.1: "I have the right to submit it under
-> > the open source license indicated in the file".
+On Mon, Aug 11, 2025 at 03:45:54PM -0700, H. Peter Anvin wrote:
+> On August 11, 2025 3:12:25 PM PDT, "Paul E. McKenney" <paulmck@kernel.org> wrote:
+> >On Mon, Aug 11, 2025 at 02:57:30PM -0700, Luck, Tony wrote:
+> >> On Mon, Aug 11, 2025 at 02:46:11PM -0700, Paul E. McKenney wrote:
+> >> > On Fri, Aug 08, 2025 at 10:31:27AM +0200, Krzysztof Kozlowski wrote:
+> >> > > On 05/08/2025 19:50, Sasha Levin wrote:
+> >> > > With AI you do not have to even write it. It will hallucinate, create
+> >> > > some sort of C code and you just send it. No need to compile it even!
+> >> > 
+> >> > Completely agreed, and furthermore, depending on how that AI was
+> >> > trained, those using that AI's output might have some difficulty meeting
+> >> > the requirements of the second portion of clause (a) of Developer's
+> >> > Certificate of Origin (DCO) 1.1: "I have the right to submit it under
+> >> > the open source license indicated in the file".
+> >> 
+> >> Should the rules be:
+> >> 
+> >> 1) No submissions directly from an AI agent. The From: line must
+> >> always refer to a human.
+> >> 
+> >> 2) The human on the From: line takes full responsibilty for the
+> >> contents of the patch. If it is garbage, or broken in some way
+> >> there's no fall back on the "but AI wrote that bit".
+> >
+> >Another option is "The AI was trained only on input having a compatible
+> >license."  Which, to your point, would to the best of my knowledge cut
+> >out all of the popular and easily available AIs.
+> >
+> >There might well be less restrictive conditions on the AI training data,
+> >but I am not qualified to evaluate such conditions, let alone construct
+> >them.
 > 
-> If the argument is that cetain LLM generated code cannot be used for code under
-> the DCO, then:
-> 
-> a) isn't this debatable? Do we want to itemize a safe list for AI models
->    which we think are safe to adopt for AI generated code?
+> I think we need legal advice on this, but I think this is a *really*
+> important issue. It could end up being a very ugly mess otherwise.
 
-For my own work, I will continue to avoid use of AI-generated artifacts
-for open-source software projects unless and until some of the more
-consequential "debates" are resolved favorably.
-
-> b) seems kind of too late
-
-Why?
-
-> c) If something like the Generated-by tag is used, and we trust it, then
->    if we do want to side against merging AI generated code, that's perhaps our
->    only chance at blocking that type of code. Its however not bullet proof.
-
-Nothing is bullet proof.  ;-)
-
-At the same time, I have no idea whether or not a Generated-by tag is
-a good idea.
-
-> I'm however not sure if a) hold water. Are folks seriously taking these
-> positions somewhere?
-
-I am seriously taking that position for my own work and will continue
-to do so until further notice.
+Indeed, one of the reasonsss that I am not qualified is that I am
+no lawyer.  ;-)
 
 							Thanx, Paul
 
