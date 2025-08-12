@@ -1,100 +1,104 @@
-Return-Path: <ksummit+bounces-2132-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2131-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF31FB22AD6
-	for <lists@lfdr.de>; Tue, 12 Aug 2025 16:41:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8894AB22AD0
+	for <lists@lfdr.de>; Tue, 12 Aug 2025 16:40:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 005613B53A8
-	for <lists@lfdr.de>; Tue, 12 Aug 2025 14:37:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C6B52A1CF2
+	for <lists@lfdr.de>; Tue, 12 Aug 2025 14:36:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D1672EBBA8;
-	Tue, 12 Aug 2025 14:36:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=codethink.co.uk header.i=@codethink.co.uk header.b="QlWgOdVR"
-Received: from imap4.hz.codethink.co.uk (imap4.hz.codethink.co.uk [188.40.203.114])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C78A1C861D;
+	Tue, 12 Aug 2025 14:36:31 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8D928726C
-	for <ksummit@lists.linux.dev>; Tue, 12 Aug 2025 14:36:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.203.114
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9573596B
+	for <ksummit@lists.linux.dev>; Tue, 12 Aug 2025 14:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755009416; cv=none; b=MGhb4nQ4xb90ztcx3BAYIm399mDMeJjEL2jGCFtvQ6IYIfco91bTTgqkpQg81FLsSDhgQ/X9UT7wXh1vAd+sL7eU43kEaDnGqgOOELSrWumOzSA+fiUgBCtRQUxai0K2f9X9DfwyMMxK0B7vZcTFRtiYqmPdAsN0SeQfmMgLQ4s=
+	t=1755009390; cv=none; b=aKA7O94jy2z1Uu8Kl36/nHtXuwe/fvvYFdIgLfhECwhx7+O0j52lov9MGKzO2upvENsme7hJxihxFKH6tnlB4o6tKM95Ah0Gx2ZlV4AW1CrG/KAm90ASmI/ghdqAeThqIe2pV995e8AB1OKSDbwbrhkq7+HEr/2nPmuvCxrD2aY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755009416; c=relaxed/simple;
-	bh=Ptq+Y0QteqBWU6wZNGOIUiBUt8hlGXhVFFC6DU21Yig=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MFHoYfMDUvQd4IW0QomeZZSPJpcHz6ieFIJoPrlJrjuFVWu8Uu0g7w7/x3gH1B910qH+gJztggbnNjlboXczWt30KGS8t/VMh2TgzOfUpDzbH9Ouxmz6mK+No5aQMtDIu+2AFW9Smgq+W9GouNdKhZS4qqOsvrX1ALSj7irGo3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=codethink.co.uk; spf=pass smtp.mailfrom=codethink.co.uk; dkim=pass (2048-bit key) header.d=codethink.co.uk header.i=@codethink.co.uk header.b=QlWgOdVR; arc=none smtp.client-ip=188.40.203.114
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=codethink.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codethink.co.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=codethink.co.uk; s=imap4-20230908; h=Sender:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ny/7vSRPcjN18aA6DlYSY8tyYL6U8Z5A1t9xNiTtubQ=; b=QlWgOdVRptoe+93vXJo/qQiKJJ
-	1yJKmUXFmKei2P3AKeQ7MCBy3ORMsdHigwSc9vogGu3d4z/GS1ChbZENhh9TlgrmmrcNSmhhs6E0R
-	vOqwatD5g7FMJemUNcIohbC7itu5avCZpG19S3wmBAnt1lP6dHKJeHoSE+c8fHROAzeMI6vrpC1ZX
-	RFBHW76iN5vzgsOzuDkohcAlnvs2q9gOMaiZhubIG2e8YRsdD973FpyEOEqFpDi7qKO+NnYl7DUQ8
-	8Hc67n9zoK/sjVJ4y0EaUIdRvHV6REHHEaVpvmwvYmdI1hanSSVJu+U2K2xAnTBbYXBkU8R2zT0UF
-	SvDAAnVA==;
-Received: from [167.98.27.226] (helo=[10.35.6.194])
-	by imap4.hz.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
-	id 1ulq7H-00CNCA-7m; Tue, 12 Aug 2025 15:36:43 +0100
-Message-ID: <47ef32d0-f87d-4788-b2bc-f61390717667@codethink.co.uk>
-Date: Tue, 12 Aug 2025 15:36:42 +0100
+	s=arc-20240116; t=1755009390; c=relaxed/simple;
+	bh=20AHha75eyG9HHTJSxVhDhfgUbRXYrJEAH3d3cZwZgM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RL51c81m99CLAm0kH1hu9ZytOjgWWh5+b6CCykyhLd92ru/rfV91kJXi3Pml3fQ1odc089OCZkSoLCKbDrHqnoim/lD3SCkv55ymAMAnN5aSchSolhFzbtzh95aEHaav/3t0HBO1drd0AGz4UoIVTjtlLtJWiX/RD4LyMh3BCVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 05BC3C036E;
+	Tue, 12 Aug 2025 14:36:26 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf18.hostedemail.com (Postfix) with ESMTPA id 34EC72F;
+	Tue, 12 Aug 2025 14:36:25 +0000 (UTC)
+Date: Tue, 12 Aug 2025 10:37:10 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>, Julia Lawall
+ <julia.lawall@inria.fr>, "H. Peter Anvin" <hpa@zytor.com>,
+ ksummit@lists.linux.dev
+Subject: Re: [MAINTAINERS SUMMIT] The role of AI and LLMs in the kernel
+ process
+Message-ID: <20250812103710.5faf83fc@gandalf.local.home>
+In-Reply-To: <d877a0d2-28b4-4231-87bb-4c7b8c10eefe@lucifer.local>
+References: <e3188fe2-4b6c-4cb2-b5ae-d36c27de6832@lucifer.local>
+	<37BCAD5A-07C4-4119-89C2-D3A45C24DE18@zytor.com>
+	<alpine.DEB.2.22.394.2508060747440.3518@hadrien>
+	<e52df6bb-cee3-46e1-9e05-6abb42174c85@suswa.mountain>
+	<d877a0d2-28b4-4231-87bb-4c7b8c10eefe@lucifer.local>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [MAINTAINERS SUMMIT] Annotating patches containing AI-assisted
- code
-To: Mark Brown <broonie@kernel.org>, Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Jiri Kosina <jkosina@suse.com>, ksummit@lists.linux.dev
-References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
- <e03f2583-c149-4fcf-aadb-81fe40afee46@suswa.mountain>
- <d7ddd076-3cf8-4604-82f3-7e18709484c3@sirena.org.uk>
-Content-Language: en-GB
-From: Ben Dooks <ben.dooks@codethink.co.uk>
-Organization: Codethink Limited.
-In-Reply-To: <d7ddd076-3cf8-4604-82f3-7e18709484c3@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Sender: ben.dooks@codethink.co.uk
+X-Stat-Signature: em69yndbwuubk7mc97dunhhjhzm6r3jk
+X-Rspamd-Server: rspamout03
+X-Rspamd-Queue-Id: 34EC72F
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1+NAnNlaU2RzMvyvG1KnOGjs+sDO907zqc=
+X-HE-Tag: 1755009385-673805
+X-HE-Meta: U2FsdGVkX1+hc6w9kx3ftBb0DnndqSegYfwmfmqXSHSHKWmSKhInN7BvyMvYcaIndI0PKoWTxHjTIY7PhYPn8N4myS+B5hFOUL9ShVMIhOXv7/mDUyaPMLzdLBqo9S//CXVSmtG2KReHP04+N09ZhmypwOIBu6EX8s9U+k85p9+F9+/o7/02I7MXQzCaAZ+q5RzqUquHM+JtlaLibv/tAT0yDQLuN8c2L15ngDRmRd9lSWSHYDnweXi91uOr0ZMBRRDRVvsPFpCdbyTdt6QGe7qcO0JMJcrKzpDKACfOm8gGhl3RitZCmW0cBEcT1afFUknXcn5sKhD4mumtPACiVCiI9KFyNyxFuZhflkRIxr38Kx9ofCiIWQ==
 
-On 06/08/2025 11:13, Mark Brown wrote:
-> On Wed, Aug 06, 2025 at 11:17:23AM +0300, Dan Carpenter wrote:
+On Wed, 6 Aug 2025 20:30:25 +0100
+Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+
+> > I feel like I have seen patches where people have generated AI
+> > documentation for locking.  The problem is that if you ask AI to write
+> > something it always has a very confident answer but normally it's vague
+> > and slightly wrong.  It takes no time to generate these patches but it
+> > takes a while to review them.  
 > 
->> Just a "Patch generated with AI" under the --- cut off line would be
->> fine.
-> 
->> We had a patch in staging from AI which "copy and pasted" from a spec
->> that it had hallucinated.  The language in the commit message is so
->> smooth and confident that it took a re-read to see that it's totally
->> nonsense.  A lot of the patches in staging are from newbies and
->> sometimes kids and I believe the person who sent the  AI assisted
->> patch did it with good intentions.  But, ugh, I don't want to deal
->> with that.
-> 
-> I think the suggestion from an earlier thread that people should say
-> what the AI they were using (as they tend to for static checkers and
-> so on) was good - that's useful for both noticing tools that work well
-> and tracking things down if we notice a pattern of errors with some
-> tool.
+> The async relationship between effort to generate vs. effort to review is a
+> very serious aspect of all this.
 
-Also, if AI is used, then how was it used? Keeping the inputs may also
-be useful ?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          THIS!
 
--- 
-Ben Dooks				http://www.codethink.co.uk/
-Senior Engineer				Codethink - Providing Genius
+My biggest concern with AI is that it may cause me to spend more time
+reviewing what it produced than it would take me to write the code myself.
 
-https://www.codethink.co.uk/privacy.html
+When I finally got people to help me with my work, my productivity dropped
+substantially, as I found I was spending more time helping them with tasks
+than it would have taken me to do it myself. But over time, that changed.
+
+This could be the same with AI if you had a model that would learn from
+what you taught it. But I suspect that AI generators will not be taking my
+input from what I find and I'll likely be telling the same AI generator how
+to fix the mistake over and over again.
+
+One thing I look forward to with AI is that it will likely help me debug my
+own code. I suspect it would be really good at reading my code and say
+"Hey Stupid! You forgot to free this value over here". And things like that.
+In other words, I trust AI to debug my code more than I can debug its code.
+
+What's that saying? "To debug code requires someone that is smarter than
+the one who wrote it."
+
+-- Steve
 
