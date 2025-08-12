@@ -1,164 +1,107 @@
-Return-Path: <ksummit+bounces-2145-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2146-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC193B22D42
-	for <lists@lfdr.de>; Tue, 12 Aug 2025 18:23:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 702A7B22D89
+	for <lists@lfdr.de>; Tue, 12 Aug 2025 18:29:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E81A161B0A
-	for <lists@lfdr.de>; Tue, 12 Aug 2025 16:18:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10189682B57
+	for <lists@lfdr.de>; Tue, 12 Aug 2025 16:22:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2033B2F83CA;
-	Tue, 12 Aug 2025 16:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2932F6579;
+	Tue, 12 Aug 2025 16:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lvodTWz2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="owLftb1A"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CFA12F83AE
-	for <ksummit@lists.linux.dev>; Tue, 12 Aug 2025 16:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764F223D7D4
+	for <ksummit@lists.linux.dev>; Tue, 12 Aug 2025 16:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755015470; cv=none; b=it0J/knrOt46Zg72pu1jlsXOFJUuRB0wHbBUHOCeuw4MlhYH8UGD0FbVHq7fVxykAIKRYXoCT3zKVlBYy9gRVr8Jio4ztS+cLDX6mnquHHvzwV6xjITQTvW+JphTaz9VStcPYEwIRFNbqAXGLGimP9gwM6S19B7T4g24J8ua/gk=
+	t=1755015757; cv=none; b=HUvq1ms0nrCgGmwFHJ+OOeEO+07yXIv0FFMisOPQb4RUAStdKVY7y1dCWVDOrt5ITF3//f0+uZ6j8DdmTnTbsMFtiXX7zhY4BwDIAbnNKZfMYiN+J1iUxZ5ETBwchHulSOXDhvApUQZnr4Un8BCFuAFzX4Jlj8ut1r3VoR/RKWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755015470; c=relaxed/simple;
-	bh=5081FYfuXnHHhC6rxQA8TwLLvE7Pb0Ga9MMlz1Me0WA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jbkl9DRXWDGs/SfSN59R/pElkeF7MoCo6TmtgCWquKgcKFwTI5TPk5cTJ+ptplLpa0pFgu5WsUYQ2Wu+80LfBDWgDUpoUdLcspgHXlU7ptOamjNYgTeJWE+gDPv+/QLqPCm+pqMNcAhKyCGX3TTjuUeUznAeYCLW0CXiA6cxfOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lvodTWz2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86127C4CEF7;
-	Tue, 12 Aug 2025 16:17:48 +0000 (UTC)
+	s=arc-20240116; t=1755015757; c=relaxed/simple;
+	bh=YAYowHpuQDCZTG3qA+5HdLtd+Worhd5mwfclJ1gSaPU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hirA0sgiKO4C+E1rOKhN7cywOgE9+FxwFktiLd55Q1UnHEae7Y6Ib4mb48d5papXfp/uC7UfICmnPB0FuBTGHMyc57aHKpwC1g5FcI+b5CH8VGQqZDd89ZWD62OqErebt36SbgFi/k5qNdDyRsF0RB6xaa60zp2OvnDizCQY3mA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=owLftb1A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53F76C4CEF7;
+	Tue, 12 Aug 2025 16:22:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755015470;
-	bh=5081FYfuXnHHhC6rxQA8TwLLvE7Pb0Ga9MMlz1Me0WA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lvodTWz2D29kJp8ESptexgvavnHy7mxplboxfbQE+tp1z/LY/UDKJywUOhSkt/tY9
-	 MAlLSrMH6WSlKPHiGrCnG1gC3HDm27dPIoG4SDTu4dcxM8cZwi2NZGPQspYuHLGNIa
-	 B/8cMj6XWXez3WeeVs9lUHnw3UwgY/yft3Nkox1xRG5sFIEG3O0vLEZiKPefReccHb
-	 WWh3gPop1KdVytiZk7owSW2LgJgvrBCGAHkOxEBSxfJo9uZHa3G2qnRrjXIGpTQP+N
-	 LmiFXRSGtOnfUEuqGxWb9y1E25HZDHvQRFwPtuu80XTa4f1gKzhs3/VJn62vrYvXcm
-	 xZF3bDkVv4tfA==
-Message-ID: <13a6b4cb-6566-4afa-b76f-bd18ce23ce18@kernel.org>
-Date: Tue, 12 Aug 2025 18:17:46 +0200
+	s=k20201202; t=1755015757;
+	bh=YAYowHpuQDCZTG3qA+5HdLtd+Worhd5mwfclJ1gSaPU=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=owLftb1A8revLYvPtPjbl9BlKMLLIbGtcR0Ug0vc1M6yHF9nvN8R2+AAp7Icp52jq
+	 zDINelgw4KTDmMroE+i1M5cEXbzFQkjmtGbLAaY/yFWTTBp5OaVO4jfNXrT29tX8VF
+	 wyntcdwRQ8vxMRqdiQ2hmrsLUCereyjKfYpybLcU4jREp6NLgLVfd4aIm0NKjsKdzv
+	 rMzH+gBPsjQHpQj1M4o5pRAKhdpM5WohnU6vxZsLSFsosPd7LytjXPyynQTNesqCgV
+	 WoJJEBgLlHQ5Cf0FZYqhld5YRHvq3r8xMWjr0S0XDAcoa6Sg1T5+9BgK7q2U3w2kdM
+	 H4tKAbTX0Lnrw==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 01FBBCE091E; Tue, 12 Aug 2025 09:22:36 -0700 (PDT)
+Date: Tue, 12 Aug 2025 09:22:36 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Luis Chamberlain <mcgrof@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>, Jiri Kosina <jkosina@suse.com>,
+	ksummit@lists.linux.dev
+Subject: Re: [MAINTAINERS SUMMIT] Annotating patches containing AI-assisted
+ code
+Message-ID: <a69a8df9-af0c-4ee9-9931-2c160cce141e@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
+ <aJJEgVFXg4PRODEA@lappy>
+ <12ded49d-daa4-4199-927e-ce844f4cfe67@kernel.org>
+ <f482c860-c6b2-4c5b-baa8-b546761debdf@paulmck-laptop>
+ <aJpqo48FgDLglg-p@bombadil.infradead.org>
+ <a9122886-701f-46b6-9616-24b31f2dd44c@paulmck-laptop>
+ <20250812120131.1f4cf045@gandalf.local.home>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [MAINTAINERS SUMMIT] Annotating patches containing AI-assisted
- code
-To: paulmck@kernel.org
-Cc: Steven Rostedt <rostedt@goodmis.org>, Sasha Levin <sashal@kernel.org>,
- "Luck, Tony" <tony.luck@intel.com>, Jiri Kosina <jkosina@suse.com>,
- ksummit@lists.linux.dev
-References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
- <aJJEgVFXg4PRODEA@lappy> <12ded49d-daa4-4199-927e-ce844f4cfe67@kernel.org>
- <f482c860-c6b2-4c5b-baa8-b546761debdf@paulmck-laptop>
- <aJpnStlxDUsGNPuA@agluck-desk3> <aJpupN1KztXyglnN@lappy>
- <20250812114956.40dbb2fe@gandalf.local.home>
- <c1ea68c1-c352-40b5-a68a-790f618bb221@kernel.org>
- <743df9f7-70ff-4038-bec1-2fc938711be0@paulmck-laptop>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <743df9f7-70ff-4038-bec1-2fc938711be0@paulmck-laptop>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250812120131.1f4cf045@gandalf.local.home>
 
-On 12/08/2025 18:12, Paul E. McKenney wrote:
-> On Tue, Aug 12, 2025 at 06:03:36PM +0200, Krzysztof Kozlowski wrote:
->> On 12/08/2025 17:49, Steven Rostedt wrote:
->>> On Mon, 11 Aug 2025 18:28:52 -0400
->>> Sasha Levin <sashal@kernel.org> wrote:
->>>
->>>> We have the following in our docs:
->>>>
->>>>          code from contributors without a known identity or anonymous
->>>>          contributors will not be accepted. All contributors are required
->>>>          to "sign off" on their code
->>>>
->>>> Which requires a real, known, human identity behind the "Signed-off-by"
->>>> tag.
->>>
->>> I guess the real question is, if you have AI write the code, do you have
->>> the right to add your Signed-off-by to it? Especially if you don't know
->>> what that AI was trained on.
->>>
->>> Does the Signed-off-by mean if later on, we find that the AI used an
->>> patented algorithm, the one that added their SoB can be in legal trouble?
->>
->>
->> Maybe we should be very explicit about annotating AI-generated patches
->> and instead of (see workflows discussion [1]):
->>
->> 	Assisted-by: ....
->>
->> expect different tag, like:
->>
->> 	Legal-risk-by:
->>
->> or:
->> 	Legally-questionable-because-of:
->>
->> [1] https://lore.kernel.org/r/20250809234008.1540324-1-sashal@kernel.org/
+On Tue, Aug 12, 2025 at 12:01:31PM -0400, Steven Rostedt wrote:
+> On Mon, 11 Aug 2025 15:51:48 -0700
+> "Paul E. McKenney" <paulmck@kernel.org> wrote:
 > 
-> If you have to add one of those last two tags, my carefully considered
-> advice is to refrain from applying the patch.
+> > > a) isn't this debatable? Do we want to itemize a safe list for AI models
+> > >    which we think are safe to adopt for AI generated code?  
+> > 
+> > For my own work, I will continue to avoid use of AI-generated artifacts
+> > for open-source software projects unless and until some of the more
+> > consequential "debates" are resolved favorably.
 > 
-> Applying a patch containing the first tag might not be wise, either,
-> depending on the outcome of a number of lawsuits currently in flight.
-> Plus there are a lot of other countries that might choose to weigh in.
+> Does that include people who submit AI generated code to you?
+> 
+> This would also require AI use disclosures.
 
-Yes, that's what I wanted to imply. At least person applying the patch
-and then later sending in pull request to next maintainer could not use
-excuse "I did not know, that Assisted-by causes legal risk".
+We have all avoided applying patches containing copyright violations
+for a very long time.  And the possibilility of such violations is one
+thing that seems to me to be adddressed by the DCO, which says (among
+other things):
 
-Best regards,
-Krzysztof
+	I have the right to submit it under the open source license
+	indicated in the file
+
+Whether we like it or not, there are lawsuits in flight that could
+potentially come to decisions that result in incorporation of AI-generated
+code into the Linux kernel being copyright violations, which would
+mean that the submitter does not have the right to submit.
+
+And no, I have no way to identify AI-generated code.  If I mistakenly
+incorporate some AI-generated code, I must rip it out and clean-room
+construct some alternative.  Just as is already the case for other
+potential legal issues.
+
+							Thanx, Paul
 
