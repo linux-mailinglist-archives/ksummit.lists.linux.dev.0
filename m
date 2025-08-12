@@ -1,58 +1,52 @@
-Return-Path: <ksummit+bounces-2147-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2148-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECD3DB22EAB
-	for <lists@lfdr.de>; Tue, 12 Aug 2025 19:13:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 224BBB22ED8
+	for <lists@lfdr.de>; Tue, 12 Aug 2025 19:18:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9A3416FDF9
-	for <lists@lfdr.de>; Tue, 12 Aug 2025 17:12:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67EEE189D847
+	for <lists@lfdr.de>; Tue, 12 Aug 2025 17:19:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3933F2F83D8;
-	Tue, 12 Aug 2025 17:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D21332FD1AA;
+	Tue, 12 Aug 2025 17:18:43 +0000 (UTC)
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1E9286D61
-	for <ksummit@lists.linux.dev>; Tue, 12 Aug 2025 17:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5602F83CE
+	for <ksummit@lists.linux.dev>; Tue, 12 Aug 2025 17:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755018728; cv=none; b=uZJkqHFSsYjb2h/lioON9qCjI59mJF+fvq4Em+RQX/KPy3QSAY7IfcQkl1LtEdMYvLZtGmG4jZLLGU0/O5i7vqyrsFBTtIABb1zrjyAIvXBLE8s7pZwlrbPoUCrYby5qXjD0M1mpocEqEsJjcbAEucZJOKpKlt2NcGsHp/ZJOWs=
+	t=1755019123; cv=none; b=p/j98LcQAe/3zDyKNB6hI/M6wqUk0bb/L782d/Du2wj0fVcux/6+rX0D+yhOFNNY+Nyf4/SzZ2iPAlUNGZMn9V+I68ZeIOWq4nrIH0IO8stsw7z4ToDNfxOIjy7gfIshCD/ksB33yvkztWvNAnlCg5mqRGsnWM9jlEtyQxvOWNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755018728; c=relaxed/simple;
-	bh=bYf9RFdl8p66htdOPoIUdaRvk7iewrH4NRDqepacMAc=;
+	s=arc-20240116; t=1755019123; c=relaxed/simple;
+	bh=WmRQf4ynQKtFY7A+i+GPngG7qkxYqr8adszBGGB4Sy4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R+jRnNScAzTItatoZvQZ95ygk1E/4jYrHA+nmj8wIf/L+PfjUvP5zTip4JgBK3zoG8xGmS5codbXoT/8q8Y4MowJXS5W7T25UWuMsN8AkL/BmFaC0DzyBktU7PkHRcR6OcyobywkxhnXlZryD6OFhks0h6asZ9i02GnIfAIb2TQ=
+	 MIME-Version:Content-Type; b=AZ6UfBPj7aOrDuSDUSiWumTQxmMpNf4L34LLi6CGnebRyl3RXuq88Fk996CYsPbfQ7oUajzT5LfFzoMvPNHTQ2R+OlsV2R+EU0XsMhOMTIrH6MHpTqV9Yb4zVPFbqr59NDTY/rHbKe5XFGYuW+u0ltlh3GOBoQjc3zbrln8Z3qA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EA89E160112;
-	Tue, 12 Aug 2025 17:12:04 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf20.hostedemail.com (Postfix) with ESMTPA id 29B8320028;
-	Tue, 12 Aug 2025 17:12:03 +0000 (UTC)
-Date: Tue, 12 Aug 2025 13:12:48 -0400
+Received: from omf10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 35B3D1D3B46;
+	Tue, 12 Aug 2025 17:18:40 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf10.hostedemail.com (Postfix) with ESMTPA id 654DD30;
+	Tue, 12 Aug 2025 17:18:38 +0000 (UTC)
+Date: Tue, 12 Aug 2025 13:19:23 -0400
 From: Steven Rostedt <rostedt@goodmis.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: paulmck@kernel.org, Sasha Levin <sashal@kernel.org>, "Luck, Tony"
- <tony.luck@intel.com>, Jiri Kosina <jkosina@suse.com>,
+To: Takashi Iwai <tiwai@suse.de>
+Cc: Jiri Kosina <jikos@kernel.org>, Greg KH <gregkh@linuxfoundation.org>,
+ James Bottomley <James.Bottomley@hansenpartnership.com>,
  ksummit@lists.linux.dev
-Subject: Re: [MAINTAINERS SUMMIT] Annotating patches containing AI-assisted
- code
-Message-ID: <20250812131248.6b49f0cd@gandalf.local.home>
-In-Reply-To: <13a6b4cb-6566-4afa-b76f-bd18ce23ce18@kernel.org>
-References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
-	<aJJEgVFXg4PRODEA@lappy>
-	<12ded49d-daa4-4199-927e-ce844f4cfe67@kernel.org>
-	<f482c860-c6b2-4c5b-baa8-b546761debdf@paulmck-laptop>
-	<aJpnStlxDUsGNPuA@agluck-desk3>
-	<aJpupN1KztXyglnN@lappy>
-	<20250812114956.40dbb2fe@gandalf.local.home>
-	<c1ea68c1-c352-40b5-a68a-790f618bb221@kernel.org>
-	<743df9f7-70ff-4038-bec1-2fc938711be0@paulmck-laptop>
-	<13a6b4cb-6566-4afa-b76f-bd18ce23ce18@kernel.org>
+Subject: Re: [MAINTAINERS SUMMIT] The amount of -stable emails
+Message-ID: <20250812131923.69d34403@gandalf.local.home>
+In-Reply-To: <87ectprmmg.wl-tiwai@suse.de>
+References: <162r47q9-rp56-67so-7032-2r1rn36p03n6@fhfr.pbz>
+	<cb91ddf05b9ea48056765a9027ff9132e080df30.camel@HansenPartnership.com>
+	<2025080515-grandpa-prankster-ee83@gregkh>
+	<p1886464-9p9n-4p0r-52r7-70sqprsoo32q@xreary.bet>
+	<87ectprmmg.wl-tiwai@suse.de>
 X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
@@ -62,64 +56,37 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ypwegh7rc67buwt8zrz3ws18pard6zxw
+X-Stat-Signature: e1yjybawwj9wze3tt1p5qurj5ahahop7
 X-Rspamd-Server: rspamout03
-X-Rspamd-Queue-Id: 29B8320028
+X-Rspamd-Queue-Id: 654DD30
 X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX1/1MtGyXwtrk02C0SkmF1++BcznFO3alQg=
-X-HE-Tag: 1755018723-676461
-X-HE-Meta: U2FsdGVkX1+CnNDlKXNfk0Nh1GxrKTaDS/uqw8ChaHiWuNTaUBTBfPGzPQPnuTlDwk9WCRHmPjZzG4I0y/jAYiecUEKjIcjqJ2vq8Gg3n4KcddpODOr781y6W+hB3/ZQGA28ARwR5OL8I6y8XL7lSYuCMxLVHjO+Sp4v/JfiPkmX6SxaSSOjclqwymk8iUG4x83/cuGxtdVWwJuz7OB/Gb1qdDRyWeOjG3r8PdAO43BnBixqh14Pdl+cXxeXPFBcgv2u9HOh2NJARSSLuFm2pLCH2yLYdxyUkERK2d8D8zsWXQolHg1nSQ7EI0fs6ryu2PQnHCiHQ6YRkqP/t7EH41wWNaIbWGoTn5OanHAanXIfdxSa85tzfOfKRvg+d8ticOXCB9+f9nuLYYY3m3llCg==
+X-Session-ID: U2FsdGVkX1/0IrVgQUSv6GkPMyYsG8hBoV1CrV/XINs=
+X-HE-Tag: 1755019118-747936
+X-HE-Meta: U2FsdGVkX1/oI9BeI0lpZk0b+ZySYelphaQ62YondotZAgd3utwNlEhLJeylcltVpdVF0AEbjecPAOanHYmiC2VOHfIQW5vyQqYs/1VO4TgZjya8TxUZ/QIJaoNjvyqv6ZmJ08xbYf0pqznfrtXJoKCMcyELIL5HjBkwH+O9ZC2kA54LSN72fRCqoI8Jiq0bIpSungeXkNNc+Vy8PBLxS2yaAcnkmjkxcFu59fIqQZNzvxJuNN4UXsq8rwn4ZR6UfzvkYOI3T9k1q+4SNLlzpNmlXZ/FPGl/uEhZC6i61sBedaIG9QSU2ZVWM6mZYsjfxi7tNvy62joUwRx2An1sCbNF62lIZw5p
 
-On Tue, 12 Aug 2025 18:17:46 +0200
-Krzysztof Kozlowski <krzk@kernel.org> wrote:
+On Wed, 06 Aug 2025 08:27:03 +0200
+Takashi Iwai <tiwai@suse.de> wrote:
 
-> > Applying a patch containing the first tag might not be wise, either,
-> > depending on the outcome of a number of lawsuits currently in flight.
-> > Plus there are a lot of other countries that might choose to weigh in.  
+> > For context searches if some particular information regarding stable 
+> > patch history is needed, we can still do lore/lei queries nicely and 
+> > easily.
+> > Is there any other usecase (that people are actually actively using) for 
+> > it?  
 > 
-> Yes, that's what I wanted to imply. At least person applying the patch
-> and then later sending in pull request to next maintainer could not use
-> excuse "I did not know, that Assisted-by causes legal risk".
+> In rare cases, patches are incorrectly applied.  That can't be
+> verified without the actual patch.
+> 
+> Usually it happens with a cherry-pick with fuzz, so we might be able
+> to catch suspected ones, but the inspection of the patch is still
+> needed.
 
-Once you add your SoB, it means "You know". As described in the Submitting
-Patches documentation:
+As you state this is rare. Who actually checks this? I don't. I pretty much
+ignore any patch that I marked as stable and it was accepted into the
+stable tree. If there was a merge mistake, I would never see it.
 
-  Developer's Certificate of Origin 1.1 
-  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 
-
-  By making a contribution to this project, I certify that:
-
-        (a) The contribution was created in whole or in part by me and I
-            have the right to submit it under the open source license
-            indicated in the file; or
-
-        (b) The contribution is based upon previous work that, to the best
-            of my knowledge, is covered under an appropriate open source
-            license and I have the right under that license to submit that
-            work with modifications, whether created in whole or in part
-            by me, under the same open source license (unless I am
-            permitted to submit under a different license), as indicated
-            in the file; or 
-
-        (c) The contribution was provided directly to me by some other
-            person who certified (a), (b) or (c) and I have not modified
-            it.
-
-        (d) I understand and agree that this project and the contribution
-            are public and that a record of the contribution (including all
-            personal information I submit with it, including my sign-off) is
-            maintained indefinitely and may be redistributed consistent with
-            this project or the open source license(s) involved.
-
-  then you just add a line saying::
- 
-        Signed-off-by: Random J Developer <random@developer.example.org>
-
-
-If you add your SOB and then find out later that your AI tool added some
-code that was not allowed, then you broke (a) and (b), and I believe you
-are legally liable because your SoB means "You know". If you don't know,
-then you should *not* be submitting the code.
+If people are checking for these, then I suggest they use some sort of
+digest and look. But I really could do without the email that it was
+applied cleanly.
 
 -- Steve
 
