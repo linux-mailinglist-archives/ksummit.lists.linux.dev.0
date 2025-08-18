@@ -1,93 +1,191 @@
-Return-Path: <ksummit+bounces-2151-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2152-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15EDFB2B077
-	for <lists@lfdr.de>; Mon, 18 Aug 2025 20:33:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4DF6B2B16B
+	for <lists@lfdr.de>; Mon, 18 Aug 2025 21:19:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71B68565870
-	for <lists@lfdr.de>; Mon, 18 Aug 2025 18:33:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C07293B0280
+	for <lists@lfdr.de>; Mon, 18 Aug 2025 19:14:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FF9272E6F;
-	Mon, 18 Aug 2025 18:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D684ECA52;
+	Mon, 18 Aug 2025 19:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="dLYDnEEQ"
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sRwgLj/X"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A24211A11
-	for <ksummit@lists.linux.dev>; Mon, 18 Aug 2025 18:32:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395CF3451A8
+	for <ksummit@lists.linux.dev>; Mon, 18 Aug 2025 19:13:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755541954; cv=none; b=mgUsmr+JNH1MZqaG0m4mvXQKJ1qGbr89kzrirnTnQNR5XFIafXZADdoxn0KlHXrooaSrwKdtEL8BnsEnBquewQp/uGZLAq03EWbQ5tNtJaBubUrJMfr2cjF5c0sBwhi+Imyv6OYYPY+W1L4/S+5x65zKJSSjtvJfYev06GUf2Xo=
+	t=1755544439; cv=none; b=hn4TC/DEwvk3XycVWtsYGRmkYmSxFkR3MRP4fpjHbDYuiLxCg+4nUXKEKlkcRzEV2ZnvijpHgGnHm41Gt36+7AaEP5J/CpzZw5VEXTHrYuTT1+A2w4RF1QDOgysdzyW1OJIOp72sZ02VQ049N5BV6YeCVwi5TsS8EtU7a1s3uOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755541954; c=relaxed/simple;
-	bh=PMrFtdhKmmyHtEZteHovmwk7L6sk3r4j2HPoHrkf/Co=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=d5l+rE7hLoLfHLhEAp+s+HWfdjTscANfcNTTT7W9StT6fpylaIScSKNjTWrLvducUUbsOFWtbX3sAaNCFjcKylvtYJR7GDabtsnMNsktGCHRoirWPKA8o1833MpzABj8rdt7i/Acn1T5ka1A6u2tDrAQKdPl2o/FPewVbADhvTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=dLYDnEEQ; arc=none smtp.client-ip=198.37.111.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1755541949;
-	bh=PMrFtdhKmmyHtEZteHovmwk7L6sk3r4j2HPoHrkf/Co=;
-	h=Date:From:To:Subject:In-Reply-To:References:Message-ID:From;
-	b=dLYDnEEQBxH2KPdZLYnm7QvAfXSn2l6Fn+/F5yXQ8nBAs14E6owm/W+WKt/ZOYJDT
-	 psS4GvGOgljfO1j43P/EIVW26Hl5eyk9PunKIaF0FG58T9dUftZQM6tkupJJL33JXh
-	 PtZsappIRVqSy5vuFvtUczl1C7XFpzA9R22ElKys=
-Received: from ehlo.thunderbird.net (unknown [IPv6:2a00:23c8:101a:bc01:2ca6:6915:404f:16ff])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 6F59A1C0234;
-	Mon, 18 Aug 2025 14:32:29 -0400 (EDT)
-Date: Mon, 18 Aug 2025 19:32:26 +0100
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: paulmck@kernel.org, Krzysztof Kozlowski <krzk@kernel.org>,
- Sasha Levin <sashal@kernel.org>, Jiri Kosina <jkosina@suse.com>,
+	s=arc-20240116; t=1755544439; c=relaxed/simple;
+	bh=TuIoLTyXvj8k/Nkp5Ew6o+CV33Ouq23Wjg4zsUcoZsY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Xnrcqdr9aaoq+s/n8LAYt/VQ58UzNZ9llITdMgPlJ6BBZVCMnhz+Uvs8idABQrL3LzjFLN1lFvYAftaZ0WGoD47XwPyXPv1Iz5OqrR87RjxGvTVc4A8tK8hZB+MY7NWu2r3vf8qKhazDaRQQ40AX/uUJI3aw6KQ3Isj+K4CoeiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sRwgLj/X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4083CC4CEEB;
+	Mon, 18 Aug 2025 19:13:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755544438;
+	bh=TuIoLTyXvj8k/Nkp5Ew6o+CV33Ouq23Wjg4zsUcoZsY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=sRwgLj/XpK5Dk2E2Vs6i9H+WVrcjEROsDNs7mOmCieAc4wI3JBVf4ZBS378A2VEf5
+	 h7bvT58fLs0857u/hRY6MIlxyBobKgQ7M3nLsgFve21a2agebLm9eQ/2buZqFQutY3
+	 AMy4l6rxHq3uwFPMQypKPPhGzGwDRwsPgnZ4OjYV/oXc4RfhjZ8lU557vc742S10Ae
+	 1VMGXz73kaz1jGEFxZJeX7aGPK5yEFqeSws1U13Oher+covMm4XdSHFY10iIwksMgj
+	 jUUzCuy0TkBVi23tuz0ntQQNGcFKbUFXp72OmKTOeFRzew1OFGBLNEGxWIrOmb4CiF
+	 o5YoU5ZpmMt4A==
+Date: Mon, 18 Aug 2025 21:13:54 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: paulmck@kernel.org, Krzysztof Kozlowski <krzk@kernel.org>, Sasha Levin
+ <sashal@kernel.org>, Jiri Kosina <jkosina@suse.com>,
  ksummit@lists.linux.dev
-Subject: =?US-ASCII?Q?Re=3A_=5BMAINTAINERS_SUMMIT=5D_Annotating?=
- =?US-ASCII?Q?_patches_containing_AI-assisted_code?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <CAJZ5v0iBLndaGmF=_VHy8bi5F7Ey0Ov+pCtd2Wt9+_uAkW1e-A@mail.gmail.com>
-References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz> <aJJEgVFXg4PRODEA@lappy> <12ded49d-daa4-4199-927e-ce844f4cfe67@kernel.org> <f482c860-c6b2-4c5b-baa8-b546761debdf@paulmck-laptop> <c0ecacbefa1e93cae4176dc368f2ea63f611f56c.camel@HansenPartnership.com> <CAJZ5v0iBLndaGmF=_VHy8bi5F7Ey0Ov+pCtd2Wt9+_uAkW1e-A@mail.gmail.com>
-Message-ID: <F9AF2AA7-0E12-43E9-A34C-2D45CA591DEC@HansenPartnership.com>
+Subject: Re: [MAINTAINERS SUMMIT] Annotating patches containing AI-assisted
+ code
+Message-ID: <20250818211354.697cb25a@foz.lan>
+In-Reply-To: <c0ecacbefa1e93cae4176dc368f2ea63f611f56c.camel@HansenPartnership.com>
+References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
+	<aJJEgVFXg4PRODEA@lappy>
+	<12ded49d-daa4-4199-927e-ce844f4cfe67@kernel.org>
+	<f482c860-c6b2-4c5b-baa8-b546761debdf@paulmck-laptop>
+	<c0ecacbefa1e93cae4176dc368f2ea63f611f56c.camel@HansenPartnership.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
-On August 18, 2025 6:53:22 PM GMT+01:00, "Rafael J=2E Wysocki" <rafael@kern=
-el=2Eorg> wrote:
->On Tue, Aug 12, 2025 at 10:41=E2=80=AFAM James Bottomley
-><James=2EBottomley@hansenpartnership=2Ecom> wrote:
-[=2E=2E=2E]
->> But the bottom line is that pure AI generated code is effectively
->> uncopyrightable and therefore public domain which means anyone
->> definitely has the right to submit it to the kernel under the DCO=2E
->
->Well, if it isn't copyrightable, then specicially it cannot be
->submitted under the GPLv2 which is required for the kernel, isn't it?
+Em Tue, 12 Aug 2025 09:38:12 +0100
+James Bottomley <James.Bottomley@HansenPartnership.com> escreveu:
 
-No=2E Public domain code can be combined with any licence (including GPL) =
-because it carries no incompatible obligations since it carries no obligati=
-ons at all=2E  You can release public domain code under any licence, but yo=
-u can't enforce the licence except on additions or modifications because th=
-e recipient could have obtained the original from the original obligation f=
-ree source=2E
+> On Mon, 2025-08-11 at 14:46 -0700, Paul E. McKenney wrote:
+> > On Fri, Aug 08, 2025 at 10:31:27AM +0200, Krzysztof Kozlowski wrote: =20
+> > > On 05/08/2025 19:50, Sasha Levin wrote: =20
+> > > > On Tue, Aug 05, 2025 at 05:38:36PM +0200, Jiri Kosina wrote: =20
+> > > > > This proposal is pretty much followup/spinoff of the discussion
+> > > > > currently happening on LKML in one of the sub-threads of [1].
+> > > > >=20
+> > > > > This is not really about legal aspects of AI-generated code and
+> > > > > patches, I believe that'd be handled well handled well by LF,
+> > > > > DCO, etc.
+> > > > >=20
+> > > > > My concern here is more "human to human", as in "if I need to
+> > > > > talk to a human that actually does understand the patch deeply
+> > > > > enough, in context, etc .. who is that?"
+> > > > >=20
+> > > > > I believe we need to at least settle on (and document) the way
+> > > > > how to express in patch (meta)data:
+> > > > >=20
+> > > > > - this patch has been assisted by LLM $X
+> > > > > - the human understanding the generated code is $Y
+> > > > >=20
+> > > > > We might just implicitly assume this to be the first person in
+> > > > > the S-O-B chain (which I personally don't think works for all
+> > > > > scenarios, you can have multiple people working on it, etc),
+> > > > > but even in such case I believe this needs to be clearly
+> > > > > documented. =20
+> > > >=20
+> > > > The above isn't really an AI problem though.
+> > > >=20
+> > > > We already have folks sending "checkpatch fixes" which only make
+> > > > code less readable or "syzbot fixes" that shut up the warnings
+> > > > but are completely bogus otherwise.
+> > > >=20
+> > > > Sure, folks sending "AI fixes" could (will?) be a growing
+> > > > problem, but tackling just the AI side of it is addressing one of
+> > > > the symptoms, not the underlying issue. =20
+> > >=20
+> > > I think there is a important difference in process and in result
+> > > between using existing tools, like coccinelle, sparse or even
+> > > checkpatch, and AI-assisted coding.
+> > >=20
+> > > For the first you still need to write actual code and since you are
+> > > writing it, most likely you will compile it. Even if people fix the
+> > > warnings, not the problems, they still at least write the code and
+> > > thus this filters at least people who never wrote C.
+> > >=20
+> > > With AI you do not have to even write it. It will hallucinate,
+> > > create some sort of C code and you just send it. No need to compile
+> > > it even! =20
+> >=20
+> > Completely agreed, and furthermore, depending on how that AI was
+> > trained, those using that AI's output might have some difficulty
+> > meeting the requirements of the second portion of clause (a) of
+> > Developer's Certificate of Origin (DCO) 1.1: "I have the right to
+> > submit it under the open source license indicated in the file". =20
+>=20
+> Just on the legality of this.  Under US Law, provided the output isn't
+> a derivative work (and all the suits over training data have so far
+> failed to prove that it is), copyright in an AI created piece of code,
+> actually doesn't exist because a non human entity can't legally hold
+> copyright of a work.  The US copyright office has actually issued this
+> opinion (huge 3 volume report):
+>=20
+> https://www.copyright.gov/ai/
+>=20
+> But amazingly enough congress has a more succinct summary:
+>=20
+> https://www.congress.gov/crs-product/LSB10922
+>=20
+> But the bottom line is that pure AI generated code is effectively
+> uncopyrightable and therefore public domain which means anyone
+> definitely has the right to submit it to the kernel under the DCO.
+>=20
+> I imagine this situation might be changed by legislation in the future
+> when people want to monetize AI output, but such a change can't be
+> retroactive, so for now we're OK legally to accept pure AI code with
+> the signoff of the submitter (and whatever AI annotation tags we come
+> up with).
+>=20
+> Of course if you take AI output and modify it before submitting, then
+> the modifications do have copyright (provided a human made them).
 
-Regards,
+On my tests with AI, humans need to modify it anyway. It reminds me
+the (not so) good old code generators we had in the past: AI-generated
+code, even when it works, it usually have unneeded steps and other
+caveats that require human interaction to clean it up and fix.
 
-James
+I got good results with AI for things like generating unit tests, but
+once tests are generated, still 50%-60% of them fails because AI
+did stupid things, like not counting whitespaces right, and even
+sometimes forgetting parameters and arguments.
 
---=20
-Sent from my Android device with K-9 Mail=2E Please excuse my brevity=2E
+=46rom several aspects, it looks like contact a very junior intern
+that knows a programming language and code really fast, but it has
+no glue about how to generate a production quality level code.
+
+After dozens of interactions, the code can be used as the bases for
+a senior professional to modify it and have something ready for
+merging.
+
+The net result is that:
+
+1. AI alone doesn't produce a ready-to-merge code;
+2. Lots of refinement requirements made by humans to shape the code=20
+   into something that actually works;
+3. During AI interaction, human has to intervene several times to
+   avoid AI to hallucinate. Sometimes, it also has to close the
+   chat and open again - or even use a different LLM model when
+   AI can't converge;
+4. At best scenario, human still needs to read the code and carefully
+   modify for it to make sense; at worse, it has to write its own
+   code, eventually using some suggestions from the AI hallucination.
+
+Heh, there are exceptions: if one asks AI to produce a hello world
+code (or something that "plays by the book" - e.g. when AI can use
+thousands of references from code in public domain) the code is not=20
+that bad: it is just a variant of some public domain code.
+
+Thanks,
+Mauro
 
