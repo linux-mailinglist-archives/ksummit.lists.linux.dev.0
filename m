@@ -1,189 +1,102 @@
-Return-Path: <ksummit+bounces-2163-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2164-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D65B2C841
-	for <lists@lfdr.de>; Tue, 19 Aug 2025 17:19:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B35B2C860
+	for <lists@lfdr.de>; Tue, 19 Aug 2025 17:24:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03CD81BA404C
-	for <lists@lfdr.de>; Tue, 19 Aug 2025 15:15:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BDDC727889
+	for <lists@lfdr.de>; Tue, 19 Aug 2025 15:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF2E262FF6;
-	Tue, 19 Aug 2025 15:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247A6284883;
+	Tue, 19 Aug 2025 15:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a7YjHwoQ"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="ftm27UyK"
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5E020C48A
-	for <ksummit@lists.linux.dev>; Tue, 19 Aug 2025 15:15:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500B02765EA
+	for <ksummit@lists.linux.dev>; Tue, 19 Aug 2025 15:23:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755616529; cv=none; b=Th+6VenWA2mROsnYylp6cVhH311AEAWkogT0QZ0Z6517amxd12uYK5eO4gZuVHHZxrSpZxEeKnlfrpP6Ioh9bHbuj7LxerCfUGkE0LHnUPnJrmJy8s2rcnGax7pa4a3OCm65D2NaHueDbtxm2OZ4SVy9aA0UxXOf7w7qRuv98Ao=
+	t=1755617033; cv=none; b=lBfZJwPHAqm2oh0SH8C/wjUEdq0S9XwWbB0wQM2jFJ2pr7DYQ3881JgkC2stCDIZo7pBLpfT1zJZ6n2GTKgOagxMg2kL5JYhpqWSaZ/WHwrHKs4aCx6hIIZWzkgjZoeHmXHDNeIYF3jReYKrWrn2BhruMbN0pemstZRf2/SZEUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755616529; c=relaxed/simple;
-	bh=H3eji56BtwvP4Ywv4RWxsRRX37tjVHX/Y2hoGHHHlm8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fPnkdw8hjhlByJl8tGKCsNTiw94lzF7Bt5g+PpZFkkJHpU+mtCDeL0h/KJtL5ebueNnomswXakgkKjmXwSeLvJFn6MKU39fcuE+ujE1fgbtjLKw7Ae+vwdIJ7N9NcfW+K4ExzRP9AHCJIqxQ+L5wveyD76mONcDv3YhALbTlZV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a7YjHwoQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F21EC4CEF1;
-	Tue, 19 Aug 2025 15:15:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755616529;
-	bh=H3eji56BtwvP4Ywv4RWxsRRX37tjVHX/Y2hoGHHHlm8=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=a7YjHwoQ5iAyPIz312MWSidLK+qLtZ3TWBeJtNTkJkq+AYhUvE4FK7GRgf9o0ouDm
-	 ohGvaqFJzayz98b+RI8rdf6Dslplt/KJUJ9ASjB05YPVVpEUHQm/x5bAvz/YF2z2XJ
-	 5uSjKsvhoBo0kISkrgOQBQOrbtEISfQYWvSo2jN0T726yq3xKA6ZP7L0F4RXr+V5B3
-	 xo/2U/SSU/1dUIBXqnwJx5HOaPcLUyN0JgPiGXV20RMHY9NcQNGggYilV6D4JdSqzA
-	 3wsXRY76RW3rxpkRtHoKhTFlgo6xMmhBHk09tlokIXp2fLmB3ApdHSxxo6meV5YfRW
-	 XlF9hXSFM1umg==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id E2798CE0853; Tue, 19 Aug 2025 08:15:28 -0700 (PDT)
-Date: Tue, 19 Aug 2025 08:15:28 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>, Jiri Kosina <jkosina@suse.com>,
-	ksummit@lists.linux.dev
-Subject: Re: [MAINTAINERS SUMMIT] Annotating patches containing AI-assisted
- code
-Message-ID: <de381fd2-ac30-4827-b957-437dc24f91f7@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
- <aJJEgVFXg4PRODEA@lappy>
- <12ded49d-daa4-4199-927e-ce844f4cfe67@kernel.org>
- <f482c860-c6b2-4c5b-baa8-b546761debdf@paulmck-laptop>
- <c0ecacbefa1e93cae4176dc368f2ea63f611f56c.camel@HansenPartnership.com>
- <9020e75d-361f-457f-9def-330d8964f431@paulmck-laptop>
- <20250818230729.106a8c48@foz.lan>
+	s=arc-20240116; t=1755617033; c=relaxed/simple;
+	bh=Cdsjji01jaxcuxsa8bG+72C8jNGDd8pmA2f1uT4Dd3Y=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=gKfSKDFWzqmri2h1evqwvhrZ/ET+FPHiU2HTVjYRVYwE7YTWb298BnpuZAj5+FomsMLNf6S+nSCtsyMUe4HGyFHSGkBWtkrzhvO1OpOLgnEd26kLqAYRy3Zpc7OYTR2jgUobixFfmPnzwCG1uuBlIXYeO2AjBxq8HVR1/CVO1GQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=ftm27UyK; arc=none smtp.client-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1755617029;
+	bh=Cdsjji01jaxcuxsa8bG+72C8jNGDd8pmA2f1uT4Dd3Y=;
+	h=Date:From:To:Subject:In-Reply-To:References:Message-ID:From;
+	b=ftm27UyKNE7j6uzmtPVep70qpbTz0pt9RldPQNFUWeCHlFSWudefEnlm7vEZlg02B
+	 jyIxBMck+iueTjBfHgrvOYoSu9Cg91KxLtrwBWWqPjExrCzhXn0DFgYJJQYLTpZXq3
+	 dDkC8K+opjO/1FA+G3+kAS0GNLYRoLIQLaeXQ5YI=
+Received: from ehlo.thunderbird.net (unknown [IPv6:2a00:23c8:1023:8d01:db56:7598:3eda:860b])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 985AC1C024D;
+	Tue, 19 Aug 2025 11:23:49 -0400 (EDT)
+Date: Tue, 19 Aug 2025 16:23:46 +0100
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ "Paul E. McKenney" <paulmck@kernel.org>
+CC: Krzysztof Kozlowski <krzk@kernel.org>, Sasha Levin <sashal@kernel.org>,
+ Jiri Kosina <jkosina@suse.com>, ksummit@lists.linux.dev
+Subject: =?US-ASCII?Q?Re=3A_=5BMAINTAINERS_SUMMIT=5D_Annotating?=
+ =?US-ASCII?Q?_patches_containing_AI-assisted_code?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20250818230729.106a8c48@foz.lan>
+References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz> <aJJEgVFXg4PRODEA@lappy> <12ded49d-daa4-4199-927e-ce844f4cfe67@kernel.org> <f482c860-c6b2-4c5b-baa8-b546761debdf@paulmck-laptop> <c0ecacbefa1e93cae4176dc368f2ea63f611f56c.camel@HansenPartnership.com> <9020e75d-361f-457f-9def-330d8964f431@paulmck-laptop> <20250818230729.106a8c48@foz.lan>
+Message-ID: <9383F8DB-CD38-40CC-B91D-7F98E8156C04@HansenPartnership.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250818230729.106a8c48@foz.lan>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 18, 2025 at 11:07:29PM +0200, Mauro Carvalho Chehab wrote:
-> Em Tue, 12 Aug 2025 07:42:21 -0700
-> "Paul E. McKenney" <paulmck@kernel.org> escreveu:
-> 
-> > On Tue, Aug 12, 2025 at 09:38:12AM +0100, James Bottomley wrote:
-> > > On Mon, 2025-08-11 at 14:46 -0700, Paul E. McKenney wrote:  
-> > > > On Fri, Aug 08, 2025 at 10:31:27AM +0200, Krzysztof Kozlowski wrote:  
-> > > > > On 05/08/2025 19:50, Sasha Levin wrote:  
-> > > > > > On Tue, Aug 05, 2025 at 05:38:36PM +0200, Jiri Kosina wrote:  
-> > > > > > > This proposal is pretty much followup/spinoff of the discussion
-> > > > > > > currently happening on LKML in one of the sub-threads of [1].
-> > > > > > > 
-> > > > > > > This is not really about legal aspects of AI-generated code and
-> > > > > > > patches, I believe that'd be handled well handled well by LF,
-> > > > > > > DCO, etc.
-> > > > > > > 
-> > > > > > > My concern here is more "human to human", as in "if I need to
-> > > > > > > talk to a human that actually does understand the patch deeply
-> > > > > > > enough, in context, etc .. who is that?"
-> > > > > > > 
-> > > > > > > I believe we need to at least settle on (and document) the way
-> > > > > > > how to express in patch (meta)data:
-> > > > > > > 
-> > > > > > > - this patch has been assisted by LLM $X
-> > > > > > > - the human understanding the generated code is $Y
-> > > > > > > 
-> > > > > > > We might just implicitly assume this to be the first person in
-> > > > > > > the S-O-B chain (which I personally don't think works for all
-> > > > > > > scenarios, you can have multiple people working on it, etc),
-> > > > > > > but even in such case I believe this needs to be clearly
-> > > > > > > documented.  
-> > > > > > 
-> > > > > > The above isn't really an AI problem though.
-> > > > > > 
-> > > > > > We already have folks sending "checkpatch fixes" which only make
-> > > > > > code less readable or "syzbot fixes" that shut up the warnings
-> > > > > > but are completely bogus otherwise.
-> > > > > > 
-> > > > > > Sure, folks sending "AI fixes" could (will?) be a growing
-> > > > > > problem, but tackling just the AI side of it is addressing one of
-> > > > > > the symptoms, not the underlying issue.  
-> > > > > 
-> > > > > I think there is a important difference in process and in result
-> > > > > between using existing tools, like coccinelle, sparse or even
-> > > > > checkpatch, and AI-assisted coding.
-> > > > > 
-> > > > > For the first you still need to write actual code and since you are
-> > > > > writing it, most likely you will compile it. Even if people fix the
-> > > > > warnings, not the problems, they still at least write the code and
-> > > > > thus this filters at least people who never wrote C.
-> > > > > 
-> > > > > With AI you do not have to even write it. It will hallucinate,
-> > > > > create some sort of C code and you just send it. No need to compile
-> > > > > it even!  
-> > > > 
-> > > > Completely agreed, and furthermore, depending on how that AI was
-> > > > trained, those using that AI's output might have some difficulty
-> > > > meeting the requirements of the second portion of clause (a) of
-> > > > Developer's Certificate of Origin (DCO) 1.1: "I have the right to
-> > > > submit it under the open source license indicated in the file".  
-> > > 
-> > > Just on the legality of this.  Under US Law, provided the output isn't
-> > > a derivative work (and all the suits over training data have so far
-> > > failed to prove that it is), copyright in an AI created piece of code,
-> > > actually doesn't exist because a non human entity can't legally hold
-> > > copyright of a work.  The US copyright office has actually issued this
-> > > opinion (huge 3 volume report):
-> > > 
-> > > https://www.copyright.gov/ai/
-> > > 
-> > > But amazingly enough congress has a more succinct summary:
-> > > 
-> > > https://www.congress.gov/crs-product/LSB10922  
-> > 
-> > Indeed:
-> > 
-> > 	While the Constitution and Copyright Act do not explicitly define
-> > 	who (or what) may be an "author," U.S. courts to date have not
-> > 	recognized copyright in works that lack a human author—including
-> > 	works created autonomously by AI systems.
-> > 
-> > Please note the "U.S. courts *to* *date*".  :-(
-> > 
-> > > But the bottom line is that pure AI generated code is effectively
-> > > uncopyrightable and therefore public domain which means anyone
-> > > definitely has the right to submit it to the kernel under the DCO.
-> > > 
-> > > I imagine this situation might be changed by legislation in the future
-> > > when people want to monetize AI output, but such a change can't be
-> > > retroactive, so for now we're OK legally to accept pure AI code with
-> > > the signoff of the submitter (and whatever AI annotation tags we come
-> > > up with).  
-> > 
-> > Except that the USA is a case-law jurisdiction, and changes
-> > in interpretation of existing laws can be and have been applied
-> > retroactively, give or take things like statutes of limitations.  And we
-> > need to worry about more than just USA law.
-> > 
-> > And I do agree that many of the lawsuits seem to be motivated by an
-> > overwhelmening desire to monetize the output of AI that was induced by
-> > someone else's prompts, if that is what you are getting at.  It does seem
-> > to me personally that after you have sliced and diced the training data,
-> > fair use should apply, but last I checked, fair use was a USA-only thing.
-> 
-> Maybe, but other Countries have similar concepts. I remember I saw an
-> interpretation of the Brazilian copyright law once from a famous layer
-> at property rights matter, stating that reproducing small parts of a book, 
-> for instance, could be ok, under certain circumstances (in a concept
-> similar to US fair use).
+On August 18, 2025 10:07:29 PM GMT+01:00, Mauro Carvalho Chehab <mchehab+hu=
+awei@kernel=2Eorg> wrote:
+>Em Tue, 12 Aug 2025 07:42:21 -0700
+>"Paul E=2E McKenney" <paulmck@kernel=2Eorg> escreveu:
+[=2E=2E=2E]
+> do agree that many of the lawsuits seem to be motivated by an
+>> overwhelmening desire to monetize the output of AI that was induced by
+>> someone else's prompts, if that is what you are getting at=2E  It does =
+seem
+>> to me personally that after you have sliced and diced the training data=
+,
+>> fair use should apply, but last I checked, fair use was a USA-only thin=
+g=2E
+>
+>Maybe, but other Countries have similar concepts=2E I remember I saw an
+>interpretation of the Brazilian copyright law once from a famous layer
+>at property rights matter, stating that reproducing small parts of a book=
+,=20
+>for instance, could be ok, under certain circumstances (in a concept
+>similar to US fair use)=2E
 
-Understood and agreed.  And in the worst case, this battle must be fought
-separately in each legal jurisdiction.  I do hope that it does not come
-to that, but...
+Yes, technically=2E  Article 10 of the Berne convention contains a weaker =
+concept allowing quotations without encumbrance based on a three prong test=
+ that the quote isn't extensive,  doesn't rob the rights holder of substant=
+ial royalties and doesn't unreasonably prejudice the existing copyright rig=
+hts=2E
 
-							Thanx, Paul
+Regards,
+
+James
+
+
+--=20
+Sent from my Android device with K-9 Mail=2E Please excuse my brevity=2E
 
