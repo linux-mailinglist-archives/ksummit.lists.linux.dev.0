@@ -1,118 +1,145 @@
-Return-Path: <ksummit+bounces-2188-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2189-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 595E4B30338
-	for <lists@lfdr.de>; Thu, 21 Aug 2025 21:52:40 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAEF0B306FC
+	for <lists@lfdr.de>; Thu, 21 Aug 2025 22:52:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 237A71C8303B
-	for <lists@lfdr.de>; Thu, 21 Aug 2025 19:53:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CCBC84E6908
+	for <lists@lfdr.de>; Thu, 21 Aug 2025 20:52:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF38341AD4;
-	Thu, 21 Aug 2025 19:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA15322C87;
+	Thu, 21 Aug 2025 20:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ht+qo7Hv"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="d4SF84j6"
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A985C2FABE3
-	for <ksummit@lists.linux.dev>; Thu, 21 Aug 2025 19:52:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C4C1EB5C2
+	for <ksummit@lists.linux.dev>; Thu, 21 Aug 2025 20:34:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755805954; cv=none; b=j8m993qD9NJRY67K5duRu6AnBgq7q/4oFgGy4xxA7I9wLR96NvIhSNpSE/Fw8Kgov05qPMRe8/YaH1+clFYQUM6RY5Ayj4RgZdY9DjT+ft+B9Pv8rgogmd1c7RMSOzaQoBiBwpIlUtNxkri73nW/bd0XRx5pXl8oEjcgixMpRHs=
+	t=1755808462; cv=none; b=jZTxwy+STya4/tQWjPnRw0Vg5BefbJ3nCpSvM5iSrD1K06OFIkEkTRxdXPa+U3y1yeuxXQwaA/Pea0hLdEJu//9IUg2f2qJp6xmBRQC8IImSMMamS2IPhxGDVoy2Uhe1NBUgNJlG/0aFyZsaajMYFxahU65DNlLsNzDEm9RwKb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755805954; c=relaxed/simple;
-	bh=6x1kbJyri6SDhlMOz6DdcGMsk1MK8DLYtZmg2og4J7Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VTLuLQItOp3Hh/5j+PmvZshlilhi6Yh83/rRqTO8koVq4LL2oFv5tcOkGCNlSK9dbuqPgTBtkvo7d23f0/l8XpuKy9/4HNw3jqmi5niBxJ4jJPlLYU5WkPEnScfDmLuiAVQvDGG8mfIIURQszherjJQbLDoBIhQSuHII7QFzUhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ht+qo7Hv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0DB5C4CEEB;
-	Thu, 21 Aug 2025 19:52:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755805953;
-	bh=6x1kbJyri6SDhlMOz6DdcGMsk1MK8DLYtZmg2og4J7Y=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Ht+qo7Hvy1kg3CK2yIXW0QY9dTipVq2vNe/1KA/qBsxhGHKAiwFB8d0FIGyITNYUc
-	 pB4QVVfJ0wOEDi4e4aa6XJV9HGMhNzLaL+w4BSBEyvWJTiB3mityynK6pFUItBCVgG
-	 ie/F3ljl0OGAIjQI59ieSfiYVsJLrn/VFUENG8J87SGw3IUi5LJy3TlpdpXR+C4Bec
-	 2S0sZkFIr1hqVthRK8IMBijerNDy4Te+Vbb23Ub5LD9q9U1zwnWgxxZMwmKAozp8EA
-	 7rl355fR1mzcnmFmAV8uXmxNHjVPiQgQrC4NqKvwgAQQBc5GoU1kDCQFXvhZJ38Hz4
-	 q6GcvoypQycog==
-Date: Thu, 21 Aug 2025 21:52:29 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>, James Bottomley
- <James.Bottomley@hansenpartnership.com>, Jiri Kosina <jkosina@suse.com>,
- ksummit@lists.linux.dev
-Subject: Re: [MAINTAINERS SUMMIT] Annotating patches containing AI-assisted
- code
-Message-ID: <20250821215229.5f4ed387@foz.lan>
-In-Reply-To: <20250821150757.26813600@gandalf.local.home>
-References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
-	<aJJEgVFXg4PRODEA@lappy>
-	<12ded49d-daa4-4199-927e-ce844f4cfe67@kernel.org>
-	<f482c860-c6b2-4c5b-baa8-b546761debdf@paulmck-laptop>
-	<c0ecacbefa1e93cae4176dc368f2ea63f611f56c.camel@HansenPartnership.com>
-	<9020e75d-361f-457f-9def-330d8964f431@paulmck-laptop>
-	<20250818230729.106a8c48@foz.lan>
-	<9383F8DB-CD38-40CC-B91D-7F98E8156C04@HansenPartnership.com>
-	<4tacplepoih3wvejopmtkdg7ujtvwmufd5teiozk5im2jikn7a@jdbou6kwindl>
-	<d565cb60-29bd-4774-995d-0154c0046710@paulmck-laptop>
-	<20250821122329.03c77178@foz.lan>
-	<20250821125037.5cf5be3d@gandalf.local.home>
-	<20250821193041.398ed30b@foz.lan>
-	<20250821135329.16dad71e@gandalf.local.home>
-	<20250821203259.2097c63b@foz.lan>
-	<20250821150757.26813600@gandalf.local.home>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1755808462; c=relaxed/simple;
+	bh=29HWqsRpgm/L2rT2+jnUODCtvVpLGq1qWh1AROLvPj4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EdOU5CAiRzEw3NUeB8my+miSVL1C9GXxKmcemjih4zOp1odPtzt5W8pqO2SrPZpuFUzNeUFkmmw+iLiL7ZYjD529GRcINqI+CVQqHCGTsJf6KFaGsmFhIGp2ouMyxuAYN1UIr0kTTvvV7my4qceCnTmQmbxjvJvKIqYB3aeq5Is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=d4SF84j6; arc=none smtp.client-ip=18.9.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
+Received: from trampoline.thunk.org (pool-173-48-113-69.bstnma.fios.verizon.net [173.48.113.69])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 57LKY7O5029200
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 21 Aug 2025 16:34:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1755808449; bh=WJ4tVu5z2VID9C5zAZWHLOKuM4/5q+czdRotkdglyU0=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=d4SF84j6GCxn7qI1rIgTYYe5L12VOF1IdreBMIXlPX3B6aQa2EnXd8lO0TagQctrj
+	 AvEr7CuywBhjsUZTnwm/yPof21J1GMdQE/a7BhpAOqxegZQ0cZE118niCLB1LJJ4LK
+	 dyKaMDHN0LRr1vdt7eH4wTph4cyhBa50jKyW/2xhITWICuKsqBnPW+ISlfFxFNVI+h
+	 Ub/erVdanTrQ+JPUz7MP6sHL0C1+9tfQjsltpq36epe8h9gxTB5aeGLO++H2joL3DH
+	 KR4bTczUyuC89bZprehb6ajL3VUKll8HlgO2DYnD7e8+mhCfxQfNlsKF0t9uFHICpP
+	 XPWQLBnnQ+UTQ==
+Received: by trampoline.thunk.org (Postfix, from userid 15806)
+	id 56BD82E00D6; Thu, 21 Aug 2025 16:34:07 -0400 (EDT)
+Date: Thu, 21 Aug 2025 16:34:07 -0400
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: ksummit@lists.linux.dev, linux-fsdevel@vger.kernel.org
+Subject: Re: [MAINTAINER SUMMIT] Adding more formality around feature
+ inclusion and ejection
+Message-ID: <20250821203407.GA1284215@mit.edu>
+References: <fc0994de40776609928e8e438355a24a54f1ad10.camel@HansenPartnership.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fc0994de40776609928e8e438355a24a54f1ad10.camel@HansenPartnership.com>
 
-Em Thu, 21 Aug 2025 15:07:57 -0400
-Steven Rostedt <rostedt@goodmis.org> escreveu:
+On Thu, Aug 21, 2025 at 09:56:15AM +0100, James Bottomley wrote:
+> I think the only point of agreement on this topic will be that how
+> bcachefs was handled wasn't correct at many levels.  I think this shows
+> we need more formality around feature inclusion, including a possible
+> probationary period and even things like mentorship and we definitely
+> need a formal process that extends beyond Linus for deciding we can no
+> longer work with someone any more.
 
-> On Thu, 21 Aug 2025 20:32:59 +0200
-> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
-> 
-> > Btw, even in the case of a bigger pattern you saw there and you
-> > may be repeating, you won't be the only one doing it: an entire
-> > generation that used K&C textbook are also repeating them. Plus
-> > the ones that used newer books whose authors got inspired from
-> > it.  
-> 
-> Since the authors actively encouraged people to use their examples, there's
-> no incentive to go after anyone.
+I think we are conflating three different things in this discussion
+thread, and it would be helpful if we separated them out.
 
-True.
+  1.  What is the process by which a particular feature be included
+         or ejected?
+  2.  What is the process by which a developer should be excluded
+         from the deevlopment community?  And this goes beyond
+	 Code of Conduct violations, but in the case of a maintainer,
+	 when that person has displayed toxic tendencies which are
+	 sufficiently bad that other deevlopersa and maintainers refuse to
+	 work with the individual, and when that person has been accused of
+	 promoting a toxic environmet which is harming the entire
+	 community?
+  3.  The question of maintainer mentorship, which is very different
+         from (2) as there are a large set of skills which a much broader
+	 front including avoiding maintainer burnout, the product management
+	 side of being a maintainer (e.g. working with companies to
+	 motivate them to invest in a featrue which benefits not only the
+	 companies' business interest, but the community as a whole),
+	 managing volunteer, etc.
 
-> > In practice, even with the original book's copyright, I doubt
-> > anyone could actually enforce copyrights if one picks one of the
-> > book's code and use as-is (and more likely one would adjust
-> > coding style, parameter pass logic, etc).  
-> 
-> I'm not so sure. But since most people who write coding books want people
-> to use their work, there's been no precedence on someone going after
-> someone for using code from a book (that I know of).
-> 
-> But there's a lot of assumptions in this thread, and I fear that those that
-> take a too lenient approach to AI may get burned by it.
+(2) is a very hard problem, and so there is a tendency to focus on
+solving problems (1) and (2).  However, using bcachefs and its
+maintainera as a motivating case for solutions to address (1) and (3)
+very likely going to result in skewing the discussion around the best
+ways of addressing (1) and (3).
 
-AI is new, so yeah, there's always a risk. But then again, there's a
-risk already without it. I don't think the risk is too much different.
-Perhaps it is even lower, as all major companies are investing in AI,
-and they don't want to be sued. Plus, they're much more interested on
-the direct revenue AI can produce for them. So, probably there aren't
-much intent to try costly legal actions with low chances to monetize
-by going  after people using AI.
+As far as (2), our baseline way of handling things is quite ad hoc.
+At the moment, individual developers will simply refuse to work
+someone who is accused of being toxic, by doing things such as:
 
-Thanks,
-Mauro
+   (a) using mail filters to redirect e-mail from that person
+       to /dev/null,
+   (b) telling a higher-level maintainer that because of (a) they
+       would appreciate it if any pull requests from that individual
+       include changes to their subsystem or sub-subsysttem,
+       that those commits should be presumed to be auto-NACK'ed,
+       and requesting that the PULL request should be rejected,
+   (c) if the behaviour of said person exasperates a higher-level
+       maintainer to such an extent that the higher-level maintainer
+       refuse to accept patches or pull requests from said
+       individual, and
+   (d) informing program committees of invite-only workshops and/or
+       conferences that if that individual attends, they will refuse
+       to attend because of that individual's toxicity.
+
+I will note that (b) and (c) can be appealed to someone higher up on
+the maintainer hierarchy, unless that higher-level maintainer is
+Linus, at which point there is no higher level authority to take that
+appeal, and that (b), (c), and (d) are effectivly a way that
+developers and maintainers are effectively saying, "it's either him or
+me!", and as someone who has to manage volunteers, if a sufficiently
+large number of volunteers are sufficiently p*ssed off that they are
+threatening to withdraw, the wise maintainer (or program committee)
+should take heed.
+
+Now, the above is inherently very messy.  But fortunately, it's only
+happened once in thirty five years, and before we propose to put some
+kind of mechanism in place, we need to make sure that the side effects
+of that mechanism don't end up making things worse off.
+
+There is the saying that "bad facts make bad law", and the specifics
+of this most recent controversy are especially challenging.  I would
+urge caution before trying to create a complex set of policies and
+mechanim when we've only had one such corner case in over 35 years.
+
+Cheers,
+
+						- Ted
 
