@@ -1,48 +1,55 @@
-Return-Path: <ksummit+bounces-2176-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2177-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F12FBB3007F
-	for <lists@lfdr.de>; Thu, 21 Aug 2025 18:53:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46365B3011E
+	for <lists@lfdr.de>; Thu, 21 Aug 2025 19:31:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50032165362
-	for <lists@lfdr.de>; Thu, 21 Aug 2025 16:50:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D9E45A8718
+	for <lists@lfdr.de>; Thu, 21 Aug 2025 17:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C932E282D;
-	Thu, 21 Aug 2025 16:50:38 +0000 (UTC)
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34EB3218C3;
+	Thu, 21 Aug 2025 17:30:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fetuIph2"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2332E1720
-	for <ksummit@lists.linux.dev>; Thu, 21 Aug 2025 16:50:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4963D2E7F36
+	for <ksummit@lists.linux.dev>; Thu, 21 Aug 2025 17:30:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755795038; cv=none; b=oL1PBLd4mR+ngr7rsbo6I7IObJNmGJajLZ6lmIMqfEZkvNAsH3ZYYKYYGCvA2Q6HJj40frqf3H7ue++Zrn1W8HfgjLvsZBayN1NUNUlLroxa9eq3wfBkPTqlGZQWCQU+LtFntZX8e/ZpHkRZKT/qkmi19rHl+pJedPxh8+oXWDg=
+	t=1755797447; cv=none; b=ki0Y82PecTENsnCR0707mQ/s/B1qH4TDKTR0WW5EkJUK3nT7/mc5xgmqDkUOPJr16McSNonb/2OOLo31J99qcazaSIgTcGxksSqHZolHgUVmadAz15j9a/WmNzO8YtP3hf10XrxiW3x1BA15Gl5rkO12+27FpflEqNvtIZo/WSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755795038; c=relaxed/simple;
-	bh=jIObUoPUYArZQ+79F5dGctKTb4fQkO8+Y2iFCCw6OfQ=;
+	s=arc-20240116; t=1755797447; c=relaxed/simple;
+	bh=+Dy7kQ/IZYHp0mrOKizs5onoKFHoyAof/7mU2CvK7QE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YglaHr973PwSlXnG+PhutNNu9kR7fi3ZE4fE677fKfH6LxjHRni58Ng7eQZuYBsC/xhBStXc4U2zarHkDiIhE09JNDsgDJmNyQ06+eLysF/SenmKi0ka5+Mvmd+G5U0XNiOcbrI6WZbpaCyZdIVBi/7uVl5BoOLQPHRNDa7/n78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E52D91A04C9;
-	Thu, 21 Aug 2025 16:50:34 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf06.hostedemail.com (Postfix) with ESMTPA id 3CC2320010;
-	Thu, 21 Aug 2025 16:50:33 +0000 (UTC)
-Date: Thu, 21 Aug 2025 12:50:37 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+	 MIME-Version:Content-Type; b=n5yl8+iCHx6/PoW0t5tcnAzc5dvQfUTp2c+jsD0hlI19ATQ/WXJ7tZW+HdeeD0lqa4QLXnNX/Hg3vPUuNhBjQX8LqX2z8TUdE6+3WPXgGsAD4iCxPtdnAbNI1TZBk+KyHsbkm7fSxrFd1Y9T0VqnUlATLhbDw6Vkl6EsVXzy9mA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fetuIph2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72263C4CEEB;
+	Thu, 21 Aug 2025 17:30:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755797446;
+	bh=+Dy7kQ/IZYHp0mrOKizs5onoKFHoyAof/7mU2CvK7QE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=fetuIph25qeeew0a3Fnkz+zodP2BuoTq3eXmbN3n/rXFZegVKuN8yFp25acgOcfvF
+	 GAfpHQTDU58jvwp1P0mfSQDpSPE9hTfUyBcUFWnymK2kGaM1/DCmNDzcSnCmeCYpwb
+	 +O/V727ZXFCzxmHrW1j7qnOfS5hoxJp7ZrZdF4awm0hr/1zwjhTcoOjxpCAXG/vHn8
+	 5sBpwV3WJtfAqLIOwuPYZi+2KNOzX6PgrSiS5ufliMqrPsc5nAIDQGsGrNYSHTqb1t
+	 yB5M8er41wHSLX4Uxd/FN8tg88vhbTgM3njDH0QoflnAbapIrUa4odDTCOYwNYc1Bp
+	 i20T4/j9Ehb2Q==
+Date: Thu, 21 Aug 2025 19:30:41 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Steven Rostedt <rostedt@goodmis.org>
 Cc: "Paul E. McKenney" <paulmck@kernel.org>, James Bottomley
  <James.Bottomley@hansenpartnership.com>, Jiri Kosina <jkosina@suse.com>,
  ksummit@lists.linux.dev
 Subject: Re: [MAINTAINERS SUMMIT] Annotating patches containing AI-assisted
  code
-Message-ID: <20250821125037.5cf5be3d@gandalf.local.home>
-In-Reply-To: <20250821122329.03c77178@foz.lan>
+Message-ID: <20250821193041.398ed30b@foz.lan>
+In-Reply-To: <20250821125037.5cf5be3d@gandalf.local.home>
 References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
 	<aJJEgVFXg4PRODEA@lappy>
 	<12ded49d-daa4-4199-927e-ce844f4cfe67@kernel.org>
@@ -54,7 +61,8 @@ References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
 	<4tacplepoih3wvejopmtkdg7ujtvwmufd5teiozk5im2jikn7a@jdbou6kwindl>
 	<d565cb60-29bd-4774-995d-0154c0046710@paulmck-laptop>
 	<20250821122329.03c77178@foz.lan>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	<20250821125037.5cf5be3d@gandalf.local.home>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -63,57 +71,85 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 3CC2320010
-X-Stat-Signature: cxbizsmek48n3pexrcwck1ok36nuz7ik
-X-Rspamd-Server: rspamout02
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX18T0VVSziXv+MG0XytasnD32J+7JPeGAIA=
-X-HE-Tag: 1755795033-762036
-X-HE-Meta: U2FsdGVkX185pDBi6XIUFMNI0/e2X8TOmyAIdvrY0EJy0Qr5fgsW5MOZdPcGJe6SUXaDS0XowG+aAvW+h0imv8JSLQ/RcfMpT5pvovqI2evkyQuiHoP4kD86ATDQdzxs4I1Za6/XFNqc00VAXl4uuLcJUM0RjJ7h4mV410Cnw4SVv616dd31e4F1fnWLN9Xt48kY/LLHZYNeKmQmfjC2naTlrfdiXNyCBkslWiWtVHOQ72D08eVlczSM2wou1Jmrggt2r2NLiiWDE5HVSW38BLEZ1Y3iYyLzs4p6yHKFb3+s39oqGzYLXtR+tNDChBg8rMhJGV4aDnlLzwYAsTMh4xM+9zdZsA3N
 
-On Thu, 21 Aug 2025 12:23:29 +0200
-Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+Em Thu, 21 Aug 2025 12:50:37 -0400
+Steven Rostedt <rostedt@goodmis.org> escreveu:
 
-> > Many of the AI players scrape the web, and might well pull in training
-> > data from web pages having a restrictive copyright.  The AI's output
-> > might then be influenced by that restricted training data.   
+> On Thu, 21 Aug 2025 12:23:29 +0200
+> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
 > 
-> True, but this is not different than a developer seeking the web for
-> answers of his development problems, reading textbooks and/or reading 
-> articles.
-
-The difference I believe is that AI is still a computer program. It could,
-in theory, copy something exactly as is, where copyright does matter.
-
-If you read something and was able to rewrite it verbatim, you would be
-subject to copyright infringement if what you read had limits on how you
-could reproduce it.
-
+> > > Many of the AI players scrape the web, and might well pull in training
+> > > data from web pages having a restrictive copyright.  The AI's output
+> > > might then be influenced by that restricted training data.     
+> > 
+> > True, but this is not different than a developer seeking the web for
+> > answers of his development problems, reading textbooks and/or reading 
+> > articles.  
 > 
-> Also, if someone publicly document something an any sort of media,
-> it is expected that people will read, adquire knowledge from it and
-> eventually materialize the acquired knowledge into something. This
-> is fair use, and has some provision from Berne convention, although
-> it may depend on each Country's specific laws.
-
-You can learn from it, but it also comes down to how much you actually copy
-from it.
-
+> The difference I believe is that AI is still a computer program. It could,
+> in theory, copy something exactly as is, where copyright does matter.
 > 
-> On my view, if the trained data comes from lots of different
-> places, as AI is actually a stochastic process that write
-> code by predicting the next code words, if there's just one web 
-> site with an specific pattern, the chances of getting exactly
-> the same code are pretty low. It is a way more likely that humans
-> would pick exactly the same code as written on his favorite
-> textbook than an LLM feed with hundreds of thousands of web
-> sites.
+> If you read something and was able to rewrite it verbatim, you would be
+> subject to copyright infringement if what you read had limits on how you
+> could reproduce it.
 
-The issue I have with the above statement is, how would you know if the AI
-copied something verbatim or not? Are you going to ask it? "Hey, AI, was
-this code a direct copy of anything?" Would you trust its answer?
+Maybe at the early days of LLM this could be true, but now that they're
+massively trained by bots, the number of places it retrieves data for
+its training is very large, and considering how artificial neurons
+work, they will only store patterns with a high number of repetitions. 
 
-For a human to do the same, they would have to knowingly have done the copy.
+Now, if one asks it to do a web search, then the result can be 
+biased, just like if you google it at the web.
 
--- Steve
+> > Also, if someone publicly document something an any sort of media,
+> > it is expected that people will read, adquire knowledge from it and
+> > eventually materialize the acquired knowledge into something. This
+> > is fair use, and has some provision from Berne convention, although
+> > it may depend on each Country's specific laws.  
+> 
+> You can learn from it, but it also comes down to how much you actually copy
+> from it.
+> 
+> > 
+> > On my view, if the trained data comes from lots of different
+> > places, as AI is actually a stochastic process that write
+> > code by predicting the next code words, if there's just one web 
+> > site with an specific pattern, the chances of getting exactly
+> > the same code are pretty low. It is a way more likely that humans
+> > would pick exactly the same code as written on his favorite
+> > textbook than an LLM feed with hundreds of thousands of web
+> > sites.  
+> 
+> The issue I have with the above statement is, how would you know if the AI
+> copied something verbatim or not? Are you going to ask it? "Hey, AI, was
+> this code a direct copy of anything?" Would you trust its answer?
+> 
+> For a human to do the same, they would have to knowingly have done the copy.
+
+Heh, if I ask you to write a C code to write something...
+
+...
+...
+...
+... 
+
+I bet that one of the first things (if not the first) you
+considered was: printf("Hello world!"). 
+
+I also bet you can't remember the first time you saw it.
+
+Ok, this is a very small code, but still there are some patterns
+that we learn over time and we keep repeating on our code without
+knowing from where they came from, nor remembering if there was
+a copyright from where we picked it or not.
+
+In my case, I probably saw my first "Hello world" either on a book
+or on some magazine a lot of time ago that was copyrighted by its
+authors, but I can't tell you for sure when I first saw it.
+
+Do you remember the first time you saw that, and what copyrights
+were there? :-)
+
+Thanks,
+Mauro
 
