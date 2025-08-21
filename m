@@ -1,78 +1,78 @@
-Return-Path: <ksummit+bounces-2192-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2193-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE8D3B307E6
-	for <lists@lfdr.de>; Thu, 21 Aug 2025 23:06:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98616B30842
+	for <lists@lfdr.de>; Thu, 21 Aug 2025 23:22:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A60291D24C8D
-	for <lists@lfdr.de>; Thu, 21 Aug 2025 21:02:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50D80188B3D9
+	for <lists@lfdr.de>; Thu, 21 Aug 2025 21:19:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 947D6393DE4;
-	Thu, 21 Aug 2025 20:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC672D7DCA;
+	Thu, 21 Aug 2025 21:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="GM3OqV9w"
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T63Ria4i"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F487393DD9
-	for <ksummit@lists.linux.dev>; Thu, 21 Aug 2025 20:59:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5B52C0298
+	for <ksummit@lists.linux.dev>; Thu, 21 Aug 2025 21:18:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755809996; cv=none; b=Gwe0qyhXB6HtT3190aas4VHUpjr3ssNnEdM34bm9sxsyyB+X2unQ6NdU7E1IXAzfUYn9OUc4u2l06m0Op5vwEdgoIamBgB0Q+zs+mthscwmwiJOVrfj0WtWcDtv54ful/k36XnVSWlriGxc4oXbyk5sVSBVnFDrZdRT3RsHYryM=
+	t=1755811097; cv=none; b=O1ynS8USPusLVsRp4z2M43fe44QIh9Sg+YURqpmC3SLwiIqx+4TLZFr2GHJ/WAkS1IsuwI2rgeth65Q+J75uKJH7Qbe0sT3Mk49djw2ydIMOcBt/CKegeEBKA/xRGO2PZ4s9Mly3CTIqREVKYeA5yScFzZp7g++sJ+4wAXFOSec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755809996; c=relaxed/simple;
-	bh=GpcCxn9GfF5EUrbeHIDHmZBthwjprD4p8VNgAbhXB74=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tbvQmE1u/bRIqIRzIA4qME/tHRWoYWMKFWyn1+RTZDJww6skBLVRgm9o2p5evcTNrwf3aTt+5PsJ7n6jwbk4OGd+UjxzFTuA2Z+75yBEHX4I/aFP1378brlMK0bJwIl/MeWgUHXlwpjN0CovVdwCGeSBhnYtt9doaQC6iXb5jMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=GM3OqV9w; arc=none smtp.client-ip=18.9.28.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
-Received: from trampoline.thunk.org (pool-173-48-113-69.bstnma.fios.verizon.net [173.48.113.69])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 57LKxonH010259
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 Aug 2025 16:59:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1755809992; bh=1UZbu40+NQ+L5f8C12ebvpREaa+BoEnTLmppeBFRg54=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=GM3OqV9wnYmT9cWN6othS4pgEltxzdaGFZkj4zsS/P7WuhwQaNtEDNw0Qxsw0awmi
-	 DAKCTnSUzenocS30OaAzz6+5glF17HRa5v+vrEAgNjdL2Z4O4f3DBwuyMJAtZBGjwc
-	 wo3OHtGbbdxbyS/vgfNMMRB/L8vrchOwjmiWq9mre8iSeigy+CeIhq0jxFecQ5R8Dn
-	 m6ZLIgKeduQ0d/tNz3qN1a/mxBHEaPiNyVyZTpzIuVVIGyelsCejACShbcnagcvqgv
-	 dV/LCkxIGl81R6EuirgNBJVkM1nXL97//lLmblo9p8UrF/5/e76MxxNVj4WHswTpS2
-	 fkGV00vXZl4Rw==
-Received: by trampoline.thunk.org (Postfix, from userid 15806)
-	id BC2CF2E00D6; Thu, 21 Aug 2025 16:59:50 -0400 (EDT)
-Date: Thu, 21 Aug 2025 16:59:50 -0400
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: ksummit@lists.linux.dev, linux-fsdevel@vger.kernel.org
-Subject: Re: [MAINTAINER SUMMIT] Adding more formality around feature
- inclusion and ejection
-Message-ID: <20250821205950.GB1284215@mit.edu>
-References: <fc0994de40776609928e8e438355a24a54f1ad10.camel@HansenPartnership.com>
- <20250821203407.GA1284215@mit.edu>
+	s=arc-20240116; t=1755811097; c=relaxed/simple;
+	bh=I1+FBUWGfJE2eGpB2FW589wtohWKGnYzQntqihoe88I=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=QvTOeom1ZM/YdGAelufXewYrJCHPbgxjH443h8sgENij0GsKyVDQf2X9bI+ul0w4p834pQ5wmsSpkqAF22DCwy2/w5OXB5j3yDdFOt5MIOL7Vj7g+ekfk98DGx2VlS2jAhiTequ7JoR9N9uBUkUbeVY1pihVm7IWJZh55LeNj3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T63Ria4i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5806DC4CEEB;
+	Thu, 21 Aug 2025 21:18:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755811096;
+	bh=I1+FBUWGfJE2eGpB2FW589wtohWKGnYzQntqihoe88I=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=T63Ria4ih9BEVOI4/6/VoBE/5AlGYhjsnb6AhzSrD4YkMLTBp4JC1Sd/JP/xWxaO+
+	 50Lb9qTXmdlCmRxlxb6eRDMFSbrYfJby4umqifDfjzKGw9GqJCbIRy1EEkC/w+GXEY
+	 HGEFcSATmsr8i2afvE5cLHrrOcHbo/I16FHhl7iVcXc45dEMdFgLJtr+6Y28L7eszE
+	 0WIurTLJmV7cdXhEblm0fmN9L2WSBoD4Frg/BMeBDE02kjVTSjbj2Yt/dirresuHaR
+	 ndWmyRcHTEc4EgTi6n7nZpkvzAbB7yqF9Q5wXqGY24FjLFLRJlfCG+OlmIGNfxSXRM
+	 B4a3i5LB5Rm4A==
+Date: Thu, 21 Aug 2025 23:18:14 +0200 (CEST)
+From: Jiri Kosina <jikos@kernel.org>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+cc: "Paul E. McKenney" <paulmck@kernel.org>, 
+    James Bottomley <James.Bottomley@hansenpartnership.com>, 
+    ksummit@lists.linux.dev
+Subject: Re: [MAINTAINERS SUMMIT] Annotating patches containing AI-assisted
+ code
+In-Reply-To: <o8r437r9-30sr-o187-8599-qss9p3p7303o@xreary.bet>
+Message-ID: <913nn653-9797-0s7s-p8p8-n91so300ppq0@xreary.bet>
+References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz> <aJJEgVFXg4PRODEA@lappy> <12ded49d-daa4-4199-927e-ce844f4cfe67@kernel.org> <f482c860-c6b2-4c5b-baa8-b546761debdf@paulmck-laptop> <c0ecacbefa1e93cae4176dc368f2ea63f611f56c.camel@HansenPartnership.com>
+ <9020e75d-361f-457f-9def-330d8964f431@paulmck-laptop> <20250818230729.106a8c48@foz.lan> <9383F8DB-CD38-40CC-B91D-7F98E8156C04@HansenPartnership.com> <4tacplepoih3wvejopmtkdg7ujtvwmufd5teiozk5im2jikn7a@jdbou6kwindl> <d565cb60-29bd-4774-995d-0154c0046710@paulmck-laptop>
+ <20250821122329.03c77178@foz.lan> <o8r437r9-30sr-o187-8599-qss9p3p7303o@xreary.bet>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250821203407.GA1284215@mit.edu>
+Content-Type: text/plain; charset=US-ASCII
 
-On Thu, Aug 21, 2025 at 04:34:07PM -0400, Theodore Ts'o wrote:
-> (2) is a very hard problem, and so there is a tendency to focus on
-> solving problems (1) and (2).
+On Thu, 21 Aug 2025, Jiri Kosina wrote:
 
- "solving problems (1) and (3) instead."
+> And one of the points why I originally brought this up is that I believe 
+> we need either (a) be able to take the informed decision/risk by applying 
+> a patch we know has been written by AI, or (b) be able to outright reject 
+> it on that basis (e.g. if it's too complicated).
 
-Apologies for the typo.
+... and again, that's leaving all the legal aspects (which need to be 
+figured out as well, of course) aside.
 
-						- Ted
+-- 
+Jiri Kosina
+SUSE Labs
+
 
