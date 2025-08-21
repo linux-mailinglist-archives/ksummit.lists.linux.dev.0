@@ -1,47 +1,59 @@
-Return-Path: <ksummit+bounces-2175-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2176-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52750B3002A
-	for <lists@lfdr.de>; Thu, 21 Aug 2025 18:35:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F12FBB3007F
+	for <lists@lfdr.de>; Thu, 21 Aug 2025 18:53:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 758D51CE0F4A
-	for <lists@lfdr.de>; Thu, 21 Aug 2025 16:28:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50032165362
+	for <lists@lfdr.de>; Thu, 21 Aug 2025 16:50:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADCAD2DD5E0;
-	Thu, 21 Aug 2025 16:27:57 +0000 (UTC)
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C932E282D;
+	Thu, 21 Aug 2025 16:50:38 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11FB2DE70D
-	for <ksummit@lists.linux.dev>; Thu, 21 Aug 2025 16:27:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2332E1720
+	for <ksummit@lists.linux.dev>; Thu, 21 Aug 2025 16:50:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755793677; cv=none; b=UnzHqIujr0oXGjVlG4BqAk+wO5i59wNG23nnh1nzOqzH1oYRLUeOSbpXeHlHhcTsAgGQgFOP9onp/AyGN6tiWl6U8KUXmCBK0zGwuFFwbUv6WvfKPm9bk6svyhf0z7Dknh9uTKdU8e0mZrwi2rbaZa/OgMsWe/fBf9JNGsgsXT4=
+	t=1755795038; cv=none; b=oL1PBLd4mR+ngr7rsbo6I7IObJNmGJajLZ6lmIMqfEZkvNAsH3ZYYKYYGCvA2Q6HJj40frqf3H7ue++Zrn1W8HfgjLvsZBayN1NUNUlLroxa9eq3wfBkPTqlGZQWCQU+LtFntZX8e/ZpHkRZKT/qkmi19rHl+pJedPxh8+oXWDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755793677; c=relaxed/simple;
-	bh=bxMXYy+zXhd8IdvDf4l1l2BfrFDUaWsDErHagNPkAu8=;
+	s=arc-20240116; t=1755795038; c=relaxed/simple;
+	bh=jIObUoPUYArZQ+79F5dGctKTb4fQkO8+Y2iFCCw6OfQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=muzF3txAekCPRzsLVhDm+0JFA9kEvx55v2/5YAuvuFujqdpSCkXvQuSMv5TtMRRvQAY9XoZ0cozoZ3inwtkkh0uPY8eN26lElA/qESDcEU4sPsniZUs1t565zN1ztFSXcQb9yTCRXdcVaIGXH/e2u/HlJBmBN67KNHEb+32YSX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.12
+	 MIME-Version:Content-Type; b=YglaHr973PwSlXnG+PhutNNu9kR7fi3ZE4fE677fKfH6LxjHRni58Ng7eQZuYBsC/xhBStXc4U2zarHkDiIhE09JNDsgDJmNyQ06+eLysF/SenmKi0ka5+Mvmd+G5U0XNiOcbrI6WZbpaCyZdIVBi/7uVl5BoOLQPHRNDa7/n78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E4F1B83682;
-	Thu, 21 Aug 2025 16:27:47 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf17.hostedemail.com (Postfix) with ESMTPA id 4CEFA17;
-	Thu, 21 Aug 2025 16:27:46 +0000 (UTC)
-Date: Thu, 21 Aug 2025 12:27:50 -0400
+Received: from omf06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E52D91A04C9;
+	Thu, 21 Aug 2025 16:50:34 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf06.hostedemail.com (Postfix) with ESMTPA id 3CC2320010;
+	Thu, 21 Aug 2025 16:50:33 +0000 (UTC)
+Date: Thu, 21 Aug 2025 12:50:37 -0400
 From: Steven Rostedt <rostedt@goodmis.org>
-To: James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: ksummit@lists.linux.dev, linux-fsdevel@vger.kernel.org
-Subject: Re: [MAINTAINER SUMMIT] Adding more formality around feature
- inclusion and ejection
-Message-ID: <20250821122750.66a2b101@gandalf.local.home>
-In-Reply-To: <fc0994de40776609928e8e438355a24a54f1ad10.camel@HansenPartnership.com>
-References: <fc0994de40776609928e8e438355a24a54f1ad10.camel@HansenPartnership.com>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>, James Bottomley
+ <James.Bottomley@hansenpartnership.com>, Jiri Kosina <jkosina@suse.com>,
+ ksummit@lists.linux.dev
+Subject: Re: [MAINTAINERS SUMMIT] Annotating patches containing AI-assisted
+ code
+Message-ID: <20250821125037.5cf5be3d@gandalf.local.home>
+In-Reply-To: <20250821122329.03c77178@foz.lan>
+References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
+	<aJJEgVFXg4PRODEA@lappy>
+	<12ded49d-daa4-4199-927e-ce844f4cfe67@kernel.org>
+	<f482c860-c6b2-4c5b-baa8-b546761debdf@paulmck-laptop>
+	<c0ecacbefa1e93cae4176dc368f2ea63f611f56c.camel@HansenPartnership.com>
+	<9020e75d-361f-457f-9def-330d8964f431@paulmck-laptop>
+	<20250818230729.106a8c48@foz.lan>
+	<9383F8DB-CD38-40CC-B91D-7F98E8156C04@HansenPartnership.com>
+	<4tacplepoih3wvejopmtkdg7ujtvwmufd5teiozk5im2jikn7a@jdbou6kwindl>
+	<d565cb60-29bd-4774-995d-0154c0046710@paulmck-laptop>
+	<20250821122329.03c77178@foz.lan>
 X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
@@ -51,42 +63,57 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspamout04
-X-Rspamd-Queue-Id: 4CEFA17
-X-Stat-Signature: 7dmpeqz9peocjqmn1f6jrcx4uc8ssp7e
+X-Rspamd-Queue-Id: 3CC2320010
+X-Stat-Signature: cxbizsmek48n3pexrcwck1ok36nuz7ik
+X-Rspamd-Server: rspamout02
 X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX1/mxB/npHbdufTge3T3jVDA+GAOZ8p7IEk=
-X-HE-Tag: 1755793666-164900
-X-HE-Meta: U2FsdGVkX19vdMypWTZ+cu7jHudpAlel61kV0fW9B/td3BmXi6urpbqeTBLgyTzQkmegFOCBODcATQI7pWGDK1ujOop++8skVD1S7QPrXUK9apEJdjGIXa4Xwj6pT4QWlDfsN3xvhN9S3c2jxjWV8xI6lAdhYz3ZUAQQ54znYDkB1CYG87vbAmKnYwYtpzRe5S62bYlOml1SUWVu17UyPv64LuoJWfBheM5LchJlDEkmqiThhFK59sRMRW4AJJtUr/nBGJLmcxKFSdQmoW8mqm4W66v1W89UohIOtX7aZL8VhABedv2B5YiGujzvhbBaDk9elb64u5Nc6zWXEuaduh6IaXlFodfPtXAsZ9dBPO4rmzFnWwn8HTrTigomYIWN
+X-Session-ID: U2FsdGVkX18T0VVSziXv+MG0XytasnD32J+7JPeGAIA=
+X-HE-Tag: 1755795033-762036
+X-HE-Meta: U2FsdGVkX185pDBi6XIUFMNI0/e2X8TOmyAIdvrY0EJy0Qr5fgsW5MOZdPcGJe6SUXaDS0XowG+aAvW+h0imv8JSLQ/RcfMpT5pvovqI2evkyQuiHoP4kD86ATDQdzxs4I1Za6/XFNqc00VAXl4uuLcJUM0RjJ7h4mV410Cnw4SVv616dd31e4F1fnWLN9Xt48kY/LLHZYNeKmQmfjC2naTlrfdiXNyCBkslWiWtVHOQ72D08eVlczSM2wou1Jmrggt2r2NLiiWDE5HVSW38BLEZ1Y3iYyLzs4p6yHKFb3+s39oqGzYLXtR+tNDChBg8rMhJGV4aDnlLzwYAsTMh4xM+9zdZsA3N
 
-On Thu, 21 Aug 2025 09:56:15 +0100
-James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
+On Thu, 21 Aug 2025 12:23:29 +0200
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
 
-What exactly do you mean by "feature inclusion"?
+> > Many of the AI players scrape the web, and might well pull in training
+> > data from web pages having a restrictive copyright.  The AI's output
+> > might then be influenced by that restricted training data.   
+> 
+> True, but this is not different than a developer seeking the web for
+> answers of his development problems, reading textbooks and/or reading 
+> articles.
 
-Something that requires a new maintainer? As with the bcachefs, the issue
-was with how the new maintainer worked with the current workflow.
+The difference I believe is that AI is still a computer program. It could,
+in theory, copy something exactly as is, where copyright does matter.
 
-Maybe you mean "maintainer inclusion and ejection"?
+If you read something and was able to rewrite it verbatim, you would be
+subject to copyright infringement if what you read had limits on how you
+could reproduce it.
 
-> However, I'm sure others will have different ideas.
+> 
+> Also, if someone publicly document something an any sort of media,
+> it is expected that people will read, adquire knowledge from it and
+> eventually materialize the acquired knowledge into something. This
+> is fair use, and has some provision from Berne convention, although
+> it may depend on each Country's specific laws.
 
-The thing is, I believe there's a lot of features and maintainers that are
-added. Most go unnoticed as the feature is a niche (much like bcachefs was).
+You can learn from it, but it also comes down to how much you actually copy
+from it.
 
-Perhaps we should have a maintainer mentorship program. I try to work with
-others to help them become a new maintainer. I was doing that with Daniel
-Bristot, and I've done it for Masami Hiramatsu and I'm currently helping
-others to become maintainers for the trace and verification tooling.
+> 
+> On my view, if the trained data comes from lots of different
+> places, as AI is actually a stochastic process that write
+> code by predicting the next code words, if there's just one web 
+> site with an specific pattern, the chances of getting exactly
+> the same code are pretty low. It is a way more likely that humans
+> would pick exactly the same code as written on his favorite
+> textbook than an LLM feed with hundreds of thousands of web
+> sites.
 
-I share my scripts and explain how to do a pull request. How to use
-linux-next and what to and more importantly, what not to send during during
-the -rc releases.
+The issue I have with the above statement is, how would you know if the AI
+copied something verbatim or not? Are you going to ask it? "Hey, AI, was
+this code a direct copy of anything?" Would you trust its answer?
 
-I'm sure others have helped developers become maintainers as well. Perhaps
-we should get together and come up with a formal way to become a maintainer?
-Because honestly, it's currently done by trial and error. I think that
-should change.
+For a human to do the same, they would have to knowingly have done the copy.
 
 -- Steve
 
