@@ -1,145 +1,93 @@
-Return-Path: <ksummit+bounces-2189-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2190-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAEF0B306FC
-	for <lists@lfdr.de>; Thu, 21 Aug 2025 22:52:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE2AB30769
+	for <lists@lfdr.de>; Thu, 21 Aug 2025 22:57:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CCBC84E6908
-	for <lists@lfdr.de>; Thu, 21 Aug 2025 20:52:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96DD8B0730C
+	for <lists@lfdr.de>; Thu, 21 Aug 2025 20:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA15322C87;
-	Thu, 21 Aug 2025 20:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBFA13126D9;
+	Thu, 21 Aug 2025 20:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="d4SF84j6"
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XXpDQg6w"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C4C1EB5C2
-	for <ksummit@lists.linux.dev>; Thu, 21 Aug 2025 20:34:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1B83568EA
+	for <ksummit@lists.linux.dev>; Thu, 21 Aug 2025 20:38:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755808462; cv=none; b=jZTxwy+STya4/tQWjPnRw0Vg5BefbJ3nCpSvM5iSrD1K06OFIkEkTRxdXPa+U3y1yeuxXQwaA/Pea0hLdEJu//9IUg2f2qJp6xmBRQC8IImSMMamS2IPhxGDVoy2Uhe1NBUgNJlG/0aFyZsaajMYFxahU65DNlLsNzDEm9RwKb4=
+	t=1755808688; cv=none; b=ZDanUF4YncSRStXrAsVsZgkrH7YvcGkZL1KuhD88lxVp/tXX4tDdjXgnCTBU0XrHrqa4Z41YDRqGHf8L3B9uPM2pwajIC2eXkQ2NAwLHyi1j6owrNyiyMwkr3SIbAnXfOauRyaLPvUYh2mqzjXjAg9tjMp993R02N4B2OvIbhe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755808462; c=relaxed/simple;
-	bh=29HWqsRpgm/L2rT2+jnUODCtvVpLGq1qWh1AROLvPj4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EdOU5CAiRzEw3NUeB8my+miSVL1C9GXxKmcemjih4zOp1odPtzt5W8pqO2SrPZpuFUzNeUFkmmw+iLiL7ZYjD529GRcINqI+CVQqHCGTsJf6KFaGsmFhIGp2ouMyxuAYN1UIr0kTTvvV7my4qceCnTmQmbxjvJvKIqYB3aeq5Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=d4SF84j6; arc=none smtp.client-ip=18.9.28.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
-Received: from trampoline.thunk.org (pool-173-48-113-69.bstnma.fios.verizon.net [173.48.113.69])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 57LKY7O5029200
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 Aug 2025 16:34:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1755808449; bh=WJ4tVu5z2VID9C5zAZWHLOKuM4/5q+czdRotkdglyU0=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=d4SF84j6GCxn7qI1rIgTYYe5L12VOF1IdreBMIXlPX3B6aQa2EnXd8lO0TagQctrj
-	 AvEr7CuywBhjsUZTnwm/yPof21J1GMdQE/a7BhpAOqxegZQ0cZE118niCLB1LJJ4LK
-	 dyKaMDHN0LRr1vdt7eH4wTph4cyhBa50jKyW/2xhITWICuKsqBnPW+ISlfFxFNVI+h
-	 Ub/erVdanTrQ+JPUz7MP6sHL0C1+9tfQjsltpq36epe8h9gxTB5aeGLO++H2joL3DH
-	 KR4bTczUyuC89bZprehb6ajL3VUKll8HlgO2DYnD7e8+mhCfxQfNlsKF0t9uFHICpP
-	 XPWQLBnnQ+UTQ==
-Received: by trampoline.thunk.org (Postfix, from userid 15806)
-	id 56BD82E00D6; Thu, 21 Aug 2025 16:34:07 -0400 (EDT)
-Date: Thu, 21 Aug 2025 16:34:07 -0400
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: ksummit@lists.linux.dev, linux-fsdevel@vger.kernel.org
-Subject: Re: [MAINTAINER SUMMIT] Adding more formality around feature
- inclusion and ejection
-Message-ID: <20250821203407.GA1284215@mit.edu>
-References: <fc0994de40776609928e8e438355a24a54f1ad10.camel@HansenPartnership.com>
+	s=arc-20240116; t=1755808688; c=relaxed/simple;
+	bh=gskXFy3QQVhZxXIXO6V9A/gnWJ9hyHePtJEd1XYa5jw=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=PV2mvdnBfWQYErRmuQ+ECkmIZ57r0hgtvRRfjkyxzRs+3UUMCEgZluQ0KlnLkQtCO4LDngexcjmflHjWupRPQSbfai51ypDHzN6MWexFo6oGaASztP9cyPR54l4E7ABlLRH8BPgRpoJGHpdBnHJzA/RmJjGxaKSWj2xpv/OAh6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XXpDQg6w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B9FC4CEF4;
+	Thu, 21 Aug 2025 20:38:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755808688;
+	bh=gskXFy3QQVhZxXIXO6V9A/gnWJ9hyHePtJEd1XYa5jw=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=XXpDQg6wFy5L9w4jRcB3U5F/U8JLrBuOf3CGq5CotXzjsYbWozZR/1Q5mlYJ8QWUH
+	 HpPS15Ki/2FvLS8dMejkQgGBD9RC79bIzvySEcxVK1TjQDPaDMcUmFwkxqAGBavtnQ
+	 67G4NZVdlov9PClCQ+dsZsVW65bx5ggPyQHKNU2Di4+S6O7FUJW1fMSYTMrCtTrvDj
+	 Wxo95i2qWcn/3viywiUg7Ci0UUpmeutIEAc0jcgKWBZ5M37pweQ7dsvitJknWvSTUs
+	 /mt8MomGMBpYz6QmzTRMoDRREd7YTwwzY4VjlUTiX6H8q2JC+81cNGRjtLlQ7LhXyf
+	 qDCOwd6xcP0Yw==
+Date: Thu, 21 Aug 2025 22:38:05 +0200 (CEST)
+From: Jiri Kosina <jikos@kernel.org>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+cc: "Paul E. McKenney" <paulmck@kernel.org>, 
+    James Bottomley <James.Bottomley@hansenpartnership.com>, 
+    ksummit@lists.linux.dev
+Subject: Re: [MAINTAINERS SUMMIT] Annotating patches containing AI-assisted
+ code
+In-Reply-To: <20250821122329.03c77178@foz.lan>
+Message-ID: <o8r437r9-30sr-o187-8599-qss9p3p7303o@xreary.bet>
+References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz> <aJJEgVFXg4PRODEA@lappy> <12ded49d-daa4-4199-927e-ce844f4cfe67@kernel.org> <f482c860-c6b2-4c5b-baa8-b546761debdf@paulmck-laptop> <c0ecacbefa1e93cae4176dc368f2ea63f611f56c.camel@HansenPartnership.com>
+ <9020e75d-361f-457f-9def-330d8964f431@paulmck-laptop> <20250818230729.106a8c48@foz.lan> <9383F8DB-CD38-40CC-B91D-7F98E8156C04@HansenPartnership.com> <4tacplepoih3wvejopmtkdg7ujtvwmufd5teiozk5im2jikn7a@jdbou6kwindl> <d565cb60-29bd-4774-995d-0154c0046710@paulmck-laptop>
+ <20250821122329.03c77178@foz.lan>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fc0994de40776609928e8e438355a24a54f1ad10.camel@HansenPartnership.com>
+Content-Type: text/plain; charset=US-ASCII
 
-On Thu, Aug 21, 2025 at 09:56:15AM +0100, James Bottomley wrote:
-> I think the only point of agreement on this topic will be that how
-> bcachefs was handled wasn't correct at many levels.  I think this shows
-> we need more formality around feature inclusion, including a possible
-> probationary period and even things like mentorship and we definitely
-> need a formal process that extends beyond Linus for deciding we can no
-> longer work with someone any more.
+On Thu, 21 Aug 2025, Mauro Carvalho Chehab wrote:
 
-I think we are conflating three different things in this discussion
-thread, and it would be helpful if we separated them out.
+> In any case (either AI, human or hybrid AI/human), if the code has issues,
+> we may need to revert it.
+> 
+> On other words, AI doesn't radically changes it: at the end, all remains
+> the same.
 
-  1.  What is the process by which a particular feature be included
-         or ejected?
-  2.  What is the process by which a developer should be excluded
-         from the deevlopment community?  And this goes beyond
-	 Code of Conduct violations, but in the case of a maintainer,
-	 when that person has displayed toxic tendencies which are
-	 sufficiently bad that other deevlopersa and maintainers refuse to
-	 work with the individual, and when that person has been accused of
-	 promoting a toxic environmet which is harming the entire
-	 community?
-  3.  The question of maintainer mentorship, which is very different
-         from (2) as there are a large set of skills which a much broader
-	 front including avoiding maintainer burnout, the product management
-	 side of being a maintainer (e.g. working with companies to
-	 motivate them to invest in a featrue which benefits not only the
-	 companies' business interest, but the community as a whole),
-	 managing volunteer, etc.
+The code is rarely 1:1 copy-pasted, both by humans and AI.
 
-(2) is a very hard problem, and so there is a tendency to focus on
-solving problems (1) and (2).  However, using bcachefs and its
-maintainera as a motivating case for solutions to address (1) and (3)
-very likely going to result in skewing the discussion around the best
-ways of addressing (1) and (3).
+Transformations are needed, you need to glue individual pieces together, 
+adapt for a different version of API, yada yada yada.
 
-As far as (2), our baseline way of handling things is quite ad hoc.
-At the moment, individual developers will simply refuse to work
-someone who is accused of being toxic, by doing things such as:
+When done by human, there is some hope that the human does understand what 
+he/she is doing in the process, and you can reach out to them for 
+human-to-human discussion about the code.
 
-   (a) using mail filters to redirect e-mail from that person
-       to /dev/null,
-   (b) telling a higher-level maintainer that because of (a) they
-       would appreciate it if any pull requests from that individual
-       include changes to their subsystem or sub-subsysttem,
-       that those commits should be presumed to be auto-NACK'ed,
-       and requesting that the PULL request should be rejected,
-   (c) if the behaviour of said person exasperates a higher-level
-       maintainer to such an extent that the higher-level maintainer
-       refuse to accept patches or pull requests from said
-       individual, and
-   (d) informing program committees of invite-only workshops and/or
-       conferences that if that individual attends, they will refuse
-       to attend because of that individual's toxicity.
+With AI-generated code, there might be no such human to talk to who 
+understands what the code does and why.
 
-I will note that (b) and (c) can be appealed to someone higher up on
-the maintainer hierarchy, unless that higher-level maintainer is
-Linus, at which point there is no higher level authority to take that
-appeal, and that (b), (c), and (d) are effectivly a way that
-developers and maintainers are effectively saying, "it's either him or
-me!", and as someone who has to manage volunteers, if a sufficiently
-large number of volunteers are sufficiently p*ssed off that they are
-threatening to withdraw, the wise maintainer (or program committee)
-should take heed.
+And one of the points why I originally brought this up is that I believe 
+we need either (a) be able to take the informed decision/risk by applying 
+a patch we know has been written by AI, or (b) be able to outright reject 
+it on that basis (e.g. if it's too complicated).
 
-Now, the above is inherently very messy.  But fortunately, it's only
-happened once in thirty five years, and before we propose to put some
-kind of mechanism in place, we need to make sure that the side effects
-of that mechanism don't end up making things worse off.
+-- 
+Jiri Kosina
+SUSE Labs
 
-There is the saying that "bad facts make bad law", and the specifics
-of this most recent controversy are especially challenging.  I would
-urge caution before trying to create a complex set of policies and
-mechanim when we've only had one such corner case in over 35 years.
-
-Cheers,
-
-						- Ted
 
