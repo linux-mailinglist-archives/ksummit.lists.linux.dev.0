@@ -1,99 +1,121 @@
-Return-Path: <ksummit+bounces-2185-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2186-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00DA1B302B4
-	for <lists@lfdr.de>; Thu, 21 Aug 2025 21:15:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C709B302EF
+	for <lists@lfdr.de>; Thu, 21 Aug 2025 21:33:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B57F582600
-	for <lists@lfdr.de>; Thu, 21 Aug 2025 19:15:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EF801BC6D0A
+	for <lists@lfdr.de>; Thu, 21 Aug 2025 19:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E002E88B9;
-	Thu, 21 Aug 2025 19:15:12 +0000 (UTC)
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F5A02E9EC3;
+	Thu, 21 Aug 2025 19:33:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="aYbsYaPP"
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B6E341AA6
-	for <ksummit@lists.linux.dev>; Thu, 21 Aug 2025 19:15:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E75127280B
+	for <ksummit@lists.linux.dev>; Thu, 21 Aug 2025 19:33:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755803711; cv=none; b=QuGH+aPmqD3SXD5c2adye8qiQBmuzZAq4tWV6PHWNYECoS4Ek7vHlWAeCqUVr/OTr98Rob9BbSiuFXek5VxhtYPVzv4aa33Qzs9vJG8DiO8+MP2L3o2AbobN5c0xbP+yqmfE+uyTXlZymwKDogDNYlcEDTsNG3bLsFvCeTJwLVU=
+	t=1755804792; cv=none; b=Ux9HLTYGjKUFWxpC5i+TQbh7tHzsrYy8mrq7Ys+jFrsgqaJ6GlLl8sAan4eaI7jFHhYyUvs+zKp75UHDaCOJnOzEj6oJmCEvEwBrMBXHkvUo4rDLvaUobs3Kp/yH1TaE25qSbBeQwkjQTqdRI+sCOQpYjhZBaYWoNbcmXampImk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755803711; c=relaxed/simple;
-	bh=v9DXLBdAVysgMetYRE1Go8LQdkE/8szQv91HZLHyA7Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gfI5Dqykm2unNncLgvya3EoEIA/dB2Gig5gdXMB6AqMXEB9/2Joq+Dpr+LE9dVoCyhkXyh1sPO2yTtflFhopo6HmD6cdWhMkalbj2+Za1xd9oAAR/q8XiJWpqxoK8vnpcP7ckQFPTxEPh2u2upWc4z6yLQW3+7hEt9ueoEriPTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D3611117EE7;
-	Thu, 21 Aug 2025 19:15:08 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf16.hostedemail.com (Postfix) with ESMTPA id 3A4222000E;
-	Thu, 21 Aug 2025 19:15:07 +0000 (UTC)
-Date: Thu, 21 Aug 2025 15:15:12 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: ksummit@lists.linux.dev, linux-fsdevel@vger.kernel.org
-Subject: Re: [MAINTAINER SUMMIT] Adding more formality around feature
- inclusion and ejection
-Message-ID: <20250821151512.6b42336b@gandalf.local.home>
-In-Reply-To: <64ca315de44a6a5d8e5992a67a592b97f12f0098.camel@HansenPartnership.com>
-References: <fc0994de40776609928e8e438355a24a54f1ad10.camel@HansenPartnership.com>
-	<20250821122750.66a2b101@gandalf.local.home>
-	<64ca315de44a6a5d8e5992a67a592b97f12f0098.camel@HansenPartnership.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1755804792; c=relaxed/simple;
+	bh=FNKdQ2Q9j36mgXRTTKI7GXB4mhjWXXIWbw7majwblus=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DeqYBbQ6M3EC9ac6RTIYPArRvr3zL3AUf4ctqsJS+sSKKjrDbU2K2w0O7zoMKWjByjdrsQ1tV70GRZ9cQhDMMgceo6toCvAdC8WTRdHdlI8sy6Ej9LQiUTGwjaYg1m98PulLeBSthN2XF1SbcLtabkYzEZ2Z5nfkMmpes3sCcTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=aYbsYaPP; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-32326e202e0so1335428a91.2
+        for <ksummit@lists.linux.dev>; Thu, 21 Aug 2025 12:33:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1755804789; x=1756409589; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wpJ1JUIhWo3zxoVLim9BIZbHFtWsNpYjF3/W08jmiX8=;
+        b=aYbsYaPPpVN4sdcBvSvWLInMLwi9KijhV5ADBG8ThatuBxPkJJeJqx4t08K+wcMVFl
+         CDXaWgnt0FG+/AhWyZxrDUnW6VmUmnB6dLam84mrb+f8FcbYU4LSCocNnPqvmTCUwR3g
+         cNKSirOTzJADQ/afD9K4Le7zN972U3dZLshQu9hsgenCbjGryIoVddOoyzt/Q2s7lWoe
+         CQlYd/1sxUSNswarp+VHbXkoL15onvyN+i/E/olJO5u4VQi4M7rk/GoJfy9fbsqldMVS
+         fnI6yH3IZ3N365WT3CgyJaI4K/IeTAOUvM9br4EIwWD1Xa6paO8xdFgqWzxNsphUXBHv
+         mz+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755804789; x=1756409589;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wpJ1JUIhWo3zxoVLim9BIZbHFtWsNpYjF3/W08jmiX8=;
+        b=LSo1DIC6o5D+/4Fl9gR0gp6ULXQrvgnSO3smtuvQNq5VA+LEAG4NP+YtaOQp6C2lns
+         4jtWuxPCUJ7gfyTcyJquK/NSCCq26ghQMTsRgSX3zVyAXs43UlirNi+oht2NJfYMHt9m
+         a/Z29h+i0bs+QOjdzKhkvZMMNfGoUhMuWy5vorygcRPQXSfpGiTQOMUobGXkzuxKlS1D
+         W53c2zjuM7UPsvzWm6GRTKhuWK5im06l34zzH4sPvdQcGUjHc8s3xBaCcT5qc/E5vpvq
+         +MRxds0Gw0BJXli4IrkG3VF24Y4Dexqo0U3AR2a0XNr9fY1t+ed/fFGhbu7nbARYtQdH
+         PB4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUAVXs+SRT0ctyIbuZFTBS0UY1egGAfJKNtScgK4lKveXDZRlgVa3tsaWySk5Y847ffA5G3/q3R@lists.linux.dev
+X-Gm-Message-State: AOJu0Yywv51py+i9Nr85Q43+cN80pjjqmDnN2rqoBxwciR+d+Sqki1O6
+	WTABwNl/4o7f8qZ35kwz0vs7qARjQSJLGz1CAdCbQkgY72ExxbBWMHEbWTp5qiKlV/mclLheMlS
+	SoeWIwGh5A9DIGTANrB+KiYGU/tydBC6MPaRo0BpBYgvFiPq7BZ0=
+X-Gm-Gg: ASbGncspFTrmzaWE9rdU9Iu/ZnmYOyFpBzpsKvaT/bRxu+tdPDsZqNOJi5TMzM/T6x1
+	MBjfjJh2bhZKT2Xo6yzYekFVI/3fSJRVfI9xhbYoZQ3mqbD3FUhCCWtlibYTxeDdEe4LWujAxMo
+	ZJZaJiR5FP3TtLTbYQ0tmVsBSVlMUjrruKGkPj1cu1vNSbUWELvEUXRryJ9y3P4aVhQ+Kx6hKaY
+	nzApR6j0xQe6uiE0w==
+X-Google-Smtp-Source: AGHT+IE3rSz/S9joHsxzgn3nqrAjaVgh+JNeXVJWaeHVu8UKpssEwvNF8sTjGNJifciDTputJMBgY0zCaDMpzHhVtr0=
+X-Received: by 2002:a17:90b:2752:b0:325:1548:f0f with SMTP id
+ 98e67ed59e1d1-32515ee0104mr777322a91.14.1755804788711; Thu, 21 Aug 2025
+ 12:33:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ph9kqrdt9mm5urqd851hknqwxnkkggss
-X-Rspamd-Server: rspamout03
-X-Rspamd-Queue-Id: 3A4222000E
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX1+AD2CcoiU0hmsHn3FS7CFMuWvB/hEIYmA=
-X-HE-Tag: 1755803707-560238
-X-HE-Meta: U2FsdGVkX1/PNGF+zzWiRNllOOraKWPJbFKKs3pytWrbJ5MaHOJsc+AYKFfe+qMak1aqfSB4fHrCuZ0c8fMTXDjmNDynWwreM9+reBuZ9ejbovF7RIBXYnwo1iatgI3tDsxNrx9LUspY/cTUV4MGUIdWNoeR0Gb/qVzlbb36F9SGc4oByvRlDw3Mo52zKRrwTfcOLlv9lxz9fWJFOvbrH8th18Za3QOhhNdcZKVgjah56J6WydkAxA9VwCuvToKtIi1weysefsYxlMu3g0soSabruaw1cwTeQaITZ/Yg6xMuXAZAvHfSdWC5Bf3OyAyrSQ1GwtvL83ht/LclBhqB2utMWNcS1OM4adJYf8CV7qcCwys4XmVyyGgAS5pSmGEt
+References: <fc0994de40776609928e8e438355a24a54f1ad10.camel@HansenPartnership.com>
+ <20250821122750.66a2b101@gandalf.local.home>
+In-Reply-To: <20250821122750.66a2b101@gandalf.local.home>
+From: Paul Moore <paul@paul-moore.com>
+Date: Thu, 21 Aug 2025 15:32:56 -0400
+X-Gm-Features: Ac12FXyBGe0rSMh1OHfkwA4myJIJvSYM_gON_hNIj_jpU_PMzU1SrEYwDaM3olM
+Message-ID: <CAHC9VhRoFb0xmmfzqqMhHqABLnnP0vCiPJHiVgLPbrVzi6djDw@mail.gmail.com>
+Subject: Re: [MAINTAINER SUMMIT] Adding more formality around feature
+ inclusion and ejection
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, ksummit@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 21 Aug 2025 18:44:07 +0100
-James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
+On Thu, Aug 21, 2025 at 12:35=E2=80=AFPM Steven Rostedt <rostedt@goodmis.or=
+g> wrote:
+>
+> Perhaps we should have a maintainer mentorship program. I try to work wit=
+h
+> others to help them become a new maintainer. I was doing that with Daniel
+> Bristot, and I've done it for Masami Hiramatsu and I'm currently helping
+> others to become maintainers for the trace and verification tooling.
 
-> > I share my scripts and explain how to do a pull request. How to use
-> > linux-next and what to and more importantly, what not to send during
-> > during the -rc releases.  
-> 
-> I'm not sure that covers it.  As I read the situation it was more about
-> how you work with others when there are things in the kernel you'd like
-> to introduce or change to support your feature.  Hence it's really
-> about working with rather than against the community.
+I realize this wasn't the original focus of James' mail, my apologies
+for continuing on the tangent, but I do think some form of a
+maintainer/reviewer/developer/etc. mentorship program is a good idea.
+Like Steven, and surely many others (staging tree?), I've done similar
+things in the security space, and even in the most informal
+arrangements I believe it has helped people get up to speed with our
+somewhat unusual development practices and not-always-documented
+processes.
 
-What I'm suggesting is to have a program to help newcomers that are taking
-on a maintainer role. This program can not only teach what needs to be done
-to be a maintainer, but also vet the people that are coming into our
-ecosystem. If there's a lot of push back from the individual on how to
-interact with the community, then that individual can be denied becoming a
-maintainer.
+I would expect the program to be fairly informal, especially at first,
+with perhaps an hour every week or two where an existing maintainer
+could work with a mentee off-list to answer questions, explain
+process, code, or anything else relevant to kernel
+development/maintenance.  Time zones would be a challenge for any
+interactive discussions, but that's a common problem for community
+development these days, and finding ways to resolve that would be an
+important part of the mentorship.
 
-
-> 
-> > I'm sure others have helped developers become maintainers as well.
-> > Perhaps we should get together and come up with a formal way to
-> > become a maintainer? Because honestly, it's currently done by trial
-> > and error. I think that should change.  
-> 
-> That wouldn't hurt, but that problem that I see is that some fairly
-> drastic action has been taken on what can be characterised as a whim,
-> so I think we need some formality around how and when this happens.
-
-If it was policy for Kent to work with a mentor before he could send
-patches directly to Linus, would this have uncovered the issues before they
-became as large as they had become?
-
--- Steve
+--
+paul-moore.com
 
