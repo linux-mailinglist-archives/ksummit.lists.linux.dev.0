@@ -1,121 +1,222 @@
-Return-Path: <ksummit+bounces-2171-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2172-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A96F3B2F30B
-	for <lists@lfdr.de>; Thu, 21 Aug 2025 10:58:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80123B2F540
+	for <lists@lfdr.de>; Thu, 21 Aug 2025 12:26:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E30A189758B
-	for <lists@lfdr.de>; Thu, 21 Aug 2025 08:56:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27D86603E18
+	for <lists@lfdr.de>; Thu, 21 Aug 2025 10:24:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4CF02ED85D;
-	Thu, 21 Aug 2025 08:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD9F2F1FC6;
+	Thu, 21 Aug 2025 10:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="E9pGeyTm"
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QMwz0wxR"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3732ECEA6
-	for <ksummit@lists.linux.dev>; Thu, 21 Aug 2025 08:56:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7A324A06D
+	for <ksummit@lists.linux.dev>; Thu, 21 Aug 2025 10:23:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755766580; cv=none; b=NxLbfI3jwa/h2QEHDb/J0wvXmx+9+Bs6jYRjyEil6XZsTEjJpmO9TKYk2Jd6SRq/rcnttf59b0BXIqgaL9dSzwUgERokscIeizTNfGrCZvXI4ty6WIIOegMuSh039AUBMiIlcP59s4ow1gG9o3ZPYAgzzth8cX7lyZVXB7gQbWc=
+	t=1755771813; cv=none; b=NqTLnhAeqfe2Ax1Keu9ECB45ZJ4xl6wW72nfh6ZNQIHLLPP5m9RNilkfVLzw499NDPUATVY+7B/bULnGZNwx6u3ws0w6pCXBrDIUhbje3GQx44JR06BJBA1BQGma7JjJxajRqBHZicFYCuUfCMvgcAAk2GZbdBhFDZh745sZU8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755766580; c=relaxed/simple;
-	bh=n5B3pBrcTjpUQ3Mns6LoUBbwF1WNhZTLnpHtk4hBAp0=;
-	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:MIME-Version; b=V5gtT2Ct0xJdSa54PGwGpstyOEkeJiFa+ImX+HoIfNyQ2y21hb7VxacZw6uQXZ1+PKRuGu06RD1kPaQTmMkcQF0L9rEz04nCtDUpbGmlM+KDQFAY/r4+C2tUNKGJeZryCita1h/ScWzidcJR2T4+MuU0aYzoWf441TSa5nnOMJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=E9pGeyTm; arc=none smtp.client-ip=198.37.111.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1755766576;
-	bh=n5B3pBrcTjpUQ3Mns6LoUBbwF1WNhZTLnpHtk4hBAp0=;
-	h=Message-ID:Subject:From:To:Date:From;
-	b=E9pGeyTmwn7O82AO/5PdHA3yzWfGnckI1McMq88L3VMtZeLCxt9jOXFKZI/ZPxeP+
-	 pHkmr12A5a4IeR8GL5tAHqnFTWH6MG6F7CNUZt6GaNf3e+6em9HPyRWKmocUaEEuoa
-	 n8ZP0OONStNPX1F4nZ2OWWiOFHdHJKJ8zJnGGC1k=
-Received: from [IPv6:2a00:23c8:101e:bb01:5bfe:95b6:ba99:a97b] (unknown [IPv6:2a00:23c8:101e:bb01:5bfe:95b6:ba99:a97b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 754A51C0197;
-	Thu, 21 Aug 2025 04:56:16 -0400 (EDT)
-Message-ID: <fc0994de40776609928e8e438355a24a54f1ad10.camel@HansenPartnership.com>
-Subject: [MAINTAINER SUMMIT] Adding more formality around feature inclusion
- and ejection
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: ksummit@lists.linux.dev
-Cc: linux-fsdevel@vger.kernel.org
-Date: Thu, 21 Aug 2025 09:56:15 +0100
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+	s=arc-20240116; t=1755771813; c=relaxed/simple;
+	bh=On05gZiqloJDJpnZfMvzOT9D11TM0YHujiqyN/6pLJ0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FnJXwwt1DNVFuHa97evYH2oleUrhw+Xd2Gs+dwv0d9V8VpgK6EPWnt804dyyfZmF7FN9CjP+WMorWjy/3jdB9iz7NN1wssiI8C8Ifc3DVZtJ7PEsmt/8SnmRMOCUcUEVDetRl1TroZ6M0vD5DKQ1xCZULHhZm+P2vbFVniEr9F4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QMwz0wxR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F11C4CEEB;
+	Thu, 21 Aug 2025 10:23:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755771812;
+	bh=On05gZiqloJDJpnZfMvzOT9D11TM0YHujiqyN/6pLJ0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=QMwz0wxRI5Yf10/h9Ge93b4AOhHCOsmxE1xoVCoY/lLU57IznSoV+rouTyHWP2kXu
+	 hWjfXrw3o269WzU1jCiD7Qi8or9Kw/spiR0EgU6bej6GjlrhpQLnJ3rIp3E/F72iaa
+	 hlV/kMlD0YbsMPT8PZsYDfUw57RWUa4SU736bkZyrcl7Wl3v/adzkf5AA8A97q7pbg
+	 RbF5jrJIsaKEl0+rMSTfv2c164UY/4UwIj3CHQHRDC6r6YqtCj80aCBu/362rE+QPw
+	 7rDqrWKv1e92ughwADqwxOSQdx84Nf36oaF8bJXSwclXYeng0PvS6Rp8MrbJZ/mw9Q
+	 P3Qlgha+6g45w==
+Date: Thu, 21 Aug 2025 12:23:29 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, Jiri Kosina
+ <jkosina@suse.com>, ksummit@lists.linux.dev
+Subject: Re: [MAINTAINERS SUMMIT] Annotating patches containing AI-assisted
+ code
+Message-ID: <20250821122329.03c77178@foz.lan>
+In-Reply-To: <d565cb60-29bd-4774-995d-0154c0046710@paulmck-laptop>
+References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
+	<aJJEgVFXg4PRODEA@lappy>
+	<12ded49d-daa4-4199-927e-ce844f4cfe67@kernel.org>
+	<f482c860-c6b2-4c5b-baa8-b546761debdf@paulmck-laptop>
+	<c0ecacbefa1e93cae4176dc368f2ea63f611f56c.camel@HansenPartnership.com>
+	<9020e75d-361f-457f-9def-330d8964f431@paulmck-laptop>
+	<20250818230729.106a8c48@foz.lan>
+	<9383F8DB-CD38-40CC-B91D-7F98E8156C04@HansenPartnership.com>
+	<4tacplepoih3wvejopmtkdg7ujtvwmufd5teiozk5im2jikn7a@jdbou6kwindl>
+	<d565cb60-29bd-4774-995d-0154c0046710@paulmck-laptop>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-I think the only point of agreement on this topic will be that how
-bcachefs was handled wasn't correct at many levels.  I think this shows
-we need more formality around feature inclusion, including a possible
-probationary period and even things like mentorship and we definitely
-need a formal process that extends beyond Linus for deciding we can no
-longer work with someone any more.  I don't think anyone has the right
-answer on this so (shock, horror), this is a genuine discussion topic
-and one that would probably extend beyond the maintainer summit.  The
-problem is that while the bcachefs saga did stray into CoC territory,
-the fundamental issues were technical and community not around conduct
-and I think a large part of the solution will involve discussing how
-you mentor someone in community building and how you objectively
-measure when they're failing to the extend that they're damaging
-surrounding communities.
+Em Wed, 20 Aug 2025 14:44:00 -0700
+"Paul E. McKenney" <paulmck@kernel.org> escreveu:
 
-We probably also all have somewhat of an evolution of our positions on
-this as well so I can start the ball rolling by detailing mine.  It's
-public that I thought bcachefs shouldn't have gone in in the first
-place:
+> On Tue, Aug 19, 2025 at 06:16:10PM +0200, Mauro Carvalho Chehab wrote:
+> > On Tue, Aug 19, 2025 at 04:23:46PM +0100, James Bottomley wrote: =20
+> > > On August 18, 2025 10:07:29 PM GMT+01:00, Mauro Carvalho Chehab <mche=
+hab+huawei@kernel.org> wrote: =20
+> > > >Em Tue, 12 Aug 2025 07:42:21 -0700
+> > > >"Paul E. McKenney" <paulmck@kernel.org> escreveu: =20
+> > > [...] =20
+> > > > do agree that many of the lawsuits seem to be motivated by an =20
+> > > >> overwhelmening desire to monetize the output of AI that was induce=
+d by
+> > > >> someone else's prompts, if that is what you are getting at.  It do=
+es seem
+> > > >> to me personally that after you have sliced and diced the training=
+ data,
+> > > >> fair use should apply, but last I checked, fair use was a USA-only=
+ thing. =20
+> > > >
+> > > >Maybe, but other Countries have similar concepts. I remember I saw an
+> > > >interpretation of the Brazilian copyright law once from a famous lay=
+er
+> > > >at property rights matter, stating that reproducing small parts of a=
+ book,=20
+> > > >for instance, could be ok, under certain circumstances (in a concept
+> > > >similar to US fair use). =20
+> > >=20
+> > > Yes, technically.  Article 10 of the Berne convention contains a weak=
+er concept allowing quotations without encumbrance based on a three prong t=
+est that the quote isn't extensive,  doesn't rob the rights holder of subst=
+antial royalties and doesn't unreasonably prejudice the existing copyright =
+rights. =20
+> >=20
+> > Exactly. The interpretation from such speech I mentioned is based on th=
+at.
+> > Now, exactly what is substantial is something that could be argued.
+> >=20
+> > There are two scenarios to consider:
+> >=20
+> > 1. AI using public domain or Open Source licensed code;
+> >=20
+> > There are so many variations of the same code patterns that AI
+> > was trained, that it sounds unlikely that the produced output would
+> > contain a substantial amount of the original code.
+> >=20
+> > 2. Public AI used to developt closed source=20
+> >=20
+> > If someone from VendorA trains a public AI to develop an IP protected d=
+river
+> > for HardwareA with a very specialized unique code, and someone asks the
+> >  same AI to:
+> >=20
+> > 	"write a driver for HardwareA"
+> >=20
+> > and get about the same code, then this would be a possible legal issue.=
+=20
+> >=20
+> > Yet, on such case, the developer from VendorA, by using a public AI,
+> > and allowed it to be trained with the code, opened the code to be used
+> > elsewhere, eventually violating NDA. For instance, if he used
+> > Chatgpt, this license term applies:
+> >=20
+> > 	"3. License to OpenAI
+> >=20
+> > 	 When you use the service, you grant OpenAI a license to use
+> > 	 your input for the purpose of providing and improving the=20
+> > 	 service=E2=80=94this may include model training unless you=E2=80=99ve=
+ opted out.
+> >=20
+> > 	 This license is non-exclusive, worldwide, royalty-free,=20
+> > 	 sublicensable=E2=80=94but it's only used as outlined in the Terms of =
+Use
+> > 	 and privacy policies."
+> >=20
+> > So, if he didn't opt-out, it granted ChatGPT and its users a patent-free
+> > sublicensable code.
+> >=20
+> > Ok, other LLM tools may have different terms, but if we end having
+> > to many people trying to monetize from it, the usage terms will be
+> > modified to prevent AI holders to face legal issues.
+> >=20
+> > Still, while I'm not a lawyer, my understanding from the (2)
+> > is that if one uses it for closed source development and allowed
+> > implicitly or explicitly the inputs to be used for training, the one
+> > that will be be accounted for, in cases envolving IP leaking, is the
+> > person who submitted IP protected property to AI. =20
+>=20
+> Many of the AI players scrape the web, and might well pull in training
+> data from web pages having a restrictive copyright.  The AI's output
+> might then be influenced by that restricted training data.=20
 
-https://lore.kernel.org/all/?q=3Df:bottomley%20s:bcachefs
+True, but this is not different than a developer seeking the web for
+answers of his development problems, reading textbooks and/or reading=20
+articles.
 
-for most of the problems it eventually caused.  However after mature
-reflection, I think this was wrong: ab initio exclusion, even with
-valid and evidence based reasons, will make us into a narrow minded and
-ossified club.  I still think there should be discussion of the ab
-initio problems but they should form part of the probation and
-development plan for the feature, so everyone knows they always have a
-chance to prove that they can do better than others thought at the
-time.  It is probable that this probation and development plan can be
-evolved at the time over email (I don't think one size fits all is ever
-going to work for this) but a key point will be having at least one and
-possibly more existing maintainers being responsible for executing it
-(finding these people is going to be a challenge, I know).  The second
-part is even more problematic: how do you measure forward progress
-during the probationary period and judge whether the training wheels
-should come off or the feature should be ejected?  If there's a clear
-plan, then assessing progress against that solves some of the problem,
-but not all and if the final decision is no instead of yes, there needs
-to be a written down set of reasons for why this is (and possibly a
-post mortem discussion of how everyone could do better next time
-around).
+Also, if someone publicly document something an any sort of media,
+it is expected that people will read, adquire knowledge from it and
+eventually materialize the acquired knowledge into something. This
+is fair use, and has some provision from Berne convention, although
+it may depend on each Country's specific laws.
 
-However, I'm sure others will have different ideas.
+On my view, if the trained data comes from lots of different
+places, as AI is actually a stochastic process that write
+code by predicting the next code words, if there's just one web=20
+site with an specific pattern, the chances of getting exactly
+the same code are pretty low. It is a way more likely that humans
+would pick exactly the same code as written on his favorite
+textbook than an LLM feed with hundreds of thousands of web
+sites.
 
-Regards,
+> Although we
+> might desperately want this not to be a problem for AI-based submissions
+> to the Linux kernel, what we want and what the various legal systems
+> actually give us are not guaranteed to have much relation to each other.
 
-James
+True, but that's not the point. AI is not that different than
+someone googling the net to seek for answers.
 
+The only difference is that, when AI is used, you won't know
+exactly from where the code was based.
+
+I agree that this could be problematic. But then, again, when a maintainer=
+=20
+picks a patch from someone else, the same applies: we don't have any
+guaranties that the code was not just copied-and-pasted from some place,
+except by the SoB.
+
+In any case (either AI, human or hybrid AI/human), if the code has issues,
+we may need to revert it.
+
+On other words, AI doesn't radically changes it: at the end, all remains
+the same.
+
+That's why I don't think we'll get any new information nor need to
+follow any procedure different than what we already do, if the developer
+had used AI, and to what extent.
+
+-
+
+Now, a completely different thing is if we start having "incompetent"
+developers ("incompetent" in the sense given by the Dilbert Principle) that
+have some AI bot patch-generator to write patches they can't do themselves.
+
+I'll certainly reject such patches and place such individuals on my
+reject list.
+
+
+Thanks,
+Mauro
 
