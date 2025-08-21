@@ -1,222 +1,114 @@
-Return-Path: <ksummit+bounces-2172-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2173-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80123B2F540
-	for <lists@lfdr.de>; Thu, 21 Aug 2025 12:26:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1524AB2F5AF
+	for <lists@lfdr.de>; Thu, 21 Aug 2025 12:55:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27D86603E18
-	for <lists@lfdr.de>; Thu, 21 Aug 2025 10:24:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B92D21C8582A
+	for <lists@lfdr.de>; Thu, 21 Aug 2025 10:55:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD9F2F1FC6;
-	Thu, 21 Aug 2025 10:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5220F308F11;
+	Thu, 21 Aug 2025 10:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QMwz0wxR"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NUIc1WAs"
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7A324A06D
-	for <ksummit@lists.linux.dev>; Thu, 21 Aug 2025 10:23:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4D7136358
+	for <ksummit@lists.linux.dev>; Thu, 21 Aug 2025 10:54:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755771813; cv=none; b=NqTLnhAeqfe2Ax1Keu9ECB45ZJ4xl6wW72nfh6ZNQIHLLPP5m9RNilkfVLzw499NDPUATVY+7B/bULnGZNwx6u3ws0w6pCXBrDIUhbje3GQx44JR06BJBA1BQGma7JjJxajRqBHZicFYCuUfCMvgcAAk2GZbdBhFDZh745sZU8E=
+	t=1755773696; cv=none; b=RsTRG3jnEIS3/4h8MNBlfjmyzWV4jBdMKiaFQ1aqziZInG9gA2EGvHvYqtsxfB390yuqpLz43T3ukYJvfxeN8aOLK1cXHnn0SfMJTREhO2/nUrkQMre++qH4RO6cgLX2kNZeEtbdgyyzg2aBo6Tx/YlLsBsHwCdgZExCJ0JM1ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755771813; c=relaxed/simple;
-	bh=On05gZiqloJDJpnZfMvzOT9D11TM0YHujiqyN/6pLJ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FnJXwwt1DNVFuHa97evYH2oleUrhw+Xd2Gs+dwv0d9V8VpgK6EPWnt804dyyfZmF7FN9CjP+WMorWjy/3jdB9iz7NN1wssiI8C8Ifc3DVZtJ7PEsmt/8SnmRMOCUcUEVDetRl1TroZ6M0vD5DKQ1xCZULHhZm+P2vbFVniEr9F4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QMwz0wxR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F11C4CEEB;
-	Thu, 21 Aug 2025 10:23:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755771812;
-	bh=On05gZiqloJDJpnZfMvzOT9D11TM0YHujiqyN/6pLJ0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QMwz0wxRI5Yf10/h9Ge93b4AOhHCOsmxE1xoVCoY/lLU57IznSoV+rouTyHWP2kXu
-	 hWjfXrw3o269WzU1jCiD7Qi8or9Kw/spiR0EgU6bej6GjlrhpQLnJ3rIp3E/F72iaa
-	 hlV/kMlD0YbsMPT8PZsYDfUw57RWUa4SU736bkZyrcl7Wl3v/adzkf5AA8A97q7pbg
-	 RbF5jrJIsaKEl0+rMSTfv2c164UY/4UwIj3CHQHRDC6r6YqtCj80aCBu/362rE+QPw
-	 7rDqrWKv1e92ughwADqwxOSQdx84Nf36oaF8bJXSwclXYeng0PvS6Rp8MrbJZ/mw9Q
-	 P3Qlgha+6g45w==
-Date: Thu, 21 Aug 2025 12:23:29 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, Jiri Kosina
- <jkosina@suse.com>, ksummit@lists.linux.dev
-Subject: Re: [MAINTAINERS SUMMIT] Annotating patches containing AI-assisted
- code
-Message-ID: <20250821122329.03c77178@foz.lan>
-In-Reply-To: <d565cb60-29bd-4774-995d-0154c0046710@paulmck-laptop>
-References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
-	<aJJEgVFXg4PRODEA@lappy>
-	<12ded49d-daa4-4199-927e-ce844f4cfe67@kernel.org>
-	<f482c860-c6b2-4c5b-baa8-b546761debdf@paulmck-laptop>
-	<c0ecacbefa1e93cae4176dc368f2ea63f611f56c.camel@HansenPartnership.com>
-	<9020e75d-361f-457f-9def-330d8964f431@paulmck-laptop>
-	<20250818230729.106a8c48@foz.lan>
-	<9383F8DB-CD38-40CC-B91D-7F98E8156C04@HansenPartnership.com>
-	<4tacplepoih3wvejopmtkdg7ujtvwmufd5teiozk5im2jikn7a@jdbou6kwindl>
-	<d565cb60-29bd-4774-995d-0154c0046710@paulmck-laptop>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1755773696; c=relaxed/simple;
+	bh=6z9+vcQJUI6gFcHn8TkrD2LAj/6hHrhU8RpC0IcDO5Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Jyc+w6sOxvvGZ+ojQlqrU3Iwoip3e+4oD5gNhc8JXaMBKpGWxrQenfHMfOGs08+wtXs0qBoim+8S6qIRBQp25g7+z6ezw5vh0j/cJzgcZb/8EK5IkSKrQ7pIRQfNbFJkKsfIwPla8iBxQKKFtx5Vns8arURS6SoaGbxXcogs+80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NUIc1WAs; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-24458051ac6so1210315ad.1
+        for <ksummit@lists.linux.dev>; Thu, 21 Aug 2025 03:54:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755773695; x=1756378495; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6z9+vcQJUI6gFcHn8TkrD2LAj/6hHrhU8RpC0IcDO5Y=;
+        b=NUIc1WAsN6jSuZ32mT33EaKMgCb45DICbm6/pSkbw7djx/6zK4WLEkA7jN0sj/jA8F
+         CVqdQGGjVEbHLe3YpSdzmyzqw4iq4P/4L7QAXbfmDphC0m+yQrL7KcuMERFEjzhd0ToA
+         kwQb6KP+gPeROQ7WPAorPTaFd1r5UVoSAiDgTyeRTEH06nfl0zVXhojhYtl9hkkZSdVt
+         vsHECyRjuEyGrn1GMHXrrRJkiH8216CZegmu8e74wk9bGPp4J1JMtkh/qXx43cXzF8le
+         DfTWOd1y5nGu8qVT3mpAuMpMDZcooUNu36GZuuNcqPow8hsMDyf84rx4hQkVixFIgXod
+         lyyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755773695; x=1756378495;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6z9+vcQJUI6gFcHn8TkrD2LAj/6hHrhU8RpC0IcDO5Y=;
+        b=w7fK14VAz/ORLxmm/RVw1qk3SKZdD0ZJM2oa82iItE8RDmlu0BxQL/3N8SAZL3I2b7
+         IBT4PSltKZQyTyZ1jenqBReJEEL2kB5tekzAa6AwLwraVh8fsIncrdrAVvupogTG22bG
+         qIueC0nxv1qig/3L/Yorj/uOFDP3uNb70zwCFvjplMScgJ+8U1A+QkXYOKea9UPJe/ya
+         hj+wmAnZ6UGeDcf39JKgczqOx1+zNk1Q0leQUgL2a0u8Fi9SggxfhYyf3FJl1nOedXnm
+         +Vemf4Oi4mMnqKIlrCyA1cLC/F7bVzR/oI+hwc8dzP/v8UZyuLlWP/so9mm+WMNKf6VG
+         TkEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUQgFzCy/3dzgP7e3yzbNANR2wmgPbjMKIIs1dLYjowgQjCcpy0F/sSX4rOEvo0i3EXLa16MqsS@lists.linux.dev
+X-Gm-Message-State: AOJu0YwH0eBXzQEU1avxz0HNMUyfqE3Eeoq6kXXF6rDr4k4yD+4yIft+
+	h4+t2y6vU0VmZgABQJPx4HPX7j+r2YUwE1RDGze9Rj2wXleUAEEW/YP4gLjFTj5SO52k0Hnx3mL
+	/LTTM8ThvPS1LwTMo6ukBxhFcjdE9zqA=
+X-Gm-Gg: ASbGnctxOwri0jf5+ziYjKtzxXZ0UQLZA2aJO5CuAM6pbnnDKd+JmrXXPlXUF9hnR1d
+	H4Wg4vFkJHPva2wqY7v+LzYZq6aTrG6L5jlcVrR5Oer0UIrvjC6rEXnFXBG7TmxaVtmEtsMOMLU
+	ERgZDLW+BF03h36DKcoux4/AkG3Ebdw40JrR+Db0xqfk3q2RWb47pNqccjnXmrQNUjvq+elq4Cb
+	LyfJARn2rWnh+YzSAI=
+X-Google-Smtp-Source: AGHT+IEeaGqbNm0p7f2FlU3KO8H/wa5ghpAWrMUDevru/4vMoYDqRyFQJz+LHOOKfyVYW8tZy/hBZ2T6boIqroqtm1Y=
+X-Received: by 2002:a17:902:fc47:b0:23f:fd0e:e5c0 with SMTP id
+ d9443c01a7336-245ff86b777mr15086625ad.9.1755773694694; Thu, 21 Aug 2025
+ 03:54:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
+ <aJJEgVFXg4PRODEA@lappy> <12ded49d-daa4-4199-927e-ce844f4cfe67@kernel.org>
+ <f482c860-c6b2-4c5b-baa8-b546761debdf@paulmck-laptop> <aJpqo48FgDLglg-p@bombadil.infradead.org>
+ <a9122886-701f-46b6-9616-24b31f2dd44c@paulmck-laptop> <20250818232332.0701fea2@foz.lan>
+ <4dae36f1-b737-4ea0-b3d5-6a7784967578@paulmck-laptop> <wznbwwz2lywki34l5bdl327bpvdzvsmiwzjhdfe5ys7e7puwfy@652l53zffvnl>
+ <eb52bf02-48b6-43fa-93b4-29d827cfcb51@paulmck-laptop>
+In-Reply-To: <eb52bf02-48b6-43fa-93b4-29d827cfcb51@paulmck-laptop>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 21 Aug 2025 12:54:42 +0200
+X-Gm-Features: Ac12FXw5XGpQchdxQDPPrDaoLlP5Pch9mZx4VEkW3GWvTNoC0ACCX9VJHHpCaVw
+Message-ID: <CANiq72k096VkeCNnT4itWkSLFBAHTJL0xmsobfV1iZfDYu26Dw@mail.gmail.com>
+Subject: Re: [MAINTAINERS SUMMIT] Annotating patches containing AI-assisted code
+To: paulmck@kernel.org
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, Jiri Kosina <jkosina@suse.com>, ksummit@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Em Wed, 20 Aug 2025 14:44:00 -0700
-"Paul E. McKenney" <paulmck@kernel.org> escreveu:
+On Thu, Aug 21, 2025 at 12:03=E2=80=AFAM Paul E. McKenney <paulmck@kernel.o=
+rg> wrote:
+>
+> Use of a local service might seem attractive, but even if you somehow
+> know for sure that it doesn't send your prompts off somewhere, it very
+> likely at least logs them, for customer-service purposes if nothing else.
+> Which might be less obviously troubling that broadcasting the prompts
+> publicly, but any logged prompts are still discoverable in the legal
+> sense.
 
-> On Tue, Aug 19, 2025 at 06:16:10PM +0200, Mauro Carvalho Chehab wrote:
-> > On Tue, Aug 19, 2025 at 04:23:46PM +0100, James Bottomley wrote: =20
-> > > On August 18, 2025 10:07:29 PM GMT+01:00, Mauro Carvalho Chehab <mche=
-hab+huawei@kernel.org> wrote: =20
-> > > >Em Tue, 12 Aug 2025 07:42:21 -0700
-> > > >"Paul E. McKenney" <paulmck@kernel.org> escreveu: =20
-> > > [...] =20
-> > > > do agree that many of the lawsuits seem to be motivated by an =20
-> > > >> overwhelmening desire to monetize the output of AI that was induce=
-d by
-> > > >> someone else's prompts, if that is what you are getting at.  It do=
-es seem
-> > > >> to me personally that after you have sliced and diced the training=
- data,
-> > > >> fair use should apply, but last I checked, fair use was a USA-only=
- thing. =20
-> > > >
-> > > >Maybe, but other Countries have similar concepts. I remember I saw an
-> > > >interpretation of the Brazilian copyright law once from a famous lay=
-er
-> > > >at property rights matter, stating that reproducing small parts of a=
- book,=20
-> > > >for instance, could be ok, under certain circumstances (in a concept
-> > > >similar to US fair use). =20
-> > >=20
-> > > Yes, technically.  Article 10 of the Berne convention contains a weak=
-er concept allowing quotations without encumbrance based on a three prong t=
-est that the quote isn't extensive,  doesn't rob the rights holder of subst=
-antial royalties and doesn't unreasonably prejudice the existing copyright =
-rights. =20
-> >=20
-> > Exactly. The interpretation from such speech I mentioned is based on th=
-at.
-> > Now, exactly what is substantial is something that could be argued.
-> >=20
-> > There are two scenarios to consider:
-> >=20
-> > 1. AI using public domain or Open Source licensed code;
-> >=20
-> > There are so many variations of the same code patterns that AI
-> > was trained, that it sounds unlikely that the produced output would
-> > contain a substantial amount of the original code.
-> >=20
-> > 2. Public AI used to developt closed source=20
-> >=20
-> > If someone from VendorA trains a public AI to develop an IP protected d=
-river
-> > for HardwareA with a very specialized unique code, and someone asks the
-> >  same AI to:
-> >=20
-> > 	"write a driver for HardwareA"
-> >=20
-> > and get about the same code, then this would be a possible legal issue.=
-=20
-> >=20
-> > Yet, on such case, the developer from VendorA, by using a public AI,
-> > and allowed it to be trained with the code, opened the code to be used
-> > elsewhere, eventually violating NDA. For instance, if he used
-> > Chatgpt, this license term applies:
-> >=20
-> > 	"3. License to OpenAI
-> >=20
-> > 	 When you use the service, you grant OpenAI a license to use
-> > 	 your input for the purpose of providing and improving the=20
-> > 	 service=E2=80=94this may include model training unless you=E2=80=99ve=
- opted out.
-> >=20
-> > 	 This license is non-exclusive, worldwide, royalty-free,=20
-> > 	 sublicensable=E2=80=94but it's only used as outlined in the Terms of =
-Use
-> > 	 and privacy policies."
-> >=20
-> > So, if he didn't opt-out, it granted ChatGPT and its users a patent-free
-> > sublicensable code.
-> >=20
-> > Ok, other LLM tools may have different terms, but if we end having
-> > to many people trying to monetize from it, the usage terms will be
-> > modified to prevent AI holders to face legal issues.
-> >=20
-> > Still, while I'm not a lawyer, my understanding from the (2)
-> > is that if one uses it for closed source development and allowed
-> > implicitly or explicitly the inputs to be used for training, the one
-> > that will be be accounted for, in cases envolving IP leaking, is the
-> > person who submitted IP protected property to AI. =20
->=20
-> Many of the AI players scrape the web, and might well pull in training
-> data from web pages having a restrictive copyright.  The AI's output
-> might then be influenced by that restricted training data.=20
+I think by "local service" Mauro may mean, in general, open source
+projects that do not require network access and that would not have
+customer service in the commercial sense and so on. Some open source
+projects still have logging or telemetry, of course -- I don't know
+how common that is in libraries/apps of that domain -- but if so I
+guess forks would appear, or people would run them in isolated VMs if
+they are concerned about things like that, etc.
 
-True, but this is not different than a developer seeking the web for
-answers of his development problems, reading textbooks and/or reading=20
-articles.
-
-Also, if someone publicly document something an any sort of media,
-it is expected that people will read, adquire knowledge from it and
-eventually materialize the acquired knowledge into something. This
-is fair use, and has some provision from Berne convention, although
-it may depend on each Country's specific laws.
-
-On my view, if the trained data comes from lots of different
-places, as AI is actually a stochastic process that write
-code by predicting the next code words, if there's just one web=20
-site with an specific pattern, the chances of getting exactly
-the same code are pretty low. It is a way more likely that humans
-would pick exactly the same code as written on his favorite
-textbook than an LLM feed with hundreds of thousands of web
-sites.
-
-> Although we
-> might desperately want this not to be a problem for AI-based submissions
-> to the Linux kernel, what we want and what the various legal systems
-> actually give us are not guaranteed to have much relation to each other.
-
-True, but that's not the point. AI is not that different than
-someone googling the net to seek for answers.
-
-The only difference is that, when AI is used, you won't know
-exactly from where the code was based.
-
-I agree that this could be problematic. But then, again, when a maintainer=
-=20
-picks a patch from someone else, the same applies: we don't have any
-guaranties that the code was not just copied-and-pasted from some place,
-except by the SoB.
-
-In any case (either AI, human or hybrid AI/human), if the code has issues,
-we may need to revert it.
-
-On other words, AI doesn't radically changes it: at the end, all remains
-the same.
-
-That's why I don't think we'll get any new information nor need to
-follow any procedure different than what we already do, if the developer
-had used AI, and to what extent.
-
--
-
-Now, a completely different thing is if we start having "incompetent"
-developers ("incompetent" in the sense given by the Dilbert Principle) that
-have some AI bot patch-generator to write patches they can't do themselves.
-
-I'll certainly reject such patches and place such individuals on my
-reject list.
-
-
-Thanks,
-Mauro
+Cheers,
+Miguel
 
