@@ -1,48 +1,56 @@
-Return-Path: <ksummit+bounces-2180-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2181-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F1B2B3017F
-	for <lists@lfdr.de>; Thu, 21 Aug 2025 19:53:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FDD6B301AB
+	for <lists@lfdr.de>; Thu, 21 Aug 2025 20:03:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 194DC173CF6
-	for <lists@lfdr.de>; Thu, 21 Aug 2025 17:53:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DE8F1CE4119
+	for <lists@lfdr.de>; Thu, 21 Aug 2025 18:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D36E338F57;
-	Thu, 21 Aug 2025 17:53:30 +0000 (UTC)
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7298834165B;
+	Thu, 21 Aug 2025 18:02:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ab07SxrT"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25B0482FF
-	for <ksummit@lists.linux.dev>; Thu, 21 Aug 2025 17:53:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A852E36EA
+	for <ksummit@lists.linux.dev>; Thu, 21 Aug 2025 18:02:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755798810; cv=none; b=CC4pwyTVj8oQB/mpJa1q3vYy+yBKel9340lqcbWTIbq+n0dRmOl27eJyS7xAL6E/TetyXWmaASqVyk9GH+H1NMSJrXMDFCO9kF9CPP/BUPpHkx4jm/EW7Fpy+XoAWsppFQyJj6cyl7loiqIUT0GjkHAn7GwWWkuPHLBpmaxMnaI=
+	t=1755799325; cv=none; b=J0YtIg6t+cuKpe0X8sce0flyr/JLSpvN9m1SBFA7MrgpmkkfJWJoXzLzeH6By3uUfMe8/U2eNRA3MFhRgTDMb71ydvyg2SgRwZ9Y/h20l5SVwquB4drdugW/C4gx8ai8zJFRk8MCBrMScQoUxEQMj+iWStgkOHRLLd5u4j8aRlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755798810; c=relaxed/simple;
-	bh=kFH8nId/UOK+3xUp0CXPDzlj4tmvXefvNpCeTtVJUOE=;
+	s=arc-20240116; t=1755799325; c=relaxed/simple;
+	bh=+L/PMHVvqE99dEGKljkUMEwd3tcbh9ogbNgNiTLNWPE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tvAZtMfBmeO+m9KuQKQY4rYGrOLRxccAhUobkL48BJQrDXCnO6zP3WaZXOYrBweAjANVuQbWH2PJLNeFKo36Ebq8C7wieoVb+lni3os1RVz8UIrasK0zINokNYRzY4mB/4XiSV7MnwmamWKx1J+XFhFnvGX+GI0r4VhprNKsRM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9207B117BDC;
-	Thu, 21 Aug 2025 17:53:26 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf17.hostedemail.com (Postfix) with ESMTPA id C1FAC19;
-	Thu, 21 Aug 2025 17:53:24 +0000 (UTC)
-Date: Thu, 21 Aug 2025 13:53:29 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>, James Bottomley
+	 MIME-Version:Content-Type; b=pHo8PmvDpTKSgoyYX1Y+W1oVrpxiQDukb6FEpEhfvPN/JhTLl5MXaPfSDVNk/f2JZ1Nq7jg41nt3Ce7sH15Due5SzZ1GjyUDxb4yvD9/3c9lU8g0Wq5jOfHXtTvrXuzneG4LUzpA9XwVVFTd2xH2EwNWYgBu3vowwc/cvmRLdEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ab07SxrT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBEACC4CEEB;
+	Thu, 21 Aug 2025 18:02:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755799324;
+	bh=+L/PMHVvqE99dEGKljkUMEwd3tcbh9ogbNgNiTLNWPE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Ab07SxrTFV9HzF1wIRKuL3CNOzZJ1hq3ZJdVJmBovpgarjXF5cdOnDav9J32cGCuG
+	 QjuQH3fFLwP7F/fL37MTfeN/+iiQ7rqyy0/tVmhcysbu1j6SSBN9+TBwK2O7LYNyyk
+	 5xV12KruSNMDlU8lhP8a+70sA81OBQFKrI8Qr+t2NpkqkVUC5/sCHxyimAeuD7HgG/
+	 sUfB9XBVrGnfPWvuo7zRD0pfByfu2th20ilW6aThxwQOF+APdp5ndIx/Nb1yvkyWoB
+	 HhMh30j2FMnkQ+GhNdXD7sg+2Yrvn41FxqOwdu02P1cUkjl5EfOsBpV8d62p9OqPVB
+	 l+uOtojjCR5mA==
+Date: Thu, 21 Aug 2025 20:01:59 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: "Luck, Tony" <tony.luck@intel.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>, "Paul E. McKenney"
+ <paulmck@kernel.org>, James Bottomley
  <James.Bottomley@hansenpartnership.com>, Jiri Kosina <jkosina@suse.com>,
- ksummit@lists.linux.dev
+ "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
 Subject: Re: [MAINTAINERS SUMMIT] Annotating patches containing AI-assisted
  code
-Message-ID: <20250821135329.16dad71e@gandalf.local.home>
-In-Reply-To: <20250821193041.398ed30b@foz.lan>
+Message-ID: <20250821200159.1bcdf0c9@foz.lan>
+In-Reply-To: <DS7PR11MB60772F52AF3A152B5AB04A1CFC32A@DS7PR11MB6077.namprd11.prod.outlook.com>
 References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
 	<aJJEgVFXg4PRODEA@lappy>
 	<12ded49d-daa4-4199-927e-ce844f4cfe67@kernel.org>
@@ -56,7 +64,8 @@ References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
 	<20250821122329.03c77178@foz.lan>
 	<20250821125037.5cf5be3d@gandalf.local.home>
 	<20250821193041.398ed30b@foz.lan>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	<DS7PR11MB60772F52AF3A152B5AB04A1CFC32A@DS7PR11MB6077.namprd11.prod.outlook.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -65,43 +74,46 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: oto6cax4cmjjd3mujf699h3hrno54c4e
-X-Rspamd-Server: rspamout03
-X-Rspamd-Queue-Id: C1FAC19
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX19ZmIA5Fqk52cubHc7uaN7+6DesPPFSH1g=
-X-HE-Tag: 1755798804-978727
-X-HE-Meta: U2FsdGVkX19phQdSkcjlFWhvJhDIct6NCkvYC1A5tiydFf/m3TmUev4/6hxjZCdl3NcPzB57te08o4KrS4rpDcs/SSvk/ywgbPmtXUoTasXgp4qQXu1rT5hwFZ00kM7KXecr/QJRzC8x1Jb6cCPV1SDYo26GWyDd/FbS/906is4hZ/uDT1xqsLQHxgjwS+jA4TJWioUsibTjghvIPxUFbJACdLy5rDL+NLAPalSJhKwUqZi8pMhVG/6G0gqzvqELLB9Yxljb6dm7wYtKtLcvrBfY5W+0yUW4PosHUBSYo5kR+IIgVQGlrb7HcKHiVY3cADPoKf+QxMYFitNvqBIdbwzmeXhnaH+lcbM8TBxbICwpYerCSGT41g==
 
-On Thu, 21 Aug 2025 19:30:41 +0200
-Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+Em Thu, 21 Aug 2025 17:36:54 +0000
+"Luck, Tony" <tony.luck@intel.com> escreveu:
 
-> I bet that one of the first things (if not the first) you
-> considered was: printf("Hello world!"). 
-
-I do believe "how much" you copy is important in the infringement of a
-copyright. I believe this is how "sampling" works in songs. If you only
-copy a little, it's not considered infringement. At least that's the way I
-believe it works.
-
-Now "Hello world!" may not be enough code to copyright.
-
+> > Do you remember the first time you saw that, and what copyrights
+> > were there? :-)  
 > 
-> I also bet you can't remember the first time you saw it.
+> Kernighan and Ritche "The C programming language" - First edition.
 
-As Tony Luck replied, I remember when I first saw it in the K&R book back
-in college.
+I saw it there too, but I probably saw it before that, on an "80 Micro"
+Magazine edition which I don't recall anymore.
 
-The funny part is, I still have my book. And looking at it, even though it
-recommends to use the examples, I can't seem to find where it gives you the
-right to use them. The start of the book has:
+Btw, Wikipedia says it came from a BCPL code (*). So, K&R were not the
+original authors.
 
-  All rights reserved. No part of this publication may be reproduced,
-  stored in a retrieval system, or transmitted, in any form or by any mean,
-  electronic, mechanical, photocopying, recording, or otherwise, without
-  the prior written permission of the publisher.
+(*) https://en.wikipedia.org/wiki/%22Hello,_World!%22_program
 
-Hmm.
+Anyway, the point is: i we weren't trained with such pattern, 
+a printf() with "Hey" or "Hi" would be a more likely answer.
 
--- Steve
+That's said, in the early programming days, I used a lot more
+this pattern (**):
+
+	The quick brown fox jumps over the lazy dog
+
+(**) https://en.wikipedia.org/wiki/The_quick_brown_fox_jumps_over_the_lazy_dog
+
+with has all 23 English characters. I have absolutely no glue when
+I first saw it, but it was before I got "C Programming Language" 
+book in hands, as I used it for a code I developed in Assembler
+before learning C.
+
+Yet, as I saw a lot more the "Hello world", I haven't using the
+brown fox pattern for years.
+
+Anyway, the point is: AI repeat patterns, but it will very likely
+repeat the ones that are used on tons of different places, where
+it is really hard to have any copyrights applied (as they become
+common sense). Humans do the same.
+
+Thanks,
+Mauro
 
