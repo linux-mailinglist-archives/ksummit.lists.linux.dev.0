@@ -1,153 +1,112 @@
-Return-Path: <ksummit+bounces-2215-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2216-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CBB0B32227
-	for <lists@lfdr.de>; Fri, 22 Aug 2025 20:13:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DA5FB32243
+	for <lists@lfdr.de>; Fri, 22 Aug 2025 20:27:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8F7E1D276C9
-	for <lists@lfdr.de>; Fri, 22 Aug 2025 18:14:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03108B07BB0
+	for <lists@lfdr.de>; Fri, 22 Aug 2025 18:27:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 033F72BE628;
-	Fri, 22 Aug 2025 18:13:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J0/qh204"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B805D2BEC2E;
+	Fri, 22 Aug 2025 18:26:55 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1912BE033
-	for <ksummit@lists.linux.dev>; Fri, 22 Aug 2025 18:13:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D48277017
+	for <ksummit@lists.linux.dev>; Fri, 22 Aug 2025 18:26:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755886433; cv=none; b=Za4Oi2vkC33xcmtHbCWYNXLgd9VC6dQLdmsJzafK0yynsXwbwGZ+sKgN38q18LT/N+LYhko6YJjJLELUJ/KOAfU56moHF8o85twc1euOo3MCPntqrH4sL8RAWyHtreWCmu0haEtnX6UzGk013Kc3SWu8psF+z3C3I4JQfxwPD9o=
+	t=1755887215; cv=none; b=d5FEErTvDvocTMQnywLhnLM16OpEnQUbMrLnLkeXnI9RSxeSL03k20i4w4wALC3B/sIugBFVf8DAak4wKCj6ttD+PvIYoqGGk/0SxQArq2cd5KUGmzF3UMvXSQlSiTv9JSS/19AUzq2w37jSPlq/dG2ld+ItMdbRjBZeCx1uG5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755886433; c=relaxed/simple;
-	bh=vU343fTAxgZmpgPZkktnORXe5EWIuSgLimMaZupOkQE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qsLws6+pUT4gYecTq/dYalJYTSsnHXXKbS5EHLDQ6kUsuhG44/w0I/ALgFpZYlxinOAeumETrzt8Yd0lVkbMknOmR2Hd0QfH5NLeifMYI+yLBRd6fcrTjsqVjT5v96yWp2bgRbyWNPNjF2rsptCaLLRE/x0voy+Rv0X4W5rqTDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J0/qh204; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E27F9C4CEF4
-	for <ksummit@lists.linux.dev>; Fri, 22 Aug 2025 18:13:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755886432;
-	bh=vU343fTAxgZmpgPZkktnORXe5EWIuSgLimMaZupOkQE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=J0/qh204A+4yfnTJ2NWo8b6v5sEJUk2J6Am+cWkIYuF7hk8eW6vHEeIfZv4DCg3e2
-	 XRoXxlcezc/MkUUxB3/nLG8fEwQB5CLqXAEhpOZsS2+sOnHhn0sMM6O9Wnfh4XEHB/
-	 vTlDpo/vsf+XBdF8EVTXikfB1BxWP/gKLcrKo75sdxv5jrBSwQNPOwt5bjpjZavgw7
-	 u3mv8t+rBqapKK9qDQbTrVpI/OIKx/TA0yTS4MrKtM3MNnQJUiJg0gWTBGjU0CmmkS
-	 FZV2D2loitmjwFdJg+1mTAPkv6gFS8xgH0eJZbjiH3m+PxhecWe/rTKCbEbT6aBi7R
-	 xLJJfCWtZ2n+w==
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e95230750ceso893921276.0
-        for <ksummit@lists.linux.dev>; Fri, 22 Aug 2025 11:13:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXZCk4qy+LnNfTxJ8t00bQpSxp83HU64P9EeooFnqFzqMN3PdA8EQECK9yDqxzNy0pkQ2J4A1YO@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy0Zougjl+sBbJ6+bqI9+YtqdunR2/hpnF/Nm1asziRC98yir6T
-	VpZyx09tYg+oXZqndGCsIUsZ8nlIZ5Oiq9QjPj7oduedM7/Kd1tF1nnPW8OqRhBB8kRPSPverNa
-	/mdK8lfvUGPm+YAYV71om+pr9PNM04cHYFWfAK4BSTg==
-X-Google-Smtp-Source: AGHT+IHhRf2TaqCZn/6kRt8XjIKqpaL9R5RJhn8UTmBo6Oybg2svLWl6m5S/cJDHVVyZbVAu3WydAGxqOV8Ga0ecPRc=
-X-Received: by 2002:a05:6902:1891:b0:e95:11d6:258 with SMTP id
- 3f1490d57ef6-e9511d6033cmr6400849276.16.1755886432211; Fri, 22 Aug 2025
- 11:13:52 -0700 (PDT)
+	s=arc-20240116; t=1755887215; c=relaxed/simple;
+	bh=hNpZ6kyurjI67RrnYo0iaO3Q8WzJT1ts4smhKeiP/ag=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CTpiMJAi0BT591vuuAO/ujK0kJTho803OqIkx3Q/eIEWSokilUYYBulCeZMFEd98TmkJOx8ZYbPEjnwvw6MEZod2/R0ExyA+3euX4RzW5hk1ZT6cQBH6YVgmsWJwHlgAbqnrNv29ojOEkL6O/u0lq21dge/+9ZxRKLz63aueJmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CC684819ED;
+	Fri, 22 Aug 2025 18:26:45 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf18.hostedemail.com (Postfix) with ESMTPA id C440231;
+	Fri, 22 Aug 2025 18:26:43 +0000 (UTC)
+Date: Fri, 22 Aug 2025 14:26:50 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Chris Li <chrisl@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>, YoungJun Park
+ <youngjun.park@lge.com>, ksummit@lists.linux.dev, gunho.lee@lge.com,
+ taejoon.song@lge.com, linux-mm@kvack.org, David Hildenbrand
+ <david@redhat.com>
+Subject: Re: [TECH TOPIC] Per-cgroup Swap Device Control
+Message-ID: <20250822142650.572507ff@gandalf.local.home>
+In-Reply-To: <CACePvbUYp7w68C8z_TeMhOJQ0hmWw1jkwy+D_Lb+N5WbmufAug@mail.gmail.com>
+References: <aKgm+wisMipLqnL4@yjaykim-PowerEdge-T330>
+	<aKihqI8PWLFL1b5i@casper.infradead.org>
+	<20250822131022.4df59a60@gandalf.local.home>
+	<aKisJJYL9LV20qzg@casper.infradead.org>
+	<CACePvbUYp7w68C8z_TeMhOJQ0hmWw1jkwy+D_Lb+N5WbmufAug@mail.gmail.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <aKgm+wisMipLqnL4@yjaykim-PowerEdge-T330> <aKihqI8PWLFL1b5i@casper.infradead.org>
- <20250822131022.4df59a60@gandalf.local.home> <aKisJJYL9LV20qzg@casper.infradead.org>
-In-Reply-To: <aKisJJYL9LV20qzg@casper.infradead.org>
-From: Chris Li <chrisl@kernel.org>
-Date: Fri, 22 Aug 2025 11:13:41 -0700
-X-Gmail-Original-Message-ID: <CACePvbUYp7w68C8z_TeMhOJQ0hmWw1jkwy+D_Lb+N5WbmufAug@mail.gmail.com>
-X-Gm-Features: Ac12FXyVtLiDu6js8Zea8UB6FyOKcVFb0xZCJLZ3n24tp2pC2drBWSymijPbbTU
-Message-ID: <CACePvbUYp7w68C8z_TeMhOJQ0hmWw1jkwy+D_Lb+N5WbmufAug@mail.gmail.com>
-Subject: Re: [TECH TOPIC] Per-cgroup Swap Device Control
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, YoungJun Park <youngjun.park@lge.com>, ksummit@lists.linux.dev, 
-	gunho.lee@lge.com, taejoon.song@lge.com, linux-mm@kvack.org, 
-	David Hildenbrand <david@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 8o1zs5wuk65g1g9wuxwbyunznxxfidzk
+X-Rspamd-Server: rspamout07
+X-Rspamd-Queue-Id: C440231
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX19qApwMrh7stjceUbbTYGOhEuvVEc9W+D0=
+X-HE-Tag: 1755887203-398458
+X-HE-Meta: U2FsdGVkX18C6W5l/ocCnOU79zFmh36vZY7+wfTLac660UKzn13RzukaFrddo4l44BiOL+UWqAxbmdGL9fRRLeuWhUKHha6eFN9MU6taVE4q9Sq8QwcGuAZ64bi6hu2YpGTjAnWpES1ewABidgMmUjgtlXxUELGR62hBkXt9fwTQRzT3q0BpPfDVjCpxqbjK1cGCWf3x8SCEe4IVsYb2ziylmyzH/sxMTjxJHg7nCJ220wjShgTb5kEmbxMh7Kzmivcm5u8fABxWILQsSxzv2rsd311ZIUv1hw3zOB/8MsSMDnLHSUvg700JGAFZ72dqkrTp2s2dARstE3zbkrX8rFzDwpPmovPhuGKfFICgs58ZZUEjiG/u4rhA9HwxrvLUI/pLpUTFAQumhEULY7nEkryE7nGCnETyIxOogG0pWC3PWYEhsZEjGQ==
 
-On Fri, Aug 22, 2025 at 10:43=E2=80=AFAM Matthew Wilcox <willy@infradead.or=
-g> wrote:
->
-> On Fri, Aug 22, 2025 at 01:10:22PM -0400, Steven Rostedt wrote:
-> > On Fri, 22 Aug 2025 17:58:16 +0100
-> > Matthew Wilcox <willy@infradead.org> wrote:
-> >
-> > > > Proposal:
-> > > > I am developing on a restricted internal platform where there is a
-> > > > technical requirement to use idle devices as extended memory.
-> > >
-> > > I don't think this is appropriate for the maintainer summit.  You
-> > > can submit it to the Plumbers MM microconf [1] or LSFMM in May.
-> > >
-> > > [1] https://lpc.events/event/19/contributions/1995/
-> > >
-> > > Also you should have cc'd linux-mm for this kind of thing, adding
-> > > it now.  Preserving the rest of the proposal for those who are
-> > > interested.
-> >
-> > From Ted's original email: https://lore.kernel.org/all/20250805144357.G=
-A762104@mit.edu/
-> >
-> >   Related to the Maintainer's Summit, the Kernel Summit is organized as=
- a
-> >   track which is run in parallel with the other tracks at the Linux
-> >   Plumbers Conference (LPC), and is open to all registered attendees of
-> >   LPC.  The goal of the Kernel Summit track will be to provide a forum =
-to
-> >   discuss specific technical issues that would be easier to resolve in
-> >   person than over e-mail.  The program committee will also consider
-> >   "information sharing" topics if they are clearly of interest to the w=
-ider
-> >   development community (i.e., advanced training in topics that would b=
-e
-> >   useful to kernel developers).
-> >
-> >   To suggest a topic for the Kernel Summit, please do two things. by
-> >   September 10th, 2025. First, please send e-mail with a subject prefix=
- of
-> >   [TECH TOPIC] to ksummit@lists.linux.dev.  As before, please use a
-> >   separate e-mail for each topic.
-> >
-> > So this appears to be appropriate.
->
-> My mistake.  I thought tech topics were part of maintainer summit, not
-> part of the kernel track.  It'll be up to the kernel track organiser(s)
-> whether to accept it to that track or whether they think it'll be more
-> appropriate in the MM microconf.
+On Fri, 22 Aug 2025 11:13:41 -0700
+Chris Li <chrisl@kernel.org> wrote:
 
-That is partly my fault as well. I suggest to YoungJun for the LPC
-2025 in this email:
+> Anyway, is there any conflict to apply to LPC MM Micro Conference
+> track as well? Of course which conference to apply to is a decision
+> for YoungJun to make. I am just curious what options are available
+> now.
 
-https://lore.kernel.org/linux-mm/CAF8kJuMo3yNKOZL9n5UkHx_O5cTZts287HOnQOu=
-=3DKqQcnbrMdg@mail.gmail.com/
+Note that MC topics are more discussion focused than either the Refereed or
+Kernel Summit tracks. A MC topic is between 15 to 30 minutes which does not
+give much time for presentations. A Track topic is longer and allows more
+presentation of the topic. Also, acceptance to a Track talk gives a pass to
+Plumbers, whereas acceptance to an MC topic does not guarantee one.
 
-What I have in mind is extract as you said, the MM track Micro
-Conference, and CC the linux-mm mail list as well. I forgot to mention
-the details of the MM Micro Conference track part in my suggestion
-email.
+> 
+> Hi, YoungJun,
+> 
+> If you decide to apply for LPC MM MC track as well, don't forget to
+> register yourself as a speaker on the LPC website.
+> https://lpc.events/event/19/abstracts/
+> The lower right of the page, there is a button "Submit a new abstract",
+> Click on that to start the process. Don't forget to select the pull
+> down menu MM Micro conference.
 
-Anyway, is there any conflict to apply to LPC MM Micro Conference
-track as well? Of course which conference to apply to is a decision
-for YoungJun to make. I am just curious what options are available
-now.
+The part I left out of Ted's email was:
 
-Hi, YoungJun,
+   Secondly, please create a topic at the Linux Plumbers Conference
+   proposal submission site and target it to the Kernel Summit track:
 
-If you decide to apply for LPC MM MC track as well, don't forget to
-register yourself as a speaker on the LPC website.
-https://lpc.events/event/19/abstracts/
-The lower right of the page, there is a button "Submit a new abstract",
-Click on that to start the process. Don't forget to select the pull
-down menu MM Micro conference.
+        https://lpc.events/event/19/abstracts
 
-Hopefully see you in LPC then.
+   Please do both steps.  I'll try to notice if someone forgets one or the
+   other, but your chances of making sure your proposal gets the necessary
+   attention and consideration are maximized by submitting both to the
+   mailing list and the web site.
 
-Chris
+
+So YoungJun has already signed up to the website and proposed a Kernel
+Summit track. It can be switched over to a MM MC topic by editing the
+submitted abstract and switch the Track over to:
+
+  "Kernel Memory Management MC"
+
+-- Steve
 
