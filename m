@@ -1,101 +1,99 @@
-Return-Path: <ksummit+bounces-2202-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2203-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3ED5B3117A
-	for <lists@lfdr.de>; Fri, 22 Aug 2025 10:18:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2A8CB31655
+	for <lists@lfdr.de>; Fri, 22 Aug 2025 13:30:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEC8672570C
-	for <lists@lfdr.de>; Fri, 22 Aug 2025 08:15:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D04811892FD4
+	for <lists@lfdr.de>; Fri, 22 Aug 2025 11:30:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8632EB5DA;
-	Fri, 22 Aug 2025 08:14:58 +0000 (UTC)
-Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14952F746A;
+	Fri, 22 Aug 2025 11:29:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GuFB6ivF"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7CCF286893
-	for <ksummit@lists.linux.dev>; Fri, 22 Aug 2025 08:14:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.147.51.103
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A162291C3F;
+	Fri, 22 Aug 2025 11:29:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755850498; cv=none; b=G5wYS5/XLmnttPBDEp1MBYEZF/LX0/sndhQTTNaOj6E+iU1IPV86yxDGrcmLWQsKt9jgin0/+lsJ4eXJRZRHLXrpifKL64zVSW8t48BajsOjoiCSJTVm7UsgDjJSoYfxR0OHTg+Pp0SsGzbibirxcwJ+1PaLqKJ3BRtLPO62RXk=
+	t=1755862188; cv=none; b=D3WNR890uZxbjRL3R68pCudY8t+O3Jc5I7lr1RPr+4nW1tDlxikemO13/ZSlpY/nOVN1YLD+UBdACXmMwltfzUW9HS/xK5A+c7+1JouQ29+JlDbhD51PyP4Z8EgxCVYIB3C7eUQrsohJ6XKv1Uq+lavcAX2GJc9zetNk7ZDmsio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755850498; c=relaxed/simple;
-	bh=yaowHG58gZ2EXZxhp1Z9v630fFQb6+eQd6H4fhC64hc=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=ktLTOiD1bwee+NQX/2lhkCxF2eeUU5uShIkTAuXB+Vf8Gp/kA/S8SmNuNncmujiGmuhpgPzCDK/l4HvsNleRG2BX+fMQOHG+v5ZvN6VRQSyofNELqKCppmJ+FjGQNmmR5leFOxDGxjA3/VPb2c4AJQZlp49UygQ44scHvQQjhnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com; spf=pass smtp.mailfrom=lge.com; arc=none smtp.client-ip=156.147.51.103
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 22 Aug 2025 17:14:51 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Fri, 22 Aug 2025 17:14:51 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: ksummit@lists.linux.dev
-Cc: youngjun.park@lge.com, chrisl@kernel.org, gunho.lee@lge.com,
-	taejoon.song@lge.com
-Subject: [TECH TOPIC] Per-cgroup Swap Device Control
-Message-ID: <aKgm+wisMipLqnL4@yjaykim-PowerEdge-T330>
+	s=arc-20240116; t=1755862188; c=relaxed/simple;
+	bh=bbC1YUgNLlBy5q2Utej8KQ1LJRsDhI7+Q/Jkxo3uDXE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BuMfTqRX9TH618bgHzksSYdtlDUKP2N+4idhnzxpMLmD7q7V9k+lOqyyYz9yrwwstKtt+l1X1LSVWe93ybYrr6G3d33BaxUFqC64A/zVDqJ4VK1DOFbsanI9jgSaxjI5Y2Plcal+SyUPoy93lXrB1+abf4RjMNSt0CX8kIKEjKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GuFB6ivF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AC67C4CEED;
+	Fri, 22 Aug 2025 11:29:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755862187;
+	bh=bbC1YUgNLlBy5q2Utej8KQ1LJRsDhI7+Q/Jkxo3uDXE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=GuFB6ivF+/M5Oqce003YMkEhK6a3TME8O9Aztjv8iDW8HikUnT84GXV88NJSn90Gz
+	 uliB2R+wGtK/9MCSnUZkv/nHMBFPpln1kUXos9JeC8wg7OzbVhiZg2gLhUUcnLPdlD
+	 t6vvcgziZ1GM4W36WF6kcOfZJe3TGG+z/2rm18etBWL3kUvelnP6QA0Xca24UOvVv3
+	 rIvDqfccJysDWF1duqPf1sHyLm8P+DIhS793WMZaMqVrLQ4g8MhSCbV4iKrgFqUFzV
+	 N5Zel6LZcHkPsE5BS6169mumdF7VyOUuspFWgJDPM4A7CWtH2SaH8lWL4w2BoPgsEp
+	 eq9xEGkEdfQTw==
+Date: Fri, 22 Aug 2025 13:29:43 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Theodore Ts'o <tytso@mit.edu>, James Bottomley
+ <James.Bottomley@hansenpartnership.com>, ksummit@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org
+Subject: Re: [MAINTAINER SUMMIT] Adding more formality around feature
+ inclusion and ejection
+Message-ID: <20250822132943.1ca76a8a@foz.lan>
+In-Reply-To: <aKeb8vf2OsOI19NA@casper.infradead.org>
+References: <fc0994de40776609928e8e438355a24a54f1ad10.camel@HansenPartnership.com>
+	<20250821203407.GA1284215@mit.edu>
+	<aKeb8vf2OsOI19NA@casper.infradead.org>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Abstract:
-Enabling cgroup-level control over swap devices for diverse workloads
+Em Thu, 21 Aug 2025 23:21:38 +0100
+Matthew Wilcox <willy@infradead.org> escreveu:
 
-Proposal:
-I am developing on a restricted internal platform where there is a
-technical requirement to use idle devices as extended memory.
+> On Thu, Aug 21, 2025 at 04:34:07PM -0400, Theodore Ts'o wrote:
+> > There is the saying that "bad facts make bad law", and the specifics
+> > of this most recent controversy are especially challenging.  I would
+> > urge caution before trying to create a complex set of policies and
+> > mechanim when we've only had one such corner case in over 35 years.  
+> 
+> Well. we may have dodged a few bullets before now.  Just in filesystems,
+> I can think of Hans Reiser, Jeff Merkey, Boaz Harrosh, Daniel Phillips
+> (no, i'm not saying any of the others did anything as heinous as Hans,
+> but they were all pretty disastrous in their own ways).
 
-One motivating scenario discussed was to configure background processes
-to use slow swap (network) while foreground processes use fast swap
-(local storage).
+There are other cases as well: there was a media driver maintainer that
+did pretty bad things, including physical threats against other
+maintainers. I even got a report that he did threat to life another
+maintainer who complained he would be violating GPL copyrights.
 
-Currently, the kernel does not provide per-process or per-cgroup swap
-selection, making this idea unachievable. To meet this usage need, and
-after reviewing alternatives, I reached the conclusion that swap
-devices must be controllable on a per-cgroup basis.
+> I don't think we can necessarily generalise from these examples to,
+> say, Lustre.  That has its own unique challenges, and I don't think that
+> making them do more paperwork will be helpful.
 
-I would like to present the motivation, implementation progress, and
-directions of this work, and invite discussion and feedback from the
-community. Through prior exchanges with Chris Li[1], I also recognized
-that this topic has already triggered meaningful technical debate, and
-I believe a broader discussion at Kernel Summit would be valuable.
+Agreed. I don't think those few examples have much in common:
+each had different types of issues. So, I don't think any text
+would be enough to cover such cases, as they're punctual.
 
-Agenda:
-1. Motivation for per-cgroup swap priority [2]
-   - Comparison with alternative approaches
+Probably the only thing that could be more effective would be to have
+an e-signed CLA for the ones which become maintainers.
 
-2. Implementation reviews and problem solving
-   - Changes in percpu clusters & swap [3]
-   - Consistency with cgroup parent-child semantics [4]
-   - Challenges with NUMA autobind and swap priority [5]
 
-3. Criticism and alternative ideas
-   - Technical concerns raised by Chris Li [6]
-   - Introduction of the swap tier approach
-
-4. Further discussion
-   - Topics expected to arise in ongoing reviews before Plumbers
-
-These agenda items reflect issues that have emerged through the ongoing
-RFC → PATCH development process. The presentation aims to summarize
-these discussions, share the current direction, and invite further
-feedback and open discussion from the community.
-
-[1] https://lore.kernel.org/linux-mm/CAF8kJuMo3yNKOZL9n5UkHx_O5cTZts287HOnQOu=KqQcnbrMdg@mail.gmail.com/
-[2] https://lore.kernel.org/linux-mm/20250612103743.3385842-1-youngjun.park@lge.com/
-[3] https://lore.kernel.org/linux-mm/CAMgjq7BJE9ALFG4N8wb-hdkC+b-8d1+ckXL9D6pbbfgiXfuzPA@mail.gmail.com/
-[4] https://lore.kernel.org/linux-mm/rivwhhhkuqy7p4r6mmuhpheaj3c7vcw4w4kavp42avpz7es5vp@hbnvrmgzb5tr/
-[5] https://lore.kernel.org/linux-mm/jrkh2jy2pkoxgsxgsstpmijyhbzzyige6ubltvmvwl6fwkp3s7@kzc24pj2tcko/
-[6] https://lore.kernel.org/linux-mm/CAF8kJuMo3yNKOZL9n5UkHx_O5cTZts287HOnQOu=KqQcnbrMdg@mail.gmail.com/
+Thanks,
+Mauro
 
