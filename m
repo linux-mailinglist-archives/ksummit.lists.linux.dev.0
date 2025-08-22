@@ -1,64 +1,60 @@
-Return-Path: <ksummit+bounces-2207-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2208-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D66F8B317B6
-	for <lists@lfdr.de>; Fri, 22 Aug 2025 14:26:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6F0EB31927
+	for <lists@lfdr.de>; Fri, 22 Aug 2025 15:19:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED436AA18BF
-	for <lists@lfdr.de>; Fri, 22 Aug 2025 12:25:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B836816E2EF
+	for <lists@lfdr.de>; Fri, 22 Aug 2025 13:16:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76A22E336F;
-	Fri, 22 Aug 2025 12:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B500303C90;
+	Fri, 22 Aug 2025 13:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="PseBtBnS"
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ZUaE1OKu"
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E7A1E51D
-	for <ksummit@lists.linux.dev>; Fri, 22 Aug 2025 12:25:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5364F2FF14B;
+	Fri, 22 Aug 2025 13:16:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755865536; cv=none; b=iOdu7MZzg/kAP+KIyIB2UNRYfnsneibx2IXELFMU6TJi7LUZmoOR5cgm2iaP0TYqP4c65D78s78Nci9mKNDlomDRkZzubicZvVKmgInhKAiUCoxzbRTTXm9IzX/CD3gkILCwUY8ET3jTc6WFFR+Hzwxv7EV/jHjMYv3/GwJQ2Qw=
+	t=1755868564; cv=none; b=sDI+/i/yXGpcKM+GN1DJ7opD97eD4uJ/SpKQfZIItTbH6cuWomk5UJJBLIMRnhN3av6cGHnJ3cl7GBCwdJYhE4QqYXqkzgzuKi/98ogIkd7QxcquRY7DfrAnx124OR6pZVXuIYNPT6nkx5RLftysOAXsmIMB7YXfFBSLqUuNbgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755865536; c=relaxed/simple;
-	bh=BiVLT7ijqZ0hT6ZphssnYd7Os4gZD4Awt6h1PY2IS2I=;
+	s=arc-20240116; t=1755868564; c=relaxed/simple;
+	bh=E9SWjDq2Dx9bluiQ3MsBtIywG3gBOC6POLtg9cN7FTg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lpfgu8ZlFBQBFqsepvw6Hzfs/rtoGF8YfuoeHPoHieBm4a1ai9c88/zAHT4x5V4ZT4fBWuTiAbLVeddvs4nb5eIy7MhjLeKIl9M28EqVMV8sNK5mKwlOkFZ9zup/unnWPZxrLXDtu16Qu3mCWPoyscVN2xmCMe/f2avsHcpB+qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=PseBtBnS; arc=none smtp.client-ip=18.9.28.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
-Received: from macsyma.thunk.org (pool-173-48-112-142.bstnma.fios.verizon.net [173.48.112.142])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 57MCPPEQ031704
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 22 Aug 2025 08:25:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1755865528; bh=duG5zyv9oNGXQ+s7J0J6ZL+HnHmEFnUBy4998ozC+v4=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=PseBtBnSD2Um4WHD8uuM6evgozorWxSMTkP0gL/I4PX/Bf77TwgU+AbEXawnThG1E
-	 HYPeR57pR8TjM3/brwFQ61sbW9EuusEMAW1QhahKJ29bEyuMfiRsTOgrKFgp66a/gF
-	 B5jjAJZ4LT3KTvagu8wQqeBTMXDbvB0VlX26FCPYP2AX+g33QTs5p3bqjqJWB4I7pe
-	 EyTdEtXvZzgn7bNVJi3Fr7PXgleHdKiFoJGn7uvq6YUikiuMhylBBCi4fjHgxEx4L6
-	 0yzizKf51syEsF3gizuqEs9j3SuQ3Pl1O0G/si6pGMt0X5KtRDCslaM1b599labI2r
-	 1vOLcM26S/lbg==
-Received: by macsyma.thunk.org (Postfix, from userid 15806)
-	id AD7A73FDD76E; Fri, 22 Aug 2025 08:24:24 -0400 (EDT)
-Date: Fri, 22 Aug 2025 08:24:24 -0400
-From: "Theodore Tso" <tytso@mit.edu>
-To: Greg KH <greg@kroah.com>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
-        ksummit@lists.linux.dev, linux-fsdevel@vger.kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hf5CZfEJ2hPskLop2w0F25gviaIS9WxE2RGCSO854guzws9R9lYUcEtVPOJwkCDsakzE5amdc9C+AxFeu2RJba7N49YhpQHyCiYxA576w/8/tVrNgRXOzJb2Py3bcbAd4iz8NsPvD1ISJUQVIZuRDGzHCnSfn7U9bZ0hR4aHTBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ZUaE1OKu; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=ET3se4OxnTeOD3IJ4EAKqjqV4x9bGpczObSPg39C6OQ=; b=ZUaE1OKuJMb58CtRgyJ+/M4i8P
+	1Q34L849Z93rBZAAOpb+42MopP0GXeebRu+gcWMleTqhqU7Mp9kZgK/tSQErZ19CxGi9mjT2EkX5c
+	c/WR07GEGU2djqbdlWa9M4Pah26/8OT6i86slmX4NCGuUGZgh8pj7spBhSdkAxHqJwZGDQkLifwVA
+	I9Lj7nYk1fNHad80nT0tGxOL7DJxyvKn3TERYQ/yzozjwu+fc5pe1jl7BiQ6SfpAubsgPLHiBu41j
+	Q+k90cesgjiKCAVYHiN+mBJtNH96rNeBWN5/BAwcYsaPE8vc2tNHrtWOBEnqTnRDhrLqG2+dK2zCn
+	JfJjl4rA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1upRcW-00000008GU1-0iiF;
+	Fri, 22 Aug 2025 13:15:52 +0000
+Date: Fri, 22 Aug 2025 14:15:51 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	ksummit@lists.linux.dev, linux-fsdevel@vger.kernel.org
 Subject: Re: [MAINTAINER SUMMIT] Adding more formality around feature
  inclusion and ejection
-Message-ID: <20250822122424.GA34412@macsyma.lan>
+Message-ID: <aKhth9DOKrhfnZwS@casper.infradead.org>
 References: <fc0994de40776609928e8e438355a24a54f1ad10.camel@HansenPartnership.com>
- <20250821203407.GA1284215@mit.edu>
- <940ac5ad8a6b1daa239d748e8f77479a140b050d.camel@HansenPartnership.com>
- <2025082202-lankiness-talisman-3803@gregkh>
+ <20250821122750.66a2b101@gandalf.local.home>
+ <20250822133935.4e68d2d2@foz.lan>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -67,62 +63,24 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2025082202-lankiness-talisman-3803@gregkh>
+In-Reply-To: <20250822133935.4e68d2d2@foz.lan>
 
-On Fri, Aug 22, 2025 at 02:03:13PM +0200, Greg KH wrote:
+On Fri, Aug 22, 2025 at 01:39:35PM +0200, Mauro Carvalho Chehab wrote:
+> On a side note: I never used myself bcachefs, and I'm not aware of its
+> current status and how much it depends on the current maintainer.
 > 
-> It's not our job to quell "internet speculation", sorry.  Just because
-> we normally work in public for almost everything, doesn't mean that some
-> things can't be done in private as well.  And again, just because you
-> haven't seen a public decision doesn't mean that there hasn't been one
-> made :)
+> Yet, IMO, I don't like the idea that, if a maintainer leaves the
+> project for whatever reason (including misbehavior), features would
+> be excluded - even if they're experimental.
+> 
+> So, I'd say that, except if we would be willing to face legal issues, 
+> or the feature is really bad, the best would be to give at least one
+> or two kernel cycles to see if someone else steps up - and if the
+> feature is experimental(*), perhaps move it to staging while nobody
+> steps up.
 
-The other thing I'll add here is that the best analogy I can think of
-here is that this is a HR / Personnel issue.  These sorts of things,
-whether they are a matter of someone not working well with the team
-(at which point the manager needs to figure out how to resolve the
-issue, and will often need to engage in private mediation /
-interventions), or being caught on camera at a Coldplay concert, will
-always have private conversations that will never be made part of the
-public record --- as it should be, as much as content creators looking
-for clickbait might wish otherwise.
-
-Now, if what James is trying to say is that we could have avoided the
-whole situation by refusing to allow bcachefs to be included in the
-first place, I'm going to have to respectfully disagree with that
-proposal as a way to avoid problems in the future.
-
-I'm not sure that the fact that various developer-to-developer
-relationships would have degraded to the point that it had by the end
-of this whole saga could have been predicted at the point when we were
-making the "to include or not to include bcachefs in Linux mainline".
-I don't think we could have predicted whether or not a perspective
-future maintainer would utterly refuse private offers of coaching from
-the beginning.  And I don't think we should proactively refuse to
-accept a feature just because someone's inter-personal relationships
-are not perfect.
-
-The current baseline is that the media subsystem, networking, or BPF
-maintainer's decide what features to accept and who they will accept
-pull requests from.  The same us true all the way up the hierarchy
-maintainer tree up to Linus.  What is the alternative that we could
-use?  That some democratic voting procedure, or some kind of core team
-would stick their oar into making this decision?  I'm not sure that
-would be an improvement; in fact, IMHO, it will very likely be
-significantly worse.
-
-I'm sure that as a result of this whole sitution, maintainers may very
-well be more careful before accepting a new feature from a perspective
-submaintainer who might be challenged in the teamwork department.  But
-I'm not sure trying to codify this would be helpful --- because I
-fundamentally disagree with the premise that we can accurately predict
-how future stories will end.  Hindsight, after all, is 20/20.
-
-If someone wants to suggest a concrete proposal, perhaps that's
-something we can discuss.  But my personal opinion is having an
-open-ended discussion of how we could have avoided the messiness of
-bcachefs would probably not be a good use of time at the Maintainer's
-Summit.
-
-						- Ted
+Kent is bcachefs.  There's no team who might be able to step up, and
+while the code is certainly clear enough, anyone who takes it over will
+have to deal with Kent, an army of internet trolls and having to learn
+an incredibly complex codebase.  I wouldn't wish that on anyone.
 
