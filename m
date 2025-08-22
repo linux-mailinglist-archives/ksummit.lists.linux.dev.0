@@ -1,58 +1,56 @@
-Return-Path: <ksummit+bounces-2203-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2204-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2A8CB31655
-	for <lists@lfdr.de>; Fri, 22 Aug 2025 13:30:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C7ABB31677
+	for <lists@lfdr.de>; Fri, 22 Aug 2025 13:39:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D04811892FD4
-	for <lists@lfdr.de>; Fri, 22 Aug 2025 11:30:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D94BA05481
+	for <lists@lfdr.de>; Fri, 22 Aug 2025 11:39:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14952F746A;
-	Fri, 22 Aug 2025 11:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402302F1FDC;
+	Fri, 22 Aug 2025 11:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GuFB6ivF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uH6xZFGE"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A162291C3F;
-	Fri, 22 Aug 2025 11:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51AA2C029E;
+	Fri, 22 Aug 2025 11:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755862188; cv=none; b=D3WNR890uZxbjRL3R68pCudY8t+O3Jc5I7lr1RPr+4nW1tDlxikemO13/ZSlpY/nOVN1YLD+UBdACXmMwltfzUW9HS/xK5A+c7+1JouQ29+JlDbhD51PyP4Z8EgxCVYIB3C7eUQrsohJ6XKv1Uq+lavcAX2GJc9zetNk7ZDmsio=
+	t=1755862779; cv=none; b=s/fz6UJSU/mff0/MDR6pq2gCpwvry0KV8tM7Ob2EY8xa85dfmX0DMA3f57ACxf5fRA1kO1QPC1Y+k1sFRDoF/WYlZ+LvC5jiA8VHmwNwnEflvOD94hYUeDgNYn6oXYvVK2mFcTBBZcalyrk0nim16ZyGpiZcOzv2PgGNWJUIy+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755862188; c=relaxed/simple;
-	bh=bbC1YUgNLlBy5q2Utej8KQ1LJRsDhI7+Q/Jkxo3uDXE=;
+	s=arc-20240116; t=1755862779; c=relaxed/simple;
+	bh=/oLiMLxegsdBwnRXpnuzlhqafHTSVnT+dEn2Elw3DuU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BuMfTqRX9TH618bgHzksSYdtlDUKP2N+4idhnzxpMLmD7q7V9k+lOqyyYz9yrwwstKtt+l1X1LSVWe93ybYrr6G3d33BaxUFqC64A/zVDqJ4VK1DOFbsanI9jgSaxjI5Y2Plcal+SyUPoy93lXrB1+abf4RjMNSt0CX8kIKEjKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GuFB6ivF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AC67C4CEED;
-	Fri, 22 Aug 2025 11:29:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N4IMnXzRDhNJHR9MK/mgs+w19fZjDvTGiV5rnzxLmVwj7uJ1YYP2rxzqbzBhoiCnRmHGkDpnMg5JH7flYOnv0mbl4Ae2J0H8jI4S0W3n5qYTwO3Mgx5Xw8F+yxgc+Pm5cFbiQtMuAqbQrlr61QaCN1AkkQ+4bgFDh92g03zMJwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uH6xZFGE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 286BAC4CEED;
+	Fri, 22 Aug 2025 11:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755862187;
-	bh=bbC1YUgNLlBy5q2Utej8KQ1LJRsDhI7+Q/Jkxo3uDXE=;
+	s=k20201202; t=1755862779;
+	bh=/oLiMLxegsdBwnRXpnuzlhqafHTSVnT+dEn2Elw3DuU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=GuFB6ivF+/M5Oqce003YMkEhK6a3TME8O9Aztjv8iDW8HikUnT84GXV88NJSn90Gz
-	 uliB2R+wGtK/9MCSnUZkv/nHMBFPpln1kUXos9JeC8wg7OzbVhiZg2gLhUUcnLPdlD
-	 t6vvcgziZ1GM4W36WF6kcOfZJe3TGG+z/2rm18etBWL3kUvelnP6QA0Xca24UOvVv3
-	 rIvDqfccJysDWF1duqPf1sHyLm8P+DIhS793WMZaMqVrLQ4g8MhSCbV4iKrgFqUFzV
-	 N5Zel6LZcHkPsE5BS6169mumdF7VyOUuspFWgJDPM4A7CWtH2SaH8lWL4w2BoPgsEp
-	 eq9xEGkEdfQTw==
-Date: Fri, 22 Aug 2025 13:29:43 +0200
+	b=uH6xZFGEBPnPVW98ZEux+QwU81VzixJUduoqCTZ6NNt7CvYrU/YzHZoIa48L3FFL/
+	 dQ7W5WcfgXwfhAzWMSXE+LLD2k7BZU9U2YA6XED3WtWiXZcYaK3l9HeyVEutP1095H
+	 ghqO3NST861mFRUPGBPx6Gt86kVGLK8b8qgDgkLT9Y4Gr9yKwxWQDmGKIpY0j3+KCw
+	 Z+0V7YcHDcpzLafpieSpbiutOuWmiqigqcq2BM8vnb95x4FQp07ydtWY461CgiYB4R
+	 T0jhIPbJCM0YKnlXvk4hCF8+o0Fk9pw2iFahUWlSNiHFWdMIBPRWHfnI/oZhqWZl3e
+	 7zc7TU9+r7bKA==
+Date: Fri, 22 Aug 2025 13:39:35 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Theodore Ts'o <tytso@mit.edu>, James Bottomley
- <James.Bottomley@hansenpartnership.com>, ksummit@lists.linux.dev,
- linux-fsdevel@vger.kernel.org
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: James Bottomley <James.Bottomley@HansenPartnership.com>,
+ ksummit@lists.linux.dev, linux-fsdevel@vger.kernel.org
 Subject: Re: [MAINTAINER SUMMIT] Adding more formality around feature
  inclusion and ejection
-Message-ID: <20250822132943.1ca76a8a@foz.lan>
-In-Reply-To: <aKeb8vf2OsOI19NA@casper.infradead.org>
+Message-ID: <20250822133935.4e68d2d2@foz.lan>
+In-Reply-To: <20250821122750.66a2b101@gandalf.local.home>
 References: <fc0994de40776609928e8e438355a24a54f1ad10.camel@HansenPartnership.com>
-	<20250821203407.GA1284215@mit.edu>
-	<aKeb8vf2OsOI19NA@casper.infradead.org>
+	<20250821122750.66a2b101@gandalf.local.home>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
@@ -63,36 +61,57 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-Em Thu, 21 Aug 2025 23:21:38 +0100
-Matthew Wilcox <willy@infradead.org> escreveu:
+Em Thu, 21 Aug 2025 12:27:50 -0400
+Steven Rostedt <rostedt@goodmis.org> escreveu:
 
-> On Thu, Aug 21, 2025 at 04:34:07PM -0400, Theodore Ts'o wrote:
-> > There is the saying that "bad facts make bad law", and the specifics
-> > of this most recent controversy are especially challenging.  I would
-> > urge caution before trying to create a complex set of policies and
-> > mechanim when we've only had one such corner case in over 35 years.  
+> On Thu, 21 Aug 2025 09:56:15 +0100
+> James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
 > 
-> Well. we may have dodged a few bullets before now.  Just in filesystems,
-> I can think of Hans Reiser, Jeff Merkey, Boaz Harrosh, Daniel Phillips
-> (no, i'm not saying any of the others did anything as heinous as Hans,
-> but they were all pretty disastrous in their own ways).
+> What exactly do you mean by "feature inclusion"?
+> 
+> Something that requires a new maintainer? As with the bcachefs, the issue
+> was with how the new maintainer worked with the current workflow.
+> 
+> Maybe you mean "maintainer inclusion and ejection"?
+> 
+> > However, I'm sure others will have different ideas.  
+> 
+> The thing is, I believe there's a lot of features and maintainers that are
+> added. Most go unnoticed as the feature is a niche (much like bcachefs was).
 
-There are other cases as well: there was a media driver maintainer that
-did pretty bad things, including physical threats against other
-maintainers. I even got a report that he did threat to life another
-maintainer who complained he would be violating GPL copyrights.
+On a side note: I never used myself bcachefs, and I'm not aware of its
+current status and how much it depends on the current maintainer.
 
-> I don't think we can necessarily generalise from these examples to,
-> say, Lustre.  That has its own unique challenges, and I don't think that
-> making them do more paperwork will be helpful.
+Yet, IMO, I don't like the idea that, if a maintainer leaves the
+project for whatever reason (including misbehavior), features would
+be excluded - even if they're experimental.
 
-Agreed. I don't think those few examples have much in common:
-each had different types of issues. So, I don't think any text
-would be enough to cover such cases, as they're punctual.
+So, I'd say that, except if we would be willing to face legal issues, 
+or the feature is really bad, the best would be to give at least one
+or two kernel cycles to see if someone else steps up - and if the
+feature is experimental(*), perhaps move it to staging while nobody
+steps up.
 
-Probably the only thing that could be more effective would be to have
-an e-signed CLA for the ones which become maintainers.
 
+(*) where IMHO it should be sitting in the first place when it got
+    merged, being an experimental feature.
+
+> 
+> Perhaps we should have a maintainer mentorship program. I try to work with
+> others to help them become a new maintainer. I was doing that with Daniel
+> Bristot, and I've done it for Masami Hiramatsu and I'm currently helping
+> others to become maintainers for the trace and verification tooling.
+> 
+> I share my scripts and explain how to do a pull request. How to use
+> linux-next and what to and more importantly, what not to send during during
+> the -rc releases.
+> 
+> I'm sure others have helped developers become maintainers as well. Perhaps
+> we should get together and come up with a formal way to become a maintainer?
+> Because honestly, it's currently done by trial and error. I think that
+> should change.
+
+Agreed with training: this can help getting things right.
 
 Thanks,
 Mauro
