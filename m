@@ -1,62 +1,62 @@
-Return-Path: <ksummit+bounces-2209-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2210-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97D30B31E71
-	for <lists@lfdr.de>; Fri, 22 Aug 2025 17:27:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75C2EB31EBD
+	for <lists@lfdr.de>; Fri, 22 Aug 2025 17:35:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 622EE1D6119A
-	for <lists@lfdr.de>; Fri, 22 Aug 2025 15:20:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7ED7D1C826A1
+	for <lists@lfdr.de>; Fri, 22 Aug 2025 15:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F592EA499;
-	Fri, 22 Aug 2025 15:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979CF258CF8;
+	Fri, 22 Aug 2025 15:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="sIqUTtrV"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="snidVJVW"
 Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35320210F59
-	for <ksummit@lists.linux.dev>; Fri, 22 Aug 2025 15:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E988255F24
+	for <ksummit@lists.linux.dev>; Fri, 22 Aug 2025 15:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755875973; cv=none; b=iqFvQZNJOarwlYLZejupA7nqaUI1CqrW2NrAJUXMc6mdUJyfCRscHbNhQGignqrjztMGG3gf9LhKTueJ9QNHddMF61gjmJKKMcAjt9Z5yo6wDWhpeU7ATpIyvXkah3vcP+XcjjJhH25ak1r1UUYvRrQlZP7Kxw79UbjGWMM9Bys=
+	t=1755876714; cv=none; b=usplGbkzPEWQxvM6MIFwW+/S0hSbrRcsFk8WEl0FDr+WGwu5sVyPLU8VYjZlZOdsj0Yh0BJU3fN0wxASQV+ZDGdMR+xeXy6BIY7bIc/AoVgqk4FK0Prpwbb/ciNvtp1Qlo/GW+agMCwuq5ij28U0oC7GJsw7jiRoTl740hvWj1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755875973; c=relaxed/simple;
-	bh=1isU46vUHqoa+u9zMlp96k5S5rYnQ9d3txtRd9BBR8c=;
+	s=arc-20240116; t=1755876714; c=relaxed/simple;
+	bh=3zLWjKbV8wuG+Rp4iQlIxh11111uRe5B2QeXuo2dNXA=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=NSp/zfHg0w9JiGtgivF71kc676exL7FhR1sNCV5Ec8hEpLRGlxkAtc9CdtNblZUsODrSdakMMNwB36mX5Oz+McSvZtKRUcn8y+GsAwyucslkSyX5k4ed6zeborCVLx/3sxJlahYSbybO2BO2GaBTp6XhmgCNq40RzNN40fCkNf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=sIqUTtrV; arc=none smtp.client-ip=198.37.111.173
+	 Content-Type:MIME-Version; b=PhB/EjHK+Vto2jYJ5VoSjyelz8kCw+Nb9qL2kSefRcGksu9HGI17Eh1kgYtmfdICR6d07gD1N7xns+etgbJ5xvNw9yZ3vXW3dFklvJzMEu3uQtpjrUK2iXEjVFKmBabCYwk50u4Itm/3SUH9NF5IQxjSPW6QufiJelyu9bvf2SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=snidVJVW; arc=none smtp.client-ip=198.37.111.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1755875970;
-	bh=1isU46vUHqoa+u9zMlp96k5S5rYnQ9d3txtRd9BBR8c=;
+	d=hansenpartnership.com; s=20151216; t=1755876712;
+	bh=3zLWjKbV8wuG+Rp4iQlIxh11111uRe5B2QeXuo2dNXA=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=sIqUTtrValxi/No7Wppcg5Fa8hQsGff+WXQ/J8MTjV47jrAmDE3Ht+0xZelGz9+ub
-	 5fcEb7s/y5F4O6kgixy3ACldheVh42aBHPku81CM5IuynY3rsfdYOKg5bQy8fwt6+D
-	 cLF+VNZcfGiZtYdHvqKHRThM7Tdun8wpvtF1T7wQ=
+	b=snidVJVWUxXVP/aHMF6vi7JzYTR7CVleV+LpzJtqPqxDvhAGPjhfnJ6qMi3p4dc8C
+	 oEbPVfuqQZHThEEJettYa6Tp++PMcCxefONwr2jqpngmSDk1ju//dniJ3W/aemOlOm
+	 V/w7oaEkSiSMdVl7pRfHORekdy0NJ5xHX563ZrFQ=
 Received: from [IPv6:2a00:23c8:101e:bb01:5bfe:95b6:ba99:a97b] (unknown [IPv6:2a00:23c8:101e:bb01:5bfe:95b6:ba99:a97b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 643BF1C024D;
-	Fri, 22 Aug 2025 11:19:29 -0400 (EDT)
-Message-ID: <d876450623204fa278bea8ffb7fbe1a20b0eecae.camel@HansenPartnership.com>
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 62B6C1C0284;
+	Fri, 22 Aug 2025 11:31:51 -0400 (EDT)
+Message-ID: <62aea685546cee80b18cfd7e1ea50b1a590d5edd.camel@HansenPartnership.com>
 Subject: Re: [MAINTAINER SUMMIT] Adding more formality around feature
  inclusion and ejection
 From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Greg KH <greg@kroah.com>
-Cc: Theodore Ts'o <tytso@mit.edu>, ksummit@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org
-Date: Fri, 22 Aug 2025 16:19:27 +0100
-In-Reply-To: <2025082202-lankiness-talisman-3803@gregkh>
+To: Theodore Tso <tytso@mit.edu>, Greg KH <greg@kroah.com>
+Cc: ksummit@lists.linux.dev, linux-fsdevel@vger.kernel.org
+Date: Fri, 22 Aug 2025 16:31:49 +0100
+In-Reply-To: <20250822122424.GA34412@macsyma.lan>
 References: 
 	<fc0994de40776609928e8e438355a24a54f1ad10.camel@HansenPartnership.com>
 	 <20250821203407.GA1284215@mit.edu>
 	 <940ac5ad8a6b1daa239d748e8f77479a140b050d.camel@HansenPartnership.com>
 	 <2025082202-lankiness-talisman-3803@gregkh>
+	 <20250822122424.GA34412@macsyma.lan>
 Autocrypt: addr=James.Bottomley@HansenPartnership.com;
  prefer-encrypt=mutual;
  keydata=mQENBE58FlABCADPM714lRLxGmba4JFjkocqpj1/6/Cx+IXezcS22azZetzCXDpm2MfNElecY3qkFjfnoffQiw5rrOO0/oRSATOh8+2fmJ6el7naRbDuh+i8lVESfdlkoqX57H5R8h/UTIp6gn1mpNlxjQv6QSZbl551zQ1nmkSVRbA5TbEp4br5GZeJ58esmYDCBwxuFTsSsdzbOBNthLcudWpJZHURfMc0ew24By1nldL9F37AktNcCipKpC2U0NtGlJjYPNSVXrCd1izxKmO7te7BLP+7B4DNj1VRnaf8X9+VIApCi/l4Kdx+ZR3aLTqSuNsIMmXUJ3T8JRl+ag7kby/KBp+0OpotABEBAAG0N0phbWVzIEJvdHRvbWxleSA8SmFtZXMuQm90dG9tbGV5QEhhbnNlblBhcnRuZXJzaGlwLmNvbT6JAVgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAhkBFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmBLmY0FCRs1hL0ACgkQgUrkfCFIVNaEiQgAg18F4G7PGWQ68xqnIrccke7Reh5thjUz6kQIii6Dh64BDW6/UvXn20UxK2uSs/0TBLO81k1mV4c6rNE+H8b7IEjieGR9frBsp/+Q01JpToJfzzMUY7ZTDV1IXQZ+AY9L7vRzyimnJHx0Ba4JTlAyHB+Ly5i4Ab2+uZcnNfBXquWrG3oPWz+qPK88LJLya5Jxse1m1QT6R/isDuPivBzntLOooxPk+Cwf5sFAAJND+idTAzWzslexr9j7rtQ1UW6FjO4CvK9yVNz7dgG6FvEZl6J/HOr1rivtGgpCZTBzKNF8jg034n49zGfKkkzWLuXbPUOp3/oGfsKv8pnEu1c2GbQpSmFtZXMgQm90dG9tbGV5IDxqZWpiQGxpbnV4LnZuZXQuaWJtLmNvbT6JAVYEEwEIAEACGwMHCwkIBwMCAQYVC
@@ -77,56 +77,94 @@ List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 
-On Fri, 2025-08-22 at 14:03 +0200, Greg KH wrote:
-> On Fri, Aug 22, 2025 at 09:09:04AM +0100, James Bottomley wrote:
-> > So what I saw is that as developers exercised this and effectively
-> > disengaged unless directly attacked, it pretty much became all on
-> > Linus because no-one was left in the chain. This is precisely where
-> > I think we could do with an alternative mechanism.
->=20
-> You are implying here that we all just "ran away" and left Linus to
-> hold the bag here, which is NOT the case at all.=C2=A0 This specific issu=
-e
-> has been discussed to death in a lot of different threads, public and
-> private with lots of people involved and none of that would have been
-> any different had we had some sort of "process document" ahead of
-> time.
-
-I didn't ask for a process document.  I was clear about what I was
-asking for in the part of the email you cut in your reply.
-
-> So I don't think that attempting to codify the very rare occurances
-> like this is going to really help out much, given that they are all
-> unique to their time/place/subsystem based on our past history like
-> this.
->=20
-> > > Now, the above is inherently very messy.=C2=A0 But fortunately, it's
-> > > only happened once in thirty five years, and before we propose to
-> > > put some kind of mechanism in place, we need to make sure that
-> > > the side effects of that mechanism don't end up making things
-> > > worse off.
+On Fri, 2025-08-22 at 08:24 -0400, Theodore Tso wrote:
+> On Fri, Aug 22, 2025 at 02:03:13PM +0200, Greg KH wrote:
 > >=20
-> > Well, what we ended up with is one person in the chain (Linus), no
-> > actual decision except a failed pull request and nothing actually
-> > said which has lead to a raft of internet speculation.
+> > It's not our job to quell "internet speculation", sorry.=C2=A0 Just
+> > because we normally work in public for almost everything, doesn't
+> > mean that some things can't be done in private as well.=C2=A0 And again=
+,
+> > just because you haven't seen a public decision doesn't mean that
+> > there hasn't been one made :)
 >=20
-> It's not our job to quell "internet speculation", sorry.
+> The other thing I'll add here is that the best analogy I can think of
+> here is that this is a HR / Personnel issue.=C2=A0 These sorts of things,
+> whether they are a matter of someone not working well with the team
+> (at which point the manager needs to figure out how to resolve the
+> issue, and will often need to engage in private mediation /
+> interventions), or being caught on camera at a Coldplay concert, will
+> always have private conversations that will never be made part of the
+> public record --- as it should be, as much as content creators
+> looking for clickbait might wish otherwise.
+>=20
+> Now, if what James is trying to say is that we could have avoided the
+> whole situation by refusing to allow bcachefs to be included in the
+> first place, I'm going to have to respectfully disagree with that
+> proposal as a way to avoid problems in the future.
 
-I didn't say it was.
+I did tackle that in the original proposal:
 
-> =C2=A0 Just because we normally work in public for almost everything,
-> doesn't mean that some things can't be done in private as well.=C2=A0 And
-> again, just because you haven't seen a public decision doesn't mean
-> that there hasn't been one made :)
+https://lore.kernel.org/all/fc0994de40776609928e8e438355a24a54f1ad10.camel@=
+HansenPartnership.com/
 
-I get that in the current political climate transparency is taking a
-back seat.  However, it does lie at the heart of the open in open
-source so I think we should be making a bit more effort to be better.
+But for those who didn't read it the precis is I said on reflection I
+wouldn't ban anything at the inclusion stage even though that's what I
+initially argued for
 
-Being transparent would have controlled (not quelled because there's
-always conspiracy theorists) the internet speculation not because it
-would make it someone's job but because it's simply a natural
-consequence of doing the right thing.
+> I'm not sure that the fact that various developer-to-developer
+> relationships would have degraded to the point that it had by the end
+> of this whole saga could have been predicted at the point when we
+> were making the "to include or not to include bcachefs in Linux
+> mainline". I don't think we could have predicted whether or not a
+> perspective future maintainer would utterly refuse private offers of
+> coaching from the beginning.=C2=A0 And I don't think we should proactivel=
+y
+> refuse to accept a feature just because someone's inter-personal
+> relationships are not perfect.
+
+I think one takeaway is that there were a bunch of predictions which
+ultimately turned out to be true and to make a success of it we should
+have had a plan for coping with the foreseen issues.
+
+> The current baseline is that the media subsystem, networking, or BPF
+> maintainer's decide what features to accept and who they will accept
+> pull requests from.=C2=A0 The same us true all the way up the hierarchy
+> maintainer tree up to Linus.=C2=A0 What is the alternative that we could
+> use?=C2=A0 That some democratic voting procedure, or some kind of core
+> team would stick their oar into making this decision?=C2=A0 I'm not sure
+> that would be an improvement; in fact, IMHO, it will very likely be
+> significantly worse.
+
+When did this become about how our current maintainer pull system
+works?  I'm certainly not advocating changing it.
+
+> I'm sure that as a result of this whole sitution, maintainers may
+> very well be more careful before accepting a new feature from a
+> perspective submaintainer who might be challenged in the teamwork
+> department.=C2=A0 But I'm not sure trying to codify this would be helpful
+> --- because I fundamentally disagree with the premise that we can
+> accurately predict how future stories will end.=C2=A0 Hindsight, after
+> all, is 20/20.
+
+I don't think anyone made that premise.  However, when problems are
+foreseen its not unreasonable to plan to try to overcome them and be
+successful.
+
+> If someone wants to suggest a concrete proposal, perhaps that's
+> something we can discuss.=C2=A0 But my personal opinion is having an
+> open-ended discussion of how we could have avoided the messiness of
+> bcachefs would probably not be a good use of time at the Maintainer's
+> Summit.
+
+Well I did ask for two concrete things, but I can certainly repeat:
+
+On Fri, 2025-08-22 at 09:09 +0100, James Bottomley wrote:
+>  I think I'd be happy if we sort out two things
+>=20
+>    1. That the decision be taken by more than one person rather than
+>       abdicating to last man standing
+>    2. The outcome be documented clearly.
+>=20
 
 Regards,
 
