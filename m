@@ -1,118 +1,143 @@
-Return-Path: <ksummit+bounces-2204-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2205-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C7ABB31677
-	for <lists@lfdr.de>; Fri, 22 Aug 2025 13:39:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE594B316D6
+	for <lists@lfdr.de>; Fri, 22 Aug 2025 14:03:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D94BA05481
-	for <lists@lfdr.de>; Fri, 22 Aug 2025 11:39:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C3827B5D16
+	for <lists@lfdr.de>; Fri, 22 Aug 2025 12:01:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402302F1FDC;
-	Fri, 22 Aug 2025 11:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F462FA0F1;
+	Fri, 22 Aug 2025 12:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uH6xZFGE"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="6P8oBcT2";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="El9pqWkU"
+Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51AA2C029E;
-	Fri, 22 Aug 2025 11:39:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949BE28AB1E
+	for <ksummit@lists.linux.dev>; Fri, 22 Aug 2025 12:03:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755862779; cv=none; b=s/fz6UJSU/mff0/MDR6pq2gCpwvry0KV8tM7Ob2EY8xa85dfmX0DMA3f57ACxf5fRA1kO1QPC1Y+k1sFRDoF/WYlZ+LvC5jiA8VHmwNwnEflvOD94hYUeDgNYn6oXYvVK2mFcTBBZcalyrk0nim16ZyGpiZcOzv2PgGNWJUIy+o=
+	t=1755864200; cv=none; b=uTwVr2of+xkiPBZ3dtjP19EWWCF7YilLj5p32XO7jTP7APvKh6qsjmpFYDKW6KzaoThnt87Vmc0W5JT5DwgPOrjZa1rwKpkA009uYUd9TGOO8y753RVq/VBrixhVFP2dUMX8jgVKjBGAHP0KhmHsOUWH+KjX8dRY/rukHPWrdS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755862779; c=relaxed/simple;
-	bh=/oLiMLxegsdBwnRXpnuzlhqafHTSVnT+dEn2Elw3DuU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N4IMnXzRDhNJHR9MK/mgs+w19fZjDvTGiV5rnzxLmVwj7uJ1YYP2rxzqbzBhoiCnRmHGkDpnMg5JH7flYOnv0mbl4Ae2J0H8jI4S0W3n5qYTwO3Mgx5Xw8F+yxgc+Pm5cFbiQtMuAqbQrlr61QaCN1AkkQ+4bgFDh92g03zMJwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uH6xZFGE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 286BAC4CEED;
-	Fri, 22 Aug 2025 11:39:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755862779;
-	bh=/oLiMLxegsdBwnRXpnuzlhqafHTSVnT+dEn2Elw3DuU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=uH6xZFGEBPnPVW98ZEux+QwU81VzixJUduoqCTZ6NNt7CvYrU/YzHZoIa48L3FFL/
-	 dQ7W5WcfgXwfhAzWMSXE+LLD2k7BZU9U2YA6XED3WtWiXZcYaK3l9HeyVEutP1095H
-	 ghqO3NST861mFRUPGBPx6Gt86kVGLK8b8qgDgkLT9Y4Gr9yKwxWQDmGKIpY0j3+KCw
-	 Z+0V7YcHDcpzLafpieSpbiutOuWmiqigqcq2BM8vnb95x4FQp07ydtWY461CgiYB4R
-	 T0jhIPbJCM0YKnlXvk4hCF8+o0Fk9pw2iFahUWlSNiHFWdMIBPRWHfnI/oZhqWZl3e
-	 7zc7TU9+r7bKA==
-Date: Fri, 22 Aug 2025 13:39:35 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: James Bottomley <James.Bottomley@HansenPartnership.com>,
- ksummit@lists.linux.dev, linux-fsdevel@vger.kernel.org
+	s=arc-20240116; t=1755864200; c=relaxed/simple;
+	bh=8lgAd5vyyWTcwHr7084ZIO+LBkWU2qgpnRjFcZD7Gco=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O4s1WDHGBivEKo8rM0plbuXxXSF660reaZVA+5As8+7yPXduL8cSYWgVYJkeg/kDhzFBrfB0TYC9h6xwM4ID3K3ZuY2tY25MzsjSTWcoQw2bWUEn+4cXt/j6ZqogDmp5I87dY2ZRrwxSAIApo8RXy5H6JAmWreCyHE2QLClD2aU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=6P8oBcT2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=El9pqWkU; arc=none smtp.client-ip=202.12.124.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 82C287A0092;
+	Fri, 22 Aug 2025 08:03:16 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Fri, 22 Aug 2025 08:03:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1755864196;
+	 x=1755950596; bh=cEEPRIBWy9/8u3eeW7uLIZrfX/pjIbJxcEgs6t8llQI=; b=
+	6P8oBcT2tyKD6NoheNsrhCv/PLjwRNNHgynwlLt3a/tW7eDV6FGNwwm8vIm/yqsc
+	tPO9DM7HNXfLKDRYtFstXefz2mCIawifCk4/3feKfSCgf87yRQPeul6usjTyS2lj
+	wxu8RdRxZg25gBd3NAeJfGap4k1rSbGPQ4teGC6RdHxciSsSpAn+06YyDN58VGWC
+	Vhd6jHiwqimy/Cw3vhs98VKiM2zKKL87mzv7fJsX1bA0Y42cz4ztHWRgeYPhIF7u
+	Y0Ydw/h2OFM/qF1Qb1+m4+X4n8sY4FMzS0HA1B+aJKN4VVosFGWimHDiPWUayfha
+	2XxtkZdbpJx15pblNhwd7A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1755864196; x=
+	1755950596; bh=cEEPRIBWy9/8u3eeW7uLIZrfX/pjIbJxcEgs6t8llQI=; b=E
+	l9pqWkUgLBKuwY3x57OIc0ODDKvXDBUHdfZdQqohRQBqsTaaEF3d4TrsThLaY0p0
+	j0hgwlPGqItxA9rXGND9fxriBbGKurjy8JhJot0D6RI0cHQh4cFGds4Ed1voy8wI
+	T1R/WDhSVHpvzs6hSkMlZpOFZfyf20ZpSiP6uCJGoQi9v8AgDx6kh44bv0rrmtbo
+	0OK+mPGnakHPQPKdvNAVusE+6ywkiP9zISyCGGL30FfBkfdwrRkfC4APrlekYpGA
+	AS9aIxw5qdsgw0gJoVZa43FnByAZWRA8QHD3+mdGD7YGwdEP6PRUOZzCAiWRENn+
+	OLdPUYg2HNPJBmDQ3Loug==
+X-ME-Sender: <xms:hFyoaMWmXn8bcksfRCTDDKyETy0mT4aqWX5vfuq7Y4k7PYr2wcJeGw>
+    <xme:hFyoaNfU21-hT1TWsYHznjjyDY4mh98KKk6TtBR0WjNo2qrmMOLBTsE9iRCZ7Bmqa
+    8vGs4-oIDh0_A>
+X-ME-Received: <xmr:hFyoaAJ_kwfA_DstAP57AnDHmzYog-FU9RJkGchzEpOW0uiTEPwVuWhhcNgBiZ9fDXAw-q66ZbCgWuz9qnOJiL4Y8ueOWq4QP-a09A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduieefjeduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeelheehud
+    duueeggeejgfehueduffehveeukefgkeeufeeltdejteeiuedtkeekleenucevlhhushht
+    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhh
+    drtghomhdpnhgspghrtghpthhtohepkedpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
+    ohepjhgrmhgvshdrsghothhtohhmlhgvhieshhgrnhhsvghnphgrrhhtnhgvrhhshhhiph
+    drtghomhdprhgtphhtthhopehthihtshhosehmihhtrdgvughupdhrtghpthhtohepkhhs
+    uhhmmhhitheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqd
+    hfshguvghvvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:hFyoaKwPQRFLZpYBk0kOfBnaZIy88qvVSIVVe7yNedSGppn0MDk-SQ>
+    <xmx:hFyoaGvq-XglLXIEirGk1Sx1fxXmrUzpxwIEmgfAQq2_MitYiC8iHg>
+    <xmx:hFyoaNDtr7h6cMu7bxNb07ZNLU2uujR3xixxzFxuFlYZJH4fIJmluA>
+    <xmx:hFyoaIEIHcbUlSUKB4cc8aUC23VM_qN4V_aaJQiIVj_7zFLwzfv27Q>
+    <xmx:hFyoaLQiCrkLNPR0J2FcY3yuHh1IJSnUqklEUOlV70zQuwilPvCL5Mq3>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 22 Aug 2025 08:03:15 -0400 (EDT)
+Date: Fri, 22 Aug 2025 14:03:13 +0200
+From: Greg KH <greg@kroah.com>
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: Theodore Ts'o <tytso@mit.edu>, ksummit@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org
 Subject: Re: [MAINTAINER SUMMIT] Adding more formality around feature
  inclusion and ejection
-Message-ID: <20250822133935.4e68d2d2@foz.lan>
-In-Reply-To: <20250821122750.66a2b101@gandalf.local.home>
+Message-ID: <2025082202-lankiness-talisman-3803@gregkh>
 References: <fc0994de40776609928e8e438355a24a54f1ad10.camel@HansenPartnership.com>
-	<20250821122750.66a2b101@gandalf.local.home>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+ <20250821203407.GA1284215@mit.edu>
+ <940ac5ad8a6b1daa239d748e8f77479a140b050d.camel@HansenPartnership.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <940ac5ad8a6b1daa239d748e8f77479a140b050d.camel@HansenPartnership.com>
 
-Em Thu, 21 Aug 2025 12:27:50 -0400
-Steven Rostedt <rostedt@goodmis.org> escreveu:
+On Fri, Aug 22, 2025 at 09:09:04AM +0100, James Bottomley wrote:
+> So what I saw is that as developers exercised this and effectively
+> disengaged unless directly attacked, it pretty much became all on Linus
+> because no-one was left in the chain. This is precisely where I think
+> we could do with an alternative mechanism.
 
-> On Thu, 21 Aug 2025 09:56:15 +0100
-> James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
+You are implying here that we all just "ran away" and left Linus to hold
+the bag here, which is NOT the case at all.  This specific issue has
+been discussed to death in a lot of different threads, public and
+private with lots of people involved and none of that would have been
+any different had we had some sort of "process document" ahead of time.
+
+So I don't think that attempting to codify the very rare occurances like
+this is going to really help out much, given that they are all unique to
+their time/place/subsystem based on our past history like this.
+
+> > Now, the above is inherently very messy.  But fortunately, it's only
+> > happened once in thirty five years, and before we propose to put some
+> > kind of mechanism in place, we need to make sure that the side
+> > effects of that mechanism don't end up making things worse off.
 > 
-> What exactly do you mean by "feature inclusion"?
-> 
-> Something that requires a new maintainer? As with the bcachefs, the issue
-> was with how the new maintainer worked with the current workflow.
-> 
-> Maybe you mean "maintainer inclusion and ejection"?
-> 
-> > However, I'm sure others will have different ideas.  
-> 
-> The thing is, I believe there's a lot of features and maintainers that are
-> added. Most go unnoticed as the feature is a niche (much like bcachefs was).
+> Well, what we ended up with is one person in the chain (Linus), no
+> actual decision except a failed pull request and nothing actually said
+> which has lead to a raft of internet speculation.
 
-On a side note: I never used myself bcachefs, and I'm not aware of its
-current status and how much it depends on the current maintainer.
+It's not our job to quell "internet speculation", sorry.  Just because
+we normally work in public for almost everything, doesn't mean that some
+things can't be done in private as well.  And again, just because you
+haven't seen a public decision doesn't mean that there hasn't been one
+made :)
 
-Yet, IMO, I don't like the idea that, if a maintainer leaves the
-project for whatever reason (including misbehavior), features would
-be excluded - even if they're experimental.
+sorry,
 
-So, I'd say that, except if we would be willing to face legal issues, 
-or the feature is really bad, the best would be to give at least one
-or two kernel cycles to see if someone else steps up - and if the
-feature is experimental(*), perhaps move it to staging while nobody
-steps up.
-
-
-(*) where IMHO it should be sitting in the first place when it got
-    merged, being an experimental feature.
-
-> 
-> Perhaps we should have a maintainer mentorship program. I try to work with
-> others to help them become a new maintainer. I was doing that with Daniel
-> Bristot, and I've done it for Masami Hiramatsu and I'm currently helping
-> others to become maintainers for the trace and verification tooling.
-> 
-> I share my scripts and explain how to do a pull request. How to use
-> linux-next and what to and more importantly, what not to send during during
-> the -rc releases.
-> 
-> I'm sure others have helped developers become maintainers as well. Perhaps
-> we should get together and come up with a formal way to become a maintainer?
-> Because honestly, it's currently done by trial and error. I think that
-> should change.
-
-Agreed with training: this can help getting things right.
-
-Thanks,
-Mauro
+greg k-h
 
