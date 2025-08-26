@@ -1,143 +1,140 @@
-Return-Path: <ksummit+bounces-2223-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2224-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F49CB37383
-	for <lists@lfdr.de>; Tue, 26 Aug 2025 21:58:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82FEDB373A2
+	for <lists@lfdr.de>; Tue, 26 Aug 2025 22:12:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FAB98E1EA8
-	for <lists@lfdr.de>; Tue, 26 Aug 2025 19:57:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B96407AB46C
+	for <lists@lfdr.de>; Tue, 26 Aug 2025 20:11:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A298D36CC73;
-	Tue, 26 Aug 2025 19:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C179E30CD91;
+	Tue, 26 Aug 2025 20:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DtH8U9cU"
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Xj6zPme+"
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 478F830CD8E
-	for <ksummit@lists.linux.dev>; Tue, 26 Aug 2025 19:57:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F5D3164C6
+	for <ksummit@lists.linux.dev>; Tue, 26 Aug 2025 20:12:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756238273; cv=none; b=kHa/4vZ4ZiF3d8G/WJ6nCNiJLgT4lfqQvPP82iCHmZv0KYeei9FtHuRH83IH8lq8wC6dD7HApcJufK7SBl0Th5EPVy4KggDjePpZRfoSHrdTpudkIKxGmHkJVfl+kJmujUUucWou7Ej4TaN21px1jJKYc4BWddzRVrVsrW8+hpc=
+	t=1756239158; cv=none; b=fA5VnbpwCqLTp2Ue2rehV8eQc8oUI/hBDxkOyL/ChBCnDpI/XvEDN3qD/eZgNT7PxRW1sAKiuLV65WFExe8PMuUTYtS1kKP28/19li5Lsi8SH4p7C/nP0vwqpVxWYI5I64nZLYFndD1cO8GlEVqybiMMbgzcajg+R8Ewsnt8X2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756238273; c=relaxed/simple;
-	bh=Rzvu0tvTCMwnOJ48p+0COzbe+Kfv09E+j3FnXgctm6o=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=lDDbVpZOXUkxhsG+C/1YCbGtbkXRMOGcEIGSoSyMpJf3YSR+1F0v5WNMt50BwF4BJjA3Dv2SLBru+r4XxdAXHHrcANbiTKgCnfP+I4dJep85c02LnO129ezuUTnTqELMKXxhTKsfBoIScOoZSrp83hZk+LzQL+1ypzIHRHUBiCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DtH8U9cU; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-afcb7a2befdso911797866b.2
-        for <ksummit@lists.linux.dev>; Tue, 26 Aug 2025 12:57:50 -0700 (PDT)
+	s=arc-20240116; t=1756239158; c=relaxed/simple;
+	bh=5LK3/+NivPONmiRRG5m6R//DxXYodCXwnIUiz0u1YsA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LuHnYpvcqanTG+siM7b1s5GMrR1gF/Y6me6Kg391joh28UJAh8Hlzv6lkJ04lk7JEsCIY+uOfBMTak3fpHdBk9fcPPSpdENWA8j23OBqJJVV/Nl2PicSBUt8y8h5snCsYo+KxVtJ53yVo88WW3rrZonjAK7SxZpYhCVytt6rG94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Xj6zPme+; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-afea7e61575so144835866b.2
+        for <ksummit@lists.linux.dev>; Tue, 26 Aug 2025 13:12:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756238269; x=1756843069; darn=lists.linux.dev;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Rzvu0tvTCMwnOJ48p+0COzbe+Kfv09E+j3FnXgctm6o=;
-        b=DtH8U9cUoko8grjI8aXKjpP/vIGqxSF2lERhs+VqLyB6bgQA1J/2l0IcE6XeQHFg5t
-         1FOWPD/4aQKWrO4Ph2njeovGseODUYDZX4zA+mgVuJdophRDqn2Ap08hbJwGKhfaSz4q
-         nz9tHO/LevPAdaXD+NYtHK3wkpH7+c0u2A1c8kASh12NqqhJixbYWEsv67qaeG3M5AMz
-         JmbzUbj4JTgnWO4dhM9qTkV5nqmIntpZRfiayNbhrSX+XUdjRAwT4vWqkxzXH/P1D+j5
-         f7FXuTFuXgCoE42oAkm+EsCN93wZnddA3plZ1f/i4f0jLaIUu4Xl8YtIxj9XUNJMK1mx
-         UU+g==
+        d=linux-foundation.org; s=google; t=1756239154; x=1756843954; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+0SlNe/7MkVJSUBe/QJDCMcn/Cx/K7+yLMBEsDkZHKQ=;
+        b=Xj6zPme+ctFfcTA7/pykGiIFoVjcMnBzxC5+X5PSbJUyNVJEU8ZyDrprX6YRPj3UPg
+         m0Z+AqMP63PRaQeQe30jcH7xyEf60/51WVERdCmZAyHXl8K9fIz8TkUj0gjaSfFlusT4
+         nh26EY7fLqOV2AutGe855botwWHclstBgcQgk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756238269; x=1756843069;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Rzvu0tvTCMwnOJ48p+0COzbe+Kfv09E+j3FnXgctm6o=;
-        b=d4TmNxaWevTXxSmJ0Vxg9xLEeMuj5m/qwygLUWaSxu7FocFYQcphKPm+wdzQClnLHm
-         0LZ9ZczR8rzc/7RYPq3HJ1n0KD/hQjQiaB3ghwe445wgJzgUBQKhoxZF7R+NfI6bcyqk
-         F4XlXLYFHuAca9ADAWBsng4ovNViYcuqPkG+Wun4muXS2WhRQXrWpHn0jhhInysinthk
-         UwLRuzvwBMz545Vf0qy++/Ssuo7HmsdCTqSagBp0ksqXfYMCaRHGxqkDiK7gptsKUpof
-         zKM6hW92uvK3LBLuyScTU+vTZt9cIDYXZrabDmXPTH9osQn/kAi1YgLZb4h2CTLgWjej
-         QI1g==
-X-Gm-Message-State: AOJu0YysezIQVTBiDmiQ9kFaYPjxKFMuZcVxzJvf5U+tKQ3djveeFiho
-	tdT4rzWxNVSu6sopA7vHBzOONXGGlWpaSJObNBCUDeqieef5F0dk1RdH0uOpgpm9bJ82WN/CIjP
-	nJJqJ4pWLhCj5dQFYdMdMKDIyroA+cCkL6sJR7Nicirc/+NyklrpwnqWu4A==
-X-Gm-Gg: ASbGncs8cAlp9/cr9BAxvO6VUOfsFYPYqhaPFQ+B9h+8/W+853VPgpDPYJ3de0JtLOJ
-	DDF2E16AoJvPZiQmei+obX43egLrEm4d0T+XPtCs5ndGnI8JICUCZ8qJQLVv9U06SZXtJiw9nZM
-	wXRsc1L1tiQlBAwun3snPH+oYpghRCssciv5iWn/uZIcDZx7Ws0yZ4riauaJJ+ezy9AQ5L9I2Rg
-	e70WjbCqLV7qtOQQayYQU6C6k4iGQisopLwzmk=
-X-Google-Smtp-Source: AGHT+IG+3luHxwInJXXYQq44Gv6XnUxWR9eHCXk4rJtY3hucL3sccUU7TYcpBoyWCBxTQB6vrWPtDAUMMJkdgSt7ojw=
-X-Received: by 2002:a17:906:7305:b0:afe:78c2:4d4a with SMTP id
- a640c23a62f3a-afe78c25066mr765842466b.34.1756238268647; Tue, 26 Aug 2025
- 12:57:48 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756239154; x=1756843954;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+0SlNe/7MkVJSUBe/QJDCMcn/Cx/K7+yLMBEsDkZHKQ=;
+        b=FJL1sBleelSePeRDitTEw4PtxTqhkp/feL5/njOzvGkM1+RsL8yhirbTkcWs8y0EZ9
+         cfObI/0fLbpW9IrZx4TAg95wfqjT5RW24ClrQ4QbjOJy3m41/Q8PrJ9cIVmZWZDSgrlP
+         MRJ9j94j3F5WjLmpfPFTmAe0R8OYq9YXW2CSirz47iSXiGW2KaeDwfN6UADjgCDotVMF
+         nqGc8uzHZ+PRZayxRRaIyPbdEOCTQOwUaroFaO+H0JqqoSnAnDaRU3CU9+bL1GXEg9D1
+         Y4nD4nvXpbssnVu1OMAiR/qAXIrmLFwqnEruUu+E5AWD/a3KxGVhCU9K3y7qbQDl5qVK
+         +dpA==
+X-Gm-Message-State: AOJu0YzZgkdgq3JZG8NH2Vxj/eX7teM+WqMzqY7mZRV7IsK1Lbsrlrf3
+	yEQKqLgE+B5fW60oBZq0bSiixiopakeArf7Zq0AnQSYJKscEyfRSxXP5WhTYKkeCeU84DmHJEcw
+	tzYoxVXk=
+X-Gm-Gg: ASbGncuMnqa7LDqMKyobHRoCpB3YWz6VHstwOyYQRRq0kizEUFyGawNkRfO8RKwAVlG
+	Z7ig+usZNcG0QtVebZ3aW3WTu49fbip8PDuyn2vshB84tAs0pHpcfc9oF8DAS8erv+lxfPCIIfq
+	DjLhcTEpOeK5itRj8hi9MUFzTaT5h1UWNvka3Ycmw9indsGE2HnQLS1ix5V3wnT8FGWfBLtozZH
+	sODxmdttxw4rOJ446Ben8Y0r9rWS434CalMM16jG3OcE+n+aQiZX2FRZxxfGckrppQfl8dFwO6x
+	QOeDusQ/vaBv2od2xMjhL8YWw2VM8cVT4csGaZJ2M675sDgXOwLLmU3xFFflzUTQM/uP0A/imGT
+	XjutwIFzQBYuaqmnfByMDWMHRU2cdp+FvdWDc2GQD+qIRjh5Kzn9jzZj7nrk4c+Rm2RNfNASO+c
+	qKjoSGxUA=
+X-Google-Smtp-Source: AGHT+IFSu4w0XC2mDftV+Ys1CQXnli0Stpu5jAWBz4hfkzAzxx6xTN7n80CZNA15HDpOOOeHFWksKw==
+X-Received: by 2002:a17:907:7f9f:b0:ade:79c5:21dc with SMTP id a640c23a62f3a-afe2901b543mr1651091666b.25.1756239153544;
+        Tue, 26 Aug 2025 13:12:33 -0700 (PDT)
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com. [209.85.208.53])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afe88c76f61sm430282466b.10.2025.08.26.13.12.32
+        for <ksummit@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 Aug 2025 13:12:32 -0700 (PDT)
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-61c26f3cf0dso7021026a12.1
+        for <ksummit@lists.linux.dev>; Tue, 26 Aug 2025 13:12:32 -0700 (PDT)
+X-Received: by 2002:a05:6402:4406:b0:61c:527b:150c with SMTP id
+ 4fb4d7f45d1cf-61c527b16a5mr8286854a12.32.1756239152367; Tue, 26 Aug 2025
+ 13:12:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Date: Tue, 26 Aug 2025 21:57:37 +0200
-X-Gm-Features: Ac12FXx3_VaCf7QVUAruj3KoOiedZ5UUlEBP_7wXARn2t5E8Sz6ETqdxEWInWls
-Message-ID: <CACMJSes7ZnGo+Wyk_Db8VEUb8iXFB6-ev3hceY9aY1vjhpywTQ@mail.gmail.com>
-Subject: [MAINTAINER SUMMIT] Enforcing API deprecation
-To: ksummit@lists.linux.dev
+References: <CACMJSes7ZnGo+Wyk_Db8VEUb8iXFB6-ev3hceY9aY1vjhpywTQ@mail.gmail.com>
+In-Reply-To: <CACMJSes7ZnGo+Wyk_Db8VEUb8iXFB6-ev3hceY9aY1vjhpywTQ@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 26 Aug 2025 13:12:15 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wgOXd-meRuz5Gv2oz0W0wBUOpMO5CK9eifjfdR5Xz_-Fw@mail.gmail.com>
+X-Gm-Features: Ac12FXyBlzqtzuTzRXdOLCneWioHEvPkLOJrzETwof11G_qlKQD3MEz6Isnp5EE
+Message-ID: <CAHk-=wgOXd-meRuz5Gv2oz0W0wBUOpMO5CK9eifjfdR5Xz_-Fw@mail.gmail.com>
+Subject: Re: [MAINTAINER SUMMIT] Enforcing API deprecation
+To: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Cc: ksummit@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-I am not sure how many other maintainers are affected by the issue I'm
-about to describe but I imagine it impacts to some degree all
-subsystems that have existed for a long time, have undergone
-significant reworks and whose API is used ubiquitously tree-wide
-across many files. Power-management and device properties/driver core
-APIs come to mind as potential examples and I personally face it with
-the GPIO subsystem.
+On Tue, 26 Aug 2025 at 12:58, Bartosz Golaszewski
+<bartosz.golaszewski@linaro.org> wrote:
+>
+> 1. Use gcc's __attribute__((deprecated)) (Linus doesn't like it
 
-Deprecating legacy programming interfaces after introducing better
-alternatives is a natural result of the way the kernel is developed
-and the size of the codebase. We typically cannot rework interfaces in
-a single patch or series series, especially when dealing with existing
-cross-tree consumers.
+No. Unacceptable. We do not introduce warnings that aren't immediately fixe=
+d.
 
-What we usually do is:
-1. Provide an alternative solution living in parallel to the old one.
-2. Mark the legacy interfaces as deprecated in their kerneldocs.
-3. Slowly convert users one by one until the relevant symbols are no
-longer called anywhere in the kernel.
-4. Remove legacy interface.
+And no - this isn't even getting discussed. The kernel stays
+warning-free, which means that "__attribute__((deprecated))" isn't
+something that "Linus doesn't like". It's simply NOT AN OPTION.
 
-A problem occurs when during step #3 (which may take anywhere from
-several releases to many years depending on how commonly given
-interface is used), developers continue to introduce new calls to the
-deprecated routines. This is not always easily caught, because quite
-often patches using the API of a given subsystem will not be send to
-this subsystem's maintainer (Example: while GPIO core code lives under
-drivers/gpio/, there are lots of provider implementations and even
-more consumers spread tree-wide. I cannot possibly catch every commit
-I'm not explicitly Cc'ed on and eventually some will fly under the
-radar. Also: this is not a good solution if I have to manually object
-every time, this should be more or less automated).
+> 2. Use keywords in MAINTAINERS entries (this sounds like an abuse of
+> what this file is really for and can sometimes be hard to get right.
+> Also: see above about it not being very efficient).
+> 3. Make checkpatch.pl check the patches for new uses of deprecated
+> APIs (similarly to what it does for invalid usage of memory and log
+> helpers)
+> 4. Make build bots detect it.
 
-A lot of less experienced driver developers write their code by simply
-copy-pasting from existing modules without checking whether given
-symbols are marked as deprecated.
+Fine, but doesn't solve anything.
 
-There are several things that look like potential solutions:
-1. Use gcc's __attribute__((deprecated)) (Linus doesn't like it[1] and
-with hundreds of calls to convert it wouldn't be acceptable).
-2. Use keywords in MAINTAINERS entries (this sounds like an abuse of
-what this file is really for and can sometimes be hard to get right.
-Also: see above about it not being very efficient).
-3. Make checkpatch.pl check the patches for new uses of deprecated
-APIs (similarly to what it does for invalid usage of memory and log
-helpers)
-4. Make build bots detect it.
+> I would like to propose a discussion on how to enforce API deprecation
+> in a way that supports efforts to reduce technical debt, without being
+> hampered by developers and maintainers who mean no harm but simply
+> don=E2=80=99t know any better.
 
-And probably many more I haven't thought of.
+Here's the only thing that works: if you change the API, you have to
+fix up all existing users.
 
-I would like to propose a discussion on how to enforce API deprecation
-in a way that supports efforts to reduce technical debt, without being
-hampered by developers and maintainers who mean no harm but simply
-don=E2=80=99t know any better.
+If you are not willing to fix up all existing users, and you introduce
+a parallel API, then you are the one that maintains both the old and
+the new API forever.
 
-Best Regards,
-Bartosz Golaszewski
+Or at least until somebody else did the work that you weren't willing to do=
+.
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
-it/?id=3D771c035372a036f83353eef46dbb829780330234
+End result: the burden of new / different API's is on the person
+introducing them. IOW: don't introduce new API's unless you are
+willing to support them.
+
+             Linus
 
