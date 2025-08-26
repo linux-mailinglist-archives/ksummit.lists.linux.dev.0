@@ -1,114 +1,90 @@
-Return-Path: <ksummit+bounces-2225-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2226-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F851B373C9
-	for <lists@lfdr.de>; Tue, 26 Aug 2025 22:24:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37B5FB373CE
+	for <lists@lfdr.de>; Tue, 26 Aug 2025 22:28:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 490651B26BEC
-	for <lists@lfdr.de>; Tue, 26 Aug 2025 20:25:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E68F67C4596
+	for <lists@lfdr.de>; Tue, 26 Aug 2025 20:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B7E2877E7;
-	Tue, 26 Aug 2025 20:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53AA92C08CA;
+	Tue, 26 Aug 2025 20:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="T6C+nau9"
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E+DZRx7n"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387FF287516
-	for <ksummit@lists.linux.dev>; Tue, 26 Aug 2025 20:24:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D007D28151E
+	for <ksummit@lists.linux.dev>; Tue, 26 Aug 2025 20:28:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756239886; cv=none; b=Yeg9F5KA2OVzPgaH1FII7stgSaxpId9tGP+l9xtI6C6+1sYB42x3Uj1XONlA2r6MmOu1xhxsT10oUBa6+Yz5KiCEosvZCJa+s85hPlEdQs0gTNS4ZDJ/nMB3KEDn/nipCLusBcdHSFqtXAC43hduL0PJHEqbEFY26ZoqOnOuSqc=
+	t=1756240097; cv=none; b=qokmJ2wotikTUUv5vDYbRIA3LByAosyPw04ZaPjPDxfjfnjFw5NIarX6BLJaO7mC/2lX2aKaO/tgglgZUZrqSN9s3gVWz71Y7lIhTh+0Anfxi7jgmgQscFI6GN7AKlboIrNJhdpGkODMMaYkLIWfKFHwRroerPbmMuZMSaatoo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756239886; c=relaxed/simple;
-	bh=occGt7ACjL0NvOWoflXz3R8RmS+VQ9ydWoHHMVaU8FY=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=M1VrTnlYGjymMZkbKlOFSzGLS2/+3ZqIwWpKJ7SlBMu/Dt7Utq0k/47H4/qit1YSArLA6rilmvZ72mSA3QiI4EkvGmKwwxg/TkwA4Sa8jEGlh9JwN1mfXjUBI2a1q/T/Egon8ZOMKTgq/QGtiQTXPgKOUrGZ0nrQfnXOf8PAE0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=T6C+nau9; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=occGt7ACjL0NvOWoflXz3R8RmS+VQ9ydWoHHMVaU8FY=;
-	t=1756239885; x=1757449485; b=T6C+nau9sEqScBpCAPMdXD3LhDXi97eviwhuZlT0vv9hvEg
-	9Cr0VTprAmXQ2dKTbJogrX/EAhyq5vxHbfYD/enK5pCc1PdIdFvdii/1ZPkDB5ByQiG64Opt5oh49
-	YaCoLkjfJBLs24uDFou1SpdibLhII50vD+ScK/PRiQLRKCZ9KKNScZLEgPfsBdMAem9uGuX96z9FI
-	JF+AMm5zUvIKPL35m2PPY7s7YVgOTeH0JyPsIfmNr/dZfVa1xg/r+4Ng7RL1Lx8D2LetrfIjZ/l+w
-	RuIsPUD8HnXfX2V02KBkHP6hj3l8b+byZ1B1QjZvzeeq8EezJ1IfcdforHQTg40A==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1ur0Di-000000049x2-3XfA;
-	Tue, 26 Aug 2025 22:24:43 +0200
-Message-ID: <f8bb4fb296ab764b1973103f8944bb14004d9acd.camel@sipsolutions.net>
+	s=arc-20240116; t=1756240097; c=relaxed/simple;
+	bh=GjCmdhDnmLRbnAkYKEMK99YEon6EHLCcKM1znpF621k=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=AaeNHQL2k4bNv9m6ZUNICDqG+fycux5pvzByqjF9fFtloDsjL7C+IrnJ9eWQP4J7lqh7jxI3Owrf3Smc1ldvcdC8kUauD05Mi+I9r9HmlEiGbMiY19+LK3nDAL6/N3IsDqqgim+MnOj+cu67LG+EVx+kPmM+PFRJg+slBT/KXzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E+DZRx7n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFADC4CEF1;
+	Tue, 26 Aug 2025 20:28:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756240097;
+	bh=GjCmdhDnmLRbnAkYKEMK99YEon6EHLCcKM1znpF621k=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=E+DZRx7nd3UTcie2pYM81hFwS8SAZbr3z7G5GF5U7+f6UV4ExTIvkbtCBPmIj5fyD
+	 pyCiTBeAe2LuXx9WV/06kgxeEInseRG2DGt6+19uPueuc4E+/fS06wbRs2BrFlsmow
+	 meGcyn3ufwYuFYqGZuwSt6sL6LtkppTKIPliVMyLAAfZfbU+ZxDjtTJjwsHJO7R/Pb
+	 WxqG6tVmguBoSrdp78r/WLgI05J+A4PpPeAZvxjb0rhCXGIbPXGHUKMr249sVXFaOX
+	 +Bs7AoHV9ndE7Ef3Bg7rq3y/ihjbnp/yUpJQYEHDbmm/OxcEmgk8TpXZjFCvakQij2
+	 Reci0fevdWyag==
+Date: Tue, 26 Aug 2025 22:28:14 +0200 (CEST)
+From: Jiri Kosina <jikos@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+    ksummit@lists.linux.dev
 Subject: Re: [MAINTAINER SUMMIT] Enforcing API deprecation
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
-	ksummit@lists.linux.dev
-Date: Tue, 26 Aug 2025 22:24:42 +0200
-In-Reply-To: <CACMJSes7ZnGo+Wyk_Db8VEUb8iXFB6-ev3hceY9aY1vjhpywTQ@mail.gmail.com>
-References: 
-	<CACMJSes7ZnGo+Wyk_Db8VEUb8iXFB6-ev3hceY9aY1vjhpywTQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+In-Reply-To: <CAHk-=wgOXd-meRuz5Gv2oz0W0wBUOpMO5CK9eifjfdR5Xz_-Fw@mail.gmail.com>
+Message-ID: <536or9s2-r219-2854-2n7s-q299s7q7noq9@xreary.bet>
+References: <CACMJSes7ZnGo+Wyk_Db8VEUb8iXFB6-ev3hceY9aY1vjhpywTQ@mail.gmail.com> <CAHk-=wgOXd-meRuz5Gv2oz0W0wBUOpMO5CK9eifjfdR5Xz_-Fw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=ISO-8859-7
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-On Tue, 2025-08-26 at 21:57 +0200, Bartosz Golaszewski wrote:
-> What we usually do is:
-> 1. Provide an alternative solution living in parallel to the old one.
-> 2. Mark the legacy interfaces as deprecated in their kerneldocs.
-> 3. Slowly convert users one by one until the relevant symbols are no
-> longer called anywhere in the kernel.
-> 4. Remove legacy interface.
+On Tue, 26 Aug 2025, Linus Torvalds wrote:
+
+> > I would like to propose a discussion on how to enforce API deprecation
+> > in a way that supports efforts to reduce technical debt, without being
+> > hampered by developers and maintainers who mean no harm but simply
+> > don=A2t know any better.
 >=20
-> A problem occurs when during step #3 (which may take anywhere from
-> several releases to many years depending on how commonly given
-> interface is used), developers continue to introduce new calls to the
-> deprecated routines. This is not always easily caught, because quite
-> often patches using the API of a given subsystem will not be send to
-> this subsystem's maintainer (Example: while GPIO core code lives under
-> drivers/gpio/, there are lots of provider implementations and even
-> more consumers spread tree-wide. I cannot possibly catch every commit
-> I'm not explicitly Cc'ed on and eventually some will fly under the
-> radar. Also: this is not a good solution if I have to manually object
-> every time, this should be more or less automated).
+> Here's the only thing that works: if you change the API, you have to
+> fix up all existing users.
+>=20
+> If you are not willing to fix up all existing users, and you introduce
+> a parallel API, then you are the one that maintains both the old and
+> the new API forever.
 
-Once most things are converted, copy/paste will die automatically use
-the right things. Sure, you might think you're almost there and then a
-handful of new users are introduced, but you can actually remove the
-APIs in -next and then the new ones fail to build there, if you're that
-far along.
+I don't disagree, I just feel that it's important to note that it's pretty=
+=20
+much impossible to do a proper functional testing of many such=20
+conversions.
+Especially when drivers are involved on the consuming side. Even more so=20
+if obscure ones (which is quite often the case in driver space).
 
-I guess you have to ask yourself how much it matters?
+But yes, if there are people who do care about such drivers, they will=20
+speak up once they get hit by the breakage, so it's not a huge problem=20
+either.
 
-Is it a major hassle to keep supporting the old API? Then I guess the
-effort to support the old API outweighs the effort to convert it
-quickly, so do that?
+--=20
+Jiri Kosina
+SUSE Labs
 
-If the old API just calls the new API or something simple you basically
-keep the old API forever (I just looked at PCI MSI APIs which have said
-it's deprecated for almost a decade, and yet is still the most commonly
-used one ... I guess it didn't matter). If it doesn't matter then really
-all you did was introduce an _additional_ API that might let you solve
-whatever problem you were trying to solve that the old API didn't let
-you solve, but isn't needed for the vast majority of cases?
-
-More nagging etc. really won't change anything except stress maintainers
-out even more, make people ignore it, etc. Whoever cares can do the
-conversion, but if whoever maintains the API doesn't actually care about
-converting it, why should anyone else?
-
-johannes
 
