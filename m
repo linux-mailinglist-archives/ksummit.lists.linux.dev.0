@@ -1,72 +1,72 @@
-Return-Path: <ksummit+bounces-2232-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2233-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9E12B385C3
-	for <lists@lfdr.de>; Wed, 27 Aug 2025 17:07:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC848B386B3
+	for <lists@lfdr.de>; Wed, 27 Aug 2025 17:31:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A73FE175C61
-	for <lists@lfdr.de>; Wed, 27 Aug 2025 15:07:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C545D7A620F
+	for <lists@lfdr.de>; Wed, 27 Aug 2025 15:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A286B26F2BE;
-	Wed, 27 Aug 2025 15:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FBD429B8F8;
+	Wed, 27 Aug 2025 15:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DZrvq1+p"
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CHaCHU41"
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56400216E24
-	for <ksummit@lists.linux.dev>; Wed, 27 Aug 2025 15:07:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A28156C6A
+	for <ksummit@lists.linux.dev>; Wed, 27 Aug 2025 15:31:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756307261; cv=none; b=Gm3XpYSPfyNZFveRxa/XyxW3BZP5je8W8C5SWCZIX8njNRPZGQhut+amNxXEQA8na+8GkAN4dW6gluoX2is4s4EfIrLU+U+naJNzje/VqsD5Cr50PtJ0nWWQIGb/UCM5w88wXoV3Ox85p5E1i5vr2hOdarB/006uYnA+UMh1WC4=
+	t=1756308712; cv=none; b=TrWwUaGzzvE3jb3z5lfNUzlKK306fFrC0gH1ngVm5l9E6GQsdSAFYEBvrTXRd3gGBpb7SFRABbGV0rGhhg84Fcnjeq6mJAUDp3vodvZZRv9XVFb4BbsM6bq+EKDaOxGG++rLF+wfGzum0IVNxXvbOqR+CE385F5YrA2ZEDovdpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756307261; c=relaxed/simple;
-	bh=dOuZE4A++QXIxhKd+WrZnFsU4UmxHWpRzgvf6q8StHQ=;
+	s=arc-20240116; t=1756308712; c=relaxed/simple;
+	bh=mY934ZzTbSRUzwzhvm4GwZvUEUvLhLcwdjan4AL5eck=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=b9jMykHasQ/KL49AoBT7Usw71zTyN3ycgXC5S5UMIDad90spGeKFbM51Zj0Zon246M1pgv0qFkiNND2k/dUk4JiW5/smIgQx5JgM5BRhdoZitobWJ6PA/Qs8H38Lt6pjcPKDWsgImKEw3M3+QpF2qrQzQJctUAYopaeMs3zEztQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DZrvq1+p; arc=none smtp.client-ip=209.85.218.51
+	 To:Cc:Content-Type; b=fz+DEg4C3EbnuJdzFIr2WnwuO/WSEtmXwTsMgwEscDsGxvjqz4zHMjAz3cdKzhfaWU+N82kBKsmlK0MGAntWa0OCmVyHo/hYYR6svJFTvniBTtsdan4WP6vDpKTwpMfzgHjsUAM3rFQMOHU15s3X4qUrAzuh45mSFP5a3J835GI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CHaCHU41; arc=none smtp.client-ip=209.85.218.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-afcb7a3a085so1103396666b.2
-        for <ksummit@lists.linux.dev>; Wed, 27 Aug 2025 08:07:39 -0700 (PDT)
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-afcb731caaaso1038788066b.0
+        for <ksummit@lists.linux.dev>; Wed, 27 Aug 2025 08:31:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756307257; x=1756912057; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1756308708; x=1756913508; darn=lists.linux.dev;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=dOuZE4A++QXIxhKd+WrZnFsU4UmxHWpRzgvf6q8StHQ=;
-        b=DZrvq1+pHP/MdI6sRABfWDzV0SFk0hMXNExXHuqXzfB1jxJxJmTTBoUOWg5zf/xpUU
-         aCQhm/hXCMHx4bvpdgP8SXYPsJY+Lfsg8UzGdnSubnObCz/hQhPbwqqr/XKBl49r316R
-         +D+2LxvYObWRFsTI/fMLY5Zfv6vfhL8PzlYEPBFzE0MPdHP55WSJRa9qrFT+3wbOjHcD
-         pzSYpG+OtHG7siWLN4wvyBklxoHcJ9R1NUAHeGQS12Bum7JoXOLfZhsog/U9iWCPy9hS
-         J8yLbOCrgZ/5apws0wEWA3Z6e4LyMJfTS2JtNUtGiHDyqHxxhBUpOjYWhd8r4RWuqHYH
-         6OVA==
+        bh=iVYqlkkhgVrHHKWyq5bfwCsYCJYQkxjzO7UzXn6ecUo=;
+        b=CHaCHU41YIw9My+N6MKMOP1shLPdmSRo9IUqA0pjLYybTNK7yDNbJvpd8xlZw4mp+I
+         U456ePb6oXyIAWqB7GkgPeFytAAxBQovh664YW8G/6f86XidG37BiLlf/c1QiaHsIRtB
+         1LHO7vfpcM8c42tlRJkpLM7lqn5sr3aJWR+6jsWIdx9O6nO1pUFtAq6f0x2Tibgf+Cu2
+         4BUx8JQnd12QnQ93f5i6xnhOhBFWnFUatuhzyZG53qe7pDY6PV8K1LSKXaSsOEJwKd5N
+         ihCIeHPAvZaVVAMCZ8N3PqnAVgIoqRTG2YCYfS6j/c6QDDQZ83F4XvU1ViS8064EyGwV
+         2RVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756307257; x=1756912057;
+        d=1e100.net; s=20230601; t=1756308708; x=1756913508;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=dOuZE4A++QXIxhKd+WrZnFsU4UmxHWpRzgvf6q8StHQ=;
-        b=it7736fBV1AxwI2H5yAbEEoG0jrywmIbADRRXq4lDECVRmZ4wFo9v7C6qhj4gQ/W2P
-         vUGnGadjhyJib0Gts7EP/imTnpw5urA6dcgvOxcF4To2thpiBCLDj8EGAnNlloEhGu1g
-         EQK3QdU4cnDVqvnraeOUwA+LalWgJyThUY0YZZFAX4UJ+BYqhQq8fcq+PJpbGRlMNPv2
-         L8shm+w7nmurqSwOEH5ZtwMvrwcAYqC2NgQM+J6qkT7NlU0M1rNsizmXEeX5AAcfyp/q
-         nh34Jv608rpy/BKCYShhUUsdzG1roKWWgGIeb/+umBozQF+YBWFS4z2rwX3QXqMTFT+X
-         fODQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXKzz3TdZfaOWZCxIkhweiUmUxBgLbPFFDxHiRn8XHOEPFIkJLqGep4MiPI36bqK2wZ1hCkOVC1@lists.linux.dev
-X-Gm-Message-State: AOJu0YwdGiH7sru938wWNsXTVxHHMK0GdNqitSfBA1+hGl64zWkqBsxy
-	7nFafeJhl7CNcSZJVWuCVR/cP7d8dnmtOuW/3K2Xnr5RVtGW3lhHwpWLwp4bbrayY3pRWH5O5R2
-	5xaPQ/JWKsduHlCfjGdrhGUbsgbj4JCy/aIkkxot/yRfRQ+J0e423
-X-Gm-Gg: ASbGncvXUpBBRN4C1wdOc39rmfrNi0C3K2CXHy3eQQtC9wZTRSqkgnOltSZqYuAbimY
-	SLZHGeYq1t9PgFwtvXyJ8iR6lyNw2JvAfAa5PWCmFvtHNdGLOacbNMvyE+aIDofYAb91NoAziHt
-	gkkxPiucafOT+Yn+V7jS0lvLBe3KjIvPIOK9Lgu2qaUJxso+cInkwE8ranKge3O7v8AjrhoxflG
-	cmTdvhpvrSbaG12gWX5InLXt2dnxDonZSsYxZU=
-X-Google-Smtp-Source: AGHT+IG/y0BwC4ffz54WX+aDtkh0DGdAgXdjPLTDSs7PPwdvnUcYztl5HYGsBcHeGbA9epferwwvJM5XVLKrfXzhHkI=
-X-Received: by 2002:a17:907:1c13:b0:afe:d62a:f04e with SMTP id
- a640c23a62f3a-afed62af753mr7624066b.29.1756307257514; Wed, 27 Aug 2025
- 08:07:37 -0700 (PDT)
+        bh=iVYqlkkhgVrHHKWyq5bfwCsYCJYQkxjzO7UzXn6ecUo=;
+        b=Sm+QU0cHC57CtodYtloDtRCz3tVJQQRr7uo5NW0Q6OXkHfy/RFFM+78kgYcJPx9dcn
+         jmwOIQUW784faDybwsgpUR1DZK0lMr3+nCPzHXHjqeRvqWcA2+7UVpOtrYWlyNq54pMU
+         ZHQmhoTqQaTVPRxlJyrE52Hrnmu2f5KFJHLvGcO7FKrD8Ttsc+nqNM+DIOz6E1Sa0z1z
+         WlZXjGAQgv10QADxslGV1OBipEiCjb/IxsMs3OfQ+y6aCGFwFbfuRbTQ5s30Ic1cH6aa
+         YSR7RlAhHZjSK4X1dHMPyY41NHBMKHv9bY3GOleqEeJGlwpcdIYZIf933x7Q7fg4ev5O
+         u2Kw==
+X-Forwarded-Encrypted: i=1; AJvYcCWVoAZzdDwguyrQ1Ye3k0rSIlz4L0y7Vx7NWiRgyeVmEfp+6XltLgV59tKOC45eftkIA9BO8jmY@lists.linux.dev
+X-Gm-Message-State: AOJu0YydZd0aYgD68xXySzUnoO9SsXMLAu0r+VxvKj7uBWvZOvicNmRV
+	XYJVm1vMBmsU7034POKxo9mz7zwFSG0UJC1X5gUiWBrUNVsLQ9Mo+A//p0IqEyBn6YAEESpukxM
+	4dYx5ka5tm1E6MQqUYkKpLF9+LzxJHRgIJJPEJHvkN+E+6IUizzaSewA=
+X-Gm-Gg: ASbGncur9PopNsbSLP5CD1PDVCkKOe4/IAZzlCqwBqthreyeYqpv1b3IKfKEAiNW2Cl
+	QCELsuIkj+5sFwfD/gbyv2EQ7PeSW/aAMyOEtWobsasASlHGQTrBFpST9ye1v4OZBTGhzzTF9Zs
+	DTONJOqrmJqhP4ZHhtbEpv/THZMT8gJ4+tBINV2eAXArSoqZXdPZJ9AxHCZB8PyfHkjQSdJPfod
+	XLQFAHhoQI67HO5PrO4+5JmlDBfzraENKdBpBY=
+X-Google-Smtp-Source: AGHT+IGxJNNUaE0fprFErPKUGxi2uusZ5yw1ST8pdm7SeTdILtdQlg/9sU/GPkBniFe6MFMFYhlH7mXQ+dTFwjYrGu4=
+X-Received: by 2002:a17:907:3e08:b0:af9:a5f8:2f34 with SMTP id
+ a640c23a62f3a-afe2963b046mr2066539966b.53.1756308708250; Wed, 27 Aug 2025
+ 08:31:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -75,55 +75,44 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <CACMJSes7ZnGo+Wyk_Db8VEUb8iXFB6-ev3hceY9aY1vjhpywTQ@mail.gmail.com>
  <CAHk-=wgOXd-meRuz5Gv2oz0W0wBUOpMO5CK9eifjfdR5Xz_-Fw@mail.gmail.com>
- <536or9s2-r219-2854-2n7s-q299s7q7noq9@xreary.bet> <CAHk-=wi2E0BBX1ZUEo5B5a0E+M_eFU_NgWgp+cABfsqR9f-cAQ@mail.gmail.com>
-In-Reply-To: <CAHk-=wi2E0BBX1ZUEo5B5a0E+M_eFU_NgWgp+cABfsqR9f-cAQ@mail.gmail.com>
+ <CACMJSet5r0PDFsYRcNWKQH_jfimqpQWZ2nL2YKoc-+QisNNykA@mail.gmail.com> <e5e72565-6421-8f1e-50d2-6deecc303faf@inria.fr>
+In-Reply-To: <e5e72565-6421-8f1e-50d2-6deecc303faf@inria.fr>
 From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Date: Wed, 27 Aug 2025 17:07:25 +0200
-X-Gm-Features: Ac12FXxrMDeaQ8EgWhyl2D_H8WSHsD8TcHX0xG0Nbs73a2GZYjEwmf2zLiC3204
-Message-ID: <CACMJSesxLDH+ZPcbFq+s-4E+3QmhU4JejYZ6-SoYBfM0ePCCtQ@mail.gmail.com>
+Date: Wed, 27 Aug 2025 17:31:36 +0200
+X-Gm-Features: Ac12FXz5RCRhZp9atbgaizCVrEMUv-Y0os2iriugSl94KzXN4BN74KU-WbEFeos
+Message-ID: <CACMJSev0yRtCqr9YuHkN8ETyzU6_4bhuuX3ykLXNK8Z0eR1TvQ@mail.gmail.com>
 Subject: Re: [MAINTAINER SUMMIT] Enforcing API deprecation
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Jiri Kosina <jikos@kernel.org>, ksummit@lists.linux.dev
+To: Julia Lawall <julia.lawall@inria.fr>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, ksummit@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 27 Aug 2025 at 00:44, Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
+On Wed, 27 Aug 2025 at 16:58, Julia Lawall <julia.lawall@inria.fr> wrote:
 >
 
 [snip]
 
+> >
+> > And to address your last sentence on a personal note: thing's arent
+> > always so black and white - for me: I inherited the GPIO subsystem
+> > with both the old and the new API already present tree-wide and am
+> > just trying to improve the pre-existing situation.
 >
-> Perfect is often the enemy of good. Making the new API easier to
-> convert to, in the name of making for a smoother development model,
-> may be the right thing to do, even if maybe the new API isn't then
-> everything you would want it to be.
+> Is there some centralized place listing what APis need attention and
+> giving some hints about what should be done?  Hints could be text or
+> change examples or pointers to commits where the change has been done.
 >
-> I suspect Bartosz comes at this from the recent GPIO setting changes,
-> and honestly, I do think that could have been done with a coccinelle
-> script originally, instead of doing a parallel API at all.
->
+> julia
 
-No, not at all, that was super easy as the conversions were - for most
-part - trivial and while I did catch some new incoming code with the
-old callbacks, the whole conversion took 2 or 3 cycles so that wasn't
-an issue.
-
-I'm mostly referring to the conversion from global GPIO numbers to
-GPIO descriptors. This change is so profound that the two APIs don't
-even have much in common (including their implementations) so most of
-your points above don't apply: there's a fundamental difference
-between requesting a global GPIO number that's a magic value defined
-somewhere and getting it through device property accessors. We do, of
-course, have a compatibility layer for that but it's janky at best.
-
-This is the conversion that's really challenging and taking years and
-the progress is slow because you have to functionally test these
-changes. This cannot be automated or coccinelled away because it
-touches on providers, consumers and firmware nodes.
-
-And in the process: even really experienced developers (I won't point
-fingers :) ) sometimes submit patches using the legacy API which is
-something I'd like to avoid, hence this proposal.
+There's a TODO entry[1], a talk where I described the heaps of
+technical debt we're dealing with[2] and lots of patches on the list
+called typically something like "convert to GPIO descriptors" and
+which look like this[3] or this[4] so quite different depending on
+circumstances.
 
 Bartosz
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpio/TODO#n6
+[2] https://www.youtube.com/watch?v=BR41Yg69c9Y
+[3] https://lore.kernel.org/all/20250808151822.536879-18-arnd@kernel.org/
+[4] https://lore.kernel.org/all/20240423-gpio-leds-v1-3-799c2f6bc61c@linaro.org/
 
