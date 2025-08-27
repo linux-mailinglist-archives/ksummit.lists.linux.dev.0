@@ -1,154 +1,129 @@
-Return-Path: <ksummit+bounces-2231-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2232-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8AC4B38597
-	for <lists@lfdr.de>; Wed, 27 Aug 2025 16:59:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9E12B385C3
+	for <lists@lfdr.de>; Wed, 27 Aug 2025 17:07:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A7373ADEEC
-	for <lists@lfdr.de>; Wed, 27 Aug 2025 14:59:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A73FE175C61
+	for <lists@lfdr.de>; Wed, 27 Aug 2025 15:07:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5FE24A066;
-	Wed, 27 Aug 2025 14:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A286B26F2BE;
+	Wed, 27 Aug 2025 15:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=inria.fr header.i=@inria.fr header.b="mxUWkBeR"
-Received: from mail3-relais-sop.national.inria.fr (mail3-relais-sop.national.inria.fr [192.134.164.104])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DZrvq1+p"
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BB120DD75
-	for <ksummit@lists.linux.dev>; Wed, 27 Aug 2025 14:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.134.164.104
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56400216E24
+	for <ksummit@lists.linux.dev>; Wed, 27 Aug 2025 15:07:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756306762; cv=none; b=RD1PVoPXPGy8s90GR5TPv+fvFCdJYHgWrFPdh+00GtwDrQxNyvRWbpK1ASJbQA2r7XIehGSoV2EQ2sl22jY+zmxZzD6Q7NAoFcyLm7ORJ4uU5JtEtwVqZBGfjdxUPPRtHkRksxfRV8ywexfkeYW2Q3F0wM9tAVHFAeLjymJzs7k=
+	t=1756307261; cv=none; b=Gm3XpYSPfyNZFveRxa/XyxW3BZP5je8W8C5SWCZIX8njNRPZGQhut+amNxXEQA8na+8GkAN4dW6gluoX2is4s4EfIrLU+U+naJNzje/VqsD5Cr50PtJ0nWWQIGb/UCM5w88wXoV3Ox85p5E1i5vr2hOdarB/006uYnA+UMh1WC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756306762; c=relaxed/simple;
-	bh=1uAmX/S/1Hdd3XEjHYasOPxylz9whgaW8jBu6tdBKxE=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=cmjFdI5iX7WRQ67pJvjBPabiIIEZvwzq3FT8bn1eFKCEIV7eOXl0Njf9B/fSFl6CyN6ndHuK7REme8Q4VM5ZMLw7jkAg4nyEvj/jWD+jn+lYjG12ozbxzETEn9d3TgcBocdz8K3K0x8Lfx4XeAtCaITvdDi/yQrloWoHj33C3OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inria.fr; spf=pass smtp.mailfrom=inria.fr; dkim=pass (1024-bit key) header.d=inria.fr header.i=@inria.fr header.b=mxUWkBeR; arc=none smtp.client-ip=192.134.164.104
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inria.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inria.fr
+	s=arc-20240116; t=1756307261; c=relaxed/simple;
+	bh=dOuZE4A++QXIxhKd+WrZnFsU4UmxHWpRzgvf6q8StHQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b9jMykHasQ/KL49AoBT7Usw71zTyN3ycgXC5S5UMIDad90spGeKFbM51Zj0Zon246M1pgv0qFkiNND2k/dUk4JiW5/smIgQx5JgM5BRhdoZitobWJ6PA/Qs8H38Lt6pjcPKDWsgImKEw3M3+QpF2qrQzQJctUAYopaeMs3zEztQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DZrvq1+p; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-afcb7a3a085so1103396666b.2
+        for <ksummit@lists.linux.dev>; Wed, 27 Aug 2025 08:07:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=inria.fr; s=dc;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=Rhe0/cUwoUF5mM/HKpVSvD9G1+c1MVgqUOVuvOTypXU=;
-  b=mxUWkBeRjTFdy/jmuY2d21BfAFXUiAoOoF8iBhd0l/BppG8Ov9NAJXz5
-   VchP4lsScmgXSdXFAvbGUY6e8ZsviFibiH2wgQFebXjNsAG6mYC1jCcQd
-   1poAnBeZN4FtHcmJMqCU7n5/dSsGr7vvAElnWE6lrhPfKPcMqVczCshm3
-   M=;
-X-CSE-ConnectionGUID: SaYIFBkCQlmVy2oxq+uqtA==
-X-CSE-MsgGUID: PbYj6dcvQJCaqw/bE0ij4w==
-Authentication-Results: mail3-relais-sop.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=julia.lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
-X-IronPort-AV: E=Sophos;i="6.18,214,1751234400"; 
-   d="scan'208";a="124029158"
-Received: from dt-lawall.paris.inria.fr ([128.93.67.65])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2025 16:58:08 +0200
-Date: Wed, 27 Aug 2025 16:58:08 +0200 (CEST)
-From: Julia Lawall <julia.lawall@inria.fr>
-To: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-cc: Linus Torvalds <torvalds@linux-foundation.org>, ksummit@lists.linux.dev
-Subject: Re: [MAINTAINER SUMMIT] Enforcing API deprecation
-In-Reply-To: <CACMJSet5r0PDFsYRcNWKQH_jfimqpQWZ2nL2YKoc-+QisNNykA@mail.gmail.com>
-Message-ID: <e5e72565-6421-8f1e-50d2-6deecc303faf@inria.fr>
-References: <CACMJSes7ZnGo+Wyk_Db8VEUb8iXFB6-ev3hceY9aY1vjhpywTQ@mail.gmail.com> <CAHk-=wgOXd-meRuz5Gv2oz0W0wBUOpMO5CK9eifjfdR5Xz_-Fw@mail.gmail.com> <CACMJSet5r0PDFsYRcNWKQH_jfimqpQWZ2nL2YKoc-+QisNNykA@mail.gmail.com>
+        d=linaro.org; s=google; t=1756307257; x=1756912057; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=dOuZE4A++QXIxhKd+WrZnFsU4UmxHWpRzgvf6q8StHQ=;
+        b=DZrvq1+pHP/MdI6sRABfWDzV0SFk0hMXNExXHuqXzfB1jxJxJmTTBoUOWg5zf/xpUU
+         aCQhm/hXCMHx4bvpdgP8SXYPsJY+Lfsg8UzGdnSubnObCz/hQhPbwqqr/XKBl49r316R
+         +D+2LxvYObWRFsTI/fMLY5Zfv6vfhL8PzlYEPBFzE0MPdHP55WSJRa9qrFT+3wbOjHcD
+         pzSYpG+OtHG7siWLN4wvyBklxoHcJ9R1NUAHeGQS12Bum7JoXOLfZhsog/U9iWCPy9hS
+         J8yLbOCrgZ/5apws0wEWA3Z6e4LyMJfTS2JtNUtGiHDyqHxxhBUpOjYWhd8r4RWuqHYH
+         6OVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756307257; x=1756912057;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dOuZE4A++QXIxhKd+WrZnFsU4UmxHWpRzgvf6q8StHQ=;
+        b=it7736fBV1AxwI2H5yAbEEoG0jrywmIbADRRXq4lDECVRmZ4wFo9v7C6qhj4gQ/W2P
+         vUGnGadjhyJib0Gts7EP/imTnpw5urA6dcgvOxcF4To2thpiBCLDj8EGAnNlloEhGu1g
+         EQK3QdU4cnDVqvnraeOUwA+LalWgJyThUY0YZZFAX4UJ+BYqhQq8fcq+PJpbGRlMNPv2
+         L8shm+w7nmurqSwOEH5ZtwMvrwcAYqC2NgQM+J6qkT7NlU0M1rNsizmXEeX5AAcfyp/q
+         nh34Jv608rpy/BKCYShhUUsdzG1roKWWgGIeb/+umBozQF+YBWFS4z2rwX3QXqMTFT+X
+         fODQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXKzz3TdZfaOWZCxIkhweiUmUxBgLbPFFDxHiRn8XHOEPFIkJLqGep4MiPI36bqK2wZ1hCkOVC1@lists.linux.dev
+X-Gm-Message-State: AOJu0YwdGiH7sru938wWNsXTVxHHMK0GdNqitSfBA1+hGl64zWkqBsxy
+	7nFafeJhl7CNcSZJVWuCVR/cP7d8dnmtOuW/3K2Xnr5RVtGW3lhHwpWLwp4bbrayY3pRWH5O5R2
+	5xaPQ/JWKsduHlCfjGdrhGUbsgbj4JCy/aIkkxot/yRfRQ+J0e423
+X-Gm-Gg: ASbGncvXUpBBRN4C1wdOc39rmfrNi0C3K2CXHy3eQQtC9wZTRSqkgnOltSZqYuAbimY
+	SLZHGeYq1t9PgFwtvXyJ8iR6lyNw2JvAfAa5PWCmFvtHNdGLOacbNMvyE+aIDofYAb91NoAziHt
+	gkkxPiucafOT+Yn+V7jS0lvLBe3KjIvPIOK9Lgu2qaUJxso+cInkwE8ranKge3O7v8AjrhoxflG
+	cmTdvhpvrSbaG12gWX5InLXt2dnxDonZSsYxZU=
+X-Google-Smtp-Source: AGHT+IG/y0BwC4ffz54WX+aDtkh0DGdAgXdjPLTDSs7PPwdvnUcYztl5HYGsBcHeGbA9epferwwvJM5XVLKrfXzhHkI=
+X-Received: by 2002:a17:907:1c13:b0:afe:d62a:f04e with SMTP id
+ a640c23a62f3a-afed62af753mr7624066b.29.1756307257514; Wed, 27 Aug 2025
+ 08:07:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1268481417-1756306688=:3517"
+References: <CACMJSes7ZnGo+Wyk_Db8VEUb8iXFB6-ev3hceY9aY1vjhpywTQ@mail.gmail.com>
+ <CAHk-=wgOXd-meRuz5Gv2oz0W0wBUOpMO5CK9eifjfdR5Xz_-Fw@mail.gmail.com>
+ <536or9s2-r219-2854-2n7s-q299s7q7noq9@xreary.bet> <CAHk-=wi2E0BBX1ZUEo5B5a0E+M_eFU_NgWgp+cABfsqR9f-cAQ@mail.gmail.com>
+In-Reply-To: <CAHk-=wi2E0BBX1ZUEo5B5a0E+M_eFU_NgWgp+cABfsqR9f-cAQ@mail.gmail.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Date: Wed, 27 Aug 2025 17:07:25 +0200
+X-Gm-Features: Ac12FXxrMDeaQ8EgWhyl2D_H8WSHsD8TcHX0xG0Nbs73a2GZYjEwmf2zLiC3204
+Message-ID: <CACMJSesxLDH+ZPcbFq+s-4E+3QmhU4JejYZ6-SoYBfM0ePCCtQ@mail.gmail.com>
+Subject: Re: [MAINTAINER SUMMIT] Enforcing API deprecation
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Jiri Kosina <jikos@kernel.org>, ksummit@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Wed, 27 Aug 2025 at 00:44, Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
+>
 
---8323329-1268481417-1756306688=:3517
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+[snip]
 
+>
+> Perfect is often the enemy of good. Making the new API easier to
+> convert to, in the name of making for a smoother development model,
+> may be the right thing to do, even if maybe the new API isn't then
+> everything you would want it to be.
+>
+> I suspect Bartosz comes at this from the recent GPIO setting changes,
+> and honestly, I do think that could have been done with a coccinelle
+> script originally, instead of doing a parallel API at all.
+>
 
+No, not at all, that was super easy as the conversions were - for most
+part - trivial and while I did catch some new incoming code with the
+old callbacks, the whole conversion took 2 or 3 cycles so that wasn't
+an issue.
 
-On Wed, 27 Aug 2025, Bartosz Golaszewski wrote:
+I'm mostly referring to the conversion from global GPIO numbers to
+GPIO descriptors. This change is so profound that the two APIs don't
+even have much in common (including their implementations) so most of
+your points above don't apply: there's a fundamental difference
+between requesting a global GPIO number that's a magic value defined
+somewhere and getting it through device property accessors. We do, of
+course, have a compatibility layer for that but it's janky at best.
 
-> On Tue, 26 Aug 2025 at 22:12, Linus Torvalds
-> <torvalds@linux-foundation.org> wrote:
-> >
-> > On Tue, 26 Aug 2025 at 12:58, Bartosz Golaszewski
-> > <bartosz.golaszewski@linaro.org> wrote:
-> > >
->
-> [snip]
->
-> > > 4. Make build bots detect it.
-> >
-> > Fine, but doesn't solve anything.
-> >
->
-> How so? The developer gets an email telling them they used a legacy
-> API, the maintainer sees a build bot report and knows to ignore the
-> patch. That's already better than what we (don't) have currently.
->
-> > > I would like to propose a discussion on how to enforce API deprecation
-> > > in a way that supports efforts to reduce technical debt, without being
-> > > hampered by developers and maintainers who mean no harm but simply
-> > > don’t know any better.
-> >
-> > Here's the only thing that works: if you change the API, you have to
-> > fix up all existing users.
-> >
-> > If you are not willing to fix up all existing users, and you introduce
-> > a parallel API, then you are the one that maintains both the old and
-> > the new API forever.
-> >
-> > Or at least until somebody else did the work that you weren't willing to do.
-> >
->
-> That sounds great in theory but in practice, one may be willing to do
-> the work and it will still take years (as is the case with GPIO) where
-> there were thousands of calls to the legacy API and - due to the
-> nature of the differences between the old and new one - the
-> conversions are far from trivial.
->
-> I'm not advocating a policy change, I'm trying to bring up the subject
-> of making the effort easier for those who participate in the tree-wide
-> refactoring.
->
-> > End result: the burden of new / different API's is on the person
-> > introducing them. IOW: don't introduce new API's unless you are
-> > willing to support them.
-> >
->
-> I would assume, kernel developers in general and maintainers in
-> particular want to make linux better. An old API may have been
-> introduced long ago in times where we didn't know what we didn't know
-> (or even implemented by completely different people altogether) and
-> the new one, implemented later, is objectively better.
->
-> Sometimes a new API is close enough to the old one, that it can simply
-> be wrapped in backward compatible inline functions and the
-> implementation is the same for both. That's awesome and supporting the
-> legacy interface is not a big problem in this case. However, in other
-> cases, the underlying change in philosophy can be so fundamental that
-> we effectively end up with two intertwined implementations where a lot
-> of code could simply be removed once we unify all the users. In our
-> case, the work IS happening and several people are contributing. My
-> point is: this effort is commendable and should be supported rather
-> than brushed off with a "that's the API's author problem". I'm sure I
-> don't have to even name the advantages of having less code to
-> maintain.
->
-> And to address your last sentence on a personal note: thing's arent
-> always so black and white - for me: I inherited the GPIO subsystem
-> with both the old and the new API already present tree-wide and am
-> just trying to improve the pre-existing situation.
+This is the conversion that's really challenging and taking years and
+the progress is slow because you have to functionally test these
+changes. This cannot be automated or coccinelled away because it
+touches on providers, consumers and firmware nodes.
 
-Is there some centralized place listing what APis need attention and
-giving some hints about what should be done?  Hints could be text or
-change examples or pointers to commits where the change has been done.
+And in the process: even really experienced developers (I won't point
+fingers :) ) sometimes submit patches using the legacy API which is
+something I'd like to avoid, hence this proposal.
 
-julia
---8323329-1268481417-1756306688=:3517--
+Bartosz
 
