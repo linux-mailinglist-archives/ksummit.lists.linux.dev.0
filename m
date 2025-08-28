@@ -1,81 +1,72 @@
-Return-Path: <ksummit+bounces-2235-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2236-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DEBAB3881E
-	for <lists@lfdr.de>; Wed, 27 Aug 2025 18:58:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C32C9B3A3D3
+	for <lists@lfdr.de>; Thu, 28 Aug 2025 17:13:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2B483B5F9C
-	for <lists@lfdr.de>; Wed, 27 Aug 2025 16:58:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80A50171020
+	for <lists@lfdr.de>; Thu, 28 Aug 2025 15:11:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF8782EA72A;
-	Wed, 27 Aug 2025 16:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E0B258EC0;
+	Thu, 28 Aug 2025 15:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="MHzZ3ttk"
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DWyZIkXX"
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B5D225761
-	for <ksummit@lists.linux.dev>; Wed, 27 Aug 2025 16:58:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081E924E4BD
+	for <ksummit@lists.linux.dev>; Thu, 28 Aug 2025 15:11:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756313886; cv=none; b=g7Rb27fz/fAdRR8mOtIROKlVxyC0wWMGk0XNhuw0dbp7VwCF+kixliW25kSxHDbhxeGY5Sd0/+Tdvx6FW7abJRayhhbdT3WGCXD+rydruOKuXwj4vAYZcR+W7C6LEVAB5LvpT7RWH8+54FWNyfOP7G7yRX6/k/yY701tcqxA8Kc=
+	t=1756393884; cv=none; b=os4eUxxEnWYLnQn/QdvrTXECzQvy4n848S4AUcNr6pAiH5lpx6ojubL/21mP/6PFLGzGu7u+7mgyit23lB8bVivoxvoryiil0lL2L1vNU8jLzBR1Rn2yDcJo0CYplR7uXZGIJ4zHmiCG14mIAH0mOvL4zAcd4RL/bi+FibiB9uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756313886; c=relaxed/simple;
-	bh=tffF2EJOkKksQuVcfYK5ffZtXu2lTRTUY5QG28Y1xS0=;
+	s=arc-20240116; t=1756393884; c=relaxed/simple;
+	bh=CZ1MgrlZ/Mutmq7ccTGwgPsYCdMoDQ88gWJIc28Gkjk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hFigDIb9Q8NzWOHBVCDJWxzrckmFcpczEeFaKflTErg9qp6CmzyF7mL9RvELpNS1dVnFwrl36lXrmlsqsktCufoAvdcjYVvwxpz8577nSaIfQGcCjqi2XS5gQNFQ3vex0V+zVRpUptDxEaWCr9X9oq+IxjRTF6dKf3TPkG0ge9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=MHzZ3ttk; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-afcb7a3a085so565666b.2
-        for <ksummit@lists.linux.dev>; Wed, 27 Aug 2025 09:58:04 -0700 (PDT)
+	 To:Cc:Content-Type; b=h5QNqzURYjALe9SVx32BtYNNL8MtE+Rygcyk5xmLPDILXc/+QPWaSmzyhqmhmITjBaLV8b03tBmMusF8BcfYCYWlYiyqS0mAiH4KuVoVeheWbFWTD/JjUf8cKt4t//DF5Ymo43RqmJ+lDhm5aAskazKSi/DcBiXxOxDAZ61Gwxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DWyZIkXX; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-afeceee8bb1so153625166b.3
+        for <ksummit@lists.linux.dev>; Thu, 28 Aug 2025 08:11:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1756313882; x=1756918682; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1756393881; x=1756998681; darn=lists.linux.dev;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=HyLDuXPt5Se/Z8URF92NqrT+8rMt1jc/uWNVhLl931c=;
-        b=MHzZ3ttkXXyve2tYGkB8aTlYzYkuJpdtMfsf6rxSjdPX2aUTbD/5nVnk+Noe4za4RR
-         gYgsdCq1v9kiVQtBurNQzfJPIrxWf9/yoofkYjvlUg6UKL12eQMib+4BaEKatppY00On
-         1DdoXFWtH6jdLIpd+TBqAdUB31VUndCggOM7s=
+        bh=CZ1MgrlZ/Mutmq7ccTGwgPsYCdMoDQ88gWJIc28Gkjk=;
+        b=DWyZIkXXNtstmMj/PFKRLxFxJPGs/jjy33QniyMYJY+ECX8JkVe3ZdSfTtxjK6DPPh
+         ZCLmZImhr53QUa9peozWFQJBeYRNf1FqIatGicqyrFqB3GUlL8naZy7rsIbWdjZwWdJ4
+         0HIXaxsc9gSM8Mzie2ElkityxubaWuViDWpKGDTrIrW7cexUX1obdut07woCae/foJpc
+         z9BAz1iqx2A4SX47QXmdg2mYzZCBRMcxrzoqEsaAHx2PPu6/hST9OrAOs3+i3oncZgDJ
+         hHKrNogc5StkO0zsc3RW9pxSQoRCM3HkcIU1WxEfBKoppEK/845X8UHwKbqCn2jPeDYj
+         jPxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756313882; x=1756918682;
+        d=1e100.net; s=20230601; t=1756393881; x=1756998681;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=HyLDuXPt5Se/Z8URF92NqrT+8rMt1jc/uWNVhLl931c=;
-        b=hZIdOX43jNUGIxzsih6DoKTlstUmSuDMKcztbUTbh168QWicgcicefJy5JW1IvCvYh
-         8gLPQpDo0KBg7crErKfPh1Vj9ubFTWm+hSCIqsOatnbalMTSmJZ3neT+xWErpoHWzwx1
-         GTaMo+dLyn+50nV6V78C9NqbtvMVIeKsXKEWtSxvUEgtuE1Mucqn1wAD4Q9ie4d/QHbv
-         c4PV7RBzDS4w/KuxE+D7wilJVg4G6a0SdtReWRZLe2gOH0isHQVWktJKU7pvCZaucF6t
-         LD5kYR4+VARSjvwDE0qvRVv3M6BBW6nD+Bbx0v4aY4oTVyIShNtFcB6wneHr3KZBmYiU
-         UCjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVsxFS8ye6PxHL6ATijma+TeDfdkMLQVXP9/mheNqwDDbq8cPeCvOToVQ6SQGYh2FZvE41L2AT4@lists.linux.dev
-X-Gm-Message-State: AOJu0YxCVgpAO1SUhxAaipS0C5Dn57PE9skJLKy4DaCtjJsh2BWwskWD
-	ItTJbbxk/UihX7e0jWyzVGmwqWvYLcdIOaMGf9hT1IDs443aqTL1YzefLXJ2FxpIQYEh+gxKde7
-	N34UwAtA=
-X-Gm-Gg: ASbGncuwM+MFOEPn0l5ljrj9xXKLZyhBjoWJBTSmCNZ8u5dCGyNSG5cSDebXnzRmccK
-	cx+lX3JflP8PiOsU1I3fLraVhW7L63s3mAsGEn+R6hJxIPcYBxihUYDHelqQr1cJM7ANquNIvfW
-	gouWBoIZL3g9S5x6GzlcXsbdlRNWL9pxSeWrgUWdbIgjJheF5jp/A5gP2Q2blPVAC8rrLA/ZHuj
-	DifYRszFd9gblE6LizY/MGl+/rM0z3teBJMzuZgBZMcoY03QeAr7G9+WOiuZfSLYY7WIvY2IUYU
-	nk2yJnKZlZIRpXFKxCRAzreHxjPzgzmxlSzxQuRziKxbueNrXx648qoBxgNjMD2g/9zVInc9Kdv
-	fMmi9k66n/Jke+p3La09/hd9wh3M2Yb+5DSJmAcJiDdU/f2wsPLQKaumQC7wiDCNUg/6XOKYj
-X-Google-Smtp-Source: AGHT+IGEPrH+RsRocR7qItBnt0nZgAnbOOudjal0Ady2aT73tTvAa9u3ZDl67K8Pegv4wcCyqv1Mlw==
-X-Received: by 2002:a17:906:c107:b0:af2:42e8:ad9f with SMTP id a640c23a62f3a-afe29548ffdmr1883747966b.39.1756313882369;
-        Wed, 27 Aug 2025 09:58:02 -0700 (PDT)
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com. [209.85.208.45])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afe88c76f61sm620537566b.10.2025.08.27.09.58.01
-        for <ksummit@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 Aug 2025 09:58:01 -0700 (PDT)
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-61cb9e039d9so24711a12.1
-        for <ksummit@lists.linux.dev>; Wed, 27 Aug 2025 09:58:01 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV1hxKSbAWRsngiBUwlUkHbtXeydSkb/2m6xta3htS1e5F1ZGRYmnBwr2CS7k8MsaF4BbseHwkp@lists.linux.dev
-X-Received: by 2002:a05:6402:50c7:b0:61c:8728:360 with SMTP id
- 4fb4d7f45d1cf-61c87280991mr6831503a12.21.1756313880594; Wed, 27 Aug 2025
- 09:58:00 -0700 (PDT)
+        bh=CZ1MgrlZ/Mutmq7ccTGwgPsYCdMoDQ88gWJIc28Gkjk=;
+        b=Yupos0ExbFA0nbrcrWQMSkb7Q8bExTLpEH5XqEcLw8OLXXSpMkWkKkivPmXqp0trVh
+         LKU84kOz8ktFtlFxJFRpuXtQGtWdNDTuguCnWGMMJ3UkgSVkd7acdSYdo+leNT2RKDV5
+         KxSboB0A/sTZKvIgI3HDpT44nEB1qaA++pBlakpWNdP9Lt5RdAGxeD+97WzUTylAbVJf
+         LYrNdC85GH+3K/GFcHfMt7iZLlgdfXTQnbd0SN/F4u7j02gHMO+GaNpGhS4dnR6n8kuH
+         w1E0Cee/5otkTa+e7QGoc/+CHegMgIXYUaEYRUfX2ixQMIuZ5MC3NEBlaHI1t9QvaQ3v
+         GqQg==
+X-Forwarded-Encrypted: i=1; AJvYcCXUbrnF8VD8pkorrC5S9OlfXkf/bpn0eNMus0MNKWbYJSdcHXyiFa042I21pCw+l4CtxKOZAFJD@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx60yhE1DaZ+AWjrDMu54TOVM30irOF1rCH548eJHYytQHI01fk
+	C5pmOPiAVX0khWO7A23/z1hzuZ8TUzL/GhLBIRD1zGg3L6cpQUXbZoCQ8iDSZ/kG/QYOckR05SL
+	iB/Y++ajLx5VHR+t0HTk1QjxiNpC98Eb0/0HGKqcsnjBsRy/9jBGBrOw=
+X-Gm-Gg: ASbGncvLimfnLAvc3yokWhax3Tep9JoMgfnZo/OIRaFqm7yvWhdDfRtwo8mQu1gNW+X
+	Rtt2nZJThjJyeIuuS5N9nOZ70CXm+RZQmMhSVyUX1sCbCo5DYqdYFCNEfzFSszkRLP3Q3NO5+IX
+	4Ro1UxRsEXboJWwTqgYWt+tZRfQ8C6DUL1uDa2hCTI2Ax6sZNf5NIwVzweiWbk9fj3weLRDIdE6
+	i2UrslyO4S2dxXXnJkP/SqRbj3JSv9S9KBi+xw=
+X-Google-Smtp-Source: AGHT+IFEs7konsZoczwepvocks0UsX4TsQn6/luW4E4/g/JEAnBN229gz9GrPnqiKhYQHDmVZ0dSEdh7MQUrAzV9fXI=
+X-Received: by 2002:a17:907:3e08:b0:af9:a5f8:2f34 with SMTP id
+ a640c23a62f3a-afe2963b046mr2450458566b.53.1756393881127; Thu, 28 Aug 2025
+ 08:11:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -85,43 +76,61 @@ MIME-Version: 1.0
 References: <CACMJSes7ZnGo+Wyk_Db8VEUb8iXFB6-ev3hceY9aY1vjhpywTQ@mail.gmail.com>
  <CAHk-=wgOXd-meRuz5Gv2oz0W0wBUOpMO5CK9eifjfdR5Xz_-Fw@mail.gmail.com>
  <536or9s2-r219-2854-2n7s-q299s7q7noq9@xreary.bet> <CAHk-=wi2E0BBX1ZUEo5B5a0E+M_eFU_NgWgp+cABfsqR9f-cAQ@mail.gmail.com>
- <CACMJSesxLDH+ZPcbFq+s-4E+3QmhU4JejYZ6-SoYBfM0ePCCtQ@mail.gmail.com> <CAL_JsqKqO2Qg6VnRaotQdfrfoo78Y8AA1AKQBrD_XVSEK2BMgA@mail.gmail.com>
-In-Reply-To: <CAL_JsqKqO2Qg6VnRaotQdfrfoo78Y8AA1AKQBrD_XVSEK2BMgA@mail.gmail.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Wed, 27 Aug 2025 09:57:44 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whkAe8f4=ttQmZhtoKvGtCLhEA-oHwUEvQFftYAwfVwCA@mail.gmail.com>
-X-Gm-Features: Ac12FXwNnkGMkp1uMwcBA-qxJCXCwRd7eiMIsWsFoc8tqhopPJlftt6wjzrgBdE
-Message-ID: <CAHk-=whkAe8f4=ttQmZhtoKvGtCLhEA-oHwUEvQFftYAwfVwCA@mail.gmail.com>
+ <CACMJSesxLDH+ZPcbFq+s-4E+3QmhU4JejYZ6-SoYBfM0ePCCtQ@mail.gmail.com>
+ <CAL_JsqKqO2Qg6VnRaotQdfrfoo78Y8AA1AKQBrD_XVSEK2BMgA@mail.gmail.com> <CAHk-=whkAe8f4=ttQmZhtoKvGtCLhEA-oHwUEvQFftYAwfVwCA@mail.gmail.com>
+In-Reply-To: <CAHk-=whkAe8f4=ttQmZhtoKvGtCLhEA-oHwUEvQFftYAwfVwCA@mail.gmail.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Date: Thu, 28 Aug 2025 17:11:09 +0200
+X-Gm-Features: Ac12FXwbe80vL_HLNkL2s9I0dvJY3ZON1kgMLc3lU4oYMGwTaY5dMmTYupXnb0Y
+Message-ID: <CACMJSevrym+yvkmNTXcavDG7Xi5wOrnYYunuMo4ZMP7ti-ve7Q@mail.gmail.com>
 Subject: Re: [MAINTAINER SUMMIT] Enforcing API deprecation
-To: Rob Herring <robherring2@gmail.com>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Jiri Kosina <jikos@kernel.org>, 
-	ksummit@lists.linux.dev
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Rob Herring <robherring2@gmail.com>, Jiri Kosina <jikos@kernel.org>, ksummit@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 27 Aug 2025 at 09:42, Rob Herring <robherring2@gmail.com> wrote:
+On Wed, 27 Aug 2025 at 18:58, Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
 >
-> I have a similar situation with DT APIs. It's a bit more nuanced than
-> the GPIO case. There's old APIs which are "don't add new users" or
-> "think twice before you add a new user". We may never get rid of the
-> APIs because a) no one wants to fix PPC and Sparc and b) there's
-> sometimes a need for these lower level functions. It's similar to
-> using devm_ APIs vs. the non devm_ variants.
+> All I'm saying is that people who do new API's should either just
+> accept that, or just convert between the two. None of this "deprecate"
+> garbage. None of this "blame other developers because they use the old
+> interface".
+>
 
-Having parallel APIs for different use cases is perfectly fine.
-Normal, even, and not something that we should worry about or even
-strive to avoid.
+How about "let developers know, people are actively working to replace
+this old, bad* API with a better alternative so at least don't
+(unknowingly) sabotage their efforts"?
 
-The devm_xyz() vs just plain xyz() is a good example of that. They are
-parallel for good reasons, and they will remain forever.
+> That's the basic tenet here: if you are too lazy to convert all users,
+> you also do not have the moral right to complain about - or expect -
+> others not doing the work you didn't do for you.
+>
 
-All I'm saying is that people who do new API's should either just
-accept that, or just convert between the two. None of this "deprecate"
-garbage. None of this "blame other developers because they use the old
-interface".
+That's just being mean for no reason. I already said it elsewhere in
+this thread but let me reiterate: sometimes a new (surely not lazy)
+developer shows up and wants to improve an already messy situation
+(for instance: remove the cruft resulting from having two APIs that
+could be unified with some effort). They may very well not be
+responsible for the problem at all. Don't they have the moral right to
+at least steer the subsequent development from others in the right
+direction if they're willing to do the heavy lifting? No complaining
+and no blaming: just advice on how to use a given subsystem. Like, I
+don't know, telling user-space to not use sysctl() (the system call)
+back in the day because it's bad and was replaced by the /proc/sys
+alternative?
 
-That's the basic tenet here: if you are too lazy to convert all users,
-you also do not have the moral right to complain about - or expect -
-others not doing the work you didn't do for you.
+And what is it with this "all or nothing" approach? What if it's not
+feasible (too many places to fix at once)? I'm not sure telling
+someone who wants to improve 1% of the code-base that they "either fix
+100% or go away" is a good approach. If the kernel looks better after
+this hypothetical conversion, then isn't it worth supporting? Telling
+users not to use a specific set of functions and instead go with a
+different one isn't really a big issue, is it?
 
-               Linus
+Bartosz
+
+* - The API may have looked good when it was introduced but things
+change and new use-cases come up. GPIO would have never needed the big
+locking overhaul we did a couple cycles back, had we just kept only
+supporting MMIO chips. But things do evolve...
 
