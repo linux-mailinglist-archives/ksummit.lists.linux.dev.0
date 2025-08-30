@@ -1,181 +1,129 @@
-Return-Path: <ksummit+bounces-2238-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2239-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13CCEB3B694
-	for <lists@lfdr.de>; Fri, 29 Aug 2025 11:00:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10BF0B3CB4F
+	for <lists@lfdr.de>; Sat, 30 Aug 2025 15:37:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C358E7AD636
-	for <lists@lfdr.de>; Fri, 29 Aug 2025 08:59:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C44C1BA5094
+	for <lists@lfdr.de>; Sat, 30 Aug 2025 13:37:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F8F82E3713;
-	Fri, 29 Aug 2025 09:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C32228C99;
+	Sat, 30 Aug 2025 13:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pTUJTYG6"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="DndYw8Yz"
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906192E36E8
-	for <ksummit@lists.linux.dev>; Fri, 29 Aug 2025 09:00:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2CD61A9FBC
+	for <ksummit@lists.linux.dev>; Sat, 30 Aug 2025 13:37:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756458046; cv=none; b=mktSZqYOIHzo+YcjLnDEw3bJsxjZ+FskSlTK8Mx2qdSL3Pq+8nC850ILoIe4nA7/DKeMf0CHidmAJ9cwNToX6e1+YeoWg1M4ivzSJgjUxKjvi2ZNnLVf4HBx7dAYHg9UMnTH/pD1Kj1+c82bVA0XqzWOpvtyBa1gm1/ozqzxmU0=
+	t=1756561049; cv=none; b=MJytAd8fQioLnyEe+/N9ezzqc92pJQStIbrGHnDWKAlH/2xSia7PxekTvkM7HvfAyzbx3OnSCDYlj33zIZefm1etng9JYudsv9YQ/uycqOsyqWC1pN7g0r4Xyb2vn3RNfN3Qo0/FghK47MJ+Fcm50n1KP2cl0qUisdmyjSZNhiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756458046; c=relaxed/simple;
-	bh=YkLgKeR0ud23g0kwm1nGP78rzqmDSGjPuAQVOSsswUM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uBgxDj02iK600oK0SOVV4yoL9dXVdolIw7s3/1JilDYOFOq7w664MThjIJBUUXb8tJw2b83gCCfK+Rk4p5LzGOf8RkSS9X1MzbcmJxgPDOxkJpl4q+KnfJjdL/7A8N7u6PXDTG0BnSBvdvHNmatPUfY5zM8FhqD/j+er9TXHPUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pTUJTYG6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F36FC4CEF0;
-	Fri, 29 Aug 2025 09:00:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756458046;
-	bh=YkLgKeR0ud23g0kwm1nGP78rzqmDSGjPuAQVOSsswUM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pTUJTYG6IpK5yUq/vwhUYCuAYK/dS36NzbswmfKzTU5nFYTu0Zgqvac72tYGO7peL
-	 w9z1DxtcN2NUweB7BkvGCaqqP4f2Ktn7Vx8OR4abBRx03AA9NOW41GVyGfxig+muB6
-	 W6BuMwW7XtqsHVcgabvgU6RoxZzhYZmn/fI8/4XEnvjxjFR7VuAnh+8YDEBqd1rx1r
-	 a0czcCoLvasIO/mtGUkw0tdlqjQ+YipL0U8yn3uyBAeG3kUCPR3yFT+hs13pIkqR12
-	 9tgXKzf4RuwPOjvpwb5v5oMpLsC5a1jPGSIna2C0jdOiZFxr7PCrIpPqKROZtoUL1G
-	 diEpQVwcEIMwA==
-Message-ID: <1fa9e347-99c8-4548-816e-ccef0e51999c@kernel.org>
-Date: Fri, 29 Aug 2025 11:00:43 +0200
+	s=arc-20240116; t=1756561049; c=relaxed/simple;
+	bh=PRXulmq2MtQqsnynsoMoHtq1jvPwQiiPV0YK53vCb4U=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=hfQyoSOpL5OjxnXQSjkM/QUxDJUM3xw04C666z+6x8I3OzeOxCxVN+LghikeH18xkJR8mbn3k12Jva3z9pacjXvx7IGty34AWHi6pBPFqp2det7rug7GiXcMl/DGjaBv4SgKRQlw3hVOeJdWNc1eBNo+HjJ6j2brC57K98i7/JE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=DndYw8Yz; arc=none smtp.client-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net AE75D40ADA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1756561046; bh=H+95uQuLC9ps6TNKQFuDylLFDazJ1j4v+jOr6xX6ki0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=DndYw8YzMskoERUIDxY895nS28f0ifEsY12K3HzT0EOPDQY8FpTGbnemE8lLWWExj
+	 4/1Y4NxrgzPAT994QyRPlrnGMiq+qTcZInKmVs/76/ubOzpMpTY4re6bPFC73k9b8M
+	 ieRt0pt2/rFS6CrIccWGFAMQ3++qf3lpf4JISm3JSucI5DGabPLryEOeXEjJkFJ6Pv
+	 cZbY7SgbE1OgN8LH47U3joJGURanPiH7Y6Q3MozhqbDk6FNByl9XtQeACtTWQPPoNF
+	 tPlgLTIApak92iV9onkTRLynM/CVzNEYXS1Y2jiPuuf5lhbgWDsjrKXGqb/jqrv5Ue
+	 rajKG80M+SGdA==
+Received: from localhost (unknown [IPv6:2601:280:4600:2da9::1fe])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id AE75D40ADA;
+	Sat, 30 Aug 2025 13:37:26 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: ksummit@lists.linux.dev
+Subject: Re: [TECH TOPIC] Kernel documentation - update and future directions
+In-Reply-To: <20250828230104.GB26612@pendragon.ideasonboard.com>
+References: <87plcndkzs.fsf@trenco.lwn.net>
+ <20250828230104.GB26612@pendragon.ideasonboard.com>
+Date: Sat, 30 Aug 2025 07:37:25 -0600
+Message-ID: <87wm6l0w2y.fsf@trenco.lwn.net>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [MAINTAINER SUMMIT] Enforcing API deprecation
-To: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
- Linus Torvalds <torvalds@linux-foundation.org>
-Cc: ksummit@lists.linux.dev
-References: <CACMJSes7ZnGo+Wyk_Db8VEUb8iXFB6-ev3hceY9aY1vjhpywTQ@mail.gmail.com>
- <CAHk-=wgOXd-meRuz5Gv2oz0W0wBUOpMO5CK9eifjfdR5Xz_-Fw@mail.gmail.com>
- <CACMJSet5r0PDFsYRcNWKQH_jfimqpQWZ2nL2YKoc-+QisNNykA@mail.gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <CACMJSet5r0PDFsYRcNWKQH_jfimqpQWZ2nL2YKoc-+QisNNykA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On 27/08/2025 16:47, Bartosz Golaszewski wrote:
-> On Tue, 26 Aug 2025 at 22:12, Linus Torvalds
-> <torvalds@linux-foundation.org> wrote:
->>
->> On Tue, 26 Aug 2025 at 12:58, Bartosz Golaszewski
->> <bartosz.golaszewski@linaro.org> wrote:
->>>
-> 
-> [snip]
-> 
->>> 4. Make build bots detect it.
->>
->> Fine, but doesn't solve anything.
->>
-> 
-> How so? The developer gets an email telling them they used a legacy
-> API, the maintainer sees a build bot report and knows to ignore the
-> patch. That's already better than what we (don't) have currently.
+Laurent Pinchart <laurent.pinchart@ideasonboard.com> writes:
 
-I think build-time warnings or emails from LKP about using deprecated
-API do solve the problem, in the very long term. Why? We do remove old
-platforms, so even if we do not convert in-tree users from deprecated
-API, these warnings would reduce amount of new code coming to the
-kernel. Eventually at some point we just drop old architectures, old
-platforms or drivers and that might be the last user of the deprecated API.
+> Hi Jon,
+>
+> On Fri, Aug 22, 2025 at 04:55:51PM -0600, Jonathan Corbet wrote:
+>> The last year has seen a massive amount of work in our documentation
+>> build infrastructure and continuous improvement in the docs themselves.
+>> This session will provide a brief update of what has happened recently,
+>> followed by discussion on what we want to do next.  How would we like
+>> our documentation to evolve in the next year or three?
+>
+> One area that I think could be improved is making documentation more
+> accessible, in particular to newcomers. We have a really impressive (and
+> ever increasing) amount of documentation that has mostly grown in an
+> organic fashion. As a consequence, many answers can be found when one
+> knows what they're searching for, but reading documentation is painful
+> for newcomers. It doesn't flow naturally, and lots of concepts are used
+> before being introduced much later (or in entirely different locations).
 
+Trust me, I get it.  That's why I have pushed so hard to try to organize
+the docs with the intended reader in mind.  I think that has worked out
+well but, so far, the main effect has been to take a massive unorganized
+pile of stuff and arrange it into several pile of stuff, hopefully with
+slightly better organization.
 
-> 
->>> I would like to propose a discussion on how to enforce API deprecation
->>> in a way that supports efforts to reduce technical debt, without being
->>> hampered by developers and maintainers who mean no harm but simply
->>> don’t know any better.
->>
->> Here's the only thing that works: if you change the API, you have to
->> fix up all existing users.
->>
->> If you are not willing to fix up all existing users, and you introduce
->> a parallel API, then you are the one that maintains both the old and
->> the new API forever.
+Occasionally I make an attempt to attack one of the top-level books and
+create a bit more order there.  But my teaspoon is going to take a while
+to drain that ocean.
 
-Sure, I don't think anyone questions that part. So imagine we maintain
-both APIs, but we do not want the old one to grow?
+> While some documents are clearly meant to be reference material, other
+> target developers who are not familiar with the topic being described.
+> They would benefit from being written in linear, story-telling way. I
+> don't know how to best achieve that though: developers writing any kind
+> of documentation in the first place is already an achievement, and
+> writing the documentation while putting yourself in the shoes of someone
+> not familiar with the topic is not an easy task.
 
->>
->> Or at least until somebody else did the work that you weren't willing to do.
->>
-> 
-> That sounds great in theory but in practice, one may be willing to do
-> the work and it will still take years (as is the case with GPIO) where
-> there were thousands of calls to the legacy API and - due to the
-> nature of the differences between the old and new one - the
-> conversions are far from trivial.
-> 
-> I'm not advocating a policy change, I'm trying to bring up the subject
-> of making the effort easier for those who participate in the tree-wide
-> refactoring.
+It is common to divide technical documentation into four broad
+categories: tutorials (for learning), howtos (getting tasks done),
+explanation (understanding what's going on), and reference.  Each is
+aimed at a different audience.
 
-How about sparse attributes for the old API as deprecated and in the
-same time all existing users as "ignore-that-sparse-warning"? We already
-have a few drivers doing:
-	#ifdef __CHECKER__
-to avoid many false positives (e.g. handling inlines). Also few for
-skipping locking (drivers/scsi/qla2xxx/qla_nx.c), but this feels rather
-like anti-pattern.
+Most of what we have is reference.  There's an occasional howto, and
+some explanation in spots.  We don't have much in the way of tutorials.
 
-We also have cases of:
-	#ifdef CONFIG_CC_IS_GCC
-	#pragma GCC diagnostic ignored "-Wsuggest-attribute=format"
-	#endif
+It would be nice to (1) recognize those categories in the organization
+of our documentation, and (2) fill them out somewhat.  But, as you note,
+getting people to do that is hard.  Doing it properly requires somebody
+whose job is to create that sort of material...and, as I've harped on
+for years:
 
+	Despite the fact that there are large number of people paid to
+	work on the kernel, there is not a single person whose job is to
+	work on kernel documentation.
 
-Best regards,
-Krzysztof
+Last year we tried an experiment with a bit of funding from the LF to
+create a bit of paid documentation; for a number of reasons, that
+experiment did not work out.  But it seems there should be a way to make
+some forward progress on this front.
+
+Thanks,
+
+jon
 
