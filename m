@@ -1,126 +1,119 @@
-Return-Path: <ksummit+bounces-2249-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2250-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE1DCB3EDAB
-	for <lists@lfdr.de>; Mon,  1 Sep 2025 20:16:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CF86B3EDC0
+	for <lists@lfdr.de>; Mon,  1 Sep 2025 20:20:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AFDA207EDE
-	for <lists@lfdr.de>; Mon,  1 Sep 2025 18:16:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBA9B3AC60C
+	for <lists@lfdr.de>; Mon,  1 Sep 2025 18:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0581A239E63;
-	Mon,  1 Sep 2025 18:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECF5B320A2A;
+	Mon,  1 Sep 2025 18:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="2UVIe9lK"
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dl+BBhro"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4919516132A;
-	Mon,  1 Sep 2025 18:15:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF5A28EB;
+	Mon,  1 Sep 2025 18:20:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756750554; cv=none; b=YxNi7dpDOIYQSc2OwK4bpF9yXAJ3jpLFgGWU3imUUpu5owqNrjtJuk4cyxDaJTdHVIIfU2dog/aJlhAN+Sf588Cw6bEzU2/+7jI2Prer0DnF2tIQZnLVvfyzIEcf4PsZzDgSXHVQYjFlG2FkTuf5SisZyQfR823TZoh2jV7lEVs=
+	t=1756750827; cv=none; b=X2/ygBhU7JFdBP7rBLxXRg4BlJO9IlfUa5AOGVQ0Ubf3RCwj0JRjNVEdMwliD3BTWG32gd9dzZWWed9iNXUzSdR0W2K8Lb57ZtVcw3bVgGMOINHyNim0FJT6CLKtMlDVi5vskFDHxgAi+3bvIUAZNW35zGzqjt5Cs+tKPQ80WsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756750554; c=relaxed/simple;
-	bh=7CzD+pxO5Ta5pvGZTs3pd1Ibie9wy6Tm6tKdIsV7FOw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OxEljI9z0ZO4QvVwiy60j1pqS29f8jJlP14dnH98VAMSVgx8Hg4K5f9UZUWvwXOgwWSz3XxxZN6YCOtNtzwiC/7Rurh4qv46oClB/z9xwczNGIeYD7L8Rdt5eRexhE4sjZVpCAn1lz6UDr7GpAp2sNkoF9Cctv1ebu0Cddc8lRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=2UVIe9lK; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=6PLbKrTqDlV/rgrKakybTJQzxxfzQkbpPoJMusdTYLg=; b=2UVIe9lKuGKQpmU5ztP3jxZtXd
-	YHoYCg4K5nNnobPLWjcner93CNWho7ooOxw25JZLVZP/sp+DZ7YdLynQiBgafBRxYMGx6xQoZ57as
-	zzb96Z0TPDDyjIZbRQH4LWm4s0HhOUv//BwIhzFizFHRgbhnzJGuM+AGcxKyxZ+uKrQwSUiqgYHSu
-	ifVquIiCVVWAujQgH0aK/cX3oyA0BNEM29ANW33WF97EX0FcZc9VWLIBleRKUH21hl9vGz0nsLxMr
-	L+NknHBBLbOul8MghVvAiZW9ecDYmvOtLLjX7F+2j8Tk4jtvJzUEthhNU7c085bIKNnkgcHHBky9d
-	tcw4nR6w==;
-Received: from [50.53.25.54] (helo=[192.168.254.17])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ut94I-0000000DXsN-3Mlz;
-	Mon, 01 Sep 2025 18:15:50 +0000
-Message-ID: <6c2f40ed-7dbc-4ae8-8231-f414ad15acef@infradead.org>
-Date: Mon, 1 Sep 2025 11:15:50 -0700
+	s=arc-20240116; t=1756750827; c=relaxed/simple;
+	bh=vSt/gB4i6AMigMvp1uMXAuxfiYydJmAzr5hpNcwmsyw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gRwysgsvRFaYm4hbacZQyjJtZzZK7TWsy/sijFWyKrvOGbeNgCgm3nx5TI0uh5DQ094yrRpr7DBFsymL7PiWm8BdOsM5aL/Ekmk/oNQVoGJFbQa/1EIVUaMyeMhBFHoHixwcLoYfe1wYW4RqT95IkspAMGPhENv7cPh2MrWEEU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dl+BBhro; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C950C4CEF0;
+	Mon,  1 Sep 2025 18:20:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756750826;
+	bh=vSt/gB4i6AMigMvp1uMXAuxfiYydJmAzr5hpNcwmsyw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dl+BBhroDVQAtq3+AP1kfZaxsI2DLMSMoNWt63FPuAhdJisXeFn6Nn67ZTGN5HmPT
+	 JRGID7Jjd3vI1tei9ixOc/si4OhV/OUuM6bzo9J+dZnCHkZ0y6nJgZNn23KMQ8dX2N
+	 CRfP9ueSj39RxGdJqabN2dJslK11/mpeYDeTGrkqJmhWyLQmPhPKsNw2FwLRwM2VvP
+	 MEl15LRndTzo6Mx7JjLlim4bNLETgzzh3HywyBo051mbZUGJhSIU47JQWJK2XJ2Qjx
+	 EPM9g809+ezeIQMrsPCFKMDUTde8C4QZhLhxO0jpvzbuk8aDFqxHjcSO/GcaRYfmvh
+	 aPX6SItLq1Fvg==
+Date: Mon, 1 Sep 2025 19:20:20 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: Jani Nikula <jani.nikula@intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Vegard Nossum <vegard.nossum@oracle.com>, ksummit@lists.linux.dev,
+	Linux Documentation <linux-doc@vger.kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Akira Yokosawa <akiyks@gmail.com>,
+	Bagas Sanjaya <bagasdotme@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>
+Subject: Re: [TECH TOPIC] Kernel documentation - update and future directions
+Message-ID: <e50d186e-c3ba-41f1-9cee-19619d482373@sirena.org.uk>
+References: <20250828230104.GB26612@pendragon.ideasonboard.com>
+ <87wm6l0w2y.fsf@trenco.lwn.net>
+ <930d1b37-a588-43db-9867-4e1a58072601@oracle.com>
+ <20250830222351.GA1705@pendragon.ideasonboard.com>
+ <87h5xo1k6y.fsf@trenco.lwn.net>
+ <20250831160339.2c45506c@foz.lan>
+ <b452388b7796bba710790ceb5759b75ec6e57f23@intel.com>
+ <b41031ca-b4a4-450d-a833-5affefe958b2@infradead.org>
+ <2f927f53-9af5-4e0c-be8f-f7bdf90e23ff@sirena.org.uk>
+ <6c2f40ed-7dbc-4ae8-8231-f414ad15acef@infradead.org>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [TECH TOPIC] Kernel documentation - update and future directions
-To: Mark Brown <broonie@kernel.org>
-Cc: Jani Nikula <jani.nikula@intel.com>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Vegard Nossum <vegard.nossum@oracle.com>, ksummit@lists.linux.dev,
- Linux Documentation <linux-doc@vger.kernel.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Akira Yokosawa
- <akiyks@gmail.com>, Bagas Sanjaya <bagasdotme@gmail.com>,
- Matthew Wilcox <willy@infradead.org>
-References: <87plcndkzs.fsf@trenco.lwn.net>
- <20250828230104.GB26612@pendragon.ideasonboard.com>
- <87wm6l0w2y.fsf@trenco.lwn.net>
- <930d1b37-a588-43db-9867-4e1a58072601@oracle.com>
- <20250830222351.GA1705@pendragon.ideasonboard.com>
- <87h5xo1k6y.fsf@trenco.lwn.net> <20250831160339.2c45506c@foz.lan>
- <b452388b7796bba710790ceb5759b75ec6e57f23@intel.com>
- <b41031ca-b4a4-450d-a833-5affefe958b2@infradead.org>
- <2f927f53-9af5-4e0c-be8f-f7bdf90e23ff@sirena.org.uk>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <2f927f53-9af5-4e0c-be8f-f7bdf90e23ff@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="oDGuD8/aUtrhDyqI"
+Content-Disposition: inline
+In-Reply-To: <6c2f40ed-7dbc-4ae8-8231-f414ad15acef@infradead.org>
+X-Cookie: Auction:
 
-Hi,
 
-On 9/1/25 10:52 AM, Mark Brown wrote:
-> On Mon, Sep 01, 2025 at 09:51:01AM -0700, Randy Dunlap wrote:
-> 
->> Willy had a suggestion that we just make checking kernel-doc during
->> all .c builds a permanent feature instead of a W=1 option.
->> This helps, but still doesn't force 'make htmldocs' to be run.
-> 
-> make htmldocs is rather slow:
-> 
->   $ time make -j56 htmldocs
->   ...
->   make -j56 htmldocs  2355.99s user 141.33s system 158% cpu 26:14.86 total
+--oDGuD8/aUtrhDyqI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Wow. I just ran 'make -j8 htmldocs' on my 16 GB intel core-i7 laptop:
+On Mon, Sep 01, 2025 at 11:15:50AM -0700, Randy Dunlap wrote:
+> On 9/1/25 10:52 AM, Mark Brown wrote:
 
-1205.85user 66.15system 6:05.82elapsed 347%CPU (0avgtext+0avgdata 1298044maxresident)k
-697432inputs+1128016outputs (92major+16863601minor)pagefaults 0swaps
+> > make htmldocs is rather slow:
 
-(using /usr/bin/time)
+> >   $ time make -j56 htmldocs
+> >   ...
+> >   make -j56 htmldocs  2355.99s user 141.33s system 158% cpu 26:14.86 total
 
-How much RAM does your build system have?
+> Wow. I just ran 'make -j8 htmldocs' on my 16 GB intel core-i7 laptop:
 
-> 
-> and produces a bunch of warnings with current mainline it seems.  That
-> compares unfavourably with allmodconfig on this system:
-> 
->   $ time make -j56 allmodconfig
->   ...
->   make -j56 allmodconfig  5.31s user 1.93s system 146% cpu 4.931 total
->   $ time make -j56
->   ...
->   make -j56  53468.11s user 4387.30s system 5084% cpu 18:57.77 total
+> 1205.85user 66.15system 6:05.82elapsed 347%CPU (0avgtext+0avgdata 1298044maxresident)k
+> 697432inputs+1128016outputs (92major+16863601minor)pagefaults 0swaps
 
-whereas my x86_64 allmodconfig build takes over 1 hour.  :(
+> How much RAM does your build system have?
 
-> and seems rather more likely to flag something for me.
+64G, it's not swapping at all or anything.
 
-OK, good to hear. Thanks.
+--oDGuD8/aUtrhDyqI
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
-~Randy
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmi14+QACgkQJNaLcl1U
+h9AQIQf+Pb833i8AjsFLANNmcinPav7VS18mARe8sEOBTglOihWPT9AicXRHdD1u
+XTkRxCvlWAkw4VhJKlqBUDNhTTP58XKqmn+MSUlk89UxJr+eHrVf/AZ4glNMb03U
+7KgqevMjrH1vaWfu4kG6mX02lzyPv2irwpeodWTkmxFOBfnZsvu1Hc5DA2IXXhi+
+lGpXU/xvt57qn9GkXOAeQOkOL1BVK+Wv8t8r0HsT44fg7tG6FM4uBXTgH/sv77JY
+NIwj/sH+9EVH8fNzBfnt0XJli/iKN0cTO+3jcZ5AVcXaLvpL5av4PXdGq+9xsktZ
+bk/tM6sxLkk/SEbiJetmCDTQJbbN8g==
+=RKPp
+-----END PGP SIGNATURE-----
+
+--oDGuD8/aUtrhDyqI--
 
