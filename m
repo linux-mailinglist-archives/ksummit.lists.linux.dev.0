@@ -1,135 +1,96 @@
-Return-Path: <ksummit+bounces-2275-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2276-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67207B40888
-	for <lists@lfdr.de>; Tue,  2 Sep 2025 17:07:42 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFFD3B408B4
+	for <lists@lfdr.de>; Tue,  2 Sep 2025 17:15:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 077831B26112
-	for <lists@lfdr.de>; Tue,  2 Sep 2025 15:08:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BBDDB4E41DE
+	for <lists@lfdr.de>; Tue,  2 Sep 2025 15:15:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 478B3312821;
-	Tue,  2 Sep 2025 15:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516A12E06E6;
+	Tue,  2 Sep 2025 15:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kwYw0IuC"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="XPPoz8+H"
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAAA52DF15B;
-	Tue,  2 Sep 2025 15:07:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F011B21BF
+	for <ksummit@lists.linux.dev>; Tue,  2 Sep 2025 15:15:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756825656; cv=none; b=ElOYivNbWQOP19bDS9hFoHn+8qa3lZTdbBa7Mup9HWLiVRck9nt0U3O8gdcQMXl2oUDP/oB3jMSTi/b8Kzo7nunSXH22lE+BdjBMb5mEA+Lf+Sg9nQ8T3wAavDWuvDtcdi0a9eBn1eAmq4R1/NKx85tEaMMkdgMb4j7nJ/3wJWU=
+	t=1756826152; cv=none; b=CkMCP4H95PQRAMvG5NcPjyqhKX0c3Ku0txYNGu4khooBhB3n0933WBVRHH/FogtPk0nUOYqthoi22Cj1VSKfJ9G3957PdWyrkdwlSsYBMrn1kPYLxx3HHN/RcM90i4TDhRBAJlztDocQVnV5EBB9Q67Q5aYAHyGXVfosKii7hdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756825656; c=relaxed/simple;
-	bh=VVXx8+WgldiOQbHxpm/JG+dX7BU8tajscSPkE2wACgg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A4RA9tdqq6eajh/yr1bZf9JF5AuDnaeSvhbqfSHWiMLiaFAKeHhP3R3YRIe4nwP5pjDeKshh0cCyPU0AcyAfrJZ+3osnx2D463jw1B++fxto0x88pkdHR7yKRlY38jREilkx3X1LuuJIsaPoHNJ+nh6BJcddQ/DFcAX2SCTkBk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kwYw0IuC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DE4C4CEED;
-	Tue,  2 Sep 2025 15:07:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756825656;
-	bh=VVXx8+WgldiOQbHxpm/JG+dX7BU8tajscSPkE2wACgg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kwYw0IuCK7sFYLhL/dVkOZAtlRXgc2uLb8p81zSEqok6N/psKsqqMGCe5vjGQiAh0
-	 9xsXW1fxUVfzsM0AyT4uWAnWlD4VE4/x7VK5rfHLx0bB5ksKHCuXutkA1YSomWiWfX
-	 c9Np9KP0l9D0zoMaQHr9Z8n5GiOdj+zJHU4NUwlWrbGSyXjwu/DrGopa2BCqSaw7fl
-	 GZJeG4GBhLKN4Q4/zHbQjbiCgF9lqJBAy+DfSUZLV9IzNIDYCFxRUUZRflU0oclkQf
-	 mxbz3Fh1bAVugx43+ASM9XvUXaCyhsxuzW5EuatEKnQgDXaiMzaGRgHSp4OtHez4ms
-	 SFvQ8P7znE8bQ==
-Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
-	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1utSbe-00000003gOA-0KcG;
-	Tue, 02 Sep 2025 17:07:34 +0200
-Date: Tue, 2 Sep 2025 17:07:34 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Vegard Nossum <vegard.nossum@oracle.com>, 
-	ksummit@lists.linux.dev, Linux Documentation <linux-doc@vger.kernel.org>, 
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, 
-	Akira Yokosawa <akiyks@gmail.com>, 
-	Bagas Sanjaya <bagasdotme@gmail.com>, Matthew Wilcox <willy@infradead.org>
+	s=arc-20240116; t=1756826152; c=relaxed/simple;
+	bh=qoGtyu5m4QCOHcaH1GIUeRoNbpvl++oxlKMI3DKIE3I=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=e9FUBWiV9bfxYH3JX1jqa8C73iGMJuxrODqCW2jugWs6v3dsZWqH8vITonKPuVyPx3FgzDEPJVkFTOFR9a+6vvRTUuNMpPmRWjJtywvmYBXaEcOSYE5VvSAdXr0DCY3G3aGX9+VYwLVzgJ+GsE8qX7CrJ0ba4NidMCm2eTv8PUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=XPPoz8+H; arc=none smtp.client-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 62A6F40AFD
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1756826150; bh=bcZKRrrYe/3aLeyEZGEvcoWbhFxph4Rl9XPebC0N214=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=XPPoz8+Hw/OqZHGPTCCHjWKJZDXy0xM71RFhi17zKM+PBZ4IoTDkqvJzfFVqPZf4N
+	 Q7PIXjrMz0G8I0VdWbn5KU94Cqdgr896Kg29q0cu7Ivp6+XCMGmbxU7ZloeBBPQbMA
+	 NrXS3BIH77sAvbvXemk3m7AEsZ0BgD5sDIVysTz2WsFhfmXN0CpAeUehYgQsmZzvRf
+	 Oys6haTTVx39EIcmAQWbvTB4o+cxfn6es2+dKP1ZSeg4/vOiZ8VQEwIwDz+FXTuMMX
+	 pI3juG1pZC060z6ho6keyDiURMR+MQf4Az/CQOj9bAheZqsGyOXtk5g1UOlWgNKkSR
+	 H3HhAXp5mhy9g==
+Received: from localhost (unknown [IPv6:2601:280:4600:2da9::1fe])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id 62A6F40AFD;
+	Tue,  2 Sep 2025 15:15:50 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, Mark Brown
+ <mchehab+huawei@kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, Randy Dunlap
+ <rdunlap@infradead.org>, Jani Nikula <jani.nikula@intel.com>, Laurent
+ Pinchart <laurent.pinchart@ideasonboard.com>, Vegard Nossum
+ <vegard.nossum@oracle.com>, ksummit@lists.linux.dev, Linux Documentation
+ <linux-doc@vger.kernel.org>, Akira Yokosawa <akiyks@gmail.com>, Bagas
+ Sanjaya <bagasdotme@gmail.com>, Matthew Wilcox <willy@infradead.org>
 Subject: Re: [TECH TOPIC] Kernel documentation - update and future directions
-Message-ID: <n4qixsp23dccgz6mtrmd2xumcngtphkbywjnxkrqpnuf2dbu2p@2sj44sbyga4j>
-References: <87wm6l0w2y.fsf@trenco.lwn.net>
- <930d1b37-a588-43db-9867-4e1a58072601@oracle.com>
- <20250830222351.GA1705@pendragon.ideasonboard.com>
- <87h5xo1k6y.fsf@trenco.lwn.net>
- <20250831160339.2c45506c@foz.lan>
- <b452388b7796bba710790ceb5759b75ec6e57f23@intel.com>
+In-Reply-To: <xni5csulan6a3kngfw66okhrea2v2u4cwvfkk5vqy5p4xonowf@ajubzphgygit>
+References: <b452388b7796bba710790ceb5759b75ec6e57f23@intel.com>
  <b41031ca-b4a4-450d-a833-5affefe958b2@infradead.org>
- <bff2c47623a632609d07f8f2d237d0b40722c2c1@intel.com>
- <20250902135521.51482530@foz.lan>
- <d9e917d57be113a3de06dfb099c55bf428be6e33@intel.com>
+ <2f927f53-9af5-4e0c-be8f-f7bdf90e23ff@sirena.org.uk>
+ <20250901204635.51b81ffd@foz.lan>
+ <1bf8a898-e697-46e2-86b1-4158b021d652@sirena.org.uk>
+ <j3iblg4xx4nu64dgaxhl62mtherszeh3jyrskkf7l2jigld7wf@lr7mtq33gbi7>
+ <865e583b-4c97-4db1-963c-ed8539fa56dc@sirena.org.uk>
+ <20250902135938.35048fbc@foz.lan> <20250902141434.3e5b14e4@foz.lan>
+ <8339a5dd-446d-4717-9d68-983f5e2354b3@sirena.org.uk>
+ <xni5csulan6a3kngfw66okhrea2v2u4cwvfkk5vqy5p4xonowf@ajubzphgygit>
+Date: Tue, 02 Sep 2025 09:15:49 -0600
+Message-ID: <87ecsox4uy.fsf@trenco.lwn.net>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d9e917d57be113a3de06dfb099c55bf428be6e33@intel.com>
-Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Content-Type: text/plain
 
-On Tue, Sep 02, 2025 at 03:07:53PM +0300, Jani Nikula wrote:
-> On Tue, 02 Sep 2025, Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
-> > Em Tue, 02 Sep 2025 13:42:45 +0300
-> > Jani Nikula <jani.nikula@intel.com> escreveu:
-> >
-> >> On Mon, 01 Sep 2025, Randy Dunlap <rdunlap@infradead.org> wrote:
-> >> > ISTM that there are lots of non-docs developers who either just don't care
-> >> > about that or never run 'make W=1 htmldocs' to see the problems in their
-> >> > drivers or subsystems. OK, maybe it's just a very low priority for them.
-> >> >
-> >> > Willy had a suggestion that we just make checking kernel-doc during
-> >> > all .c builds a permanent feature instead of a W=1 option.
-> >> > This helps, but still doesn't force 'make htmldocs' to be run.
-> >> >
-> >> > And it causes around 450 build warnings in my testing of an x86_64 allmodconfig
-> >> > build.  
-> >> 
-> >> I think in general the build system lacks proper support for subsystems
-> >> or drivers being ahead of the curve in keeping them W=1 or kernel-doc
-> >> -Wall clean.
-> >
-> > It is trivial to add a spinx/kerneldoc parameter to allow setting
-> > -Wall per each .. kernel-doc markup. Yet, one would need to add it
-> > for every markup within the subsystem.
-> 
-> I'm not sure how that is relevant to what I'm saying.
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
 
-You said that the building system lacks support of W=1/-Wall per
-subsystem. What I said is that, provided that we add a:
+> To sum-up those discussions, I can propose a patchset for the next
+> merge window that would:
+>
+> 1. change kernel-doc exec to re-run using the latest available python
+>    version if version < 3.11, on a similar same way to what
+>    scripts-pre-install and scripts-build-wrapper does(*);
 
-	.. kernel-doc:: drivers/drm/...
-	:wall: 
+I have to confess that I still feel some discomfort with this sort of
+"pick a better version" magic.  Should we really be overriding the
+search path that the user has set up?
 
-you can set it per file inside a subsystem. Granted: this is doesn't
-cover the entire subsystem.
-
-Heh, there is another option. For instance lets assume you want
--Wall for drm subsystem. you could have this on your CI:
-
-	$ ./scripts/kernel-doc -Wall --none drivers/gpu/
-
-On a similar way, the build system can also W=1 inside a subsystem:
-
-	$ make W=1 drivers/gpu/
-
-(This is what we do on media)
-
-In the specific case of the drm subsystem, you could try to modify
-dim to run both as a condition to accept a git push - or modify
-CI to only actually do the merge after passing both.
-
--- 
 Thanks,
-Mauro
 
+jon
 
