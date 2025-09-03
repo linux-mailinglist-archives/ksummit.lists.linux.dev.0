@@ -1,215 +1,116 @@
-Return-Path: <ksummit+bounces-2284-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2285-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B9DB41BC7
-	for <lists@lfdr.de>; Wed,  3 Sep 2025 12:25:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A7C2B41C1E
+	for <lists@lfdr.de>; Wed,  3 Sep 2025 12:42:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06E29207FF6
-	for <lists@lfdr.de>; Wed,  3 Sep 2025 10:25:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C7627AD72D
+	for <lists@lfdr.de>; Wed,  3 Sep 2025 10:41:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3420A2E9EB8;
-	Wed,  3 Sep 2025 10:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F312F28F4;
+	Wed,  3 Sep 2025 10:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kzAl2yB1"
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mPM3ELMs"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185AF275B18
-	for <ksummit@lists.linux.dev>; Wed,  3 Sep 2025 10:25:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055B42F1FE1;
+	Wed,  3 Sep 2025 10:42:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756895127; cv=none; b=CpNHExzFOP6VXOkE7GjzYwyQDBZpOifZfVh8R4MqCgOuJnwBCTW3Kv43VDe1+wmuE2hLVUQGB/4olDIt3z+OAyDTcnE0SBxln0RE8Lf+yaDkMbA4XX5r2yftYLT2tB5wf3U/AZsa9QVwBZBjrFnkjsrkc5sT1eFgkpk6m0V5e1c=
+	t=1756896164; cv=none; b=r1JH7fOFW5qqt4tFJkoIeKO1LTwYd8YMXaDGk/0IzRXAgV0Al3A8WWoninXlXAKxppo15PtAywpBtqmCbzRFUWh8AohGr8QNGngKWKJ51STsJV4u3SeYZgUm2f4f4iwMttMKgG4/asstp1dbMlFqkNa0hiplwNGPjFEVzv/tD7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756895127; c=relaxed/simple;
-	bh=Q9fut6T33IgYBTP8+/KBZMHpXGM2Z8NN5b4LqjxG6tY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ERUtJg89S54LDHBnigmx0VG3dw8bejPRK1gv54puWoejLn3KVoUUI2C8IWbHbzr1F88pkq55dUPJrQ28mrYIcWtUrDoOtmS5zFygO4hJx3CtAqtHhw6xya6UPEY9cxozXqzcOAQKSEYffr6FXBvi8AgThehrLjkmcS8svxYRoVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kzAl2yB1; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756895126; x=1788431126;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=Q9fut6T33IgYBTP8+/KBZMHpXGM2Z8NN5b4LqjxG6tY=;
-  b=kzAl2yB11UIvMPjsK7OCNtJ07w8Y3qI2IW+8O3T2nXOv7GXziz9mQyuK
-   yVeDDpofuRkzKUXoRMn586DIrgsxQBzcopGfh7zPUIkIBfTZLMzBtr50m
-   XMCutH7LW4a4AA2rkLJtFAqab2nnC3G+cp3rlw3vj3KQLQicxil4n9VTL
-   V9tnGN3BkDIe/tJAmQ8/Zd74XWLsYmCHQUvBu75kx6Q4/r7moSdrk6Vgw
-   1AXoVlsD7Nk2ve8eUSQPoVhvRLjh0pRjPkZgx2xavna8ycegldXcjwUty
-   /AKRZ6n7/Ust5AJclk4IO6EcrsK+1RtHSnP4RQzDiWw1sAkdcG4H/Nkeq
-   A==;
-X-CSE-ConnectionGUID: S8rnsWvxSYeQFdje2vv7zA==
-X-CSE-MsgGUID: rlyoPCDpToKH4PpkKFGPjg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="76646294"
-X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; 
-   d="scan'208";a="76646294"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 03:25:25 -0700
-X-CSE-ConnectionGUID: 3bqGDvcVQPyzkmTHFlI1Sw==
-X-CSE-MsgGUID: Z0qDKcfPR+qZQh0mcRqE2g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; 
-   d="scan'208";a="175916773"
-Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.246.246])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 03:25:21 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Jonathan Corbet
- <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>, Vegard Nossum
+	s=arc-20240116; t=1756896164; c=relaxed/simple;
+	bh=nswBR64ViC/hUPCWHFJwHb30VGxS00bZA6cSKxGjObE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KcIBfN7aUQ1YRiOaTHbRIDE0wari3zszd4RGuo5fjAWSSb3qb0CBD/GQIQS5ztkBlxkGd5CJbP0014/teUWswUkPTjIGxv49Iwb5YFa7HG5uddzUWVKScSJ7cZOK1TfWXJ9QctAp+SXqbH9S0eZfZTULa1imCPgsdRJKR4qTxmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mPM3ELMs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72382C4CEF0;
+	Wed,  3 Sep 2025 10:42:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756896163;
+	bh=nswBR64ViC/hUPCWHFJwHb30VGxS00bZA6cSKxGjObE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=mPM3ELMsON/gpoXLTjoBw18ZWNLXtJL15Rcd+I+MzssRclb/U/KNNshXpjBNBBHgI
+	 W7LtLDOH9Vr67CnpeyEil9cTMKkJfA4NO6Sq6pUe2NvYDCjJcLW/jvGZF8fQGJ/lBN
+	 uqnEDEl3IuK2aVcC2+1y3cI8FZxhrScrOMEUpxHV9lwpuGhTiEEcy2Nqkizton2ROM
+	 v0L2WezQ9Y/EXivir7eRZw83yq8K3+tLrT1KNXgpYc+WF08a///6CNiyoGpkvY9Q3m
+	 zh6HCDhcksc/o+S60m9jAhtWmpqvBQrO1tkgJpxIEoNoGY19svUpbcvPUH83rx1PDw
+	 lp6/hoYwEkrXw==
+Date: Wed, 3 Sep 2025 12:42:29 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>,
+ Jani Nikula <jani.nikula@intel.com>, Laurent Pinchart
+ <laurent.pinchart@ideasonboard.com>, Vegard Nossum
  <vegard.nossum@oracle.com>, ksummit@lists.linux.dev, Linux Documentation
  <linux-doc@vger.kernel.org>, Akira Yokosawa <akiyks@gmail.com>, Bagas
  Sanjaya <bagasdotme@gmail.com>, Matthew Wilcox <willy@infradead.org>
-Subject: Re: [TECH TOPIC] Kernel documentation - update and future directions
-In-Reply-To: <20250903120409.32f3b3b0@foz.lan>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20250901204635.51b81ffd@foz.lan>
- <1bf8a898-e697-46e2-86b1-4158b021d652@sirena.org.uk>
- <j3iblg4xx4nu64dgaxhl62mtherszeh3jyrskkf7l2jigld7wf@lr7mtq33gbi7>
- <865e583b-4c97-4db1-963c-ed8539fa56dc@sirena.org.uk>
- <20250902135938.35048fbc@foz.lan> <20250902141434.3e5b14e4@foz.lan>
- <8339a5dd-446d-4717-9d68-983f5e2354b3@sirena.org.uk>
- <xni5csulan6a3kngfw66okhrea2v2u4cwvfkk5vqy5p4xonowf@ajubzphgygit>
- <87ecsox4uy.fsf@trenco.lwn.net> <20250902191929.504977bf@foz.lan>
- <20250902185221.GA1602@pendragon.ideasonboard.com>
- <50492e9bd0d647a6ba7eccbed73f782181f83499@intel.com>
- <20250903120409.32f3b3b0@foz.lan>
-Date: Wed, 03 Sep 2025 13:25:18 +0300
-Message-ID: <9a9d8e15947e7f11c92d390bb221ebc6e601212e@intel.com>
+Subject: Re: [TECH TOPIC] Kernel documentation - update and future
+ directions
+Message-ID: <20250903124229.332dfeae@foz.lan>
+In-Reply-To: <b20224870cd266f93e11ed8ac75c9e77478884eb.camel@sipsolutions.net>
+References: <b452388b7796bba710790ceb5759b75ec6e57f23@intel.com>
+	<b41031ca-b4a4-450d-a833-5affefe958b2@infradead.org>
+	<2f927f53-9af5-4e0c-be8f-f7bdf90e23ff@sirena.org.uk>
+	<20250901204635.51b81ffd@foz.lan>
+	<1bf8a898-e697-46e2-86b1-4158b021d652@sirena.org.uk>
+	<j3iblg4xx4nu64dgaxhl62mtherszeh3jyrskkf7l2jigld7wf@lr7mtq33gbi7>
+	<865e583b-4c97-4db1-963c-ed8539fa56dc@sirena.org.uk>
+	<20250902135938.35048fbc@foz.lan>
+	<20250902141434.3e5b14e4@foz.lan>
+	<8339a5dd-446d-4717-9d68-983f5e2354b3@sirena.org.uk>
+	<xni5csulan6a3kngfw66okhrea2v2u4cwvfkk5vqy5p4xonowf@ajubzphgygit>
+	<87ecsox4uy.fsf@trenco.lwn.net>
+	<20250902191929.504977bf@foz.lan>
+	<87frd4vfys.fsf@trenco.lwn.net>
+	<b20224870cd266f93e11ed8ac75c9e77478884eb.camel@sipsolutions.net>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 03 Sep 2025, Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
-> Em Wed, 03 Sep 2025 10:47:28 +0300
-> Jani Nikula <jani.nikula@intel.com> escreveu:
->
->> On Tue, 02 Sep 2025, Laurent Pinchart <laurent.pinchart@ideasonboard.com> wrote:
->> > I'm with Jon here, I wouldn't blindly override the Python interpreter
->> > selected by the user. What we could however do is print a message if we
->> > detect a version of Python that could improve performance, telling the
->> > user they could switch.  
->> 
->> Just piling on here, totally agreed.
->> 
->> Don't surprise the user. Let the user be in control. If they choose a
->> silly combo, let them. You know, they might be debugging the issues in
->> that silly combo to begin with, and don't want to jump through hoops to
->> work around tools that think they know better.
->> 
->> Letting the user know they're using a silly combo and suggesting better
->> alternatives is a whole different matter.
->
-> The code can be changed to suggest a better alternative, and having an
-> optional argument to load the newest one automatically, but the issue
-> still remains:
->
-> if one has native python3.6, for instance, and he installed a newer one
-> to build htmldocs with:
->
-> 	dnf install -y python3.11 # or zypper/apt-get/urpmi/... install python3.11
->
-> python3 will still be a soft link to python3.5, and all attempts to
-> build docs will fail.
+Em Wed, 03 Sep 2025 08:29:34 +0200
+Johannes Berg <johannes@sipsolutions.net> escreveu:
 
-If the user wants to shoot themselves in the foot, let them.
+> On Tue, 2025-09-02 at 12:58 -0600, Jonathan Corbet wrote:
+> > > 
+> > > The idea is not to override the search path: instead, to use it to
+> > > check if the user installed other /usr/bin/python3.* files (or on
+> > > some other part of PATH). Most distributions nowadays come with 
+> > > multiple python versions. I can't see a downside (*) of not using 
+> > > a newer version that the user had installed on his system and
+> > > has it on PATH.  
+> > 
+> > But overriding the path is exactly what this would be doing.  It doesn't
+> > seem right to say "we know better than you do" and circumvent the
+> > configured path; the user may well have reasons for setting things up
+> > the way they did.  
+> 
+> Absolutely! Please don't ever do this.
+> 
+> For example, use case we have: using nix-shell to lock down the software
+> used to build, for reproducible builds and similar reasons. Without --
+> pure, PATH may still contain (last!) software from the system itself,
+> but it should basically never be used.
 
-> With the approach I'm taken, Makefile will call sphinx-pre-install
-> and sphinx-build-wrapper. They both use a function that checks for
-> incompatible versions, re-running the code with one which works,
-> warning the user about that. So, on openSUSE leap, for instance, 
-> we have two official packages with Sphinx:
->
-> 	$ grep PRETTY_NAME /etc/os-release 
-> 	PRETTY_NAME="openSUSE Leap 15.6"
->
-> 	$ zypper search sphinx |grep -E "python\S+\-Sphinx "
-> 	   | python3-Sphinx                          | Python documentation generator                                              | package
-> 	i+ | python311-Sphinx                        | Python documentation generator                                              | package
->
->
-> There, python3-Sphinx is too old:
->
-> 	# sphinx-build --version
-> 	sphinx-build 2.3.1
->
-> As docs minimal requirement is 3.4.3. Also, it is based on python3.6,
-> which is not compatible with the kernel Sphinx extensions.
->
-> Which the approach I took, once one installs python311-Sphinx like I did,
-> the build happens cleanly:
->
-> 	$ make htmldocs
-> 	# sphinx-pre-install, which checks is needed packages are installed
-> 	Python 3.6.15 not supported. Changing to /usr/bin/python3.11
-> 	# sphinx-build-wrapper, which calls Sphinx to build the docs
-> 	Python version: 3.11.9
-> 	Python 3.6.15 not supported. Changing to /usr/bin/python3.11
-> 	Python version: 3.11.9
-> 	Using alabaster theme
-> 	Using Python kernel-doc
-> 	...
->
-> but if we remove the switch logic:
->
->         -print(f"Python {python_ver} not supported. Changing to {new_python_cmd}")
->         -
->         -try:
->         -    os.execv(new_python_cmd, args)
->         -except OSError as e:
->         -    sys.exit(f"Failed to restart with {new_python_cmd}: {e}")
->         -
-> 	+print(f"Python {python_ver} not supported.")
->
-> The build will then fail:
->
-> 	# make htmldocs
-> 	Python 3.6.15 not supported.
-> 	Python 3.6.15 not supported.
-> 	Traceback (most recent call last):
-> 	  File "/usr/bin/sphinx-build", line 5, in <module>
-> 	    from sphinx.cmd.build import main
-> 	ModuleNotFoundError: No module named 'sphinx'
->
-> because:
->
-> - python3.6 is not supported;
-> - sphinx-build is installed with python311-Sphinx, which also installed
->   python311 package.
->
-> See, in this case, the user wanted docs build to use python3.11, as
-> it installed python311-Sphinx package from a distro official package.
->
-> Without the version-check logic, the only option would be for the user
-> to do:
->
-> 	ln -sf python3 python3.11  # or something equivalent
->
-> -
->
-> Btw, the same type of packaging multiple versions of python and 
-> Sphinx is quite common on several distributions. This is not
-> an issue specific to openSUSE.
->
-> Also, notice that we're talking here about building docs with
-> distros that are using a 9+ years old python3, e.g.:
->
-> 	- openSUSE Leap;
-> 	- RHEL8-based distros;
-> 	- other old LTS and EOL distros that have a too old Python 
-> 	  versions.
->
-> Thanks,
-> Mauro
+if the PATH is mangled, you'll have a lot more problems than just
+building docs as it will pick wrong exec files anyway.
 
--- 
-Jani Nikula, Intel
+In the particular case of docs, if you have, for instance, two different
+python versions, one with sphinx and another one without it, it may pick
+the wrong one, causing the build to fail. There's nothing the build system
+can do to solve it. The proper fix would be to wrap the calling logic
+to save the env before running under nix-shell, restoring env afterwards.
+
+Thanks,
+Mauro
 
