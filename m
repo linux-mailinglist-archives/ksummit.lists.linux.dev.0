@@ -1,150 +1,129 @@
-Return-Path: <ksummit+bounces-2298-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2299-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0500FB425FE
-	for <lists@lfdr.de>; Wed,  3 Sep 2025 17:53:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E050FB4875C
+	for <lists@lfdr.de>; Mon,  8 Sep 2025 10:37:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3743616AAEF
-	for <lists@lfdr.de>; Wed,  3 Sep 2025 15:52:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A71D27B13E4
+	for <lists@lfdr.de>; Mon,  8 Sep 2025 08:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF6628A1E6;
-	Wed,  3 Sep 2025 15:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E941E231C9F;
+	Mon,  8 Sep 2025 08:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PQAy7nl7"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=fnnas-com.20200927.dkim.feishu.cn header.i=@fnnas-com.20200927.dkim.feishu.cn header.b="Yjw2JEbu"
+Received: from sg-1-31.ptr.blmpb.com (sg-1-31.ptr.blmpb.com [118.26.132.31])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9255021D3F6;
-	Wed,  3 Sep 2025 15:52:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FEBD21322F
+	for <ksummit@lists.linux.dev>; Mon,  8 Sep 2025 08:36:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756914753; cv=none; b=P9qlG0eszmtLoTEwCq65xsDQ29/7u3jtpr7c9rbMl/qxCq0Lzm1c0CxSqhtaCZgCi7FQOHt84xovgAqC9+Kyclzf3oM515MUBCQjh2oB61zVF+T9UJn83LxKWRtOZ6ONUv+IGr80st7NgBMd5I0xQXXEVX6DKpdh25GREPOlPG0=
+	t=1757320590; cv=none; b=sLAWNrZup5D4lyffprz6/xcox8rLGNN9ruEuwvUoSOWKkB8/Vx9Egm7Nvn8ATHukYm3bp5qQhrCCyPbFBoSWk3L0UXtGivMZOOyTjvJC1DA91MJmAUWmbDMJASHTD+3ho4Tfhcrb34A0nUu5nTPT4DhgXT5AHZeLmBBdzcuT5U0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756914753; c=relaxed/simple;
-	bh=Dia7i4SZs/QHOK4dY0wnSKRQydjPdYaJVl6UENAVyZI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mUyW98wO0ugh4rc3CjDcjasnnh8xwW1Ku637QaGjskI+acPejxU7HgFLTDEy/nA+DAR8G8SrmqH+FD9X30wNdJgObzt9jP69GXbkk8bxW4W2mNe4Bax8B94BW+5CHLvEJEyD/OQxzMee0NNErYEJyoUjowEfRopTQZCMAMe4M7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PQAy7nl7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFF8C4CEE7;
-	Wed,  3 Sep 2025 15:52:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756914753;
-	bh=Dia7i4SZs/QHOK4dY0wnSKRQydjPdYaJVl6UENAVyZI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PQAy7nl7UPIDgDCCdMAEJyRYR6KwrHSgWVgfMqpjjmZ8w+H9+pxBzbZ14puy2esCf
-	 to0YkawgplwmOjd4GSYQiO8a2P9o9bhbUBZlKameNv9vYm+vkkaQWQoqxC2rIzpCSd
-	 LHe2XIyJsY0j4WSjo2EMeSZn1dYfifBvj4OzRG5vBI6/quOfnQnJz+GJejIjrQahsf
-	 rDaZyjMendTMo5DPAGbLEN8x2VGqldkyDIWA4/6ww+1/tkwAPw5CSWn0rioyirXC1X
-	 NRgYzXKS5rHngYYEzXDnpkVOf2mNwAkxHmNNHH0FQ5LPUduQ++hsITY9KetDvwjqVr
-	 YgOIpzMgywQCA==
-Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
-	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1utpmh-00000007NmB-00LH;
-	Wed, 03 Sep 2025 17:52:31 +0200
-Date: Wed, 3 Sep 2025 17:52:30 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Jonathan Corbet <corbet@lwn.net>
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, 
-	Johannes Berg <johannes@sipsolutions.net>, Randy Dunlap <rdunlap@infradead.org>, 
-	Jani Nikula <jani.nikula@intel.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Vegard Nossum <vegard.nossum@oracle.com>, ksummit@lists.linux.dev, 
-	Linux Documentation <linux-doc@vger.kernel.org>, Akira Yokosawa <akiyks@gmail.com>, 
-	Bagas Sanjaya <bagasdotme@gmail.com>, Matthew Wilcox <willy@infradead.org>
-Subject: Re: [TECH TOPIC] Kernel documentation - update and future directions
-Message-ID: <5t23xw2yizkyfuevubkvi2keshpi7ut5txftx5tdgeqres24nf@dlewpyk746sw>
-References: <20250902191929.504977bf@foz.lan>
- <87frd4vfys.fsf@trenco.lwn.net>
- <b20224870cd266f93e11ed8ac75c9e77478884eb.camel@sipsolutions.net>
- <20250903124229.332dfeae@foz.lan>
- <431ce4a26d70de6b6d63778e62b732dc035633f9.camel@sipsolutions.net>
- <a88f4cad41b2b0930f2cd486dc6c2ffc64300fa6.camel@sipsolutions.net>
- <xxlm3ozmpel5iadhtambkzfx273oysjraffcizdmgexzhuqtwf@qxkwdvqmbadw>
- <874a85f2154d6b05635d856dcdd85d4715d19d3c.camel@sipsolutions.net>
- <vu3l5df4iz4rbwinxldr56vzupzxeupemcvxt7ziqi7kwhytso@wrgznki67cew>
- <875xdzzgvz.fsf@trenco.lwn.net>
+	s=arc-20240116; t=1757320590; c=relaxed/simple;
+	bh=vj00WcnfKT4wfhLIdpjO78UWR9vSVVgwQ/mIDo5IbtU=;
+	h=Message-Id:To:Date:Subject:Mime-Version:From:Content-Type; b=LnAWso+sZg2Ql0bv4sIRVMSnqlkrxBCJc75njLu7tKs25MgLEQakPOYicWgrF4PkdOw5d5zgmeEn5GAyHqOMQ1DKc/kRhBimVAn4ndPEFuD786PN0P3pw+NvG88OX1rKQFe5+DiKBtAJ6W72kpj99MT8VhHzpZU6AU/4JB6do7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fnnas.com; spf=fail smtp.mailfrom=fnnas.com; dkim=pass (2048-bit key) header.d=fnnas-com.20200927.dkim.feishu.cn header.i=@fnnas-com.20200927.dkim.feishu.cn header.b=Yjw2JEbu; arc=none smtp.client-ip=118.26.132.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fnnas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=fnnas.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=fnnas-com.20200927.dkim.feishu.cn; t=1757320447;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=PX2SWg92N3VcVsQtCfNESU5znh1V1o1UCF1WqzNMBXo=;
+ b=Yjw2JEbuXEqsZOBK0v7dbRdIxJE5hLQ8+PqEkK1n6fYONvRf18zN6AuuOTTvx/kWvleOlk
+ k325Qz1yusg+Eqd5eMzEn6VAOt0bLSOFmxowp1SU2U3cV74bNyIBQbX6ocgNZx/hkuySCb
+ NAMgt5LiA7EMx6pKHMzs9u1/S5squ+ZmKNXKxX95y3jlz3w0gvU3aG7zsrfEfNqEe+hps1
+ NarS1Nfz5FWT8iAKvKu0FpgxA3Sz0RnLjuhfhinrosk1RtxoBW5Tx/Lkdoy7i74YTVKaaP
+ Z9IAB5K+ZxWavTZ9F4BITogqU7ebm0DSEJfzlfvBCOo2I7gF/dW10bakpbmtqQ==
+Message-Id: <DC0B4305-C340-42C2-84B5-8C370794EBC2@fnnas.com>
+To: <ksummit@lists.linux.dev>
+Date: Mon, 8 Sep 2025 16:33:54 +0800
+X-Mailer: Apple Mail (2.3826.700.81)
+X-Original-From: Coly Li <colyli@fnnas.com>
+Subject: [MAINTAINERS SUMMIT] re-think of richACLs in AI/LLM era
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <875xdzzgvz.fsf@trenco.lwn.net>
-Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Received: from smtpclient.apple ([120.245.64.195]) by smtp.feishu.cn with ESMTPS; Mon, 08 Sep 2025 16:34:05 +0800
+From: "Coly Li" <colyli@fnnas.com>
+X-Lms-Return-Path: <lba+268be94fe+4ee8a2+lists.linux.dev+colyli@fnnas.com>
+Content-Type: text/plain; charset=UTF-8
 
-On Wed, Sep 03, 2025 at 09:37:36AM -0600, Jonathan Corbet wrote:
-> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
-> 
-> > On Wed, Sep 03, 2025 at 05:11:12PM +0200, Johannes Berg wrote:
-> >> On Wed, 2025-09-03 at 16:57 +0200, Mauro Carvalho Chehab wrote:
-> >> > There are actually 3 different issues that depend on python version:
-> >> > 
-> >> > 1. sphinx-pre-install:
-> >> > 
-> >> >     This used to be a Perl script. The goal is to check if sphinx-build
-> >> >     is installed and works, and identify missing dependencies.
-> >> > 
-> >> >     The problem is: if one installs python3xx-Sphinx, instead of
-> >> >     python3-Sphinx, the script will fail, except if it first switches
-> >> >     to python3.xx;
-> >> 
-> >> So let it fail. Fail is fine, at least it's a clear signal. The python3-
-> >> Spinx package will anyway be a sort of meta-package that's basically
-> >> empty and depends on a specific version.
-> >
-> > No, that's not the case. On Leap, python3-Sphinx uses python 3.6 and has
-> > Sphinx version 2.3.x, which is too old.
-> 
-> That's Leap 15, presumably?
+Hi folks,
 
-Yes. Leap 15.6 (the latest one)
+This is Coly Li. I=E2=80=99ve been maintaining bcache for a while and have =
+met Linus,
+Greg, Ted, and other maintainers in person at many conferences. Yes, I am a
+sustained and reliable kernel developer.
 
-> Given that 16 is due Real Soon Now, perhaps
-> before any kernel with these changes is released, do we need to concern
-> ourselves with that?
+Recently, I joined a startup (https://fnnas.com) that provides AI/LLM
+capabilities for personal or micro-enterprise storage. We help users share =
+and
+communicate AI/LLM-processed information from their stored data more
+conveniently.
 
-Not sure how it works on openSUSE, but on other LTS distros, people
-usually wait at least for x.1 version (16.1) before migrating their
-systems.
+Our users can run highly compact LLMs on their own normal and inexpensive
+hardware to process photos, videos, and documents using AI. Of course, it=
+=E2=80=99s slow
+but that=E2=80=99s expected and acceptable. They can even come back to chec=
+k the results
+weeks later.
 
-> > True, but at least one of the major LTS distros don't have it(*).
-> >
-> > We can review it after Leap is replaced for the next openSUSE release.
-> >
-> > (*) also, RHEL8 (and its derivated releases) suffer the same issues
-> >      and they aren't EOL yet.
-> >
-> > For most of us, I doubt the fallback logic would ever be used.
-> 
-> CentOS 8 stream went EOL over a year ago.  How many people have systems
-> stuck on RHEL 8 and are using them to do docs builds?
-> 
-> > When it becomes painful, we can drop it.
-> >
-> > Anyway, I'll let it for Jon to decide.
-> 
-> I still really don't think that adding that stuff is a good idea; our
-> scripts should behave the way people expect them to and not go rooting
-> around for alternative interpreters to feed themselves to.  I appreciate
-> that you want to make things Just Work for people, that is a great goal,
-> but this seems a step too far.
+In our use case, different people or roles store their personal and sensiti=
+ve
+data in the same storage pool, with different access controls granted to AI=
+/LLM
+processing tasks. When they share specific information or data with others
+within the same machine or over the internet, the access control hierarchy =
+or
+rules become highly complicated and impossible to handle with POSIX ACLs.
 
-Ok, as I said, it is up to you to decide. I sent already a patch
-series with the last patch making the build break with python 3.6:
+We tried bypassing access control to user space, which worked well except f=
+or
+scalability and performance:
+- As the number and size of files increase, storing all access control rule=
+s in
+  user space memory doesn=E2=80=99t scale=E2=80=94especially on normal mach=
+ines without huge
+  memory resources.
+- For some hot data sets (a group of files and directories), checking acces=
+s
+  control rules in user space and hooking back to the kernel is highly
+  inefficient.
 
-    https://lore.kernel.org/linux-doc/cover.1756913837.git.mchehab+huawei@kernel.org/
+Therefore, the RichACL project comes back to mind. Of course, RichACL alone
+isn=E2=80=99t enough. A high-level policy agent (in user space) is still ne=
+eded for
+task/session-oriented access and sharing policy control, but RichACL can he=
+lp
+implement file system-level access control. This would give us a context-aw=
+are
+and highly efficient access control implementation.
 
-Patches 1 and 2 should be OK to be merged. Patch 3 is the one that
-will break for Leap15/RHEL8 and other distros where python 3.6 is
-required for the distro default (and typically mandatory) python3
-package.
+What I=E2=80=99d like to discuss is:
+- After almost 10 years, should we reconsider RichACL in the AI/LLM era?
+- What are the major barriers or remaining work needed to get RichACLs into
+  upstream?
 
-Feel free to apply it or not as you wish.
+Since our first public beta was released 13 months ago, we now have over on=
+e-
+million active installations running daily. This is a real workload for Ric=
+hACL
+and represents real feature demand from end users. If you=E2=80=99re intere=
+sted in this
+topic, we=E2=80=99d be happy to provide more details about the access contr=
+ol
+requirements in AI workloads and even show a live demo of the use case.
 
-Thanks,
-Mauro
+Thanks in advance.
+
+Coly Li
 
