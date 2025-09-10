@@ -1,163 +1,231 @@
-Return-Path: <ksummit+bounces-2323-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2324-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF425B520B2
-	for <lists@lfdr.de>; Wed, 10 Sep 2025 21:12:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95CF6B52137
+	for <lists@lfdr.de>; Wed, 10 Sep 2025 21:37:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7635A5E3EF1
-	for <lists@lfdr.de>; Wed, 10 Sep 2025 19:12:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5192D5E0A18
+	for <lists@lfdr.de>; Wed, 10 Sep 2025 19:37:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E792D46AB;
-	Wed, 10 Sep 2025 19:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693282D8791;
+	Wed, 10 Sep 2025 19:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="I91Dtyrt"
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BVDwfLU2"
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B5F2D3EE1
-	for <ksummit@lists.linux.dev>; Wed, 10 Sep 2025 19:12:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757531529; cv=none; b=N7ghQBFLekBkiD6FkUZeJbr8aSyU2Qev/OtUo/K+r+PDZnC42O4PDKyEHZFp6pfu1SbAWSG7tsGa1lTOP8GHzWtaRC77ERcOs3W422jS7glghfFI5HEWOR+Lf53fIGj1KUWH70+upeP98Y8X8gCWMc4Zs7xshGI5l/wTpNSWBkY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757531529; c=relaxed/simple;
-	bh=T4GEY6Gg82cZ0dfnu/7lVVZerK/EfYF5/GFhaY2+MWc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TcNpWl9xr+mDsXt47Ii1/OEYaKTPDf8tcS7jI7XELmNQrQHARjMNfgoExgeq2gRJRShXHqs8Nu7y8R83PJXboBWjnALsbJ0uPsmQiC1v8lNrmysnB/WIBkfa/M/Ufn8XxMlkW+BwMDSkZQlGzJAn1odIVSsFFHKgrGV7vHJpDDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=I91Dtyrt; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2445806df50so63736905ad.1
-        for <ksummit@lists.linux.dev>; Wed, 10 Sep 2025 12:12:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1757531527; x=1758136327; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hgLbVMiPSinrJOJQ+wAE/rdDIsbkzBJnnk/llpZDwUQ=;
-        b=I91DtyrtQnpTzbqD53B37J8pFcTqZh9PFU96SWNdnMYnNGiA2k+RbovxwiVFH55sm+
-         nZLsSjD6EvHSfcYzMqDOr791Ge8cxJDZYTSvToQa6v8fj6H1tx4kH7W7M52N5mNZiFh3
-         9FI0DKC0UhwFAxwsJQhGzNGn1YXJK/ugAhYNYnJElRj0Ifnw7OtzIQmYhXP1HGsQgMX2
-         VlUCz9PGzG+HlKuacVkpJODDXNh4M//IXsusLga4GawV1cpiQDHjwEN3sf84PgD4hugk
-         cSipYrzBpaPY7NbfBEWaQRJVn7m26mOEwRLa3I+q4eTTr9JnFQWAZbrIvqdKHsqCqBCI
-         ObLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757531527; x=1758136327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hgLbVMiPSinrJOJQ+wAE/rdDIsbkzBJnnk/llpZDwUQ=;
-        b=gYOuEZBPgZILRulYF227iG4lzQacE++dUR5+agFmTLFk5lzKNw2nEyv6ndAS2sOMXe
-         cHUQIdJTfQs33Eov8+JtLZfY4mdMnNklhMBf3uDJoJ0KaoOF78E0fJnyYmYjkUzcj5D3
-         yDn6sP0D/o7xYagTY8+P7kGYQog7mRjdBweDU3i/Ed68zqT539h36YaJ4V4pc9AT5sHm
-         s+g0g6JLh3onW8nTb85zxN7KlXioRyaYwLOXBfqFahO/hJImpobpfkbOHXcRcrYT3WHq
-         Jl1AIlmd56hI1WsYkDHIl5fcelCvbbs3hZa3uyhCasxVA/uai+7Hga36ZE9LpEFNWnYQ
-         uKbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU76c8aZIJ/V6SHN5AUPeVHHkXfr8jMxCo7RYA3caYJuWlPhxSY0/K1ZROXuq0ur+TInWUbfBsQ@lists.linux.dev
-X-Gm-Message-State: AOJu0YzXQh70IIuCNHMoVCsK2AcyVAK6Fwl9+5usVBj4TzhGg6d9ykzx
-	Y2VlLrqzTQjNMlnij74w/1XFOagVhdk8pc7F37kCHwjDB/n/rRgS24Oq9sR+8rAMLcNHuBF0sNW
-	my2+lV8T3lhAwP5lUFXH+prrOVLuhjUPXDzfv+bc+
-X-Gm-Gg: ASbGncs5h0EOQFLws10ByoYE1UWyehk2SuitcQnoeb+d9B0OCl04ZKceMGqUhqavx4R
-	CBFEObdjI0KCNteR7oWB4cDViJB34wktKTtLxXi2Lc4g8sL+Lf3efbY7aOMBMfBbzkErbzj5ie6
-	VFvlU92Qg9/etHBRNrIxoA7zvXC7SsOKMyl7oBYlEBgni96DM8VgxCzHPtp8I8DV594bYHDUmZO
-	CPaj5fxusz4hqtE5A==
-X-Google-Smtp-Source: AGHT+IEkFbxMIzXEsMxUl6A2vwa7uvOf7qiMuV8V/12m+O0jaREhkKbW4xhL91u6mZfYjvU9wkcdjdgUGuGSxO7BLx0=
-X-Received: by 2002:a17:902:ce8b:b0:24a:d582:fbaa with SMTP id
- d9443c01a7336-2516f04ee0cmr250405645ad.12.1757531526965; Wed, 10 Sep 2025
- 12:12:06 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AFC41A3178
+	for <ksummit@lists.linux.dev>; Wed, 10 Sep 2025 19:37:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757533037; cv=fail; b=aHmf6s/eYJxoXgGEJ9FT8YkEcH1T8LmF3Eef/XnDHfKfMWLZmU0xT1Lj8Xchw8dnWsEnSp4PVZQGzZBzSNCsNFRL7Q9Rd8x8NLK07/Orewg3C+VhJ0ZkQes+TjpGJUpsHwF71Yk0zsvghNlQKUmqGBF76HsS5WsWGt0HeTB87gY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757533037; c=relaxed/simple;
+	bh=eBEdbeVt8iHKHq9Td/Y2Xz/0+uyb7sLdhjqEy9Gwd0U=;
+	h=Message-ID:Date:To:From:Subject:MIME-Version:Content-Type; b=CLJ20yUqrfEAuKU5JNXcieg5L+KUSfuYJn1t7ozGCIRmTx/cq5iQL2PGNFlVR8IPt7Gh0+tyGeu1Iy1exxND3U1Yvmh3G+iIhZb6RIMJvmW8PwaVOk3H1VEeeTUVKch/JCI8uaZ5IJnAsfIZNb7KqmDKmKMdFh5yWAMqs5tiu6I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BVDwfLU2; arc=fail smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757533036; x=1789069036;
+  h=message-id:date:to:from:subject:mime-version:
+   content-transfer-encoding;
+  bh=eBEdbeVt8iHKHq9Td/Y2Xz/0+uyb7sLdhjqEy9Gwd0U=;
+  b=BVDwfLU23qYye9BL8V0cMTTc2tpe4+gnaz7KZh5jwe8oWtWNnzVrsPlC
+   ffGOSJyxZba/RGD00fsICQqqzp1m2emR3eRe2dlzp9M4ophNKKMQcaTJN
+   x+CLxBTMKwcZz8smjUHi1j+RXdi16vNjk9qQq0eMHRh3kB/yfmxPrXyMI
+   YXLES/Tb5sUJfLQlQaJx/Dj/pYTJ4L+dHIo0MaDa3V10ojS3iDCHttCI3
+   RoDykaOrXopcKMb7RsbysQv7P1Ttm1oJ0l3ft9GRxRP5IW01hZ9tozISa
+   xmuMPyEEzQnULOBgQw+Doy1qh2y7iHR3CPrVpU+wz8AKa7qSfgAF85/YC
+   g==;
+X-CSE-ConnectionGUID: Sr2HZMu5Se6IMq6hb2ocfA==
+X-CSE-MsgGUID: qBACNaPuQAmmB2ksNbOSkg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11549"; a="47428544"
+X-IronPort-AV: E=Sophos;i="6.18,255,1751266800"; 
+   d="scan'208";a="47428544"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2025 12:37:15 -0700
+X-CSE-ConnectionGUID: gPrtSr2dSEelQb/v5h0E1w==
+X-CSE-MsgGUID: KVcWPNC7Qji7nN8UKWMGIQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,255,1751266800"; 
+   d="scan'208";a="177783539"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2025 12:37:15 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Wed, 10 Sep 2025 12:37:14 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17 via Frontend Transport; Wed, 10 Sep 2025 12:37:14 -0700
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (40.107.244.86)
+ by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Wed, 10 Sep 2025 12:37:14 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=om3w48TUUeiQooSSIzR2l4IHoEHr/ajhUC+LX0N+oAA8ipAzJWgffdOWrCkHDt+er61/z6ZETl4ap09/V71bM1jMATiUVj2WGva6DTlpbyLBl+qignkg96lk/zKoznCKUOzw2SjlsUkD13PNpGuHdP7dK3/s+jiBdxPK1EkG5zL3ZINkJwEktwqa5eWvuUg7rZLP/yJtgBtgfic1dYWz+TQ21XPZVh2oPjGBmqN058LEgu0zReODUlokXjdjTHRPqiIpcJM/9HDYLU/UI4YWJahrDjPZXLxl6MPDXeajtQPJRKcllDv8ouE5jY4o9xJLOy54FkzUDJckksEQut84GA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TXrOQl2fpYcuDnKvXy1uoWwbro1yga5Smy19Iec8BC4=;
+ b=sbWVnNg67zcHvhe3piNJqlFILNAMd7DDjJpHf4RLK81tszmXlHKGvay4DNyvml/m3NL0sH1smfUYzARfAhTmlO08MOUDB2N8cUPkARMlG0ClzFpMtp3XhVDujCINecftxjBBPK7rYqWASse+LDPYuM+pvilHsjsu9Or0z9soSPDzd0ELcpHK1zrZBlifo6zd1pPhQLkVzg00KlTAUPIu+bCWG5il1s14hnA18Cn8ZqFfDq8Stt4s+rdTpYZ2EI3yVxkZsvzn0Hqgvj+ePITHEd217soCKnxQN7XQ8Jz9PE2sYoGHNoAmXPq8JOoAIIAwh8/GmljTfzZwlpUJl9AODg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM3PR11MB8683.namprd11.prod.outlook.com (2603:10b6:8:1ac::21)
+ by MW5PR11MB5809.namprd11.prod.outlook.com (2603:10b6:303:197::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Wed, 10 Sep
+ 2025 19:37:07 +0000
+Received: from DM3PR11MB8683.namprd11.prod.outlook.com
+ ([fe80::5769:9201:88f6:35fa]) by DM3PR11MB8683.namprd11.prod.outlook.com
+ ([fe80::5769:9201:88f6:35fa%4]) with mapi id 15.20.9094.021; Wed, 10 Sep 2025
+ 19:37:06 +0000
+Message-ID: <fc612440-af2b-4799-97b0-d5631380f0be@intel.com>
+Date: Wed, 10 Sep 2025 22:37:03 +0300
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: <ksummit@lists.linux.dev>
+From: "Sinyuk, Konstantin" <konstantin.sinyuk@intel.com>
+Subject: [TECH TOPIC] UALink driver upstreaming
+X-ClientProxiedBy: TL2P290CA0012.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:2::16) To DM3PR11MB8683.namprd11.prod.outlook.com
+ (2603:10b6:8:1ac::21)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <DC0B4305-C340-42C2-84B5-8C370794EBC2@fnnas.com>
- <ntzpuxiyoqf5a5ldeq4tlc37uy3nw3kojoes5ookdmcrb53ome@xbjcgntijlfl>
- <20250908113934.1a31423a@gandalf.local.home> <E5FD7630-3474-4F02-A4F8-A1C11DA7672A@fnnas.com>
- <4f2d4025-9fbf-441d-a51a-0c0d4ba16314@infradead.org> <CAHC9VhRyRuBtzwn2LbwxqLvj21LwrwrAZx4N3f7At1HHyNFPCQ@mail.gmail.com>
- <yiqw4rfqbry7s34af72eoemon2qbylc6prouafg7xx3aeo2uwa@tdgyedc43hhp>
-In-Reply-To: <yiqw4rfqbry7s34af72eoemon2qbylc6prouafg7xx3aeo2uwa@tdgyedc43hhp>
-From: Paul Moore <paul@paul-moore.com>
-Date: Wed, 10 Sep 2025 15:11:55 -0400
-X-Gm-Features: Ac12FXzB5zRWQkigskJaXBrIVSym6fvFtBD3LSg1T9V5ibIWwf1aLcn_oAoyZfs
-Message-ID: <CAHC9VhR0RU+AfhJEZnA2=7CSZhWYTMB5CdbE9BfGoTbYBP9Rnw@mail.gmail.com>
-Subject: Re: [MAINTAINERS SUMMIT] re-think of richACLs in AI/LLM era
-To: Coly Li <colyli@fnnas.com>
-Cc: Randy Dunlap <rdunlap@infradead.org>, Steven Rostedt <rostedt@goodmis.org>, Jan Kara <jack@suse.cz>, 
-	ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR11MB8683:EE_|MW5PR11MB5809:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0dfccb49-5797-4cb6-b1d3-08ddf0a16cf8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?ZHZ4VllMUE1mL1lLK2czZUVmTTh4OHFrR3ZEazlBNjJWcnlpSEZXc3dVK1JR?=
+ =?utf-8?B?RnZ4c1pyRDZwVDI0aytjTWZndm4xdzRLQmx3K0RXakpEc0pFTFBxQ0lacitI?=
+ =?utf-8?B?aGRmVkNHUW5lRHdlRFZDekZHV205MERzQm14dnZWMzgxdXNhMllJTkJRWm9m?=
+ =?utf-8?B?aERuZEdPaGFBeTZoY2hnQnZJeU1ocklIYkRtMWdhS20xWEp0UXNkVWtORnor?=
+ =?utf-8?B?MzNTa3RUOG5pZ2RwdVArVnFPejJzQndBU0MwMVBCcit2VEhaNkhJcFN6T3lh?=
+ =?utf-8?B?VlZNU2l3dVV6bmhzRHpkQUVDQXMrMkkrNnJsRm1ZdDVvTkhvYlhYSTduVXdL?=
+ =?utf-8?B?ejN0LzZITGRSUGZkMEYvSnUrL0JrKzdQZFVqR0JtUFZvRWFxMUFZeCtpdW1w?=
+ =?utf-8?B?RFpsMzZOOXlPZHVhV080VDJUbUFuZFNTV0VuWldPdVp5YXpOWUthQ21hN3N3?=
+ =?utf-8?B?TXY5dnAyelNPckNlZFZ5N3lBOTdDUFRzNU9kbVVzQmhQT3JyOGlrUE5TdlQz?=
+ =?utf-8?B?L1ZPUGlCY1YwVDBUZVc2L2JFOXRMYVdUQmNpb2lTUnV2Sml0bjNWMWRabmpa?=
+ =?utf-8?B?ZzBBeWxWUlE0WWZHSDRjeHp4T1FYeGkvL2hTc0pRYUdnQnh0OXZ1THZGR2d2?=
+ =?utf-8?B?aCswRGMwR0htNnByWFRoTVFyYXRSQUNOSDZTeFZJMWxqVzUvU21oRGtZMGRx?=
+ =?utf-8?B?RWVBcloyM0RBMVgyVHBrYm9GaXp1bnZ0K1JEbEtmbmtRTDJWVlA2UTlEUGQr?=
+ =?utf-8?B?dzA0NCtHbFVCdFdRdkh6NS80VnFYRUJvRTljNW4xSVdreXBRN0NCcUhqdTRh?=
+ =?utf-8?B?dmJNKzRBaFJ5Z0E2dktxcUE2dndxa3BiYzhOMDFyODY0VWZoN3NBMTZRRlJB?=
+ =?utf-8?B?QWVUR0NQK000SFR0SktSeFcxeDRqem5SaWJPOXBIZmhwVC9BK2hWTXJ3TjZC?=
+ =?utf-8?B?NFFKcWNQdDFqZjUwSS9KRWZOMmdMTmV4UnFsQTNhb2VaNVo0Ymk0b3I4ckhz?=
+ =?utf-8?B?Z09sQy9lNnRDSE1HWExwMU1vc1RSeUM5SGFFYTlZekhNZFdvelJiYXNXNDEv?=
+ =?utf-8?B?YlVKbERCRHdSZERmcm5WQUJndnRWR2NmbEpQdTJVWUdFUDdIYkdLYzBxbW5V?=
+ =?utf-8?B?WEJWWm9ralUzZlREZS9pUk1qVjk5N2JXd3ViR1BjaTJYWWg5OWpPV0NrbVAw?=
+ =?utf-8?B?RElNeS9wdWZXYmw0OEtoUy9MZDNnSmhBOEpvSVA4UmkxRXg2aEhWUzAzcUpl?=
+ =?utf-8?B?MUduMnBCUGh6Z1pjMWFuUis0akpZS0lPRmQzV2haRWJZU3JXNXJFblVsR0JD?=
+ =?utf-8?B?V0ErK0VtdWEyekREWkFhOW5DVU1peHV3UkVTSVVjVVVha21CcEhlZWxsV1RQ?=
+ =?utf-8?B?bnhIT1JhbVZXYkNyeVFvdVdPRVRiUDlyRWd1OHB2c1VjUFVVTm1xY0JqUVdX?=
+ =?utf-8?B?QlA5UnpyOXdhL1BTUngyTWowS1V4VW13NlFzWng4VDkraDBnTk9SRk12UkR0?=
+ =?utf-8?B?cnQzQlpuYjBNMXdXckJGUDdpTzc2M1VBWkZ6R0d5aXlKL0g4ZGdVcHlHaEdK?=
+ =?utf-8?B?aFl2WHIxREFpanZVRHJBc3FIc0tIOWZrMzZEK2hEQUxwaHVWTXNEaG1WREV6?=
+ =?utf-8?B?elFERGx0UWVlczg4THN0dXpCZmQ1S2dFS3htd2NPZUk5VlRSRjR3Y0gvY3Zu?=
+ =?utf-8?B?NEh0enNRa0xMSzdNVFduWXZBVTNQd3kvdGVuSm5HSWs5SmZMVDZVa3R1TS9T?=
+ =?utf-8?B?L0kwMDdKWi94YTk2TUhSV0tKK1JRLzgzV3RRRGUzeXlqaTcrUHhneG5BRnlk?=
+ =?utf-8?B?azlBTEwxTWpBemZwQ3BuaDFUQTVENHl1ZFdCQ0dESDMrZkF3VnZQMjVtc1d4?=
+ =?utf-8?B?dzZHYVFmZ0hYY2djSmZqYVNCVUZFL3MzZU0vWExETjFsME1QWWVxVUtpemFy?=
+ =?utf-8?Q?ybtJE/N8KsA=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR11MB8683.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bng1QkxaZDFWOGtCZWx1bldZQTlFdUFHTVFScWMxWUdLMGFOUlIzdVBObURF?=
+ =?utf-8?B?Mm1yMnZ4cU1nR3JZYW9FOTVIZ0xXbGFKSWFUVm43cXlQTlZFdUw4OGxyR0tF?=
+ =?utf-8?B?OEYwNFhRcWhDdkQzRkdISjFpeEtvYVhDV2ZWZDlPZHdEUkZsTTIya05FWU1i?=
+ =?utf-8?B?ZlpncTNubVhUcENZNFpPRC83YkIzQ09vOGFacksyUWhtbXlEd2lvUHBZaElQ?=
+ =?utf-8?B?NHhKandzQUluRHladkxYZGF3aDN0VGZzU05XRnZSd3ZVS0lseGQza2duTFRS?=
+ =?utf-8?B?UjBrRnRPbDF1Q2tDT2J3UDFPVHJwZVQwNDl4Q1dDeElpZjF0VEhpVzV3WVA4?=
+ =?utf-8?B?MlVkN2lhUUtjcFZDOVFGVjF3Q0VOTSsxdUluajNNVUg3cUlwcU5ERFZVYmxW?=
+ =?utf-8?B?MUMydnpZSmhpNkpvOEhzYlcwU3FsOWhmNVlINlJrVitZWU96d2lOcCtZWm1H?=
+ =?utf-8?B?VWxCS01CdTZoc0tWbFg4bEpHZEpndDM4cjhXK1VhdW1WQk9xdVU0ZldURlA1?=
+ =?utf-8?B?YzhoWjk0Z0c1ekp4SXNUZ1JHd2U1ek1IU0h0ckNVc3hUbm5OM05iR1BXTVpK?=
+ =?utf-8?B?Tjc0eS9IcE95UnZCZ01wcWRhSTJra0ZrRFNweXI3Vlo4d3gzK3pKcDdxR083?=
+ =?utf-8?B?YnFNUUNUQlIyNW93Rmg4QS9UNjdWTnNmdWZSb0pCblEzaWpNVGliWnZHbVhN?=
+ =?utf-8?B?K3YvbDdRVFVockFEMTk2aUtETFpJMG9aWit1VDdETFN0Y1BpOXM4ZSswdHdI?=
+ =?utf-8?B?YzlBdzNTdjRYQWN1YkhXdG9JemlWYXpZU1pkVDdCamFrKzU5OEZxZ3JmTS8x?=
+ =?utf-8?B?cTlxeXpiRDRlTWFTRXBFUDQvSEN4YmJGTWZJVVhhUGIwKzVxR0hLM0NjeXJC?=
+ =?utf-8?B?d21CYnNIZFVTRUpGUktnWTFCQzloWHN5V3NvTVliblZrVlJidGpkdWxvNHNh?=
+ =?utf-8?B?TEJEY0pxYUtXNTFZZDhIdFM1U0JJMWRHemcvRTVHY2J2Qnd5RGF5U2hkaHl0?=
+ =?utf-8?B?K1QzVFNuV091aVJsc0x4ZkE3MzdPdmw0dzNXcnh0ZWFKV1c5a1E3MDRiQ1No?=
+ =?utf-8?B?Qkt5aXZZM3U5TUFDd1VvWkNBcndrT1pqUmlYSkNSSnN4QnJqcUZOamZZMG5v?=
+ =?utf-8?B?Tk50U0lVMFhYKzVNRGNOTHlPVjc1eFRGbjJOMFpWTVV2Vzg5SFY4RjVMV2pG?=
+ =?utf-8?B?eTBRTW5NWjBxS1c0eHVXUFlTLzJjWUVnTDJuUHFjZXNDeHJoamtibW0vRkQz?=
+ =?utf-8?B?aEFXNnMrTDJTYm9nZlpMeFBpS1pQQnhiWjJROU9ibHhYV01oNVQrMm1KTEVR?=
+ =?utf-8?B?ZVl4VXkxMVNlM01iTkxxS08zeEgyZDNhOG1RdE1GNXZoYkRrZ01jQnhybnJK?=
+ =?utf-8?B?eDJSSWgzWFV6Q3RtcGJKZU1TK1pnQnIzalZZNWxoTmFzMUVqMndDUVZoY1pv?=
+ =?utf-8?B?UXdhZ0lWWXNLdEMvM2psN1BJaGd0MUVFK0YzVHlsZ2R1YS9HcmpEUHoySk4w?=
+ =?utf-8?B?cnpQNzVWazRCQ2RyTU9ROFVvWldWVnJBUHhxSStBaVhoY1pOSmFaMXQzdzdT?=
+ =?utf-8?B?aVIzYTU0ZUpLQ0lyRzRGOTVYcVpiRjdkQUVEUVprazVVL1F0UkJ5eHoxdzkx?=
+ =?utf-8?B?UDhMYUVaMzRRNThXVFV5NDBEN2dkZnBkT09sdm1RN2J0OW12ZHhacjlXenF5?=
+ =?utf-8?B?dUYzTExaS2lXcmVqOGduUUFvNkJ5VjY3aWYxbGxuV1I5NmE1Wlo0dlBNTGRV?=
+ =?utf-8?B?ODRmVnQwQnJZeUQzUjc2QXJmYWFJUCtuVUNYQXdTNzlFYmFnNHh2Q0JRV1V2?=
+ =?utf-8?B?bG1aZWdkeVA2SXBidVVMRStrVkZidlAyV1I1elY1Z3JKRzIycVZWSzV0em9I?=
+ =?utf-8?B?NHJwWHJmb2ljSHBwMHZGeURadTdNVStpUGV2bS9BZGt0akd3QmwybjZSMTA3?=
+ =?utf-8?B?ZnAwbEJyYUNTSXpFdlo5R24vOFg3eGFNN1VvRnpiNmluMjJiT3hrKyt6TzNI?=
+ =?utf-8?B?WFhIcUVLK2Rab2N2Q2hYRWR6b3BYOUUrVy9JamlGWktNK2tWSkRPYUZZM2Qr?=
+ =?utf-8?B?bjRQQXNMOHVHRk52YUlzTVROeFN2MWc1MDhEOTg5dWFwV1lUNXB2b3V3WWxJ?=
+ =?utf-8?B?WXJSaTZHVlBVcTg5Snd0NFNNaVd2UjFkME55cDg1SzB0Z0ZBVEZUYWl3L0I2?=
+ =?utf-8?B?SUE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0dfccb49-5797-4cb6-b1d3-08ddf0a16cf8
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR11MB8683.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2025 19:37:06.8631
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7XL7YT2a3iqkzLp1dIBq38qeKxJDB92PN856T2i2kcYKX31WlGyzZwMPQtF7PVLEjD4KIw/FH0cr4YjJ3ycDdlM0dQ4bND7sTjvtQGWXcuU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR11MB5809
+X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Wed, Sep 10, 2025 at 9:32=E2=80=AFAM Coly Li <colyli@fnnas.com> wrote:
-> On Mon, Sep 08, 2025 at 09:03:24PM +0800, Paul Moore wrote:
+SGkgQWxsLAoKVGhlIFVBTGluayBDb25zb3J0aXVtIGlzIGRlZmluaW5nIGFuIG9wZW4sIHZlbmRv
+cuKAkW5ldXRyYWwgaW50ZXJjb25uZWN0IGFpbWVkCmF0IHNjYWxpbmcgQUkgd29ya2xvYWRzIHdp
+dGggbG934oCRbGF0ZW5jeSwgbWVtb3J54oCRc2VtYW50aWMgY29tbXVuaWNhdGlvbgpiZXlvbmQg
+UENJZS4gVW5saWtlIHByb3ByaWV0YXJ5IHNvbHV0aW9ucyBzdWNoIGFzIE5WTGluayAoTlZJRElB
+KSBvcgpJbmZpbml0eSBGYWJyaWMgKEFNRCksIFVBTGluayBpcyBhIGNyb3Nz4oCRdmVuZG9yIHN0
+YW5kYXJkIGFuZCB3YXMgcmVjZW50bHkKcmVjb2duaXplZCBhdCBGTVMgMjAyNS4KCkkgd291bGQg
+bGlrZSB0byBwcmVzZW50IGEgcHJvcG9zYWwgb24gd2hhdCBVQUxpbmsgc3VwcG9ydCBjb3VsZCBs
+b29rIGxpa2UgaW4KdGhlIHVwc3RyZWFtIExpbnV4IGtlcm5lbC4KCktleSBhcmVhcyBmb3IgZGlz
+Y3Vzc2lvbjoKLSBDb3JlIGRyaXZlciBkZXNpZ246IHByb3Bvc2VkIHN0YXJ0IHVuZGVyIGRyaXZl
+cnMvbWlzYy91YWwvIGZvciBkaXNjb3ZlcnksCsKgIHRvcG9sb2d5LCBhbmQgcmVzb3VyY2UgbWFu
+YWdlbWVudC4KLSBNZW1vcnkgc2VtYW50aWNzOiBzYW1l4oCRT1MgYW5kIG11bHRp4oCRT1MgcmFj
+ayBzY2VuYXJpb3MsIGxldmVyYWdpbmcgZG1hX2J1ZiwKwqAgSE1NLCBhbmQgTlVNQS4KLSBDb250
+cm9sIHBhdGg6IEFVWCBidXMgZm9yIHZlbmRvciBleHRlbnNpb25zLCBvZmZsb2FkaW5nIHJlYWzi
+gJF0aW1lIHNlcXVlbmNlcwrCoCB0byBkZXZpY2UgbWljcm9jb250cm9sbGVycywgZ2VuZXJpYyBV
+QUxpbmsgaW50ZXJmYWNlLgotIFNlY3VyaXR5OiBjb25maWRlbnRpYWwgY29tcHV0ZSBzdXBwb3J0
+IGFuZCBhIHVzZXJzcGFjZSBkYWVtb24gZm9yIHRvcG9sb2d5CsKgIGFuZCBhdXRoZW50aWNhdGlv
+bi4KLSBVcHN0cmVhbWluZyBzdHJhdGVneTogYmVnaW4gd2l0aCBhIG1pbmltYWwgY29yZSBkcml2
+ZXIsIHRoZW4gaW5jcmVtZW50YWxseQrCoCBleHRlbmQgdG93YXJkIE1NIGludGVncmF0aW9uLCBk
+bWFfYnVmIHN1cHBvcnQsIHNlY3VyaXR5LCBhbmQKwqAgY3Jvc3PigJFzdWJzeXN0ZW0gd29yay4K
+ClRoZSBnb2FsIGlzIHRvIGRlY2lkZSBob3cgVUFMaW5rIHNob3VsZCBiZSByZXByZXNlbnRlZCBh
+cyBhIGZpcnN04oCRY2xhc3MKaW50ZXJjb25uZWN0IGluIExpbnV4LCBjb21wbGVtZW50aW5nIENY
+TCB3aGlsZSByZW1haW5pbmcgdmVuZG9y4oCRbmV1dHJhbCwKQUJJ4oCRc3RhYmxlLCBhbmQgbWFp
+bnRhaW5hYmxlLgoKQmVzdCBSZWdhcmRzLApLb25zdGFudGluIFNpbnl1awpIYWJhbmEgTGFicyBH
+YXVkaSBkcml2ZXIgbWFpbnRhaW5lcgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkludGVsIElzcmFlbCAoNzQpIExp
+bWl0ZWQKClRoaXMgZS1tYWlsIGFuZCBhbnkgYXR0YWNobWVudHMgbWF5IGNvbnRhaW4gY29uZmlk
+ZW50aWFsIG1hdGVyaWFsIGZvcgp0aGUgc29sZSB1c2Ugb2YgdGhlIGludGVuZGVkIHJlY2lwaWVu
+dChzKS4gQW55IHJldmlldyBvciBkaXN0cmlidXRpb24KYnkgb3RoZXJzIGlzIHN0cmljdGx5IHBy
+b2hpYml0ZWQuIElmIHlvdSBhcmUgbm90IHRoZSBpbnRlbmRlZApyZWNpcGllbnQsIHBsZWFzZSBj
+b250YWN0IHRoZSBzZW5kZXIgYW5kIGRlbGV0ZSBhbGwgY29waWVzLgo=
 
-...
-
-> > I can't say I'm familiar with the RichACL concept, but generally
-> > speaking yes, the LSM framework exists as a way to implement access
-> > control mechanisms beyond the traditional Linux access controls (other
-> > things too, but those aren't really relevant here).
->
-> Is it convenient for normal users or non-root processes (including the po=
-licy agent) to
-> setup the LSM rules? We need to allow normal users to set their own acces=
-s control policy
-> for the data they owned.
-
-Management of an individual LSM's configuration is generally left to
-the individual LSM.  Some LSMs restrict their configuration knobs
-behind capabilities or their own access controls, while others allow
-unprivileged access to the configuration; it depends on the LSM's
-security model.  As an unprivileged example, Landlock allows
-applications, run by arbitrary users, to set their own Landlock
-security policy via the Landlock API.
-
-> Also there is a special case, e.g. a file=E2=80=99s parent directory does=
-n=E2=80=99t allow write
-> permission, but the file needs to grant delete permission.
-> 4614 int do_unlinkat(int dfd, struct filename *name)
-> 4615 {
-> [snipped]
-> 4645                 inode =3D dentry->d_inode;
-> 4646                 ihold(inode);
-> 4647                 error =3D security_path_unlink(&path, dentry);
-> 4648                 if (error)
-> 4649                         goto exit3;
-> 4650                 error =3D vfs_unlink(mnt_idmap(path.mnt), path.dentr=
-y->d_inode,
-> 4651                                    dentry, &delegated_inode);
-> [snipped]
-> 4563 int vfs_unlink(struct mnt_idmap *idmap, struct inode *dir,
-> 4564                struct dentry *dentry, struct inode **delegated_inode=
-)
-> 4565 {
-> 4566         struct inode *target =3D dentry->d_inode;
-> 4567         int error =3D may_delete(idmap, dir, dentry, 0);
-> 4568
-> 4569         if (error)
-> 4570                 return error;
-> [snipped]
->
-> It seems in do_unlinkat() the security check security_path_unlink() is ca=
-lled before
-> calling may_delete() inside vfs_unlink(). So even security rule permits t=
-o delete
-> this file but the parent directory doesn't grant write permission, such a=
-ccess control
-> still cannot be archieved.
-
-One of the important parts of the LSM framework as a whole is that
-LSMs can not grant access that would otherwise be blocked by the
-standard/discretionary access controls built into the Linux kernel; in
-other words, LSMs can only say "no" to an access, they can not grant
-access by themselves.  Yes, this is by design, and no, I see no reason
-to change that design decision at this point in time (doing so would
-require a tremendous amount of work and likely introduce a fair number
-of security regressions for quite some time).
-
---=20
-paul-moore.com
 
