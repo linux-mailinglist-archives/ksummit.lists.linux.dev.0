@@ -1,140 +1,224 @@
-Return-Path: <ksummit+bounces-2339-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2340-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFCCAB531C7
-	for <lists@lfdr.de>; Thu, 11 Sep 2025 14:10:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6952B5320C
+	for <lists@lfdr.de>; Thu, 11 Sep 2025 14:27:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FAB41692D5
-	for <lists@lfdr.de>; Thu, 11 Sep 2025 12:10:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A597567191
+	for <lists@lfdr.de>; Thu, 11 Sep 2025 12:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A72B31DD88;
-	Thu, 11 Sep 2025 12:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF096321431;
+	Thu, 11 Sep 2025 12:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MwALIExy"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="gNgTXuh0"
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F111518C031
-	for <ksummit@lists.linux.dev>; Thu, 11 Sep 2025 12:10:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D0A31282F
+	for <ksummit@lists.linux.dev>; Thu, 11 Sep 2025 12:27:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757592637; cv=none; b=QpTiE06qYqDGm6xNM84gDfPxMWO/2MAQrSDbwDZTcaNf3t5biKucRARnJTPPQA1CuyVLzO1Bzw7aGlihopT29tk1Fwx0vVjqJMgRpjeBnLj/7cZllKs1TX9Pm0XlygRLzWVvIUsdTIj2YYMdhT4z5tbUIEEW0rZAezwCN5ayMic=
+	t=1757593661; cv=none; b=iIYBnZMOkuhcmYfPP/hHmy800lNLSBilT2zq9aPwnfQXbF/fW26Jwj6osmAnRW21MXrntZdBT/WT1maZB1JtLNlZ/SZHBeuT1ID61vAQVW/yX1Rp4hCCozS2bK06XAECWSFFARo9UWnyM4B15ExBQXaJITtT/p+V+SAHkIWgRvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757592637; c=relaxed/simple;
-	bh=DGuMZFwpU9nyq8oogorCGkNXi0hXZhsI1bCHp3zgYFw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dPG9BstaLjSafPbrEfvix25b6fbxrXPgCRAoB8aWBw+aOSmMVYFoB5/JW+MxUdqU3A0oDvk6+3FDr4sOM3iJ8R8l2bk8qaHEYSjZ78IcHqRfWwIL6DZYfsm0Cn3yqugVEVW8rot0wFzNb6sossAXCjC7CigUPZfmkt0Jo3LTH+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MwALIExy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE7FC4CEF1;
-	Thu, 11 Sep 2025 12:10:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757592636;
-	bh=DGuMZFwpU9nyq8oogorCGkNXi0hXZhsI1bCHp3zgYFw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MwALIExySDC/F3qwva5c+QGGLo1S9Y5P/rajLd8/4mojr1sTqJJhxzY5272Mbwfc0
-	 hR+xvXVmnkRiGm3EIGH/E9DoHwsKfVGJ/JJ4UyxiH4e4AqQ2sQiibsAJ7RR/XNg/04
-	 JNQmLTpPjw1/MmKQ+FymSZRPhcOCFPfx/RCdQxDZCkHgy1KNY2XwVjnfrWutA/8zrM
-	 ck66MwAtKF9x35keKeREnZrpczpmXwPTvsIPyp2PnOVJ7QUyjvWVm5mvOLoCaiPK39
-	 5DaGUI5/B1i/FMR8z5v4ZTbetbk0j7ZmKnsG+RZisRUvWz/eH68M+wo3X2d2HxxnmO
-	 H9qe+ElguKFIA==
-Message-ID: <248b5194-5d6f-40a7-b574-21fe6db13959@kernel.org>
-Date: Thu, 11 Sep 2025 14:10:33 +0200
+	s=arc-20240116; t=1757593661; c=relaxed/simple;
+	bh=OSd3yFSBnzQ3G9kATtDg2M5BHlI4bc3W/zI2o/fXAi8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K4GGybMtkE0YbRKs8xHroTT15hAja4AWhbDIoUuZhbHkAl5feuwsuKzoxbVFQZ7miiNr4UvIMbrhfvfkfJbXNM6BZQFAKQBaifeQASifyLOEV81Nvwvvibdad77UGNNOCs3pS8bU8rcqorUdS+VQRiUqDuc2PEEQWKtgdhv44P4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=gNgTXuh0; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 74FB9666;
+	Thu, 11 Sep 2025 14:26:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1757593582;
+	bh=OSd3yFSBnzQ3G9kATtDg2M5BHlI4bc3W/zI2o/fXAi8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gNgTXuh0PaKz1vWsD+O8mCxXo7IVTAkdXKf5+P9bw92VoOcMDoj2E960PkWVDPrl9
+	 CrxF9WVbL/2qUHusM+YdDjl842WzTR2bMajThNqQKrcl8qRmg1QmdRjHPWngYzbNYg
+	 50oBA+JjwZequLlArqx8JoNlEbFWQwfFGrpfz/Do=
+Date: Thu, 11 Sep 2025 15:27:11 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: ksummit@lists.linux.dev
+Subject: Re: [MAINTAINERS SUMMIT] Hidden commits from next (aka why
+ maintainers hoard them in backpack)
+Message-ID: <20250911122711.GC8177@pendragon.ideasonboard.com>
+References: <299e6601-a83e-4e5d-9dd9-12ae796cd913@kernel.org>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [MAINTAINERS SUMMIT] Hidden commits from next (aka why
- maintainers hoard them in backpack)
-To: Jiri Kosina <jikos@kernel.org>
-Cc: ksummit@lists.linux.dev
-References: <299e6601-a83e-4e5d-9dd9-12ae796cd913@kernel.org>
- <81n4979o-0969-q3o1-6n66-979668n0on47@xreary.bet>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <81n4979o-0969-q3o1-6n66-979668n0on47@xreary.bet>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <299e6601-a83e-4e5d-9dd9-12ae796cd913@kernel.org>
 
-On 11/09/2025 14:06, Jiri Kosina wrote:
-> On Thu, 11 Sep 2025, Krzysztof Kozlowski wrote:
+On Thu, Sep 11, 2025 at 01:04:19PM +0200, Krzysztof Kozlowski wrote:
+> Hi,
 > 
->> Identifying the patches
->> =======================
->> There are two cases here for patches committed by sub-maintainers, but
->> never fed to next:
->> 1. The upstream maintainer took them via pull request.
 > 
-> Hm, why would that imply that they never make to linux-next though?
-
-I was not precise. The commits end in next once they reach upstream
-maintainer. I wanted to say they are never in the next while being only
-in sub-maintainer's tree.
-
+> I have noticed at least a few cases where sub-maintainers collect
+> patches, but their trees are not included linux-next. Or their patches
+> are not fed to linux-next.
 > 
-> I always keep multiple topic branches that are queued for upcoming merge 
-> window, and it doesn't really matter whether they came in from pull 
-> request of whether I have created it myself.
+> I don’t see a good reason to keep valid, proper patches - collected by
+> trusted sub-maintainers and intended for upstream submission - out of
+> linux-next. If a sub-maintainer is trusted in collecting patches and
+> sending them to the upstream maintainer, these commits should be visible
+> in the linux-next.
 > 
-> And all those branches then merge into for-next, which linux-next is 
-> consuming.
-
-Yep, that's how it should be.
-
+> I have occasionally asked sub-maintainers to add their trees to the
+> linux-next, and sometimes this worked. In other cases it could not work
+> for various reasons, e.g. workflow of the upstream maintainer or
+> reluctance to share commits early. These reasons are what I would like
+> to discuss and, hopefully, improve.
 > 
-> I don't see how the fact that (part of) topic branch came in via pull 
-> request would make any difference ... ?
+> 
+> Why is that a problem?
+> ======================
+> Patch was reviewed on the list day X and applied by the sub-maintainer.
+> Then for two, three or four weeks, this patch is not being in the
+> linux-next means:
+> 1. Limited or no build bot coverage.
+> 
+> 2. No actual integration testing, even if it is just spotting early
+> merge conflicts.
 
+This has prevented me from noticing an integration issue with DT
+bindings and DT sources in at least one occasion, so I'm interested in
+improving the process.
 
+> 3. No wide community testing.
+> 
+> 4. Contributors cannot base their patchsets on linux-next for
+> convenience, but need to find each sub-maintainer tree and pull it. For
+> few cases (see further) these sub-maintainer trees are not documented in
+> MAINTAINERS, so it is impossible for contributor to rebase on current
+> maintainer's tree!
+> 
+> 
+> 
+> Identifying the patches
+> =======================
+> There are two cases here for patches committed by sub-maintainers, but
+> never fed to next:
+> 1. The upstream maintainer took them via pull request.
+> 2. The upstream maintainer rebased everything - changing commit date (to
+> add their own Signed-off-by? otherwise why would you rebase a pull
+> request from someone you trust?).
 
-Best regards,
-Krzysztof
+I've heard a maintainer saying that Linus doesn't like subsystem trees
+to have lots of merges. Any help debunking that would be appreciated.
+
+Linear histories have upsides, but rebasing causes pain. drm-misc is one
+case of linear history with limited pain: with dozens (hundreds ?) of
+committers, patches are pushed to drm-misc pretty much right away once
+they're approved, and they end up in linux-next. Committers do not hoard
+patches in their private trees for weeks or even days before pushing to
+drm-misc. The linear history is in this case likely a good compromise:
+it simplifies the workflow for committers, while not introducing rebases
+down the line (the only rebase operations happen right away when a
+committer picks a patch and loses the race with other committers to push
+it to drm-misc).
+
+For subsystems with workflows based on pull requests from
+sub-maintainers, I say way more downsides than upsides in
+cherry-picking/rebasing.
+
+> Short stats for case (1) - no rebasing
+> ======================================
+> 
+> I collected commits present in today's linux-next, but not present in
+> ~two weeks ago. These are the commits which appeared for broad testing
+> in the last two weeks.
+> 
+> Then I dropped from above set all commits with commit date newer than
+> the next two weeks ago.
+> 
+> This gives us set of commits:
+> 1. Which were committed some time ago, like a month ago,
+> 2. But they appeared in the linux-next only recently or were rebased.
+> 3. Then a manual look by subject (not automated yet) to be sure commit
+> was not rebased.
+> 
+> Where were these commits? Why maintainers hoard them instead of
+> releasing to linux-next?
+> 
+> Currently that is around:
+> git rev-list --before=2025-08-27 next-20250911 ^next-20250829 | wc -l
+> 133
+> 
+> `git show --no-patch --format=fuller` on above list
+> 
+> And here is the example output of such commits still not in the
+> next-20250829:
+> 
+> Author:     John Harrison <John.C.Harrison@Intel.com>
+> AuthorDate: Fri Jun 13 20:02:22 2025 -0700
+> Commit:     Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+> CommitDate: Thu Jul 3 14:05:10 2025 -0700
+> 
+> Author:     Arnd Bergmann <arnd@arndb.de>
+> AuthorDate: Thu Aug 7 09:21:28 2025 +0200
+> Commit:     Oliver Upton <oliver.upton@linux.dev>
+> CommitDate: Fri Aug 8 01:28:57 2025 -0700
+> 
+> commit 0c6b24d70da21201ed009a2aca740d2dfddc7ab5
+> Author:     Jason-JH Lin <jason-jh.lin@mediatek.com>
+> AuthorDate: Mon Jul 28 10:48:50 2025 +0800
+> Commit:     Chun-Kuang Hu <chunkuang.hu@kernel.org>
+> CommitDate: Wed Aug 13 23:50:06 2025 +0000
+> 
+> 
+> Short stats for case (2) - rebasing
+> ===================================
+> I don’t have statistics for these cases, because sub-maintainers’ trees
+> are not in linux-next, and the upstream maintainer changes the commit
+> date during rebasing.
+> 
+> But such cases do exist (I dug them out, even though maintainer trees
+> are not listed in MAINTAINERS file but pull requests are on the lists):
+> 
+> Author:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> AuthorDate: Thu Aug 8 22:41:02 2024 +0200
+> Commit:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> CommitDate: Wed Aug 14 16:42:57 2024 +0300
+> 
+> Above commit is not in linux-next still, even though it was committed
+> month ago.
+
+Can you provide the commit ID ? It's hard to check what happened without that.
+
+> Just a friendly note, Laurent, I appreciate your work and I do not want
+> to point that you committed it incorrectly. In the contrary - your
+> commit is right, but your upstream maintainer stops you from including
+> this in linux-next. My aim here is only to discuss and improve the process.
+
+I would be happy to have my tree included in linux-next. I'm worried
+that the fact that the media subsystem cherry-picks my pull requests
+instead of merging them would cause issues though. Am I worrying
+needlessly, or is that a real issue ?
+
+> Terminology
+> ===========
+> 1. Sub-maintainer: A person who collects (applies) patches and sends
+> them via pull request to the upstream maintainer.
+> 
+> 2. Upstream maintainer: A person who collects patches from contributors
+> and pull requests from sub-maintainers, and then sends everything to
+> Linus (or another upstream maintainer).
+
+There's a bit of overlap between the two catagories in your definitions
+with the "or another upstream maintainer" part in the second definition.
+
+-- 
+Regards,
+
+Laurent Pinchart
 
