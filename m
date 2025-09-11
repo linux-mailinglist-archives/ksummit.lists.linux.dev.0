@@ -1,122 +1,123 @@
-Return-Path: <ksummit+bounces-2362-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2363-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9157FB53BC8
-	for <lists@lfdr.de>; Thu, 11 Sep 2025 20:45:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7524FB53C0F
+	for <lists@lfdr.de>; Thu, 11 Sep 2025 21:03:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACC011CC7B49
-	for <lists@lfdr.de>; Thu, 11 Sep 2025 18:46:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26C71165516
+	for <lists@lfdr.de>; Thu, 11 Sep 2025 19:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1383C2DC79C;
-	Thu, 11 Sep 2025 18:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DEC1DB15F;
+	Thu, 11 Sep 2025 19:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IhdYIEPl"
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qpc9RCfl"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB395F4FA
-	for <ksummit@lists.linux.dev>; Thu, 11 Sep 2025 18:45:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC7F2DC79F
+	for <ksummit@lists.linux.dev>; Thu, 11 Sep 2025 19:02:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757616352; cv=none; b=EALKPEh7vgSo5Aa93ergAPqmRabf4e5iLp5wbcUCK8WbZZddekeQ9eAMiOQFfRpAifCBwwITFnI/YbyU6oSxvdOLAU6oZxFe9/4oadYBjFul18ouYPn/TcxJk2Fz6Uqs+B7iraBHQKVRwAaXZmNOpIxK0kFimSF4Q+fQ474m1zk=
+	t=1757617378; cv=none; b=O8XubKbnftVOuV12gAPxtWqeW0rAKsAJf43mxzV+mZrNwT/QrZMpPp+Dl53sxGC7AcKDc7hjhecXeH9Pp/clYQuCwDKR0cCYTht/Kqd08BuiHw3R8eHG4HyIQpE9HWm67bnaIundjqr1kGmLFQE6D0XtubI6bxU5JB0lJOti8hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757616352; c=relaxed/simple;
-	bh=HbfHBjTNsekPLz6Ioa+pDATG8xKlRCBbRcS1nubSWB8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hoMLrFDuHyX0kJGHSZEHQLZHQhfxhBk/7D81v+a1h4dKfBdr738AkSqBdTr0KOR5lwhn7Rk+RerhrosJDbmKPwIis1wyAbiNFjwIixo5KqpSh49kvdBt8rdnrgAsd3SiwC+Qe4zEgGcmYuiosM3LI2Zk1fXw5s+q0h9WY4q1E9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IhdYIEPl; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45de56a042dso7080205e9.3
-        for <ksummit@lists.linux.dev>; Thu, 11 Sep 2025 11:45:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1757616349; x=1758221149; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=xAt4Vr8DKvShBvhc47p1I4Dhc6UNnnPMFHnU/GqPGlo=;
-        b=IhdYIEPl5wDBwRMty+CRfss6hGAKnfz+d1z0iF9fNRDkzHEGaLSDMTiISAjdUziGs8
-         /1zAQX7BqINoNysi6tKNBqYqGy5vzvhaTAyuCUrKtWrw9qlLtFFLBX/3gpSe2zgxn6ZC
-         hkIYVZzFCuuKlBFnpfEo6coCBSn7oYBjRvebkdPh9/VRRRIu7xbcOFWGlDNZkKTx5e8K
-         xLEmwWCRQJyZN1kHcZ+vLJZkjRoklrYGRmHt5JjxZTK6bYhJC3IuTyl5w3z3j0sH49w0
-         Vf+VqUT27LV2Zo/ssDS6vj6D1ZaxDZvSUSAWwV+RpDF+GgTgkjJnFOzrW62iZpw8NcMv
-         BzCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757616349; x=1758221149;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xAt4Vr8DKvShBvhc47p1I4Dhc6UNnnPMFHnU/GqPGlo=;
-        b=iCp0Bz+NRMuFDT8UjOEtm9qJPHtz7aZ78tChGV/KOiTZN/ZSNAFZ0JVZftxBAgWPuh
-         VCUuMTszf9sOHgu+WRLvguk+dswy7RTu65f1kAFHA9Rv8TqrRJDTw5Q3sWh5K+VogTtp
-         ypKo64jQG7+FFIr9rTmBi/L4c7tJV22q2lsQBXgrozHSFpooJuKqstQ7ETjO2YlBnmVt
-         PdbZHavn5kl2r6Yrv7SCEJU4r7pSe/hUQgeQUNDM7+lrPfLh8R+Ta5AmciGqVRgipjV3
-         lQ140ZcrFcBmJG+9/shlYBluoOFCfJMenD4u6WKFgnHrFzoXTR7vxnto1EqAv19f0Pqk
-         vn2g==
-X-Forwarded-Encrypted: i=1; AJvYcCWX7liBGs5QOcCKULy/piAVP5v1Jb1HopNT//rs1P+BLMlpUPD94/tacXErnGPftfEPZ+oQTDGE@lists.linux.dev
-X-Gm-Message-State: AOJu0YyXFgeNyXOfxFOkEJ2xflcZobVwRKD/+nD6JmVqWD/CfFcFlyAW
-	Oi/M658kq+tHRZOLouYlyrLvTYCQ8/KLg+5DNBbQHcmA2MPviiEjfl+pczjck/kAPWg=
-X-Gm-Gg: ASbGncvw+PL31RZ/eZ9n5fDJMd1jB14fuRLgutSG7y+sOQECDEny3oiZtGDLsDoMp1e
-	fhEnmE/pR/ErBAmN8EFXkpSaMIKqAE2myzLKdKAGxa1DE++CacEVtod7F3dtNx4NivFCbiX7yJA
-	Hz+R0nQgup+blyWDqWkHsVAlkRB073CAtSvmfrWp4N+LfhgEGfRXuls035Pu+UsaOG5qpXVR4nc
-	WWFQj11LoE66R900UqvSbFpA3qpQCXtX5f450tmX3bqOK03DrIee3CpvlZ0ugF3wYe8LfB76NAW
-	Wkv6QBcaRGJMBvloWEwV1iEFZLw5IuMAli7lgRFiSqac9cw0lrW4kY6H0lf/jfkFsiIBsFoFNxz
-	7RxGvwWiWo/llmal+O7wmcn4mXYJWSr5Ep5RZsQ==
-X-Google-Smtp-Source: AGHT+IFDTQbSRBU/aiauuJz5HkQOIp5D8OAjH4aWkdrxeVPoWew2o/gzKNixsT4vY5pfOUQkJT6aCw==
-X-Received: by 2002:a05:600c:45c4:b0:45b:9912:9f30 with SMTP id 5b1f17b1804b1-45f211ca9a5mr4614015e9.6.1757616349048;
-        Thu, 11 Sep 2025 11:45:49 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3e7607e40a5sm3365450f8f.60.2025.09.11.11.45.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Sep 2025 11:45:48 -0700 (PDT)
-Date: Thu, 11 Sep 2025 21:45:45 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, ksummit@lists.linux.dev
-Subject: Re: [MAINTAINERS SUMMIT] Hidden commits from next (aka why
- maintainers hoard them in backpack)
-Message-ID: <aMMY2W33nmoJafDe@stanley.mountain>
-References: <299e6601-a83e-4e5d-9dd9-12ae796cd913@kernel.org>
- <14357de0-ca64-4605-87d3-64d3015d973e@sirena.org.uk>
+	s=arc-20240116; t=1757617378; c=relaxed/simple;
+	bh=/l1FNyVz0XVh27TNNvS7g18wDcuOqzJQhTqiTmOYUh8=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=GW/GXahiBRacExcJaRlU4XcfxMCPH/w0RQlny8hMq+yKfWPySjYV3Oyegwh7KBX74dqAkbRRXv+ge1MIWlyqPFSOeIPTgYWkVbjZVmd679pKA+xcKmLVbeK8FBEFC+foXb6bN0lNp5FYEhIVKHtmI2m02342Pt0X8LsJocHxpOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qpc9RCfl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 387ECC4CEF8
+	for <ksummit@lists.linux.dev>; Thu, 11 Sep 2025 19:02:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757617378;
+	bh=/l1FNyVz0XVh27TNNvS7g18wDcuOqzJQhTqiTmOYUh8=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=Qpc9RCflNruABHAWoaS2aAF0THFSa5hSdMLcv0fguWIR4kSjWpKyv9ZbY3UKPknjj
+	 Le9j3cMyPdp6Ake+/8KGDxw/FwDaJ0ZwiTCJ+2MgJLea824nnnbqrGOseU0aNv/7Ol
+	 g0abT32k3DE1WWC7wsOwxaki6Ebk6KQ4RYcB0zPNLAu63STefUZjs4KfnCIuNwV0m2
+	 SVktb2H36Rzww45yZAK/kfjQdMkI6bcj4RmeBBGRtMRsVKzu+6JTXAoDPurg3C+fes
+	 lqwK7mp37HxiqcpOKCzxoWNJhM4NtBHjAg6v5b3CzIIN15mq4jPuGrxC3z9QwhdugH
+	 MWjwetc2w8oKg==
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 3C3ECF40069;
+	Thu, 11 Sep 2025 15:02:57 -0400 (EDT)
+Received: from phl-imap-08 ([10.202.2.84])
+  by phl-compute-12.internal (MEProxy); Thu, 11 Sep 2025 15:02:57 -0400
+X-ME-Sender: <xms:4RzDaNwarGpMhTWKFjRzzk3Uds30Vl2MfwBp_gvbS57Yvpu6rd9J1w>
+    <xme:4RzDaNQzL96Tf8dh9KVTAgyg2wnsfsD8UlsaB6AsxfYJXa_HWksQ3gLbVtgCOTZYh
+    3YKdbQuoeeaeMIATNg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvieeliecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdfnvghonhcu
+    tfhomhgrnhhovhhskhihfdcuoehlvghonheskhgvrhhnvghlrdhorhhgqeenucggtffrrg
+    htthgvrhhnpeejvefflefgledvgfevvdetleehhfdvffehgeffkeevleeiveefjeetieel
+    ueeuvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    hlvghonhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidquddvfedtheefleek
+    gedqvdejjeeljeejvdekqdhlvghonheppehkvghrnhgvlhdrohhrgheslhgvohhnrdhnuh
+    dpnhgspghrtghpthhtohepgedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepshhi
+    nhihuhhksehgmhgrihhlrdgtohhmpdhrtghpthhtohepkhhonhhsthgrnhhtihhnrdhsih
+    hnhihukhesihhnthgvlhdrtghomhdprhgtphhtthhopehlihhnuhhsrdifrghllhgvihhj
+    sehlihhnrghrohdrohhrghdprhgtphhtthhopehkshhumhhmihhtsehlihhsthhsrdhlih
+    hnuhigrdguvghv
+X-ME-Proxy: <xmx:4RzDaH7PV1CLyqTeiTrdDRBiz0h5creSDnn3mqn8XoMhCGZTk8hj-Q>
+    <xmx:4RzDaGXCN1PdBwTZiBpG4sthvSX9Iig7X7xAFTxH1ozHxodlnvjznA>
+    <xmx:4RzDaODQFqEHcNCLtc9v0Rd_s5jsDiCxdUM3VNYyX1GxyPsNTX7_gA>
+    <xmx:4RzDaN5Cy2xO9hSnSbUzUPiRRCImJmL5kdk-OpxbCACF68F6hj37NA>
+    <xmx:4RzDaBzTczR5yT8NsiY6F2gezdjJ8XGgVHsfIWqUjbQ9BVMjxQcW-Qoq>
+Feedback-ID: i927946fb:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 09B082CE0072; Thu, 11 Sep 2025 15:02:57 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <14357de0-ca64-4605-87d3-64d3015d973e@sirena.org.uk>
+X-ThreadId: AiuzKEH_WMOk
+Date: Thu, 11 Sep 2025 22:02:35 +0300
+From: "Leon Romanovsky" <leon@kernel.org>
+To: "Kostia Sinyuk" <sinyuk@gmail.com>,
+ "linus.walleij@linaro.org" <linus.walleij@linaro.org>
+Cc: ksummit@lists.linux.dev, "Konstantin Sinyuk" <konstantin.sinyuk@intel.com>
+Message-Id: <164760a7-edc9-4be7-b7ca-1729feec6da6@app.fastmail.com>
+In-Reply-To: 
+ <CAPpb9yn9akO=pBiQs0=xTcPGTY-XghK8nYcm0dAgQO1Es5udWw@mail.gmail.com>
+References: 
+ <CACRpkdaKKeD3zNXM3nazfVb2m9uwfywE_rnGy3hMxwX-Aw6stQ@mail.gmail.com>
+ <a74382d8-a2bf-4534-b0ee-a97d8faabf16@intel.com>
+ <CAPpb9yn9akO=pBiQs0=xTcPGTY-XghK8nYcm0dAgQO1Es5udWw@mail.gmail.com>
+Subject: Re: [TECH TOPIC] UALink driver upstreaming
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 11, 2025 at 01:05:36PM +0100, Mark Brown wrote:
-> On Thu, Sep 11, 2025 at 01:04:19PM +0200, Krzysztof Kozlowski wrote:
-> 
-> > I don’t see a good reason to keep valid, proper patches - collected by
-> > trusted sub-maintainers and intended for upstream submission - out of
-> > linux-next. If a sub-maintainer is trusted in collecting patches and
-> > sending them to the upstream maintainer, these commits should be visible
-> > in the linux-next.
-> 
-> > I have occasionally asked sub-maintainers to add their trees to the
-> > linux-next, and sometimes this worked. In other cases it could not work
-> > for various reasons, e.g. workflow of the upstream maintainer or
-> > reluctance to share commits early. These reasons are what I would like
-> > to discuss and, hopefully, improve.
-> 
-> Yes, this is especially frustrating when it's fixes trees and you end up
-> with breakage in -next for a week or whatever while you wait for a fix
-> to make it's way to the upstream maintainer's tree.
 
-One thing that would help is if someone breaks linux-next and then post
-the fix but also let us know when it will be merged into linux-next.
-Sometimes people fix the patch silently without responding to the bug
-report.  Or they post the patch and we assume it's going to be merged
-the next day but they want to test it for an extra day or two first.
 
-regards,
-dan carpenter
+On Thu, Sep 11, 2025, at 21:10, Konstantin Sinyuk wrote:
+> On Thu, Sep 11, 2025 at 10:42:01AM +0200, Linus Walleij wrote:
+>> So this gives at hand that since this is no "ordinary" memory-mapped
+>> driver, it needs its own bus and therefore intuitively its own subsystem?
+>>
+>> What about drivers/accel/ual where other accelerators live?
+>>
+>> Or if that is somehow inappropriate, just drivers/ual, don't be shy.
+>
+> Hi Linus,
+>
+> For the initial RFC, I thought to start under drivers/misc/ just as a
+> lightweight entry point to get early review. But I agree with you that
+> UALink fits more naturally as its own subsystem, similar to how CXL is
+> handled, rather than being grouped under accel. The long-term plan
+> should definitely be drivers/ual/.
+
+So do it right from the beginning and save from us unnecessary review iterations.
+
+Thanks 
+
+>
+> Best Regards,
+>  Konstantin
 
