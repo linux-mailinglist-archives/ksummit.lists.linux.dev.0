@@ -1,102 +1,104 @@
-Return-Path: <ksummit+bounces-2355-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2356-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4560DB53605
-	for <lists@lfdr.de>; Thu, 11 Sep 2025 16:44:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09A5CB53794
+	for <lists@lfdr.de>; Thu, 11 Sep 2025 17:23:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F23FB3A3AE5
-	for <lists@lfdr.de>; Thu, 11 Sep 2025 14:44:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D3D21BC106D
+	for <lists@lfdr.de>; Thu, 11 Sep 2025 15:21:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D2A7342CB6;
-	Thu, 11 Sep 2025 14:44:05 +0000 (UTC)
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE2E34AB16;
+	Thu, 11 Sep 2025 15:19:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="m0oAQHZr"
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A7C335BAF
-	for <ksummit@lists.linux.dev>; Thu, 11 Sep 2025 14:44:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3D5320A1D
+	for <ksummit@lists.linux.dev>; Thu, 11 Sep 2025 15:19:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757601845; cv=none; b=mgec10xtkD4CEVWFCWPEwL0S3wrkwOB0c5pu4Hhj17t/uwdocsceRhj8KEVPf2bTeyW4rWHRmwk/diQ3mRZSuMCkrE+RBlehC79k51zywnHUwA5nCpaBNVRnbgE/nYwOMpTFuLiceLWS00gFvtwGQHV3ucV6BTjGeoDuU2q0mC8=
+	t=1757603995; cv=none; b=pJoOeMKFhBk+MyEWOBN9v891QjG5+NNUaLef0JchgkNoMDdpgkhXhFtIbq7SdvXL8WHP3B3SN7NCrQvqKmBWUyoB8o3KkYgo6P1qQhfshHFmO1xsHXg0ni/gJJyFX6fAaPlYsxeCS4pEkV3m6/XUqAjeCd2ITgoklgLFelX14nY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757601845; c=relaxed/simple;
-	bh=D9251gVNpN6ScPhl1MhJypVgo9NtDO+gQ393PLZgWNw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RlYjk9Z4kh26hzKf4X/3FYGr6Tb+Mn+v4DjeK++4dqFJDNVARQ9LqdfvKGbH6/FEC6yRx6pHzSQgzefBoi2rV0GJEyrTiDrrhTyaMywD4SQoDopRb7eF/CgtDy6r9DHBTbggpF3/OAo09brydpFr2QAC3XHiRCRbo8LCVM0ZCBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0FF0316023E;
-	Thu, 11 Sep 2025 14:24:16 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf06.hostedemail.com (Postfix) with ESMTPA id 53DDF2000F;
-	Thu, 11 Sep 2025 14:24:14 +0000 (UTC)
-Date: Thu, 11 Sep 2025 10:25:06 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Krzysztof
- Kozlowski <krzk@kernel.org>, ksummit@lists.linux.dev
-Subject: Re: [MAINTAINERS SUMMIT] Hidden commits from next (aka why
- maintainers hoard them in backpack)
-Message-ID: <20250911102506.43ee7f9c@gandalf.local.home>
-In-Reply-To: <e7a60ee9-77fe-4729-a58d-441543792de7@sirena.org.uk>
-References: <299e6601-a83e-4e5d-9dd9-12ae796cd913@kernel.org>
-	<20250911122711.GC8177@pendragon.ideasonboard.com>
-	<e7a60ee9-77fe-4729-a58d-441543792de7@sirena.org.uk>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1757603995; c=relaxed/simple;
+	bh=r99NtIpD59yFN7vvEhIkm2GjIpqUYqn4Kh78DPPnru4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=l3OQzgZ88jS3NXhFJ5fJ4Ws05DHJ2w5HL+zBWMMFSinMD4P6rz89yhzUt9owvG8QukqdZ7XZhRhFRnV36DSdWAsdN/C/Kx3tkgxfOEF4oLgapjwiGfofCoDI1KAwF+/9aISQ5JQyocNMKj+h6pYjBj/aMUJH8ZYXtxjBzkTRU4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=m0oAQHZr; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-336b908cbaaso7591031fa.1
+        for <ksummit@lists.linux.dev>; Thu, 11 Sep 2025 08:19:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1757603990; x=1758208790; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yWzA1LdLH8P47t9lFzGcV6bY3rX2p/OttdrVRUE1sCk=;
+        b=m0oAQHZrAbiyBLkNzhfmpBRMJ60MEEwCj6lVabvIV7Esbn8VXU8kd8lq1oHoFNtg83
+         y+M84f4VDrxb8v8p8vTYxBjGF0oTpk1NV1T6S/U4u79IEWfRs8h/IbeBihMyVlldKeov
+         yBHhAv/tX3KdFcZNYp0CYkW0nkcdQ7PqyV3wKM9WB+tX25u8H/wqog0gq2C+3+uF1xBh
+         n+N/7YqFRhT3IcLhZ2Gm90Nq5fyimeIX4eAdVBduCMvTOwj0YHGNK2j7E/oQSPg2ppLE
+         bhNTl6Echza03bHMO/b4EMT8Nk89iwYdN+6LtyEZyH9sGJciIRjQkOCh9M5kjbNeKa6i
+         MVTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757603990; x=1758208790;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yWzA1LdLH8P47t9lFzGcV6bY3rX2p/OttdrVRUE1sCk=;
+        b=rlXCVe2AoVya1Bh8XalCxI+drk1Oao0wMSv3/l3pNBC9ylvblEgEdq1z+0UqRnwz8G
+         ksIEn9Mvu8p7tuVv3TZz0Oo6xu/nAsOmYbX3t8GD4+YKVtw4BFZlFFhIAnTVGGgUlO1M
+         C+pqw795a0fhD86XXxRtphc02j1vpaj/+R08HRnCe0YqLtvZZtxLuVnddNAi9EJswOpq
+         oE5eAhrpMGyeXGtgCILelWZEdcupJ8y37v9rl8j1SVvBVzPhD0U6tAXreSEdW7I4IYUZ
+         Zw9uRsUCgNqDgVFAotTWzqUs1NdMvKAoMuoYCKqo3sS1nAuq3JJrBXPfIBUtCV99AwyG
+         BF1A==
+X-Gm-Message-State: AOJu0YxS9/bIBUCK0/RS+94t/1MxvcZ65/6ZWsNQ1TPTQmTS7B+vQeNQ
+	Ftw+iOpagh1YLc5E/riPsxu5GxoPk1E+1xe8gplqwD6tQ1WAELsG0/tHRo/k0/1eWkpwng3vvgn
+	U1d2c0j9Yf44SnHTYLDAzsLfhtcm9E96nSznH4rFtAEwQPpLPWP6QjpQ=
+X-Gm-Gg: ASbGnctrV6C6B5VzXRAtcUCqDirEWyNAqGgcFohooeRrPDAlGIM8XunCfLvNlUCP6wE
+	sFTfBdVCWKQGt6p6IlcrPAULl5YTZtimtYOF5kE1jyk2T1jJIcA/ECOkByudR1umspsyb+RpRzo
+	BRTyodngufjuKLFLnoiryVBgqGYqYmfBWr39qUXyjLzZwNKhSRGhhfXMPSa+4+zseF44zaKNr63
+	rCDolPy51aSrKjktg==
+X-Google-Smtp-Source: AGHT+IERXyZyWTJ/VdBpgvFV1MfAoXsLzGIKIamuqZhPiJUX3Tphpfbd5uQehAKysM6W2TKuBnszxFMbP2nF6xtDrrw=
+X-Received: by 2002:a2e:a9a7:0:b0:336:e42a:4ad8 with SMTP id
+ 38308e7fff4ca-33b608c58cemr62885811fa.44.1757603990008; Thu, 11 Sep 2025
+ 08:19:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: a3pz9zubz1hw1y37o87bsfi1yzhiik34
-X-Rspamd-Server: rspamout05
-X-Rspamd-Queue-Id: 53DDF2000F
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX18G5prZjWlZ5QpPRfnUdnbXwgXySOIKBYs=
-X-HE-Tag: 1757600654-966623
-X-HE-Meta: U2FsdGVkX1+s9AUqWTTHgc56BpNtjWOEQLldV2+NtkMeeLVscAge4rp+U9U5rO0PGzc4H4DDsVSRyfs5LZJ86sLEcbcjpe3kLkBbJkTnhR+MSqZjtBCZwrtaCgByze7A6zRAW06lzafugCk4o1JOQ/rO+SsWdNCK04mSASvfW/dYBqx9/7kuEQ7RFCLUXWxbwO1TmysnzupKcXcAQmaavWznhlo8/hRVdT2osBVpcXaHxQSHoYixzpxUuLvmCfBjGq0mqXYXsPHMX+Op4CI+YhGXFFFieeCDhRykyINoSCLXkQRqGHoGqpX7VWI+FwuMnzc33gAhTdKz10TD9ttTWt4DqgGXFyXn
+References: <fc612440-af2b-4799-97b0-d5631380f0be@intel.com>
+In-Reply-To: <fc612440-af2b-4799-97b0-d5631380f0be@intel.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Thu, 11 Sep 2025 17:19:38 +0200
+X-Gm-Features: Ac12FXylgp4D6y2LSd1VVkkjzFz7C2sBp-X746-M52H7yEmO0Rh1rzfazgUgUng
+Message-ID: <CACRpkdaKKeD3zNXM3nazfVb2m9uwfywE_rnGy3hMxwX-Aw6stQ@mail.gmail.com>
+Subject: Re: [TECH TOPIC] UALink driver upstreaming
+To: "Sinyuk, Konstantin" <konstantin.sinyuk@intel.com>
+Cc: ksummit@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 11 Sep 2025 14:40:45 +0100
-Mark Brown <broonie@kernel.org> wrote:
+On Wed, Sep 10, 2025 at 9:37=E2=80=AFPM Sinyuk, Konstantin
+<konstantin.sinyuk@intel.com> wrote:
 
-> > I've heard a maintainer saying that Linus doesn't like subsystem trees
-> > to have lots of merges. Any help debunking that would be appreciated.  
-> 
-> AIUI it's a quality of merges issue rather than a number of merges
-> issue, if the merge commits all have commit messages that convey useful
-> information about something that makes sense then you should be fine.
-> If the merge commits are all just default messages not so much.  Things
-> like taking a pull request with a descriptive commit like the cover
-> letter for the merge hopefully do have some purpose and a useful commit
-> message.  
-> 
-> The quantity thing comes up because a common way you end up with a lot
-> of merges is automation which tends to also imply lacking changelogs and
-> motivation.
+> - Core driver design: proposed start under drivers/misc/ual/ for discover=
+y,
+>   topology, and resource management.
 
-Basically a merge commit should be no different than any other commit. It
-should have a purpose and that purpose should be described in the merge's
-change log just like every other commit has its purpose described in their
-own.
+So this gives at hand that since this is no "ordinary" memory-mapped
+driver, it needs its own bus and therefore intuitively its own subsystem?
 
-I now have several topic branches, and I try hard to avoid merges as they
-tend to make my pull requests more complex. But every so often, I have a
-patch that comes in that is required for work in two of my existing topic
-branches. This is a case where one change is required for two topic
-branches to continue more work.
+What about drivers/accel/ual where other accelerators live?
 
-In these rare events, I will apply the change to one of the topic branches,
-then merge it into the other with a detailed explanation to why I needed to
-do that merge.
+Or if that is somehow inappropriate, just drivers/ual, don't be shy.
 
-Linus hasn't complained about it, so I'm guessing that's the correct thing
-to do.
-
--- Steve
+Yours,
+Linus Walleij
 
