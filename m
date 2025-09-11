@@ -1,100 +1,118 @@
-Return-Path: <ksummit+bounces-2329-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2330-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 120FFB52812
-	for <lists@lfdr.de>; Thu, 11 Sep 2025 07:13:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D722B52831
+	for <lists@lfdr.de>; Thu, 11 Sep 2025 07:38:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B83EA173F36
-	for <lists@lfdr.de>; Thu, 11 Sep 2025 05:13:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1196C7A1D68
+	for <lists@lfdr.de>; Thu, 11 Sep 2025 05:37:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82235241667;
-	Thu, 11 Sep 2025 05:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD28F24C068;
+	Thu, 11 Sep 2025 05:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5+z/kqs"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=gaisler.com header.i=@gaisler.com header.b="Hs7ZfSyD"
+Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE25023F26A
-	for <ksummit@lists.linux.dev>; Thu, 11 Sep 2025 05:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F5224290D;
+	Thu, 11 Sep 2025 05:38:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.231.106.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757567606; cv=none; b=CeOwpuxTdGW8OhSmIxuD0TDOqSoSxBgELfIypL0rv1o/yDyfW6iax9nmWvv8DPOx3vI7OKk7ZlY7pzt3ijTO7lxKqR6BxxYxh4whPlP63/Ec+C0M5dso4UYFLg95rH6sk4LCdfx0x+sFyAouGYI6sQXuJLGpyePX2f/eXYOxjyw=
+	t=1757569113; cv=none; b=u1DIdvl4dPpLIU5wLQd60iH3/R9AMMq96/zWygl4ceJt5VgAOKySKNo+EGYgcMqdGdsxYyOUzKo1VYcBvn2Ks7qN4ten0xWAdBgfxst/Y7lCMh9M/HUvZTEN56Rs16L2c7GjgyrwgHlqUAxvKRsR0z6EkCNoD0kkT892v559tG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757567606; c=relaxed/simple;
-	bh=V48+0Ib63nugtfMhhor97TAClzY8lg2APPA7HqKhgFs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oak4zce8Ye8DUd3mRUOgV2qAz/ltiopfqEYlbAmxctdSP/DukdE7ru8lEGWYYQ/2ZV/qTPpPPlbqXi3Cf/kgy2+M9DT28BkL0ipl7D8ugZjcMjP4WG7klOy1Fi0uXRNZwlQaEhTwKnQNHWvNNW2oRfevNjzZ5jdvirA24UyLZDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5+z/kqs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C491FC4CEF1;
-	Thu, 11 Sep 2025 05:13:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757567605;
-	bh=V48+0Ib63nugtfMhhor97TAClzY8lg2APPA7HqKhgFs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=y5+z/kqsjYqz1VoyXHNRA5NQPLauBJ6LVwi/aQOZfbbaLaXJoQw2mFzow5JcYoQgq
-	 pOaUVGOT7sc53WgHVB1EJuIMQkOQUnLxCOYQRJLsLReHT2GSrjxRCVBujeO0la0tiw
-	 yo061uQ3LVNSwWyUd3R5R/kxW+Ed3cucvJslfG4s=
-Date: Thu, 11 Sep 2025 07:13:22 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "Sinyuk, Konstantin" <konstantin.sinyuk@intel.com>
-Cc: ksummit@lists.linux.dev
-Subject: Re: [TECH TOPIC] UALink driver upstreaming
-Message-ID: <2025091118-opposing-carrot-655b@gregkh>
-References: <fc612440-af2b-4799-97b0-d5631380f0be@intel.com>
+	s=arc-20240116; t=1757569113; c=relaxed/simple;
+	bh=zslq5NZ9GBE+NFMFpUXQKdQwmGpJdU16zodzEZ5lWJ8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=amjmZjD/VqyCfyUaPsiybHxCKnJ6r+099qVDEe+S9L5okhWZoBiwOgsbyIjNy8Mvw+npb30PztVdVA8sDONAE40P7Lx03z/RgV6chsFn+jI2CzfSGDAG6nklNWJLogLuNCTnMv146jJPf/ci0GYVn1UHhZ8lqpgAjV1msJButn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gaisler.com; spf=pass smtp.mailfrom=gaisler.com; dkim=fail (0-bit key) header.d=gaisler.com header.i=@gaisler.com header.b=Hs7ZfSyD reason="key not found in DNS"; arc=none smtp.client-ip=94.231.106.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gaisler.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gaisler.com
+Received: from localhost (localhost [127.0.0.1])
+	by smtp.simply.com (Simply.com) with ESMTP id 4cMmYn6jWzz1FQVw;
+	Thu, 11 Sep 2025 07:38:21 +0200 (CEST)
+Received: from [192.168.0.25] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by smtp.simply.com (Simply.com) with ESMTPSA id 4cMmYn1PXCz1FQVP;
+	Thu, 11 Sep 2025 07:38:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
+	s=simplycom2; t=1757569101;
+	bh=J4SmUX7P+kpNB7OaZvmmYUNeRGLdLLWkUbpUICDS3qY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Hs7ZfSyDOM7aPRu33LOA+3yef+fVto4kU9xa+4YpClIxfuXs1fUOvHNHSbYzTsH95
+	 ys3zgWHJHS23RTioc6nK1rRkrbxCam9D5ptr5a/DgIz7xpPRDCQ6Etyd5bStpWc73w
+	 7yOC/+8Ounc2FdB1AGu5KYNtNxw+XWF0Y0vJdIXiwXVxxPzwE6FGqoMLKjGAvRTDu6
+	 0tRpQ6v9KDjievFY3f8w6p8LSH1LMGdoj0SQczd00LYltcWoPmKILRmn5F8FOypXFd
+	 6Zp6gO/YqFuyTXHhSNlsS6DU3Zk+NRltjlY23ffJsltCzkH4eal4Sp3ahPCc/wsqRM
+	 gmrx1Brnia8oQ==
+Message-ID: <5d2fec2b-8e59-417e-b9e6-12c6e27dd5f0@gaisler.com>
+Date: Thu, 11 Sep 2025 07:38:15 +0200
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <fc612440-af2b-4799-97b0-d5631380f0be@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+To: Arnd Bergmann <arnd@arndb.de>, ksummit@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, imx@lists.linux.dev,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Richard Weinberger <richard@nod.at>, Lucas Stach <l.stach@pengutronix.de>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Ankur Arora <ankur.a.arora@oracle.com>, David Hildenbrand
+ <david@redhat.com>, Mike Rapoport <rppt@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Matthew Wilcox <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>,
+ Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
+ =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>,
+ Sergio Paracuellos <sergio.paracuellos@gmail.com>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+Content-Language: en-US
+From: Andreas Larsson <andreas@gaisler.com>
+In-Reply-To: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 10, 2025 at 10:37:03PM +0300, Sinyuk, Konstantin wrote:
-> Hi All,
+On 2025-09-09 23:23, Arnd Bergmann wrote:
+> High memory is one of the least popular features of the Linux kernel.
+> Added in 1999 for linux-2.3.16 to support large x86 machines, there
+> are very few systems that still need it. I talked about about this
+> recently at the Embedded Linux Conference on 32-bit systems [1][2][3]
+> and there were a few older discussions before[4][5][6].
 > 
-> The UALink Consortium is defining an open, vendor‑neutral interconnect aimed
-> at scaling AI workloads with low‑latency, memory‑semantic communication
-> beyond PCIe. Unlike proprietary solutions such as NVLink (NVIDIA) or
-> Infinity Fabric (AMD), UALink is a cross‑vendor standard and was recently
-> recognized at FMS 2025.
+> While removing a feature that is actively used is clearly a regression
+> and not normally done, I expect removing highmem is going to happen
+> at some point anyway when there are few enough users, but the question
+> is when that time will be.
 > 
-> I would like to present a proposal on what UALink support could look like in
-> the upstream Linux kernel.
-> 
-> Key areas for discussion:
-> - Core driver design: proposed start under drivers/misc/ual/ for discovery,
->   topology, and resource management.
-> - Memory semantics: same‑OS and multi‑OS rack scenarios, leveraging dma_buf,
->   HMM, and NUMA.
-> - Control path: AUX bus for vendor extensions, offloading real‑time sequences
->   to device microcontrollers, generic UALink interface.
-> - Security: confidential compute support and a userspace daemon for topology
->   and authentication.
-> - Upstreaming strategy: begin with a minimal core driver, then incrementally
->   extend toward MM integration, dma_buf support, security, and
->   cross‑subsystem work.
+> I'm still collecting information about which of the remaining highmem
+> users plan to keep updating their kernels and for what reason. Some
+> users obviously are alarmed about potentially losing this ability,
+> so I hope to get a broad consensus on a specific timeline for how long
+> we plan to support highmem in the page cache and to give every user
+> sufficient time to migrate to a well-tested alternative setup if that
+> is possible, or stay on a highmem-enabled LTS kernel for as long
+> as necessary.
 
-Do you have patches today for this new bus?  Why not start submitting
-them already?  Why wait till December?
+We have a upcoming SoC with support for up to 16 GiB of DRAM. When that is
+used in LEON sparc32 configuration (using 36-bit physical addressing), a
+removed CONFIG_HIGHMEM would be a considerable limitation, even after an
+introduction of different CONFIG_VMSPLIT_* options for sparc32.
 
-> ---------------------------------------------------------------------
-> Intel Israel (74) Limited
-> 
-> This e-mail and any attachments may contain confidential material for
-> the sole use of the intended recipient(s). Any review or distribution
-> by others is strictly prohibited. If you are not the intended
-> recipient, please contact the sender and delete all copies.
+Regards,
+Andreas
 
-You are going to have to fix that footer up to be able to send anything
-to public lists :)
-
-thanks,
-
-greg k-h
 
