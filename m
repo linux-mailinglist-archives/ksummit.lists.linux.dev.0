@@ -1,123 +1,114 @@
-Return-Path: <ksummit+bounces-2363-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2364-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7524FB53C0F
-	for <lists@lfdr.de>; Thu, 11 Sep 2025 21:03:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 435B8B53C46
+	for <lists@lfdr.de>; Thu, 11 Sep 2025 21:29:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26C71165516
-	for <lists@lfdr.de>; Thu, 11 Sep 2025 19:03:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA9473A4F3F
+	for <lists@lfdr.de>; Thu, 11 Sep 2025 19:29:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DEC1DB15F;
-	Thu, 11 Sep 2025 19:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F353F25C822;
+	Thu, 11 Sep 2025 19:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qpc9RCfl"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="hvpoGfpS"
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC7F2DC79F
-	for <ksummit@lists.linux.dev>; Thu, 11 Sep 2025 19:02:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6753954652
+	for <ksummit@lists.linux.dev>; Thu, 11 Sep 2025 19:29:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757617378; cv=none; b=O8XubKbnftVOuV12gAPxtWqeW0rAKsAJf43mxzV+mZrNwT/QrZMpPp+Dl53sxGC7AcKDc7hjhecXeH9Pp/clYQuCwDKR0cCYTht/Kqd08BuiHw3R8eHG4HyIQpE9HWm67bnaIundjqr1kGmLFQE6D0XtubI6bxU5JB0lJOti8hY=
+	t=1757618985; cv=none; b=Nhl2O9/3hEwXD4XUUBMuCf6Rcru02iA2k13llyx+mJpQauq5klR2dIU9M63lvtoFjNgMFpvPrNifL7n7iAoza34yG+TW0d5xUh1pzXgt3RlR1LwJa9CypjDYjyk5kPjVMzS5KbWPe3VyYwRIsfAQV5hwrTEKAkOsv0eisaCFvok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757617378; c=relaxed/simple;
-	bh=/l1FNyVz0XVh27TNNvS7g18wDcuOqzJQhTqiTmOYUh8=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=GW/GXahiBRacExcJaRlU4XcfxMCPH/w0RQlny8hMq+yKfWPySjYV3Oyegwh7KBX74dqAkbRRXv+ge1MIWlyqPFSOeIPTgYWkVbjZVmd679pKA+xcKmLVbeK8FBEFC+foXb6bN0lNp5FYEhIVKHtmI2m02342Pt0X8LsJocHxpOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qpc9RCfl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 387ECC4CEF8
-	for <ksummit@lists.linux.dev>; Thu, 11 Sep 2025 19:02:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757617378;
-	bh=/l1FNyVz0XVh27TNNvS7g18wDcuOqzJQhTqiTmOYUh8=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=Qpc9RCflNruABHAWoaS2aAF0THFSa5hSdMLcv0fguWIR4kSjWpKyv9ZbY3UKPknjj
-	 Le9j3cMyPdp6Ake+/8KGDxw/FwDaJ0ZwiTCJ+2MgJLea824nnnbqrGOseU0aNv/7Ol
-	 g0abT32k3DE1WWC7wsOwxaki6Ebk6KQ4RYcB0zPNLAu63STefUZjs4KfnCIuNwV0m2
-	 SVktb2H36Rzww45yZAK/kfjQdMkI6bcj4RmeBBGRtMRsVKzu+6JTXAoDPurg3C+fes
-	 lqwK7mp37HxiqcpOKCzxoWNJhM4NtBHjAg6v5b3CzIIN15mq4jPuGrxC3z9QwhdugH
-	 MWjwetc2w8oKg==
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 3C3ECF40069;
-	Thu, 11 Sep 2025 15:02:57 -0400 (EDT)
-Received: from phl-imap-08 ([10.202.2.84])
-  by phl-compute-12.internal (MEProxy); Thu, 11 Sep 2025 15:02:57 -0400
-X-ME-Sender: <xms:4RzDaNwarGpMhTWKFjRzzk3Uds30Vl2MfwBp_gvbS57Yvpu6rd9J1w>
-    <xme:4RzDaNQzL96Tf8dh9KVTAgyg2wnsfsD8UlsaB6AsxfYJXa_HWksQ3gLbVtgCOTZYh
-    3YKdbQuoeeaeMIATNg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvieeliecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdfnvghonhcu
-    tfhomhgrnhhovhhskhihfdcuoehlvghonheskhgvrhhnvghlrdhorhhgqeenucggtffrrg
-    htthgvrhhnpeejvefflefgledvgfevvdetleehhfdvffehgeffkeevleeiveefjeetieel
-    ueeuvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    hlvghonhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidquddvfedtheefleek
-    gedqvdejjeeljeejvdekqdhlvghonheppehkvghrnhgvlhdrohhrgheslhgvohhnrdhnuh
-    dpnhgspghrtghpthhtohepgedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepshhi
-    nhihuhhksehgmhgrihhlrdgtohhmpdhrtghpthhtohepkhhonhhsthgrnhhtihhnrdhsih
-    hnhihukhesihhnthgvlhdrtghomhdprhgtphhtthhopehlihhnuhhsrdifrghllhgvihhj
-    sehlihhnrghrohdrohhrghdprhgtphhtthhopehkshhumhhmihhtsehlihhsthhsrdhlih
-    hnuhigrdguvghv
-X-ME-Proxy: <xmx:4RzDaH7PV1CLyqTeiTrdDRBiz0h5creSDnn3mqn8XoMhCGZTk8hj-Q>
-    <xmx:4RzDaGXCN1PdBwTZiBpG4sthvSX9Iig7X7xAFTxH1ozHxodlnvjznA>
-    <xmx:4RzDaODQFqEHcNCLtc9v0Rd_s5jsDiCxdUM3VNYyX1GxyPsNTX7_gA>
-    <xmx:4RzDaN5Cy2xO9hSnSbUzUPiRRCImJmL5kdk-OpxbCACF68F6hj37NA>
-    <xmx:4RzDaBzTczR5yT8NsiY6F2gezdjJ8XGgVHsfIWqUjbQ9BVMjxQcW-Qoq>
-Feedback-ID: i927946fb:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 09B082CE0072; Thu, 11 Sep 2025 15:02:57 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1757618985; c=relaxed/simple;
+	bh=xH3L+rJDeHoo+3xCa6E7H8LcQh2CpUhxXwHIUZf3qDs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qHVRS2wFJRyTyFE2BW9Sdn3PFVepLSTQpF075MEH3ayKeNqJfQvgBjT3IE1ecUh51D/pZblgByD5qLZo/OYJJDWYW3/jq1mLWFLmQb7px/0UvNt376blCkBMOJxNo9473mBuq8c8st616L6tUXfZQW2+dwmvBaE/L9ZwVDKJdLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=hvpoGfpS; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id CF5FC596;
+	Thu, 11 Sep 2025 21:28:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1757618905;
+	bh=xH3L+rJDeHoo+3xCa6E7H8LcQh2CpUhxXwHIUZf3qDs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hvpoGfpS2QV+5yAu7Kf9gxOXbLZBAoLMlvJyN0syQYa1E3tAc1iFdhTk/HTggjByu
+	 7PcFeusGDtNCFi0p4lFOPP4vW1QmbxO8pvcDmi+JtzgwQAS5hmFeP2watfei5m4jzQ
+	 QipfABIMWGaCgT+JAKrB7r4yBBAAtTo19FPZkSkw=
+Date: Thu, 11 Sep 2025 22:29:14 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Mark Brown <broonie@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+	ksummit@lists.linux.dev
+Subject: Re: [MAINTAINERS SUMMIT] Hidden commits from next (aka why
+ maintainers hoard them in backpack)
+Message-ID: <20250911192914.GG13915@pendragon.ideasonboard.com>
+References: <299e6601-a83e-4e5d-9dd9-12ae796cd913@kernel.org>
+ <20250911122711.GC8177@pendragon.ideasonboard.com>
+ <e7a60ee9-77fe-4729-a58d-441543792de7@sirena.org.uk>
+ <20250911102506.43ee7f9c@gandalf.local.home>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ThreadId: AiuzKEH_WMOk
-Date: Thu, 11 Sep 2025 22:02:35 +0300
-From: "Leon Romanovsky" <leon@kernel.org>
-To: "Kostia Sinyuk" <sinyuk@gmail.com>,
- "linus.walleij@linaro.org" <linus.walleij@linaro.org>
-Cc: ksummit@lists.linux.dev, "Konstantin Sinyuk" <konstantin.sinyuk@intel.com>
-Message-Id: <164760a7-edc9-4be7-b7ca-1729feec6da6@app.fastmail.com>
-In-Reply-To: 
- <CAPpb9yn9akO=pBiQs0=xTcPGTY-XghK8nYcm0dAgQO1Es5udWw@mail.gmail.com>
-References: 
- <CACRpkdaKKeD3zNXM3nazfVb2m9uwfywE_rnGy3hMxwX-Aw6stQ@mail.gmail.com>
- <a74382d8-a2bf-4534-b0ee-a97d8faabf16@intel.com>
- <CAPpb9yn9akO=pBiQs0=xTcPGTY-XghK8nYcm0dAgQO1Es5udWw@mail.gmail.com>
-Subject: Re: [TECH TOPIC] UALink driver upstreaming
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250911102506.43ee7f9c@gandalf.local.home>
 
+Hi Steve,
 
+On Thu, Sep 11, 2025 at 10:25:06AM -0400, Steven Rostedt wrote:
+> On Thu, 11 Sep 2025 14:40:45 +0100 Mark Brown wrote:
+> 
+> > > I've heard a maintainer saying that Linus doesn't like subsystem trees
+> > > to have lots of merges. Any help debunking that would be appreciated.  
+> > 
+> > AIUI it's a quality of merges issue rather than a number of merges
+> > issue, if the merge commits all have commit messages that convey useful
+> > information about something that makes sense then you should be fine.
+> > If the merge commits are all just default messages not so much.  Things
+> > like taking a pull request with a descriptive commit like the cover
+> > letter for the merge hopefully do have some purpose and a useful commit
+> > message.  
+> > 
+> > The quantity thing comes up because a common way you end up with a lot
+> > of merges is automation which tends to also imply lacking changelogs and
+> > motivation.
+> 
+> Basically a merge commit should be no different than any other commit. It
+> should have a purpose and that purpose should be described in the merge's
+> change log just like every other commit has its purpose described in their
+> own.
+> 
+> I now have several topic branches, and I try hard to avoid merges as they
+> tend to make my pull requests more complex. But every so often, I have a
+> patch that comes in that is required for work in two of my existing topic
+> branches. This is a case where one change is required for two topic
+> branches to continue more work.
 
-On Thu, Sep 11, 2025, at 21:10, Konstantin Sinyuk wrote:
-> On Thu, Sep 11, 2025 at 10:42:01AM +0200, Linus Walleij wrote:
->> So this gives at hand that since this is no "ordinary" memory-mapped
->> driver, it needs its own bus and therefore intuitively its own subsystem?
->>
->> What about drivers/accel/ual where other accelerators live?
->>
->> Or if that is somehow inappropriate, just drivers/ual, don't be shy.
->
-> Hi Linus,
->
-> For the initial RFC, I thought to start under drivers/misc/ just as a
-> lightweight entry point to get early review. But I agree with you that
-> UALink fits more naturally as its own subsystem, similar to how CXL is
-> handled, rather than being grouped under accel. The long-term plan
-> should definitely be drivers/ual/.
+Do you then send an individual pull request for each topic branch to
+Linus ?
 
-So do it right from the beginning and save from us unnecessary review iterations.
+What if one of those topic branches had to aggregate patches from, let's
+say, 10 different series from 10 contributors who each sent you a pull
+request ? Would you merge them or cherry-pick them ?
 
-Thanks 
+> In these rare events, I will apply the change to one of the topic branches,
+> then merge it into the other with a detailed explanation to why I needed to
+> do that merge.
+> 
+> Linus hasn't complained about it, so I'm guessing that's the correct thing
+> to do.
 
->
-> Best Regards,
->  Konstantin
+-- 
+Regards,
+
+Laurent Pinchart
 
