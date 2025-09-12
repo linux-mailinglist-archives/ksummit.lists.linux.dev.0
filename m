@@ -1,105 +1,116 @@
-Return-Path: <ksummit+bounces-2365-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2366-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B61FDB53C77
-	for <lists@lfdr.de>; Thu, 11 Sep 2025 21:42:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 603B0B543C0
+	for <lists@lfdr.de>; Fri, 12 Sep 2025 09:22:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61BF71742A8
-	for <lists@lfdr.de>; Thu, 11 Sep 2025 19:42:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22822169366
+	for <lists@lfdr.de>; Fri, 12 Sep 2025 07:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ABA025C6EE;
-	Thu, 11 Sep 2025 19:42:43 +0000 (UTC)
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 757312C0262;
+	Fri, 12 Sep 2025 07:22:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="npNBcVD9"
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963F62DC765
-	for <ksummit@lists.linux.dev>; Thu, 11 Sep 2025 19:42:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5FD2BF016
+	for <ksummit@lists.linux.dev>; Fri, 12 Sep 2025 07:22:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757619762; cv=none; b=nkT6H7Y5OkoD7KgneTR9hzyPEtq7x+5zmenZFkuW2mBZeYAWOHQaveVvA3tAoQejrx1zmKNCG1MQGnt+MHs25zAG/cNL+8DsjaXvr3sk+KWYSo0efEx+2JKpbeWSA4FHYtoa8Ymp8dXMrGb9M88fhWx2poAGYCigYnRUIxPI37U=
+	t=1757661765; cv=none; b=T0DcreZ11Ns91/SV46djqyRoen9tCW12x1SCIZfiGm4Rax3eeNwSPXCHIeoVEry31SFf0x5QtyQFCO4Dlf0ISym+gOKYZachiUr6L0TeDBoMcmOkPsZmaUIJ1kH8sEB2ltLDTrNUOjAlJYB+aZuACJlVfX7RRbHK0UycjcJeSL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757619762; c=relaxed/simple;
-	bh=UswXRapy8t8iG/B5xBi+Rk/9BtANlmJ1/ym4lVKZhdw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KGcgp2IvXqziYA540gubW8h/Baq832G1a2lJSyB0z4CW9+WjP0kuE/g1kenhhGolKUD3CMdmvj3NhFVk1UQ6c26LkqnG9+twL2pSlkpVG1lcoBddkaGYV4aVcRTUDXGkVf8h/Mm8EzTwRL3VFgNxyTmKS0LJ4XuvXwEjpSiIcD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5EADF1A0585;
-	Thu, 11 Sep 2025 19:42:38 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf12.hostedemail.com (Postfix) with ESMTPA id A470F29;
-	Thu, 11 Sep 2025 19:42:36 +0000 (UTC)
-Date: Thu, 11 Sep 2025 15:43:29 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Mark Brown <broonie@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
- ksummit@lists.linux.dev
-Subject: Re: [MAINTAINERS SUMMIT] Hidden commits from next (aka why
- maintainers hoard them in backpack)
-Message-ID: <20250911154329.41757f50@gandalf.local.home>
-In-Reply-To: <20250911192914.GG13915@pendragon.ideasonboard.com>
-References: <299e6601-a83e-4e5d-9dd9-12ae796cd913@kernel.org>
-	<20250911122711.GC8177@pendragon.ideasonboard.com>
-	<e7a60ee9-77fe-4729-a58d-441543792de7@sirena.org.uk>
-	<20250911102506.43ee7f9c@gandalf.local.home>
-	<20250911192914.GG13915@pendragon.ideasonboard.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1757661765; c=relaxed/simple;
+	bh=LFFDItX69IfeFYupqtxi699PEVLId8z2psSqs6Xp7Bo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=K34p/DyZJ9nrx5PaL7gECR4P/7MAhduD/oH/qrNZihStwX+CFa4cheAiWc+EcZd8yRd5qjFKsl+PCJqY/H4TUPqmtzhKcDERLlyI8WmpxswuSM6j9WADrfiwO9jePyPLHzuNnz0N02E667trtlSG0PpVQZmDR91s5lNNzWKYRIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=npNBcVD9; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-33c9efd65eeso15279801fa.3
+        for <ksummit@lists.linux.dev>; Fri, 12 Sep 2025 00:22:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1757661761; x=1758266561; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LFFDItX69IfeFYupqtxi699PEVLId8z2psSqs6Xp7Bo=;
+        b=npNBcVD9yxTOQ4udDSJp9rCkqigg8YqmOvxbI2c2XlqGuyx06/aLSAsKoWjVwjMrhw
+         ng4GNdD2L1k6bqYymhcutV69MckfNDzxvhrMl+ONCUq88FOeBw4L9aw7KrWt7nEoK9qV
+         +VmvWI0OzCDTO/qami9/SZOGag6yU4e0Kgt7DeNDsocFsPqfuxu4T7e00J0231b8lIcn
+         HA9OLuQ6p6e3mdgfMWnru6EkwvaPwZN6wbEMi4OOI66+uD5M7c+4PiBRqePyyhp2hfv1
+         mRirAcx98qJbO3sdtdd5PCk2aOLcQL60qKuE/kdwkTOFYbQBnyOBpB+kQS2ReE5U6LLK
+         Mlxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757661761; x=1758266561;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LFFDItX69IfeFYupqtxi699PEVLId8z2psSqs6Xp7Bo=;
+        b=q2eE+yrZxZ80wQmO0H/SOwqG0MquL6mIeM/Bf5BiexmlLXQppEJ15wxlbKA6k8KG9P
+         im0pIrBKtc8yMfOzd0bTmaNKU9nGygNUcc8W/8UuPPlMb6jPxea/nEjx1IniZI4SzLHG
+         oDm+Pg+s/MAXYqJOJb1eCU9QnptoumXcc8TpMR5EtpWoTrhLtOPpCAmAc9er6JxM6Dd8
+         g9CVo64dO4nKcYRboAxvp/7T9+ACsOzVZjFcpcSYlGe4tsDbjmygyXvPZu/7xDw/n1cJ
+         RnoR+I+7FQurBLuEwP4Q8nvn5LwmidcVnyUjXc+BCkLJkW+dseypUi6Havc5X0z245X8
+         OZ6Q==
+X-Gm-Message-State: AOJu0YxrnOQoOjyKT73xcv4Mf5QIBvZvsfAaZro3+yrSpuGHEkllH1Ti
+	XMP7VG4Ufk1KdkMzt4ORB0ncB28HEH/Y6pA2p2cT02dgtbpZRJmStYS8CK3hUfY+1xogtTgZuBY
+	ubaZg8zR52kNfzUPtH8eFFeLtsKQX3q2/ME315Un0IQ==
+X-Gm-Gg: ASbGncunwviA9L/ZxTH9ah8C+DsH49KpuQGBE2sBhc+18N2lwy112S7aRecQAWdNFpT
+	oR0MhK65wilUArh6Kxw92h8xSBrE5JxWN1NecLYHb2oThqlOZ4qJu82/UUYyDmPoR9TEdBYC+iU
+	Z7P4i4OQjBXpiM35HX9GyHQzG4TebM9x+3ricNZSkMoNs1DMWygsky//gn7rpcw93Q/o7gKXaQM
+	rgPi3M=
+X-Google-Smtp-Source: AGHT+IEpb1Ksju8gX+f7hKclHLv2efeL5F+hA9m3pMOp6ExWKNkaF7ctx9xFmDCAFKq8FR+VV195BmgI4LkeHUUPEvg=
+X-Received: by 2002:a2e:a988:0:b0:352:46d5:e541 with SMTP id
+ 38308e7fff4ca-35246d5e92amr1938961fa.0.1757661761059; Fri, 12 Sep 2025
+ 00:22:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: rucya8exzjfra5x7we317jdcj3hchz3y
-X-Rspamd-Server: rspamout05
-X-Rspamd-Queue-Id: A470F29
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX19OEJExdHZLSewektdPx6dtboOZIMcMNf8=
-X-HE-Tag: 1757619756-199455
-X-HE-Meta: U2FsdGVkX1/DJcoKo3YsBnI+tynBED69iPz14XNRSmB9XyUfAFWWmqpydvUvv6DYjkbRDXhGbwr6UO9k6WLqS+ivVvBgmrI7+4hs+sjosBuuT+wIg/9+++JDMfXD40Zo6TWwwnaJ9ydGVsOg9w3h26kFScXW4iOqtMDNsZQRRG9auMyip6Z1emksE+aH7IXYkif/4/0b65CyiZ6Cne6WOGPFGbHT5cxf8yQguhQkHkHaJKthpqzZ62l2f3gBXq7R07ln7yEpz9PaEpHEMoKoFM5BFLKbeipu5GRvgCl8jm2H1yLU67C/sajbrwG1aRGtRJGba1fRpwSEelyuhvaJxKBCWhSKOn7861Ct1oVwmkgIelzNlC2hVxVjEHxDAsyb
+References: <CACRpkdaKKeD3zNXM3nazfVb2m9uwfywE_rnGy3hMxwX-Aw6stQ@mail.gmail.com>
+ <a74382d8-a2bf-4534-b0ee-a97d8faabf16@intel.com> <CAPpb9yn9akO=pBiQs0=xTcPGTY-XghK8nYcm0dAgQO1Es5udWw@mail.gmail.com>
+In-Reply-To: <CAPpb9yn9akO=pBiQs0=xTcPGTY-XghK8nYcm0dAgQO1Es5udWw@mail.gmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Fri, 12 Sep 2025 09:22:29 +0200
+X-Gm-Features: Ac12FXy_V9Gfmv07XXCdNCSIHJU004gWL0IBTxoXeC4GDkF8qSxbjdkdNUb-s00
+Message-ID: <CACRpkda5KwVP-J=_3goL6WAy=dR1ZQufdjT6pJyY+Fno_Hsy6w@mail.gmail.com>
+Subject: Re: [TECH TOPIC] UALink driver upstreaming
+To: Konstantin Sinyuk <sinyuk@gmail.com>
+Cc: ksummit@lists.linux.dev, Konstantin Sinyuk <konstantin.sinyuk@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 11 Sep 2025 22:29:14 +0300
-Laurent Pinchart <laurent.pinchart@ideasonboard.com> wrote:
+On Thu, Sep 11, 2025 at 8:10=E2=80=AFPM Konstantin Sinyuk <sinyuk@gmail.com=
+> wrote:
+> On Thu, Sep 11, 2025 at 10:42:01AM +0200, Linus Walleij wrote:
 
-> > I now have several topic branches, and I try hard to avoid merges as they
-> > tend to make my pull requests more complex. But every so often, I have a
-> > patch that comes in that is required for work in two of my existing topic
-> > branches. This is a case where one change is required for two topic
-> > branches to continue more work.  
-> 
-> Do you then send an individual pull request for each topic branch to
-> Linus ?
+> > So this gives at hand that since this is no "ordinary" memory-mapped
+> > driver, it needs its own bus and therefore intuitively its own subsyste=
+m?
+> >
+> > What about drivers/accel/ual where other accelerators live?
+> >
+> > Or if that is somehow inappropriate, just drivers/ual, don't be shy.
+>
+> Hi Linus,
+>
+> For the initial RFC, I thought to start under drivers/misc/ just as a
+> lightweight entry point to get early review. But I agree with you that
+> UALink fits more naturally as its own subsystem, similar to how CXL is
+> handled, rather than being grouped under accel. The long-term plan
+> should definitely be drivers/ual/.
 
-Yes I do. Linus suggested it. I use to keep everything in a single branch,
-but when Linus had an issue with one aspect of the pull request, it caused
-me to rebase the entire thing. That's when Linus said I needed to break up
-my changes into different topics so that if he had an issue with one, it
-wouldn't stop the rest from getting in unmodified.
+If you want to "ease in" drivers the appropriate place is drivers/staging.
 
-> 
-> What if one of those topic branches had to aggregate patches from, let's
-> say, 10 different series from 10 contributors who each sent you a pull
-> request ? Would you merge them or cherry-pick them ?
+But if you have a focused team and you are going to start small
+and work on this then just use drivers/accel/ual from day 1.
 
-Currently, the only pull requests I take are separate topic branches where
-the merge usually ends up being a simple fast forward. Most of my updates
-come from patches that I just pull into my topic branches directly from
-patchwork.
-
-I likely don't have the complexity of DRM.
-
-But looking more at the tip tree, which is much more complex than my own,
-which also has several topic branches. They merge in branches from others
-via pull requests, just like Linus would from us. They don't cherry-pick
-nor rebase, unless its patches from the mailing list. I believe Linus is OK
-with that workflow.
-
--- Steve
-
+Yours,
+Linus Walleij
 
