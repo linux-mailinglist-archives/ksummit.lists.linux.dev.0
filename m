@@ -1,166 +1,159 @@
-Return-Path: <ksummit+bounces-2375-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2376-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12557B54C70
-	for <lists@lfdr.de>; Fri, 12 Sep 2025 14:07:02 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5C62B54CDE
+	for <lists@lfdr.de>; Fri, 12 Sep 2025 14:14:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B9A51CC6ACE
-	for <lists@lfdr.de>; Fri, 12 Sep 2025 12:04:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AB4B04E2B32
+	for <lists@lfdr.de>; Fri, 12 Sep 2025 12:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63162320A28;
-	Fri, 12 Sep 2025 11:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8303824A078;
+	Fri, 12 Sep 2025 12:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="URhWBMbb"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZT3KPjcs"
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C355A30214B
-	for <ksummit@lists.linux.dev>; Fri, 12 Sep 2025 11:55:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB5F3019CA
+	for <ksummit@lists.linux.dev>; Fri, 12 Sep 2025 12:07:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757678132; cv=none; b=qZM221Oahcc2lJLRX0QpxqHjTofywVOHAx/4ZWphNekVUvWeFhlIguroOOQRNq91SryKud9W2Tw41/YB3ykM6TbyDfWT6j0cjJ5dzTdBkUjtzpkxh770XDlGOFhwpWhNH36EP+TxRMNfzeOfduSJMJqht5B5+EttED1HTMrv/oQ=
+	t=1757678871; cv=none; b=fj8DGeIsPdMu99hdf+scMNrOksx3B2/a0eU/oBLy3MdnfvuhRJnGN6pk2jUG6nkWPexw/C90duU33MMXHJDs0RvlZH9RGLuJYJmGQf2HytBHpHEJimyGPTgiPR1yabNx/YeHyffohHMqdpRGN8aawnAPH67SipdADAYyPi9z9Gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757678132; c=relaxed/simple;
-	bh=R/+prnBfTZoHTZs8TkF1c7hLZbXS9wZl97fsfHyeSFM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=luqyFBiSG94GcrJ54mDBjuJNc1RsQjCNdj/dmnlkSdorYlSgPDnog6tQalkGmORvaCxjCG6M513zL0H8/pWO7+yquuz37Kmf9L+Sf0HoWp4UtUYhx9Ey6f4Td9C9gCQAe2XhoyK10roK6bzITM6atd2Ju2E+AQgxgXPYFmHYpvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=URhWBMbb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A52E4C4CEF1;
-	Fri, 12 Sep 2025 11:55:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757678132;
-	bh=R/+prnBfTZoHTZs8TkF1c7hLZbXS9wZl97fsfHyeSFM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=URhWBMbbdcIj8TDNbQg631vb0fcqV8WwtBUYOcI2Jaoj/vTCfRLgGOZjDPxEk6ylJ
-	 A1SWD9lewGJ/auQPebsrsUGYP5Utyg6UQv8mhicB7DvkFGwo4mzblzgRp9tEHmxqRu
-	 5ykQppO8O700lJyaDQyEwIdihGsoPReFiD2AxLJpiF3S/IZAtkahv3+4P1EQsmviYF
-	 JJJDkzeE6og3qtnvULMwEn11oviWF/K4gtdWlw63jXizUP5vl+c0wjhoVOJsSfyvkS
-	 CDt+H96xIf+Io0EquzYe2+9FSeJO3RiiXa3noY7LuUGl840ft7fkuOxc/Hgsgx/D7+
-	 jER6btN4Ql0ew==
-Message-ID: <fd7f9e60-18a8-491d-8deb-2edc8ef1f5cc@kernel.org>
-Date: Fri, 12 Sep 2025 13:55:29 +0200
+	s=arc-20240116; t=1757678871; c=relaxed/simple;
+	bh=X6ZRNDaCuOivHijOYCFBVNSiy4/GhIk2pJhe7Q3P7xA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QCwn7lUHKr7pWJW+8Pi6RQI2uegZLs93wuE/p+DC9IIogI2Aeb2/W2pOe2Gt+hUKG4rNtPMrgM7pZyssktRraruWe0y6VGU/S+B/r9h8qDrxpQh3ikCNT/FT6T1bds9qyBFOmsdVwEZnxueEH4Fu3I8YOHmdP+gbzMrf/B0kKtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZT3KPjcs; arc=none smtp.client-ip=209.85.219.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-e9e137d69aaso1270680276.0
+        for <ksummit@lists.linux.dev>; Fri, 12 Sep 2025 05:07:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757678869; x=1758283669; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=41eguu5v2XlDnYkEFTiMmjx8hLfyx26Ce8ZNbdhYcMY=;
+        b=ZT3KPjcswUP9uK697Ts5wHlE6+H4f5U2mvhN8l7okhN6icJg3Kc6Ssjb2FNjI7ie5A
+         +12sag3hL2X4txUXL3xdr3DAu2uy8aD8LAoTrdIjKR6kF4ZfT/v99NcbX92kYpgRxo0E
+         JVqXynjLcsZemQGfeV/NbZgGq5Xjx4wH0Dm39O3oro0vFMrrmkkhgQ6L4tI2OjmAyKGl
+         wgoTDKuhzSjMWR0Q9WutHi75BIBdzwBmckuWAW6YZSVa1A5tgKhcgHsat/xjR4Dbk7zQ
+         01oxBEZtVp+s0SDbp8JaQuQh0LoVCMTNpjzoutYDWWEuItJXNAGcYU7lE3N52ZIhc8Y2
+         z9FQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757678869; x=1758283669;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=41eguu5v2XlDnYkEFTiMmjx8hLfyx26Ce8ZNbdhYcMY=;
+        b=Y/HOaWHtAM5Sjtz9RPYW2P9Y3ZY+5zZW8NfPxWQh2JsO6zRhjz7zrk8y72WfHuId5i
+         dpxPfMb/CxVdEnWWPkoh12USphHZ1hlBxqvkA3bOO5kBxCY1sLzflRKR+tuPwKA9gVvt
+         g8b0BwoetpcFbOYuDd5YxAOElhJQEaPuQpzmG82Hdd7jc8MY5MBsYLht/07RgfrZs/RY
+         H/d2dWetHFJn11WJ4XGJoc+rflOZLOqKCEoU9Uby6JaF8M/Rr92RRD/+B08+r+43EVQl
+         YHRJjp7vG3r+1+wsL3A8ElSbEEYLA/PRZUCgtdXNOi2FF0P84ieuiBeGNkalcUsyxrt8
+         r9xw==
+X-Forwarded-Encrypted: i=1; AJvYcCXeyUlMgpGqyYEZ6aVdHVNhzK5eCSEFP5gU9A1CyLKK/wxfzWam6O+p/CYNaLeWNMEErXcF3ICX@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzd9vvbAswQFU4FmHvBcj3bJrwfEkkHVQzCvdIF8ykzSLA3xzBB
+	M1lLadlCoD42ZhjnYJfNf4wN/C8G3F4kmAGW1QlO6RXDOwBODzGmQXT8FyDNoGK8HnrVdfaUbl8
+	OMY26GX96kO1BCR17mw0q7nkswsGr4to=
+X-Gm-Gg: ASbGncvVnTL62a5xGo4p1IZGDjyqGQW5ocIY6hdB1v+VJQNe1iXVDuxGfHX4ZTj/fGF
+	rqmDkSgQgSygSnBwXRZGXBTa2FIAbv8DgegH07gTl6R4YOdbPxwhzsE5lvUClfOq4Sc46EgMf3Q
+	mToBWVvyZcJSYNcL0EEmpBBy8sDT6qE+viO/ZtcJn6aXBDYo7tgXgpWn7DzuB4nLZ4h62DpUR6o
+	nwZw4qh
+X-Google-Smtp-Source: AGHT+IGMrv7yzxFFD+GGbV/xoOo0wN1bt9GQ2HpMgWaYbQ9p8xRzsTkvU6i+K1/SePmHlg4VgxO6o6DsT0HhhaBxfyo=
+X-Received: by 2002:a05:690c:2606:b0:727:440:f34 with SMTP id
+ 00721157ae682-73064cfc0dbmr24106137b3.40.1757678868855; Fri, 12 Sep 2025
+ 05:07:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [MAINTAINERS SUMMIT] Hidden commits from next (aka why
- maintainers hoard them in backpack)
-To: Sasha Levin <sashal@kernel.org>
-Cc: ksummit@lists.linux.dev
-References: <299e6601-a83e-4e5d-9dd9-12ae796cd913@kernel.org>
- <aMLFXhAVQE1VJ4ff@laps>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <aMLFXhAVQE1VJ4ff@laps>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <2025091207-blouse-scratch-dde3@gregkh> <0f876c7c-566b-476a-b590-d490d41d605c@intel.com>
+In-Reply-To: <0f876c7c-566b-476a-b590-d490d41d605c@intel.com>
+From: Konstantin Sinyuk <sinyuk@gmail.com>
+Date: Fri, 12 Sep 2025 15:07:37 +0300
+X-Gm-Features: Ac12FXzLxer-SHDMGppikjYxh4tD2XzOPgGSpYM0oIq_AdOu3eIMOJj6la8c7E8
+Message-ID: <CAPpb9ymTGwMnJaALJOHx4TcMLxA22w_KcY8=Zxzy_Qy7Uk==9g@mail.gmail.com>
+Subject: Re: [TECH TOPIC] UALink driver upstreaming
+To: gregkh@linuxfoundation.org
+Cc: "linus.walleij@linaro.org" <linus.walleij@linaro.org>, ksummit@lists.linux.dev, 
+	Konstantin Sinyuk <konstantin.sinyuk@intel.com>, Leon Romanovsky <leon@kernel.org>, ogabbay@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11/09/2025 14:49, Sasha Levin wrote:
-> On Thu, Sep 11, 2025 at 01:04:19PM +0200, Krzysztof Kozlowski wrote:
->> 1. Limited or no build bot coverage.
+On Fri, Sep 12, 2025 at 09:22:29AM +0200, Linus Walleij wrote:
+> On Thu, Sep 11, 2025 at 8:10=E2=80=AFPM Konstantin Sinyuk <sinyuk@gmail.c=
+om> wrote:
+>> On Thu, Sep 11, 2025 at 10:42:01AM +0200, Linus Walleij wrote:
+>
+>>> So this gives at hand that since this is no "ordinary" memory-mapped
+>>> driver, it needs its own bus and therefore intuitively its own subsyste=
+m?
+>>>
+>>> What about drivers/accel/ual where other accelerators live?
+>>>
+>>> Or if that is somehow inappropriate, just drivers/ual, don't be shy.
 >>
->> 2. No actual integration testing, even if it is just spotting early
->> merge conflicts.
+>> Hi Linus,
 >>
->> 3. No wide community testing.
->>
->> 4. Contributors cannot base their patchsets on linux-next for
->> convenience, but need to find each sub-maintainer tree and pull it. For
->> few cases (see further) these sub-maintainer trees are not documented in
->> MAINTAINERS, so it is impossible for contributor to rebase on current
->> maintainer's tree!
-> 
-> This topic seems to come up on an annual basis :)
-> 
-> As a follow up to last year's discussion[1] I wrote a bot[2] that is able to
-> analyze pull requests and respond with statistics about how long commits spent
-> in -next as well as on the mailing lists. An example of the reports it produces
-> is available here[3].
+>> For the initial RFC, I thought to start under drivers/misc/ just as a
+>> lightweight entry point to get early review. But I agree with you that
+>> UALink fits more naturally as its own subsystem, similar to how CXL is
+>> handled, rather than being grouped under accel. The long-term plan
+>> should definitely be drivers/ual/.
+>
+> If you want to "ease in" drivers the appropriate place is drivers/staging=
+.
 
-Oh, I missed that, these are nice!
+Not really.  Staging is for "stuff that is not cleaned up yet and we
+want to do that work in-tree".  It's best for existing code bases that
+have been around for a while to get dropped in there and take advantage
+of people wanting to do simple "first task" type of kernel patches
+(coding style cleanups, shim layer removals, spelling fixes.)
 
-> 
-> I haven't ended up receiving signal from Linus that it's useful and not a waste
-> of his time, so I stopped sending these mails out.
+It's almost never a good idea to use staging for a new subsystem as the
+work it takes to get it merged out of staging is almost always more than
+it would be to just do "all of the coding style cleanups first" out of
+the tree and then merge it properly.
 
+So I do not recommend staging for anything with an "active" developer
+community, as it would just slow down the acceptance of the code to the
+real part of the kernel.
 
-Honestly, I have a feeling that importance of this topic a bit depends
-where do you look. Or where do you put your fingers. I work a lot with
-multiple subsystems, although 99% of them around drivers, with frequent
-inter-dependencies and cross-tree interactions. And by "work" I mean as
-submitting patches and as a maintainer.
+> But if you have a focused team and you are going to start small
+> and work on this then just use drivers/accel/ual from day 1.
 
-The best example here is the SoC DTS (Devicetree sources, so
-arch/*/boot/dts/*) which is supposed to be completely independent of
-actual drivers. Independent in a meaning it must go via different tree
-(SoC tree) and never mixed or actually depending on the drivers, while
-of course the driver implementation is necessary for entire thing to
-work for the final user. That's by design.
+Totally agreed.
 
-I found for everything around me extremely important that accepted
-patches reach linux-next as fast as possible. I found also similar
-voices in the this email thread, so I am not alone in this judgment.
+---
 
-I can also imagine that if one does not deal ever with patchsets
-touching multiple subsystems or does not have upstream/downstream
-maintainership model, things are a bit simpler.
+Hi Greg, Linus,
 
-But really for these many things around me, commits not being in the
-next is a significant pain (and appearing in next 1 week before merge
-window does not count, because it is already too late for me to do
-anything, since my upstream maintainers partially closes their tree
-around rc6-rc7).
+Thanks for clarifying. I agree staging and misc are not good homes.
 
+Strictly speaking, UALink is an interconnect fabric (rack=E2=80=91scale mem=
+ory
+semantic bus, closer to how CXL is structured) rather than an
+accelerator device driver. The existing accel/ drivers (Gaudi, QAIC,
+ivpu) are compute engines, while UAL should provide a cross=E2=80=91device =
+bus
+framework, so accel/ is not a perfect architectural fit.
 
-Best regards,
-Krzysztof
+That said, I understand the concern about creating a top=E2=80=91level
+drivers/ual/ directory too early. Starting small under
+drivers/accel/ual/ is clearly better than misc/, and I will coordinate
+with Oded  to make sure it integrates cleanly there.
+
+Longer term, as UAL adoption grows and multiple vendors hook into the
+framework, the natural home would be a dedicated drivers/ual/, just as
+CXL evolved into its own subsystem.
+
+Best Regards,
+ Konstantin
 
