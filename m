@@ -1,95 +1,193 @@
-Return-Path: <ksummit+bounces-2383-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2384-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B77EB5558F
-	for <lists@lfdr.de>; Fri, 12 Sep 2025 19:44:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F21D9B55816
+	for <lists@lfdr.de>; Fri, 12 Sep 2025 23:10:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4F4B16C6DB
-	for <lists@lfdr.de>; Fri, 12 Sep 2025 17:44:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9470B7C6B80
+	for <lists@lfdr.de>; Fri, 12 Sep 2025 21:10:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC436324B2E;
-	Fri, 12 Sep 2025 17:44:42 +0000 (UTC)
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C975832ED2F;
+	Fri, 12 Sep 2025 21:09:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="GI4t6+q5";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Hg+efwLE"
+Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3430431D39D
-	for <ksummit@lists.linux.dev>; Fri, 12 Sep 2025 17:44:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F040C28489B;
+	Fri, 12 Sep 2025 21:09:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757699082; cv=none; b=Fjj5C+0A8MQQU/tJVX+bZk9N4kTfxe2Qf3kCzlAIg4tuUA1klkBxR876NLsqtb1gSWpWvW3USTPZo6xVCpX7RpcfpGWT00sx5p6mrExAd4+W9N/lbHl7QtEd7fmzeTLmAG+BFSl9t0CuhWsM1+G9vqIfmUEkV6TemRJNYgR5x90=
+	t=1757711394; cv=none; b=hwLvYcvmp9Lu0EhZ+rP0NeiHMNqoMPcq+l5xm29cnzwTBR6rYT2ieq0YYobA3cIxfETOMTly7U2GKpdG04ukcr7get2Gm7g1XFFNj0ZYCbo/5YM/FnZacRleBG9yZ+AM/yNWuWqw8XzFHzmYBGuduwTeS7xDogQoLKUSqqFL2Js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757699082; c=relaxed/simple;
-	bh=EdaPQljbcCLRXohEUQXkQK7qWIS5YqNgWLRouReDGjI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=svnbGXDHlHBr4sW9J3wlzX7r9uKzt/kFx0NYzRRagtpVvc9BDefh3Yvxv33mUcCbHOWyOy3BwvjyaQ4ClldC0IlECOqO2tgYQ4/H/J5r8xTtt1z8/2jkh/fRYx8cbJ9R5ZJ0aVnVyuY9jdtJEnmYcS1/dhJppLNw3kZRRQUy4qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5FD6B5BB1A;
-	Fri, 12 Sep 2025 17:44:32 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf11.hostedemail.com (Postfix) with ESMTPA id 90DFF2002A;
-	Fri, 12 Sep 2025 17:44:30 +0000 (UTC)
-Date: Fri, 12 Sep 2025 13:45:25 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Mark Brown <broonie@kernel.org>, Laurent Pinchart
- <laurent.pinchart@ideasonboard.com>, Krzysztof Kozlowski <krzk@kernel.org>,
- ksummit@lists.linux.dev
-Subject: Re: [MAINTAINERS SUMMIT] Hidden commits from next (aka why
- maintainers hoard them in backpack)
-Message-ID: <20250912134525.24a22559@gandalf.local.home>
-In-Reply-To: <68323a1d-eb5e-4a45-811b-653555cbf7c5@suse.cz>
-References: <299e6601-a83e-4e5d-9dd9-12ae796cd913@kernel.org>
-	<20250911122711.GC8177@pendragon.ideasonboard.com>
-	<e7a60ee9-77fe-4729-a58d-441543792de7@sirena.org.uk>
-	<20250911102506.43ee7f9c@gandalf.local.home>
-	<68323a1d-eb5e-4a45-811b-653555cbf7c5@suse.cz>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1757711394; c=relaxed/simple;
+	bh=e7oq3c2bmJNjTLNH0WCmh3oqHoeflOXUxfd9Pnphqm8=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=Wjlqgy/RxUiW8j/BMkZIDOajFJl/zhU9mq4Xxh1CmRqb8YGjgnWdUV1ga9bDXrl2JstZFIbCd0mQeh5h7mSJnMNUiccVpv4nzmXTPLmTVTQERk0+2rem4lKeKQY63tmkzZSGQ5GlVea3x3UXjQnmOp6oUQEf3vutd7c8bLdYSGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=GI4t6+q5; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Hg+efwLE; arc=none smtp.client-ip=202.12.124.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 128BF7A01CD;
+	Fri, 12 Sep 2025 17:09:50 -0400 (EDT)
+Received: from phl-imap-17 ([10.202.2.105])
+  by phl-compute-05.internal (MEProxy); Fri, 12 Sep 2025 17:09:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1757711389;
+	 x=1757797789; bh=CLqRBKVf5IvTh800HM+2y42LrS7XFT+UlQoEp2IAPso=; b=
+	GI4t6+q5kXjCO6cruisFBrxlfYspQdyR2nSwyVUifQzM7VEMrmYCNyjAVYjNhTgm
+	WqCqX8kZdK2deNSwLTBVJ3N8pSl0NhU5c9HH2kyD2VdFMzafqFVFH9hpDeIJNrzj
+	g4Qa7RVKOklHp6T9//Fk2QqJOmtlyMcvCzaPH7vzB72i03nMdNbtRdOZjHzQ4h/L
+	ftry70985VVJ0JC8deKiZyhzurfBwKKn5fmc5YLwZO9NW0AWFO9cbhr6Oa1pnc8X
+	IbeXUCwwcUmmLw1JIdKGv7tJjqaUU7L6MH1vAFkSQFJ8ZQ5CrDw16pFxmTMYZ3b4
+	iRfechyn/kmAf/3LIGcGLw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1757711389; x=
+	1757797789; bh=CLqRBKVf5IvTh800HM+2y42LrS7XFT+UlQoEp2IAPso=; b=H
+	g+efwLEojmMZRq8iZwYjjIYprH/XYxRGz4gmpycxwdhPe1s8+YfTor2bbGv0c0B2
+	RLsa8YQz2KykS1Kzwhrjk5vc4sNyX55mlyEc/YPCTF+a+h5XGA1P5EP0qMtntlaW
+	glaOlh/Kn+XcHwMTpuhR2UrjWZGj35jBvgxWwqm5OAUbjTj6+VnIzZ7ANky9E3Wz
+	IpurPFx3x7zuk4nsRKyP70Og/99u4DsemcafNS5R+S7aIEm+gzBBWkmSBQ6mFI6Z
+	sZlMDN5oUpNr0X2A2oOZa95CyTZTboiXtWUjzqMltgruej+lvRP5fnsTfi9FdrWx
+	iwGev+FnsPgCi2tPWVfjQ==
+X-ME-Sender: <xms:GozEaJ7WVeaEI1J4FNYCAeFSe1bMurC67OT_BB0Jbhk6PWXzJbvBLQ>
+    <xme:GozEaG5x_FaTJVZFNRf7pkhjUFbOGrPCkzZW9DKjVtpsq9dK8yfY--QfEjU7m0KIT
+    _ceh86DRDz2N8UZEKI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdeftddtlecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpeevhfelgeefleefgedttefhgfffieejkefghfeghffhheelieeivdduteevhedvgeen
+    ucffohhmrghinheplhifnhdrnhgvthenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
+    grmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthho
+    peefvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheptghhvghsthgvrhdrrgdruh
+    hnrghlsegrrhhinhgtledrtghomhdprhgtphhtthhopegrlhgvgigrnhgurhgvrdgsvghl
+    lhhonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtoheptghhrhhishhtohhphhgvrd
+    hlvghrohihsegtshhgrhhouhhprdgvuhdprhgtphhtthhopegrnhgurhgvrghssehgrghi
+    shhlvghrrdgtohhmpdhrtghpthhtohepghgvvghrthdorhgvnhgvshgrshesghhlihguvg
+    hrrdgsvgdprhgtphhtthhopegrlhgvgigrnhguvghrrdhsvhgvrhgulhhinhesghhmrghi
+    lhdrtghomhdprhgtphhtthhopehsvghrghhiohdrphgrrhgrtghuvghllhhoshesghhmrg
+    hilhdrtghomhdprhgtphhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtghp
+    thhtohepfihilhhlhiesihhnfhhrrgguvggrugdrohhrgh
+X-ME-Proxy: <xmx:GozEaDU9e-ltO4GjQuBQZhofb5Kj9EDyPaq1nCnmbW-klx59mcvMXA>
+    <xmx:GozEaKDK4yJBaHtkl_LHlcH0jkKXOLdoeoxqmFBWV2JzvB84rcbpfw>
+    <xmx:GozEaCC2WD64DUi7GSydM1X-85yv-7hi6n4v8g8ii_kFrgTh92XlXw>
+    <xmx:GozEaJphW--h3lZUWi9M-TVTnM42xRnish8dD4tvsnrWGtNkHbKeKA>
+    <xmx:HYzEaKn6J5RHAuH4Qzhj_HsWd61NA-XKIndTEYj5XMySXeVQsv1vmoqt>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id AFA80C40077; Fri, 12 Sep 2025 17:09:46 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-ThreadId: AneuvEk2E7Kg
+Date: Fri, 12 Sep 2025 23:09:22 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Nicolas Ferre" <nicolas.ferre@microchip.com>, ksummit@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, imx@lists.linux.dev,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Richard Weinberger" <richard@nod.at>,
+ "Lucas Stach" <l.stach@pengutronix.de>,
+ "Linus Walleij" <linus.walleij@linaro.org>,
+ "Geert Uytterhoeven" <geert+renesas@glider.be>,
+ "Ankur Arora" <ankur.a.arora@oracle.com>,
+ "David Hildenbrand" <david@redhat.com>,
+ "Mike Rapoport" <rppt@kernel.org>,
+ "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Matthew Wilcox" <willy@infradead.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>,
+ "Suren Baghdasaryan" <surenb@google.com>,
+ "Ira Weiny" <ira.weiny@intel.com>, "Nishanth Menon" <nm@ti.com>,
+ =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>,
+ "Sergio Paracuellos" <sergio.paracuellos@gmail.com>,
+ "Andreas Larsson" <andreas@gaisler.com>,
+ "Mihai.Sain" <Mihai.Sain@microchip.com>,
+ "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
+ "Claudiu Beznea" <claudiu.beznea@tuxon.dev>
+Message-Id: <1d58fc51-b921-4669-b6e2-f9a71d1eda58@app.fastmail.com>
+In-Reply-To: <f931da29-5f10-494a-acc0-309bd805d41a@microchip.com>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+ <f931da29-5f10-494a-acc0-309bd805d41a@microchip.com>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: fcbyhaz3zuu8uknuezff71bphkbtsree
-X-Rspamd-Server: rspamout07
-X-Rspamd-Queue-Id: 90DFF2002A
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX199v3Chi32wIecRNyzAHBdGvpjiYv8fZEY=
-X-HE-Tag: 1757699070-695213
-X-HE-Meta: U2FsdGVkX19g/kTypwt1ZOM97MbIgWNDTvWs9Bsu/1YsDpAJ5I9bfckCd9Wx5mn4yfAx67Bj4kKyl8iz32brl7i6ZLPNT4zsj7OYq0NWeJVKUdOKRUSvoilCiDnONxT4fjxPxGa/Pwfup1o4iURYxVMYLrZhxfRK8tIXoPPfrzGPyOdz5KY1TtSe0UJ7305aJ8KGBjR29LEnkqLUu9TJW4Pv7uNI6VqcvmHR/416jJv0ylKLPRFBPpf8T/5B/U0qvsiHZ2krcXeC/rNLaheZjORWCn9sayXIQi5dOcEul4cG4IYsa8OGE43SJ6tGtKyK
 
-On Fri, 12 Sep 2025 11:52:18 +0200
-Vlastimil Babka <vbabka@suse.cz> wrote:
+On Fri, Sep 12, 2025, at 18:49, Nicolas Ferre wrote:
+> Arnd,
+>
+> On 09/09/2025 at 23:23, Arnd Bergmann wrote:
+>> I'm still collecting information about which of the remaining highmem
+>> users plan to keep updating their kernels and for what reason.
+>
+> We have 1GB of memory on our latest Cortex-A7 SAMA7D65 evaluation boards 
+> [1] (full production announced beg. 2025). The wide range of DDR types 
+> supported make some of these types interesting to use at such density.
+> Both our Cortex-A7 SoCs don't have IOMMU; core and DMAs can address the 
+> full range of the 32 bit address space, so we're quite 
+> standard/simplistic in this area. We use CMA with large chunks as our 
+> camera or display interfaces address "modern-ish" resolutions (~1080p).
+>
+> We use CONFIG_HIGHMEM and activated it for simplicity, conformance to 
+> usual user-space workloads and planned to add it to our sama7_defconfig 
+> [2]. I understand that we might reconsider this "by default" choice and 
+> move to one of the solutions you highlighted in your message, lwn.net 
+> article or recent talk at ELC-E.
 
-> > In these rare events, I will apply the change to one of the topic branches,
-> > then merge it into the other with a detailed explanation to why I needed to
-> > do that merge.  
-> 
-> Could you alternatively put the commit in a shared base of the two topic
-> branches, and thus avoid the merging? Or it is a case that you don't want to
-> rebase (at the moment because merge window is near, or ever?), or the change
-> can't be moved ahead of the other work in those topic branches?
+Hi Nicolas,
 
-Once I start pushing changes to linux-next, I try to avoid rebasing. That's
-because my changes have already been tested, and others may be building on
-top of them. In these rare cases, there's changes that are added to two
-topic branches where a single change may be needed for both. Or more
-realistically, a change will affect two topic branches (like a common
-function that has its prototype changed. I may change it in one branch, and
-then the other branch needs to use it too).
+Thanks for your summary! I think with 1GB, you'll be mostly on the safe
+side in general. I would definitely recommend using VMSPLIT_3G_OPT
+as the default in the long run and turn off highmem on those.
 
-In these rare cases, I just add the change and merge it to prevent rebasing.
+My expectation is that VMSPLIT_3G_OPT may uncover application bugs, but
+those should be fixed anyway, while using highmem is safer but makes
+everything slightly worse through the added runtime overhead and
+increased fragmentation risk. The 1GB case has caused additional bugs
+because it has a very small highmem area on CONFIG_VMSPLIT_3G and
+that can make it run out of highmem first. 
 
-I also wait until the later rc releases to start pushing to linux-next to
-limit these conflicts. I try to push around -rc4, but I'm a bit late, and
-I'm going to be pushing around -rc5 and -rc6 this round :-/
+> Of course we plan to maintain these boards and keep updating our kernel 
+> "offer" once a year for those associated SoCs (with maintaining 
+> upstream, as usual). As you said, being ARMv7, we're quite confident for 
+> now.
+>
+> As you mentioned, we've recently released one ARMv5te arm926ejs-based 
+> soc: the SAM9x75 family. But we don't have the intention to use too big 
+> memory sizes on them, even if they do address large screens, with LVDS 
+> and MIPI or modern camera interfaces...
+>
+> I don't have too much info about our customer's use cases as they are 
+> very, very diverse, but don't hesitate to reach out to me if you have 
+> questions about a particular combination of use.
+> Thanks for your regular update on these topics.
 
--- Steve
+I'm curious about the AT91RM9200 part, which I think is the oldest 
+SoC with Linux support that is still advertised as "in production".
+I understand that Microchip hardly ever discontinues parts, and there is
+clearly no need to stop supporting it as long as you maintain the SAM9
+family, but I wonder how many users are still buying this part or
+running the latest kernel on it. 
+
+    Arnd
 
