@@ -1,59 +1,60 @@
-Return-Path: <ksummit+bounces-2395-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2396-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EE4AB59C1C
-	for <lists@lfdr.de>; Tue, 16 Sep 2025 17:32:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8747CB59C3A
+	for <lists@lfdr.de>; Tue, 16 Sep 2025 17:37:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D22231C029F3
-	for <lists@lfdr.de>; Tue, 16 Sep 2025 15:32:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 342277B44B8
+	for <lists@lfdr.de>; Tue, 16 Sep 2025 15:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE398237172;
-	Tue, 16 Sep 2025 15:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC0D2237172;
+	Tue, 16 Sep 2025 15:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="ZY8Qprw+"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="kSyI0zcA"
 Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6334D23D7E7
-	for <ksummit@lists.linux.dev>; Tue, 16 Sep 2025 15:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD7922689C
+	for <ksummit@lists.linux.dev>; Tue, 16 Sep 2025 15:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758036724; cv=none; b=K5CPTolOwkmhn0Z0+iaiQbzwy906kcrW12i5lmoDIqcHq3y33cUHz1BgcGhuCgfhGdeZKhW6qrqaqh7Uz/PtYvhjeuMmLDO8/EK0DQBHlTovA8kwA1Ne6szu8vYBfXgAnXPbXOHwEYpUCOoXb2myon+VfDfWCoVRGAlJvciCO4k=
+	t=1758037023; cv=none; b=GsEU2Ql7lLxYVV9jUi/rc8gPY5D5krJWqFpMq/NKH1OwPDWofqqJbNxGLd4vQixnet9BMbi2n4B7rGJj0hAMqa7dYMcYA9At09UXL/Z7tIs6cqWdIEE61nMQmJsbK6EHBgwjqypeAduNPhXv2umUrXw4VTbenYJhzw3DJsh+iBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758036724; c=relaxed/simple;
-	bh=mQ2g/kYHk64EQ58A5ysfBLssSTlJooehM1wb8lPmfQk=;
+	s=arc-20240116; t=1758037023; c=relaxed/simple;
+	bh=7jQlIpnq7FMZFiTl3zI8wcq4I5Hf9vKLDOD5KtEoDUg=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lpKel/DG4rxfsNMKa0Eo5KWSjfKuk4Z9VmlnUYKvrS5uOrGtGR+tPRTNG0hIUc8Ng1aIZtgZomi6vzF5OvZlwIMIBdVVU2/LRl8JvR6bIkp2yOqlS85AXUN0UJ45h/AB0rceP0KYOjkRxhlvICLRsyor+BtgTaOvof8QrACiYO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=ZY8Qprw+; arc=none smtp.client-ip=198.37.111.173
+	 Content-Type:MIME-Version; b=YZ067E0eA7nw6wEDEYonZQ2ACuo6Ty1tJStmmnUGi7FNOVzDFqhmr1TUKPKM+shPK2VGbEeN1bMgTctGXv43wRn+gnSeX2CF8wu+KXUT+1f8w1YYSMuWObtXLdf0xf8p6pBQcRk52WauWQzJYQGq+cytfzMBTaqounBlswkD4Qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=kSyI0zcA; arc=none smtp.client-ip=198.37.111.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1758036716;
-	bh=mQ2g/kYHk64EQ58A5ysfBLssSTlJooehM1wb8lPmfQk=;
+	d=hansenpartnership.com; s=20151216; t=1758037020;
+	bh=7jQlIpnq7FMZFiTl3zI8wcq4I5Hf9vKLDOD5KtEoDUg=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=ZY8Qprw+kfT21vJ7M/Xmv6oqYWbJODsXKGrpA2Ak9v0n8BzcZK2M7VYE/nUdLQFb6
-	 C6hLwhMBirHCeJLGzVqy2fNLx3h3/j/WUxcinAcb/CKDGl18p9vdaxi/YbgTuLKXBL
-	 8EO/EZV8w/VfR44psSA2/Skg1swENgUKjF5hqvJc=
+	b=kSyI0zcAGgl2Vijyir6p0GDkXh62vXV/s5XohXejxrA569pGOguXGsPn3g9K0Wm8X
+	 J0ztnzZwJrRQ0RGzUgwZlJpyNCMujng5fZDRkkfcZrAg+3X8ICZdiuJ95IuXSXPYNR
+	 AUgCMQYer6nSmbTxfx8ZmOrENe+Fkn3iQtnvh3NQ=
 Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 2BFC31C030C;
-	Tue, 16 Sep 2025 11:31:56 -0400 (EDT)
-Message-ID: <d2e1d24e80572809549cc8b188257e98eba61871.camel@HansenPartnership.com>
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 60A431C0318;
+	Tue, 16 Sep 2025 11:37:00 -0400 (EDT)
+Message-ID: <82fd01ebb02a56e9f2a9d597ce0ab313aef9db60.camel@HansenPartnership.com>
 Subject: Re: [MAINTAINERS SUMMIT] Annotating patches containing AI-assisted
  code
 From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Jiri Kosina <jikos@kernel.org>, Kees Cook <kees@kernel.org>
+To: dan.j.williams@intel.com, Kees Cook <kees@kernel.org>, Jiri Kosina
+	 <jkosina@suse.com>
 Cc: ksummit@lists.linux.dev
-Date: Tue, 16 Sep 2025 11:31:55 -0400
-In-Reply-To: <noq7ssn1-9657-6869-1257-qo0ps32no46s@xreary.bet>
+Date: Tue, 16 Sep 2025 11:36:59 -0400
+In-Reply-To: <68c85aec6deb3_2dc0100d0@dwillia2-mobl4.notmuch>
 References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
 	 <202509151019.CD7AA0C0BE@keescook>
-	 <noq7ssn1-9657-6869-1257-qo0ps32no46s@xreary.bet>
+	 <68c85aec6deb3_2dc0100d0@dwillia2-mobl4.notmuch>
 Autocrypt: addr=James.Bottomley@HansenPartnership.com;
  prefer-encrypt=mutual;
  keydata=mQENBE58FlABCADPM714lRLxGmba4JFjkocqpj1/6/Cx+IXezcS22azZetzCXDpm2MfNElecY3qkFjfnoffQiw5rrOO0/oRSATOh8+2fmJ6el7naRbDuh+i8lVESfdlkoqX57H5R8h/UTIp6gn1mpNlxjQv6QSZbl551zQ1nmkSVRbA5TbEp4br5GZeJ58esmYDCBwxuFTsSsdzbOBNthLcudWpJZHURfMc0ew24By1nldL9F37AktNcCipKpC2U0NtGlJjYPNSVXrCd1izxKmO7te7BLP+7B4DNj1VRnaf8X9+VIApCi/l4Kdx+ZR3aLTqSuNsIMmXUJ3T8JRl+ag7kby/KBp+0OpotABEBAAG0N0phbWVzIEJvdHRvbWxleSA8SmFtZXMuQm90dG9tbGV5QEhhbnNlblBhcnRuZXJzaGlwLmNvbT6JAVgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAhkBFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmBLmY0FCRs1hL0ACgkQgUrkfCFIVNaEiQgAg18F4G7PGWQ68xqnIrccke7Reh5thjUz6kQIii6Dh64BDW6/UvXn20UxK2uSs/0TBLO81k1mV4c6rNE+H8b7IEjieGR9frBsp/+Q01JpToJfzzMUY7ZTDV1IXQZ+AY9L7vRzyimnJHx0Ba4JTlAyHB+Ly5i4Ab2+uZcnNfBXquWrG3oPWz+qPK88LJLya5Jxse1m1QT6R/isDuPivBzntLOooxPk+Cwf5sFAAJND+idTAzWzslexr9j7rtQ1UW6FjO4CvK9yVNz7dgG6FvEZl6J/HOr1rivtGgpCZTBzKNF8jg034n49zGfKkkzWLuXbPUOp3/oGfsKv8pnEu1c2GbQpSmFtZXMgQm90dG9tbGV5IDxqZWpiQGxpbnV4LnZuZXQuaWJtLmNvbT6JAVYEEwEIAEACGwMHCwkIBwMCAQYVC
@@ -74,64 +75,31 @@ List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 
-On Tue, 2025-09-16 at 11:39 +0200, Jiri Kosina wrote:
-> On Mon, 15 Sep 2025, Kees Cook wrote:
+On Mon, 2025-09-15 at 11:29 -0700, dan.j.williams@intel.com wrote:
+> Kees Cook wrote:
+> > On Tue, Aug 05, 2025 at 05:38:36PM +0200, Jiri Kosina wrote:
+> [..]
+> > It seems like a "show your work" approach for commit logs would be
+> > valuable regardless of tools involved. I've been struggling to find
+> > a short way to describe this, though. Initially I thought we wanted
+> > to ask "Why is this contribution correct?" but we actually already
+> > expect that to be answered in the commit log. We want something
+> > more specific, like "How did you construct this solution?" But that
+> > is unlikely to be distilled into a trailer tag.
 >=20
-> > So, what I mean to say is it's certainly useful to declare "I used
-> > a chisel", but that for long running sessions it becomes kind of
-> > pointless to include much more than a general gist of what the
-> > process was. This immediately gets at the "trust" part of this
-> > thread making the mentioned "human understanding the generated
-> > code" a central issue. How should that be expressed? Our existing
-> > commit logs don't do a lot of "show your work" right now, but
-> > rather focus on the why/what of a change, and less "how did
-> > I write this". It's not strictly absent (some commit logs discuss
-> > what alternatives were tried and eliminated, for example), but
-> > we've tended to look only at final results and instead use trust in
-> > contributors as a stand-in for "prove to me you understand what
-> > you've changed".
+> Is this something more than "declare assumptions and tradeoffs"? One
+> of the trust smells of a patchset is understanding earnest
+> alternatives, and the author's willingness to entertain alternatives.
 >=20
-> Thanks, I understand your point.
->=20
-> I, however, don't think I as a maintainer care at all whether the
-> patch has been "assisted by" some LLM when it comes to proposing
-> testing scanarios and testcases, managing the testing results, yada
-> yada yada.
+> If a submitter is not prepared to to argue *against* the patch being
+> included in its current form, then that can indicate more homework is
+> needed.
 
-I think historians might care to have this record, so from that point
-of view it might be useful to preserve but ...
-
-> If the patch author wishes to express that in one way or the other,
-> just a freetext form in the commit log is completely fine for me.
->=20
-> I don't think we care about that aspect direcly neither from
-> "maintainer workflow" nor legal perspectives (IANAL, of course).
-
-From the legal point of view we have to remember that copyright only
-protects expression, not ideas.  So if AI gave you the idea, in the
-same way as going to a conference or reading about it in a paper, but
-you wrote the code, the copyright is all yours and nothing needs
-recording in the signoff chain.  It's only if some of the actual
-expression the AI gave made its way into the commit that we'd need it
-documenting in the signoff chain.
-
-> But we do (or should, I believe) care about the actual submitted code
-> having been produced by it, for both of the the reasons above.
-
-I agree with you in principle (as outlined above).  However, in
-practice there is a legal grey area over what constitutes original
-expression vs copying.  For example, if you're asking AI about finding
-say a memory region and it advises you to use a sort and recommends
-quicksort, that's not copying because it never produced any code
-(expression) and only contributed ideas.  However, if as part of this
-back and forth AI produced quicksort code which you implemented in a
-substantially similar way in the kernel several weeks later, there
-would be an argument to be made that it was copying not original
-expression.  In that latter case it would be helpful later to have a
-contemporaneous record that AI produced some code which the patch
-author looked at but then implemented their own separate version.=20
-Putting this in the commit log would seem to be an ideal place to
-preserve it.
+I agree this is necessary for a submitter to engage in the patch
+process, but I would argue it's not sufficient to satisfy concerns
+about AI content of the patch because there are many instances of one
+individual successfully taking over another's patch set for the
+purposes of putting it upstream (and thus making the arguments above).
 
 Regards,
 
