@@ -1,54 +1,49 @@
-Return-Path: <ksummit+bounces-2392-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2393-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 233D8B5926B
-	for <lists@lfdr.de>; Tue, 16 Sep 2025 11:39:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CACC9B599E3
+	for <lists@lfdr.de>; Tue, 16 Sep 2025 16:28:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DE941BC39B9
-	for <lists@lfdr.de>; Tue, 16 Sep 2025 09:39:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 849F44E45EA
+	for <lists@lfdr.de>; Tue, 16 Sep 2025 14:23:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EE2D2BDC02;
-	Tue, 16 Sep 2025 09:39:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ll+ONLhF"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BDB2315D4A;
+	Tue, 16 Sep 2025 14:19:25 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C492BD590
-	for <ksummit@lists.linux.dev>; Tue, 16 Sep 2025 09:39:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F04299A8F
+	for <ksummit@lists.linux.dev>; Tue, 16 Sep 2025 14:19:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758015545; cv=none; b=Si1QQWlZFHLAZ5/96XuWbrQY3MQaOGv7vhH7R7mOtk8ttbJ680UHZ7YKga+fUFvO2MXbq+t4JzbKkgi+84OINDtoUwwAEYxJv6wyg/23FAuVgzWvHTR9o7gDNg7EytwIgLA3JH1fWAK6B0vq1c+Gz23S9uS8rDJz8/ojlfxVT10=
+	t=1758032365; cv=none; b=JvNcBZX7uVw/jRHDGcINH7q8khATLOuVkJc3UNCiWlBEh/bSzzc32kobzA6QJGB38yaLkwelTWyxV1WMqIV9p2lIbYSPMBdyPnh8d5u+1FXUvReisZax6/fNHp3bZCILK4IUjgfZLl25QQ3i7aoZ5mCBWqT9oXz/px3PBGgt3is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758015545; c=relaxed/simple;
-	bh=UCWwFDiR48pAyEmAwql0uyeXmE5k5aZAgO0BGTBiuRQ=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=MbkgiMEjRRgAnTyB9Es1gpKZazHZIe6XraVGLST5fLwPmUczK5HUVXXmHb0Ww6bLT7ksLe7XXmLaYJ0yBlpjzSSw8iW2xg2RMFljlvZXeFy8tD7w/L4nDFQkM0v6uLbrZuPXkedLiU2KJVjkZRgMWAtw2btUWtaNIxjTYm6CTg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ll+ONLhF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C74C4CEEB;
-	Tue, 16 Sep 2025 09:39:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758015545;
-	bh=UCWwFDiR48pAyEmAwql0uyeXmE5k5aZAgO0BGTBiuRQ=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=Ll+ONLhF+WYsGn4/LGJew9kJNfs9hX2cHOCVKaqvKoolAd3Ai3tuBbMJ3Dbf27wZr
-	 s7keop/QfduTerynrVLV19FEMVQyNJQzfyem5Ua3cKDKFYccgmKFFfZiGLLJRQvmK3
-	 LkAOgqM/rhT6kzniOXh5jPWfl2pGoKYo1j6J2bdJvEkrntX8pLnyV0PH8H9DLv3YQh
-	 QOv6nqsz1PmFTukgmcM3HftKIodEjiaFAOGomMWucgBAKRuyr0KbDCa9UGrHL4/N7h
-	 DE4WcJ+XAM2rYRTRYyOY4WBYPgQzQrmy7PjQaAHD9sksTIHLzxmAM1dSeNzESxI8ra
-	 EzcwE0IaQv8WQ==
-Date: Tue, 16 Sep 2025 11:39:02 +0200 (CEST)
-From: Jiri Kosina <jikos@kernel.org>
+	s=arc-20240116; t=1758032365; c=relaxed/simple;
+	bh=Q7zYEKyl8SW0iTHds5kr+7Wbd6oIwxbiPZJYw43234Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OBLJd08c0Hzb2vc3UPnO2K/vRGNqCp66Wd41rTd/cgc3L0wIxkO7ws6FeOVrjztxKIaBQO+Tt1VdbUXpaIqQpqHH+9acSC132NYCGZQwh0PY7/gifzGVUKhb1irZm/Ce22YS4R/81iWbhwBDnsJZeUtjGaxwJXJTcxxU1/eY/t0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 86160B6F3D;
+	Tue, 16 Sep 2025 14:19:21 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf20.hostedemail.com (Postfix) with ESMTPA id D2A3A20028;
+	Tue, 16 Sep 2025 14:19:19 +0000 (UTC)
+Date: Tue, 16 Sep 2025 10:20:22 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
 To: Kees Cook <kees@kernel.org>
-cc: ksummit@lists.linux.dev
+Cc: Jiri Kosina <jkosina@suse.com>, ksummit@lists.linux.dev
 Subject: Re: [MAINTAINERS SUMMIT] Annotating patches containing AI-assisted
  code
+Message-ID: <20250916102022.5bc75a36@gandalf.local.home>
 In-Reply-To: <202509151019.CD7AA0C0BE@keescook>
-Message-ID: <noq7ssn1-9657-6869-1257-qo0ps32no46s@xreary.bet>
-References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz> <202509151019.CD7AA0C0BE@keescook>
+References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
+	<202509151019.CD7AA0C0BE@keescook>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -56,8 +51,17 @@ List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: aon6q4ebjji9557jpipk4ehs5f9yk6m3
+X-Rspamd-Server: rspamout01
+X-Rspamd-Queue-Id: D2A3A20028
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX19VGH1lCFlc0kJkvWbNiM6AzRaPFWlDdOI=
+X-HE-Tag: 1758032359-971378
+X-HE-Meta: U2FsdGVkX18EyDgjD78VwHXAl3+XBO4B8H6BMBHli/beep+BjkKtrNbXNnHHt74zUxtIgJZyQnKkXbySp+DUNFctQZZ4u8xMcosxU4SDwvGkcpzA3H/ucKkDVf8sI00yb04Vqs2EV8gp0/Y8R6sNCjj+4emRfis3jY7jW60d9dXy3dTCWhFvze7gRQ70pJ3tQBdOKRtIk6eexW1O4H+Q9/3dgGT1DdtUV+RMbzU2tUU1+UsNS3tCBnCDfqslxhb/qY21yFrYweoxR9AWXw4E+SJwN7/YQ8lSiWukk1aATLrzCvyWdexaacyzfGkuCXT5ETmjbxDSS4+3BYOAoYcHASt5ZeNEn5wD
 
-On Mon, 15 Sep 2025, Kees Cook wrote:
+On Mon, 15 Sep 2025 11:01:46 -0700
+Kees Cook <kees@kernel.org> wrote:
 
 > So, what I mean to say is it's certainly useful to declare "I used a
 > chisel", but that for long running sessions it becomes kind of pointless
@@ -71,24 +75,16 @@ On Mon, 15 Sep 2025, Kees Cook wrote:
 > to look only at final results and instead use trust in contributors as
 > a stand-in for "prove to me you understand what you've changed".
 
-Thanks, I understand your point.
+I don't think anyone cares if you used AI to help you understand the
+situation or to test your work. But if you had a robot build you the fish
+and you handed that in as your own work, that would be deceptive.
 
-I, however, don't think I as a maintainer care at all whether the patch 
-has been "assisted by" some LLM when it comes to proposing testing 
-scanarios and testcases, managing the testing results, yada yada yada.
+Saying "this patch has been assisted by LLM $X" is quite too vague and I
+don't think that's necessary for most cases. It's only necessary if the AI
+created code for you that is beyond the normal "completion" (like filling
+out your for loop syntax). I like to use a quick sort example. If you ask
+AI to "give me a quick sort routine", that should definitely be expressed
+in the change log.
 
-If the patch author wishes to express that in one way or the other, just a 
-freetext form in the commit log is completely fine for me.
-
-I don't think we care about that aspect direcly neither from "maintainer 
-workflow" nor legal perspectives (IANAL, of course).
-
-But we do (or should, I believe) care about the actual submitted code 
-having been produced by it, for both of the the reasons above.
-
-Thanks,
-
--- 
-Jiri Kosina
-
+-- Steve
 
