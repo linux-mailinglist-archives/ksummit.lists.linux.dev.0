@@ -1,105 +1,112 @@
-Return-Path: <ksummit+bounces-2411-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2412-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56925B84DC9
-	for <lists@lfdr.de>; Thu, 18 Sep 2025 15:35:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAD90B85D02
+	for <lists@lfdr.de>; Thu, 18 Sep 2025 17:56:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F37193ABF9B
-	for <lists@lfdr.de>; Thu, 18 Sep 2025 13:34:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 651B0177612
+	for <lists@lfdr.de>; Thu, 18 Sep 2025 15:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B058A308F0F;
-	Thu, 18 Sep 2025 13:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B25D531355D;
+	Thu, 18 Sep 2025 15:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="mffiEw3N"
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BQ2Fnbn9"
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FFED284688;
-	Thu, 18 Sep 2025 13:34:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF901313D45
+	for <ksummit@lists.linux.dev>; Thu, 18 Sep 2025 15:51:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758202492; cv=none; b=pCmm5Cs+sLJPodfNaNikomFEeiS5clWgNTswOEXW6ZN+8u8iZCdUhgwaxdlGvFLBE8fMtLvqYF31TynHHflv/zs8t8e9QCa8kgEtiE0c6jGPH/AiK9Nh5VIs6EDgUyFlPZsjgGN49M7HHhulZauCHQ9e1e0qM9sscNgqfEuQc24=
+	t=1758210676; cv=none; b=JCCnFtg7Jc9JifJuP6+1OP0e+dkuPkmg1c0sr7yacEi3LweecKEDzNNybcy0uaXS2uxsCP2BUjEICx5zggWgWxl30q0V9pVliYMCFXYNZTCjv8g+EyN7K6ee4pcob7j8+7wk3d9So5sxC+s8rMw8gpQWULHIeviw6G+9hJFY4Jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758202492; c=relaxed/simple;
-	bh=fbMOsgK3KBan8r6PCrVT0WZEekJpyTiFl1qcW51/sfs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eqlT2Z6XcVnA+/YiKUB6ufQxmgqxctF8SzieI86pPEuzsSYXN9vxA4IjqvPeAseEGrgEpCeCHzhfHTHTA9L491eXUaDQM9OvLHpp6qHu9VJLUndCW8z/URdO+n10728ad0t6PhFVBOYEgpRXcKazxOjZ/XAnNempihh+HToz+68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=mffiEw3N; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=2WK7RF7NsYG+8NsyTTvySh7GNGT5jm6UcDa778flAEQ=; b=mffiEw3N0Xsy0iehgYkPk5d+dg
-	sWKIhv5XK/zUNW+x7cpwzMKn+fWVigxBkekrLwF/YIOd76oce1YtRzHGNOghxSvsx4TZKrO8BB5yX
-	oA6G/OA6kjESeDYNowdA/HoKupolfgZZgm9ZJ1RTWZMa7p8eDc9puB5qodRd9gcxhoms=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uzEmL-008pSt-MZ; Thu, 18 Sep 2025 15:34:29 +0200
-Date: Thu, 18 Sep 2025 15:34:29 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, ksummit@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
-	linux-mm@kvack.org, imx@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Richard Weinberger <richard@nod.at>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Ankur Arora <ankur.a.arora@oracle.com>,
-	David Hildenbrand <david@redhat.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
-	Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-	Andreas Larsson <andreas@gaisler.com>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-Message-ID: <ca6fc8dc-d1ee-41a8-a1c9-11ed2907207f@lunn.ch>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
- <20250917125951.GA1390993@nvidia.com>
- <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
+	s=arc-20240116; t=1758210676; c=relaxed/simple;
+	bh=O6gIZvZ8Z/Z3FQOYoGIHOw4ojhAeR/dmivs2m+9mGj4=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=XjjVT2gPIRH5PJRqVnkwdOmjB5AU9CXwBj7/sgq8NDwZGL+CSDIlVQ8Jq8moA3DwZxMes5/UIiCuKFV2+QSujc+eHzgR/N+BXu6KerHpjm/PFSIYCmiVbm5QckvhzhSsP+emkoMIdgg5js1IVvwpDd+cYjeQx3LOcqeNjNyUS+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BQ2Fnbn9; arc=none smtp.client-ip=74.125.224.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-62bbc95b4dfso680191d50.2
+        for <ksummit@lists.linux.dev>; Thu, 18 Sep 2025 08:51:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1758210672; x=1758815472; darn=lists.linux.dev;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=O6gIZvZ8Z/Z3FQOYoGIHOw4ojhAeR/dmivs2m+9mGj4=;
+        b=BQ2Fnbn9nOhEPbrBbyWAyiey5Opc/OpwXaiNh0HCvCUinPk4kKBxp/AVXLG04bzIOF
+         bVmjWOCZKbQ1nM1Remf8EpFKCrOwUCeQzE5D4LYgYM5Bfs15++wKYPK9d3VAm9F6lGE4
+         iAaVWBVMLohAthsguCOlKCKHjecnrBbfHcki7sP551SbipQMScFsMrM3LjvUwxk2yIwl
+         CsJTGujgOY5dqnl9k1y/ezteC5g3AwZd+PjrerE+hEtyT/sv6Tg5lcajyRwBuNjLC8UP
+         G+Rv+UBwB6EkqfMeUtRp48Z/+FeVOFATyOhwOCs9BcxFhS00gEtPcWmFAG7ROZzkkKIj
+         Wq4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758210672; x=1758815472;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=O6gIZvZ8Z/Z3FQOYoGIHOw4ojhAeR/dmivs2m+9mGj4=;
+        b=Y8Y7Dv/kYRVoV82EusIkNR0EkjntJeuhJQ7IGwt6EXkyCIgbyRdNwAN/O45q3ZVjA5
+         uifXSzXj8Hv0udOVEO+sjXZpWBZFpz7WV4gOzt6Gxt4mm1i3NPMceA3OZOnei/S6iKM3
+         A2VzP+JaSd6LpqIv53OlkAPjAY/CXmJqQZQZt4A6UR/4E1GP0OuvhrALKkW0zsdhEjT+
+         2Mq7vB069YjVzFvY3VSCnQeDIvcHnVaSNXQE5BOGuyS1rtNKqF5o9M4y//8NumxPSWor
+         VSxn+Frz+WTgaNMi3cLzPg51fwTwh6hBGbqk89cNOAHMDzRU0lpRG/i2PzIbDjYZJYAv
+         ViRQ==
+X-Gm-Message-State: AOJu0Yx6695G/TQOlY5v8zzk1Ws/jL89Xebkr0aHzFKfzwBhWz2LW1yn
+	NFXnvY3GInBXHM8NIArgD7I/8y/JYZGXG50MgVAbVNDTIjzVE45X0y9SHQRSNojUHq03gX/LHTK
+	Zv8sj+exus6naWEC0M42AmYzK7HpEulpwz1xegLh5rUzurBWQeyil3wQ=
+X-Gm-Gg: ASbGnctKaMrjYXT/3ijmFLWJl18/ODYJLPzuCAQoW4TvHvUQWF2J5y2sHc/WdgmAWjR
+	rgcO7kuLEi/MG/oT1Y91Qu/qwqY7PnCE8IO3JcDkIzm8Kph8gtBvEfxSp9H7c07bVlEXe9sv03f
+	QXXI0bvDL9cryymJRpjaXQ4VaQwT99dcLQ/ToTgzq3m9FQwf6KnUalZ7UoWAmGxgGUnZL1J2gPM
+	+nllPYh1m9YW7Jzapm3rR918Ik=
+X-Google-Smtp-Source: AGHT+IFjNE2Wb5q0q38C98tzHW58cZbIBYL5aQwqXXSqJ/h0zfuSit0Hc4UL2LNhsQ4yUEA+kcrz02bKb9fSXacVc0U=
+X-Received: by 2002:a05:690e:244f:b0:5f3:319c:ff0a with SMTP id
+ 956f58d0204a3-6347f59e58emr3550d50.28.1758210672400; Thu, 18 Sep 2025
+ 08:51:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Thu, 18 Sep 2025 17:50:36 +0200
+X-Gm-Features: AS18NWAlUHgUie3K9gntf7RJTHMpmP_yKGMwvN9FFvNIXinZGU-l_oaYg3jJuV4
+Message-ID: <CAPDyKFqBzm=-i3F7pbwT+NqnWKRnDis865qrzudq1C-6WbLUUw@mail.gmail.com>
+Subject: [TECH TOPIC] Selecting a low-power state for a flash-based storage
+ device (NVMe/UFS/eMMC/SD)
+To: ksummit@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-> * Marvell mv78xx0 and kirkwood (armv5 pj1) were fairly
->   powerful in 2008 and could support at least 1GB of RAM,
->   but I only found one machine (OpenBlocks A7) that does
->   this. It's unclear if anyone is still updating kernels
->   on this machine, but they could /probably/ use
->   VMSPLIT_3G_OPT if they do.
+Hi everyone,
 
-If i remember correctly, there was a design issue with the OpenBlocks
-A7, and it would not run with its full amount of memory. To get a
-stable system you had to limit the RAM. I don't remember if that was
-just with the NULL series, and it was fixed for mass production
-devices, or they are all broken.
+Before reading, I wanted to let you know that I have submitted this
+CFP to the power/thermal MC too, but I wanted to circle it here, due
+to get a bit wider coverage.
 
-I doubt there are any mv78xx0 machines left, why where never very
-popular, but there are still Kirkwood NAS boxes around. I keep mine up
-to date, put an LTS kernel on it once a year, update to the latest
-debian sid.
+On battery driven platforms, flash-based storage devices like
+NVMe/UFS/eMMC/SD are being used in a combination with a carefully
+designed support for platform-power-management. Yet, a flash-based
+storage device typically contributes significantly to the
+energy-budget for a platform. That means it's highly important to
+manage them in an optimized way, otherwise we may waste a lot of
+energy or in the worst case, if we get things wrong, we could even
+damage the device.
 
-	Andrew
+In this regard, it's highly problematic that we are lacking a common
+policy for how to deal with low-power states for these storage
+devices. Especially since they are really sharing the same kind of
+problems, while their respective subsystems treat them quite
+differently. Some tend to pick the deepest possible low-power state,
+while others prefer leaving the device fully powered-on, even during a
+system-wide-sleep.
+
+I want us to discuss these problems in more detail and in particular
+let's see if we can find a way to start moving things into a more
+common ground.
+
+Kind regards
+Ulf Hansson
+MMC and PM subsystem maintainer
 
