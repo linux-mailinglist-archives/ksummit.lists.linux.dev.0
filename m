@@ -1,133 +1,194 @@
-Return-Path: <ksummit+bounces-2409-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2410-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07C50B811DD
-	for <lists@lfdr.de>; Wed, 17 Sep 2025 19:04:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35730B84C17
+	for <lists@lfdr.de>; Thu, 18 Sep 2025 15:13:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5CB94A464A
-	for <lists@lfdr.de>; Wed, 17 Sep 2025 17:03:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C4927C07EA
+	for <lists@lfdr.de>; Thu, 18 Sep 2025 13:13:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A563C2FB635;
-	Wed, 17 Sep 2025 17:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 376C2308F2B;
+	Thu, 18 Sep 2025 13:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Tsyazxy5"
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="1ak7ojNe";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="N58W3tD5"
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42DE2FB094
-	for <ksummit@lists.linux.dev>; Wed, 17 Sep 2025 17:03:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3666C2DFA4A;
+	Thu, 18 Sep 2025 13:13:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758128605; cv=none; b=H2q0ZEcx9oMh58U/UZBXILWmVBoPLapP+uZaCUHJ9voM2xNLbcoFapV//WiOnIa14YX9vt2ZvpbyWkqz0qSg412hHPQonQ4UGaX4D5FBSIoqGnHaZOT5LlFirgmwMsNRtDfez6ouf0oh3YFVUg7KSZ7M4nGFenVcEzwis0zqW/g=
+	t=1758201223; cv=none; b=JcVnE2AX8kQyB3v9g9FSAOzWGiMSwSiHgxTdKI1harUUqv54KldMn2CYdYuLYqPZ+6GOKk3JCaVW/crWJRFQB1eXIMZsGyw26f9e7hai4Kx7l4IeTDC6j2WvNJu8Vi3KBP7OVg+KO8pV/wTszSR6fcu6Nd2yO/BQ0hD+3iNrPBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758128605; c=relaxed/simple;
-	bh=AP4RATmgy0jxhMayzF6BrbMxavdECknuH9Hg7XagckU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p/yFRAZTjKd7oZF70c3hNK4d9WG79lKENFkmvJMNcmTbVFBhLqAkqe8oya0lkI8J79ydT2ozwLdHk15naRnuW9wKSfBbdficDR0oVxp8EztJHvtwCQJ3UFcpL2EqaYOEJXwLGtDR6F/7VWX/IqMdgi6CCEujk45zeCEZc6ZViGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Tsyazxy5; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 20D276A8;
-	Wed, 17 Sep 2025 19:02:00 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1758128520;
-	bh=AP4RATmgy0jxhMayzF6BrbMxavdECknuH9Hg7XagckU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Tsyazxy5iBe3oByb9lBs7e+3xAFjf0zWafy9sBAR7q1YAQU5XjdF+fsYF5faP2p9G
-	 /C0wXuYV7kLH41+DnDdV/5EHfwLiFLqg2M53wnJ8j+AybQDiS7XhszXzLf+rxiKyX4
-	 uEVVXx8JhvPi89+QM454kISO3UbRHbfTA7fV/txQ=
-Date: Wed, 17 Sep 2025 20:02:50 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Kees Cook <kees@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Jiri Kosina <jkosina@suse.com>,
-	ksummit@lists.linux.dev
-Subject: Re: [MAINTAINERS SUMMIT] Annotating patches containing AI-assisted
- code
-Message-ID: <20250917170250.GB10145@pendragon.ideasonboard.com>
-References: <1npn33nq-713r-r502-p5op-q627pn5555oo@fhfr.pbz>
- <202509151019.CD7AA0C0BE@keescook>
- <20250916102022.5bc75a36@gandalf.local.home>
- <202509161626.AA26A66@keescook>
+	s=arc-20240116; t=1758201223; c=relaxed/simple;
+	bh=7NuKa4RBvdTlve8eUQmVmy21MtTf88/L6Mvq1YmqKS4=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=E0yBfqWF5mXJCGvIl93+P/hhIc2Jq1/7xA18xYNHQJvadc//5w0Hi30AEAY+A5W9XRymtuk1A0g281c+jgnlNX3ze+SlnQZ7frRiYNslIW5iaqsDiHEZQ01gjmzCJv1YCITxu9yvmwiCrITaEkDw3VK9n5msUrWd99GVfXWjvTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=1ak7ojNe; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=N58W3tD5; arc=none smtp.client-ip=103.168.172.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 4D4921400123;
+	Thu, 18 Sep 2025 09:13:40 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Thu, 18 Sep 2025 09:13:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1758201220;
+	 x=1758287620; bh=pLSf0bVUw5MCqJYDkX+vxsx4UdqQkDXJOmyg/3GZX6I=; b=
+	1ak7ojNef1e3g67ZCzGe8Cr86CQBJ+FtYUUdZ98wga8fH+3vuc+RwkTppRISmifj
+	TUQF2YYM9tYsbtzlw4/SjUUoGGdmMBn5Tx06zjVUjlInz+zUP3GqpAoEjzvsx869
+	wddDDt+HjXSiHs17uF5aM1hYdPjyFfy6k5SzRR6jWICdWQiEVv359WWJgj132jJJ
+	07v99j6h/aqeBEffHIyXve8yXE+JF2yzFo9WhjAf903RFRHGDj74a+pThncDZ43U
+	cChz0t8T2JlvSu/bhlxR1hPt7TnIjh7DK2BI84tuHaRAr5IdA5Jn/e/MNKeBZUvX
+	Ow885bcZSVPcmIgNRzukfQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1758201220; x=
+	1758287620; bh=pLSf0bVUw5MCqJYDkX+vxsx4UdqQkDXJOmyg/3GZX6I=; b=N
+	58W3tD5qawBw1eKsBN+kr6ZcUHb/ofQFbLKmLhZdv+qguzRhHYAyDLKSfwESXhrf
+	aIY6l97xj+oglomqiNtEG7VTMJ9wGTjdZMtSQXPvA0EL9TgggVm3rQC5HzIiRV2m
+	5xDJYwe8g7qsIUc9Kj38PQcYSOITY0LVGaKueq50doFP6bW244OFrN22sPeENXIY
+	jA1EycAhUpQLSIWjFRVFE+zrgWjqWlsWl40HCwEKhwWQaCWvW/njRnEmJDgdvYsK
+	zw0up4/m7eOD9/kuy1jxPa2+IOIk6ItpAJZUa8eKMXOtJiiJT+cAySSGyZ4hEycm
+	gElUUMqK3gL3+zK38/pmw==
+X-ME-Sender: <xms:ggXMaPqxmIxuS57jlyxuYXMmHn12czYQdlZwV1PqJq6k9KYeiwbKhQ>
+    <xme:ggXMaJp_WDMqihTWUxA0KZ9pJgwdVmKsCp-Vn1fdREcdFTwl75fs0leTwW73akmHR
+    JcpMICm3hi5jq9-VNY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdegieegvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
+    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopedvledpmhhouggvpehsmhhtphhouhht
+    pdhrtghpthhtoheptghhvghsthgvrhdrrgdruhhnrghlsegrrhhinhgtledrtghomhdprh
+    gtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghupdhr
+    tghpthhtoheprghnughrvggrshesghgrihhslhgvrhdrtghomhdprhgtphhtthhopehgvg
+    gvrhhtodhrvghnvghsrghssehglhhiuggvrhdrsggvpdhrtghpthhtoheprghlvgigrghn
+    uggvrhdrshhvvghrughlihhnsehgmhgrihhlrdgtohhmpdhrtghpthhtohepshgvrhhgih
+    hordhprghrrggtuhgvlhhlohhssehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhurhgv
+    nhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrg
+    gurdhorhhgpdhrtghpthhtohepihhrrgdrfigvihhnhiesihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:ggXMaPyueOXB7yEQObwBgenAb7JQTgJqnB9NOI6UKzHpBn4i9VSQEg>
+    <xmx:ggXMaOPqe_O8XUcPksli8MZC-GvW0FcpQCzBR-ts3xEmFaWKO-kRlw>
+    <xmx:ggXMaPyfz-9UNPjw4MTfZh2k7kwzHQF2IHlbqQH8wuFNANzoleY-xA>
+    <xmx:ggXMaICP5uqRm6gPGSMpHGW8PXzZmSwLVbGztYAkXSxcjxhxDrjnJw>
+    <xmx:hAXMaDehpAP39-4S3Q408oZS3Swdc4rSB0uIxx1VQvIAhJfZ8ILlFImQ>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 85F7270006B; Thu, 18 Sep 2025 09:13:38 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <202509161626.AA26A66@keescook>
+X-ThreadId: AneuvEk2E7Kg
+Date: Thu, 18 Sep 2025 15:12:46 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Jason Gunthorpe" <jgg@nvidia.com>
+Cc: ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Richard Weinberger" <richard@nod.at>,
+ "Lucas Stach" <l.stach@pengutronix.de>,
+ "Linus Walleij" <linus.walleij@linaro.org>,
+ "Geert Uytterhoeven" <geert+renesas@glider.be>,
+ "Ankur Arora" <ankur.a.arora@oracle.com>,
+ "David Hildenbrand" <david@redhat.com>,
+ "Mike Rapoport" <rppt@kernel.org>,
+ "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Matthew Wilcox" <willy@infradead.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>,
+ "Suren Baghdasaryan" <surenb@google.com>,
+ "Ira Weiny" <ira.weiny@intel.com>, "Nishanth Menon" <nm@ti.com>,
+ =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>,
+ "Sergio Paracuellos" <sergio.paracuellos@gmail.com>,
+ "Andreas Larsson" <andreas@gaisler.com>
+Message-Id: <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
+In-Reply-To: <20250917125951.GA1390993@nvidia.com>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+ <20250917125951.GA1390993@nvidia.com>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 16, 2025 at 04:30:30PM -0700, Kees Cook wrote:
-> On Tue, Sep 16, 2025 at 10:20:22AM -0400, Steven Rostedt wrote:
-> > On Mon, 15 Sep 2025 11:01:46 -0700 Kees Cook wrote:
-> > 
-> > > So, what I mean to say is it's certainly useful to declare "I used a
-> > > chisel", but that for long running sessions it becomes kind of pointless
-> > > to include much more than a general gist of what the process was. This
-> > > immediately gets at the "trust" part of this thread making the mentioned
-> > > "human understanding the generated code" a central issue. How should that
-> > > be expressed? Our existing commit logs don't do a lot of "show your work"
-> > > right now, but rather focus on the why/what of a change, and less "how did
-> > > I write this". It's not strictly absent (some commit logs discuss what
-> > > alternatives were tried and eliminated, for example), but we've tended
-> > > to look only at final results and instead use trust in contributors as
-> > > a stand-in for "prove to me you understand what you've changed".
-> > 
-> > I don't think anyone cares if you used AI to help you understand the
-> > situation or to test your work. But if you had a robot build you the fish
-> > and you handed that in as your own work, that would be deceptive.
-> 
-> Right, but the LLMs aren't used strictly as a "workflow" assistant. Do
-> we want to say "I used the chisel to remove a big hunk of wood you can't
-> see at all in the fish."
-> 
-> Perhaps the issue is to just over-explain when the LLM is in use for
-> now, and we (as a developer community) will collectively figure out what
-> turns out to be unimportant or redundant over time. But this can't be
-> done with a trailer tag: we're going to need relatively verbose notes
-> in the commit log.
+On Wed, Sep 17, 2025, at 14:59, Jason Gunthorpe wrote:
+> On Tue, Sep 09, 2025 at 11:23:37PM +0200, Arnd Bergmann wrote:
+>
+>> I'm still collecting information about which of the remaining highmem
+>> users plan to keep updating their kernels and for what reason. 
+>
+> On this topic of removing some parts of highmem, can we say goodbye to
+> kmap_high_get()? Only ARM uses it and only for
+> !cache_is_vipt_nonaliasing() systems.
 
-This conversation has gone in many directions, it seems to be time to
-try and refocus. One way to do so would be to focus on *why* we want
-those annotations. That may help then deciding how to best annotate
-patches to reach the intended goals.
+Good idea. I think we are almost there, just need to verify that
+there is actually no impact for existing users. I already knew
+that there is very little highmem usage on ARMv6 and earlier, but
+I tried to recheck all platforms that might be affected:
 
-Personally, I care about knowing the possible LLM origin of a patch for
-two main reasons:
+* As you say (and contrary to what the code comments suggest),
+  all ARMv7 and most ARMv6 systems have non-aliasing VIPT or
+  PIPT caches, so kmap_high_get() does nothing, and we could
+  just turn it off for those configurations.
 
-- From a maintainer point of view, to focus my reviews. I will look for
-  different error patterns, or will interpret patterns differently for a
-  human author compared to an LLM.
+* ARMv6 with aliasing VIPT caches exist but are fairly rare,
+  and I think there are no ARMv6 machines left that actually
+  use highmem. AST2500 is commonly used and has aliasing
+  caches, but I only see machines with 512MB or less, and
+  its aspeed_v5_defconfig enables CONFIG_SMP (for AST2600).
+  OMAP2 and realview are in the same category but less
+  important. imx3, s3c64xx and bcm2835 are non-aliasing
+  (and don't have highmem either).
 
-  This mostly focusses on code produced by LLMs. Usage of LLMs to
-  understand an API or review a piece of code before submission is less
-  of a concern.
+* VIVT caches are used on all ARMv5 and earlier, so removing
+  kmap_high_get() would effectively break highmem these.
+  Most ARMv5 use very small amounts of memory (<256M) in
+  a single physical address range, so they are unaffected,
+  we just have to go through the ones that are left.
 
-  I don't specifically need a commit trailer for this purpose, a
-  free-formed explanation in the commit message would be enough. I would
-  rely on trust that submitters will be honest there, the same way we
-  rely on trust that a submitter has no malicious or selfish intent in
-  general. We of course stay alert to detect breaches of that trust
-  today, and I wouldn't see a need to change the process there: we
-  already deal with situations where a submitter is determined not to be
-  trustworthy.
+* Intel IOP (armv5 xscale) certainly had highmem but was
+  removed a while ago.
 
-- From a legal point of view, to detect code that may not be compatible
-  with the GPL license. This is still a legal grey area, if we want to
-  accept code generated by LLMs without waiting for courts around the
-  world to make clear decisions, we can't ignore that there's a legal
-  risk.
+* Marvell mv78xx0 and kirkwood (armv5 pj1) were fairly
+  powerful in 2008 and could support at least 1GB of RAM,
+  but I only found one machine (OpenBlocks A7) that does
+  this. It's unclear if anyone is still updating kernels
+  on this machine, but they could /probably/ use
+  VMSPLIT_3G_OPT if they do.
 
-  For this purpose, a commit trailer would be useful, in order to easily
-  list affected commits.
+* Microchip SAM9x7 is the newest ARMv5 chip, clearly does
+  get kernel updates, and the only one I can think of with
+  DDR3 support, but seems to be limited to 256MB total memory.
 
--- 
-Regards,
+* The Gemini (ARMv4) platform enabled highmem as part of
+  commit c12d7e9fe9af ("ARM: defconfig: Update Gemini defconfig"),
+  but I don't see why, as the machine cited there only has
+  128MB of RAM in a contiguous chunk.
 
-Laurent Pinchart
+* A few ARMv4/v5 machines (omap1, davinci, ep93xx, clps71xx,
+  sa1100, riscpc) used to select CONFIG_ARCH_HAS_HOLES_MEMORYMODEL
+  or SPARSEMEM, which would indicate that they might need
+  highmem even for <1GB configurations if their memory banks are
+  far apart in physical memory. I checked those and as far
+  as I can tell, they are always within 768MB or less.
+
+     Arnd
 
