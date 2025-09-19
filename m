@@ -1,94 +1,132 @@
-Return-Path: <ksummit+bounces-2414-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2415-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45408B860CE
-	for <lists@lfdr.de>; Thu, 18 Sep 2025 18:33:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77A9CB8817B
+	for <lists@lfdr.de>; Fri, 19 Sep 2025 09:05:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 089024A1064
-	for <lists@lfdr.de>; Thu, 18 Sep 2025 16:33:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 037D37A822A
+	for <lists@lfdr.de>; Fri, 19 Sep 2025 07:04:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A86F9313524;
-	Thu, 18 Sep 2025 16:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ABFC283FD0;
+	Fri, 19 Sep 2025 07:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="KoLiEW3a"
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=fnnas-com.20200927.dkim.feishu.cn header.i=@fnnas-com.20200927.dkim.feishu.cn header.b="HjIwOpqO"
+Received: from va-2-40.ptr.blmpb.com (va-2-40.ptr.blmpb.com [209.127.231.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932482FABEB;
-	Thu, 18 Sep 2025 16:32:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B1A2512C8
+	for <ksummit@lists.linux.dev>; Fri, 19 Sep 2025 07:05:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.40
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758213178; cv=none; b=BuFYeIxyn8GeZnS44NLNPXhuT7pzen7Cx4+spVdMKfNzhsmFnlFbyts4nmm50JmO73+g7kQ4wALgxzKmPUe8qosG1R4PWPMtnJqw2iNhjwDG4Z7Y2aSyOXykBxdWtX/iIIDe72+eqH70vMQ0YTEd/sg8WiKF3Y7ERB39U6df214=
+	t=1758265540; cv=none; b=aEzWST8hisx5BiwQP2eajoZKsPasniA+HfOiQoW8mTQutjTOmEsy1YMES5unxh5Ps6WAMRULezhh8Npx5CKOKllDvEwBxHhajjjsQub7kcsVyCG1eJH0VPRyCE6iCcsxhkaP/xo9Q24tDGbrjtRwJq1AJv1FK6Mjks+WTYIb8dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758213178; c=relaxed/simple;
-	bh=E0d0p7FHQ7iasiKux1PPmhGP02qkAuNoAVkbkY/xVK4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WaUpX4hFm++JEqG+5naf3vBDEUSNr5Re8Kq7vJeLoLs2uh5xh6HvrLkEenLp3faKJBxFEnW/83qCZ/sXKCNQfvAx27WP0J3A1o5LlQLwJReyPxkZa5AraKAxPGyXIkI1JJSnB5zsksV7T7r+z7eqW48q7Ab9onKLwBHeTsWCCuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=KoLiEW3a; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=0ks/Dt/gG06zpcviyC2RmuMfALb4spkC/mj20Xhc7U4=; b=KoLiEW3a+FctGMCYTji6G0piKX
-	6+2sXpnGjpyCiB9GZ1aJLpE4MPYaT4SHrv8fw7rBSREmCDqF4nuUIBFZIIYmv+i3ReGtxZ8MGrp+s
-	j+YRd0HmYRcGKfIR/k6IHWq3t+jxGCnOm+ADllcYsPkFk37j3Kv81W5EGdi5YRAO43vk=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uzHYr-008qze-89; Thu, 18 Sep 2025 18:32:45 +0200
-Date: Thu, 18 Sep 2025 18:32:45 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, ksummit@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
-	linux-mm@kvack.org, imx@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Richard Weinberger <richard@nod.at>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Ankur Arora <ankur.a.arora@oracle.com>,
-	David Hildenbrand <david@redhat.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
-	Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-	Andreas Larsson <andreas@gaisler.com>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-Message-ID: <f4154621-be77-4c08-89d4-ab931ac3df30@lunn.ch>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
- <20250917125951.GA1390993@nvidia.com>
- <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
- <ca6fc8dc-d1ee-41a8-a1c9-11ed2907207f@lunn.ch>
- <ea6562f4-ec8c-4e99-98ec-000c25c34a3e@app.fastmail.com>
+	s=arc-20240116; t=1758265540; c=relaxed/simple;
+	bh=z381LgLQ5mfj6F9wVZkKFulpE472UJgzCM2nBeIiGt0=;
+	h=From:Date:Content-Type:Message-Id:Content-Disposition:
+	 Mime-Version:To:Cc:Subject; b=dAp1S3MW/BxX4cv1a8PCgTuIo2A/JSlOgJ9fbIkbvua1jssLvH1oiGGUD6jh6PgV+p/1vOpaz2h+utKpbB93jj9+Ooy4o5TyNkGVXC6tXGXEJjiPoWgjJtwPwozL67Xew1RQSHB7A4FUK3haA4LZ7m9vIgloOuuV1eF+3UrOYTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fnnas.com; spf=fail smtp.mailfrom=fnnas.com; dkim=pass (2048-bit key) header.d=fnnas-com.20200927.dkim.feishu.cn header.i=@fnnas-com.20200927.dkim.feishu.cn header.b=HjIwOpqO; arc=none smtp.client-ip=209.127.231.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fnnas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=fnnas.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=fnnas-com.20200927.dkim.feishu.cn; t=1758262583;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=7sGSZ6xvXVhJXfnKBh55VvSGliodbz+oixpp80FGbCI=;
+ b=HjIwOpqOMfp2sAI9SV+UZjSp+gUMPFp3fJ/DPDQk97/7CqRMuTG6sLia8I0OUmnn2XXoMz
+ bm4HIO7O/fk0+uJ2cMxbnw0TwPUYAkz3q95H+2yLDvSJol8MZ7Ws84qQ17k1zLO0tti1jr
+ b06MhPGLHoGDwXMdU/53XkufQoXak8zccsgkW8SnBkFhbQmA7IlYstHadf4mnTZMwdJnB+
+ /eni18aaxJ74ksv7GzKxpkwMUJD7yZiz5c7AO31L9YXv1tXWyfhGNpDVKiXInSXEEpN6Az
+ vsfiQ7i/9vhAe1AN1coJLNv6ukguDLCUSw/7Dq3W1fa3nZ2Kop5rrk5hRWG4Pg==
+X-Original-From: Coly Li <colyli@fnnas.com>
+From: "Coly Li" <colyli@fnnas.com>
+Date: Fri, 19 Sep 2025 14:16:19 +0800
+Content-Type: text/plain; charset=UTF-8
+Message-Id: <uloh2zdsl3aahiplt35vrzs53syrqu3wsf6qbvrfhcyxd6d3ae@zqqbsqzyaonb>
+Content-Disposition: inline
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ea6562f4-ec8c-4e99-98ec-000c25c34a3e@app.fastmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+To: "Jan Kara" <jack@suse.cz>
+Cc: "Paul Moore" <paul@paul-moore.com>, 
+	"Randy Dunlap" <rdunlap@infradead.org>, 
+	"Steven Rostedt" <rostedt@goodmis.org>, <ksummit@lists.linux.dev>
+X-Lms-Return-Path: <lba+268ccf535+d63e86+lists.linux.dev+colyli@fnnas.com>
+Subject: Re: [TECH TOPIC] re-think of richACLs in AI/LLM era
+Received: from studio.lan ([120.245.65.32]) by smtp.feishu.cn with ESMTPS; Fri, 19 Sep 2025 14:16:20 +0800
 
-> Do you know of any kirkwood machines beside the OpenBlocks A7
-> that have more than 512MB of RAM?
+On Wed, Sep 17, 2025 at 09:59:09AM +0800, Jan Kara wrote:
+> On Wed 17-09-25 01:12:48, Coly Li wrote:
+> > Users store they photos on the system, and the compact AI module processes all
+> > their photos and groups all the photos into different categories like pizza,
+> > dogs, cats, foods or group photos. After the process done, users may see they
+> > photos in different categories that the AI module thinks they should be in. Then
+> > users may share the categories with photos to others. If indentical categories
+> > shared by different users, the shared photos can be combined all together. And
+> > AI module may continue to process the shared photos and generate new categaries
+> > from the shared photos, e.g. pizza in the same city, cats and dogs in closed
+> > location, group photos contains the most common people, etc. Now the differet
+> > categories are implemented by different directories in the publicly shared
+> > directory.
+> > 
+> > In each category directory, photos with a category (or attribution) can be
+> > accessed as hard links to the original photo inodes and share the identical
+> > inodes. All these category directories are created by the AI module, although
+> > the photos are shared from each users. If a user is identified from a group
+> > photo, and this user is noticed that the photo is publicly shared. If this user
+> > doesn't want his face to be shared in public, for an optinal privacy protection
+> > right, this user can remove the hardlink of the photo which his or her face is
+> > in, that is he or she can remove the hardlink (dentry) under a publicly shared
+> > directory which this user doesn't have write permission. Because this user can
+> > be idnetified as owner of his or her face, and the photo has his face in, he or
+> > she should have write permission to delete the photo, but no write permission to
+> > other photos in same category directioy which his or her face is not in.
+> 
+> Well, from what you describe I'd say that the category directories should
+> just be AI owned rwxrwxrwt dirs (do notice the sticky bit set). This is how
+> /tmp/ is usually setup. This means that everybody can read the dir,
+> everybody can delete files but only if they are their owner, everybody can
+> create files - this is the part you probably don't want but *that* is
+> pretty easy to restrict by a LSM (practically any one can do this).
 
-No.
+This is quite similar to what we are doing now (self-define rules + ebpf hooks)
+but your suggestion might be in a more elegant way.
 
-	Andrew
+By the above method, our challenges are,
+- Application may treat this behavior as a bug
+    Once the write/delete access is denied, user application cann't understand
+  why the request was rejected. User space application can check permission bits
+  and acl, but cannot check the LSM rules, they cannot understand why all
+  permission granted but the write/delete access is rejected.
+    Currently in our products it is fine, because all applications are written
+  by ourself, we know the access deny is from the security rules voilation. But
+  in long term this might be a potential challenge.
+
+- Cannot tell the real permission fastly
+    From web UI interface, users can click the mouse right button to check his
+  or her permission of this specific file or directory. Our current rules-based
+  access control needs to reverse iterate all the rules to determine the final
+  permission which the user obtains. It is very slow and inconvenient, and we
+  don't have proper method to handle the permission display yet.
+
+- Rules store/load/management
+    Crrently all the rules are persisted in data base and loaded into in-kernel
+  memory table. The rules can be checked very fast and works fine for relative
+  small data set and access rules at this moment. But in worst case maybe each
+  sharedfile will have a signle rule for its access control, when number of
+  shared files and control policies increase more and more, such method doesn't
+  scale and is not agile in store/load/management very soon.
+
+This is view from users (both user space developers and end users). Currently I
+don't see perfect solution with LSM may solve challenge from view of users.
+
+Thanks for your suggestion.
+
+Coly Li
 
