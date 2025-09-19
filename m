@@ -1,132 +1,138 @@
-Return-Path: <ksummit+bounces-2415-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2416-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77A9CB8817B
-	for <lists@lfdr.de>; Fri, 19 Sep 2025 09:05:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08251B8822C
+	for <lists@lfdr.de>; Fri, 19 Sep 2025 09:18:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 037D37A822A
-	for <lists@lfdr.de>; Fri, 19 Sep 2025 07:04:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C937E173AC4
+	for <lists@lfdr.de>; Fri, 19 Sep 2025 07:18:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ABFC283FD0;
-	Fri, 19 Sep 2025 07:05:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fnnas-com.20200927.dkim.feishu.cn header.i=@fnnas-com.20200927.dkim.feishu.cn header.b="HjIwOpqO"
-Received: from va-2-40.ptr.blmpb.com (va-2-40.ptr.blmpb.com [209.127.231.40])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D43182C1599;
+	Fri, 19 Sep 2025 07:17:56 +0000 (UTC)
+Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B1A2512C8
-	for <ksummit@lists.linux.dev>; Fri, 19 Sep 2025 07:05:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.40
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEABD277C95
+	for <ksummit@lists.linux.dev>; Fri, 19 Sep 2025 07:17:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758265540; cv=none; b=aEzWST8hisx5BiwQP2eajoZKsPasniA+HfOiQoW8mTQutjTOmEsy1YMES5unxh5Ps6WAMRULezhh8Npx5CKOKllDvEwBxHhajjjsQub7kcsVyCG1eJH0VPRyCE6iCcsxhkaP/xo9Q24tDGbrjtRwJq1AJv1FK6Mjks+WTYIb8dg=
+	t=1758266276; cv=none; b=Pc3smKp9heCICAiHaqTUlc8iJzUS2wOc1qmpB04cnsOZvFQzj2Z5G4ohETaed0j5H71swkiyQWsyM14VQBqJw+EyKafmVEqxsyQL/G2rHpC/Hfc4P8iQY6DSKRb6DclMyksqa+HsFKOtN4UsodeMec/pXW90izBRBkFi0oViqkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758265540; c=relaxed/simple;
-	bh=z381LgLQ5mfj6F9wVZkKFulpE472UJgzCM2nBeIiGt0=;
-	h=From:Date:Content-Type:Message-Id:Content-Disposition:
-	 Mime-Version:To:Cc:Subject; b=dAp1S3MW/BxX4cv1a8PCgTuIo2A/JSlOgJ9fbIkbvua1jssLvH1oiGGUD6jh6PgV+p/1vOpaz2h+utKpbB93jj9+Ooy4o5TyNkGVXC6tXGXEJjiPoWgjJtwPwozL67Xew1RQSHB7A4FUK3haA4LZ7m9vIgloOuuV1eF+3UrOYTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fnnas.com; spf=fail smtp.mailfrom=fnnas.com; dkim=pass (2048-bit key) header.d=fnnas-com.20200927.dkim.feishu.cn header.i=@fnnas-com.20200927.dkim.feishu.cn header.b=HjIwOpqO; arc=none smtp.client-ip=209.127.231.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fnnas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=fnnas.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=fnnas-com.20200927.dkim.feishu.cn; t=1758262583;
-  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
- reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=7sGSZ6xvXVhJXfnKBh55VvSGliodbz+oixpp80FGbCI=;
- b=HjIwOpqOMfp2sAI9SV+UZjSp+gUMPFp3fJ/DPDQk97/7CqRMuTG6sLia8I0OUmnn2XXoMz
- bm4HIO7O/fk0+uJ2cMxbnw0TwPUYAkz3q95H+2yLDvSJol8MZ7Ws84qQ17k1zLO0tti1jr
- b06MhPGLHoGDwXMdU/53XkufQoXak8zccsgkW8SnBkFhbQmA7IlYstHadf4mnTZMwdJnB+
- /eni18aaxJ74ksv7GzKxpkwMUJD7yZiz5c7AO31L9YXv1tXWyfhGNpDVKiXInSXEEpN6Az
- vsfiQ7i/9vhAe1AN1coJLNv6ukguDLCUSw/7Dq3W1fa3nZ2Kop5rrk5hRWG4Pg==
-X-Original-From: Coly Li <colyli@fnnas.com>
-From: "Coly Li" <colyli@fnnas.com>
-Date: Fri, 19 Sep 2025 14:16:19 +0800
-Content-Type: text/plain; charset=UTF-8
-Message-Id: <uloh2zdsl3aahiplt35vrzs53syrqu3wsf6qbvrfhcyxd6d3ae@zqqbsqzyaonb>
-Content-Disposition: inline
+	s=arc-20240116; t=1758266276; c=relaxed/simple;
+	bh=wb2qdIEva+9wMnDjLkyVGNO79u5HZMke8qdhK9b51SU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dduFCNJTpKMD+mLTgvD+kuK/mC4qZJonR02QgBjYJ0P5KFd8pIYu9PA0zMzTGph4dewwwqAjyTswxQVQUuY/I/pzqGU7Gd20EWMnHpcbYY7gt9b2ovJgGSPWUdP6vulvYHReWZYUskyZt0qwfs0VhSPkQzIE2P6+IKrjB50qyco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-54a86cc950dso160127e0c.2
+        for <ksummit@lists.linux.dev>; Fri, 19 Sep 2025 00:17:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758266273; x=1758871073;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jN8ls4Umh9EIXSEQoAkCyXxQ8L8mjN2Gdzzs4J/riyA=;
+        b=eO0WlxF4nt37ZNiDCsSjQziJh+YbobmyAuwfkUIuIFgVxzEnKs7ul+/bzFWagIdR26
+         hIqz/kqiO/us7nWbHZ5TlcFOpQDOc/HuYss61PLo5Rzg0c1LmYHGJHY8MqzxtM1peL8t
+         arx0MIvcRkDCJvwwyNKI0ELGSn0FIzb7JBbX9mrQMoCEwTbEWkQAIGcaFC00SaiRWGGR
+         fW5roTR6f3YIMgSOg2aZkMYBlGvMP+Ppj+CfMy/d1G4EQ+81vnUDvzKWigsrxcirWVO7
+         G+xH6jE7eExgYJ+kOUn0jZCUuJ/5Q8Mt9QyOOpLC4tvfR0tQLJQAi+LGcVKfDmDH4oFj
+         euag==
+X-Forwarded-Encrypted: i=1; AJvYcCUuZus2lunjkQOXHfviMUmszAIkFO4blDbJ+Dgb67UeKoYCo5ObtfP6G5EJhr/vJoa+Y6YaCKBK@lists.linux.dev
+X-Gm-Message-State: AOJu0YzbyOtnQsq3D8hmulYL0v0oqD5vlxM4sKbfr7ilMtXU8vdBvgIU
+	F3a/QEeLkrXTOEFXfLyv84yeeSnMBtlFGez1FjpcARxB2GFxqgkgr3Ayclbek7Eb
+X-Gm-Gg: ASbGnctQUijQbTKbOG1a/YQxBDT6ZzpUNSTTIxQS18Fh+eQUYK20SwvTiZrhxSxsZnf
+	bxvZH9J4J/GIZjZYNumybYtQ3FEwqhbS+WNa58SgXQsPr5gV28+9qryQ4MDhjV+LPnSN0Il/Cp1
+	3AifpujhMT8RL0n8j5l3/upJgtoFXKffbXARY72uIo3K5aEgcSPkDNguJhwE1k1nM+Vfe4ozpb9
+	5w7Q691gNTeR9qOlGxXJTkeGK9rwOBAHKXZPYmg2tl8vxeZiWa9GO8kQeQXZ8yHWUBRa+VUPj4b
+	JGuaGPZi9t67jJ5uFxwllyC8KVroJVw+U2zm7zOUVcCTncNGFPhkjPk5nuai0vPE+iJ0PnrEiw6
+	SaSIMzx8wSVIeN/Wyf9mgE0HcZ7oIrY+jgHwIabURyd4yKSZG6G69rRyD/tHC
+X-Google-Smtp-Source: AGHT+IHT4PzVt9Z+3vTUZrqI+UYZ3c8nRIevfQnvCbCRBcd1q/16pduyxMp/dv1vTaDwEmHeADBEYw==
+X-Received: by 2002:a05:6122:2a14:b0:54a:721a:e4db with SMTP id 71dfb90a1353d-54a837c4a75mr666108e0c.3.1758266273459;
+        Fri, 19 Sep 2025 00:17:53 -0700 (PDT)
+Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com. [209.85.222.43])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-54a8076bc4bsm557988e0c.11.2025.09.19.00.17.52
+        for <ksummit@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 19 Sep 2025 00:17:52 -0700 (PDT)
+Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-890190c7912so439425241.2
+        for <ksummit@lists.linux.dev>; Fri, 19 Sep 2025 00:17:52 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVNk+evTjM4h6jgb/X0VdMHEwzXdY5s/SZpW0Tpqb1VTTpa/7BsaDde+6i4XG+gvwssnAb72DdQ@lists.linux.dev
+X-Received: by 2002:a05:6102:534c:b0:55d:b35e:7a58 with SMTP id
+ ada2fe7eead31-588f3357b74mr639278137.23.1758266271934; Fri, 19 Sep 2025
+ 00:17:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-To: "Jan Kara" <jack@suse.cz>
-Cc: "Paul Moore" <paul@paul-moore.com>, 
-	"Randy Dunlap" <rdunlap@infradead.org>, 
-	"Steven Rostedt" <rostedt@goodmis.org>, <ksummit@lists.linux.dev>
-X-Lms-Return-Path: <lba+268ccf535+d63e86+lists.linux.dev+colyli@fnnas.com>
-Subject: Re: [TECH TOPIC] re-think of richACLs in AI/LLM era
-Received: from studio.lan ([120.245.65.32]) by smtp.feishu.cn with ESMTPS; Fri, 19 Sep 2025 14:16:20 +0800
+MIME-Version: 1.0
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+ <20250917125951.GA1390993@nvidia.com> <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
+In-Reply-To: <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 19 Sep 2025 09:17:40 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVecUeLZ2LPpa457C0a=uduvDhQ4KZJx-++dEFJraRi3w@mail.gmail.com>
+X-Gm-Features: AS18NWAI1tRNfDFQjIFUy24j2rmv5VjIZdZQpBy05JHeqlSMB-7iVf4odZQDlmM
+Message-ID: <CAMuHMdVecUeLZ2LPpa457C0a=uduvDhQ4KZJx-++dEFJraRi3w@mail.gmail.com>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-mips@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Richard Weinberger <richard@nod.at>, 
+	Lucas Stach <l.stach@pengutronix.de>, Linus Walleij <linus.walleij@linaro.org>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Ankur Arora <ankur.a.arora@oracle.com>, 
+	David Hildenbrand <david@redhat.com>, Mike Rapoport <rppt@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Matthew Wilcox <willy@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Nishanth Menon <nm@ti.com>, =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>, 
+	"Chester A. Unal" <chester.a.unal@arinc9.com>, 
+	Sergio Paracuellos <sergio.paracuellos@gmail.com>, Andreas Larsson <andreas@gaisler.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Sep 17, 2025 at 09:59:09AM +0800, Jan Kara wrote:
-> On Wed 17-09-25 01:12:48, Coly Li wrote:
-> > Users store they photos on the system, and the compact AI module processes all
-> > their photos and groups all the photos into different categories like pizza,
-> > dogs, cats, foods or group photos. After the process done, users may see they
-> > photos in different categories that the AI module thinks they should be in. Then
-> > users may share the categories with photos to others. If indentical categories
-> > shared by different users, the shared photos can be combined all together. And
-> > AI module may continue to process the shared photos and generate new categaries
-> > from the shared photos, e.g. pizza in the same city, cats and dogs in closed
-> > location, group photos contains the most common people, etc. Now the differet
-> > categories are implemented by different directories in the publicly shared
-> > directory.
-> > 
-> > In each category directory, photos with a category (or attribution) can be
-> > accessed as hard links to the original photo inodes and share the identical
-> > inodes. All these category directories are created by the AI module, although
-> > the photos are shared from each users. If a user is identified from a group
-> > photo, and this user is noticed that the photo is publicly shared. If this user
-> > doesn't want his face to be shared in public, for an optinal privacy protection
-> > right, this user can remove the hardlink of the photo which his or her face is
-> > in, that is he or she can remove the hardlink (dentry) under a publicly shared
-> > directory which this user doesn't have write permission. Because this user can
-> > be idnetified as owner of his or her face, and the photo has his face in, he or
-> > she should have write permission to delete the photo, but no write permission to
-> > other photos in same category directioy which his or her face is not in.
-> 
-> Well, from what you describe I'd say that the category directories should
-> just be AI owned rwxrwxrwt dirs (do notice the sticky bit set). This is how
-> /tmp/ is usually setup. This means that everybody can read the dir,
-> everybody can delete files but only if they are their owner, everybody can
-> create files - this is the part you probably don't want but *that* is
-> pretty easy to restrict by a LSM (practically any one can do this).
+Hi Arnd,
 
-This is quite similar to what we are doing now (self-define rules + ebpf hooks)
-but your suggestion might be in a more elegant way.
+On Thu, 18 Sept 2025 at 15:13, Arnd Bergmann <arnd@arndb.de> wrote:
+> On Wed, Sep 17, 2025, at 14:59, Jason Gunthorpe wrote:
+> > On Tue, Sep 09, 2025 at 11:23:37PM +0200, Arnd Bergmann wrote:
+> >
+> >> I'm still collecting information about which of the remaining highmem
+> >> users plan to keep updating their kernels and for what reason.
+> >
+> > On this topic of removing some parts of highmem, can we say goodbye to
+> > kmap_high_get()? Only ARM uses it and only for
+> > !cache_is_vipt_nonaliasing() systems.
+>
+> Good idea. I think we are almost there, just need to verify that
+> there is actually no impact for existing users. I already knew
+> that there is very little highmem usage on ARMv6 and earlier, but
+> I tried to recheck all platforms that might be affected:
 
-By the above method, our challenges are,
-- Application may treat this behavior as a bug
-    Once the write/delete access is denied, user application cann't understand
-  why the request was rejected. User space application can check permission bits
-  and acl, but cannot check the LSM rules, they cannot understand why all
-  permission granted but the write/delete access is rejected.
-    Currently in our products it is fine, because all applications are written
-  by ourself, we know the access deny is from the security rules voilation. But
-  in long term this might be a potential challenge.
+> * Microchip SAM9x7 is the newest ARMv5 chip, clearly does
+>   get kernel updates, and the only one I can think of with
+>   DDR3 support, but seems to be limited to 256MB total memory.
 
-- Cannot tell the real permission fastly
-    From web UI interface, users can click the mouse right button to check his
-  or her permission of this specific file or directory. Our current rules-based
-  access control needs to reverse iterate all the rules to determine the final
-  permission which the user obtains. It is very slow and inconvenient, and we
-  don't have proper method to handle the permission display yet.
+Are they limited to DDR3?
 
-- Rules store/load/management
-    Crrently all the rules are persisted in data base and loaded into in-kernel
-  memory table. The rules can be checked very fast and works fine for relative
-  small data set and access rules at this moment. But in worst case maybe each
-  sharedfile will have a signle rule for its access control, when number of
-  shared files and control policies increase more and more, such method doesn't
-  scale and is not agile in store/load/management very soon.
+IIRC, someone (you? ;-) told me at ELCE that Microchip keeps on spinning
+new variants of old SoCs, to accommodate the changing DDR landscape
+and market.  So perhaps they also accept larger RAM sizes?
 
-This is view from users (both user space developers and end users). Currently I
-don't see perfect solution with LSM may solve challenge from view of users.
+Gr{oetje,eeting}s,
 
-Thanks for your suggestion.
+                        Geert
 
-Coly Li
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
