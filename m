@@ -1,181 +1,170 @@
-Return-Path: <ksummit+bounces-2425-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2426-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D302BB96E67
-	for <lists@lfdr.de>; Tue, 23 Sep 2025 19:03:00 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD044BB7392
+	for <lists@lfdr.de>; Fri, 03 Oct 2025 16:43:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D296E7AD223
-	for <lists@lfdr.de>; Tue, 23 Sep 2025 17:01:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 31AE04E8583
+	for <lists@lfdr.de>; Fri,  3 Oct 2025 14:43:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2BE82571BC;
-	Tue, 23 Sep 2025 17:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F384926E6E8;
+	Fri,  3 Oct 2025 14:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGHhAVvW"
-Received: from mail-io1-f53.google.com (mail-io1-f53.google.com [209.85.166.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=wolber.net header.i=@wolber.net header.b="QPEO+eJO";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jYjEi0GG"
+Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04DC914AD20
-	for <ksummit@lists.linux.dev>; Tue, 23 Sep 2025 17:02:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B0439FD9
+	for <ksummit@lists.linux.dev>; Fri,  3 Oct 2025 14:43:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758646963; cv=none; b=PtmS6uIMUaZkFGOo4ND+v9ovcuO+vaGXP/I7D079IHqNunuumugU3JJbLqVDrob6oM1BOkvfnvv/YDzCvBzp+LsOEg4oTV/Qqoj3Tr5SahW9keJc/NegaAEfw+GAbZEhxxL6nxCxy7D/uNOLbWY6/bUtvs85R0wxgaTZHpGNueU=
+	t=1759502631; cv=none; b=FfF1QWhNA8Aq1PeHxlrE6Vp6L1UQb1SY1Cw2ePZmVSMFhp/wUTvTGX/zAhnn8r4GrcWLu/27N8yIjhbHviaRHQDzHf/GtJcz8P3s3h+KQhhbzVhE6L5TMnDAai5afXP4mzO6QG0V9+c8vv4uz7Mf5l0SPBmv1ZRzGSUm8+OL8RE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758646963; c=relaxed/simple;
-	bh=ErDxKmvlNrKC0TzNCSRtc3l2E1g8L7ODD3MLlvTODgs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=fJF4M7npmtA+bZ8sH0ILXbLhbiYgm4HJXxJGBY4uJ2PK3jG8pnw0/D6NX3EAHWgdoc1kFXm6PtDHPpMDJN8sklD3JRGUXwK8zujwtuDAJOYeHMvQyQGWYMMQbX43MLbHuxmksN9Api+Bu834LhDE1ouY4brXL2MZiyLhn+4Ru6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGHhAVvW; arc=none smtp.client-ip=209.85.166.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-io1-f53.google.com with SMTP id ca18e2360f4ac-8936326129eso180311339f.2
-        for <ksummit@lists.linux.dev>; Tue, 23 Sep 2025 10:02:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1758646960; x=1759251760; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=QrvQRe7BNvdNh8MHY9kSGS0YhbUBpaaHXLq7VMbiJ+Y=;
-        b=JGHhAVvWNLvUsYOL4oXle/zc15tmUwMyjAlG88QqeUdTvKZ7On6s7kUWKS4QzLe7hu
-         b6qaWbzVE849/NCobOXsDREZ3YNpgBur3RpdxMUtqRiCLFFp3M59JDzxrGO0Uk8Tu3Jf
-         RKionq1ifUfRV+hUzq4/RmVb+vmWiq8K/bvGU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758646960; x=1759251760;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QrvQRe7BNvdNh8MHY9kSGS0YhbUBpaaHXLq7VMbiJ+Y=;
-        b=szd2VBIE2qtPBBzKfhnp3r5+7DErZbEw60ywBAFI3hNVz/SmlQKdm98ibWyoOKwD82
-         z1JiCznIO90d+mfW/qsTvg1FfWLS9uG1M50eKp0nlx6+Cx8R1ucQPiLZmMMcnKx0UHcA
-         LYsCLrO1q9TIo+gqfoTJ191sIVtKkfwZRTrFLswaM4dgDQno2VDQPGdHhkkf6dVJq/UC
-         If8S7ZtpvwX81MKoU2FrBpGAegYWNTcJtBnZVV8cCoA3t7VHb1SVmgV68XiaCGqFfmXw
-         U9UJ6lgyHR0UHWon1SMpxcioDSEmxIGEoLTYF7iW3lMTrvDwKfjZUHhPQsTw3TwOT3DJ
-         pyYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXiHmmi2O2GD5pJXHmV/09QmCMxlGUvJBCm4yYvwSt2ptBa6oB74aWmjGXO4ZnlFHczsStuyTsW@lists.linux.dev
-X-Gm-Message-State: AOJu0YzqO1whA6ZGzI9tcU1iQ+GIj/h62ZfyGfhFEa3SVhZmA5xNeH7Y
-	WB8fBwtFjO21BQo70gQ1M424wdZPTzanNw2Q0tlJFKHWHrcyjucq8ElyjZXqFCK1NXA=
-X-Gm-Gg: ASbGncsI38BqUXHBbX5Gqq7vXrORrAdkzGbFtkLUf1vp3xnrsmyKNF44j+4VaCe5B2v
-	70/bVJouvw0f8Jk0sXSTpND4t4OVqPX0uaWrUJO+WaaprOcX5+ZgV3OctQ8cdL8m53BD3hZFZh2
-	VeiR4FyJEmzhxfaGzTOQdtqdp0sU48Kw1X6WhCF2ozn0VMREXbkToYBuTEwjHe52K6oZJ2AybEy
-	YpszH0EVbc7enwbsYtfw2I8/oroC48KAZBFotVO4AymVo3GhnJJoeoMfpUww4pV6txXYjWJkYd9
-	gulbrM/PcikO8ij3LhdatrG5nNIXn/b+lDKNa1cuzI8z2LlF6hNKAyNtMLe/ypdP4fMdVboEHu/
-	mydc3h2xlG55bllaRywtP5xiHeQfHcgoJvaI=
-X-Google-Smtp-Source: AGHT+IHlQsWqcuOxxf5Gyb8HJtJ8nHbNiwda9+TX9ILF1I2O7TXL3TvxWr+fVfklaMIjCrV7sfr78g==
-X-Received: by 2002:a92:cdac:0:b0:424:6fe:43c1 with SMTP id e9e14a558f8ab-42581ea5068mr44646985ab.19.1758646959510;
-        Tue, 23 Sep 2025 10:02:39 -0700 (PDT)
-Received: from [192.168.1.14] ([38.175.187.108])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-55bbf14c47esm3019115173.41.2025.09.23.10.02.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Sep 2025 10:02:38 -0700 (PDT)
-Message-ID: <b8e61cae-4074-4abc-a60c-cc76f599d160@linuxfoundation.org>
-Date: Tue, 23 Sep 2025 11:02:37 -0600
+	s=arc-20240116; t=1759502631; c=relaxed/simple;
+	bh=gsbuNCB+tenAJK3dqz1WlTMyhVWer4S3n04QGtHB+OE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To; b=ibK+eO/VdGw82j7QI0e/yqjjOQJCBz8MV6HJrsdKVkNl9kH5unf1uEtyFAICRjs1d0oJZv47t2fc5bdWoDZSLo5HNqLcfUFS9dYjDm2DWX3uHo6YM8d4Swli8dLB05LF8WATvgEt58akuX8RuKoffDOj+E/7NPA4M8bQcR0x4X0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wolber.net; spf=pass smtp.mailfrom=wolber.net; dkim=pass (2048-bit key) header.d=wolber.net header.i=@wolber.net header.b=QPEO+eJO; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jYjEi0GG; arc=none smtp.client-ip=202.12.124.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wolber.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wolber.net
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.stl.internal (Postfix) with ESMTP id 60CE21D00143;
+	Fri,  3 Oct 2025 10:43:46 -0400 (EDT)
+Received: from phl-imap-03 ([10.202.2.93])
+  by phl-compute-02.internal (MEProxy); Fri, 03 Oct 2025 10:43:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wolber.net; h=cc
+	:content-transfer-encoding:content-type:content-type:date:date
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to; s=fm3; t=1759502626; x=1759589026; bh=gsbuNCB+te
+	nAJK3dqz1WlTMyhVWer4S3n04QGtHB+OE=; b=QPEO+eJOpo1ikAVDY1dqG0TwFK
+	xrM32V4TXg5ygJ04lCA3CNDRePc2OmeNluUImXr0Djps0efqg7sJIbpfkicnljgX
+	rN2mQwLRMgBl6jHF+Bz0bZEW+uk3Se9SdCTjhIfHSE/MCo86DgfcI7dxczTBzqkI
+	edSHCnfMSDaXsBPdt2UsH8ElFYppb5vSoYevvxDQxRJl/cqOM1YbXsSAdfREqL6K
+	W6k+YoSZqmI/0kSMEB/l27J0XaaECj5DbiCX/0AM2xXCu6YWlXuPJd/RbjtIyxn1
+	O22lw6f/vHoR293JI6rDzEPQYpuSrZaxgXRQsZCmQUmDskuqP1GLk1h6m6zA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:content-transfer-encoding:content-type
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1759502626; x=1759589026; bh=gsbuNCB+tenAJK3dqz1WlTMyhVWer4S3n04
+	QGtHB+OE=; b=jYjEi0GGpSEywwTeKCVp0Cbqp9SFI9o0IufswXTL4bdKA+tovsf
+	1uLpYxD+RVQWi/2sXu6T8Jb6420vGi7JYJsn2CtQWTDldJ/FytJhC3KN7Cm9a6VO
+	NlwcYwbgLT7cV9Z6FlGTa9fVaV6zmCx/lVrfakpkTtu+3o5dUSWdVmV1MBQZMvWa
+	2M5dvWWfLFKpL7MwJlVokbPyijcV0ZDFRsk00d76HRlppvWxQQpT9rSXYTM5oplx
+	ZndBAhgpWTX+PC9mUEX823yHJL8Aekdo3LC4Uq5NvRdIwJJQAcgq5renW/MtW18j
+	qD1iW3UWVbNMasMLuwkhO/gobw5ys6g4kgQ==
+X-ME-Sender: <xms:IeHfaIHSFCcaqS06DF2zQcCAzEjzgH68OncmVFiwqSDGpvsnc2KjLw>
+    <xme:IeHfaMJaeCHAHl0HrZknGIbEZYTd8tOe-cM_3ZAr5Oc9PRZNSU42E-S4z9gclTgb7
+    UmvcP-6LMRJJPhrkffVCSSqdlLRii_wXzbVuF6b5QZs9CIYgNteRjk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdekledujecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecunecujfgurhepofgggfgtfffkuffhvffosehtqhertdertd
+    ejnecuhfhrohhmpedfvehhuhgtkhcuhgholhgsvghrfdcuoegthhhutghkseifohhlsggv
+    rhdrnhgvtheqnecuggftrfgrthhtvghrnhepgeevfeefudduveeftdekhefghfefvdeiie
+    ejvdekudekfeetieetvdevffdtudffnecuffhomhgrihhnpehlphgtrdgvvhgvnhhtshdp
+    khgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
+    hilhhfrhhomheptghhuhgtkhesfiholhgsvghrrdhnvghtpdhnsggprhgtphhtthhopeeg
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehkshhtvgifrghrtheslhhinhhugi
+    hfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehkshhumhhmihhtsehlihhsthhs
+    rdhlihhnuhigrdguvghvpdhrtghpthhtoheprggtrghrmhhinhgrsehrvgguhhgrthdrtg
+    homhdprhgtphhtthhopehgphgrohhlohhnihesrhgvughhrghtrdgtohhm
+X-ME-Proxy: <xmx:IeHfaJv-8CCa4bqNoEtkcsQ77kCMrio1Vq5NLyCQg_zLmzHHkczWWg>
+    <xmx:IeHfaAS4X4USiKbyIoDLpGnUOBcrgl48TcATHKfr6FqjIAymQFa4PA>
+    <xmx:IeHfaHMnBpL9qaqM1nj05xPq_wGtXh0BeZ6b1CPGu6XR7AScexpsmA>
+    <xmx:IeHfaNZrqhp1Vt3hx5LPqtnDHy24j4ad0Zgwa5vO6zHKnU_TyK5wkw>
+    <xmx:IuHfaJiesDAeuzijlC5psACJCB7DbxBxDxr1RPL4s5qHLA4gNRgmtybs>
+Feedback-ID: i5cf64821:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id C1E9918E0071; Fri,  3 Oct 2025 10:43:45 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [MAINTAINER SUMMIT] resources for promoting healthy communities
-To: dan.j.williams@intel.com,
- James Bottomley <James.Bottomley@HansenPartnership.com>,
- ksummit@lists.linux.dev
-References: <572009db624de21099e08f28604f4b8e6a472cf2.camel@HansenPartnership.com>
- <68d1f6173b299_1c79100e6@dwillia2-mobl4.notmuch>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <68d1f6173b299_1c79100e6@dwillia2-mobl4.notmuch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 03 Oct 2025 14:43:44 +0000
+Message-Id: <DD8RMISG1KAO.3N7ANM9R2UEAN@wolber.net>
+Subject: [TECH TOPIC] Crossing the Semantic Gap: Documenting Design Intent
+From: "Chuck Wolber" <chuck@wolber.net>
+To: <ksummit@lists.linux.dev>, <kstewart@linuxfoundation.org>,
+ <gpaoloni@redhat.com>, <acarmina@redhat.com>
+X-Mailer: aerc 0.21.0
 
-On 9/22/25 19:21, dan.j.williams@intel.com wrote:
-> James Bottomley wrote:
->> We talk a lot about community health and maintainer burn out but what
->> struck me watching Hans' talk about this:
->>
->> https://www.youtube.com/watch?v=O8Q8nIzEG6c
->>
->> was that he relied on his employer to help him thorough his burnout
->> problems.  While this reflects very creditably on Red Hat it struck me
->> that quite a few of us probably have employers who would be less
->> sympathetic to the idea that issues caused by being an open source
->> maintainer should become their problem, especially if they were
->> spilling over into internal job functions.  So I went looking for
->> community resources that could be called on and found, rather
->> distressingly given the amount that people talk about this, that there
->> are none.  The best I can find was the session that happened in the
->> Kernel Summit track:
->>
->> https://lpc.events/event/17/contributions/1574/
->>
->> But that was a one-off rather than a resource that anyone can call on
->> at any time.
-> 
-> That was indeed a useful session, thanks to Shuah for organizing. I took
-> advantage of the offer for a follow-up session with Dr. Chance.
-> 
->> So the topic I'd like to raise is what should we as a
->> community actually be providing to help people through burn out and
->> other community health issues?  We could just continue on as we are now
->> which is pretty much nothing official but various community members
->> will be happy to help (although good luck finding them listed
->> anywhere).
-> 
-> Speaking for myself, it is not clear that a list makes the problem
-> better. If the number of community members willing to help is larger
-> than the number of folks willing to be explicitly listed, does that
-> injure scaling?
-> 
-> That said, if you are having a hard time, do reach out to peers, do not
-> wait for a list.
-> 
->> We could make the self help support more official by providing a
->> mailing list and possibly a wiki of volunteers specifically for the
->> purpose.
-> 
-> Steven has talked about this, and I am supportive.
-> 
-> Additionally, one of the developments since that Plumbers session that I
-> believe helps with burnout and conflict is more offlist collaboration.
-> For example, subsystem specific conference calls, subsystem chat
-> channels, and if you are lucky enough to live near a critical mass of
-> developers, occasional gatherings for drinks and catching up, helps
-> relieve pressure and build community.
-> 
->> Or, we could even decide that this is a serious enough problem to ask
->> the LF if it would be amenable to providing us with some resources to
->> help, thinks like organizing regular sessions like the plumbers one
->> above and perhaps offering 1:1 video counseling and other resources.
-> 
-> I do think aspects of this topic are in scope for Shuah's Mentorship
-> Series, for more opportunities to share what works and what does not
-> work in navigating a Linux career.
-> 
-> https://events.linuxfoundation.org/lf-live-mentorship-series/
+Hi All,
 
-I agree - I can plan upon including navigating Linux career in 2026
-content. LPC is a good place to recruit people to host them.
+This is a joint topic proposal from Chuck Wolber, Gabriele Paoloni, and Kat=
+e
+Stewart.
 
-> 
-> There are also training and development resources that many folks have
-> access to through $employer.
+At LPC 2024 the session =E2=80=9CImproving kernel design documentation and =
+involving
+experts=E2=80=9D [1] discussed the need for enhancing and extending documen=
+tation of
+kernel code. Since then, we have made initial submissions to introduce code
+specifications into the TRACING subsystem [2][3], and later proposed a
+guideline with a worked example in /drivers/char/mem.c [4], accompanied by
+selftests traceable to these specifications. These are not intended as comp=
+lete
+solutions, but as baselines around which automation can be built. Experts f=
+rom
+other domains can develop code specifications within the kernel that will
+create maintainable coupling between code, specification, and test.
 
-This is a good option.
+The motivation is that without code specifications, integrators (i.e. those
+making use of the Linux kernel) must guess at expected behavior by reading
+code; developers spend longer understanding existing behavior before writin=
+g
+patches; and testers risk interpreting bugs as features when writing tests.=
+ All
+of these increase maintainer burden, since only review can catch such
+misalignments.
 
-> 
-> I do wonder what the uptake was on the sponsored sessions with Dr.
-> Chance to inform if this is a resource Linux community needs access to
-> on a regular basis. Is this problem is getting worse, better, or staying
-> the same over time?
-> 
+Framed another way: writing code inevitably creates a semantic gap between
+developer intent and code. Crossing that gap in the forward direction (inte=
+nt =E2=86=92
+code) is straightforward, but reversing it (code =E2=86=92 intent) is lossy=
+ and relies
+heavily on subsystem familiarity. This is the current practice today, but i=
+t
+does not scale well, and it limits how tightly tests can be coupled to actu=
+al
+design intent.
 
-Good to have this data for planning the series and determining the level
-of help.
+Our proposal is to continue exploring a lightweight adaptation of aerospace=
+ and
+automotive design techniques, tailored to the Linux kernel development proc=
+ess,
+to explicitly couple developer intent to code and test. The expected benefi=
+ts
+are technical debt reduction, long-term retention of semantic clarity, test=
+ing
+that traces to actual design intent, and less time spent by maintainers
+explaining nuanced behavior.
 
-thanks,
--- Shuah
+The goal of this discussion is to gather wider maintainer feedback on the v=
+alue
+of such specifications, and to chart possible next steps.
 
+
+Best Regards,
+
+Chuck Wolber
+Gabriele Paoloni
+Kate Stewart
+
+
+[1] https://lpc.events/event/18/contributions/1894/
+[2] https://lore.kernel.org/linux-trace-kernel/20250814122141.109076-1-gpao=
+loni@redhat.com/
+[3] https://lore.kernel.org/linux-trace-kernel/20250814122206.109096-1-gpao=
+loni@redhat.com/
+[4] https://lore.kernel.org/all/20250910170000.6475-1-gpaoloni@redhat.com/
 
 
