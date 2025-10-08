@@ -1,80 +1,91 @@
-Return-Path: <ksummit+bounces-2429-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2430-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E61FBBC6231
-	for <lists@lfdr.de>; Wed, 08 Oct 2025 19:20:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92581BC6383
+	for <lists@lfdr.de>; Wed, 08 Oct 2025 19:57:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 347E83B9F08
-	for <lists@lfdr.de>; Wed,  8 Oct 2025 17:20:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52B3A4055E9
+	for <lists@lfdr.de>; Wed,  8 Oct 2025 17:57:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7BE12BD036;
-	Wed,  8 Oct 2025 17:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CECD2BFC60;
+	Wed,  8 Oct 2025 17:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UuMXg0K1"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="NPLo5Mg6"
+Received: from 004.mia.mailroute.net (004.mia.mailroute.net [199.89.3.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187F91F462D
-	for <ksummit@lists.linux.dev>; Wed,  8 Oct 2025 17:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832D6221271
+	for <ksummit@lists.linux.dev>; Wed,  8 Oct 2025 17:57:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759944025; cv=none; b=X7ILff5lNl3WuZjEJRFn/vlcjb+bnVGonI7n5QWGDiSKKu5b1xJbTvVcsedl3hfjrQlj0X/kZtiOXl/PHrWn4LONvpgjs0bAu5+bFKlvG+ebRMq5KfrgaWwPNHtAgNBGY0OGlzcTpZ0soApICZI5nge575XkKZ8/c+tjHCNFX9o=
+	t=1759946270; cv=none; b=FsSBWVvGBSz6y/4KIvaKWuLmBS4IJLQBkzVCWd1Hvf8+kfnjYsXGkcvOx+WDjjUzeQJ3fjXyKIyK7nuRw0rhM7Pp8Adx0HRf9xW5AsTc0pJXPO61PgB/9r+q3f5/bg33usNFLvuHpA7lCSQESH+AbsvU4lrjxONr8fug+Hilcks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759944025; c=relaxed/simple;
-	bh=KA1tU83NbKCMtMsOPUn940BgdVTHAcgLh2Au5MBj3V4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H/rjddS+nBpWOeTrOn4zsHnXYRkvGSZcDjzs0h8P+l4kfkknRkCn6ReOFjT00p7gKOkeVcMHvnKqraCTIc7WHTVEvmT/YVknXVFsjCrlQNbS8Zuh4tQaLef3yQvuu2mwtisTP9nt0QCawBcCw8Jp7LxKT5mONRkVKiBGRb2niEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UuMXg0K1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D48AC4CEF4;
-	Wed,  8 Oct 2025 17:20:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759944022;
-	bh=KA1tU83NbKCMtMsOPUn940BgdVTHAcgLh2Au5MBj3V4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UuMXg0K1aU4uXPv7jbQiUq2BpUptJ9lqzrB7oBnpXvzffKqe9JBnf9a+/Ho3QOY6T
-	 TaN9i1xRgXZ+2ohp6vRh9eceUPQ8zkU/wbpBU1rGqySs9cUPHXgUS4S8TX8WF7D8Nn
-	 5oHzxpuEGX3L6eHGPFJyO9fCYpg/ahQDNnkn+zbE=
-Date: Wed, 8 Oct 2025 13:20:21 -0400
-From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-To: Chris Mason <clm@meta.com>
-Cc: ksummit@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>, 
-	Alexei Starovoitov <ast@kernel.org>
-Subject: Re: [MAINTAINERS / KERNEL SUMMIT] AI patch review tools
-Message-ID: <20251008-lively-vermilion-snail-beff9a@lemur>
-References: <fc05f97b-1257-4dee-966f-ba66fff8aef1@meta.com>
+	s=arc-20240116; t=1759946270; c=relaxed/simple;
+	bh=pMjBdJh/Lys6mKpA9sUo+3Sd5j2ga3JWQAZccC9D7CU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=ol7RIEFljQAFcCVbQCt79HhB64V3M5l/uGaFtWl4MKDYgwWFwboSyvASghkrdIqIuHLzQ/2/ce9rvKsX8m1e8t6dun4T620tCcEEKPdxyB+a4MSfHDotQHumv3Tf6yRLHXtk8rMzDt/5YFaA8henBq9ytpluTjxVxy8XIEPN7bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=NPLo5Mg6; arc=none smtp.client-ip=199.89.3.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 004.mia.mailroute.net (Postfix) with ESMTP id 4chghW3j02zm0yVD;
+	Wed,  8 Oct 2025 17:57:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1759946266; x=1762538267; bh=4aWR6onrBvWmJaOfOx03ElA0
+	zKoyGbPEUnFR6G/WodU=; b=NPLo5Mg6tc/KMqGM+q2celR1nArDJ6SVwtFnt2u4
+	c/VnXSCxRZoPrZh7IzF41z2csjtgOOdCcBwtaN8ax0VWHEhukpyg/Jwoz9SZMbTx
+	xUDD85QngAooHQdWte1YGUotUyS+AGNGlawsH4VJHEcUGsDivm3fD60M9ZBktUbn
+	I8OVnYiCoQCX8x0TN2X7PVoeZzXIIr57TLViDWNy+cg9JhBJVOIY8fNLqt0/k51s
+	zaJDOD4cdFkTSlYhAo+aahPR8WEDeOBjm+hZatBmSh57ZiXxp7EVWCQqo8X/o7h5
+	S5/1+DelZSiWcCaEYN3LKjI0iQc1TIy1Qw4m/D3tcEcSoQ==
+X-Virus-Scanned: by MailRoute
+Received: from 004.mia.mailroute.net ([127.0.0.1])
+ by localhost (004.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id 2tGCRSSkM_px; Wed,  8 Oct 2025 17:57:46 +0000 (UTC)
+Received: from [100.119.48.131] (unknown [104.135.180.219])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 004.mia.mailroute.net (Postfix) with ESMTPSA id 4chghR60DYzm0yVF;
+	Wed,  8 Oct 2025 17:57:42 +0000 (UTC)
+Message-ID: <28cd7001-0a24-4dff-a4c7-714495bff7f0@acm.org>
+Date: Wed, 8 Oct 2025 10:57:41 -0700
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [MAINTAINERS / KERNEL SUMMIT] AI patch review tools
+To: Chris Mason <clm@meta.com>, ksummit@lists.linux.dev,
+ Dan Carpenter <dan.carpenter@linaro.org>, Alexei Starovoitov <ast@kernel.org>
+References: <fc05f97b-1257-4dee-966f-ba66fff8aef1@meta.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
 In-Reply-To: <fc05f97b-1257-4dee-966f-ba66fff8aef1@meta.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 08, 2025 at 01:04:54PM -0400, Chris Mason wrote:
-> My goal for KS/MS is to discuss how to enable maintainers to use review
-> automation tools to lower their workload.  I don't want to build new CI
-> here, so the goal would be enabling integration with existing CI.
-> 
-> My question for everyone is what would it take to make all of this
-> useful? 
+On 10/8/25 10:04 AM, Chris Mason wrote:
+> 2) A code indexing tool with MCP server that Claude can use to find
+> functions, types, and call chains more effectively.  This makes it more
+> likely Claude can trace complex relationships in the code:
 
-I am generally of the opinion that it's more useful to talk about it than to
-ignore it. Clearly, this is a controversial subject -- many will liken
-introducing proprietary AI tooling to what happened with bitkeeper.
+Different kernel developers may prefer different AI systems. As an
+example, my employer expects me to use Gemini and I have seen it
+producing interesting code reviews. So I would prefer that any AI
+code review prompts that are developed for kernel developers support at
+least the most widely used AI systems.
 
-I've been working on incorporating series summarization with b4, but I'm
-trying to make it work with ollama/gemma3 so as not to introduce a proprietary
-dependency. My results are probably a lot more hit-and-miss than with Claude
-4.5 Sonnet -- but I find it hard to judge because the summaries *look*
-reasonably good to someone who is not a maintainer of that particular
-subsystem.
+Thanks,
 
-Maybe it's more of a BoF session material?
-
--K
+Bart.
 
