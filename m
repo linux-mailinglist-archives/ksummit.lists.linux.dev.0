@@ -1,100 +1,94 @@
-Return-Path: <ksummit+bounces-2432-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2433-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E3F9BC6419
-	for <lists@lfdr.de>; Wed, 08 Oct 2025 20:12:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0832EBC6434
+	for <lists@lfdr.de>; Wed, 08 Oct 2025 20:15:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61BFD40645F
-	for <lists@lfdr.de>; Wed,  8 Oct 2025 18:11:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFB5D19E3DD1
+	for <lists@lfdr.de>; Wed,  8 Oct 2025 18:15:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665612C0F67;
-	Wed,  8 Oct 2025 18:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC7212C08CB;
+	Wed,  8 Oct 2025 18:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TzLHu+GF"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="U+nZWLqH"
+Received: from 003.mia.mailroute.net (003.mia.mailroute.net [199.89.3.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0D42BE625
-	for <ksummit@lists.linux.dev>; Wed,  8 Oct 2025 18:11:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE922C08D5
+	for <ksummit@lists.linux.dev>; Wed,  8 Oct 2025 18:14:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759947076; cv=none; b=QjWhuzpdZN3KlRByLkP19t7RH1JafTLIFKkepuoI0qjpp9C3fGyS+LrRGaHEgyynh7UMJ8zGXe39fqFbamhqtOPcw814G4mCED0gg3LnvPBCMOmrvq9E2OC8rg9eX9/n0lF+P50YDweO8WvhNWG6iOR0H3QR44+kyc8n8E6Fxl0=
+	t=1759947291; cv=none; b=CrQY+oBDkBVqhL27jC6YnRY/78hKw6f4oVoEwI+kctBxnGgZLzurCezOm6E/y61r5OCPwt+08GIQo2fR7zo/XsU4sdtbZnzpG/4LmyQXhzBi0b9O/YVlZgAg4Ss3NQFWJ84x6TXZX7P5XIfDoGrqKMN3R7JrTLZ82mMdFUhb1Nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759947076; c=relaxed/simple;
-	bh=HA9kiNoQOxg68/9dM/1Y4SWlX5gZ2yQCpebNIEl2L2Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eZG2wez8Aqan8Fm9cVcf+4n10WXjYzl7mBR5LApdpLBLFBh7sx1mmqERjAexScDCuiVj6D6pAV9ss2PxFtMfpqkll9Y2gnsDK9QshoRsaY86AQgzHYy1BCjRyOm/sjqlkCAPxWtmREO1A7Ipx1F63oHhitDdX/MZnYn5jVrPnTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TzLHu+GF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC46C4CEE7;
-	Wed,  8 Oct 2025 18:11:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759947075;
-	bh=HA9kiNoQOxg68/9dM/1Y4SWlX5gZ2yQCpebNIEl2L2Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TzLHu+GFjw9uGjgvDGufahJuZc8eMJbFroxJ1Q5s9AFpJc7ALk+JsKRdCAd8rwZOX
-	 vfRZJekYIGAxb0sluu0KjxnYf/pwhCv/oQogOqyE5iueghpuK3iJF/ZucfhMS/EdJe
-	 XUEtRNEZMBG5L0qEaSBcfizOx+cN7ivBwK6fmkFgCze4mCJcNnaXYQzvhNr1VjJUsN
-	 o2hF+Hd633O/ONTVcPL+/sG359S0PJomvIR8s0rQ0bZERrviLn5jXhUKrxhx7/kqVz
-	 0PHKH/VU/IhBgMBAoXThkIKmuzbT++xFk5ghh05i33ng28yWUPzo8mYyMdyCE6zm2t
-	 WcouU9ukOiYPg==
-Date: Wed, 8 Oct 2025 14:11:14 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-Cc: Chris Mason <clm@meta.com>, ksummit@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: Re: [MAINTAINERS / KERNEL SUMMIT] AI patch review tools
-Message-ID: <aOapQhwE8sDVjz16@laps>
-References: <fc05f97b-1257-4dee-966f-ba66fff8aef1@meta.com>
- <20251008-lively-vermilion-snail-beff9a@lemur>
+	s=arc-20240116; t=1759947291; c=relaxed/simple;
+	bh=slOhs1hXlyJxZ0Rgzvz+OwRH8PKWMEgqTyW+l8VUXB4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=E6J6/DPEbId+D+pfmPMyYYDrDwQFRLzZdgl0c+bQu+MQPHgIkqelYv/D+YpRETLxKphv7rljadha9kkNV3RGDX0qzZN7ifqia56BUJdehH+0pUgMh5UhhZenNv6xt9+aR4yXNzQRgRemrIlqdoEsBqr1hepg/3sLu6NCGLBP/UM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=U+nZWLqH; arc=none smtp.client-ip=199.89.3.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 003.mia.mailroute.net (Postfix) with ESMTP id 4chh473NBxzlh3sX;
+	Wed,  8 Oct 2025 18:14:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1759947286; x=1762539287; bh=slOhs1hXlyJxZ0Rgzvz+OwRH
+	8PKWMEgqTyW+l8VUXB4=; b=U+nZWLqHCcPrH3if75x+WxL0ODzvjZWDArrmu4fq
+	cjq5n+o7NFJ3h+hYML0S4YPUB5LRNrCvZRRlQg1/7cDR685DsV21oQje5Blopsbu
+	jQ3bNzr/ATTAyhka5J5psOb6tKhuGTpl3n3IW9TGEHtJmb26u2DLNvQ8MZzmXXY9
+	CmCQRQ0zpXfCd939x7K2kr5LyCGtoDXJYH4h+PLIz4NFsYsZ2SqB1IW+rVUyaQ1+
+	MrxnNNVKuQ6zelm38Qc+ihhuS72NYjf5vBYkacevIbndJGFfdVRoFnb64UVSM1/q
+	CRLCF7U2FOFq2CJExpTpy3uFB1tAo1mLJcPQ+UiGCgdOow==
+X-Virus-Scanned: by MailRoute
+Received: from 003.mia.mailroute.net ([127.0.0.1])
+ by localhost (003.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id JOFOibTEl1p7; Wed,  8 Oct 2025 18:14:46 +0000 (UTC)
+Received: from [100.119.48.131] (unknown [104.135.180.219])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 003.mia.mailroute.net (Postfix) with ESMTPSA id 4chh440YcdzlgqV1;
+	Wed,  8 Oct 2025 18:14:43 +0000 (UTC)
+Message-ID: <adbaa57a-4dc8-4929-b319-8dc96ce08e89@acm.org>
+Date: Wed, 8 Oct 2025 11:14:42 -0700
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20251008-lively-vermilion-snail-beff9a@lemur>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [MAINTAINERS / KERNEL SUMMIT] AI patch review tools
+To: Chris Mason <clm@meta.com>, ksummit@lists.linux.dev,
+ Dan Carpenter <dan.carpenter@linaro.org>, Alexei Starovoitov <ast@kernel.org>
+References: <fc05f97b-1257-4dee-966f-ba66fff8aef1@meta.com>
+ <28cd7001-0a24-4dff-a4c7-714495bff7f0@acm.org>
+ <3ffd9164-919e-4fea-8597-601452537331@meta.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <3ffd9164-919e-4fea-8597-601452537331@meta.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 08, 2025 at 01:20:21PM -0400, Konstantin Ryabitsev wrote:
->On Wed, Oct 08, 2025 at 01:04:54PM -0400, Chris Mason wrote:
->> My goal for KS/MS is to discuss how to enable maintainers to use review
->> automation tools to lower their workload.  I don't want to build new CI
->> here, so the goal would be enabling integration with existing CI.
->>
->> My question for everyone is what would it take to make all of this
->> useful?
->
->I am generally of the opinion that it's more useful to talk about it than to
->ignore it. Clearly, this is a controversial subject -- many will liken
->introducing proprietary AI tooling to what happened with bitkeeper.
->
->I've been working on incorporating series summarization with b4, but I'm
->trying to make it work with ollama/gemma3 so as not to introduce a proprietary
->dependency. My results are probably a lot more hit-and-miss than with Claude
->4.5 Sonnet -- but I find it hard to judge because the summaries *look*
->reasonably good to someone who is not a maintainer of that particular
->subsystem.
+On 10/8/25 11:04 AM, Chris Mason wrote:
+> Claude really needs aggressive use of checklists to get it to stay
+> focused, other AIs may need other tricks.
 
-The approach I've been trying to take with my tools is that instead of
-embedding the AI API calling logic into the tool itself (like I did initially
-with the AUTOSEL rewrite), I just provided a "hook" in the form of a script
-that takes the prompt as input and outputs the respose from whatever LLM was
-used behind the scenes.
+Would that be a reason to avoid Claude for code reviews? All I need to
+make ChatGPT or Gemini come up with a code review is to tell it that it
+should review a kernel patch pretending that it is an experienced kernel
+developer and also what issues it should look for. The AI kernel patch
+review prompts I have seen from my colleagues are about 30-40 lines
+long. However, I do not know what copyright license applies to these
+prompts so I cannot share these prompts.
 
-It make it easier both in the sense that I can easily switch between providers
-just by calling a different script, and also I don't get locked into any single
-provider and can decide if I want to use one of the open models or a
-proprietary one.
-
-We can provide a library of these scripts to make it easy for users and give
-them the freedom to choose which model they want to be using.
-
--- 
 Thanks,
-Sasha
+
+Bart.
 
