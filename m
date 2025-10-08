@@ -1,89 +1,120 @@
-Return-Path: <ksummit+bounces-2443-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2444-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F246BC6962
-	for <lists@lfdr.de>; Wed, 08 Oct 2025 22:29:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52281BC696E
+	for <lists@lfdr.de>; Wed, 08 Oct 2025 22:30:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0613B34B1E7
-	for <lists@lfdr.de>; Wed,  8 Oct 2025 20:29:23 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 778E934EC37
+	for <lists@lfdr.de>; Wed,  8 Oct 2025 20:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67EEA299AAB;
-	Wed,  8 Oct 2025 20:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF6A226A1A4;
+	Wed,  8 Oct 2025 20:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="aApEhJY5"
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dKRHK4H0"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B561E4C6C
-	for <ksummit@lists.linux.dev>; Wed,  8 Oct 2025 20:29:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E3C212560
+	for <ksummit@lists.linux.dev>; Wed,  8 Oct 2025 20:30:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759955358; cv=none; b=bs+OFNMAjR5G10NaKil6Cd0KaVc4AIsCDtMQ70E3Et1wtX4MN9rNyJ9O7MD+fCE5nlYTZN/fmC5RH5I1NhSL5SKLpNJ/tOo7I5ZYThXDBxcrZpjJ2sPJy3v6Nc+AwFmmfNN5ERQXdTX3nzdhtIdUkLWdVa5B92tFT3xq6IGCGac=
+	t=1759955435; cv=none; b=AlEsN+EOHa/6OPo6KNj6fMNlE/ebQLKY36ilYRkOYn/wjECNEze7mz2SrOzZ4v0fF0PcxeLa6J+sEd3Zj766nKtUL6+bmAgQw2hYBimS92E9v45lDvlTh/VbMWAULuoHvsjpJwnC++ZmqjQ9FPq0W42+RGRiCcBYg5Vv02Njcu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759955358; c=relaxed/simple;
-	bh=yru6V6tdGN05E8j9ND6jzUv/dpuAmYwLS9RpyQzjKXs=;
+	s=arc-20240116; t=1759955435; c=relaxed/simple;
+	bh=ZI/+EDpirfpD7jE80bymJAYV8XOSGdotKCE0j2rXF+c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YG1xmkJNp2Eaojno3VaJfmH/0OhjP4ogq2jTvhQqhEdwhEhDIWliOQTGdqMveOUWsDMOMQi6xDsbjZKRyDJQiUmaHjXoFSdisZmHHQ8ZFA1fNhniPARUFB0lJns4SuhItwgng4TomzLJbDc/7DNzEWWVMUhyRglxDwvCAKN1Imw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=aApEhJY5; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Nt1/9LUKNaucC9oIWZISN8Dga9Qt+CfwZSUtYFoUZ48=; b=aApEhJY5nOcgmjeLL07nTErmF3
-	0npwAhs+mamagyiEGM2WrOVigJ6rk8AnKPxiXlSiPI1NFj5OXmjSw0lbOrcLBciVkf0XXfOJ2zcHa
-	2j+6wQAh4ertaW68SySi9C/DIV0138C7N04pnvhNTdG00kLKsDep1Arc7wnVGxmrs3qg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1v6amd-00ATdo-5u; Wed, 08 Oct 2025 22:29:11 +0200
-Date: Wed, 8 Oct 2025 22:29:11 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Chris Mason <clm@meta.com>, ksummit@lists.linux.dev,
+	 Content-Type:Content-Disposition:In-Reply-To; b=iLy9B4XIgaXwu4PBX1kQSTT+sV1vvSUpUq3PbRQ8KrGMntCFLgvHNgPSsnvudGgar8Vv6m7FWeai2RJQVNAo1n3VQqmIybAppgrlw+Vq2w7O+HIoRmbIslb/UbrByjFWFcp3iDMvv/26W71CMQ6UwZfbyY1wpa3CHpwbpb49lKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dKRHK4H0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 121E8C4CEE7;
+	Wed,  8 Oct 2025 20:30:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759955435;
+	bh=ZI/+EDpirfpD7jE80bymJAYV8XOSGdotKCE0j2rXF+c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dKRHK4H0kD+7JOSJe7vk9fzPgGr5RQfO4BiAJ0iJ9jnMTactU+uLJv0nHwF9hR6Ry
+	 arextHHZ+zPTcupYFmz8M79SeMP41Zus4ERSPMyxc0+RxiQyZ0m1Ydysik1fB61kVc
+	 0J7d8AKllmHzpoGrhxQToxirdLExDwQeCYMCS7LzQuKt14hljeKI+uH0kSYnnf87yF
+	 plKtbmGp2OSX6gjZLxm6UOtseR8DgrjyA8BvrvtoFrjXLgJhB7xeRhclf+eVXlT12l
+	 mwJ/A7AnBESrIL3IdjlM4WHelEUI5bFi/q0evowkAA2h4SKhz33mJwJMNBbRCQ5e0X
+	 Orqfqh83B3APg==
+Date: Wed, 8 Oct 2025 16:30:32 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: "Bird, Tim" <Tim.Bird@sony.com>
+Cc: "laurent.pinchart@ideasonboard.com" <laurent.pinchart@ideasonboard.com>,
+	Andrew Lunn <andrew@lunn.ch>, Chris Mason <clm@meta.com>,
+	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>,
 	Dan Carpenter <dan.carpenter@linaro.org>,
-	Alexei Starovoitov <ast@kernel.org>
+	Alexei Starovoitov <ast@kernel.org>, Rob Herring <robh@kernel.org>
 Subject: Re: [MAINTAINERS / KERNEL SUMMIT] AI patch review tools
-Message-ID: <64f6eab8-1f0a-42e2-835f-a548d2fd6df5@lunn.ch>
+Message-ID: <aObJ6GPU9aKeI_CZ@laps>
 References: <fc05f97b-1257-4dee-966f-ba66fff8aef1@meta.com>
  <fe0b8ef3-6dc7-4220-842b-0d5652cae673@lunn.ch>
- <aOa7Tn0QbXwL-Ydo@x1>
- <20251008193349.GI16422@pendragon.ideasonboard.com>
- <aOa95ZFLXgaEh5PJ@x1>
+ <20251008192934.GH16422@pendragon.ideasonboard.com>
+ <MW5PR13MB5632D8B5B656E1552B21159FFDE1A@MW5PR13MB5632.namprd13.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <aOa95ZFLXgaEh5PJ@x1>
+In-Reply-To: <MW5PR13MB5632D8B5B656E1552B21159FFDE1A@MW5PR13MB5632.namprd13.prod.outlook.com>
 
-> I think maintainers can't take anything for sure, even when dealing with
-> contributors that posted tons of patches before :-/
-> 
-> And as you said, we can't count on contributors running existing tests,
-> or using things like linters, checkpatch, you name it, let alone AI
-> assistants.
+On Wed, Oct 08, 2025 at 07:50:32PM +0000, Bird, Tim wrote:
+>
+>
+>> -----Original Message-----
+>> From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+>> On Wed, Oct 08, 2025 at 09:08:33PM +0200, Andrew Lunn wrote:
+>> > > My goal for KS/MS is to discuss how to enable maintainers to use review
+>> > > automation tools to lower their workload.
+>> >
+>> > Maintainers will want to use these tools, if they prove to be
+>> > useful. But ideally, we want the developers to use these tools and fix
+>> > the issues before they post code for review. That reduces the
+>> > maintainers workload even more. So Maintainers just need to run the
+>> > tools to prove that the developers have run the tools and have already
+>> > fixed the problems.
+>> >
+>> > So i'm not sure your goal is the correct long term goal. It should be
+>> > a tool for everybody, not just maintainers.
+>>
+>> This raises the interesting and important question of how to get patch
+>> submitters to follow a recommended workflow. We routinely get patches
+>> that produce checkpatch errors that are clearly not false positives.
+>> Rob Herring implemented a bot to run checks on device tree bindings and
+>> device tree sources because lots of patches fail those checks. I'm sure
+>> there are lots of other examples that have led maintainers to automate
+>> checks on the receiver's side, through various types of standard CIs or
+>> hand-made solutions. Submitters should run more tests, how to get them
+>> to do so is a broader question.
+>
+>Maybe it would be worthwhile to annotate patch submissions with tags
+>indicating what tools have been run on them.  I know we're trying to avoid
+>overuse of commit tags, but maybe we could automate this a bit, and/or'
+>reuse the 'Reviewed-by:' tag in the commit message.  I could envision, in some
+>future workflow utopia, where a missing 'Reviewed-by: checkpatch.pl AND claude AI review'
+>would be grounds for requesting these before human review.
 
-I agree. Maintainers run these tests as well just to confirm the
-developer has run the test. And Maintainers probably take less notice
-of the output, and look more at the passed/failed exist status. Why it
-failed is generally not too important, the fact it failed just needs
-to be bounced back to the submitter so they can investigate and fix
-the issue.
+This is similar to what was proposed in the last round[1] of discussions around
+disclosing (AI) tool usage.
 
-But this also requires these tests are reproducible, and that is one
-question i have. checkpatch, sparse, kdoc, Coccinelle are all
-reproducible. They give the same answer every time. If it passes for
-the developer, it should also pass for the Maintainer. But is this
-true of AI tools? Are they reproducible?
+ From the cover letter:
 
-   Andrew
+	Assisted-by: Claude-claude-3-opus-20240229 checkpatch
+
+At which point maintainers can set their own policies for their subsystem and
+automate workflows based on those policies.
+
+
+
+[1] https://lore.kernel.org/all/20250809234008.1540324-1-sashal@kernel.org/
+
+-- 
+Thanks,
+Sasha
 
