@@ -1,135 +1,106 @@
-Return-Path: <ksummit+bounces-2459-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2460-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C363BBC91CB
-	for <lists@lfdr.de>; Thu, 09 Oct 2025 14:48:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0658ABC982A
+	for <lists@lfdr.de>; Thu, 09 Oct 2025 16:30:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D17C2188AF33
-	for <lists@lfdr.de>; Thu,  9 Oct 2025 12:49:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4939F3C700B
+	for <lists@lfdr.de>; Thu,  9 Oct 2025 14:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A39F12E11A6;
-	Thu,  9 Oct 2025 12:48:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="epwGL7Rw"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 776032E8E1F;
+	Thu,  9 Oct 2025 14:30:26 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A973BA3F
-	for <ksummit@lists.linux.dev>; Thu,  9 Oct 2025 12:48:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5771A9F96
+	for <ksummit@lists.linux.dev>; Thu,  9 Oct 2025 14:30:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760014113; cv=none; b=Cpwl17kPb01IIZH2GBkI7pGlRHinV2CnynbMCiZaQj3/iSYVO2YJEbtuXMA+rF39l4TBcCKl7O4IW8uV+PZtTCASmlujXqI4we4J1okZSJIeR+DAdRNsp7paYIpOmnGTH/7/GI3sP4LUKl+oUhEkOa1f7P8D9k5URapiDBydidU=
+	t=1760020226; cv=none; b=r45/3hajRKahEtIvVpcLDi4DEURTkaEOGUDqQ2K84as8S2UQwUzm2Dm4aWO5CSzjlTcIH718gFodfSj95n5kR7tunx91N8a6v6u72qBk1bdGMiJFtutr444xNMhM0AY+zjvncDXloYq0iWBZHDVx3SrU+N6CdNR3okKGq1LtJHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760014113; c=relaxed/simple;
-	bh=iGJDg+HTB9s8tcjnBaNHTi8x6BIEyyEkVO9tEVUwo5c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PV50dURlpZ768Q1cspbQcvRwe7PD5kpVlFgQ1aMRyC6LNXsCLdFescdcsLdxPR5a+l657E5evuZL/VR0JUob5NNTm9pBWju3KWWtShKRcu+VCzdEDQg7XIGwprrDHSngtFkTyrIPzHf4OD/5/gfu5hNKcKXgAkwrMR7VI/s08CM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=epwGL7Rw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C59C4CEE7;
-	Thu,  9 Oct 2025 12:48:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760014111;
-	bh=iGJDg+HTB9s8tcjnBaNHTi8x6BIEyyEkVO9tEVUwo5c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=epwGL7RwyhAJoR6HQoSWpN6b9WHyQX8yEc0KlvF7mk8YS4umMZjyA5zswh2V2zSeg
-	 9QGoR2s6vuKrr7n/dZdnVNwZWpkdO/FBZcUei1+GTpf38uzvU0qq4/x4MM7El6rEsB
-	 VGTYrxerwYZPE+J1K9bboZ40pZEfbKWeEwvpyYF1sA/9XDCs87ErabpRXalGPvMp2n
-	 y3G9m/vqpVb4+PIgGTl1Y+A81PM+unbmuOoOY/GIL5RhEEnDH2rpDOwfd5jH7V8Mbg
-	 q2VbcPeSqRKEL79nI32M2bJix6HrWRNJLIvceRrrejnEgufH3PXGCgjSLWV3BOUQCu
-	 9xjdwN4ndnfDw==
-Date: Thu, 9 Oct 2025 09:48:27 -0300
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
+	s=arc-20240116; t=1760020226; c=relaxed/simple;
+	bh=B3/HfuqnShiF1tKS7IF2YGfsx7ra6PMqb//sVx4sGFA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qQZ33jEF/7dJtnvnzLmEbSIET1POFLzUvkbVSTK+FKe5Y/0CL3krsKefVfsuR0CXcICF+WjHKr8wowvgqY7w0vlhBymUIiR4Q1o1k3mn4IRZKeMvP/2YdxizZCkXNJq9ocSf59nnsNfMYTBF8r+5AGDTrHsS8TlFTgsGH1w7Ogs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B11D65BD1A;
+	Thu,  9 Oct 2025 14:30:21 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf19.hostedemail.com (Postfix) with ESMTPA id 7E29720030;
+	Thu,  9 Oct 2025 14:30:19 +0000 (UTC)
+Date: Thu, 9 Oct 2025 10:30:19 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
 To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Chris Mason <clm@meta.com>,
-	ksummit@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-	Alexei Starovoitov <ast@kernel.org>
+Cc: "Bird, Tim" <Tim.Bird@sony.com>, James Bottomley
+ <James.Bottomley@HansenPartnership.com>, Andrew Lunn <andrew@lunn.ch>,
+ Chris Mason <clm@meta.com>, "ksummit@lists.linux.dev"
+ <ksummit@lists.linux.dev>, Dan Carpenter <dan.carpenter@linaro.org>, Alexei
+ Starovoitov <ast@kernel.org>, Rob Herring <robh@kernel.org>
 Subject: Re: [MAINTAINERS / KERNEL SUMMIT] AI patch review tools
-Message-ID: <aOevGww0S2nG9BFa@x1>
+Message-ID: <20251009103019.632db002@gandalf.local.home>
+In-Reply-To: <20251009091405.GD12674@pendragon.ideasonboard.com>
 References: <fc05f97b-1257-4dee-966f-ba66fff8aef1@meta.com>
- <fe0b8ef3-6dc7-4220-842b-0d5652cae673@lunn.ch>
- <aOa7Tn0QbXwL-Ydo@x1>
- <20251008193349.GI16422@pendragon.ideasonboard.com>
- <aOa95ZFLXgaEh5PJ@x1>
- <20251009093750.GE12674@pendragon.ideasonboard.com>
+	<fe0b8ef3-6dc7-4220-842b-0d5652cae673@lunn.ch>
+	<20251008192934.GH16422@pendragon.ideasonboard.com>
+	<MW5PR13MB5632D8B5B656E1552B21159FFDE1A@MW5PR13MB5632.namprd13.prod.outlook.com>
+	<d08330417052c87b58b4a9edd4c0e8602e4061f2.camel@HansenPartnership.com>
+	<MW5PR13MB5632FC46AD54998C4C584F91FDE1A@MW5PR13MB5632.namprd13.prod.outlook.com>
+	<20251009091405.GD12674@pendragon.ideasonboard.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251009093750.GE12674@pendragon.ideasonboard.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 5k8hthxqfush6f1pg4tjy4p3z8pqzfwu
+X-Rspamd-Server: rspamout07
+X-Rspamd-Queue-Id: 7E29720030
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1+ngEQEFt3QolS8ZHs1TqGMQx+bGTHSgNA=
+X-HE-Tag: 1760020219-683237
+X-HE-Meta: U2FsdGVkX1/4Y9m8jNVGX3vCdFkXKdMARcX8ckjv017DuypVycs5nNIWVZAdqOLVkDuZpXFqWeg0RfBWJyjVzg2CsVH6/r36b4ULfJgwjRpxieJQrMa3BTpswEifxlrNbaHC6ww71aR5EDbKSVFlAXAuDK/9WHK/pWjulEkFHgO3rwCJyLbys64UDaHV3lT7JhDdIWmHOSPMzHcuzWSfMcLtAE7kBJ+40XmCcWwuDKRK5TX4oUpY1MMuNapQo+gMqToDiyyEsVNgGGK29ECKtGXFjZmKLzHyT2BJQh7JftZUR7/q7yKuuc4QnOzuK58LkHue5Mk93QFT2yJ2ep12IOTYeW9fX7hxud2BRfUtC9zTY9qADQU5hm3mT9KpBR4F
 
-On Thu, Oct 09, 2025 at 12:37:50PM +0300, Laurent Pinchart wrote:
-> On Wed, Oct 08, 2025 at 04:39:17PM -0300, Arnaldo Carvalho de Melo wrote:
-> > On Wed, Oct 08, 2025 at 10:33:49PM +0300, Laurent Pinchart wrote:
-> > > On Wed, Oct 08, 2025 at 04:28:14PM -0300, Arnaldo Carvalho de Melo wrote:
-> > > > On Wed, Oct 08, 2025 at 09:08:33PM +0200, Andrew Lunn wrote:
-> > > > > But ideally, we want the developers to use these tools and fix
-> > > > > the issues before they post code for review.
+On Thu, 9 Oct 2025 12:14:05 +0300
+Laurent Pinchart <laurent.pinchart@ideasonboard.com> wrote:
 
-> > > > Sure, as before, people should try to follow the best practices before
-> > > > sending pull requests, its in the best interest of everybody.
+> Forcing contributors to pay for access to proprietary tools is not
+> acceptable. Forcing contributors to even run proprietary tools is not
+> acceptable. If maintainers want contributions to go through any
+> proprietary tooling before submission, then this has to run on the
+> maintainer side (be it on a maintainer's machine, in some form of CI, or
+> somewhere else).
 
-> > > > But if they do so, and I guess most will, there will be more patches
-> > > > flowing upstream, thus Chris effort, I think, right?
+One way I see this working is to attach it to patchwork. Sending a patch to
+the BPF mailing list has their patchwork trigger a bunch of tests and it
+will tell you if it passed or failed. I'm assuming if it failed, it doesn't
+add it to patchwork and the maintainers will ignore it.
 
-> > > I'd argue there will be less patches flowing upstream, lots of v1 (and
-> > > sometimes subsequent versions) where maintainers point obvious mistakes
-> > > will be avoided. The new v1 that would end up on the list will take more
-> > > time to review than the old v1, but that's just because the new v1 will
-> > > be the old v2.
-> > 
-> > Hopefully, but then all that time the contributors had to spend on
-> > writing multiple versions for the same patch could be used to send tons
-> > of good v1 patches, leading to more features, or dealing with lots of tech
-> > debt most people have. :-)
+Attaching AI to patchwork could be useful as well. But this would run on
+some server that someone will have to pay for. But it will not be the
+submitter.
 
-> One can always dream :-)
+I've been thinking of adding tests to run when people submit to the tracing
+mailing list, but I don't want to waste my electricity on it ;-) I have
+solar now, so perhaps I should.
 
-:-)
+> 
+> You're right that cost would then be a problem. I can certainly imagine
+> $popular_ai_company sponsoring this short term, until we're
+> vendor-locked and they stop sponsorship. I don't think rushing in that
+> direction is a good idea.
 
-> If you think of a series that goes from v1 to v10 today, we will just
-> not see v1 on the list and v2 to v10 will be renamed v1 to v9, but the
-> submitter will still make a v1, run it through tests, and fix issues
-> before submitting. This will likely take less time than waiting for a
-> review on v1, but will still take development time.
+I don't see lock in being too much of an issue, unless the server that is
+going to run this adds a lot of scripts that are built on one kind of API
+that is vendor lock in. If anything, you just lose the service if it
+becomes too expensive and you can't find an alternative.
 
-Right, using AI to do pre-review should be encouraged, some people will
-not want to use some, while find some more acceptable, some will not use
-any and will ask a friend, more effort before sending patches is what
-maintainers need.
- 
-> > > To make this happen, though, maintainers will need to be reasonably
-> > > confident that obvious mistakes will have already been fixed.
-
-> > I think maintainers can't take anything for sure, even when dealing with
-> > contributors that posted tons of patches before :-/
-
-> > And as you said, we can't count on contributors running existing tests,
-> > or using things like linters, checkpatch, you name it, let alone AI
-> > assistants.
-
-> A big difference is that we can complain about submitters not running
-> checkpatch, but we can't insist they run proprietary tools.
-
-I agree that we shouldn't make it a requirement that a proprietary tool
-be used to make development dependent on it, not even require that
-something that doesn't run locally, I'd say.
-
-But this is no bitkeeper, I think, or shouldn't be, i.e. if you
-completely stop thinking and trust just LLMs to code and review for
-you...
-
-Supposedly we can at any time stop using it and go back to our old ways,
-no? :-)
-
-Oh, it may be a bitkeeper, so convenient, who would want to use just
-patches....
-
-- Arnaldo
+-- Steve
 
