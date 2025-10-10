@@ -1,149 +1,167 @@
-Return-Path: <ksummit+bounces-2474-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2475-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FC34BCA9F0
-	for <lists@lfdr.de>; Thu, 09 Oct 2025 20:56:52 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8954ABCB7A9
+	for <lists@lfdr.de>; Fri, 10 Oct 2025 05:09:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0C37C35081F
-	for <lists@lfdr.de>; Thu,  9 Oct 2025 18:56:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D53F84E623D
+	for <lists@lfdr.de>; Fri, 10 Oct 2025 03:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B12B24DFF3;
-	Thu,  9 Oct 2025 18:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D691C23BD1B;
+	Fri, 10 Oct 2025 03:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="iNJKCZ+S"
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m1u1SI2Y"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3E821FF38
-	for <ksummit@lists.linux.dev>; Thu,  9 Oct 2025 18:56:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48FF372629
+	for <ksummit@lists.linux.dev>; Fri, 10 Oct 2025 03:08:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760036206; cv=none; b=QF1G2O3d95LKWZxCukszyYP1BZC+Crd/wO6otSXmTgK3t0G20QqcbB6yh3K3jtCa1Dv1JxBMEgEfbssUYkdewXxzvjXpY23+bkGztu7iEHPGHLzIsjzH5yDvn4QWFFR4TgpBHrHXgDyLMjFQpa8/WZ5qYuPxf5y6t007OT97YeE=
+	t=1760065735; cv=none; b=nIEGMmyxxlulcy1v2dpMRAVx+S8gNpbEVOoiIbXnynosNeO5BsA5A9S3WMN7jlz4FsLPugK07k3A8E+W102wXd4uwZJu/6TZiysKeYi4B+cY4bFS4oLsCgEUcixVPRFwwFNE28k6mOFvz27Y5SpkBrsty2HV9CC/TAGygq51HW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760036206; c=relaxed/simple;
-	bh=v8JQyzlPVZaVA0jb+zo0xxxL9mPDQfP44QpLlmNUjKQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AAa/t7kPy/VEPp4cjN1THo1x2v84omZ7Uily4ZwKEd8lLYmWBs2Iom1RODlLoXmO0Y7tDE1lgYKy5jjKwqzaDfCL5RXmYSECEvnQ4dfiF4AcIPXYZRwNiKH2tELumcJgwgYiLOdWgYSu5WAIj9RsAhziU/Xo29jNU5nneNDulhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=iNJKCZ+S; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-62fc0b7bf62so1925731a12.2
-        for <ksummit@lists.linux.dev>; Thu, 09 Oct 2025 11:56:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1760036203; x=1760641003; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=itWIzPtbpqEuAAKQonI5TOGHANibqCbcc1N32dO0paU=;
-        b=iNJKCZ+Sqpk5sKF1TRedLITIzPpmfgdqKImcKvWBymCYFCol1p5R5a2O1/z3aGn/Ti
-         +KGpOG5ZaJoFj9V1RThusp7TGSwv4puz0h525wIoL2624GDtSLBpr+ychBuCZgspcwHU
-         d8h6/d/DW8YZ4s0zam0B7GQuNSdR/e7bwuC6U=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760036203; x=1760641003;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=itWIzPtbpqEuAAKQonI5TOGHANibqCbcc1N32dO0paU=;
-        b=v8nhMN+1NFgX+RUvt2j3l1WbwS3Vz1jChoP02vN94o26H+w1XwkzcD1vYXV6PJDTG+
-         lxspaq+BCBGou2QiRQylq4Uj4OoJBrOh3bNn7f8lOiOU6/llC3UKKVaBu4ovNc5WE8dH
-         hE4I/LJi1+DYYoF6aMtLWabZY6AcBLLfNCnTXUw0BcCE6cmpyXu62rveQKLBlsPhwzO9
-         q9IBVzRGOVnzzhGpKUz6eSjy8JYQWLcti0byvAYrHfPl1C/grEXqiU7lKuKofLyAOboz
-         1uK3WT0Catp2LZrGesZwkI9qL62K5PctOq+5VGHWgrip8GVkQIY8xZ1mFb/zpPLns+ap
-         PveA==
-X-Forwarded-Encrypted: i=1; AJvYcCW0hOa4V5xgrjvyhcAJ1gY0tggTz5hzFeQ1TzMDA4IZgJv20PN1nuM1L4gyonlKC15kjIS+nmdq@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywu21kQCNWrOLc/6uKRa2gNiYIJqt/vwZZVZvdTtrqSOQPMHY6F
-	9tl1Duj9qreYXrLDWGdkh8CUQ2leSL8m4dcKKQZaRK2G7/ckmSwSl/Nm8+VKCZ3A3oGMgt5b5lZ
-	WnSY0nRw=
-X-Gm-Gg: ASbGncuDfIGmUPoxCONJibQAZLYFuBSZ7F+89nJhWMI6mTALkP1ZSv8a5kyCbH4iCKu
-	Ztlwfb+u4jAqdrUsHYMF9kNWhr6+WCXourhln9dZPy3Kme4ezYT+Gj9nWe5N2sArIwo+QfvQl80
-	+crA7sJM/ORDrHCBWo2TQer4reevFt3UOY71PfaxZor1/RqMn5V7VlJov5dyQoM1r0v31THmXSm
-	k7r2/3Fs8SrrHdqxKnvao7IGUpxp3Ztcfpf4jgzwIHSBmwvBbtJESkR8z8G/hxGWRefR5h2dIsc
-	DDYhndfBHNePedmIFbGAVOkLIC9AJzErd7IBP8EV7ocGQf2IiaubyHXc0lkFkE5VmK6fPMdsDvZ
-	G0hW5XovVXuHhNDbHApe0mYNLQINuNICeo5md8QbeZ88VIOTDHQLDu0uS6fJ2bGzwtp5zki3our
-	wNbC/2uWYiCwfLhA0FW1556tXmTqfmLFYulLGQXl/B2w==
-X-Google-Smtp-Source: AGHT+IHbVsshMffFllmECYgUsaeNRfNrhbr30zaF13VQhxlvL94ih5agc44aC7bzwTh8VMSCgGXmtQ==
-X-Received: by 2002:a17:907:2d26:b0:b0c:b51b:81f6 with SMTP id a640c23a62f3a-b50ac4db244mr986365966b.43.1760036202586;
-        Thu, 09 Oct 2025 11:56:42 -0700 (PDT)
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com. [209.85.208.50])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b55d5cacba7sm37701066b.5.2025.10.09.11.56.41
-        for <ksummit@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Oct 2025 11:56:41 -0700 (PDT)
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-61cc281171cso2478452a12.0
-        for <ksummit@lists.linux.dev>; Thu, 09 Oct 2025 11:56:41 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUXD74peuHMJEkoI6l+h7eH1FWNl/bKt1Zy9b5hpPkCX+B/+IxszvN7xyXiQLPkJJfE8X6NBCvZ@lists.linux.dev
-X-Received: by 2002:a05:6402:274a:b0:62f:3436:a396 with SMTP id
- 4fb4d7f45d1cf-639d5c5a403mr7705044a12.31.1760036200824; Thu, 09 Oct 2025
- 11:56:40 -0700 (PDT)
+	s=arc-20240116; t=1760065735; c=relaxed/simple;
+	bh=KY5uku9xdSd70W+vxv36fjzpevym+8WaSPSe0zKuMwE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=mU9rL2VZqt8Kc85+tpXPBsyWLbzR0ViWtk3OmyoLahTmJL+W8UFZ6R7xWZs4cpoY86jRSO2K5jllOxMIDWGqsceRgAKrpIeaF3/eHa4P2ext8ReN6MciU46OdPGHqB/Lw7iryBYvwXb5ThfEse5nRsYI85LZilFBeQdwfm8GozQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m1u1SI2Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC46FC4CEE7;
+	Fri, 10 Oct 2025 03:08:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760065734;
+	bh=KY5uku9xdSd70W+vxv36fjzpevym+8WaSPSe0zKuMwE=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=m1u1SI2YuKMGob7NmOzlGidF9y3qYTbpC6aahluBfR/wkS9bggB4Aa120mYzLpYkO
+	 DOd/h18zdOnRpor8XcsomB26tFagB+64fU5b4DyyE78EIspCwv7iXLO7jU8dW5eZQC
+	 v6iFim0uxdWC23QHDnFWrksXEmFT5gOjobaW3ez2kB03GxtDtSc7/3zlUX5Nb8A6/X
+	 zj3u1UR1P1W7OiuhyLAs+7JPTEDceSGEhj91o5IG108+qRj7kZFSG0eJkfWQyX3rM4
+	 c3yswmOENH1te1TEqeHoMlunmaww35Vp0RjLO+mtiYFBYLPQcvdRQTOrQOOowN2sAh
+	 2TbUwmB4JQkhA==
+Message-ID: <be5094b9-fb20-462e-ad2f-2b58e520b949@kernel.org>
+Date: Fri, 10 Oct 2025 05:08:47 +0200
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <fc05f97b-1257-4dee-966f-ba66fff8aef1@meta.com>
- <fe0b8ef3-6dc7-4220-842b-0d5652cae673@lunn.ch> <20251008192934.GH16422@pendragon.ideasonboard.com>
- <MW5PR13MB5632D8B5B656E1552B21159FFDE1A@MW5PR13MB5632.namprd13.prod.outlook.com>
- <d08330417052c87b58b4a9edd4c0e8602e4061f2.camel@HansenPartnership.com>
- <MW5PR13MB5632FC46AD54998C4C584F91FDE1A@MW5PR13MB5632.namprd13.prod.outlook.com>
- <20251009091405.GD12674@pendragon.ideasonboard.com> <20251009103019.632db002@gandalf.local.home>
- <3f25bd06-a75f-4de8-b8f4-f92dffb62f09@meta.com> <aOfuu8InYEUIZdWH@x1>
- <aOfvuqPNLtBPlc2r@x1> <72b9b81c-765b-4047-bb3b-40b2a8a6e563@meta.com>
-In-Reply-To: <72b9b81c-765b-4047-bb3b-40b2a8a6e563@meta.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 9 Oct 2025 11:56:23 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wj3fQVEcAqy82JnrX2KKi4NjnEGGSH2Pf_ztnLCcveWkQ@mail.gmail.com>
-X-Gm-Features: AS18NWA63wpfx55rR2Ses7zq87PfOBJQAwBQTzbi2tBrV_qthlQoHx95Lj9a-Vk
-Message-ID: <CAHk-=wj3fQVEcAqy82JnrX2KKi4NjnEGGSH2Pf_ztnLCcveWkQ@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [MAINTAINERS / KERNEL SUMMIT] AI patch review tools
-To: Chris Mason <clm@meta.com>
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, "Bird, Tim" <Tim.Bird@sony.com>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, Andrew Lunn <andrew@lunn.ch>, 
-	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>, Dan Carpenter <dan.carpenter@linaro.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Rob Herring <robh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+To: Chris Mason <clm@meta.com>, ksummit@lists.linux.dev,
+ Dan Carpenter <dan.carpenter@linaro.org>, Alexei Starovoitov <ast@kernel.org>
+References: <fc05f97b-1257-4dee-966f-ba66fff8aef1@meta.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <fc05f97b-1257-4dee-966f-ba66fff8aef1@meta.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, 9 Oct 2025 at 11:43, Chris Mason <clm@meta.com> wrote:
->
-> I think it's also important to remember that AI is sometimes wildly
-> wrong.  Having the reviews show up on a list where more established
-> developers can call bullshit definitely helps protect against wasting
-> people's time.
+On 08/10/2025 19:04, Chris Mason wrote:
+> Hi everyone,
+> 
+> Depending on how you look at things, this is potentially a topic for
+> either MS or KS.
+> 
+> One way to lower the load on maintainers is to make it easier for
+> contributors to send higher quality patches, and to catch errors before
+> they land in various git trees.
+> 
+> Along those lines, when the AI code submission thread started over the
+> summer, I decided to see if it was possible to get reasonable code
+> reviews out of AI.
+> 
+> There are certainly false positives, but Alexei and the BPF developers
+> wired up my prompts into the BPF CI, and you can find the results in
+> their github CI.  Everything in red is a bug the AI review found:
+> 
+> https://github.com/kernel-patches/bpf/actions/workflows/ai-code-review.yml
+> 
+> My goal for KS/MS is to discuss how to enable maintainers to use review
+> automation tools to lower their workload.  I don't want to build new CI
+> here, so the goal would be enabling integration with existing CI.
+> 
+> My question for everyone is what would it take to make all of this
+> useful?  I'm working on funding for API access, so hopefully that part
+> won't be a problem.
+> 
+> There's definitely overlap between the bugs I'm finding and the bugs Dan
+> Carpenter finds, so I'm hoping he and I can team up as well.
+> 
+> In terms of actual review details, the reviews have two parts:
+> 
+> 1) The review prompts.  These are stand alone and can just work on any
+> kernel tree.  This is what BPF CI is currently using:
+> 
+> https://github.com/masoncl/review-prompts/
+> 
+> These prompts can also debug oopsen or syzbot reports (with varying
+> success).
 
-I really want any AI effort to be primarily geared towards
-maintainers, not end developers.
 
-And this is a large part of the reason. I think we've all seen the
-garbage end of AI, and how it can generate more work rather than less.
+In general, I like this entire idea a lot, because I believe it could
+drop many style or trivial review points, including obsolete/older code
+patterns.
 
-We see the downsides on the security list where people use AI to
-generate questionable reports, we see it in various general bug
-handling, and we've seen it on the infrastructure where the AI tools
-cause huge issues.
+Qualcomm is trying to do something similar internally and they published
+their code as well:
+https://github.com/qualcomm/PatchWise/tree/main/patchwise/patch_review/ai_review
+Different AI engines can be plugged, which solves some of the concerns
+in this thread that some are expected to use employer's AI.
 
-Fairly recently Jens gave up maintaining his own git server just
-because of the horror that is AI scraping tools.
+They run that instance of bot internally on all patches BEFORE posting
+upstream, however that bot does not have yet AI-review enabled, maybe
+because of too many false positives?
 
-Yes, that scraping issue a "secondary" kind of "more work rather than
-less", but it's very much a real issue nonetheless. Just the
-infrastructure load is a real thing.
+I also think this might be very useful tool for beginners to get
+accustomed to kernel style of commit msgs and how the patch is supposed
+to look like.
 
-Some long term goal may well be to help end developers, but I really
-think it should not be seen as any kind of primary goal for now and
-shouldn't even be on anybody's radar as a design issue.
-
-Exactly because I think we need that "established developers can call
-bullshit" without being overwhelmed by said BS from external sources.
-
-So I think that only once any AI tools are actively helping
-maintainers in a day-to-day workflow should people even *look* at
-having non-maintainers use them.
-
-And I say that as somebody who does think it's going to be a big help.
-I know there are lots of less optimistic people around.
-
-             Linus
+Best regards,
+Krzysztof
 
