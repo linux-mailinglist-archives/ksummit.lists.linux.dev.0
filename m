@@ -1,48 +1,49 @@
-Return-Path: <ksummit+bounces-2501-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2502-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2548ABD5870
-	for <lists@lfdr.de>; Mon, 13 Oct 2025 19:37:04 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10AF2BD58BB
+	for <lists@lfdr.de>; Mon, 13 Oct 2025 19:39:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C07EC4E5679
-	for <lists@lfdr.de>; Mon, 13 Oct 2025 17:36:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 709E64E44ED
+	for <lists@lfdr.de>; Mon, 13 Oct 2025 17:39:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A66308F0D;
-	Mon, 13 Oct 2025 17:36:40 +0000 (UTC)
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CBF73019C3;
+	Mon, 13 Oct 2025 17:39:15 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B83E3043C1
-	for <ksummit@lists.linux.dev>; Mon, 13 Oct 2025 17:36:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53C525BEE5
+	for <ksummit@lists.linux.dev>; Mon, 13 Oct 2025 17:39:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760377000; cv=none; b=Q1rtHUTmyv+mk6WteOsXz8mD9X4nJp+uem19I1AinAWYYQuPL3RDS8zT/Vz3vDIl6f2G+TECGwX0u7oUNT+B4FsuabU9ztcUlD3ebIZc39CZdjAq+QB4u2uUcC7iqBet5i9sbM42MPI0R6mdt610L5OjiQjxfaF1XZiy1axyxkI=
+	t=1760377154; cv=none; b=Pp4vawkSDerwPCJHYExQRLkMU7xy/a/ln8Vhqs/O6aOuk9Vff7SdH8o/sWBGbCs+UXqR3jlk+Vk+pyxotQFqvZZIsl3TtxDNI8ub7S4EDcPv5rgdfEEKpEr2xg0cHAyeZaf8NeAZi5qtdYrL+DLIj+E4WdlXvvAJjbH6hbxYQDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760377000; c=relaxed/simple;
-	bh=/UofpfoXuwVoei1oBARYxDgiKrJetRQ8aUj5eZjEFN8=;
+	s=arc-20240116; t=1760377154; c=relaxed/simple;
+	bh=MoSzbdRFSAdSqde51vMItPPyDzp3ty7+FcgFbn5Wf90=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mTwWs+XYTMfMmQCBxs8PRKa9LGfTulEvWbnD9b8BYIg706mBQUIQDoVJZf5rasN6frmSGf5xs/Nvsw+GZEWLQ1vP/UiNMTSxRDUOWV0f+urbqcxX8rhhbA5DWSXbtJNTO/CbEwIlufluXuK4zw9WHp1nehV8L0rgOvBVtRtLWl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.17
+	 MIME-Version:Content-Type; b=BeOxEG1NgYkOV9N+C0ZxbDDvybxRHZB6yRAcPEFvMYK8H7sJ93TZHsUkhbwhK3lYm/bcnMM/TOlmewIAXFDN6PUfeFb/Gf2tA6N0wD1XvZyFcaLl+jNaB3dYpVld+bFm/G50FMKKpBJHQ1qVKWoI+0rAGzwsC1uXXCtRI8bWh/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 24692140587;
-	Mon, 13 Oct 2025 17:36:36 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf16.hostedemail.com (Postfix) with ESMTPA id 870802000D;
-	Mon, 13 Oct 2025 17:36:34 +0000 (UTC)
-Date: Mon, 13 Oct 2025 13:36:37 -0400
+Received: from omf13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AE3B9C042D;
+	Mon, 13 Oct 2025 17:39:11 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf13.hostedemail.com (Postfix) with ESMTPA id 288ED2000E;
+	Mon, 13 Oct 2025 17:39:10 +0000 (UTC)
+Date: Mon, 13 Oct 2025 13:39:13 -0400
 From: Steven Rostedt <rostedt@goodmis.org>
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: James Bottomley <James.Bottomley@HansenPartnership.com>,
- "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
+To: James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: Doug Anderson <dianders@chromium.org>, "ksummit@lists.linux.dev"
+ <ksummit@lists.linux.dev>
 Subject: Re: Replacing Link trailers
-Message-ID: <20251013133637.040132f1@gandalf.local.home>
-In-Reply-To: <6b188d9e-3d47-4a30-8452-3e57e09cf8e3@efficios.com>
+Message-ID: <20251013133913.015f253b@gandalf.local.home>
+In-Reply-To: <c86ba3c682251154ec554f39004c392f8b8e1c02.camel@HansenPartnership.com>
 References: <a7878386f3546ba475cdf7250ab4f5a6af2a1676.camel@HansenPartnership.com>
-	<6b188d9e-3d47-4a30-8452-3e57e09cf8e3@efficios.com>
+	<CAD=FV=VK0OLj5ASxtUZAUEK1WTxDW9LwCR+yBEKD6AdUyWkNNA@mail.gmail.com>
+	<c86ba3c682251154ec554f39004c392f8b8e1c02.camel@HansenPartnership.com>
 X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
@@ -52,52 +53,24 @@ List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: i9ihky1ix9hxdga3qf1rg8c5gshqwbqm
-X-Rspamd-Server: rspamout03
-X-Rspamd-Queue-Id: 870802000D
+X-Stat-Signature: r4h3xngnwhsxso5w6nno68kjan1m1cme
+X-Rspamd-Server: rspamout07
+X-Rspamd-Queue-Id: 288ED2000E
 X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX1+/7DBNlGyiFmf+Quus/kTeHoNt9HpV5N8=
-X-HE-Tag: 1760376994-788945
-X-HE-Meta: U2FsdGVkX18zrslD65MuF8PArEo6lPkFa3Q5SXGLB+zWLKGR9pM/URWp+mj5zUcaDUMZpANbbyWF6No7iP6VFVAyZwcqgKG8vwzA4XkaLTO1xBIek3C6t1SzkmSCdJmLBW158aKoaoQewdasLGBKNu4W5rfNnybX5UdkZ+uVvXB3D1P6oDACwTrNGT7fQnOrdPT5/mdtMd49VFpaDnxiWjOCLGoHlE5PLT/tgWZ12CoiZIfER1aYkkdEcId2MNrLTHzIfTsVC0rHSHPfbbeIWieuG0UgHhpWAyeroGT+fp29veIJR2wv2cDaVkFFJRP5lVcC//8jNQqzZaOhveqgHw01VKY9Ccts28sI7iXtZrjLlsoG88hdQY4o1Hu2wa5q6fDoAp48lgHFOPA1Q8U7gg==
+X-Session-ID: U2FsdGVkX18G8iJnLOcaJvTEOblaeaaFGznB0SKqsrk=
+X-HE-Tag: 1760377150-657519
+X-HE-Meta: U2FsdGVkX197I4olmzYQAm10c7EGS0k6mbhbWTEB0dUW2cAkPiOer0CKtwTD2Rp/7cppDgvqDuHHFXWiG9PsPrr0VLx+2SSK9vtud6ifPxlxHtpuVob6mhBUgJ8i5Nh223hK4MI5wlPLyslaCSl/HOp3MIv+6r1R7jQHaaKcdcwAi9F/bRHO/ienqkngnnMySiDdHpTZwIjuImlKThRTJ/uck8zJBTVUkiIeG7Ci7P/99dA7k6r24+DJIsgrml3dy7TOmUnkBtsnSCSfiGXQB5eaPq+lUaH2t/K1KmlQ6DFXlt7MElUj5Xy8vBRgaH5/G/hb7WWLbzVKl8SsoQm+dFn+0nKb7qaAhYCOGjzcAvyIAnIqsJmyFcilW2hYmWFK
 
-On Mon, 13 Oct 2025 08:25:01 -0400
-Mathieu Desnoyers <mathieu.desnoyers@efficios.com> wrote:
+On Mon, 13 Oct 2025 12:31:32 -0400
+James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
 
-> AFAIU. this use of Link trailer is used as a strategy to work around
-> the lack of unique identifier in patch commit messages that identifies
-> multiple revisions of a patch, for tracking by patch review tooling
-> and facilitate digging through patch history.
+> Just on this, git format actually controls the amount of information it
+> prints from the headers rather than the trailers (the git tools are
+> really designed to treat the trailers simply as body text).  However,
+> that's not to say Link couldn't become a header tag instead of a
+> trailer.
 
-That's not how I use it at all. Copying my reply from the tooling thread
-here:
-
-  [..]
-
-So it allows you to not only find the cover letter of a series, but also
-daisy chains all the links to previous versions so you can see how the
-patch was developed, and all the comments to the older versions.
-
-Now my workflow incorporates these link tags. When I need to create a new
-version of the patch, I save the old git branch with its version:
-
-  git branch topic-v1
-  git reset --hard <base-commit>
-
-Then I download the old version from patchwork, run my scripts to pull it
-in (which adds the links to the emails of those commits). And when I make the
-next version, I record the changes by replacing the:
-
-  Link: https://lore.kernel.org/...
-
-With
-
-  Changes since v1: https://lore.kernel.org/...
-
-And before sending my emails, I move that text below the '---'.
-
-And this makes it very easy to incorporate the daisy chain. If I have to
-use any external tooling to search for it, I'm not going to bother, and
-this workflow will just stop happening.
+I just need it to be visible from patchwork.
 
 -- Steve
 
