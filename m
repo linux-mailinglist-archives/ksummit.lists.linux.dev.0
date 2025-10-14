@@ -1,159 +1,107 @@
-Return-Path: <ksummit+bounces-2514-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2515-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1CE9BD6671
-	for <lists@lfdr.de>; Mon, 13 Oct 2025 23:47:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB469BD7D55
+	for <lists@lfdr.de>; Tue, 14 Oct 2025 09:15:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 38C2E350E82
-	for <lists@lfdr.de>; Mon, 13 Oct 2025 21:47:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A11E189DA23
+	for <lists@lfdr.de>; Tue, 14 Oct 2025 07:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6362FA0F6;
-	Mon, 13 Oct 2025 21:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319742561AA;
+	Tue, 14 Oct 2025 07:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="JwIIYDt2"
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gUtXBFtq"
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864AB2FA0DD
-	for <ksummit@lists.linux.dev>; Mon, 13 Oct 2025 21:46:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA372BEC21
+	for <ksummit@lists.linux.dev>; Tue, 14 Oct 2025 07:15:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760392013; cv=none; b=dpmVZJUmqTRg5KLqtDM0DC8QN63GWRN2G5gC/C6awKMID6OsvdNZFOav5v3rC2NW1PbJXso/k7AlyLjBGYKuER8R3zM7lHXxPFQ89vhCrjloK4byJUQbvbdDlo23kf4Q5iZII8uTxVRwwCnnANYSPNNMEiJxYMXHO5RFsuaCVYw=
+	t=1760426130; cv=none; b=TKIpOuJ73QNoy9NgbBzwhTPoMwFcUlKuDAEjoKoWdvnAMJMWKFD08E8+4EQjlapIafz8GlCTAyC6LOHZw9sFcnppMN7Q/0Khha2uRMunOL/J/zld/JyBc1ZNYNkPC2yuvCEpSnkYqRoJmu3ttMmaP3DdjElam4Hg249B9yxW0mY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760392013; c=relaxed/simple;
-	bh=aLp3hG0aw4cgF+mqSlUSNZmh/qi5bctmxNA2Efg+3iI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YjWydKDnJhRVqGCUYLWxMl50k+lqakz6DINf/5KzagzU17zFfCrI3CKq0T35i0sOdgt81LBZeTv7ICG6fCDtFipHT0M9RI+gwLbpJ39zzRTquFLzYeWoUA6s9XO7z44YLSGm+9sPsiiKx6bg7vkf7by//yxLk5V5VzmF4BSzA/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=JwIIYDt2; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7841da939deso4028176b3a.2
-        for <ksummit@lists.linux.dev>; Mon, 13 Oct 2025 14:46:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1760392006; x=1760996806; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aLp3hG0aw4cgF+mqSlUSNZmh/qi5bctmxNA2Efg+3iI=;
-        b=JwIIYDt2d/JsO3rKoHr6f0uYNTqQWneo2dTU2nrDaRT6hjJrmlpGeP0uoY8NvXk4i2
-         wGgYTpJfwSXp7hvIQJDZvXfM+QR4oOhgof4+mXCDA6DUVUZatS9/Z/oYi1Z52ZBCJnrH
-         1okNozTl3tK8jtkX71jkG5W15r9dHz+UnT6pM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760392006; x=1760996806;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aLp3hG0aw4cgF+mqSlUSNZmh/qi5bctmxNA2Efg+3iI=;
-        b=jzw1sHn7Px3A3NVUyANWiQ3AUQ9ibAM97LYsdconCoO4KLsGXvoaxrYno76Kkh6FBs
-         4B1DE5WFOtE6+7G+LKcL43nDDbPnUmBa/g7HqpOvdGoPtnFyCyVtYPgxz2vFBPcr/MHS
-         /JHSAbRrJm+Sh1RtoE45UYYnsLmq7wQOrbH8QD2AwMUJm7OSL1XCasBrZyPjq71O3gwT
-         LElcMf4XbbjfU1e+9hKag0uFfhH84oCVbpOVynrNYR1ubelU/naqGmAC4lrpIXLxEXOe
-         L/nabH4YqzunCCi0tHPVV/FFlzW80OnsMByJlxz+toXyJJNDeGwXdwILIXSyKB3d87Gg
-         w6DQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUQIPl/ezqc9Ai5gJRCnVywv5+3EL9/R73Yn/dCFV3cuLxPCg3RQ66MWTjSdAPStdZbyHVC5u3J@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx0FQ7PQC4hQ1jf9c4YqvbVldnFu+CGHeP4GEZSvWMTwiiJMA89
-	zprgYnSyl8dqzfX0u+zCE5oH23FKTqk5wGMMXI9+nS0S3YtWtQS1fEjZ39cWjRSvF/GWBASbWB6
-	3/wA=
-X-Gm-Gg: ASbGncuUGy8oaeVYibrTQdcZxrusIbsINhqYcK1swbGw8rTYKSAcEIAfhCBrpgK7IKs
-	a3LFNWE0XcT6yubRhvepqFd7YC9mzFEvhtVsTID/rhnVKiupzpydl0Fa/qmurWGv4Nc7gjcNWu+
-	H6xMB9y1Wg837KDyMOVWqdWe69qxr97gVEKpOq7/tL5eSOm8wevpQKRz5330XK4cNVscaOPKoUA
-	rHKo1lYB9Vag66jWhz7ZmRqJnIq0wUHSW11Miu+bktpomuaP+oUvAeG1SNsCbQtaqfiRWSWPbcC
-	urXt2tHm4xc6TYEnt34Akh0flI6e+Ejiy6Xh4YBH7xDWqKabpD+/k204ECs+ukiXCrMe4wB4/RZ
-	DRbpcDL84FKbNrh9qSGLptNmQXZTMQBpMHZ+QpKdstxwmNBa4YcwsBKImEm/XXIIPdNTjRSUpl3
-	0Y8+Bu80LP3wJ/DpDqbCk=
-X-Google-Smtp-Source: AGHT+IHyS8nZ82Jjzs6QDQVWF5WyzOpC7/nKXVbXU1U5RYwpLp0hoL6/1wEDVTFywqWtZBg4jzKN8Q==
-X-Received: by 2002:a05:6a20:7488:b0:32b:71e9:81ae with SMTP id adf61e73a8af0-32da8134622mr31880794637.8.1760392005966;
-        Mon, 13 Oct 2025 14:46:45 -0700 (PDT)
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com. [209.85.214.170])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b678df6a95esm9923761a12.36.2025.10.13.14.46.44
-        for <ksummit@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Oct 2025 14:46:44 -0700 (PDT)
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-26c209802c0so45135545ad.0
-        for <ksummit@lists.linux.dev>; Mon, 13 Oct 2025 14:46:44 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVm/yXyHaOVQNQUy/mz6M6kfgEbuEdoc5V8w5ikIuQw12rOOsoic9FtGZB9i1jryEtyR0T/aflb@lists.linux.dev
-X-Received: by 2002:a17:903:40cc:b0:26e:d0aa:7690 with SMTP id
- d9443c01a7336-29027402c79mr251547725ad.41.1760392003778; Mon, 13 Oct 2025
- 14:46:43 -0700 (PDT)
+	s=arc-20240116; t=1760426130; c=relaxed/simple;
+	bh=oLBYbQG6Oasw9t4LIeAnssx7OENPrHvlmSKfAxxJRcc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oeacPEOQfxFgCRVBxlt6JKKTjHo1Wnr/Vj8viPO23PPn0mNSs27TtWLfxI+MPP5BTAx2lKRVhXr643VW0toUcLXW43kPdv8oa4Q1ivEEMJ0kdkeDekpgvcAG7sbL3LYyC77Xn5KsrDBjt1u42Ag2v4R89FVbKRHxGSz/LGXGiCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gUtXBFtq; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760426129; x=1791962129;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=oLBYbQG6Oasw9t4LIeAnssx7OENPrHvlmSKfAxxJRcc=;
+  b=gUtXBFtqylW5qusaSBY0i31RWFVXgBTH8tX9jLN1r5Qv93qXPyFLQ+ZN
+   2hRQaj/zgb7xYtrTgkigvZCc0FVHgkXRt+qw183NL6BxO1xL+sN6unxdH
+   A3/uGzx88VOm7Z6guenj3IW0H8qc/7Z1CSNyVEnBiWPw9znyFj+gaCfv6
+   ubX4xgFRIpsXr02oCK4EQGrPfyBi2uubuCEBCLUgR18oqElgc/E7G6Tnu
+   wT+udcQDdK3jgNpXZDhrs73ALYYs+/V/H6oikaxMAgMnh+PieTdFGx+T+
+   BUo0wDOihwbrzuclD+ZnFsv5kKcLkwcRGlxxQ35St4Iv8MIeF4FHwQd7M
+   A==;
+X-CSE-ConnectionGUID: lMhyzHt0Qb6Ib9EBcg5LQg==
+X-CSE-MsgGUID: RYix86csSJSV+FG/QozNFg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="66233793"
+X-IronPort-AV: E=Sophos;i="6.19,227,1754982000"; 
+   d="scan'208";a="66233793"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 00:15:28 -0700
+X-CSE-ConnectionGUID: +B7sSUX6SE6X5eErvkLVtQ==
+X-CSE-MsgGUID: aHJLFucjQpSI2ytE3lQoDw==
+X-ExtLoop1: 1
+Received: from dwillia2-desk.jf.intel.com ([10.88.27.145])
+  by fmviesa003.fm.intel.com with ESMTP; 14 Oct 2025 00:15:28 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: konstantin@linuxfoundation.org
+Cc: ksummit@lists.linux.dev,
+	workflows@vger.kernel.org
+Subject: [PATCH 0/3] b4: Add git notes for submission link trailers
+Date: Tue, 14 Oct 2025 00:15:27 -0700
+Message-ID: <20251014071530.3665691-1-dan.j.williams@intel.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <a7878386f3546ba475cdf7250ab4f5a6af2a1676.camel@HansenPartnership.com>
- <CAD=FV=VK0OLj5ASxtUZAUEK1WTxDW9LwCR+yBEKD6AdUyWkNNA@mail.gmail.com>
- <c86ba3c682251154ec554f39004c392f8b8e1c02.camel@HansenPartnership.com>
- <20251013133913.015f253b@gandalf.local.home> <20251013175031.GJ354523@mit.edu>
- <7EE2713D-7612-4EAC-9E4E-225A92FEC9D3@zytor.com> <CAHk-=wj8mfMkkLFXdMLyAzUPRH-m1h=+uJrJFSxQSRuRxbi-iw@mail.gmail.com>
- <CAD=FV=UjA8+pZoXMh9WgCHZAUX=pd7ehWxuu9kTFr5Dp5O-rCQ@mail.gmail.com> <18e3d34e-6608-403e-8b85-4873858e9788@suse.cz>
-In-Reply-To: <18e3d34e-6608-403e-8b85-4873858e9788@suse.cz>
-From: Doug Anderson <dianders@chromium.org>
-Date: Mon, 13 Oct 2025 14:46:31 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=VuJitvt2m-uthmRJYo6JJNTdU5WHXxbZG6-AY0LbfxnA@mail.gmail.com>
-X-Gm-Features: AS18NWAMTaX6iGUFx21LzuFLGcREfmLHmTh22ejttGBXwqbA5_nnv4xvEeBYqe4
-Message-ID: <CAD=FV=VuJitvt2m-uthmRJYo6JJNTdU5WHXxbZG6-AY0LbfxnA@mail.gmail.com>
-Subject: Re: Replacing Link trailers
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, "H. Peter Anvin" <hpa@zytor.com>, 
-	"Theodore Ts'o" <tytso@mit.edu>, Steven Rostedt <rostedt@goodmis.org>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi,
+As detailed in patch3, after the fact / dynamic lore link generation
+continues to be awkward for managing work-in-progress patches across
+multiple versions. 'git notes' allows for workflow specific metadata
+that does not pollute upstream. The other desirable feature of notes is
+that they are displayed by default in cgit.
 
-On Mon, Oct 13, 2025 at 1:59=E2=80=AFPM Vlastimil Babka <vbabka@suse.cz> wr=
-ote:
->
-> >> All the other arguments seem just disingenuous in that they literally
-> >> give less useful information than "b4 dig" does.
-> >
-> > Wow, I hadn't heard of "b4 dig" and it doesn't appear to have landed
-> > yet. ...but I searched and it was easy to find a reference. I'll check
-> > it out. Oh, it's using AI. I guess my suggestion that we should use AI
-> > to solve this problem was more on point than I realized. ;-) ;-) ;-)
-> >
-> > OK, I found Sasha's RFC [1].
->
-> You found the wrong one. See this one:
->
-> https://lore.kernel.org/all/20251010-muscular-camel-of-acumen-00eeaf@lemu=
-r/
->
-> But if your point was to demonstrate how searching for a subject can lead=
- to
-> the wrong outcome, good job :)
+So the mainline history and upstream pull-requests remain clean, but
+work-in-progress series development can readily display which commits
+came from which messages.
 
-Crap, that's funny. Yeah, all the top Google searches for "b4 dig" are
-all for Sasha's tool. Konstantin's patch, while landed, isn't in the
-most recent "versioned" b4 release (v0.14.3), so I didn't see it.
-...and yes, it does somewhat prove the point that just trying to match
-on "subject" can be dangerous. I've run into the issue where lore
-pages don't seem to be consistently findable in Google in the past and
-I guess it struck again...
+Example:
+$ b4 shazam -L 20250815010645.2980846-1-alison.schofield@intel.com
+$ git show | grep -A1 Notes
+Notes:
+    Link: https://patch.msgid.link/20250815010645.2980846-1-alison.schofield@intel.com
 
-OK, so Konstantin's version at least solves my problem of getting a
-mailing list post from a commit hash, which is good. It uses "git
-patch-id" which is a really great/exact solution when it works. It
-won't always work, of course. Sometimes maintainers/committers find
-merge conflicts when we try to apply and, if folks are feeling
-generous and it's easy, folks won't request a re-send. That messes up
-patch-id.
 
-Luckily "b4 dig" falls back to subject matching. As per above, that's
-not always perfect but probably works more than 95% of the time?
+Dan Williams (3):
+  b4: Move linktrailer to a LoreMessage property
+  b4, ty: Move git_get_rev_diff to __init__ for reuse in post processing
+    shazam
+  mbox: Add a --add-link-note option to shazam
 
-So I guess given the correct pointer to "b4 dig", it seems like a
-pretty workable solution for me. It will fail/be wrong sometimes, but
-probably less often than I had to deal with a maintainer that didn't
-put "Link:" tags in the past. I could still wish that maintainers
-could still put "Link:" tags to really document where they obtained
-the patch from, but oh well, one can't have everything.
+ src/b4/__init__.py | 53 +++++++++++++++++++++++++-----------------
+ src/b4/command.py  |  2 ++
+ src/b4/mbox.py     | 58 ++++++++++++++++++++++++++++++++++++++++++++++
+ src/b4/ty.py       |  7 +-----
+ 4 files changed, 93 insertions(+), 27 deletions(-)
 
--Doug
+
+base-commit: f760a0468f91296750af072f7b3aed916f217e77
+-- 
+2.51.0
+
 
