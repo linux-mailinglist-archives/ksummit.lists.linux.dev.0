@@ -1,122 +1,112 @@
-Return-Path: <ksummit+bounces-2519-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2520-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F48DBD7D63
-	for <lists@lfdr.de>; Tue, 14 Oct 2025 09:16:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48CAEBD8EFA
+	for <lists@lfdr.de>; Tue, 14 Oct 2025 13:10:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 08A544F1C58
-	for <lists@lfdr.de>; Tue, 14 Oct 2025 07:16:53 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 373FC4E7D54
+	for <lists@lfdr.de>; Tue, 14 Oct 2025 11:10:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66E9C2D8387;
-	Tue, 14 Oct 2025 07:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D499F2F1FE8;
+	Tue, 14 Oct 2025 11:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LkOFU+md"
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VCuIJJkh"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC3723B62B
-	for <ksummit@lists.linux.dev>; Tue, 14 Oct 2025 07:16:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A8914D283
+	for <ksummit@lists.linux.dev>; Tue, 14 Oct 2025 11:09:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760426207; cv=none; b=t+QRaF5SHVjrlbROSiYy7ls6Y8WguPinI3NufhkgS9ayzE0srdJ4jC+/5+R/dsud1kAGzBDTtCd+WgdWuRaOTovK5HhnG3exSdxhkOSAFbZ1rj8t8H2F6XHJPnqSs2DSI2jFXeNC/26jwfLI/BGafRx8J3186Mx2TXpQl093ZHg=
+	t=1760440185; cv=none; b=npbaeIjDXsRhPZAhGFOtvTyzLzeljLwDVkFT6gC4B6ub+o67PQOXUrCsvFVnNQ1ZkqnsfmHRlv1POSKxQbVuOk1Ja9yn/JyarkRhsLX+9N3npO8i0AHb3hXZGHNVbsWLHRBVMMAF6zedXbJzvHb9JRazpFYz/ygXkDjqw4eI7pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760426207; c=relaxed/simple;
-	bh=GwMr5JrDGuC/p5DLnAhCVUPnWWDJPOC61F4+KjrTvfM=;
+	s=arc-20240116; t=1760440185; c=relaxed/simple;
+	bh=KiCiGjyW6jnRm4w/zDSslb9IMoTQ+UOhSYH0q6C7S+I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L8tApMh2h2Iw1vzdcremwyDPW55C9A0Sx93p9mhMCQpLuxgCiQ1kd481l4e2vcjtUeMm+u/pGOZHG3bGPCBqhLd6x4oBjkKd9M/3zG/RaE3hv3935WZZo8LjXTeJPai8zJ928uB12SOQOCmWKayljCrijMI9KeZxo0/9QgqeF14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LkOFU+md; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-46e3a50bc0fso36927955e9.3
-        for <ksummit@lists.linux.dev>; Tue, 14 Oct 2025 00:16:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1760426204; x=1761031004; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eae85rP/63NYJPgrkVMftTaX2Aik9xxCRaEXXsQI7sQ=;
-        b=LkOFU+mdkyazMf3g7Ik9bt5Wz0hUkmeDyh4Qk04BTiEuxfbQljRoBLQ0DiyH5hjDE2
-         xKs7AlFdw3z/yPPjnlAljP4lfbQ3LgZ3sbwexnEw5HA3AFu1DHoXpEacUWxUjgeuMf9S
-         9yKYeXIPWZ1Z0q7dUJSek64PzJCqztG5lRrfhUukttUmmtqarwZLRA82rcaAxzwXAkGY
-         obxzXguTldKn3qGBUySvFkh7Wr0EWVBE6ryqn+GUVmpzBuiisR310rx8id8NCtwc8yhO
-         R0O5d4iTekedZAyRvD1mJGlJUkU9m+ZwYsGEU7Lofk9zjnd01jFTzjQQaHi4XoC+0195
-         BdPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760426204; x=1761031004;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eae85rP/63NYJPgrkVMftTaX2Aik9xxCRaEXXsQI7sQ=;
-        b=ItyTwHmDXBxb5T3pjsWoknnHuHWqVporWjiPF7AryG70VhvS00xt0ef3QGAdSk49nd
-         eCdVmxIDmPQnUQEKMrqxELXpkoLsix49u6zlYKSqt7xZZ3s30NHgTXA7yzln0QP4CC/4
-         2ZN/xaOg9Z6Zu3MwNzSWwM36zIcBf8rWNkKPtAKYaEZs64I/VDgq4mOgPwAW1lVFUKWY
-         jQo0rO4RcF5FhekgMFJm7ZKChR4l1N8LjkkydiKr0aqxcIKwUzZS5e/Aw1L6yoQdeVCm
-         TY7gG/7wMGs9AotxpUgLdxYr/INIMFO4mg0plLaKedJG+/74tgiq9BTjPQIxAMY1wIfh
-         YI9w==
-X-Gm-Message-State: AOJu0YzL0B9hiHPgLa1UXS2CmozbadUSlLiGT7zuiryd0O61M1AOZcp+
-	j1/H5OjsQElz247A27PE1MWawElHN6cV369yQBxvH9bzi+9vk1Cd4CoGCcAkILJ27OI=
-X-Gm-Gg: ASbGncuO2n++FfWDi+x32OZFFIF9PsGmas9TMcu9Q9T0yaus6u8xDV4LwnYbdnsaoN2
-	V0sSp3d/9ibhc8RHJYvZV7r4cCxZOXNHADjbsu5++KjqvbxUrPJu4ryeRtHXBGiColwCOqy4csS
-	Md7pqIliASLXYjWXgUCakdXVxY9edJFhlhaTBdhvE5H+wMQpY+DmJdVxgKQCC8Nin4uDI5eF4RI
-	4gMZrtcm2l4sbEVaDOgbbIjSD2UVx/IOo0h6OQ7ZgcjaszUW/GoqEAskxHIPTqI/yNeDtfybrpy
-	yEQ9CmlAZVIHuL9WJnt5D25IEOVdGtEIk1wOVx4kxLimZpbWix494YviBp8rkqR0j8puY15Jdg9
-	/uoTOfwC+yasKE5zJ7Y/y1ROuNLO+YRxGr5Ar3Izmlif6gzI4o74l0nEJBkaXJa3HFvUV/Wr4
-X-Google-Smtp-Source: AGHT+IErZ9PdMOJGOaWJXSps9x6Zc42aBSsFAxh5Is3yBh7hcrKujRtD0gVsIFWq3rLdW5zbFTNCGg==
-X-Received: by 2002:a05:600c:699b:b0:46e:410f:f645 with SMTP id 5b1f17b1804b1-46fa9af8fa5mr174301705e9.21.1760426203930;
-        Tue, 14 Oct 2025 00:16:43 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-46fab3d2d65sm142893345e9.2.2025.10.14.00.16.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Oct 2025 00:16:43 -0700 (PDT)
-Date: Tue, 14 Oct 2025 10:16:39 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Chris Mason <clm@meta.com>
-Cc: ksummit@lists.linux.dev, Alexei Starovoitov <ast@kernel.org>
-Subject: Re: [MAINTAINERS / KERNEL SUMMIT] AI patch review tools
-Message-ID: <aO3415vQ7TcOGz8a@stanley.mountain>
-References: <fc05f97b-1257-4dee-966f-ba66fff8aef1@meta.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=haQg0vf10kHi3Otn3GeroKjxwNv/3Auv2buiKoJ/RITL9N9u45CDS/2YFKni+XHFPcmZ78XEk1cTtX9HnaD1oVt4/tzZDzALWszu5XQy4n75MVVOOPgbuGK9wsywC8eapUph4RbTwYCUODsAFzLwqd9omnaKg96ElROHLz6J7qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VCuIJJkh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E1CEC4CEE7;
+	Tue, 14 Oct 2025 11:09:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760440184;
+	bh=KiCiGjyW6jnRm4w/zDSslb9IMoTQ+UOhSYH0q6C7S+I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VCuIJJkht8SmMxL9OIlCtJTc9S4cSmtpOkafNlqmCZuacFiyIHk4oB+8ggYMgWuMc
+	 1IwvMeWcac3ety4Z/Ieqa84jxZf4rbYDbqk2bvZYHlBDBBTT0N0a7Yqj7cEFboBiqD
+	 tLfAO/L1+runiqSk3t30XU4FMEKsRp76xycfepPLvBdy0QVWVIaf0X6ExjKczsJT3O
+	 s/UKu4+FWmXCui4Qc7YsaC5PwI0Fds7IxMESIAaZShA9O6Fs+v55S5drG8ZdsqUeq4
+	 4Eb4l10ebQWiDVZZyIlnV8w30Fb2AlVvvkqQNTLBipphzz9TqWsOqmZt34WQ3tTAM9
+	 H1P1R7uRe9FeQ==
+Date: Tue, 14 Oct 2025 12:09:40 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Doug Anderson <dianders@chromium.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	"H. Peter Anvin" <hpa@zytor.com>, Theodore Ts'o <tytso@mit.edu>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
+Subject: Re: Replacing Link trailers
+Message-ID: <973213cc-b442-4cd2-b129-333f168bb9b1@sirena.org.uk>
+References: <a7878386f3546ba475cdf7250ab4f5a6af2a1676.camel@HansenPartnership.com>
+ <CAD=FV=VK0OLj5ASxtUZAUEK1WTxDW9LwCR+yBEKD6AdUyWkNNA@mail.gmail.com>
+ <c86ba3c682251154ec554f39004c392f8b8e1c02.camel@HansenPartnership.com>
+ <20251013133913.015f253b@gandalf.local.home>
+ <20251013175031.GJ354523@mit.edu>
+ <7EE2713D-7612-4EAC-9E4E-225A92FEC9D3@zytor.com>
+ <CAHk-=wj8mfMkkLFXdMLyAzUPRH-m1h=+uJrJFSxQSRuRxbi-iw@mail.gmail.com>
+ <CAD=FV=UjA8+pZoXMh9WgCHZAUX=pd7ehWxuu9kTFr5Dp5O-rCQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="FGwgOXupoVvQ1V8B"
 Content-Disposition: inline
-In-Reply-To: <fc05f97b-1257-4dee-966f-ba66fff8aef1@meta.com>
+In-Reply-To: <CAD=FV=UjA8+pZoXMh9WgCHZAUX=pd7ehWxuu9kTFr5Dp5O-rCQ@mail.gmail.com>
+X-Cookie: Go 'way!  You're bothering me!
 
-On Wed, Oct 08, 2025 at 01:04:54PM -0400, Chris Mason wrote:
-> There's definitely overlap between the bugs I'm finding and the bugs Dan
-> Carpenter finds, so I'm hoping he and I can team up as well.
 
-Sure!
+--FGwgOXupoVvQ1V8B
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-In my experience the big thing when there are two tools that produce
-similar output, the frustrating thing is duplicate bug reports.  For
-example, Clang generates uninitialized variable warnings and so does
-Smatch.  Smatch is a bit more ambitious so it catches more bugs but
-also has more false positives.  I always search on lore for the
-function name before reporting uninitialized warnings.
+On Mon, Oct 13, 2025 at 01:34:05PM -0700, Doug Anderson wrote:
+> On Mon, Oct 13, 2025 at 12:20=E2=80=AFPM Linus Torvalds
 
-> 2) A code indexing tool with MCP server that Claude can use to find
-> functions, types, and call chains more effectively.  This makes it more
-> likely Claude can trace complex relationships in the code:
-> 
-> https://github.com/facebookexperimental/semcode
-> 
-> Asking claude to produce a callgraph for btrfs_search_slot() consumes
-> ~444K tokens.  With semcode installed, the same query produces better
-> results and uses 25K tokens. (btrfs_search_slot() has a huge callchain)
-> 
+> > All the other arguments seem just disingenuous in that they literally
+> > give less useful information than "b4 dig" does.
 
-Smatch has better call trees than any other tools.  The UI might not be
-the best, but the data is there in the cross function database.  Where
-Smatch falls down is when functions are called from assembly which isn't
-often.
+> Wow, I hadn't heard of "b4 dig" and it doesn't appear to have landed
+> yet. ...but I searched and it was easy to find a reference. I'll check
+> it out. Oh, it's using AI. I guess my suggestion that we should use AI
+> to solve this problem was more on point than I realized. ;-) ;-) ;-)
 
-regards,
-dan carpenter
+> OK, I found Sasha's RFC [1].
 
+Konstantin has an initial implementation in b4 tip which is not
+currently using AI but rather falling through a stack of heuristics to
+try to figure something out.  It's a commitish to lore link lookup tool.
+
+--FGwgOXupoVvQ1V8B
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmjuL3MACgkQJNaLcl1U
+h9Cg3gf+O6pLl5AZk0d4KrYQ0Om6OPo6JUqrBFEioGGqO6dB7MBlvEC+3R4kGa8c
+gJKtfg+NdrTP0AVO7KPcmvVZmFgGBOjiyFwqFFZn2zyEUIQvAv5yxtNP+n8dMX23
+aEzUgTUsajV2K0trzxdSM5wPuSHN+cO06Tf7hPvw2txID1iyLJ86Ts0Suy+LjPxk
+JT4UPC+gc6xD2H+1GG6dFp9WUPQmzytTt3QRtBuyxG3asRlv9U19k05DZj+8cQRM
+vtG3pgoXiV+jXy3xbrGpNZDqKsqjMCx0r8ZkEExLcp1ISmVOH5C/9YJlbaJpuqVR
+LTjJ1dmYsNVcNkXjEFpekUUbKAubnA==
+=5iPi
+-----END PGP SIGNATURE-----
+
+--FGwgOXupoVvQ1V8B--
 
