@@ -1,47 +1,47 @@
-Return-Path: <ksummit+bounces-2536-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2537-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 092A1BE0D0C
-	for <lists@lfdr.de>; Wed, 15 Oct 2025 23:29:45 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEAB1BE0D4B
+	for <lists@lfdr.de>; Wed, 15 Oct 2025 23:40:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B77273AE7CD
-	for <lists@lfdr.de>; Wed, 15 Oct 2025 21:29:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 847C44E9BA1
+	for <lists@lfdr.de>; Wed, 15 Oct 2025 21:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B50E02FCC1E;
-	Wed, 15 Oct 2025 21:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7951A2FFDF2;
+	Wed, 15 Oct 2025 21:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BQDlmlpK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u4y1J9BO"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3544B2F90C4
-	for <ksummit@lists.linux.dev>; Wed, 15 Oct 2025 21:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01242D3220
+	for <ksummit@lists.linux.dev>; Wed, 15 Oct 2025 21:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760563780; cv=none; b=IMHlLjGfSKfxIcdeavjlAW/pzqVX9zpOATY39LTrWCL8HNpNyf1Bwqgf+tYRqSUilxM9gHojv6aPvAb0ONhchsPfJVBswH0Sd13wyb6BywQpq8M31K9t/Ab4LpS4pq4j9JrHU8L7vWqRJrQ6fzRhjj2NRKdifZg8l63ZbstUxac=
+	t=1760564425; cv=none; b=jq0dCS23ilDfBObVrt3cwhmEWWJt+0tESSGly4OaUwW5Q3fyHKgnaGqm/hBXWKh0su54twTxdknFMYohSzuLn0er6sKYdVrojd2QVio++pnUd3yeahfGB7TGXVxHxwRNqjh2e1mqjFrz71XssGoKNJC2b3dGtyHRte/7KLUKv+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760563780; c=relaxed/simple;
-	bh=Jfe0RVlK4T5WeGB6Uwt0deGmZ4QTpwBFdBz3+J+yyZE=;
+	s=arc-20240116; t=1760564425; c=relaxed/simple;
+	bh=+vlv/7Q6O7jcv9EgQATGKpnNahPgU9YJu5guDWOd9LM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pVn+urIlFrb2VlltevNkHJczysftW81W0bHHN4Cxz7LIZ9XM8f5eA2V3HWel14Dol7iJZCoODvB7HzbIWxuLLC81v8W/1MI8n+zco2SjaMPlxHFZm6WzH8R322UIEX5oy22X8FXBULYbCjwfmWCfQwJ7e0Hiwfd3/ZdbRUlK6wI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BQDlmlpK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3953C4CEF8;
-	Wed, 15 Oct 2025 21:29:39 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=spiKDQQzPA81f2kpBUYlF65vz8X+CuV3ZFESB0FM3oCHOumm8ahLjaOBXpNrfV2GEQ/M+BlZhHwgXRhecmD89DBeqmZcyatdhgO/Pfj1F0Ck/dUbMsj6X9rhUME18/4NBbKoxvw2uCOl2kT/6iVgeNJS6b6X33ddtbii8Ha0gqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u4y1J9BO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9381C4CEF8;
+	Wed, 15 Oct 2025 21:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760563779;
-	bh=Jfe0RVlK4T5WeGB6Uwt0deGmZ4QTpwBFdBz3+J+yyZE=;
+	s=k20201202; t=1760564424;
+	bh=+vlv/7Q6O7jcv9EgQATGKpnNahPgU9YJu5guDWOd9LM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BQDlmlpKH6HwIkRkpLPbWLa6VZjJ+/KghsDulw31guTK9/HFn0d9nQjYNXcUNq31C
-	 wVmufTf6bFTE3EVNdB7hklWKsA9NbEXpDjRG035bNSextC5XR99PUTUYYae08C/2kl
-	 hCy9MjGerDVFF53knGhlSBrswNQ9q761lb+ubLhYvP/HYgKPbibTg5H8+9T1hMT6bh
-	 mfZFNQ9PGQiEhIk4dM5KcoUfFvyndP9sjUUsQZdf7xIUNsOuOtvDeVe2TQYJH4+pBP
-	 NyLWYvuwHTYni6BPBOE0rQl7gOEOpHYQnajiafOnYbFaMFp3risX3bydXqzhSm3pS0
-	 Ina1vp+R3hjzg==
-Date: Wed, 15 Oct 2025 14:29:39 -0700
-From: Kees Cook <kees@kernel.org>
+	b=u4y1J9BOlMHe9E9w+UeTChIXDqK3sMlVMKegLb2wUetosRPMkvSjC5zlGrwICPP+7
+	 +/qrUR/MKEWyKiqNRDz5vxbAewPDXTZ9hNEy3FYUZ1N2VCglI7DFiXaK2kcbyVpK+i
+	 wA2NAcFzJU/Nbi32SVax2h0gEUMs+w0SJokZPHtuVnHEcsZxp4tc8bskO6qLubkVTf
+	 TZNeo6WKFIIwZrnaYkFvGMLNDz1haakS/Fu04BksaPh11CV+Z2wxOSQ3l4jI+4hq+d
+	 3KzW1AUnMDGyHXi0Lpfg91QtVIYNGgwgxteGkS/K/y223GhRRB+bApGERyTNZRtcgM
+	 SlxPsKPW+cguA==
+Date: Wed, 15 Oct 2025 22:40:19 +0100
+From: Mark Brown <broonie@kernel.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
 	dan.j.williams@intel.com, Greg KH <gregkh@linuxfoundation.org>,
@@ -49,7 +49,7 @@ Cc: Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
 	James Bottomley <James.Bottomley@hansenpartnership.com>,
 	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
 Subject: Re: Replacing Link trailers
-Message-ID: <202510151425.0E48163@keescook>
+Message-ID: <aed7a9d7-640c-4c79-84bf-77113dac0043@sirena.org.uk>
 References: <a7878386f3546ba475cdf7250ab4f5a6af2a1676.camel@HansenPartnership.com>
  <CAD=FV=VK0OLj5ASxtUZAUEK1WTxDW9LwCR+yBEKD6AdUyWkNNA@mail.gmail.com>
  <68ee73dcd10ee_2f89910075@dwillia2-mobl4.notmuch>
@@ -63,29 +63,52 @@ List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="dAncuYLcXXYc/Z/I"
 Content-Disposition: inline
 In-Reply-To: <CAHk-=wiLMH5QBF+veebJgdh=e=Q5uz7AEF0sfWPRhSAXvg8ASg@mail.gmail.com>
+X-Cookie: Long life is in store for you.
+
+
+--dAncuYLcXXYc/Z/I
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
 On Wed, Oct 15, 2025 at 12:15:09PM -0700, Linus Torvalds wrote:
-> Look, you can have a .git/hooks/prepare-commit-msg script that looks
-> something like this:
-> 
->   #!/bin/sh
->   COMMIT_MSG_FILE=$1
->   COMMIT_SOURCE=$2
->   SHA1=$3
->   b4 dig -c "$SHA1" 2>&1 | sed 's/^/# /' >> "$COMMIT_MSG_FILE"
-> 
-> And lo and behold: you'll find the 'b4 dig' output at the end of your
-> commit message as you start editing it.
 
-Perhaps use local git notes (or whatever) for the "b4 am" URL (that would
-have been the Link tag), and at commit-msg time (i.e. the above hook),
-if "b4 dig" doesn't match that URL, emit the saved Link tag and a FIXME
-into the commit msg to describe what changed enough that "b4 dig" didn't
-find it and why a Link tag is now justified?
+> And if people who have real workflows that use Link tags actually were
+> to add them consciously, I wouldn't hate them so much.
 
--- 
-Kees Cook
+Where people are adding the tags as a matter of routine it's commonly
+because others find it useful to have them rather than for their own
+direct benefit, the workflow is someone else's.  People come along later
+and want to follow the trail back from git to the mailing list - for
+example my main use case is that I've got a bisected test failure and
+want to tell someone who might care about it while also checking to see
+if the issue has already been reported.  Sure, dig will work for that
+most of the time but it's heuristic based and it's something people have
+to install. =20
+
+I happen to already have tip of tree b4 to hand anyway for other reasons
+so it's a relatively small speedbump for me personally but it's hard to
+get enthusiastic about.
+
+
+--dAncuYLcXXYc/Z/I
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmjwFMMACgkQJNaLcl1U
+h9DgZAf7Bxt6oUw7Jn6WPFrZ9/4S3zdc+0XyRTcr15Gw0B/ZVSeFbvfO2RtVwqu0
+gnasbxj7uBcNiOBftSprG9ZYHW7zbScy6qdwkgI82aLY54R44+ZXZeleWALwbSvp
+bX9eD2ytZe5bXtJoZyIRG/UIIKnvTsOj1oE6E6ON6d2xxLxKAtByFtHbBX+/53Ba
+TmXFmv0/TbGVUDpXV0EpaqYOjscsPCa82WhG5PWPfL2H2+LBDjrH9kdWUjFADqmu
+LKa5uDW0rJTW5mpfK/6RHvGTepFJsiO0CTs2mlumscynCeVwzJ/V5fM7I1Z0Hgtf
+N0C8gkYrYfUC6d73qh2/Ieyi83N6eA==
+=P7Tn
+-----END PGP SIGNATURE-----
+
+--dAncuYLcXXYc/Z/I--
 
