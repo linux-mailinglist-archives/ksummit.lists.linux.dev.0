@@ -1,148 +1,112 @@
-Return-Path: <ksummit+bounces-2548-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2549-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE98BE34F9
-	for <lists@lfdr.de>; Thu, 16 Oct 2025 14:18:55 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C486BE3502
+	for <lists@lfdr.de>; Thu, 16 Oct 2025 14:19:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4BC7B4E4C7E
-	for <lists@lfdr.de>; Thu, 16 Oct 2025 12:18:54 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AD7CA345ADB
+	for <lists@lfdr.de>; Thu, 16 Oct 2025 12:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C82431D72B;
-	Thu, 16 Oct 2025 12:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A72631D72B;
+	Thu, 16 Oct 2025 12:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A7PJu8tB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a/RKjk8Q"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34FF2E03E6
-	for <ksummit@lists.linux.dev>; Thu, 16 Oct 2025 12:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D4E2E03E6
+	for <ksummit@lists.linux.dev>; Thu, 16 Oct 2025 12:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760617130; cv=none; b=t4zoBZUJ1QQFmcMFTcLiFPTDgQ3ACiFpcPfaZChOYc98vhTr4K8E41FwVyKEO1K2Oe9Xogz0reQpODfI2DjkPfNymRQoM4BknQiVxa6tr8AzRaQvddSgfT5cvZk8t03IkL0ihnT33nMCOURqxVyeq3eMOE1a0keSAhAbaR/Mack=
+	t=1760617140; cv=none; b=Di63vLTa73k4i61MnysQ42BkJAadB2xhpkBAIwaAknw58lYDpHvwoiDe6fNir0ai74nI2t6g0X4XW3NDjq+esv6fiYT92y5RVQToZKeiV3Grrqvd99FzVZ9MmQyM+Qvv4Ac9E4XabgDXdrT6+BirFEOBMOWj+lWRbj2AfZvwJok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760617130; c=relaxed/simple;
-	bh=5frKtB3Pe3Ka00n1d9EElpoNBxAdqPb2Pn6yjxBu19E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jP1hBR0g0lZf9xlz53rZlTBNDCo7MwxxggKhgaGE39pkjNkzh3Hq1vFx6ac8J71duVwqA5zIUo8kL00NSfviwSkz9l1brFYDCWJploxALM3bgnou8IZy9mS5EAKh9NxJ8x9EUDMsM4HPj7i0LdnTswnB1VYrgiPXF0EoFXoNt0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A7PJu8tB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 267B6C4CEF1;
-	Thu, 16 Oct 2025 12:18:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760617130;
-	bh=5frKtB3Pe3Ka00n1d9EElpoNBxAdqPb2Pn6yjxBu19E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=A7PJu8tB8ruT9zPPEnS29fHrq6fCNIuOXHo+xnXwM2WHYMrTkajVq+qxzZrMZeFSi
-	 av3nt20sY6A3nmaW4JQ0zFIvst6k4HARZ0WorgPfEukVZcWTnmwr8Fz/AIiC32jnoo
-	 ICC23sthh36oFU6nMTMkHrHMXM8hdTgewDSN6qrY=
-Date: Thu, 16 Oct 2025 14:18:48 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
-	dan.j.williams@intel.com, Doug Anderson <dianders@chromium.org>,
-	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
-Subject: Re: Replacing Link trailers
-Message-ID: <2025101639-thwarting-press-f0f7@gregkh>
-References: <a7878386f3546ba475cdf7250ab4f5a6af2a1676.camel@HansenPartnership.com>
- <CAD=FV=VK0OLj5ASxtUZAUEK1WTxDW9LwCR+yBEKD6AdUyWkNNA@mail.gmail.com>
- <68ee73dcd10ee_2f89910075@dwillia2-mobl4.notmuch>
- <2025101448-overtake-mortality-99c8@gregkh>
- <68efd54da845e_2f89910071@dwillia2-mobl4.notmuch>
- <20251015-versed-active-silkworm-bb87bd@lemur>
- <CAHk-=wiLMH5QBF+veebJgdh=e=Q5uz7AEF0sfWPRhSAXvg8ASg@mail.gmail.com>
- <CAHk-=whCgsMuZ8heJ6ma3hCM_reG9+VYWfXorC=14n59TWg22g@mail.gmail.com>
- <2025101631-foyer-wages-8458@gregkh>
- <892a58917795bf5d29394bb5123dae2a6615ca08.camel@HansenPartnership.com>
+	s=arc-20240116; t=1760617140; c=relaxed/simple;
+	bh=oBhPN5cwsbedxtoHeA6FY47vyOlwE/+bzT+GqOnHHUc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ne9uoJSMmYq8E/nl4cWAsyOBRzOAbokP7tnn6pHEALrXEaUZmIbC4eJPoqFEtVnt+Wk02bvpyJFSV0f7dCQ6k6Z3Aj9xdTTaVd5vuLxSnA/AXb8Rn98l4J26oe12kOdiVf6bknuu14gQtm4owGnOjCGzF9XNSs+qcTCQHcsj4cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a/RKjk8Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2767CC4CEF1;
+	Thu, 16 Oct 2025 12:18:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760617140;
+	bh=oBhPN5cwsbedxtoHeA6FY47vyOlwE/+bzT+GqOnHHUc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=a/RKjk8QxHHu651C4WWk1kPuxM2mtpZNtCkkS0GB1q2OunG2sBf7yTf4dRTxjJ8Qo
+	 2icYrghiVcj4SUDyeJhaVRhJ44q5U+044QKWZ9o/OZeCLB76pcorzGk7Hf7OSrTHWG
+	 9r4veH9i5TweGxiftR09dHJVNKu5r4/kQ3xQEecm5YtE9UcYjG05ryaDE/cDsRuBwp
+	 Rrf2gJXt78R9hNLv5/7FXtEvTKWoQeAuIUeS7dABcnrWjhqYRd4h77OAwrMxzJWJBK
+	 UUYu7ztWedkZlfns2TZ/ychUPrqG/YYbmICPOr92n2VP5pQaudOJ45gBFnISJiJC+l
+	 RjydnZL3mTnZg==
+Message-ID: <f54e4750-ac02-4ba4-a485-b0926a11acd5@kernel.org>
+Date: Thu, 16 Oct 2025 14:18:57 +0200
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <892a58917795bf5d29394bb5123dae2a6615ca08.camel@HansenPartnership.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Replacing Link trailers
+To: Simona Vetter <simona.vetter@ffwll.ch>,
+ Steven Rostedt <rostedt@goodmis.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ James Bottomley <James.Bottomley@hansenpartnership.com>,
+ "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
+References: <a7878386f3546ba475cdf7250ab4f5a6af2a1676.camel@HansenPartnership.com>
+ <6b188d9e-3d47-4a30-8452-3e57e09cf8e3@efficios.com>
+ <8572506ccdaa6211e177d5976a74737268486492.camel@sipsolutions.net>
+ <20251014153521.693907a1@gandalf.local.home>
+ <c311cf11f2e0bc2046c428e398508010c7626855.camel@sipsolutions.net>
+ <20251015182245.05c28887@gandalf.local.home>
+ <CAKMK7uG7DjduHj7hjFi2sk11UqbFcZHuXBF_+Ea7SKbV15e00Q@mail.gmail.com>
+From: Hans de Goede <hansg@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <CAKMK7uG7DjduHj7hjFi2sk11UqbFcZHuXBF_+Ea7SKbV15e00Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 16, 2025 at 07:54:01AM -0400, James Bottomley wrote:
-> On Thu, 2025-10-16 at 08:57 +0200, Greg KH wrote:
-> > On Wed, Oct 15, 2025 at 12:17:27PM -0700, Linus Torvalds wrote:
-> > > On Wed, 15 Oct 2025 at 12:15, Linus Torvalds
-> > > <torvalds@linux-foundation.org> wrote:
-> > > > 
-> > > > (The above script is "tested" in that I verified that yes
-> > > 
-> > > .. premature 'hit send' situation. That should have said
-> > > 
-> > >  ..that yes] I verified that it superficially works, but didn't do
-> > > anything exhaustive.
-> > > 
-> > > It was obviously meant as a "look, you can do things like this",
-> > > not as a real fully fleshed out solution.
-> > 
-> > So, to summarize all of this, you are suggesting that maintainers:
-> > 	- don't automatically include Link: tags when they don't
-> > touch a
-> > 	  patch and apply it directly from the email as `b4 dig`
-> > will be
-> > 	  able to find the patch.
-> > 	- if a maintainer does change a patch, add the Link: tag so
-> > that
-> > 	  people can find the original patch when looking it up
-> > later.
-> > 
-> > Is that correct?
-> > 
-> > If so, ugh, that just raised the workload of all of us maintainers as
-> > now we have to remember to do that second step manually (or through
-> > the new git hook, which will NOT work without a network connection so
-> > no applying patches from planes or trains).
+Hi,
+
+On 16-Oct-25 12:16 PM, Simona Vetter wrote:
+> On Thu, 16 Oct 2025 at 00:22, Steven Rostedt <rostedt@goodmis.org> wrote:
+>> On Thu, 16 Oct 2025 00:01:38 +0200
+>> Johannes Berg <johannes@sipsolutions.net> wrote:
+>>
+>>> So yeah, circling back to "benevolent" -- for me, this has definitely
+>>> broken the "benevolent" part and a lot of trust. But that's fine, I can
+>>> also do a job that heavily resolves around following a manager's
+>>> arbitrary whims. But my heart won't be in it.
+>>
+>> Yes it does appear that we all have extra work to do because one person
+>> doesn't like the current method. I don't think I saw anyone else complain
+>> about the "useless" link either. Maybe I missed it. But currently it's all
+>> been "Alright, fine, I'll work around this" and not one "Oh Great! This is
+>> most definitely helpful!", like what happened when Linus created "git".
+>>
+>> I'm currently looking for someone to help me with my maintainership. Masami
+>> came on board, but what happened was that he basically maintains all things
+>> "probe" related and I do everything else. That split still takes up more
+>> time than we have designated.
+>>
+>> Unfortunately, I've had many people say to me "I don't ever want to be a
+>> top level maintainer" and "better you than me", which makes it very
+>> difficult to find a helper. This discussion isn't helping with that
+>> perspective either.
 > 
-> I agree with all the complexity.  So why don't we simply have git am
-> add message-id to the commit header if it exists in the patch?
+> +1 on both Steve's observation and Johannes' entire mail.
 
-Where exactly would that be added?  Are you suggesting that git add a
-new atom_type of ATOM_MESSAGEID or something like that?
++1 from me on both too.
 
-If so, sure, that works for me, I just want a way to track back a commit
-to a message somehow that does not require me to pick-and-choose when I
-want to add that reference, as that increases the workload on
-maintainers.  Be it a link: or a message-id, or something else that I
-can "set and forget" in my git hooks and so can all other maintainers.
+Or as Geert put it: "So, can we please get our Link:-tags back, and get back
+to real work (or vacation ;-)?"
 
-Then, sometime in the future, a user is happy that the maintainer "paid
-the insurance bill" of adding that reference, so they can look up the
-original commit as something went wrong.
+Regards,
 
-Sounds like the networking maintainers also want it, as does drm.  I
-think those are the two largest creators of commits in our tree these
-days by far.  Luckily staging has died down so I'm no longer in that
-category :)
-
-thanks,
-
-greg k-h
+Hans
 
 
-
-
-That
-> way every b4 generated commit will have a message-id header.  No-one
-> will ever see it unless they ask for the --pretty=raw (which is what
-> tools can do, so they'll all just work) and it is completely mindless
-> so everyone always knows what it points to if they want to dig it out.
-> b4 dig can even use it as the starting point to find the email.
-> 
-> Bonus: everyone is forced to use it (because it's built in to git) and
-> we always know exactly what it means: no debate about what the target
-> of the link should be.
-> 
-> Regards,
-> 
-> James
-> 
-> 
 
