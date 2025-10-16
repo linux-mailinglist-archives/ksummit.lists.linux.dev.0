@@ -1,135 +1,103 @@
-Return-Path: <ksummit+bounces-2563-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2564-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ACD0BE40B9
-	for <lists@lfdr.de>; Thu, 16 Oct 2025 16:58:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDB59BE420F
+	for <lists@lfdr.de>; Thu, 16 Oct 2025 17:10:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCA8319C6F37
-	for <lists@lfdr.de>; Thu, 16 Oct 2025 14:59:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 163C95E032E
+	for <lists@lfdr.de>; Thu, 16 Oct 2025 15:07:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFF1341ACF;
-	Thu, 16 Oct 2025 14:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1898232D444;
+	Thu, 16 Oct 2025 15:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lWMgLkqW"
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="aL54W+A6"
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7753254B7
-	for <ksummit@lists.linux.dev>; Thu, 16 Oct 2025 14:58:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737BE2727E0
+	for <ksummit@lists.linux.dev>; Thu, 16 Oct 2025 15:07:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760626712; cv=none; b=VpnHWMvZbL/l4L9qyEZL5cwWEbZwaylj0gtOPqsm2SMosOnrzOZqb/5AIljqtChqys7oX3pOJDhve0DHRcg+GUxcSutOjrCawhLxCVYgGP6GqxL5rVdDArogzFdONoSyJ6H819SH6RZRPg/jq10e1RT+vt7IToh/TzR3EU9e8g4=
+	t=1760627264; cv=none; b=XloX/INer5cseA82JOYzWfg9/Usne4COs1pGAf0wmudzvHWyXAHDPLWWW9EMiXs4VlEstowU2JTTXzGt6PzlGpA0i51yBbp/GLx6MRumjuG3vcuU+1xU6YPDT7EX18ydzOdsgU5e+pixD4CoA9GFR891TRGym1xUuJWHTpRGoJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760626712; c=relaxed/simple;
-	bh=NmhS2ixsae63hgfZ32YIJDShB09vDisEzuBEFIDR1tY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tFnrN9tji8ldfkheo4c2q5G4WdZtIJBCRI6p3Zju/4wgT2defgYnfosbw+xPKDFhpxc/RrLiKrDddyOlzMqHRmrEUFqtoj0VUtzlquGBr04x4pQYbn7+SQP34yCmTZAWy0XVIDBM755GKGFx0hgEVgTocrQpi9XtlhHEpzvc8d8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lWMgLkqW; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-634b774f135so1432866a12.2
-        for <ksummit@lists.linux.dev>; Thu, 16 Oct 2025 07:58:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760626709; x=1761231509; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UiJZEXEfgr/5X7g9cOFpRdMiTnBkAvLQI7UzwnKi3gE=;
-        b=lWMgLkqWSMjgEgkCndQXoPR6jg6Bnx9/9MNoczeqrqkXrS1Q820DXKL4/tfdolZkkR
-         ZP0X/Gd0jNmuYVWqHqSNx/IQT5sFw3FTTyuGC2YaoxR0Mdlx4y02DisG2nJXNhj97zDK
-         X6ibTVI8zDFMjpoHIemNN13/0kjYsQFNd2SK3tx/y+LxPRGoRLu1i8/3PgwK/0ISdruO
-         pXDM7Lijw7VEeVdfenBBzI4k3Mlz/D/Ra/mMMWAkl8yADUVDCM/B83iMsIbA7vqzQzOy
-         t6jJzxzFLjyZ0j+uSiVEh/5hsAuaRaW6AKjKIb7wXQw7Fiutg1jnahdmymF0qDNNm+nz
-         wMzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760626709; x=1761231509;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UiJZEXEfgr/5X7g9cOFpRdMiTnBkAvLQI7UzwnKi3gE=;
-        b=MWtruzKwI743GyjCFFAUrwHDTXl7wnHvbUkJLyunNLBzfluQH8na4oZ5N8i83WmT0Z
-         goUbZeX8E0aoY2CbfiuJCabahaT+EW9dkVNmSih2y5f1YHpd4lPS0pC36Xg6BrQVhVUP
-         nNDnLzYOYLKU9GnYogNcXJdY8M9M8+AR5B1T+RCd6I8Op06BNigeSqAgw3Qs0pq4c7Un
-         +5GRnp/Ox5beBtrFKgtSA2dIRh28Vh5nxMGR8EyBnzAClRFksAOvrsNlaH4Wlmhi4YcI
-         DBm5QbZjQlp0pVckEtIF4ZHHz1ODzMAyM+vjQPiOSgDVT/2fqyBgYAIA9o3JmRUqFhGc
-         JDUw==
-X-Forwarded-Encrypted: i=1; AJvYcCUsNVL+d2SaARnZ/hNbT78M2Ky/USha2YrO4N4iHzOzY6QhUjZwlA1xfxsLDQdy+5woYeUNU4L7@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyt/ofGYnt6Bn1SrBtEeJHuZ74lhS6vE/N04Ii8UxrMaM/fiWBe
-	HY5Z3DpmjQsvAyfX0YvgCtinFNr1jCRpievxP6tppcwvVuyPHrRvg3ZzaqMuQvWLxEw+xKV9Ca6
-	K2MHv/cjQZrPx+IqlLu7y3g2pNs8VPO+7
-X-Gm-Gg: ASbGncvPf3HZBftZUqa1cpMRuQVWp4stKsuxL9V5KFw+KUS42ZjypOS1zipTRuAPJLN
-	e5LRZNlbbMhYj20ZPkR2dFuhjf08h7YFb0t2J/U90hBrlN4HTKWzB5NExsPEGF/nUZnZKe9W3Ww
-	GQKuavT+aCCwmsJ6TK1LHbkLcnMx2CxSh+AzhxhDbxVLPSbbi2eHdhbclv/Fuu8+k/GFyJvFdKW
-	6+m7jpcDU3itCvzj5pCjZNylXIV2bLHt8L3MbQHLQn/iq8MdHVORj3oYSBtg5t+nUvoT1lyHnYo
-	fX2DlMuFw5cKCTOKwGjs88dI+QQ=
-X-Google-Smtp-Source: AGHT+IFeORFAFTyCrZEUwmZxC/IVZdiZkmBX7iW+oQ+rMcr861L2NbkANli8xP4TORDJOZ4mjFqW45KntN8AcGuoy84=
-X-Received: by 2002:a17:907:bb49:b0:b3c:82d5:2119 with SMTP id
- a640c23a62f3a-b647403a63amr21121266b.6.1760626708280; Thu, 16 Oct 2025
- 07:58:28 -0700 (PDT)
+	s=arc-20240116; t=1760627264; c=relaxed/simple;
+	bh=rG2AUQ/0sRl1cK1Tix84DhCCVKL71w9VKhO3oDuJc7I=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=TGa4XYXxI5iuKBkS2weHJiBjMRZpO1Azv4IfDGHeWhpEu+GeZ5WAI3VRAEKl6WE9A9O4O87Fw3MJXXjmNWwQUVh1ChofbysdF+2xTvHh96opdrda4+XR4+QJzhVVQ7NU3MtBz7Uu1PEbB3ex48dYFIwDURyuOg1Qx6bE5xb3wUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=aL54W+A6; arc=none smtp.client-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1760627261;
+	bh=rG2AUQ/0sRl1cK1Tix84DhCCVKL71w9VKhO3oDuJc7I=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=aL54W+A6wKG3PR8yHjlxyp7UsLGFt84RBcugRJJU3e05aEvGj61/JTsSeRPw1UR1Y
+	 2hx0HX/Mw1/OxzMrAOlyH6EE22IEG7KHpNf+IRKlOHU/Ci5xYT7IQCr/RqhyTLOfcA
+	 yi8giaJaSqXuqYT/xDGu4KQlPUwOE0x2l818IsQU=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 147D31C02CD;
+	Thu, 16 Oct 2025 11:07:41 -0400 (EDT)
+Message-ID: <76340e9a1adf2f73b624992ae2da251826188b95.camel@HansenPartnership.com>
+Subject: Re: Replacing Link trailers
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Rob Herring <robherring2@gmail.com>, Konstantin Ryabitsev
+	 <konstantin@linuxfoundation.org>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Linus Torvalds
+ <torvalds@linux-foundation.org>, dan.j.williams@intel.com, Doug Anderson
+ <dianders@chromium.org>, "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
+Date: Thu, 16 Oct 2025 11:07:40 -0400
+In-Reply-To: <CAL_Jsq+VUh2Czq5KGPBoR056rMPxF_5W8ijuieZsU4RhPFwwpA@mail.gmail.com>
+References: <68ee73dcd10ee_2f89910075@dwillia2-mobl4.notmuch>
+	 <2025101448-overtake-mortality-99c8@gregkh>
+	 <68efd54da845e_2f89910071@dwillia2-mobl4.notmuch>
+	 <20251015-versed-active-silkworm-bb87bd@lemur>
+	 <CAHk-=wiLMH5QBF+veebJgdh=e=Q5uz7AEF0sfWPRhSAXvg8ASg@mail.gmail.com>
+	 <CAHk-=whCgsMuZ8heJ6ma3hCM_reG9+VYWfXorC=14n59TWg22g@mail.gmail.com>
+	 <2025101631-foyer-wages-8458@gregkh>
+	 <892a58917795bf5d29394bb5123dae2a6615ca08.camel@HansenPartnership.com>
+	 <2025101639-thwarting-press-f0f7@gregkh>
+	 <ef52db7e1d08eb03376fd9343c965aab4dc71ce5.camel@HansenPartnership.com>
+	 <20251016-vehement-kittiwake-of-joy-d6db8e@lemur>
+	 <CAL_Jsq+VUh2Czq5KGPBoR056rMPxF_5W8ijuieZsU4RhPFwwpA@mail.gmail.com>
+Autocrypt: addr=James.Bottomley@HansenPartnership.com;
+ prefer-encrypt=mutual;
+ keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <68ee73dcd10ee_2f89910075@dwillia2-mobl4.notmuch>
- <2025101448-overtake-mortality-99c8@gregkh> <68efd54da845e_2f89910071@dwillia2-mobl4.notmuch>
- <20251015-versed-active-silkworm-bb87bd@lemur> <CAHk-=wiLMH5QBF+veebJgdh=e=Q5uz7AEF0sfWPRhSAXvg8ASg@mail.gmail.com>
- <CAHk-=whCgsMuZ8heJ6ma3hCM_reG9+VYWfXorC=14n59TWg22g@mail.gmail.com>
- <2025101631-foyer-wages-8458@gregkh> <892a58917795bf5d29394bb5123dae2a6615ca08.camel@HansenPartnership.com>
- <2025101639-thwarting-press-f0f7@gregkh> <ef52db7e1d08eb03376fd9343c965aab4dc71ce5.camel@HansenPartnership.com>
- <20251016-vehement-kittiwake-of-joy-d6db8e@lemur>
-In-Reply-To: <20251016-vehement-kittiwake-of-joy-d6db8e@lemur>
-From: Rob Herring <robherring2@gmail.com>
-Date: Thu, 16 Oct 2025 09:58:16 -0500
-X-Gm-Features: AS18NWDdU6e8z4GVKJCii5MgToyqKxOsQJww2FkVqGLa-2FWF_AFIr2WcM-DUrU
-Message-ID: <CAL_Jsq+VUh2Czq5KGPBoR056rMPxF_5W8ijuieZsU4RhPFwwpA@mail.gmail.com>
-Subject: Re: Replacing Link trailers
-To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Greg KH <gregkh@linuxfoundation.org>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	dan.j.williams@intel.com, Doug Anderson <dianders@chromium.org>, 
-	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 16, 2025 at 8:02=E2=80=AFAM Konstantin Ryabitsev
-<konstantin@linuxfoundation.org> wrote:
->
-> On Thu, Oct 16, 2025 at 08:29:01AM -0400, James Bottomley wrote:
-> > > Where exactly would that be added?  Are you suggesting that git add a
-> > > new atom_type of ATOM_MESSAGEID or something like that?
-> >
-> > Yes, I think so ... just looking at constructing a patch now.
-> > Regardless of the outcome of this debate it seems like a reasonable
-> > (and not kernel specific) feature to add to git.
->
-> I am wholeheartedly for this approach. One of the downsides of the curren=
-t
-> scheme is that Link: trailers can be pointing at multiple patch submissio=
-ns
-> (e.g. if the commit wants to highlight a related patch series), so withou=
-t a
-> clear indication which link is the provenance link, we still have potenti=
-al
-> for confusion.
->
-> I recommend that we all stop beating the Link: trailer topic and sit on o=
-ur
-> hands until the above is either accepted or rejected by the git maintaine=
-rs.
+On Thu, 2025-10-16 at 09:58 -0500, Rob Herring wrote:
+[...]
+> With a new atom_type, there doesn't seem to be a simple way to turn
+> on or off a field in git-log. We'd need '--pretty=3Dlinus' or some new
+> git config setting.
 
-git-am already supports adding message-ID though to the commit msg
-rather than the commit itself. A custom pager config could either hide
-it or transform it into a lore link. That would avoid the need to wait
-for a new git version to trickle out to everyone.
+Well, not on a per field basis, no.  --pretty=3Draw will give you
+everything, though and "grep ^message-id" would pull it out, which I
+think would work for scripts.  If humans want to use it, I think, per
+Linus, we'd have some option to convert it to a clickable something.
 
-With a new atom_type, there doesn't seem to be a simple way to turn on
-or off a field in git-log. We'd need '--pretty=3Dlinus' or some new git
-config setting.
+Regards,
 
-Rob
+James
+
 
