@@ -1,125 +1,100 @@
-Return-Path: <ksummit+bounces-2565-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2566-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83B3FBE44A7
-	for <lists@lfdr.de>; Thu, 16 Oct 2025 17:40:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4E4ABE44B3
+	for <lists@lfdr.de>; Thu, 16 Oct 2025 17:40:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E18103B2C37
-	for <lists@lfdr.de>; Thu, 16 Oct 2025 15:36:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44EE93BAD7D
+	for <lists@lfdr.de>; Thu, 16 Oct 2025 15:38:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE64434AB0A;
-	Thu, 16 Oct 2025 15:36:45 +0000 (UTC)
-Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A0E34BA5A;
+	Thu, 16 Oct 2025 15:38:00 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D0634AAF2
-	for <ksummit@lists.linux.dev>; Thu, 16 Oct 2025 15:36:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB84205E3B
+	for <ksummit@lists.linux.dev>; Thu, 16 Oct 2025 15:37:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760629005; cv=none; b=AHi5Vu9UfF7Epz2RTMhBSs4VeOtylcYbXLqsq0m2OEdFyVjKQk7l2QNlcyZbeanGN7bCgWjP5/Irk+akPmQVimnWvVd5mazEjZJ1oF8expSYY2Wqwjbz5iel58GsOSqmS9202fQtHy8NKaj0N/Aa04Ay7dPcgrAsFd0R5nzXfkY=
+	t=1760629079; cv=none; b=WE3SRZcFhKRC4mnElLSTP0M7v8gzoC0BYDs90ABHtR7KxX/jHyGo/nowY86OL/lqqT7B8oREj3BruS1zP2nbNwQlRNHU1DA6cSneTUds+fKGlRXE4XVsYZEw3FloUEuC0iFhZ6RoLSjqln5XuQ7KejxV57gv7b8BBcP1usewhDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760629005; c=relaxed/simple;
-	bh=S3BF8jDiROIbPLm6imHUfLrJitS1gfsFkuMIOR5lO1k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pz5iGyNZVW8SdHuxvv/ScF6Lus09jdtnQQXYi0wn8o1b+pCKn41Rov72zjkB65WV38mpuI/TGO5Dbh3SrrL9W512J6WidRB4SyhIplAn6heUsjLrEWka9N+72T2Z7WwWLg1vZM9/9IF/0+HhLynCL+NSC3LwJD6XkyCZ5UVDfuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-554ff1682c8so642836e0c.1
-        for <ksummit@lists.linux.dev>; Thu, 16 Oct 2025 08:36:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760629003; x=1761233803;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=S4TnNaZPhqqHxJHVMc1sj21NLBgcB1bqiiIYUkOaNEU=;
-        b=j3x+N1Jiz+O0R7le2BDYOZ1YSD78mzgXgUCkayjiyQHc+t0HamO4zGkgJ2vE1ssO8q
-         c7p+AA3/3VoGrlDkdx0bACP8vZmonFVFl5wtXHDah4Gvh9SqKzE88Qc/En/mBfnFvb86
-         hBI9LnW6VdpiP+EHXb4rC7pfl7UJ3luddZs+Ma7A+b97E32EaE69QwKR8hPgx8LTD482
-         MNiMXWHhkrALLiz0m6vQf6Q8n7q6PmQMLpeVHrfx/p7xLAwnSQy02AQeY5/TM+lIGLG3
-         Z8qZrvzR2CBA9fc0zqngrnLh2Hok37S/LLwoIq1rvl7tOgSnXri5xOzeQqZ8o7fopFHM
-         Riog==
-X-Forwarded-Encrypted: i=1; AJvYcCV0Z1RumavAVCEEkTpit111XeaHetgYs9iRg4tyBAoy7PzLJruCMDxcaBkH25JxXBrwmItXr/iw@lists.linux.dev
-X-Gm-Message-State: AOJu0YwsgH8VcHOuBhvWWioqhYZN7TJ3U7BVDNtNWiXrldUeLmnWepgm
-	4dPK7rchweK29aDLWomgv6hW2z5NaokawCkvRa9lsLjQvmgxj6zZ5dkXiJpyeL/U
-X-Gm-Gg: ASbGncvYC5jTvK8zYbw4RNnzgO+aogBDsuFtEiTnv21ZioQq9IhybvzbMG4Ir5e7+h5
-	RG0foZjyI9VlsCK+VAjjjC+hMRoHlVsuLXcQlDpsV2YxBxETr4/EyVhvpgimpyPHjWgKiarenth
-	XoUr4mk+wU61DOaZAZ4ZRMnSt70Kmm2iKnM3AJOVs4HxC3k5Ah5TUSJnCkIwqc+Goh1CsZX4dS5
-	hHSuCFcRT27OKrvGE16oqSTEaD9RvgI4wWd8qekzzB9NLNhj4+ZamrDsK+yjPes/Wabu/YfxYfH
-	GvyZ/uKl7vawqZEmodDQ0f/N4/JLiNmMOIvPJjhThvxs63X2KDkm7w5cMIkS5Aj/Mo5kMSVO4/J
-	nlo1PxGvLD0WmEYEktTQsx509ERrJuaiUrONbj3b68g8QjiNA89fidBAESnoKF9t1cWOjqxEA4A
-	hQVM6nTw+ir13tPlcP4UrVRgUc0hdic2o292g+NA==
-X-Google-Smtp-Source: AGHT+IF4HqYLKWfaqWzfpk3Eug/QF35dDx7I/PQ9fdedBUJ0p54KlD2lIYN8VlDvjwkmWYPSSfc5Aw==
-X-Received: by 2002:a05:6122:1d11:b0:54a:9316:f429 with SMTP id 71dfb90a1353d-5564ee239efmr355201e0c.3.1760629002643;
-        Thu, 16 Oct 2025 08:36:42 -0700 (PDT)
-Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com. [209.85.217.52])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-554d80a453csm6068791e0c.13.2025.10.16.08.36.41
-        for <ksummit@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Oct 2025 08:36:42 -0700 (PDT)
-Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-5aa6b7c085aso722715137.2
-        for <ksummit@lists.linux.dev>; Thu, 16 Oct 2025 08:36:41 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCW3MC4aY2BsJc6rUYxSWNUHe4x9VI9aofsKr9iNU/No1FKifaKcpwk6lRK1n8alDrY7tMPoDMOY@lists.linux.dev
-X-Received: by 2002:a05:6102:3f05:b0:51c:77b:297c with SMTP id
- ada2fe7eead31-5d7dd5ba67amr451070137.27.1760629001516; Thu, 16 Oct 2025
- 08:36:41 -0700 (PDT)
+	s=arc-20240116; t=1760629079; c=relaxed/simple;
+	bh=JqJ/73D9eRNpk/Wbggm/dyFYdIv1IOHtkmUncgdvnWE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Tn5WV77RlJIT6W/xxl/OGNYniH0PuFwb52gSrSPFVfsiqJvGP1p3+94zEEBhCFUtK3TPXPCjMCqU/EGe4bgw1FePfsYS6mnlDG7OvZ09yeEAtHtWv+AHCL5+0SYRs2GOb8TZGl+jPqd7IlUWVVJS6GItvDXjKqokmivTCEJi4/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 94B3BC010E;
+	Thu, 16 Oct 2025 15:37:49 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf09.hostedemail.com (Postfix) with ESMTPA id 5C87F2002B;
+	Thu, 16 Oct 2025 15:37:47 +0000 (UTC)
+Date: Thu, 16 Oct 2025 11:37:57 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: Rob Herring <robherring2@gmail.com>, Konstantin Ryabitsev 
+ <konstantin@linuxfoundation.org>, Greg KH <gregkh@linuxfoundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, dan.j.williams@intel.com,
+ Doug Anderson <dianders@chromium.org>, "ksummit@lists.linux.dev"
+ <ksummit@lists.linux.dev>
+Subject: Re: Replacing Link trailers
+Message-ID: <20251016113757.2e3fff57@gandalf.local.home>
+In-Reply-To: <76340e9a1adf2f73b624992ae2da251826188b95.camel@HansenPartnership.com>
+References: <68ee73dcd10ee_2f89910075@dwillia2-mobl4.notmuch>
+	<2025101448-overtake-mortality-99c8@gregkh>
+	<68efd54da845e_2f89910071@dwillia2-mobl4.notmuch>
+	<20251015-versed-active-silkworm-bb87bd@lemur>
+	<CAHk-=wiLMH5QBF+veebJgdh=e=Q5uz7AEF0sfWPRhSAXvg8ASg@mail.gmail.com>
+	<CAHk-=whCgsMuZ8heJ6ma3hCM_reG9+VYWfXorC=14n59TWg22g@mail.gmail.com>
+	<2025101631-foyer-wages-8458@gregkh>
+	<892a58917795bf5d29394bb5123dae2a6615ca08.camel@HansenPartnership.com>
+	<2025101639-thwarting-press-f0f7@gregkh>
+	<ef52db7e1d08eb03376fd9343c965aab4dc71ce5.camel@HansenPartnership.com>
+	<20251016-vehement-kittiwake-of-joy-d6db8e@lemur>
+	<CAL_Jsq+VUh2Czq5KGPBoR056rMPxF_5W8ijuieZsU4RhPFwwpA@mail.gmail.com>
+	<76340e9a1adf2f73b624992ae2da251826188b95.camel@HansenPartnership.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <68ee73dcd10ee_2f89910075@dwillia2-mobl4.notmuch>
- <2025101448-overtake-mortality-99c8@gregkh> <68efd54da845e_2f89910071@dwillia2-mobl4.notmuch>
- <20251015-versed-active-silkworm-bb87bd@lemur> <CAHk-=wiLMH5QBF+veebJgdh=e=Q5uz7AEF0sfWPRhSAXvg8ASg@mail.gmail.com>
- <CAHk-=whCgsMuZ8heJ6ma3hCM_reG9+VYWfXorC=14n59TWg22g@mail.gmail.com>
- <2025101631-foyer-wages-8458@gregkh> <892a58917795bf5d29394bb5123dae2a6615ca08.camel@HansenPartnership.com>
- <2025101639-thwarting-press-f0f7@gregkh> <ef52db7e1d08eb03376fd9343c965aab4dc71ce5.camel@HansenPartnership.com>
- <20251016-vehement-kittiwake-of-joy-d6db8e@lemur> <CAL_Jsq+VUh2Czq5KGPBoR056rMPxF_5W8ijuieZsU4RhPFwwpA@mail.gmail.com>
- <76340e9a1adf2f73b624992ae2da251826188b95.camel@HansenPartnership.com>
-In-Reply-To: <76340e9a1adf2f73b624992ae2da251826188b95.camel@HansenPartnership.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 16 Oct 2025 17:36:29 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVd11OBizXcYWhi73J5QfE+8SB1dhY_satpw37u3R8-Zg@mail.gmail.com>
-X-Gm-Features: AS18NWDqJHhqm2a30QS9fJ4ZaU_S2EPo6iusPxGaKhsASYE_7_qU-6wOJ4bXr8U
-Message-ID: <CAMuHMdVd11OBizXcYWhi73J5QfE+8SB1dhY_satpw37u3R8-Zg@mail.gmail.com>
-Subject: Re: Replacing Link trailers
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Rob Herring <robherring2@gmail.com>, 
-	Konstantin Ryabitsev <konstantin@linuxfoundation.org>, Greg KH <gregkh@linuxfoundation.org>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, dan.j.williams@intel.com, 
-	Doug Anderson <dianders@chromium.org>, "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: do36yqg8xehtz4kdtbbj5cenr4aocoou
+X-Rspamd-Server: rspamout01
+X-Rspamd-Queue-Id: 5C87F2002B
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1/yTaIFUGoFcuX20EeOTB6xB/OC+40ixR0=
+X-HE-Tag: 1760629067-736613
+X-HE-Meta: U2FsdGVkX1961JD+oH1zvDmhVBJynFfxqoqafhfTa/C2+YMn1Mma0nPzy2qkT2X5yjeryp5hZQE9SuNfLliX8ASr3MwYxWD0TYfzuEtNNx0USYEQCe866E0yp8kG5reRiZ+A+RU1y2lnFn5wdLBDr2Ghl4t4M4Uiqnj6rIFO8TkUUgxswemJ4WVOAU3b3ZBeWXmpibZSiIT8+XA7x6nUtJU4Po8TJ87N4Bqg6hE9E29BJPYKwPIN9+E5sxTNsFRBrB/Qiovea1r8vhjfvOqEkPTGfXdmvKEgEj33XZSnOqraxucM0snd/aSUsdEBAN+qLyrlWY6Mifc1bVecUGSgeziW1RIwO1LRIq/piDcp0d79I+t8BaMO9T1OZQCqvYwA
 
-Hi James,
+On Thu, 16 Oct 2025 11:07:40 -0400
+James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
 
-On Thu, 16 Oct 2025 at 17:07, James Bottomley
-<James.Bottomley@hansenpartnership.com> wrote:
 > On Thu, 2025-10-16 at 09:58 -0500, Rob Herring wrote:
 > [...]
 > > With a new atom_type, there doesn't seem to be a simple way to turn
 > > on or off a field in git-log. We'd need '--pretty=linus' or some new
-> > git config setting.
->
+> > git config setting.  
+> 
 > Well, not on a per field basis, no.  --pretty=raw will give you
 > everything, though and "grep ^message-id" would pull it out, which I
 > think would work for scripts.  If humans want to use it, I think, per
 > Linus, we'd have some option to convert it to a clickable something.
 
-Let's hope bug reporters who barely learnt how to run git bisect will
-manage to find it...
+It would be also nice to see it in the comment section of a git commit.
 
-Gr{oetje,eeting}s,
+The part after:
 
-                        Geert
+  # Please enter the commit message for your changes. Lines starting
+  # with '#' will be ignored, and an empty message aborts the commit.
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+-- Steve
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 
