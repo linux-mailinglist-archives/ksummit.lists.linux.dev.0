@@ -1,138 +1,168 @@
-Return-Path: <ksummit+bounces-2577-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2578-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DDCFBE7FFE
-	for <lists@lfdr.de>; Fri, 17 Oct 2025 12:13:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 158D6C263C9
+	for <lists@lfdr.de>; Fri, 31 Oct 2025 17:53:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BC28556540A
-	for <lists@lfdr.de>; Fri, 17 Oct 2025 10:11:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 654CF1894722
+	for <lists@lfdr.de>; Fri, 31 Oct 2025 16:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567B231E0EB;
-	Fri, 17 Oct 2025 10:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE4E2F656E;
+	Fri, 31 Oct 2025 16:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eLIpfzeG"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="TtMOnMjj"
+Received: from mail-yx1-f46.google.com (mail-yx1-f46.google.com [74.125.224.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E7031DDB9
-	for <ksummit@lists.linux.dev>; Fri, 17 Oct 2025 10:09:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1333023D2A1
+	for <ksummit@lists.linux.dev>; Fri, 31 Oct 2025 16:51:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760695755; cv=none; b=B3yw6oeKKGIZwO9lJdpK1AT1UIvy1wFKf838F6JEd2hGB0KbbqR5BfvyM3FfN2s92T1gcKwwlrA7U/45HbcmIv/8CZHxyIdZ4yp2202iq/PSeuitpbeKEp7B5ucIYEF9WqMS0+EJ/+zLCUUIeOryjv3TQa3ax2Rdll2CWW6agm0=
+	t=1761929488; cv=none; b=ccoacUoHCoJuxgC1ji1thVAqzarP4YfBTBOhDmvqof5Kc7Ptuvd3XsiyU4U5DQQB83XpG4sPn8O7CgD4+leNIUSgNvT8YZRM5bH3EJHD3a39yUc0da7q4IX+Kjyf1Q1Btf+54+YrOuSykhOHGhTbehQulCUSJU2BMo5w2S//QEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760695755; c=relaxed/simple;
-	bh=kcBCKvBehwuzeeNpBAE5CGo3uaSXC/RW+9C1AFkPe+Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eyY82yzwdgpRuvpd2y2s+pGin/cuQctSC7TKPnM7WsxTP8+atgmrjehA2yZOFbK0RdTQ/PjfbYyyAWTlQEf5RCXJiD6aC1YXp1xnXSUcNEy4ZSY2kQMtY7B95NfQ60draQUrNof3z0K51Wr0A3d5V8e975mW7xfDUXRKWf0NCrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eLIpfzeG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41CF3C4CEFE
-	for <ksummit@lists.linux.dev>; Fri, 17 Oct 2025 10:09:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760695755;
-	bh=kcBCKvBehwuzeeNpBAE5CGo3uaSXC/RW+9C1AFkPe+Q=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=eLIpfzeGsuzCxaqCjECUFwcdYE+gyQaHKH9eSq2e+oK99R0aX1Zp8N0mcLNWapufL
-	 2Q8jWi4o9krYpYDz4zQl1O9wmx/mtfOLCaXkEP9/92lovWxqFDvxCaMbVXzvLztE5m
-	 3MVvm7iVz03CrS2HPAo+q38GwsnZhO1tmMRby2EDIdg3Xdjw0j1esKzBav++UIX0Jz
-	 DP7wMTD53ZaV3VXbjicTUvEsmkyNlV0IVmZsHb0gstzxtvpLWhY/IrBm8EhWEZtSKl
-	 ay3Q/1UraP4FfcFwUiRPGqKIUsWmu67O8Dz3+hXX+rrWzI+PrCBsihbX7KRJwfjKql
-	 G3yAphaX4I83Q==
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7c281c649ccso262321a34.2
-        for <ksummit@lists.linux.dev>; Fri, 17 Oct 2025 03:09:15 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV49TH1mJyAeTegCMZAlxR76R8NZ6rsram55taS5QlPue4tJu/U0PIgnFHyx2Rqwjnm2ge3vxCn@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx9pjO1qUWeb7MLYz0SvNMN52dikiF1XCbkzF4mDA366LFw2ABE
-	Mgkm2pAA/j70Qk6A8AphaLxLfKjSwd7l5gBy4CtVZd0tcdpk4a0MZkiNFpkHV6BrDR6s2jO/ooi
-	xGaJ6ffaqOQcoWwSbCPWypgx8vtHdsB0=
-X-Google-Smtp-Source: AGHT+IEmvA5f7FJeUmq06gqkyHtEdQkQOnWiWotl0Jx8nPhGzGfuA/6FsEo1S7ZEMSzgPZBCe4xwpxFQ0OTGXFbYczI=
-X-Received: by 2002:a05:6808:4442:b0:43f:ba16:9fa1 with SMTP id
- 5614622812f47-443a2f1b95emr1210407b6e.20.1760695754510; Fri, 17 Oct 2025
- 03:09:14 -0700 (PDT)
+	s=arc-20240116; t=1761929488; c=relaxed/simple;
+	bh=DEKnw+DGuTGilCc7ETV+vre7OdHv17FEN33Wv/12xH0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eY0H+yzLmhfHwbQMep9gCi9WQ8BtCS4Rn+FMb/8tgukLfcx8AipdGFDz/HsbdrKMYmdpnrmnJHDcPplqbi1gzsDAkUMbInqoY+MZLih3CdQODNwzPLCN91TQtPKzDkUzacfzgcSNi2mVLsO4jZMynYq+WLfsLtrSE8SCQtWpVJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=TtMOnMjj; arc=none smtp.client-ip=74.125.224.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-63e2cc1ac4aso2416533d50.2
+        for <ksummit@lists.linux.dev>; Fri, 31 Oct 2025 09:51:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1761929486; x=1762534286; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ns8UeACLeCZop8j1njC8hkx9VBcNQ9+9zqelcCYggO8=;
+        b=TtMOnMjjBauLPWIQzWhICS/Tm06BkZxq8JcQkZq80GSZoblHmAt0St6Iy7T7ZYLlGZ
+         WDur3i2zPQpzqIahtsCJypLkEe/9vzqspKsaWvUK5YtwpD02i3paQutaAua8Np6IObgj
+         7cdB+FVAbyoYC3ntsdwKQ37xeieXjiNsON0gJHJLypp4ntXW5yJ3INl43LMrlibTUpKn
+         9rxZlAifXPYXyAQzVvLjVsrqy/D+O3XsL3/kiOwFehASuDEJnXY9POSogqJvIleH+62M
+         hEnzt+wdIi0atyaFAM7RYkV6rjuIAVTFstlhgkF53UiAwKquzGY90sykpI0tbqIvvKzS
+         DlnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761929486; x=1762534286;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ns8UeACLeCZop8j1njC8hkx9VBcNQ9+9zqelcCYggO8=;
+        b=At/zK7XEhsg9QemzbU/mAgB3cl+RWciciDxKJVS6y4Wx8K9g6WoVeCCOQzwxQVt9J6
+         dOJRWEYALs5EmR9tfMInTHJaRE2VEebt5F14FlD9xdiza1kg6s0lJZDnJiDsl/obHG+0
+         u0D2uUtmYkMZZ84z654QRwZyG7+G47NQqbSK2YMNHxnPuE6BfZAZVimbIeGxHu/K1k/T
+         g1jc+lFUWLVsIgan0mo9c6oNyygHve+/3dY14Gx4B+s4CGu/lEi8uHGWleHNE9ClbE6j
+         2mS0sAWqeWVnIQoNfXgWTOhmzMtVoAiYbL6sA/aaT6zzYMr3wHkTYz3tJ274UYZPUv4q
+         gDuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWGEbOM4UqUegIvee7HgQPyJE7qMBmuhysXn/xy1iB3UtdkiNoxZvlKP/znAEI3HEkNIdfEx0lC@lists.linux.dev
+X-Gm-Message-State: AOJu0YygpOAyACK0UeCmR5+r8sgk1vvirUfBi2bUV2OrlWQ/ulVFCLnP
+	aOarF2LPbVZ8ovOIjM3uUfNo/z9GPNh6yVcQwJEbTl9vv+QQKMkFHgEqeNMvgyXpCZk=
+X-Gm-Gg: ASbGncvXJAGtb48+mTudAA5w0MCDkBe1wLLktLfjwYjd0F3zb5kJZtkm4rXk6gO9NXf
+	jAVoT+6wQCcZ9kTDYIcnYar3LHW0Hy4zbLq1Ut4IFFg7r0+08HolW7MEVRW6I1IFlMUQ7raogyv
+	ek1D6eoDEnOEkyZ/PlzkoXfKgsmjga04lpjhlSmtQwRS+gXgJt3uxkFNmsBj0PtjbPC33H+Feas
+	vIvqSbRHwMswEPj7U6oOhcHV24HehTo3jrT8p4Upbly6AG07HIS4FHYN6dJelTaJfA1Lk8IHEzO
+	iJXKE4+Efen/+VrNTwWMuDirssY0m/YwyDnQDVpnt7RIqWnBE7E23Ka20kRxFF5xgM/NxJtlZgH
+	eROT8VJa6pIt59d6d6MyuC4bUc7CzbVd8EXdWgiIQ/roQfYFQamRiSz0OjRHKSpjXYRFEIeR5BA
+	3+hcC1DDnxDUcxZd+8gUhF68lIx7lKwyW2Twk6SqPvAT5H
+X-Google-Smtp-Source: AGHT+IHf66+qNgvfxZUuRD8yRa3bPEKHHTsZmeEO31yz9z3d/Srg3xfvf5e98dLNbyESpyG0g1PRLQ==
+X-Received: by 2002:a05:690e:428f:10b0:63f:2ec7:94e5 with SMTP id 956f58d0204a3-63f9222f8efmr2778642d50.1.1761929485827;
+        Fri, 31 Oct 2025 09:51:25 -0700 (PDT)
+Received: from phoenix (204-195-96-226.wavecable.com. [204.195.96.226])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-63f96a7a4cbsm590806d50.20.2025.10.31.09.51.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Oct 2025 09:51:25 -0700 (PDT)
+Date: Fri, 31 Oct 2025 09:51:21 -0700
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Chris Mason <clm@meta.com>, ksummit@lists.linux.dev, Dan Carpenter
+ <dan.carpenter@linaro.org>, Alexei Starovoitov <ast@kernel.org>
+Subject: Re: [MAINTAINERS / KERNEL SUMMIT] AI patch review tools
+Message-ID: <20251031095121.27abff27@phoenix>
+In-Reply-To: <be5094b9-fb20-462e-ad2f-2b58e520b949@kernel.org>
+References: <fc05f97b-1257-4dee-966f-ba66fff8aef1@meta.com>
+	<be5094b9-fb20-462e-ad2f-2b58e520b949@kernel.org>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <68ee73dcd10ee_2f89910075@dwillia2-mobl4.notmuch>
- <2025101448-overtake-mortality-99c8@gregkh> <68efd54da845e_2f89910071@dwillia2-mobl4.notmuch>
- <20251015-versed-active-silkworm-bb87bd@lemur> <CAHk-=wiLMH5QBF+veebJgdh=e=Q5uz7AEF0sfWPRhSAXvg8ASg@mail.gmail.com>
- <CAHk-=whCgsMuZ8heJ6ma3hCM_reG9+VYWfXorC=14n59TWg22g@mail.gmail.com>
- <2025101631-foyer-wages-8458@gregkh> <892a58917795bf5d29394bb5123dae2a6615ca08.camel@HansenPartnership.com>
- <2025101639-thwarting-press-f0f7@gregkh> <ef52db7e1d08eb03376fd9343c965aab4dc71ce5.camel@HansenPartnership.com>
- <20251016-vehement-kittiwake-of-joy-d6db8e@lemur> <5f668197447a5eb5036199c8c95e9dcae723190e.camel@HansenPartnership.com>
- <CAD=FV=UAKneV0xOUxLMNuynPcOViBhKniDzUnAicSXKaTYg35g@mail.gmail.com>
- <89263430-4b2d-4992-a2fa-cef7f1e7b556@suse.cz> <CAMuHMdUomNgc2aGt=goZS=rKVXwB5zm2=ANwR7qdGE6gH5FQLw@mail.gmail.com>
-In-Reply-To: <CAMuHMdUomNgc2aGt=goZS=rKVXwB5zm2=ANwR7qdGE6gH5FQLw@mail.gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 17 Oct 2025 12:09:02 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0h8BERjkmcUjdG=SkoLh6QjO_WpQ2br5ewQ2SykVw1=Dg@mail.gmail.com>
-X-Gm-Features: AS18NWAFhctPMtjGW770Heavjb_9vFjMqmeBX72nxj5knK8XnVmT-yAxXOkg_EQ
-Message-ID: <CAJZ5v0h8BERjkmcUjdG=SkoLh6QjO_WpQ2br5ewQ2SykVw1=Dg@mail.gmail.com>
-Subject: Re: Replacing Link trailers
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Doug Anderson <dianders@chromium.org>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Konstantin Ryabitsev <konstantin@linuxfoundation.org>, Greg KH <gregkh@linuxfoundation.org>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, dan.j.williams@intel.com, 
-	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 17, 2025 at 11:31=E2=80=AFAM Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
->
-> Hi Vlastimil,
->
-> On Fri, 17 Oct 2025 at 10:44, Vlastimil Babka <vbabka@suse.cz> wrote:
-> > On 10/17/25 04:27, Doug Anderson wrote:
-> > > On Thu, Oct 16, 2025 at 12:09=E2=80=AFPM James Bottomley
-> > > <James.Bottomley@hansenpartnership.com> wrote:
-> > >>
-> > >> Since Linus' intervention this may be unnecessary,
-> > >
-> > > Thanks to a tip from LWN, connecting this thread to the other
-> > > centithread on Link tags. Presumably this is what James meant about
-> > > "Linus' intervention"?
-> > >
-> > > Link: https://lore.kernel.org/all/CAHk-=3Dwj5MATvT-FR8qNpXuuBGiJdjY1k=
-RfhtzuyBSpTKR+=3DVtw@mail.gmail.com/
-> > >
-> > > As per standard Linux practices, please don't submit anything to
-> > > "Documentation" about this. Anyone who needs to know should be able t=
-o
-> > > find the current policy about Link: tags in the middle of a random
-> > > centithread. ;-) "Use the <mailing lists>, Luke." ;-)
-> >
-> > The documentation has existed for a while in
-> > Documentation/process/maintainer-tip.rst
-> >
-> >    You can also use ``Link:`` trailers to indicate the origin of the
-> >    patch when applying it to your git tree. In that case, please use th=
-e
-> >    dedicated ``patch.msgid.link`` domain instead of ``lore.kernel.org``=
-.
-> >    This practice makes it possible for automated tooling to identify
-> >    which link to use to retrieve the original patch submission. For
-> >    example::
-> >
-> >      Link: https://patch.msgid.link/patch-source-message-id@here
-> >
-> > Since that file is strictly speaking about the tip tree, it would make =
-sense
-> > to promote it to something more generic?
->
-> That existed, too, but was removed in commit 944df7a31452f75b ("docs:
-> update the guidance for Link: tags") in v6.18-rc1.  That commit carries
-> a non-clickable Message-ID:-tag instead, and does not apply to Chinese
-> readers ;-)
+On Fri, 10 Oct 2025 05:08:47 +0200
+Krzysztof Kozlowski <krzk@kernel.org> wrote:
 
-So I guess it can be restored in a more generic form (maybe along with
-some specific examples of what that information is used for), but
-instead of saying "In that case, please use the dedicated
-``patch.msgid.link`` domain instead of ``lore.kernel.org``", I would
-say "In that case, the dedicated ``patch.msgid.link`` domain must be
-used instead of ``lore.kernel.org``".
+> On 08/10/2025 19:04, Chris Mason wrote:
+> > Hi everyone,
+> > 
+> > Depending on how you look at things, this is potentially a topic for
+> > either MS or KS.
+> > 
+> > One way to lower the load on maintainers is to make it easier for
+> > contributors to send higher quality patches, and to catch errors before
+> > they land in various git trees.
+> > 
+> > Along those lines, when the AI code submission thread started over the
+> > summer, I decided to see if it was possible to get reasonable code
+> > reviews out of AI.
+> > 
+> > There are certainly false positives, but Alexei and the BPF developers
+> > wired up my prompts into the BPF CI, and you can find the results in
+> > their github CI.  Everything in red is a bug the AI review found:
+> > 
+> > https://github.com/kernel-patches/bpf/actions/workflows/ai-code-review.yml
+> > 
+> > My goal for KS/MS is to discuss how to enable maintainers to use review
+> > automation tools to lower their workload.  I don't want to build new CI
+> > here, so the goal would be enabling integration with existing CI.
+> > 
+> > My question for everyone is what would it take to make all of this
+> > useful?  I'm working on funding for API access, so hopefully that part
+> > won't be a problem.
+> > 
+> > There's definitely overlap between the bugs I'm finding and the bugs Dan
+> > Carpenter finds, so I'm hoping he and I can team up as well.
+> > 
+> > In terms of actual review details, the reviews have two parts:
+> > 
+> > 1) The review prompts.  These are stand alone and can just work on any
+> > kernel tree.  This is what BPF CI is currently using:
+> > 
+> > https://github.com/masoncl/review-prompts/
+> > 
+> > These prompts can also debug oopsen or syzbot reports (with varying
+> > success).  
+> 
+> 
+> In general, I like this entire idea a lot, because I believe it could
+> drop many style or trivial review points, including obsolete/older code
+> patterns.
+> 
+> Qualcomm is trying to do something similar internally and they published
+> their code as well:
+> https://github.com/qualcomm/PatchWise/tree/main/patchwise/patch_review/ai_review
+> Different AI engines can be plugged, which solves some of the concerns
+> in this thread that some are expected to use employer's AI.
+> 
+> They run that instance of bot internally on all patches BEFORE posting
+> upstream, however that bot does not have yet AI-review enabled, maybe
+> because of too many false positives?
+> 
+> I also think this might be very useful tool for beginners to get
+> accustomed to kernel style of commit msgs and how the patch is supposed
+> to look like.
+> 
+> Best regards,
+> Krzysztof
+> 
+
+
+Has anyone tried asking AI to use existing mailing list review of previous patches
+to generate its own future prompt?
+
+If so, how did it go and what worked?
+
 
