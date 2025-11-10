@@ -1,150 +1,119 @@
-Return-Path: <ksummit+bounces-2592-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2593-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C1EBC4917A
-	for <lists@lfdr.de>; Mon, 10 Nov 2025 20:36:59 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id F20E7C49256
+	for <lists@lfdr.de>; Mon, 10 Nov 2025 20:54:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0D49188812B
-	for <lists@lfdr.de>; Mon, 10 Nov 2025 19:37:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DF8454E16B0
+	for <lists@lfdr.de>; Mon, 10 Nov 2025 19:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C199A337B80;
-	Mon, 10 Nov 2025 19:36:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="LLeKGch+"
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A18332D42D;
+	Mon, 10 Nov 2025 19:54:05 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101B9335BAD
-	for <ksummit@lists.linux.dev>; Mon, 10 Nov 2025 19:36:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DF3239E75
+	for <ksummit@lists.linux.dev>; Mon, 10 Nov 2025 19:54:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762803383; cv=none; b=qx6Vv7U8Hi8HofYXAO529Zl2dqra3nx/TMyIHPkMJZwynMwGvf2sXRNbSDMXhdQzwY4qg9eNMEi0GEPVH1XykenLpqeFjFS+AQp6gXYwnsBcomJw4VeOfadDR1BzgX/Tn0Zdobx1cCV+mk08rMCgkQ4bQs7q6ImzcR5rgyOIMW0=
+	t=1762804444; cv=none; b=J6kLI1Ckex9DHjThi2kPuA3o/yaU8E4f6de9WtCzKtfWEZPsuJZ7GBfIM2I1PWvgEjsXJ00ohAEy4DQg3FB4ca4RQwh//jFAnKNKy1MXm2LV2ZcFALCI3e6zEo1g+aOqO/4mzBuqb5ldwCwppc1L48y4atkHt70iPT2O3H4eGcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762803383; c=relaxed/simple;
-	bh=PxpwsZjpe3I2aDg2u+M53UXL2FPgJLtktslzgZjb2us=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BIUWrgHd6cmCmGqDYSG1jmM0hy9r2AWUuuLJimZ1uJgF3bvkX5te2sCxkMSD3Vl4SOt+RM6UMRF/+/ql2kt+v2hKxnqaa8uTIKA/7Tmp36OkPKVuwyuGeNDu0aN9QrpOryPiju+unYXphImGjeDzZUWmZMyQkra32nHSuTYA83A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=LLeKGch+; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b4736e043f9so472448066b.0
-        for <ksummit@lists.linux.dev>; Mon, 10 Nov 2025 11:36:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1762803379; x=1763408179; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=99/bEi2ImdlU2nnSwwuvCx8UfBwiGJABIRJHpSWJmF8=;
-        b=LLeKGch+Rb3vWws0jjXvax0X4gKegABc9fVGWSQNPFSdNNTkxOhEREdlUmo6TlszSQ
-         DgxeXcI3ONtwG6i8PknjwnQjm5XUEdaDgjn28dfPaMLCapLFhV6b1ZwaUrKDOVe0kf66
-         /RyPvkgSkzXbIEdQ49F7MYhdrC4TIenFX+nZk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762803379; x=1763408179;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=99/bEi2ImdlU2nnSwwuvCx8UfBwiGJABIRJHpSWJmF8=;
-        b=G93tHTLkVpF8UtmT5H5ETWiOgPiigIs8Qa6cIm3FWtoIX6JOs0rxPQAXcIDSEnQZ/L
-         mXluCZH0NxPUgEIHgHsOBrBoyBGTeE0ENEwLGuUgbDW2cV1MNHwfjbyE0huR2/0/wPtU
-         UqbYmbtVUhYosswFEv5GOGwo1pZ9LtH+US/aiNzqZzIhn8hO0NNzfT32J/K2gwTDeKQo
-         +Tj0/B6ZZgQPMWZBP8B8elwymiHeecHB2KF93Qsydw3yvT2Qu+Eyn5O/DrvG0H0NlmYu
-         eQ6RcoRJtSoFsae1XrV5qcWubnyByuNVqP6z1L0wBdbJRXVIgrb2ayZhLsKLvtZpne6/
-         iPlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWa9gDUv1lHGIAR6TZsrO0S8RI1ukcOFw4zRbYvzyfOOyA50RM8qZ8nNcUgx/JLSd6lMhVgC2pk@lists.linux.dev
-X-Gm-Message-State: AOJu0YwwNa0J2rvKUevOr07ec+DpK8q0ro2vb46A6NA7Dy9BuK8UbThL
-	YDP1uWJgvrLS++uO1E1yiAtc/57NOGMa33/8m9WwD+uZldsKie0hVhMVlbQ8oFZcmBEof1Ff7kk
-	vd1YzS/0=
-X-Gm-Gg: ASbGnctw+J5kPQYzTDD46fPv+iZtWOkhcpP+Q9APZtEpyBXzeD8ZO9zGTodJzvGkqfY
-	6qC2i1Ali4e++8dFQ4QwVb0QqhQtkVKtfPS8C/9E4BSEaTboUfo1uwORP8q3FA3n46wgGg/qSwT
-	eEA+exKPNGzEnC1OK5TgxOiLeeNOaTLnl/mjRz0NU+GrTzgUywJJR41FFeoqLXlxlv/w7+Z62lE
-	ELS3ALX3Exw/BHyPlfC/MrgEGQVjTpCCmKEij600gbEMgW53MAM+dCFtqW1NlibJye0+P5TzHBF
-	cdR4OQOXcMj7zPIGCn4QJUKGyoYSa/nHfSPWTvNJIg8agAKH+q9mHMy1VeW2vD3jNkaLF5mXJQg
-	+w//8oTlwudu/bDvgvgOWNx4YCeGSjwYsbM1laoLKFiqjIhyTnVjPgeg+7XvOXOuqLNwRN+oaPy
-	RDZHbiaaEcJD6qy4otxmlTA/RCuXmIbius52fUSrm5DaOoL8SYeg==
-X-Google-Smtp-Source: AGHT+IHBkarLj0EckytH8MNmFQP+DZnDCh+6aQ8VXSM8obT7UEqywvBAfgewhP49AFhnqcZ3MPP8DA==
-X-Received: by 2002:a17:906:6a11:b0:b72:5bdf:6093 with SMTP id a640c23a62f3a-b72e030473bmr752566766b.23.1762803379280;
-        Mon, 10 Nov 2025 11:36:19 -0800 (PST)
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com. [209.85.218.46])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72bf40768fsm1160701266b.23.2025.11.10.11.36.17
-        for <ksummit@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Nov 2025 11:36:19 -0800 (PST)
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b72dc0c15abso458719866b.1
-        for <ksummit@lists.linux.dev>; Mon, 10 Nov 2025 11:36:17 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUY3wLdhSooXyuwGdc92687W5QQugJ9ilPkfC/o3G5f/K8CWkrOPi8X66y9hGYUCA0Qvpnx12dl@lists.linux.dev
-X-Received: by 2002:a17:906:1355:b0:b72:eb03:9322 with SMTP id
- a640c23a62f3a-b72eb0393acmr666007766b.15.1762803376534; Mon, 10 Nov 2025
- 11:36:16 -0800 (PST)
+	s=arc-20240116; t=1762804444; c=relaxed/simple;
+	bh=xb+DXZYDEOovalo/bMCSL2f9qW8b2PYk7b5e+tKOcA8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Bo5iG/HWkj69CBi2fNXfz5hhZ4JycGt3LXDW1Q5q83/O76Lm1J4ivLecQOG4WlUhD+q5441MnRtyPDGUQW+udK4Fvg2m+oTNrH4cxtOd9o6VOVY4kZrGd0hslRdNGh7esHyG0Vwy6xpwfQ/wfpYjc3N7hpXPjG+EKmDNRN9zGEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2578357F37;
+	Mon, 10 Nov 2025 19:54:00 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf07.hostedemail.com (Postfix) with ESMTPA id 6BBAA2002C;
+	Mon, 10 Nov 2025 19:53:56 +0000 (UTC)
+Date: Mon, 10 Nov 2025 14:54:05 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>, Mike Rapoport <rppt@kernel.org>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Christian Brauner
+ <brauner@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, Vlastimil
+ Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
+ "workflows@vger.kernel.org" <workflows@vger.kernel.org>,
+ "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>, Dan Williams
+ <dan.j.williams@intel.com>, "Theodore Ts'o" <tytso@mit.edu>, Sasha Levin
+ <sashal@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Kees Cook
+ <kees@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel
+ Ojeda <ojeda@kernel.org>, Shuah Khan <shuah@kernel.org>
+Subject: Re: [PATCH] [v2] Documentation: Provide guidelines for
+ tool-generated content
+Message-ID: <20251110145405.5bc87cc5@gandalf.local.home>
+In-Reply-To: <CAHk-=whczwG=+-sAzoWoTY_VOwdFH3b5AkvQbgh+z98=p1iaXA@mail.gmail.com>
+References: <20251105231514.3167738-1-dave.hansen@linux.intel.com>
+	<653b4187-ec4f-4f5d-ae76-d37f46070cb4@suse.cz>
+	<20251110-weiht-etablieren-39e7b63ef76d@brauner>
+	<20251110172507.GA21641@pendragon.ideasonboard.com>
+	<CAHk-=wgEPve=BO=SOmgEOd4kv76bSbm0jWFzRzcs4Y7EedpgfA@mail.gmail.com>
+	<aRIxYkjX7EzalSoI@kernel.org>
+	<CAHk-=wir-u3so=9NiFgG+bWfZHakc47iNy9vZXmSNWSZ+=Ue8g@mail.gmail.com>
+	<A274AB1C-8B6B-4004-A2BC-D540260A5771@zytor.com>
+	<CAHk-=whczwG=+-sAzoWoTY_VOwdFH3b5AkvQbgh+z98=p1iaXA@mail.gmail.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251105231514.3167738-1-dave.hansen@linux.intel.com>
- <653b4187-ec4f-4f5d-ae76-d37f46070cb4@suse.cz> <20251110-weiht-etablieren-39e7b63ef76d@brauner>
- <20251110172507.GA21641@pendragon.ideasonboard.com> <CAHk-=wgEPve=BO=SOmgEOd4kv76bSbm0jWFzRzcs4Y7EedpgfA@mail.gmail.com>
- <aRIxYkjX7EzalSoI@kernel.org> <CAHk-=wir-u3so=9NiFgG+bWfZHakc47iNy9vZXmSNWSZ+=Ue8g@mail.gmail.com>
- <A274AB1C-8B6B-4004-A2BC-D540260A5771@zytor.com>
-In-Reply-To: <A274AB1C-8B6B-4004-A2BC-D540260A5771@zytor.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Mon, 10 Nov 2025 11:36:00 -0800
-X-Gmail-Original-Message-ID: <CAHk-=whczwG=+-sAzoWoTY_VOwdFH3b5AkvQbgh+z98=p1iaXA@mail.gmail.com>
-X-Gm-Features: AWmQ_bmIQjBbP-mWv2JFFWotDHPz9N5F1IH58uHH12wUDflk5iKlAp9e5SKychk
-Message-ID: <CAHk-=whczwG=+-sAzoWoTY_VOwdFH3b5AkvQbgh+z98=p1iaXA@mail.gmail.com>
-Subject: Re: [PATCH] [v2] Documentation: Provide guidelines for tool-generated content
-To: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Mike Rapoport <rppt@kernel.org>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Christian Brauner <brauner@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org, 
-	"workflows@vger.kernel.org" <workflows@vger.kernel.org>, 
-	"ksummit@lists.linux.dev" <ksummit@lists.linux.dev>, Steven Rostedt <rostedt@goodmis.org>, 
-	Dan Williams <dan.j.williams@intel.com>, "Theodore Ts'o" <tytso@mit.edu>, 
-	Sasha Levin <sashal@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Kees Cook <kees@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Shuah Khan <shuah@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 1zpbhrdnkczb8p84ob86epm6cgmfaeer
+X-Rspamd-Server: rspamout01
+X-Rspamd-Queue-Id: 6BBAA2002C
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX188rcYaq/VcpOMpuxiN+mCOVwn8TkW8hVI=
+X-HE-Tag: 1762804436-786591
+X-HE-Meta: U2FsdGVkX1+Y4d9D5TU/Zt0fkohlktXpFR1HWk/qRVIvkqMHdUh8tz0tNvRUzmamdqgPUW60sBbX+4zK3vJL6fg6VF2bmBlU7UmeYcZfzeAdDRQe22HGUNNdbDGGxMt9y+U9bJU3LansQC2b3agidz+P8tsNIlMzN1wdYlNv9j4QLPFvWy20LvXrmZxNajerzJf0KNd5yhiHzRQ5G5kfMKzUPBHsmZDpRyxkEVI5+R5uNwfz/cSTWF4mUtg+9/WsH2RXkLEv4k/QCO2MfG2rer/c6AxsL0jYyBEJYsqKq9OMecWZOfA45MmZhfqSfuyMmiM3QwC3Re2zhbzZLGulFqCz3LtDPPQ9yexoj508jDODekv/UpdEMELUH4AILS9o
 
-On Mon, 10 Nov 2025 at 11:18, H. Peter Anvin <hpa@zytor.com> wrote:
->
-> Copyright reasons, mainly.
+On Mon, 10 Nov 2025 11:36:00 -0800
+Linus Torvalds <torvalds@linux-foundation.org> wrote:
 
-I really don't see the argument.
+> What's the copyright difference between artificial intelligence and
+> good oldfashioned wetware that isn't documented by "I used this tool
+> and these sources".
 
-The copyright issues are all true for all other code too. In fact, the
-copyright issues are a thing whether tools were involved or not.
+Probably no difference. I would guess the real liability is for those that
+use AI to submit patches. With the usual disclaimers of IANAL, I'm assuming
+that when you place your "Signed-off-by", you are stating that you have the
+right to submit this code. If it comes down that you did not have the right
+to submit the code, the original submitter is liable.
 
-Copyright is *always* a thing.
+I guess the question also is, is the maintainer that took that patch and
+added their SoB also liable?
 
-We have a fair chunk of actual generated "new" code, whether it is the
-millions of lines of register descriptions from hardware companies, or
-it's the millions of lines of unicode data.
+If it is discovered that the AI tool was using source code that it wasn't
+supposed to be using, and then injected code that was pretty much verbatim
+to the original source, where it would be a copyright infringement, would
+the submitter of the patch be responsible? Would the maintainer?
 
-(Ok, the unicode data is just a few thousand lines, I exaggerate. But
-we really do have several million lines AMD GPU headers that must have
-been generated from hw descriptors, and there we didn't even ask for
-the tool or the source, just for the usual copyright sign-off).
+I guess this would be no different if the submitter saw some code from a
+proprietary project and cut and pasted it without understanding they were
+not allowed to, and submitted that.
 
-I really don't see what makes AI generated content so special.
+If the lawyers come back and say the onus is on the submitter and not the
+maintainer that the code being submitted is legal to be submitted under
+copyright law, then I'm perfectly fine in accepting any AI code (as long as
+the submitter can prove they understand that code and the code is clean).
 
-Yes, I think you need to specify what the tool was and what the
-conditions were for the change, but again - none of that is actually
-new in ANY way.
+But until the lawyers state that explicitly, I can see why maintainers can
+be nervous about accepting AI generated code. Perhaps this transparency can
+make matters worse. As it can be argued that the maintainer knew it was a
+questionable AI that generated the code? (Like it would be if a maintainer
+knew the code being submitted was copied from a proprietary project)
 
-This all feels like the usual AI hype-fest. Because THAT is the thing
-that is truly special about AI. The hype, and the billions and
-billions of dollars.
+This is out of scope of the current patch, as the patch is about
+transparency and not AI acceptance.
 
-I claim that copyright is no different just because it was artificial.
-
-What's the copyright difference between artificial intelligence and
-good oldfashioned wetware that isn't documented by "I used this tool
-and these sources".
-
-It's just another tool, guys. It's one that makes some people a lot of
-money, and yes, it will change society. But it's still just a tool.
-
-                Linus
+-- Steve
 
