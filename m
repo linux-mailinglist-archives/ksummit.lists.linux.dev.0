@@ -1,87 +1,110 @@
-Return-Path: <ksummit+bounces-2594-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2595-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB5FCC492C2
-	for <lists@lfdr.de>; Mon, 10 Nov 2025 21:02:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1496DC49392
+	for <lists@lfdr.de>; Mon, 10 Nov 2025 21:25:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F7803B4A10
-	for <lists@lfdr.de>; Mon, 10 Nov 2025 20:01:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA4131890691
+	for <lists@lfdr.de>; Mon, 10 Nov 2025 20:26:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C207833F39B;
-	Mon, 10 Nov 2025 20:00:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NFecNSsk"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E79EB2EC0BF;
+	Mon, 10 Nov 2025 20:25:50 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9A8337B8A;
-	Mon, 10 Nov 2025 20:00:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2383027AC4C
+	for <ksummit@lists.linux.dev>; Mon, 10 Nov 2025 20:25:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762804856; cv=none; b=t44YPkZrU0d00pzsMscq557Dt50RMiQaXRStRSCgZaTFHXo1eK8jXxARo80TZiKAB/jquT3w+QquYxWFubrDhf9j9ovGQ7/AJZRn3es+z9+0aGLnA3gd+1FRCYQKsNLkqAbyut19rovZPSQYp8Q9kVPywGEkIZKUohj8QUxZ9mM=
+	t=1762806350; cv=none; b=seG0tE9IQ4y+r4ddAV8Y6DqNF9uo4l9ew9/o7k4tQFJeAeVreaTrZ2K0AQMFYM/D56yqZWP6NFrjU0ftaQcrJrBSZILR+25faZ4c+oOBd5BZWK0HW7B3Q9hBRjDA2IDtbW+a2GH89spdobo2kg8KjpwbiP7/XJsaUeAEacCGVp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762804856; c=relaxed/simple;
-	bh=h3o9LAmSyvnIV3axnAq88Rd/1hcBZOHc9Sn/FM6kKjc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lUkhrp79e3lRCMRictC3UW6/coDuEO10HPKf4Izetf3gUVw2Tol4F4TdryvQ85I6CEnj9c0ljnEo6lfD/e6lmKwpWtK4V4cB6lZ8AcLeAcb/ex8OST48wAB+Te03Qv7PpUYEdtrz6f1i7XXLqAOVFWUp8tww+gMu83/qeuUWWSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NFecNSsk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D34BC16AAE;
-	Mon, 10 Nov 2025 20:00:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762804855;
-	bh=h3o9LAmSyvnIV3axnAq88Rd/1hcBZOHc9Sn/FM6kKjc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NFecNSsktu3j835501fvdrNAHQdcXfJBeqB/8rcmLpxHpDaI9gnaWVUe1QmuoKv2W
-	 TiLgRNTNBihqF8c8738rDT7E9BFfMJl1eJoU2EF3fs5rS6FVJo1vSaRHMP7EcZyjyr
-	 TpDV9XYDgVKY6jv4GwkshuNcMgKPZ17S1MciZGfU=
-Date: Mon, 10 Nov 2025 15:00:54 -0500
-From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Mike Rapoport <rppt@kernel.org>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Christian Brauner <brauner@kernel.org>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org, 
-	"workflows@vger.kernel.org" <workflows@vger.kernel.org>, "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>, 
-	Dan Williams <dan.j.williams@intel.com>, Theodore Ts'o <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Kees Cook <kees@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, Shuah Khan <shuah@kernel.org>
+	s=arc-20240116; t=1762806350; c=relaxed/simple;
+	bh=L7qUPrj9zPJEA0pzgGDw3h6kHJ+Q94P567LKoLIHNrE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mxbVquqXGuZ/z11IWKBtG3/y2sYNsB78HxLE3/v7rmnLg9EcDTCwkxmoWOeDh0NYzZyGJ08clODP0HOju4KfhditmdFZsxh3sPuLIPjGX44gUWlSunzfjvBFyf4CCuPpwzHDVAeJzXthM81Venmlsfg+vV6hDaa/WxJPh7VgaMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E50C11DF6C3;
+	Mon, 10 Nov 2025 20:25:45 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf04.hostedemail.com (Postfix) with ESMTPA id 0D75E20023;
+	Mon, 10 Nov 2025 20:25:41 +0000 (UTC)
+Date: Mon, 10 Nov 2025 15:25:50 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, "H. Peter Anvin"
+ <hpa@zytor.com>, Mike Rapoport <rppt@kernel.org>, Laurent Pinchart
+ <laurent.pinchart@ideasonboard.com>, Christian Brauner
+ <brauner@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, Vlastimil
+ Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
+ "workflows@vger.kernel.org" <workflows@vger.kernel.org>,
+ "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>, Dan Williams
+ <dan.j.williams@intel.com>, Theodore Ts'o <tytso@mit.edu>, Sasha Levin
+ <sashal@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Kees Cook
+ <kees@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel
+ Ojeda <ojeda@kernel.org>, Shuah Khan <shuah@kernel.org>
 Subject: Re: [PATCH] [v2] Documentation: Provide guidelines for
  tool-generated content
-Message-ID: <20251110-spiffy-intelligent-cockle-efde1e@lemur>
+Message-ID: <20251110152550.5d462fb2@gandalf.local.home>
+In-Reply-To: <20251110-spiffy-intelligent-cockle-efde1e@lemur>
 References: <20251105231514.3167738-1-dave.hansen@linux.intel.com>
- <653b4187-ec4f-4f5d-ae76-d37f46070cb4@suse.cz>
- <20251110-weiht-etablieren-39e7b63ef76d@brauner>
- <20251110172507.GA21641@pendragon.ideasonboard.com>
- <CAHk-=wgEPve=BO=SOmgEOd4kv76bSbm0jWFzRzcs4Y7EedpgfA@mail.gmail.com>
- <aRIxYkjX7EzalSoI@kernel.org>
- <CAHk-=wir-u3so=9NiFgG+bWfZHakc47iNy9vZXmSNWSZ+=Ue8g@mail.gmail.com>
- <A274AB1C-8B6B-4004-A2BC-D540260A5771@zytor.com>
- <CAHk-=whczwG=+-sAzoWoTY_VOwdFH3b5AkvQbgh+z98=p1iaXA@mail.gmail.com>
- <20251110145405.5bc87cc5@gandalf.local.home>
+	<653b4187-ec4f-4f5d-ae76-d37f46070cb4@suse.cz>
+	<20251110-weiht-etablieren-39e7b63ef76d@brauner>
+	<20251110172507.GA21641@pendragon.ideasonboard.com>
+	<CAHk-=wgEPve=BO=SOmgEOd4kv76bSbm0jWFzRzcs4Y7EedpgfA@mail.gmail.com>
+	<aRIxYkjX7EzalSoI@kernel.org>
+	<CAHk-=wir-u3so=9NiFgG+bWfZHakc47iNy9vZXmSNWSZ+=Ue8g@mail.gmail.com>
+	<A274AB1C-8B6B-4004-A2BC-D540260A5771@zytor.com>
+	<CAHk-=whczwG=+-sAzoWoTY_VOwdFH3b5AkvQbgh+z98=p1iaXA@mail.gmail.com>
+	<20251110145405.5bc87cc5@gandalf.local.home>
+	<20251110-spiffy-intelligent-cockle-efde1e@lemur>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251110145405.5bc87cc5@gandalf.local.home>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 0D75E20023
+X-Stat-Signature: 4eg9c48ys38wj9qpyxq11fmcbc9ciep4
+X-Rspamd-Server: rspamout06
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX18oPbG4zobniY+OHcdjesyIJghSfa8m1os=
+X-HE-Tag: 1762806341-920127
+X-HE-Meta: U2FsdGVkX18Hbux9ScpxOgizMIUE0KT/uDM4MaDbvfNrCyqytGrUwcnSTuiDWg4T+RrHg9NQu7mrlSMeN2t4vFqxakNFor5ewPY2sMqfE2tbCH9Ef8y7I1LYA93L17rlre0JZWI/RWsyu3mCNLcfVWkyxtd6UPH87ppYUe+I2xLwl+NNtSH9szvRrqGjncV8xXuKrpa3F97FrFH23VS0pFWQKUlplK0lGQnnIjk2C8Ea3y73lOD5/lTqp1qBFMWemnbIV8/N6iw0A2YPEps6FhfxWZLzzBcwK9mBmemOAmNbHp49tyA/9OEm4tTpXVNoXMhPXE2yjqiJR1jq85D/HjwvPQZkydqFjvkOcupu1E7kxKEKHn/769eJpneGszCD
 
-On Mon, Nov 10, 2025 at 02:54:05PM -0500, Steven Rostedt wrote:
-> Probably no difference. I would guess the real liability is for those that
-> use AI to submit patches. With the usual disclaimers of IANAL, I'm assuming
-> that when you place your "Signed-off-by", you are stating that you have the
-> right to submit this code. If it comes down that you did not have the right
-> to submit the code, the original submitter is liable.
+On Mon, 10 Nov 2025 15:00:54 -0500
+Konstantin Ryabitsev <konstantin@linuxfoundation.org> wrote:
 
-And if the lawyers come back and say that the submitter is not liable, what's
-to prevent someone from copypasting actual copyrighted code from a proprietary
-source and adding a "Generated-by: Chat j'ai-pété" line to absolve themselves?
+> On Mon, Nov 10, 2025 at 02:54:05PM -0500, Steven Rostedt wrote:
+> > Probably no difference. I would guess the real liability is for those t=
+hat
+> > use AI to submit patches. With the usual disclaimers of IANAL, I'm assu=
+ming
+> > that when you place your "Signed-off-by", you are stating that you have=
+ the
+> > right to submit this code. If it comes down that you did not have the r=
+ight
+> > to submit the code, the original submitter is liable. =20
+>=20
+> And if the lawyers come back and say that the submitter is not liable, wh=
+at's
+> to prevent someone from copypasting actual copyrighted code from a propri=
+etary
+> source and adding a "Generated-by: Chat j'ai-p=C3=A9t=C3=A9" line to abso=
+lve themselves?
+>=20
 
--K
+Wouldn't that be up to the courts? I shouldn't say "the lawyers come back
+and say", it's more like "a court has ruled", and keeping to court
+precedent, the lawyers would say "this is how it was ruled before". Of
+course, today I'm not really sure how much "precedent" matters :-p
+
+-- Steve
 
