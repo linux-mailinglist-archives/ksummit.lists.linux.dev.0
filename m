@@ -1,161 +1,272 @@
-Return-Path: <ksummit+bounces-2602-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2603-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC90CC4E070
-	for <lists@lfdr.de>; Tue, 11 Nov 2025 14:09:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9972DC5EEA3
+	for <lists@lfdr.de>; Fri, 14 Nov 2025 19:47:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1B404348BF9
-	for <lists@lfdr.de>; Tue, 11 Nov 2025 13:09:32 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8799336208F
+	for <lists@lfdr.de>; Fri, 14 Nov 2025 18:36:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F223E328242;
-	Tue, 11 Nov 2025 13:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB782DF71E;
+	Fri, 14 Nov 2025 18:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="R20VSPiA"
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TrliPRMf"
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17E1324717
-	for <ksummit@lists.linux.dev>; Tue, 11 Nov 2025 13:09:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77AFA2DC789
+	for <ksummit@lists.linux.dev>; Fri, 14 Nov 2025 18:35:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762866553; cv=none; b=Zk7IFEP76rrWw/askiFYG28dI4sc+vjOwxenR1RvP4tqueOPHWjWD7GTF3FxRD9m3eeBcPm63rzTB7oMDHNTJWN1G+0ZXriCFVrvWB4/RNuwzcCFc5eYtaB0g8t7NyFFSwPjxhN5rTLXnQOHHA5EfAV9dM9JerM+DUr11JLfgMI=
+	t=1763145361; cv=none; b=oGxFvXworNiu+KDYV34z0YnwchLZqcpkYiIRVQxpNO6FBnyHFwH3VQBw4CAX83LUw9pyvTBVzo9fubRH9Cj/PqywTrSaWjrSPGVRvByCr6mbGPW/jCxOGMQHIHS6rNBuzRstXlWB6EuZPDBtWIigR+4NAubbLE3Ty/C4VwY8yF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762866553; c=relaxed/simple;
-	bh=P8QSnF9cHhQkGs1VCcaMb6B4xrloT45QP+6e1bZT/v0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dkacKPty0JZ618+HD6tH4LL3hjhwhgNOI39qkJJtUe7aYO0RLgpfzN9a3RsVio3KdV8VIpzAUemhTABeObCi5azpdllYSR159OFKbvtpxhvMiF+nkzza349ttnvTE3PALLb6drMeMR3njlBlHGS1XtVtXvNJUgeRyvAoYNwNeZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=R20VSPiA; arc=none smtp.client-ip=18.9.28.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
-Received: from trampoline.thunk.org (pool-173-48-122-154.bstnma.fios.verizon.net [173.48.122.154])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 5ABD89u3016803
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Nov 2025 08:08:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1762866494; bh=jQdDg8n/Au5TS/d1fg4OZe2j+2EezOUxUqKVSpu6yGU=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=R20VSPiA7ksYyAalbxHzN76ne8XkfasqZtrg2KEBVCso6Kyw6mUxAxpyG4bKeez6D
-	 DTD3/48BIq3sMdWHnfQZa+JIY6CiHUwYGWImaacVNuD+YvfrXRXDzUi9kAHNZ6oLaG
-	 AQx95In+MWzIwHwL/asnj+in0G3XRRJvjRy7RguiDCcB8cNixaImz99NnWK+CCoe5y
-	 tvZTOOf+UuYoFYAzSwxpkBTB+O9UT8FYbggKRj0IH6Ujiwq2yBr29HinlUElfIUejn
-	 HJ4UO2lSLayz99mJ0niPjd48xpgSYikz4UySLeSK3j1FH6QkQHKqLST17BzhT3pd+I
-	 w5uM7jwCF0xRw==
-Received: by trampoline.thunk.org (Postfix, from userid 15806)
-	id A302C2E00D9; Tue, 11 Nov 2025 08:08:09 -0500 (EST)
-Date: Tue, 11 Nov 2025 08:08:09 -0500
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, Mike Rapoport <rppt@kernel.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Christian Brauner <brauner@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
-        "workflows@vger.kernel.org" <workflows@vger.kernel.org>,
-        "ksummit@lists.linux.dev" <ksummit@lists.linux.dev>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Sasha Levin <sashal@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-        Kees Cook <kees@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Miguel Ojeda <ojeda@kernel.org>, Shuah Khan <shuah@kernel.org>
-Subject: Re: [PATCH] [v2] Documentation: Provide guidelines for
- tool-generated content
-Message-ID: <20251111130809.GB3131573@mit.edu>
-References: <20251105231514.3167738-1-dave.hansen@linux.intel.com>
- <653b4187-ec4f-4f5d-ae76-d37f46070cb4@suse.cz>
- <20251110-weiht-etablieren-39e7b63ef76d@brauner>
- <20251110172507.GA21641@pendragon.ideasonboard.com>
- <CAHk-=wgEPve=BO=SOmgEOd4kv76bSbm0jWFzRzcs4Y7EedpgfA@mail.gmail.com>
- <aRIxYkjX7EzalSoI@kernel.org>
- <CAHk-=wir-u3so=9NiFgG+bWfZHakc47iNy9vZXmSNWSZ+=Ue8g@mail.gmail.com>
- <A274AB1C-8B6B-4004-A2BC-D540260A5771@zytor.com>
- <CAHk-=whczwG=+-sAzoWoTY_VOwdFH3b5AkvQbgh+z98=p1iaXA@mail.gmail.com>
- <8bc25747-fcf0-4e45-b10a-566c5cfe771a@lucifer.local>
+	s=arc-20240116; t=1763145361; c=relaxed/simple;
+	bh=swps8ZhYlsWpjyXF4UoIJa2PAB1CwC6og6rmXeftYrI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WwnQAUF6q4dm0nUG8CQq2HaPAh/jVbIqwmkE8FzmR8Q47qKp71+NZiYwugkoRGQX1fofXKgvxyYnmGvoVv/ph9H59x/U3sk85qAwfojwAC4/57ZwUoNMnX3cqnj5TzsqJuiQPcgIlqWwJwmnkkQLxYLS6zW3RaOHLKogxRFvSkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TrliPRMf; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763145360; x=1794681360;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=swps8ZhYlsWpjyXF4UoIJa2PAB1CwC6og6rmXeftYrI=;
+  b=TrliPRMfplMayoTA/aNkkXSOmYQjX2zXByp4oAGTfRdOm/dnzmbvWVtY
+   sPHWBVTrpVm1X3m3qRXh14eI9d3Zh4LF2uys835acB2p0CNTjSfOjDmwA
+   Bgr+s5poJ2c0PIO5AoHIe62wwXb10d1BzcrZqYN9GTQZ4glvTqaPjB95+
+   v3K7TAZOgYKH46F6lZKgQJ78w8bfivGnt6FhybKot+hr60saYibQMxMgU
+   hM8yz5HjBPR/RtmW34JTjqzfzZg/V/C73atDEJCqC/C3T4e0XG00rdOOJ
+   BBJdCNKw7802hiN33lnxWzfh81lnfSXjbeCwYsPbyzpML00lk/VkKmKQv
+   Q==;
+X-CSE-ConnectionGUID: +nF0oB2AQjijLsK5H7NNfA==
+X-CSE-MsgGUID: PSn6TEovSym+dZGfMyMk+Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11613"; a="64453516"
+X-IronPort-AV: E=Sophos;i="6.19,305,1754982000"; 
+   d="scan'208";a="64453516"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2025 10:35:59 -0800
+X-CSE-ConnectionGUID: azSFj2uBQrWHLlKro9ZSHA==
+X-CSE-MsgGUID: Oq03Hu1XRoOQ9EhUzJw9RQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,305,1754982000"; 
+   d="scan'208";a="189129655"
+Received: from smtp.ostc.intel.com ([10.54.29.231])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2025 10:35:59 -0800
+Received: from ray2.sr71.net (unknown [10.125.108.191])
+	by smtp.ostc.intel.com (Postfix) with ESMTP id 242F16362;
+	Fri, 14 Nov 2025 10:35:58 -0800 (PST)
+From: Dave Hansen <dave.hansen@linux.intel.com>
+To: dave@sr71.net
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	NeilBrown <neilb@ownmail.net>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Theodore Ts'o <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	workflows@vger.kernel.org,
+	ksummit@lists.linux.dev
+Subject: [PATCH] [v3] Documentation: Provide guidelines for tool-generated content
+Date: Fri, 14 Nov 2025 10:35:28 -0800
+Message-Id: <20251114183528.1239900-1-dave.hansen@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8bc25747-fcf0-4e45-b10a-566c5cfe771a@lucifer.local>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 11, 2025 at 09:35:18AM +0000, Lorenzo Stoakes wrote:
-> 
-> Now 'any idiot' can fire off hundreds of patches that look at a glance as
-> if they might have some validiity.
-> 
-> The asymmetry of this is VERY concerning.
-> 
-> I also hate that we have to think about it, but the second the press put
-> out 'the kernel accepts AI patches now!' - and trust me THEY WILL - we are
-> likely to see an influx like this that maintainers will have to deal with.
+In the last few years, the capabilities of coding tools have exploded.
+As those capabilities have expanded, contributors and maintainers have
+more and more questions about how and when to apply those
+capabilities.
 
-Yeah, that's an argument for not requiring any kind of AI tagging.
-One of my concerns is that there's no guarantee that people flooding
-the kernel with AI slop won't disclose that they used an LLM.
+Add new Documentation to guide contributors on how to best use kernel
+development tools, new and old.
 
-> 1. Maintains MUST have the ability to JUST SAY NO, go away _en-masse_ to
->    regain symmetry on this.
+Note, though, there are fundamentally no new or unique rules in this
+new document. It clarifies expectations that the kernel community has
+had for many years. For example, researchers are already asked to
+disclose the tools they use to find issues in
+Documentation/process/researcher-guidelines.rst. This new document
+just reiterates existing best practices for development tooling.
 
-Maintainers do have this already.  There are certain people who are
-known to be sending low priority patches, and people just quietly
-ignore those patches.
+In short: Please show your work and make sure your contribution is
+easy to review.
 
-The risk of AI slop is that this will just happen a *lot* more often,
-which means that patches from known high quality controllers will get
-far more attention than patches from newer contributors --- because we
-won't know whether it's a new contributor who is coming up to speed,
-or someone who is sending AI slop.  So the more AI slop we get, the
-more this dynamic will accelerate, to the point where people who
-accuse us of having an old "boys/girls" club will become true, and
-people will accuse us of not being welcoming to new contributors.
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Shuah Khan <shuah@kernel.org>
+Reviewed-by: Kees Cook <kees@kernel.org>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
+Cc: NeilBrown <neilb@ownmail.net>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Theodore Ts'o <tytso@mit.edu>
+Cc: Sasha Levin <sashal@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: workflows@vger.kernel.org
+Cc: ksummit@lists.linux.dev
 
-There *will* be a solution to the symmetry; so I wouldn't consider it
-"unworkable".  It's just that we (and especially newcomers) might not
-like the solution that naturally comes out of it.  As you put it,
-"throw out the baby with the bath water"; the system will survive, but
-it might suck to be the baby.
+--
 
-> 2. Those who submit patches MUST UNDERSTAND EVERY PART OF IT.
-> 
-> 'that which can be proposed without understanding can be dismissed without
-> understanding'.
+There has been a ton of feedback since v2. Thanks everyone! I've
+tried to respect all of the feedback, but some of it has been
+contradictory and I haven't been able to incorporate everything.
 
-Yeah, it might be that all we can do is to say that people who use
-LLM's without understanding all parts of it, my result in their
-blackening their reputation, wiht the result that *all* their patches
-might get ignored.
+Please speak up if I missed something important here.
 
-And we can warn that if a company has many of its employees sending
-lower quality contributions, maintainers might decide to address the
-denial of service attack by ignoring *all* patches from a particular
-company / domain.  We've done this before, with the University of
-Minnesota, due to gross abuse leading to lack of trust of the
-institution.
+Changes from v2:
+ * Mention testing (Shuah)
+ * Remove "very", rename LLM => coding assistant (Dan)
+ * More formatting sprucing up and minor typos (Miguel)
+ * Make changelog and text less flashy (Christian)
+ * Tone down critical=>helpful (Neil)
 
-Hopefully things won't come to that, but maybe explicitly warning
-people that *is* a possibility might be useful as a deterrent factor.
+Changes from v1:
+ * Rename to generated-content.rst and add to documentation index.
+   (Jon)
+ * Rework subject to align with the new filename
+ * Replace commercial names with generic ones. (Jon)
+ * Be consistent about punctuation at the end of bullets for whole
+   sentences. (Miguel)
+ * Formatting sprucing up and minor typos (Miguel)
 
-And I think it's important to say that it's low quality contributions
-from AI is no different from any other kind of low quality
-contributions.  And just as judges in courts of law have sanctioned
-lawyers for submitting legal briefs that contained completely
-hallucinated court cases, there will be costs to sending cr*p no
-matter what the source.
+This document was a collaborative effort from all the members of
+the TAB. I just reformatted it into .rst and wrote the changelog.
+---
+ Documentation/process/generated-content.rst | 96 +++++++++++++++++++++
+ Documentation/process/index.rst             |  1 +
+ 2 files changed, 97 insertions(+)
+ create mode 100644 Documentation/process/generated-content.rst
 
-> I think as long as we UNDERLINE these points I think we're good.
-> 
-> TL;DR: we won't take slop.
+diff --git a/Documentation/process/generated-content.rst b/Documentation/process/generated-content.rst
+new file mode 100644
+index 0000000000000..acdf23819d685
+--- /dev/null
++++ b/Documentation/process/generated-content.rst
+@@ -0,0 +1,96 @@
++============================================
++Kernel Guidelines for Tool Generated Content
++============================================
++
++Purpose
++=======
++
++Kernel contributors have been using tooling to generate contributions
++for a long time. These tools can increase the volume of contributions.
++At the same time, reviewer and maintainer bandwidth is a scarce
++resource. Understanding which portions of a contribution come from
++humans versus tools is helpful to maintain those resources and keep
++kernel development healthy.
++
++The goal here is to clarify community expectations around tools. This
++lets everyone become more productive while also maintaining high
++degrees of trust between submitters and reviewers.
++
++Out of Scope
++============
++
++These guidelines do not apply to tools that make trivial tweaks to
++preexisting content. Nor do they pertain to AI tooling that helps with
++menial tasks. Some examples:
++
++ - Spelling and grammar fix ups, like rephrasing to imperative voice
++ - Typing aids like identifier completion, common boilerplate or
++   trivial pattern completion
++ - Purely mechanical transformations like variable renaming
++ - Reformatting, like running Lindent, ``clang-format`` or
++   ``rust-fmt``
++
++Even if your tool use is out of scope you should still always consider
++if it would help reviewing your contribution if the reviewer knows
++about the tool that you used.
++
++In Scope
++========
++
++These guidelines apply when a meaningful amount of content in a kernel
++contribution was not written by a person in the Signed-off-by chain,
++but was instead created by a tool.
++
++Detection of a problem and testing the fix for it is also part of the
++development process; if a tool was used to find a problem addressed by
++a change, that should be noted in the changelog. This not only gives
++credit where it is due, it also helps fellow developers find out about
++these tools.
++
++Some examples:
++ - Any tool-suggested fix such as ``checkpatch.pl --fix``
++ - Coccinelle scripts
++ - A chatbot generated a new function in your patch to sort list entries.
++ - A .c file in the patch was originally generated by a coding
++   assistant but cleaned up by hand.
++ - The changelog was generated by handing the patch to a generative AI
++   tool and asking it to write the changelog.
++ - The changelog was translated from another language.
++
++If in doubt, choose transparency and assume these guidelines apply to
++your contribution.
++
++Guidelines
++==========
++
++First, read the Developer's Certificate of Origin:
++Documentation/process/submitting-patches.rst. Its rules are simple
++and have been in place for a long time. They have covered many
++tool-generated contributions. Ensure that you understand your entire
++submission and are prepared to respond to review comments.
++
++Second, when making a contribution, be transparent about the origin of
++content in cover letters and changelogs. You can be more transparent
++by adding information like this:
++
++ - What tools were used?
++ - The input to the tools you used, like the Coccinelle source script.
++ - If code was largely generated from a single or short set of
++   prompts, include those prompts. For longer sessions, include a
++   summary of the prompts and the nature of resulting assistance.
++ - Which portions of the content were affected by that tool?
++ - How is the submission tested and tools used to test the fix?
++
++As with all contributions, individual maintainers have discretion to
++choose how they handle the contribution. For example, they might:
++
++ - Treat it just like any other contribution.
++ - Reject it outright.
++ - Treat the contribution specially like reviewing with extra scrutiny,
++   or at a lower priority than human-generated content
++ - Suggest a better prompt instead of suggesting specific code changes.
++ - Ask for some other special steps, like asking the contributor to
++   elaborate on how the tool or model was trained.
++ - Ask the submitter to explain in more detail about the contribution
++   so that the maintainer can feel comfortable that the submitter fully
++   understands how the code works.
+diff --git a/Documentation/process/index.rst b/Documentation/process/index.rst
+index aa12f26601949..e1a8a31389f53 100644
+--- a/Documentation/process/index.rst
++++ b/Documentation/process/index.rst
+@@ -68,6 +68,7 @@ beyond).
+    stable-kernel-rules
+    management-style
+    researcher-guidelines
++   generated-content
+ 
+ Dealing with bugs
+ -----------------
+-- 
+2.34.1
 
-Agreed, completely.
-
-						- Ted
 
