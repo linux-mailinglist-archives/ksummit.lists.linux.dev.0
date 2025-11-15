@@ -1,111 +1,110 @@
-Return-Path: <ksummit+bounces-2609-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2610-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E54D1C607D7
-	for <lists@lfdr.de>; Sat, 15 Nov 2025 16:23:57 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 315B3C60A4C
+	for <lists@lfdr.de>; Sat, 15 Nov 2025 20:03:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 01630346536
-	for <lists@lfdr.de>; Sat, 15 Nov 2025 15:22:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3C2434E1FDA
+	for <lists@lfdr.de>; Sat, 15 Nov 2025 19:02:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6727A221FBD;
-	Sat, 15 Nov 2025 15:22:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Icf28FtB";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NADn7NdD"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91DE2283FF0;
+	Sat, 15 Nov 2025 19:02:52 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72ECC207DF7
-	for <ksummit@lists.linux.dev>; Sat, 15 Nov 2025 15:22:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 252AD238176
+	for <ksummit@lists.linux.dev>; Sat, 15 Nov 2025 19:02:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763220139; cv=none; b=QAL/S6b3bQPrZ9bArzXygVuA+7ywBwOkLuexh/LfXMx/Gz53aXslYJ8G8EmDrOLFLH3xRq9/VusvJdcwSIzL7vNde1AdexqeX5eDyOGEXmPHHEANkE9EAg51VggXdYR0fAjmHFcIltX7Cztjxcc9vmckGz9N6V9UEzjOAC3uveU=
+	t=1763233372; cv=none; b=fxyaTPSke1Bifx4whdUo5pCdztGv/PjWGwhnEDm2onf82CT8ihyVehI7CCX1ewmElW27lOXXQi7OrXGoraYxg7QFNLUvrv++f3p3cYYskcKIBTFi1WBKEH7pmgmgpUGmNILLyedBDmghZkAJC2dfifu/rn7uUt19v7Bl+v7GdfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763220139; c=relaxed/simple;
-	bh=IbS3ZgEsVwSJ9+lnuNvu9hIrdNAKhRGKaenwUB3kjF8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Umg9sDaNpQdVa1rGCYpwdFIt6/+SMsea9vwSFO9wGjcI960q8L3fchvefYgCDEajNAmlMM1rYSmZfWZP8zn5LhmGhg8s6mD7cjPczOqqHF6lAxQrRjV4T5/UQreTNqA4oQA8cdSRjgDNi5LoYhgBYPbuqsfbq2G5GGQ1M8l0sJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Icf28FtB; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NADn7NdD; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1763220136;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=592QoA+kCrhFi4GVSfW983g/nitfuygzMxHaYR84+6U=;
-	b=Icf28FtBKiKWLPxYVsy0KfH4y8KX9FezQeU+DXNwySBcGYJKKrirfv2e5McnAqAaAXdOfd
-	KyGxRkVn1Y9NPZ6exhoqq/oOuBAEVuCNKMJcqIToMRKpQ3xzHYEc44uTs0oYdD2x7koLje
-	/jR+SZDjPln7eI0E+XOyp1te7sZ3SplQW3v/aIG+ODlsktj+K3bdrp8lJDrQlKNrRLi/3q
-	fLXZRMoMZF/ivRnpbuplrDd+YDJp/dfPmPji5QxezYPIOuZslNE1KcoMxkweEQnAQsuwmv
-	Icfm1bWNXuWaRmoWDGNLEbGpioLxiZmx7Ycg7vvNfEwg3ZNB0lVCmomitoXlGA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1763220136;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=592QoA+kCrhFi4GVSfW983g/nitfuygzMxHaYR84+6U=;
-	b=NADn7NdDdDG8fdN2jKYmNDABBIePfvd7ClnV/Xs7We7QefpaKpULXTD5dRXv/J9KuEpzcP
-	I7zl8iJ3qYp8h9Dg==
-To: Dave Hansen <dave.hansen@linux.intel.com>, dave@sr71.net
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, Shuah Khan
- <shuah@kernel.org>, Kees Cook <kees@kernel.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, NeilBrown
- <neilb@ownmail.net>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Dan
- Williams <dan.j.williams@intel.com>, Theodore Ts'o <tytso@mit.edu>, Sasha
- Levin <sashal@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Vlastimil
- Babka <vbabka@suse.cz>, workflows@vger.kernel.org, ksummit@lists.linux.dev
+	s=arc-20240116; t=1763233372; c=relaxed/simple;
+	bh=FHdhMpf/jdA84CfaTAXSvNbEQT/GOewXqaWP7XurmqA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tLy5rgoonkTqmJXfcWCkZ8ctzqX06W4BihxAB7TFvjSUGPMeXBAjHca1LGS1Rr4q1SpWoESpCl7w+GHOM+WgB2J7GmFkWax9EfUjHa4Gy62EZzGIidjCxDMWA2wDRgpBGmO1oyCUGIzCrfts/IjI6WtVcuwPRrToriorKO1Xuuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 546B75B7C9;
+	Sat, 15 Nov 2025 19:02:42 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf15.hostedemail.com (Postfix) with ESMTPA id DF52317;
+	Sat, 15 Nov 2025 19:02:38 +0000 (UTC)
+Date: Sat, 15 Nov 2025 14:02:41 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: dave@sr71.net, Shuah Khan <shuah@kernel.org>, Kees Cook
+ <kees@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel
+ Ojeda <ojeda@kernel.org>, NeilBrown <neilb@ownmail.net>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, Dan Williams <dan.j.williams@intel.com>,
+ Theodore Ts'o <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>, Jonathan
+ Corbet <corbet@lwn.net>, Vlastimil Babka <vbabka@suse.cz>,
+ workflows@vger.kernel.org, ksummit@lists.linux.dev
 Subject: Re: [PATCH] [v3] Documentation: Provide guidelines for
  tool-generated content
+Message-ID: <20251115140241.3ce1de0e@batman.local.home>
 In-Reply-To: <20251114183528.1239900-1-dave.hansen@linux.intel.com>
 References: <20251114183528.1239900-1-dave.hansen@linux.intel.com>
-Date: Sat, 15 Nov 2025 16:22:15 +0100
-Message-ID: <87qztz9v88.ffs@tglx>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: zwqa53pau3h46bu4unzjeyg4cfdy8m3x
+X-Rspamd-Server: rspamout05
+X-Rspamd-Queue-Id: DF52317
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX199mJ4JxAZ1Mj0aPrMsvEk6wKJyp6pV6Xc=
+X-HE-Tag: 1763233358-929683
+X-HE-Meta: U2FsdGVkX19/O6baWHRv/dTFCo1uglXa9rQ/fp+pW2NIj0l4h9PU0hhUF7KKdWCWkpUGZ6YSAv+4RoS++dUE+bN0jf9QLQOdeyrEWQ9OprXL2YR1PpW4dL52RRVM3DHZCPKswgduu0NKkge1VJFLv/3LSHYJH1Npt0u4ZAs7SnuhEniYqbjCsWtd6ANVfICxVkazXNK6eeT3V35I5ZcBZ/9nqhUaxSIiIrayBuXkCBgc85ndzz/KjUzgsHl9eRv5psz+twCYkWMs2HrQ2aqEOw8hTQv0uPSHqNYbBeg1Pz7bXHkHD1h2LlZloo72xvifBKl5b0/dsn4I94JW1vPtaUn/pg1lJGHcLIkwJWdbFYrHYD0CzPibcG7XpmrTz2oTSOJnPZMwQMFVcUvch6oqr9lEY4vJMk5Q/Bs1vPBJimG30xggnW5rMKK7oiw6zRF4JFUaV2FbpvPXPAB54ApkD46BBx9otanLrSG+BoZ+2IKIrIdp9AKHg3DCk9rCKQ2duiKMZ9Txk3VSwVGDi5Aaf4LID1YYwacJWnYI3baNyTSAerCTESKMBm7o6Cet4lUHY2mlcGIkBgjtbvAIOXO6ZpqQxndhSTtCsjP5xgzYRMm8mrUouo6Mzw==
 
-On Fri, Nov 14 2025 at 10:35, Dave Hansen wrote:
-> +In Scope
-> +========
-> +
-> +These guidelines apply when a meaningful amount of content in a kernel
-> +contribution was not written by a person in the Signed-off-by chain,
-> +but was instead created by a tool.
-> +
-> +Detection of a problem and testing the fix for it is also part of the
-> +development process; if a tool was used to find a problem addressed by
-> +a change, that should be noted in the changelog. This not only gives
-> +credit where it is due, it also helps fellow developers find out about
-> +these tools.
-> +
-> +Some examples:
-> + - Any tool-suggested fix such as ``checkpatch.pl --fix``
-> + - Coccinelle scripts
-> + - A chatbot generated a new function in your patch to sort list entries.
-> + - A .c file in the patch was originally generated by a coding
-> +   assistant but cleaned up by hand.
-> + - The changelog was generated by handing the patch to a generative AI
-> +   tool and asking it to write the changelog.
-> + - The changelog was translated from another language.
-> +
-> +If in doubt, choose transparency and assume these guidelines apply to
-> +your contribution.
+On Fri, 14 Nov 2025 10:35:28 -0800
+Dave Hansen <dave.hansen@linux.intel.com> wrote:
 
-Can we pretty please define a tag and format for this?
+> In the last few years, the capabilities of coding tools have exploded.
+> As those capabilities have expanded, contributors and maintainers have
+> more and more questions about how and when to apply those
+> capabilities.
+> 
+> Add new Documentation to guide contributors on how to best use kernel
+> development tools, new and old.
+> 
+> Note, though, there are fundamentally no new or unique rules in this
+> new document. It clarifies expectations that the kernel community has
+> had for many years. For example, researchers are already asked to
+> disclose the tools they use to find issues in
+> Documentation/process/researcher-guidelines.rst. This new document
+> just reiterates existing best practices for development tooling.
+> 
+> In short: Please show your work and make sure your contribution is
+> easy to review.
 
-I'm not really interested in the creative ways which will otherwise make
-change logs even more incomprehensible.
+Thanks Dave for pushing this through!
 
-Thanks
+Reviewed-by: Steven Rostedt <rostedt@goodmis.org>
 
-        tglx
+-- Steve
+
+> 
+> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Reviewed-by: Shuah Khan <shuah@kernel.org>
+> Reviewed-by: Kees Cook <kees@kernel.org>
+> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
+> Cc: NeilBrown <neilb@ownmail.net>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Theodore Ts'o <tytso@mit.edu>
+> Cc: Sasha Levin <sashal@kernel.org>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: workflows@vger.kernel.org
+> Cc: ksummit@lists.linux.dev
 
