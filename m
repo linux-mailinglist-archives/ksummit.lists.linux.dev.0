@@ -1,113 +1,135 @@
-Return-Path: <ksummit+bounces-2635-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2636-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07EBFC6BA14
-	for <lists@lfdr.de>; Tue, 18 Nov 2025 21:33:53 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F844C6BA2C
+	for <lists@lfdr.de>; Tue, 18 Nov 2025 21:35:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6117A35E1E7
-	for <lists@lfdr.de>; Tue, 18 Nov 2025 20:28:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EA1D34F11A9
+	for <lists@lfdr.de>; Tue, 18 Nov 2025 20:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3332E1F463E;
-	Tue, 18 Nov 2025 20:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1E629D268;
+	Tue, 18 Nov 2025 20:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="u5XNYGCE"
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Tf/NUbEU"
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69D137031C
-	for <ksummit@lists.linux.dev>; Tue, 18 Nov 2025 20:28:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DBA26A1A7
+	for <ksummit@lists.linux.dev>; Tue, 18 Nov 2025 20:30:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763497694; cv=none; b=lrIJjGYIto6XYCPiYkW30VJkUxoT4PQUmbOOj04R9s20zAGuHUhGO4KhlNdzDnrbrp1Vfa3He9qEwtAdnWwsnNTerL9PGYYkL5ofh9GSkm/gIKsp5uN0MOR+vip/TJTm1oXxGTiBju8QEG7KAPhLfu6qyEOcuPlmUMiB5tUEOQ4=
+	t=1763497829; cv=none; b=hzpQYOj+M1kaaTJhAhQmFAHuMXe2WvMxX1R1aUp1yjqe3mbMObcyrBXKYDB3NJGBcZ+AEZku/ST1bt4JfsV8+RbEDSwg9RIHu9xygIAUIu6sMEo8qO4r+6YuIbF6j/EH0TvJoWjNfFpe9ro0whdH5Q4Qp2AHpPRVJh3hLNuFHsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763497694; c=relaxed/simple;
-	bh=5IW2f19lva4cAoj9OF4udTIlTdlZEfjp57RGoPDy/RM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=I2LaB96Qw0oj8XqUKGKEHI1XkFu6n0KGbChHUNpqghrA2qBRD7ntsV4YxH0OtNdE6pbRXstSdEy9VRj/PYxf/s8fiqZI7VfqmUQFARExw087nFrDNnYVK+mJPRG5uDpAhi+7xPrF5SxCOo7oDCKevTq9sSoGoqg8fBFSd1iLYn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=u5XNYGCE; arc=none smtp.client-ip=198.37.111.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1763497691;
-	bh=5IW2f19lva4cAoj9OF4udTIlTdlZEfjp57RGoPDy/RM=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=u5XNYGCE0qApvDKZoxvxoIVOhPQcFgkqgU4AS08MGLfTHAwPJuH1G/o6/FvfMGeNF
-	 bZhAoVtBKIRv8ZwiRgcy4h2P1qJFnC2ODH2ERlYhP2HKh7KVD4cFOcTgm2+JchtsOl
-	 rwzeYC2NrEIO1zRlymW+YMHvdl/0cEf1diMo56qo=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 926981C02FD;
-	Tue, 18 Nov 2025 15:28:11 -0500 (EST)
-Message-ID: <bff3cbb166dd1906c376b2465d4f2032e977c296.camel@HansenPartnership.com>
-Subject: Re: Clarifying confusion of our variable placement rules caused by
- cleanup.h
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: "H. Peter Anvin" <hpa@zytor.com>, ksummit@lists.linux.dev, Dan Williams
-	 <dan.j.williams@intel.com>
-Cc: linux-kernel <linux-kernel@vger.kernel.org>, Dan Carpenter
-	 <dan.carpenter@linaro.org>
-Date: Tue, 18 Nov 2025 15:28:11 -0500
-In-Reply-To: <cd6f099c-c28c-4b69-85f7-6012139fd646@zytor.com>
-References: 
-	<58fd478f408a34b578ee8d949c5c4b4da4d4f41d.camel@HansenPartnership.com>
-	 <cd6f099c-c28c-4b69-85f7-6012139fd646@zytor.com>
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+	s=arc-20240116; t=1763497829; c=relaxed/simple;
+	bh=+ARpv9QE/JruhVH0DmV6RX5h+3Dc8d6svbyLopVahTY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=S37EB6gvy+U1wuGlG7ewsCTa8C24KqDEwDDGNouK09n3nkmyWVkS2K6WFI2JEfbFAQaLk8wqTfEHC5crNhfTSlzmFhPQtuLlVvB17rjJtKDYrRnq2Nm/krx3Q236vbWDRCmjI6DFIj/P0+Ily47c3MNAaKv1RdJBhO8dYp1djHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Tf/NUbEU; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-640c1fda178so720032a12.1
+        for <ksummit@lists.linux.dev>; Tue, 18 Nov 2025 12:30:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1763497825; x=1764102625; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=7Zfnc0zwjdaQyaefF80P2aTcJmgzfCMP7iuMryViv88=;
+        b=Tf/NUbEUKkYokgk17t31NK5U9RY/mdB+75G43fFCBfPpqgg0b569CXSwMXLv6x12qc
+         nbFRuOswOF3KcBx17UTxdVcZyI8m18X5N6kLJG4yPmlfVSSZ56WYGOGl+JtFlY/8dEpE
+         FdDA+GR9WtxQUqVeFIgfDVkq8Tq3KHXVDPk2I=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763497825; x=1764102625;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7Zfnc0zwjdaQyaefF80P2aTcJmgzfCMP7iuMryViv88=;
+        b=CfSvYyDk4+D6LS7QGoqHCY2BTmT9aCvyR4ZbKg1+kDwuNwyvUaUdkzIY/f8yY+JvkD
+         xw/O2kETwYO+yGQoChE217L6jbDghx82p9BMWIiwnk9/s9CQHGr7wPNo2GmSanYcJaeG
+         woE/4U/2RuDTHWpRw1LduaaxgRVTWdJ2PMY0y/2IdZyEfEmH0aTdKAOuzozFr0djFEUP
+         5ZYENP6daA2Qz8213eLevPFA04pLAUqoljieIIOAmm5I2reeLquKJWU0c91uKCObO1Qi
+         CFw9wMeE57wCYmjXFtiDILlQEpdH6Z6DW1zN+yE7RAl0Ix34kQJ4K/grERoDYEEb/dwO
+         mn+w==
+X-Forwarded-Encrypted: i=1; AJvYcCWyllyWhzD6pROg2vjY9hPWkNiVEKybhrQv4t2O1mE3nsJ/m7z3Ks0wHBq3yPgbYqyEyytmH/jc@lists.linux.dev
+X-Gm-Message-State: AOJu0YyCrF185E5HhCMg/bhfHOMepdnLkM+wE7cq4VcfcN3Ump5VeQu0
+	CuCozpF1SKgJ8yjnDj+H0vlgSm2ba5r6J72VfUYDpOke0z1z17yOMh1VRUU6YFQaShXtacTg4+L
+	nhQffdYQ=
+X-Gm-Gg: ASbGncv4Di0lnmhEEOUnkFkpPo2f1mlKuUvTyV4xATpwiF3ftr7F0CjAkmvqLt5mJ+t
+	MX4gNbiz4U7q4wla8yled0acZnTkhfBiQZ7ZW8SR4j8BAFXUjw14CVxKd4F/mAiyMHCXfmFmsvP
+	k7PX9N/WtpfNgZKHWNKNIXMrQPolKgy0/1ItX5xMfqM2UlWOYxqXZl7/Q4EVIuJQxMs3zuQdpNA
+	Xp1K7dvkJO9KbsEMKr+SYscLimjCf2aok/U2EO2HuglMsK6tj1u3qkw8gRbZHh2hLIFmI/pqGrx
+	EgThevukC5A02e6g47F1SGaGNyMnZGr8codhXfHm1rzASAkMeGJuEc+Vv8cnFwquy9MnU+6SRMe
+	7n7ZFJRQ0kjaz9wusOHe9Z6DLKETNggpEZ8P1aMpgJBnacSmcxtAjcs4Armos6qDvgwEZ5YNDH2
+	Z4GcuvwgSfB1MkMYQ4NqohW8wwNmRSg+N6pT6Ki7d4hUoWddgVzwTP7gJ3CE6uBMKDaeLpWAI=
+X-Google-Smtp-Source: AGHT+IHKF1CglFDXpRubmLzkf8MpEMbuIc35DYCacdzTgJFP5ciNYTH1S1E+JVo4fgT3+l48cZE4Qw==
+X-Received: by 2002:a05:6402:20c3:10b0:640:b736:6c2f with SMTP id 4fb4d7f45d1cf-64350e8a799mr12647419a12.18.1763497825473;
+        Tue, 18 Nov 2025 12:30:25 -0800 (PST)
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com. [209.85.208.48])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6433a498102sm13596550a12.24.2025.11.18.12.30.24
+        for <ksummit@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Nov 2025 12:30:24 -0800 (PST)
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-640c1fda178so719962a12.1
+        for <ksummit@lists.linux.dev>; Tue, 18 Nov 2025 12:30:24 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCV5gq63fGggtyMWS2w8LvsYIsUXFLgR37KXTRa7uOm6vekx3djtc84Lst0jG3GwsXjL3bkcK3K8@lists.linux.dev
+X-Received: by 2002:a05:6402:42cb:b0:643:1659:7593 with SMTP id
+ 4fb4d7f45d1cf-64350ea7e53mr15860670a12.30.1763497823834; Tue, 18 Nov 2025
+ 12:30:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+References: <58fd478f408a34b578ee8d949c5c4b4da4d4f41d.camel@HansenPartnership.com>
+ <f63891cb-13e7-443f-bf02-5a357aa2a70b@acm.org> <CAHk-=wiCOTW5UftUrAnvJkr6769D29tF7Of79gUjdQHS_TkF5A@mail.gmail.com>
+ <20251118141720.11c8d4d6@gandalf.local.home> <bff6d9974e50f7cb27cc2b150ecd6e5e2252ae54.camel@HansenPartnership.com>
+In-Reply-To: <bff6d9974e50f7cb27cc2b150ecd6e5e2252ae54.camel@HansenPartnership.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 18 Nov 2025 12:30:07 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wjD1r5dr_b7gpuPdTXGdXAtaM6wHBSJyzi-Zfw3-cqR6w@mail.gmail.com>
+X-Gm-Features: AWmQ_bnSJRdnjW7O8dYNf_O1Ez_rg_fXzQwlGD1K8n_y_W08ZYUfXV4O6V3_B8s
+Message-ID: <CAHk-=wjD1r5dr_b7gpuPdTXGdXAtaM6wHBSJyzi-Zfw3-cqR6w@mail.gmail.com>
+Subject: Re: Clarifying confusion of our variable placement rules caused by cleanup.h
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Bart Van Assche <bvanassche@acm.org>, ksummit@lists.linux.dev, 
+	Dan Williams <dan.j.williams@intel.com>, linux-kernel <linux-kernel@vger.kernel.org>, 
+	Dan Carpenter <dan.carpenter@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 2025-11-18 at 11:23 -0800, H. Peter Anvin wrote:
-> On 2025-11-18 08:39, James Bottomley wrote:
-> >=20
-> > For myself I do find some value in the C89 declarations at the
-> > beginning of the block for readability, so I'm happy to relax the
-> > mixing rule to cases where it's strictly necessary and require
-> > documenting in the comment what the necessity is.=C2=A0 However, I do
-> > think we should, absent ordering problems, keep __free variables
-> > uninitialised and at the top of the block given we can detect any
-> > problem (and thus keep this rule absolutely for non-__free
-> > variables where there's no ordering issues).=C2=A0 But, again, I'm less
-> > attached to this position than I am to the consistency one: I
-> > really think it's a bad idea to change the rules for one class of
-> > variables but not for another, so whatever we do, we should do it
-> > for everything and if that means relaxing the rule mixing code and
-> > declarations for everthing,=20
-> > can live with that.
-> >=20
->=20
-> To me, a major win with pushing declarations down to first
-> initialization or thereabouts is that it implicitly reduces the scope
-> of a variable (without needing to create new blocks.)=C2=A0 This can
-> sometimes catch some pretty serious errors.
+On Tue, 18 Nov 2025 at 12:21, James Bottomley
+<James.Bottomley@hansenpartnership.com> wrote:
+>
+> On Tue, 2025-11-18 at 14:17 -0500, Steven Rostedt wrote:
+> > I think the code could also be better optimized? I haven't run an
+> > objcopy to confirm but now early exits do not require calling the
+> > __free() function on NULL pointers.
+>
+> Yes, I can confirm that (at least from reading the docs not actually
+> from disassembling the code).
 
-I do somewhat agree with that.  However, I do also think it can be
-clearer if you do deliberately create a scope block simply to demarcate
-the variable lifetime within the code ... and if you can't do that
-because of over indenting then it might be a sign the code needs to be
-split up a bit more.
+Actually, I _have_ been disassembling some of that code, and most of
+the time the compiler is actually good at eliding those things and not
+calling kfree() with a NULL pointer.
 
-Regards,
+Now, the reason for that is actually that we spent some effort on this
+in <linux/cleanup.h> (and by "we" I mean mostly PeterZ & co with me
+being involved in the discussions).
 
-James
+So you'll see those destructor functions being inline functions with
+things like that
 
+   DEFINE_FREE(kfree, void *, if (_T) kfree(_T))
+
+where that "if (_T)" being integral to having the compiler able to see
+inline that "oh, it's statically NULL at this stage, I don't need to
+call any external function".
+
+But yes, sometimes having the declaration later can simplify this all
+for the compiler too. But the *primary* thing should be about making
+the code itself legible and maintainable to humans.
+
+          Linus
 
