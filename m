@@ -1,109 +1,189 @@
-Return-Path: <ksummit+bounces-2621-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2622-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDD02C6AF99
-	for <lists@lfdr.de>; Tue, 18 Nov 2025 18:31:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5358BC6B40E
+	for <lists@lfdr.de>; Tue, 18 Nov 2025 19:38:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4AE8A3C0B5C
-	for <lists@lfdr.de>; Tue, 18 Nov 2025 17:24:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 5369328F90
+	for <lists@lfdr.de>; Tue, 18 Nov 2025 18:38:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8AA131ED82;
-	Tue, 18 Nov 2025 17:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AFF52D94AC;
+	Tue, 18 Nov 2025 18:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="UWDTaptH"
-Received: from 003.mia.mailroute.net (003.mia.mailroute.net [199.89.3.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="YTY/pi1I"
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07B131ED6C
-	for <ksummit@lists.linux.dev>; Tue, 18 Nov 2025 17:19:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E09A2C2349
+	for <ksummit@lists.linux.dev>; Tue, 18 Nov 2025 18:38:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763486347; cv=none; b=sQJ3wCuSECYjhJWoCz26OtKwNU6vymEybya+ezQ3zoL5Vo0iOTqqJVXf4GsBOB2S6hVU2kIZU1ZUBKwylC1jJ+mzwrFSsgVjf4xMPe9pWS2XAAQlfWWLGdufd+lLUY+bj4kc/RcAWmztjRCyVoEckwd+1H1HO7H59XdD0kOPAsQ=
+	t=1763491124; cv=none; b=nwmwjSK8o9iniTZ3xsHbhFszHmreozqDOeLJM8oa5HCf2trRPZVtYSG6CHXM05gYmde1ap7FWelWJSnp7yRnxygiBz4EkEVAoNX96Hab1/A2Qlodj+KUbtUBPGXKcYpBqH3MTyL634h5pWOQtzKzi0QPxsK/r/3Hbe/qZx5Iztw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763486347; c=relaxed/simple;
-	bh=rtLOLxCkT0OhPwpdB5/CwRCiZGezlpyVC+mgf/oIhK4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eJ8Hazz84Ex//xqDGg9gdh4244ZMSw7NwMeYq95Ghitt45/e8WZehB8Mles/eljHDadVy/pYeK+T6DTSRtgVnuu0R8VkBqfyYyHkPNa6WGE50Sflb/qHutqP3uJ9nkO9vnH1Ls4Bd4+k++IP7Kg3IPNeEfPB2gbpnen7gG1G/j8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=UWDTaptH; arc=none smtp.client-ip=199.89.3.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 003.mia.mailroute.net (Postfix) with ESMTP id 4d9rtn6YQSzlv82J;
-	Tue, 18 Nov 2025 17:18:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1763486336; x=1766078337; bh=YpBgM8v9K4aB3JHaQgR5PO4p
-	Cqbelo/55uxiDeGlj7o=; b=UWDTaptHQfV0A2SpBgHcLszVDxQ2cJpNNqnjV7fr
-	AuzPOMBbKJNlpNGaZxLtmuWjRXgAZrw+ogDOf0w96JqqViM2NMyXwRBx/FuvCGgI
-	6s2vWQPuqvinMwt2phV4yr9BKlnqdrc9T/pHDZLSo3lLS1s7DhnMewfh6YFQtzwY
-	YnJIRvgu6oyNhI3oYttkKNlAiYOKysdfIfuu0i446lcDDvkRNglzkfXr5ri1AU23
-	MEGeKQ4/hGnBeurI1pNLijWqnALjYWu4uoQk/06X1pMYUt1GiV2qFsIuQtWIlIX2
-	OEsNUXAmo6DzfU/ykqyQk/BWOp7JycZc1W/vxi+dA8X6Pg==
-X-Virus-Scanned: by MailRoute
-Received: from 003.mia.mailroute.net ([127.0.0.1])
- by localhost (003.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id N4onLChKH34H; Tue, 18 Nov 2025 17:18:56 +0000 (UTC)
-Received: from [100.119.48.131] (unknown [104.135.180.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 003.mia.mailroute.net (Postfix) with ESMTPSA id 4d9rtj30DyzlrnQ7;
-	Tue, 18 Nov 2025 17:18:51 +0000 (UTC)
-Message-ID: <f63891cb-13e7-443f-bf02-5a357aa2a70b@acm.org>
-Date: Tue, 18 Nov 2025 09:18:50 -0800
+	s=arc-20240116; t=1763491124; c=relaxed/simple;
+	bh=mBsjB9lSXpbh1T7s2lDMfXt53BQfLKF1/52TBEuDV4s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IRr/aUh7cxjUF1TYd9wwB5kvHztZHDh1CoiYeavg8XRAlCy9dKeGok2PUkMAGu3N+qumigB4Hlmdd+9+M6nnJUW0XIHJ8UVt7numi4gXvYY3U5ymrEr0dZCkhoRgL9WtCj4A3mMSAeFY5dRKPSgGgp16jfGDpejWEN6a28g8ugo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=YTY/pi1I; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-640b06fa959so10395887a12.3
+        for <ksummit@lists.linux.dev>; Tue, 18 Nov 2025 10:38:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1763491120; x=1764095920; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=1O4YrVg9c9BgjLkxFwt60WMc5PVwxR8AjeqghbQNFmk=;
+        b=YTY/pi1IweD3vtPzsLzsiRxEa58fRuAR4ALtEL8ku/0G/WentnTKScJ5Fn3L+E9hry
+         48e/xzcG5E9ZckttFUnDtIBTAoopZijgGV/T/yvB7FZzlElqDvpqvX+ajzxk6tDbRtli
+         8USkxiPNQNr1BWUaOAmT9kTlPvXURnnANiSpw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763491120; x=1764095920;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1O4YrVg9c9BgjLkxFwt60WMc5PVwxR8AjeqghbQNFmk=;
+        b=iQNVl8Nntt8enK6R1XJoyJFC5cS25mYRDCQURtnN/1r38iIjdgitl+QUinq5nCEh1D
+         fsqRI7VVGalV219ehEi+m5rLES2Y6sJlY/WJUGszXL5Ro9jXUiq2SqCK7ltegBze+jE+
+         NL7c7XwMSMBIHtLcqbqFXT1DMf+7BHrqwEoyb/QiTPob02ehC+Q44dDuvWoQe3rv+xaF
+         MGM4lbmX+rv/EdkLQbHkEdzem3Kq3Vw6+HI2JjikEViFM/Fq/PCxUojbUDKdGWcBB7Rz
+         mUB2+T1yi8Cepb3QpFFfYXMYvEEM7pblmZMg7Bfx4zq8ViNZKtPl2R3SA1bDAngs+jtS
+         AOKw==
+X-Forwarded-Encrypted: i=1; AJvYcCUmULH0aCI240uDIENwnJGPlok7a7OYiYtZJD301r1WwKEXRKrb5/YGfLhkPu+tovqqfu46aBCL@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy1Oamk6Jv0dSweAcZfc1b+6lpFJ1Kco6m+HqBW59OF0bYCSMER
+	iQX1hzhnreBBrnmt3ppJVeMDDPcIOXuimvY4xoRl7BHhvPYmEazwIzbZKyS1/XBPl7Zsg048U4a
+	3kFWuqio=
+X-Gm-Gg: ASbGncsZWJX0ObhSfrZgoVHqakeTrGSqQLQ+51rFHDKPGOzv2v59en6pqYi2ySlk2rK
+	iDjFuA9kHk7XzqH2B4tOmxriBsgE9PjwrdxE1BompTdkb6St7698cHeLK7Q1BiNFyWJqgW56TZr
+	EOkiGJfhPeyEGW+tgGY64XT6w579YkDIp7+chETSAYPsD0Re3emOakguvz4AIWoc5o7eAjAL97a
+	iXcanbjVS+6oQdUNk7lkPrvD6GcA1SnsWgaCRq4d451/HvOGlnN4ngKIA4x4jbKbWdLhEyFbAGq
+	hRv7LXiGCYoeMkl+d48v1AxJp+c9okfl1d306KtXv4gY8RzTw0IJWIJjwCtVT7Q0xBFtgomI5E6
+	2RXnzuT6yayTlIEe7gaPuYNt8kE5Ph1mfONbBOfJbz4OIdzQxh02FpjyquBx303RzrYLibp27VV
+	V2d0/5B5VvUUQ5QTiKwQeKEnlJqBhl7wDnNaRraoKD29Bt3tX9N1cHyFmJ8r6PVxQw00TwVco=
+X-Google-Smtp-Source: AGHT+IEvl1n/mRDGcC03HTZoFRbgwhtgqDIbcK3DDUiWuK3VGiGTRxt+kLjvwfDFs6ZpJU4TSMZUpg==
+X-Received: by 2002:a05:6402:20c4:10b0:643:83f3:1b9f with SMTP id 4fb4d7f45d1cf-64383f31c9cmr7608046a12.31.1763491120313;
+        Tue, 18 Nov 2025 10:38:40 -0800 (PST)
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com. [209.85.208.48])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6433a4ce83dsm13197584a12.34.2025.11.18.10.38.36
+        for <ksummit@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Nov 2025 10:38:36 -0800 (PST)
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-641977dc00fso8606779a12.1
+        for <ksummit@lists.linux.dev>; Tue, 18 Nov 2025 10:38:36 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWmEp30I+QXJnAs4SBz0uv6W3FwM82coF3TIS6PdsfCeXw0X308uj23TA35v/OOFeKsoFXD4Bkr@lists.linux.dev
+X-Received: by 2002:a17:907:d0d:b0:b73:43ee:a262 with SMTP id
+ a640c23a62f3a-b736794c425mr1847212466b.51.1763491116307; Tue, 18 Nov 2025
+ 10:38:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Clarifying confusion of our variable placement rules caused by
- cleanup.h
-To: James Bottomley <James.Bottomley@HansenPartnership.com>,
- ksummit@lists.linux.dev, Dan Williams <dan.j.williams@intel.com>
-Cc: linux-kernel <linux-kernel@vger.kernel.org>,
- Dan Carpenter <dan.carpenter@linaro.org>
 References: <58fd478f408a34b578ee8d949c5c4b4da4d4f41d.camel@HansenPartnership.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <58fd478f408a34b578ee8d949c5c4b4da4d4f41d.camel@HansenPartnership.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+ <f63891cb-13e7-443f-bf02-5a357aa2a70b@acm.org>
+In-Reply-To: <f63891cb-13e7-443f-bf02-5a357aa2a70b@acm.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 18 Nov 2025 10:38:20 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wiCOTW5UftUrAnvJkr6769D29tF7Of79gUjdQHS_TkF5A@mail.gmail.com>
+X-Gm-Features: AWmQ_blmMF18lOw4-9gGJXpDkAmpIXxsCXL00l_YnDwFXHozChbsl9W8Fx3ihag
+Message-ID: <CAHk-=wiCOTW5UftUrAnvJkr6769D29tF7Of79gUjdQHS_TkF5A@mail.gmail.com>
+Subject: Re: Clarifying confusion of our variable placement rules caused by cleanup.h
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, ksummit@lists.linux.dev, 
+	Dan Williams <dan.j.williams@intel.com>, linux-kernel <linux-kernel@vger.kernel.org>, 
+	Dan Carpenter <dan.carpenter@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On 11/18/25 8:39 AM, James Bottomley wrote:
-> The problem specifically is this added comment in cleanup.h:
-> 
->>   * That bug is fixed by changing init() to call guard() and define +
->>   * initialize @obj in this order::
->>   *
->>   *	guard(mutex)(&lock);
->>   *	struct object *obj __free(remove_free) = alloc_add();
-> 
-> Which is recommending mixing declarations and code contrary to our
-> prior rule.  I note the rule against mixing variables and code was
-> relaxed in the C99 standard (and in a lot of other languages), but
-> we've never formally changed our coding rules.
-> 
-> I'm not saying we have to stick with C89, just that if we change
-> adherence to it, we should do so globally and document it because
-> having incosistency for __free vs other variables really isn't a good
-> idea.
-A related question is whether or not to allow declarations in the
-initialization expression of for-statements. Although some maintainers 
-reject patches that use this C99 feature, apparently this feature is
-already used extensively:
+On Tue, 18 Nov 2025 at 09:25, Bart Van Assche <bvanassche@acm.org> wrote:
+>
+> A related question is whether or not to allow declarations in the
+> initialization expression of for-statements.
 
-$ git grep -nH 'for (int ' | grep -vE '^Documentation/|^tools/' | wc -l
-    1239
+Absolutely. It's *such* an improvement to the C syntax to be able to do
 
-Thanks,
+        for (int i = 0; i < x; i++)
 
-Bart.
+both from a syntax and a variable lifetime rule.
+
+It is also very much a "beginning of scope" syntax, even if the scope
+isn't limited by a "{ }" grouping.
+
+We already have that syntax being fairly widespread, doing a quick
+grep for it shows over 3k uses of this ("int" being the most common,
+but we've got other iterator types being used too).
+
+So this is not even a question of "whether". It is already widely used.
+
+The whole "declare variables in the middle of code" should still be
+mostly frowned upon.
+
+But it's practically required for cleanup situations - you really do
+want the initialization to pair with the cleanup or you end up with
+crazy code that might need dummy initialization that makes no sense.
+
+And I think that is basically the only valid reason for it. The old
+"declare at the top of scope" rule still holds true for normal
+variable declarations so that you don't have to look for the types.
+
+*MOST* of the cleanup cases are hopefully then abstracted out behind
+various guard macros etc, where the declaration not only goes together
+with the cleanup information, it's actually also a part of the whole
+scoping rules for cleanup.
+
+But the whole "only declare at the top" really doesn't work well for
+automatic cleanup. I do see some people still adhering to that rule,
+but it really can result in odd looking code. You end up with things
+like this:
+
+        struct x509_parse_context *ctx __free(kfree) = NULL;
+        ... other code ...
+        ctx = kzalloc(sizeof(struct x509_parse_context), GFP_KERNEL);
+
+where you have now split up the whole "this is allocated by kmalloc,
+and free'd by kfree" into two different sections that are not next to
+each other.
+
+And while I still don't love the "declare variables in the middle of
+random code" and I think we're better off with the old rule of
+generally declaring things at the top of scope, I really do think that
+it's better to keep the freeing-vs-allocation logic together.
+
+Side note: there are other situations where we might just want to
+admit that sometimes it's better to declare at the point where the
+first variable assignment is done. In particular, when using automatic
+types, the type obviously comes from the assignment. So you have a
+similar situation wrt the whole declaration location: if you use an
+auto type, you can't declare things separately from the assignment -
+and the assignment might not work at the top of a scope.
+
+So I do suspect that I'll just have to get used to assignments in the
+middle of code in general, but I feel we want to limit it to the cases
+where there is a real reason for why the declaration needs to be in a
+particular place.
+
+Example automatic type thing: something like this
+
+    #define kmalloc_type(type,gpf) (type *)kmalloc(sizeof(type),gpf)
+
+    __auto_type x = kmalloc_type(struct mystruct);
+
+simply doesn't work if you don't allow the declaration in the middle
+of code, because assignments invariably will sometimes be after other
+code.
+
+Now, we currently don't use __auto_type very much outside of macros
+(and there we often use "typeof(x)" instead for historical compiler
+reasons), but I suspect we probably should.  There's a patch floating
+around that makes it more convenient with a
+
+   #define auto __auto_type
+
+because the historical C 'auto' keyword has been so completely and
+utterly useless.
+
+                  Linus
 
