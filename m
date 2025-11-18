@@ -1,135 +1,111 @@
-Return-Path: <ksummit+bounces-2625-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2626-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4244EC6B632
-	for <lists@lfdr.de>; Tue, 18 Nov 2025 20:17:41 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECAA4C6B674
+	for <lists@lfdr.de>; Tue, 18 Nov 2025 20:21:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 914F529257
-	for <lists@lfdr.de>; Tue, 18 Nov 2025 19:17:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5E0C74E8AC8
+	for <lists@lfdr.de>; Tue, 18 Nov 2025 19:17:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 406F721885A;
-	Tue, 18 Nov 2025 19:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CCC22E6CCD;
+	Tue, 18 Nov 2025 19:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="JcuTJVeQ"
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="cwIkHT27"
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E112DCF72
-	for <ksummit@lists.linux.dev>; Tue, 18 Nov 2025 19:14:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D162848B2;
+	Tue, 18 Nov 2025 19:15:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763493284; cv=none; b=gQdzLBYRtQjkwdxqqj8U6wT740F8rYnTHYlBVcVZQDkwJQG/6+LF6fHaenB4aogj80K17fdwB5PhTHTsUFLABuTrpsnvPhBAMeBAHi9+jw7cj4XzWQ37jONYce+vpE/M2F1WV4dgEvP2lX0qQwq5CMs3nSzXju57Zw/Jt64/lK8=
+	t=1763493355; cv=none; b=lP1PJU7GfC8cA69Gygy9sc5LdW5wVJhdOPqFPrx9EEAyhzBule3JPPa+kq8h7sZsjHFRlMrAun4ScilBea1qcYZnvINwKwjt7i7+aIGbqM7ajAQ08zL3W9tZlFmw3iubXeWnIeslpBi4BUgwR/zbCmaiyExPUnepYbJDk5A7aUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763493284; c=relaxed/simple;
-	bh=vnC+t2uolRGR/UBJjTGuGQf//o1PmZCS46TqGZkaTY8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nxTR0VPt3YOSsenk78dG7hNnUNEPs/EyF7MZ2nwjkb1pA2C0ybKPN6yzsx4cFyNM4ESw4rmDyHVyfgjAmsXtIluJW6YBibKoglm+h8mlbQXMG9cYPo5yrkaB/qhF94eRYUDTvOj0HtfZm+AJFris1G1ml5dhw+l0fyk5o9MF9oI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=JcuTJVeQ; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6418738efa0so10343775a12.1
-        for <ksummit@lists.linux.dev>; Tue, 18 Nov 2025 11:14:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1763493280; x=1764098080; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=wx8vsRk+uX8K+R287yzNpgneuVIOqbxgMdZG/uaWBLU=;
-        b=JcuTJVeQoAeUb2e6HEtK8AdpYxuUkqij1K+mER+ex1T3tIi9YPTiWoGGdkvHr5faAP
-         jATeWCAC0CF7pSiHEeJ5ox4QZzbI7mJIEpUt7IzEbtiLLtwyBG/U7NpXjFUmrEhvrYp+
-         fydSKR1T7iq8WkIZB27r6YNBXVM+qhdtXEiFw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763493280; x=1764098080;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wx8vsRk+uX8K+R287yzNpgneuVIOqbxgMdZG/uaWBLU=;
-        b=dN1Rp5onDXFzNw6vDaj65OU8YmcO4petH1AlUfPeavTfUSu3fcguY5/nxhUAUjNlv9
-         UIej8Z0Pf+lLQo4QBYAJ1ICzBysHlmeZdckExdqthtQkq3phX5prevTBn5jDxKGilWTe
-         izdw5Hn1IGN0DkGw59R5n4+5zJbW8IFlLPhS2IaK/MpirgQZ4CmKzn/qUCGeRUffvU28
-         3Y8FHYZkSsR7yHDiKYmZk0ASEX6KQnjs7vjV9U4ymyFoIzfVE3hpEmDqCVPpUwmgE46j
-         AsNcONrriPtY1jgaMEdIH4Bk6mUQCEB/il4GytrgJ9VwRsRmHJdAC6KEnNwUnV4FuI6k
-         Kl5w==
-X-Forwarded-Encrypted: i=1; AJvYcCWKhgz5KgupcZLxYkik55XtEKdDKe5NnJlhI9+rJL6w1yIy3dCJhB6+hPTTRycbXCPDQ+ohacJq@lists.linux.dev
-X-Gm-Message-State: AOJu0YypALTWUZA8GybT5m01L3Lc9PXsDIX3yhIIgvJGKCqYLPR6vxmz
-	InREnF6spWPA7ANJc+PjtvOZwQkwf3KN6SO0knjwT85+uzNa8H0VfVYf6OwYe8xmaXX3rychFyh
-	WLRAzlKo=
-X-Gm-Gg: ASbGncvU3SEvyRMZJNHdp7lDu25RNT3qQ4PDcAjo4MJ60O1Oeeh4dYkfPmKIPUyYHxH
-	FefZv4J2pVK4iw3WaEQJpXHPxNbqbDoqkpEYgc+cwzBCjRxVvh68cGAdlmMyW8UP73BiMqEbGKT
-	Pof7pesyHdPm3hfe5Tqn4wbzEVMbnZ+ORDF2PMfUXFKZrjSt1/9vbPjlCXqCrJQGVuzbyiz2yGE
-	WZ3kvYhE1hvuSFx4eTdBjxklm5InqxIrCvBHUAmj+jrvQcSLT3i5/574JZd4Wjikn2SVf2wyuVG
-	czafRr6fUMWaFfTLqziA3yETciOcM9coTSu8Hrr7eSTWR07g9w+b/nm9W5nEpJ+8FUjG9RrBi4H
-	shTn92b5URA2AX9nYsD5L+0OJthqbhZ3Orrz8t3XuHQ8f4A90yV5jPofneALewT5aJ75ExZuU/E
-	rpXSgFZ8TrXg2/8BX4lwiWSTggttfeO/9JwPR+YbMLsurv+YqUJ4L13RCtTLixjxzSecTmbSQ3I
-	NVev/UXpA==
-X-Google-Smtp-Source: AGHT+IHa3ylb7pDKeY20HBBjWXOa2tDDa5DJvugXgQy5r6dCJkHCJrSyzSaeoqDq8qMUi5YUHqbPxg==
-X-Received: by 2002:a05:6402:50c8:b0:641:2cf3:ec3e with SMTP id 4fb4d7f45d1cf-64350e05276mr16154327a12.11.1763493279620;
-        Tue, 18 Nov 2025 11:14:39 -0800 (PST)
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com. [209.85.218.45])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6433a4b1db6sm13368723a12.26.2025.11.18.11.14.38
-        for <ksummit@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Nov 2025 11:14:38 -0800 (PST)
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b737cd03d46so505649666b.0
-        for <ksummit@lists.linux.dev>; Tue, 18 Nov 2025 11:14:38 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXLmvH2NcEw1qCmM3uKlEGp66qwOiVjk05N8iF5xBJs94tzVkm/qPiOpT45caoIS2I33QZhOypn@lists.linux.dev
-X-Received: by 2002:a17:906:c153:b0:b72:6a39:49d7 with SMTP id
- a640c23a62f3a-b7367b8ddf7mr1817404166b.33.1763493278245; Tue, 18 Nov 2025
- 11:14:38 -0800 (PST)
+	s=arc-20240116; t=1763493355; c=relaxed/simple;
+	bh=RiZdtAeAaXK7h7jsUMgBBtI3tLVMum4eEkpizdaAKYU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qPGxDvO7iIY0WL7PuzFCHS4n50BKfqmvnUaqisCLXsmyklTUlA9mYQAObeYDtPvYNPwrSegPPkaX9fP0GEIn0isOmgH1FlnondC2mS57ZWbvrUXttMv++Us+xiw1FsVkX00UUDk98GnXOW9r8mL2dxAJyO+JCw46Rw4QmE5vQ2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=cwIkHT27; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [IPV6:2601:646:8081:9484:7ccc:663a:75c9:3b5f] ([IPv6:2601:646:8081:9484:7ccc:663a:75c9:3b5f])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5AIJFfL0993814
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Tue, 18 Nov 2025 11:15:43 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5AIJFfL0993814
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025102301; t=1763493346;
+	bh=YghyeYDxO/PiwVZ15tnjEfjSMuBJ4eowtONkMy5DCS0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=cwIkHT27gYCj67wPu5o9JQfXanpeLROWuSv/avdXEUeuzpsXHpZTXFxDVN7jStuos
+	 gsC8fTWlIDyVb4qmaqT5xsM+XguiEv/8WxYKNJQq+2CHtpRD2afYhN4HQ8xILO5eYX
+	 Srw+Xk2oC7MlYfAH4/ioV+NG2Pb/uKM1dqouoiQ/xKS2GaBpBlRabaPBssgtdOYMCc
+	 ZiiVsEtvq9pdZpfu4I1V7EueZiG/JyGsdgJfSOQa5xzLJv3iBRzaHpzeifoYYBwx2N
+	 m49rs7jK6a7oyuXurzVOgoN+F1uSq/Nz6ny5bvEKnD1ErPqEzWDN8/O2v0tk7PZ/3X
+	 Bq3NkxSSBihAg==
+Message-ID: <7e01e70c-4a6a-41f5-a059-1434331ecaae@zytor.com>
+Date: Tue, 18 Nov 2025 11:15:35 -0800
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: Clarifying confusion of our variable placement rules caused by
+ cleanup.h
+To: Bart Van Assche <bvanassche@acm.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
+        ksummit@lists.linux.dev, Dan Williams <dan.j.williams@intel.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Dan Carpenter <dan.carpenter@linaro.org>
 References: <58fd478f408a34b578ee8d949c5c4b4da4d4f41d.camel@HansenPartnership.com>
- <f63891cb-13e7-443f-bf02-5a357aa2a70b@acm.org> <CAHk-=wiCOTW5UftUrAnvJkr6769D29tF7Of79gUjdQHS_TkF5A@mail.gmail.com>
+ <f63891cb-13e7-443f-bf02-5a357aa2a70b@acm.org>
+ <CAHk-=wiCOTW5UftUrAnvJkr6769D29tF7Of79gUjdQHS_TkF5A@mail.gmail.com>
  <82a250e0-de9e-467a-882e-7acefbfd7c24@acm.org>
+Content-Language: en-US, sv-SE
+From: "H. Peter Anvin" <hpa@zytor.com>
 In-Reply-To: <82a250e0-de9e-467a-882e-7acefbfd7c24@acm.org>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Tue, 18 Nov 2025 11:14:21 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wh3pguds+vjKy81X2o0uJj+AhwpMu2=mf6jciQjEQ781Q@mail.gmail.com>
-X-Gm-Features: AWmQ_bnMET495X1FYxhOeTOBWSLBzAetI1aw9hBAaEilWmpM5e-FxebKCPA9zz0
-Message-ID: <CAHk-=wh3pguds+vjKy81X2o0uJj+AhwpMu2=mf6jciQjEQ781Q@mail.gmail.com>
-Subject: Re: Clarifying confusion of our variable placement rules caused by cleanup.h
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, ksummit@lists.linux.dev, 
-	Dan Williams <dan.j.williams@intel.com>, linux-kernel <linux-kernel@vger.kernel.org>, 
-	Dan Carpenter <dan.carpenter@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, 18 Nov 2025 at 11:05, Bart Van Assche <bvanassche@acm.org> wrote:
->
+On 2025-11-18 11:04, Bart Van Assche wrote:
+> On 11/18/25 10:38 AM, Linus Torvalds wrote:
+>> Now, we currently don't use __auto_type very much outside of macros
+>> (and there we often use "typeof(x)" instead for historical compiler
+>> reasons), but I suspect we probably should.  There's a patch floating
+>> around that makes it more convenient with a
+>>
+>>     #define auto __auto_type
+>>
+>> because the historical C 'auto' keyword has been so completely and
+>> utterly useless.
+> 
 > In a C++ style guide I found the following advice for type deduction:
->
+> 
 > "Use type deduction only if it makes the code clearer to readers who
 > aren't familiar with the project, or if it makes the code safer. Do not
 > use it merely to avoid the inconvenience of writing an explicit type."
+> 
+> However, I'm not sure whether this guidance also makes sense for C kernel
+> code. See also
+> https://google.github.io/styleguide/cppguide.html#Type_deduction
+> 
 
-I don't think that's a bad rule, no. I don't think we should encourage
-people to switch to automatic types just because they can, but I do
-think there are situations where it makes sense and makes the code
-simpler.
+The "makes code clearer or safer" seems like a good idea to me.
 
-As mentioned, most of our automatic types currently are hidden in
-helper macros. I think it typically works best in those, where you
-effectively make them type-agnostic.
+Notably the following constructs, mostly used in macros:
 
-But I do think it also makes sense in various allocation scenarios,
-where just repeating the same type multiple times adds no real upside.
+	typeof(x) _x = (x);
+	typeof(z) _y = (typeof(z)) (y);
 
-It's not exactly uncommon to have code like this:
+... are really quite dangerous because it is very easy to mistakenly put the
+wrong variable inside the typeof().
 
-    struct xyz *abc = kzalloc(sizeof(struct xyz), GPF_KERNEL);
+	-hpa
 
-and I don't think there's any actual *value* in stating that "struct
-xyz" twice (or in stating the sizeof()).
-
-Again: I don't think we should  *push* people to do this, but I think
-it's a reasonable thing to allow. And it's a situation where having
-the declaration in the middle of the code really does make sense.
-
-                  Linus
 
