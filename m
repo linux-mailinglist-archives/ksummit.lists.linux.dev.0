@@ -1,141 +1,113 @@
-Return-Path: <ksummit+bounces-2640-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2641-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC1E8C6BAFD
-	for <lists@lfdr.de>; Tue, 18 Nov 2025 22:10:13 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E90DC6BDF7
+	for <lists@lfdr.de>; Tue, 18 Nov 2025 23:34:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 300E3363D45
-	for <lists@lfdr.de>; Tue, 18 Nov 2025 21:10:13 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 06DD4354FDE
+	for <lists@lfdr.de>; Tue, 18 Nov 2025 22:33:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE59305E00;
-	Tue, 18 Nov 2025 21:10:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="Gi9gBnQc"
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525F82D46D9;
+	Tue, 18 Nov 2025 22:33:50 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C171724DFF9
-	for <ksummit@lists.linux.dev>; Tue, 18 Nov 2025 21:10:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EABDB19E7F7
+	for <ksummit@lists.linux.dev>; Tue, 18 Nov 2025 22:33:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763500204; cv=none; b=jwGU2d/uU5RI8Y1QlVF0cKCHaroyJBjV9ckuIUAJHfvucp1xE97RaEY2SA1qm3olqrxdfR53ALN5E5hAAeil145LmGrzwLJRrggZKGEgYegAE76rTbtAJRCOEXpKAKshjPyDd7Dbxt8auj5AwiwhO62G91uhAO277sGzGeI5xGw=
+	t=1763505230; cv=none; b=lX8Yydl66k03TuEFPkl0KPZYtfyIUDLj/3iwD24L05nTkWHIdMUgjHjafNP8qMTmehGC73WVVtGC52IrBb4s45V9EUlPdAcZrtCHSP8tSnRDGT12k04M2yFX9Bpl7EiYKBnl//dvrWWcrmSLjRmpOgq0IAV1dbEocsuLf7UWEp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763500204; c=relaxed/simple;
-	bh=lt1IX57owHfVTNtXbDqeQeqiF8BRAnOSY8q3aTtnTzg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=USln1l/Zt8UaPgQc47m60E3YploTid2z1AWa6pth1+twynJ6rVHHw6coQTjF0tJqfekba6wU0GhvLmv4fXWfA0Z4MIQ5k66P2e6T+RRY86HVsoNlJ0dhgF+OjSq3eas5JTvhcbvQ7sMmkZumhce9SlV3GjkNBIFehXfTkhCq3f4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=Gi9gBnQc; arc=none smtp.client-ip=198.37.111.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1763500201;
-	bh=lt1IX57owHfVTNtXbDqeQeqiF8BRAnOSY8q3aTtnTzg=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=Gi9gBnQcCYzueKqeQNNZqjNEVKtrJi7ovVAuHBBNor6kKE0n/laB1BP1voH19UULW
-	 mTTZA02tM9LOdF/tGkWtNvLil8mMKm+KJhfJMsR1xv1+icm0uJlSCW7IuAXr5WZgQz
-	 dtHlFBxNtfj2ynHNzobtZbgdTK/JQmk+xlVAz6+M=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 8D2241C023A;
-	Tue, 18 Nov 2025 16:10:01 -0500 (EST)
-Message-ID: <fc255e7fb2b3fb4a2896f4e8680cca1f0cf7fe8d.camel@HansenPartnership.com>
-Subject: Re: Clarifying confusion of our variable placement rules caused by
- cleanup.h
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Steven Rostedt <rostedt@goodmis.org>
+	s=arc-20240116; t=1763505230; c=relaxed/simple;
+	bh=3GKAu/nCzIOMU8nff5cZZl3oR49U/UrllPL0UE6tRRs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LiQvvYWb0fH27+z1KPf+MFbY1wsK4RrMoE4h5+J4kliDIpa0ap2LAHNjjSZlDkisORS1EmxA5gr4vx19d7zuafEren12oQsn5D9YTxzhjBu6JOMDrloE748TGV5sI+pv4SWxtzYmWtHJ4EubA4AvTwLw7+hC5TWMaGJiaCR6GVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 982B3B746A;
+	Tue, 18 Nov 2025 22:33:46 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf13.hostedemail.com (Postfix) with ESMTPA id 98C682000D;
+	Tue, 18 Nov 2025 22:33:44 +0000 (UTC)
+Date: Tue, 18 Nov 2025 17:34:12 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: James Bottomley <James.Bottomley@HansenPartnership.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>, Bart Van Assche
  <bvanassche@acm.org>, ksummit@lists.linux.dev, Dan Williams
  <dan.j.williams@intel.com>, linux-kernel <linux-kernel@vger.kernel.org>,
  Dan Carpenter <dan.carpenter@linaro.org>
-Date: Tue, 18 Nov 2025 16:10:00 -0500
-In-Reply-To: <20251118155122.59dde92f@gandalf.local.home>
-References: 
-	<58fd478f408a34b578ee8d949c5c4b4da4d4f41d.camel@HansenPartnership.com>
-	 <f63891cb-13e7-443f-bf02-5a357aa2a70b@acm.org>
-	 <CAHk-=wiCOTW5UftUrAnvJkr6769D29tF7Of79gUjdQHS_TkF5A@mail.gmail.com>
-	 <20251118141720.11c8d4d6@gandalf.local.home>
-	 <bff6d9974e50f7cb27cc2b150ecd6e5e2252ae54.camel@HansenPartnership.com>
-	 <20251118155122.59dde92f@gandalf.local.home>
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- prefer-encrypt=mutual;
- keydata=mQENBE58FlABCADPM714lRLxGmba4JFjkocqpj1/6/Cx+IXezcS22azZetzCXDpm2MfNElecY3qkFjfnoffQiw5rrOO0/oRSATOh8+2fmJ6el7naRbDuh+i8lVESfdlkoqX57H5R8h/UTIp6gn1mpNlxjQv6QSZbl551zQ1nmkSVRbA5TbEp4br5GZeJ58esmYDCBwxuFTsSsdzbOBNthLcudWpJZHURfMc0ew24By1nldL9F37AktNcCipKpC2U0NtGlJjYPNSVXrCd1izxKmO7te7BLP+7B4DNj1VRnaf8X9+VIApCi/l4Kdx+ZR3aLTqSuNsIMmXUJ3T8JRl+ag7kby/KBp+0OpotABEBAAG0N0phbWVzIEJvdHRvbWxleSA8SmFtZXMuQm90dG9tbGV5QEhhbnNlblBhcnRuZXJzaGlwLmNvbT6JAVgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAhkBFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmBLmY0FCRs1hL0ACgkQgUrkfCFIVNaEiQgAg18F4G7PGWQ68xqnIrccke7Reh5thjUz6kQIii6Dh64BDW6/UvXn20UxK2uSs/0TBLO81k1mV4c6rNE+H8b7IEjieGR9frBsp/+Q01JpToJfzzMUY7ZTDV1IXQZ+AY9L7vRzyimnJHx0Ba4JTlAyHB+Ly5i4Ab2+uZcnNfBXquWrG3oPWz+qPK88LJLya5Jxse1m1QT6R/isDuPivBzntLOooxPk+Cwf5sFAAJND+idTAzWzslexr9j7rtQ1UW6FjO4CvK9yVNz7dgG6FvEZl6J/HOr1rivtGgpCZTBzKNF8jg034n49zGfKkkzWLuXbPUOp3/oGfsKv8pnEu1c2GbQpSmFtZXMgQm90dG9tbGV5IDxqZWpiQGxpbnV4LnZuZXQuaWJtLmNvbT6JAVYEEwEIAEACGwMHCwkIBwMCAQYVC
-	AIJCgsEFgIDAQIeAQIXgBYhBNVgbnPItGJxvq2a34FK5HwhSFTWBQJgS5mXBQkbNYS9AAoJEIFK5HwhSFTWEYEH/1YZpV+1uCI2MVz0wTRlnO/3OW/xnyigrw+K4cuO7MToo0tHJb/qL9CBJ2ddG6q+GTnF5kqUe87t7M7rSrIcAkIZMbJmtIbKk0j5EstyYqlE1HzvpmssGpg/8uJBBuWbU35af1ubKCjUs1+974mYXkfLmS0a6h+cG7atVLmyClIc2frd3o0zHF9+E7BaB+HQzT4lheQAXv9KI+63ksnbBpcZnS44t6mi1lzUE65+Am1z+1KJurF2Qbj4AkICzJjJa0bXa9DmFunjPhLbCU160LppaG3OksxuNOTkGCo/tEotDOotZNBYejWaXN2nr9WrH5hDfQ5zLayfKMtLSd33T9u0IUphbWVzIEJvdHRvbWxleSA8amVqYkBrZXJuZWwub3JnPokBVQQTAQgAPwIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AWIQTVYG5zyLRicb6tmt+BSuR8IUhU1gUCYEuZmAUJGzWEvQAKCRCBSuR8IUhU1gacCAC+QZN+RQd+FOoh5g884HQm8S07ON0/2EMiaXBiL6KQb5yP3w2PKEhug3+uPzugftUfgPEw6emRucrFFpwguhriGhB3pgWJIrTD4JUevrBgjEGOztJpbD73bLLyitSiPQZ6OFVOqIGhdqlc3n0qoNQ45n/w3LMVj6yP43SfBQeQGEdq4yHQxXPs0XQCbmr6Nf2p8mNsIKRYf90fCDmABH1lfZxoGJH/frQOBCJ9bMRNCNy+aFtjd5m8ka5M7gcDvM7TAsKhD5O5qFs4aJHGajF4gCGoWmXZGrISQvrNl9kWUhgsvoPqb2OTTeAQVRuV8C4FQamxzE3MRNH25j6s/qujtCRKYW1lcyBCb3R0b21sZXkgPGplamJAbGludXguaWJtLmNvbT6JAVQEEwEIAD
-	4CGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQTVYG5zyLRicb6tmt+BSuR8IUhU1gUCYEuZmQUJGzWEvQAKCRCBSuR8IUhU1kyHB/9VIOkf8RapONUdZ+7FgEpDgESE/y3coDeeb8jrtJyeefWCA0sWU8GSc9KMcMoSUetUreB+fukeVTe/f2NcJ87Bkq5jUEWff4qsbqf5PPM+wlD873StFc6mP8koy8bb7QcH3asH9fDFXUz7Oz5ubI0sE8+qD+Pdlk5qmLY5IiZ4D98V239nrKIhDymcuL7VztyWfdFSnbVXmumIpi79Ox536P2aMe3/v+1jAsFQOIjThMo/2xmLkQiyacB2veMcBzBkcair5WC7SBgrz2YsMCbC37X7crDWmCI3xEuwRAeDNpmxhVCb7jEvigNfRWQ4TYQADdC4KsilPfuW8Edk/8tPtCVKYW1lcyBCb3R0b21sZXkgPEpCb3R0b21sZXlAT2Rpbi5jb20+iQEfBDABAgAJBQJXI+B0Ah0gAAoJEIFK5HwhSFTWzkwH+gOg1UG/oB2lc0DF3lAJPloSIDBW38D3rezXTUiJtAhenWrH2Cl/ejznjdTukxOcuR1bV8zxR9Zs9jhUin2tgCCxIbrdvFIoYilMMRKcue1q0IYQHaqjd7ko8BHn9UysuX8qltJFar0BOClIlH95gdKWJbK46mw7bsXeD66N9IhAsOMJt6mSJmUdIOMuKy4dD4X3adegKMmoTRvHOndZQClTZHiYt5ECRPO534Lb/gyKAKQkFiwirsgx11ZSx3zGlw28brco6ohSLMBylna/Pbbn5hII86cjrCXWtQ4mE0Y6ofeFjpmMdfSRUxy6LHYd3fxVq9PoAJTv7vQ6bLTDFNa0KkphbWVzIEJvdHRvbWxleSA8SkJvdHRvbWxleUBQYXJhbGxlbHMuY29tPokBHwQwAQIACQUCVyPgjAIdIAAKCRCBSuR8IUhU1tXiB/9D9OOU8qB
-	CZPxkxB6ofp0j0pbZppRe6iCJ+btWBhSURz25DQzQNu5GVBRQt1Us6v3PPGU1cEWi5WL935nw+1hXPIVB3x8hElvdCO2aU61bMcpFd138AFHMHJ+emboKHblnhuY5+L1OlA1QmPw6wQooCor1h113lZiBZGrPFxjRYbWYVQmVaM6zhkiGgIkzQw/g9v57nAzYuBhFjnVHgmmu6/B0N8z6xD5sSPCZSjYSS38UG9w189S8HVr4eg54jReIEvLPRaxqVEnsoKmLisryyaw3EpqZcYAWoX0Am+58CXq3j5OvrCvbyqQIWFElba3Ka/oT7CnTdo/SUL/jPNobtCxKYW1lcyBCb3R0b21sZXkgPGplamJAaGFuc2VucGFydG5lcnNoaXAuY29tPokBVwQTAQgAQRYhBNVgbnPItGJxvq2a34FK5HwhSFTWBQJjg2eQAhsDBQkbNYS9BQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEIFK5HwhSFTWbtAH/087y9vzXYAHMPbjd8etB/I3OEFKteFacXBRBRDKXI9ZqK5F/xvd1fuehwQWl2Y/sivD4cSAP0iM/rFOwv9GLyrr82pD/GV/+1iXt9kjlLY36/1U2qoyAczY+jsS72aZjWwcO7Og8IYTaRzlqif9Zpfj7Q0Q1e9SAefMlakI6dcZTSlZWaaXCefdPBCc7BZ0SFY4kIg0iqKaagdgQomwW61nJZ+woljMjgv3HKOkiJ+rcB/n+/moryd8RnDhNmvYASheazYvUwaF/aMj5rIb/0w5p6IbFax+wGF5RmH2U5NeUlhIkTodUF/P7g/cJf4HCL+RA1KU/xS9o8zrAOeut2+4UgRaZ7bmEwgqhkjOPQMBBwIDBH4GsIgL0yQij5S5ISDZmlR7qDQPcWUxMVx6zVPsAoITdjKFjaDmUATkS+l5zmiCrUBcJ6MBavPiYQ4kqn4/xwaJAbMEGAEIACYCGwIWIQTVYG5zyLRi
-	cb6tmt+BSuR8IUhU1gUCZag0LwUJDwLkSQCBdiAEGRMIAB0WIQTnYEDbdso9F2cI+arnQslM7pishQUCWme25gAKCRDnQslM7pishdi9AQDyOvLYOBkylBqiTlJrMnGCCsWgGZwPpKq3e3s7JQ/xBAEAlx29pPY5z0RLyIDUsjf9mtkSNTaeaQ6TIjDrFa+8XH8JEIFK5HwhSFTWkasH/j7LL9WH9dRfwfTwuMMj1/KGzjU/4KFIu4uKxDaevKpGS7sDx4F56mafCdGD8u4+ri6bJr/3mmuzIdyger0vJdRlTrnpX3ONXvR57p1JHgCljehE1ZB0RCzIk0vKhdt8+CDBQWfKbbKBTmzA7wR68raMQb2D7nQ9d0KXXbtr7Hag29yj92aUAZ/sFoe9RhDOcRUptdYyPKU1JHgJyc0Z7HwNjRSJ4lKJSKP+Px0/XxT3gV3LaDLtHuHa2IujLEAKcPzTr5DOV+xsgA3iSwTYI6H5aEe+ZRv/rA4sdjqRiVpo2d044aCUFUNQ3PiIHPAZR3KK5O64m6+BJMDXBvgSsMy4VgRaZ7clEggqhkjOPQMBBwIDBMfuMuE+PECbOoYjkD0Teno7TDbcgxJNgPV7Y2lQbNBnexMLOEY6/xJzRi1Xm/o9mOyZ+VIj8h4G5V/eWSntNkwDAQgHiQE8BBgBCAAmAhsMFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmWoNBwFCQ8C4/cACgkQgUrkfCFIVNZs4AgAnIjU1QEPLdpotiy3X01sKUO+hvcT3/Cd6g55sJyKJ5/U0o3f8fdSn6MWPhi1m62zbAxcLJFiTZ3OWNCZAMEvwHrXFb684Ey6yImQ9gm2dG2nVuCzr1+9gIaMSBeZ+4kUJqhdWSJjrNLQG38GbnBuYOJUD+x6oJ2AT10/mQfBVZ3qWDQXr/je2TSf0OIXaWyG6meG5yTqOEv0eaTH22yBb1nbodoZkmlMMb56jzRGZuorhFE06
-	N0Eb0kiGz5cCIrHZoH10dHWoa7/Z+AzfL0caOKjcmsnUPcmcrqmWzJTEibLA81z15GBCrldfQVt+dF7Us2kc0hKUgaWeI8Gv4CzwLkCDQRUdhaZARAApeF9gbNSBBudW8xeMQIiB/CZwK4VOEP7nGHZn3UsWemsvE9lvjbFzbqcIkbUp2V6ExM5tyEgzio2BavLe1ZJGHVaKkL3cKLABoYi/yBLEnogPFzzYfK2fdipm2G+GhLaqfDxtAQ7cqXeo1TCsZLSvjD+kLVV1TvKlaHS8tUCh2oUyR7fTbv6WHi5H8DLyR0Pnbt9E9/Gcs1j11JX+MWJ7jset2FVDsB5U1LM70AjhXiDiQCtNJzKaqKdMei8zazWS50iMKKeo4m/adWBjG/8ld3fQ7/Hcj6Opkh8xPaCnmgDZovYGavw4Am2tjRqE6G6rPQpS0we5I6lSsKNBP/2FhLmI9fnsBnZC1l1NrASRSX1BK0xf4LYB2Ww3fYQmbbApAUBbWZ/1aQoc2ECKbSK9iW0gfZ8rDggfMw8nzpmEEExl0hU6wtJLymyDV+QGoPx5KwYK/6qAUNJQInUYz8z2ERM/HOI09Zu3jiauFBDtouSIraX/2DDvTf7Lfe1+ihARFSlp64kEMAsjKutNBK2u5oj4H7hQ7zD+BvWLHxMgysOtYYtwggweOrM/k3RndsZ/z3nsGqF0ggct1VLuH2eznDksI+KkZ3Bg0WihQyJ7Z9omgaQAyRDFct+jnJsv2Iza+xIvPei+fpbGNAyFvj0e+TsZoQGcC34/ipGwze651UAEQEAAYkBHwQoAQIACQUCVT6BaAIdAwAKCRCBSuR8IUhU1p5QCAC7pgjOM17Hxwqz9mlGELilYqjzNPUoZt5xslcTFGxj/QWNzu0K8gEQPePnc5dTfumzWL077nxhdKYtoqwm2C6fOmXiJBZx6khBfRqctUvN2DlOB6dFf5I+1QT9TRBvceGzw01E4Gi0xjWKAB6OII
-	MAdnPcDVFzaXJdlAAJdjfg/lyJtAyxifflG8NnXJ3elwGqoBso84XBNWWzbc5VKmatzhYLOvXtfzDhu4mNPv/z7S1HTtRguI0NlH5RVBzSvfzybin9hysE3/+r3C0HJ2xiOHzucNAmG03aztzZYDMTbKQW4bQqeD5MJxT68vBYu8MtzfIe41lSLpb/qlwq1qg0iQElBBgBAgAPBQJUdhaZAhsMBQkA7U4AAAoJEIFK5HwhSFTW3YgH/AyJL2rlCvGrkLcas94ND9Pmn0cUlVrPl7wVGcIV+6I4nrw6u49TyqNMmsYam2YpjervJGgbvIbMzoHFCREi6R9XyUsw5w7GCRoWegw2blZYi5A52xe500+/RruG//MKfOtVUotu3N+u7FcXaYAg9gbYeGNZCV70vI+cnFgq0AEJRdjidzfCWVKPjafTo7jHeFxX7Q22kUfWOkMzzhoDbFg0jPhVYNiEXpNyXCwirzvKA7bvFwZPlRkbfihaiXDE7QKIUtQ10i5kw4C9rqDKwx8F0PaWDRF9gGaKd7/IJGHJaac/OcSJ36zxgkNgLsVX5GUroJ2GaZcR7W9Vppj5H+C4UgRkuRyTEwgqhkjOPQMBBwIDBOySomnsW2SkApXv1zUBaD38dFEj0LQeDEMdSE7bm1fnrdjAYt0f/CtbUUiDaPodQk2qeHzOP6wA/2K6rrjwNIWJAT0EGAEIACcDGyAEFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmWoM/gFCQSxfmUACgkQgUrkfCFIVNZhTgf/VQxtQ5rgu2aoXh2KOH6naGzPKDkYDJ/K7XCJAq3nJYEpYN8G+F8mL/ql0hrihAsHfjmoDOlt+INa3AcG3v0jDZIMEzmcjAlu7g5NcXS3kntcMHgw3dCgE9eYDaKGipUCubdXvBaZWU6AUlTldaB8FE6u7It7+UO+IW4/L+KpLYKs8V5POInu2rqahlm7vgxY5iv4Txz4EvCW2e4dAlG
-	8mT2Eh9SkH+YVOmaKsajgZgrBxA7fWmGoxXswEVxJIFj3vW7yNc0C5HaUdYa5iGOMs4kg2ht4s7yy7NRQuh7BifWjo6BQ6k4S1H+6axZucxhSV1L6zN9d+lr3Xo/vy1unzA==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+Subject: Re: Clarifying confusion of our variable placement rules caused by
+ cleanup.h
+Message-ID: <20251118173412.1a43125a@gandalf.local.home>
+In-Reply-To: <fc255e7fb2b3fb4a2896f4e8680cca1f0cf7fe8d.camel@HansenPartnership.com>
+References: <58fd478f408a34b578ee8d949c5c4b4da4d4f41d.camel@HansenPartnership.com>
+	<f63891cb-13e7-443f-bf02-5a357aa2a70b@acm.org>
+	<CAHk-=wiCOTW5UftUrAnvJkr6769D29tF7Of79gUjdQHS_TkF5A@mail.gmail.com>
+	<20251118141720.11c8d4d6@gandalf.local.home>
+	<bff6d9974e50f7cb27cc2b150ecd6e5e2252ae54.camel@HansenPartnership.com>
+	<20251118155122.59dde92f@gandalf.local.home>
+	<fc255e7fb2b3fb4a2896f4e8680cca1f0cf7fe8d.camel@HansenPartnership.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 98C682000D
+X-Stat-Signature: e51uhm7roq111k3fbxftqch71i51rf99
+X-Rspamd-Server: rspamout02
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1/wOmmT3aokWwhoMx/wUjDEc8WlKYDM0wc=
+X-HE-Tag: 1763505224-788675
+X-HE-Meta: U2FsdGVkX1+7k+t95T3EE8xqzGZwtHGhORCHofgCvHn8pkAbf9UUXm8J7gvk6/NoyFOCNIZtCAlbNZERzc5XZNHKWioPR219mPixi3pip6nXDDQSsRIb4ZbqgvxdRcTCSxFIzKBqAuC4fqsnNI6ltkAeT9oCYjhMbZ+6WayqxnAzHFR0okEklnKnurI9qXqDinzEzhPMTu1O8tdbk3l9CjbzcwQsvxCg8Gge/W9Xdl/Dr58enTKiTl87Gkfs52iyC7dPzWPK7hr+gn5bI1EktXA7IEsapQND/O10o+gOdpcCSc2YmXCJawmU5dIM9g5+qJqIgZ75S3O/4nYQfTq1ifo9WuaoRu3xuvI2jQFBqhIvgSOIHGvqfb89llag2fIV
 
-On Tue, 2025-11-18 at 15:51 -0500, Steven Rostedt wrote:
-> On Tue, 18 Nov 2025 15:21:10 -0500
-> James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
->=20
-> > There is one last case that hasn't been discussed, which is where
-> > you deliberately introduce an extra scope block for the free and
-> > allocation, so in your example above it would look like
-> >=20
-> > 	if (ret < )
-> > 		return -ERROR
-> >=20
-> > 	[ several more error exits ]
-> >=20
+On Tue, 18 Nov 2025 16:10:00 -0500
+James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
+
+> > 
 > > 	{
-> > 		struct foo *var __free(kfree) =3D kmalloc(...)
-> >=20
+> > 		struct foo *var __free(kfree) = kmalloc(...)
+> > 
 > > 		[...]
+> > 
+> > 		return func(..., var);
 > > 	}
->=20
-> I'm not too big on explicit blocks for just declarations. Especially,
-> in my case where the var is used until the end:
+> > 
+> > It seems a bit strange to have the final return of a function from
+> > within an explicit scope block.  
+> 
+> Well, you did that ... the return could equally well have been outside
+> the block.  However, I do think additional scoped blocks for variables
+> looks most readable when the scope of the variable is less than the
+> code on both sides.  If the variable doesn't go out of scope until the
+> final return, I can see an argument for just doing an interior
+> declaration.
 
-Well I don't do it often, but there are times when the scope of a
-variable is definitely a lot less than the scope of the code block.
+I guess you mean by adding a ret value?
 
-I see this as being analagous to when you should use a guard vs a
-scoped guard.
+	{
+		struct foo *var __free(kfree) = kmalloc(...)
 
->=20
-> 	{
-> 		struct foo *var __free(kfree) =3D kmalloc(...)
->=20
-> 		[...]
->=20
-> 		return func(..., var);
-> 	}
->=20
-> It seems a bit strange to have the final return of a function from
-> within an explicit scope block.
+		[...]
 
-Well, you did that ... the return could equally well have been outside
-the block.  However, I do think additional scoped blocks for variables
-looks most readable when the scope of the variable is less than the
-code on both sides.  If the variable doesn't go out of scope until the
-final return, I can see an argument for just doing an interior
-declaration.
+		ret = func(..., var);
+	}
 
-Regards,
+	return ret;
 
-James
+As the var that is passed to the function that this function is retuning
+(tail call) is only scoped inside the brackets. But anyway, I don't plan on
+changing the code in question here.
 
->  Especially since the beginning is just for error conditions, and the
-> meat of the function is now in that explicit block.
->=20
-> -- Steve
->=20
+I do quite often use the scoped_guard() as that does document exactly what
+the guard is protecting.
 
+-- Steve
 
