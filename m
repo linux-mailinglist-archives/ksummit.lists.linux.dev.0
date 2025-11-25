@@ -1,87 +1,119 @@
-Return-Path: <ksummit+bounces-2647-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2648-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D9DCC85DC7
-	for <lists@lfdr.de>; Tue, 25 Nov 2025 17:04:30 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 386AAC86583
+	for <lists@lfdr.de>; Tue, 25 Nov 2025 18:57:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E8F254E61F7
-	for <lists@lfdr.de>; Tue, 25 Nov 2025 16:04:18 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D9D7034E7A3
+	for <lists@lfdr.de>; Tue, 25 Nov 2025 17:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A78F422424E;
-	Tue, 25 Nov 2025 16:04:16 +0000 (UTC)
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5701E32ABFB;
+	Tue, 25 Nov 2025 17:57:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="RQvAgm3H"
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2576B2147E5
-	for <ksummit@lists.linux.dev>; Tue, 25 Nov 2025 16:04:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA6F15ECD7;
+	Tue, 25 Nov 2025 17:57:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764086656; cv=none; b=KOxJ7m/oixA6We7stg3400AUywLWbpnogUvklX3XoMY5GBXY8sepXgnzWBxaEsjmPSJ2tt+62786anWqD88bDyFp/FWDz7EXB7jnI7sDSfs3rrQxHZ7jOa8CJ8SoxlYtSzt1yRO3cs8agC9nzpelf3yzJutlUYRlm0kqjVHrZW0=
+	t=1764093450; cv=none; b=H5mvd7+md087mom8ryb8VZempLYEhPtz6twwBNv4Zkm2dci6YjSXYgu0qUOwW02pdKoTHtUpdq0EVEvbFCN9yvZh7MQSwDkvLpBSC1nnwdhjtRDODN3MIQk3bMX43S/vZjyzC8//GXsFCtQLhpFdNJqMDiMNCkLZTAqM58tasCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764086656; c=relaxed/simple;
-	bh=P5U5/ctSh1yRorgZEQtcTI8QGPrR0dHI+POy0v4SJV4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ktYEPZ2Ho06J+5lFf0pIjEn8539j8RZvGLE/99dxN6aMwWjhrQLGP9zqKMCp98ckqlBHnN3VuagGcAydKLxuJWqSlK8L/cxtQ43zAr/EvUzoRC0qg4zmd4JdROl6f1gutSrrnZkf1V2W00aqoSqtG5hPDfzNVb19ksYgKiFB43s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4686857F20;
-	Tue, 25 Nov 2025 16:04:07 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf14.hostedemail.com (Postfix) with ESMTPA id 5139F41;
-	Tue, 25 Nov 2025 16:04:05 +0000 (UTC)
-Date: Tue, 25 Nov 2025 11:04:48 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: James Bottomley <James.Bottomley@HansenPartnership.com>,
- ksummit@lists.linux.dev, Dan Williams <dan.j.williams@intel.com>,
- linux-kernel <linux-kernel@vger.kernel.org>, Dan Carpenter
- <dan.carpenter@linaro.org>
-Subject: Re: Clarifying confusion of our variable placement rules caused by
- cleanup.h
-Message-ID: <20251125110448.5ff112ea@gandalf.local.home>
+	s=arc-20240116; t=1764093450; c=relaxed/simple;
+	bh=EXKTlqui1JWJDEu8mQ765DMKQruu/piYDd+fsHF625Y=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=nSIyVwGjB771LXfwgAwHVZIkvgH4HZRIyW/XoFLFKItSBKD+FSKgauC8L/G6cUP3ifFrAb61Z5UWPofi7YnhJkWhGjvLEgSby9WdlSG5XNt5J9pghw57TS3/zPwFPscucK5qzPDnNRmoON70MhA9Y8mICZkl8afl1K9ykLztC6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=RQvAgm3H; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5APHvLZf1468681
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Tue, 25 Nov 2025 09:57:22 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5APHvLZf1468681
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025112201; t=1764093442;
+	bh=EXKTlqui1JWJDEu8mQ765DMKQruu/piYDd+fsHF625Y=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=RQvAgm3HPpDAL2FMq0G4Zp/R0mkTcqd92Oe1HOnwT9oGZMaig+U2rODMZ2ASgeHaE
+	 aoEjsNOmo5r5UM/+Z03Brp9DTHdl/xqlPpgIr1TmLMzmI7lWzO6yKvPHKVMYkVNLyc
+	 W/GbzZJ9VYQJRdUyh9FUr4xi8xJuv5y9519I9E4at4jj7ORM+xGHdfVF5rszg+2RKk
+	 JfHn+k4CU56T58vFsf34IV3TJ3Sz8NFK7SYMa6cBieCHT/ceXVuYskj2AcolT9I8hE
+	 BbDaB4BIC2dUSuKB0EW2rGPKQWoZfEAEyhXNx4VNpVQkYQww5bB0b+fEQJYRW35C5r
+	 CKkMAdwmIMTpg==
+Date: Tue, 25 Nov 2025 09:57:21 -0800
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Alexey Dobriyan <adobriyan@gmail.com>,
+        James Bottomley <James.Bottomley@HansenPartnership.com>
+CC: ksummit@lists.linux.dev, Dan Williams <dan.j.williams@intel.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Dan Carpenter <dan.carpenter@linaro.org>
+Subject: =?US-ASCII?Q?Re=3A_Clarifying_confusion_of_our_variab?=
+ =?US-ASCII?Q?le_placement_rules_caused_by_cleanup=2Eh?=
+User-Agent: K-9 Mail for Android
 In-Reply-To: <7b37e1cb-271e-49fe-a3ee-5443006284e1@p183>
-References: <58fd478f408a34b578ee8d949c5c4b4da4d4f41d.camel@HansenPartnership.com>
-	<7b37e1cb-271e-49fe-a3ee-5443006284e1@p183>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+References: <58fd478f408a34b578ee8d949c5c4b4da4d4f41d.camel@HansenPartnership.com> <7b37e1cb-271e-49fe-a3ee-5443006284e1@p183>
+Message-ID: <B92B21C0-093D-4F52-A7E3-1A7DDC83749B@zytor.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspamout07
-X-Rspamd-Queue-Id: 5139F41
-X-Stat-Signature: jcdczobagcdh6r3rz18dwdqhgzxgs4z9
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX1+Yw8NVqr+WpJ4tLw96XxB4Q9ivnmx8tK4=
-X-HE-Tag: 1764086645-613672
-X-HE-Meta: U2FsdGVkX19YKn4VTQvrL9M0GxhHbdjPTRwaMR++Ot/RpetKY1i5W3a6QSksZscQhDLbj9rzoX1/i8pQ5Cw9THSsVCPcpb2rJGzbDra/p8e2kF6qSdzx2v7WYtRf/EHUM0mQBg+/Mrg+7ZqbojFPat6Zb4mjwfQBv4jhNfWIAIl+bt4AzjXl7DORq3MKd/LHy6Vv+IL4uAhHEYwC7B78DXSl9pkq0R/dGoVzcCQo5OgnIQKjC7EeCoHxgaGuHCQgdmSPfNoETgshpa0w1JFzOfUzxv0Ih0wR5Q3NfWktfCAaMSStySoIV5PoEznxdAOeJd+L0ZtUVZfGACKQuFwTvdhE1Hw2tWFOO4F2C8KjgXIPtj/m9q5ni1dtjwQnRHBgRw1EVygu1Jg=
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 25 Nov 2025 17:25:19 +0300
-Alexey Dobriyan <adobriyan@gmail.com> wrote:
+On November 25, 2025 6:25:19 AM PST, Alexey Dobriyan <adobriyan@gmail=2Ecom=
+> wrote:
+>On Tue, Nov 18, 2025 at 11:39:26AM -0500, James Bottomley wrote:
+>
+>> So which should we do?
+>
+>The best way to understand that C89 style of declaring in the beginning
+>of the function is pointless rule is to write some code in a language
+>which doesn't enforce it=2E You should see that nothing bad happens=2E
+>
+>It increases bug rate due to increased variable scope allowing typos=2E
+>
+>It bloats LOC -- in many cases declaration and initializer can fit
+>into a single line=2E
+>
+>It prevents adding "const" qualifier if necessary=2E
+>
+>Pressing PageUp and PageDown when adding new variable is pointless
+>busywork and distracts, breaks the tempo(flow?) so to speak=2E
+>
+>C89 style provokes substyles(!) which makes adding new variables even
+>more obnoxious: some subsystems have(had?) a rule saying that declaration=
+s
+>(with initializers) must be sorted by length, so not only programmer has
+>to PageUp to the beginning of the block, but then aim carefully and
+>insert new declaration=2E
+>
+>None of this is necessary (or possible) if the rule says "declare as low
+>as possible"=2E
+>
+>There was variation of this type of nonsense with headers (not only it ha=
+s
+>to be sorted alphabetically but by length too!)
+>
+>There is no practical difference between code and declarations:
+>declarations can have initializers which can be arbitrary complex,
+>just like "real" code=2E So the only difference is superficial=2E
+>
+>
+>C89 declaration style is pointless and dumb, no wonder other programming
+>languages dumped it (or never had), it should be simply discarded=2E
+>
+>It will also make Linux slightly less white crow to newcomers
+>(C++ doesn't have this rule after all)=2E
+>
 
-> C89 style provokes substyles(!) which makes adding new variables even
-> more obnoxious: some subsystems have(had?) a rule saying that declarations
-> (with initializers) must be sorted by length, so not only programmer has
-> to PageUp to the beginning of the block, but then aim carefully and
-> insert new declaration.
-
-As one of the subsystem maintainers that enforce the "order by length"
-rule, I'm also for making more exceptions to the c89 method. The reason we
-do the "order by length" is for aesthetic reasons, as nicer looking code is
-easier to read. If there's a rule to have all declarations at the top, at
-least make it pretty!
-
-But yeah, perhaps if we didn't have a strict enforcement of declaring
-everything at the top, we wouldn't have bugs like this:
-
-  https://lore.kernel.org/all/20251125032630.8746-3-piliu@redhat.com/
-
--- Steve
+Preventing the use of "const" is a big one=2E
 
