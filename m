@@ -1,134 +1,105 @@
-Return-Path: <ksummit+bounces-2643-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2644-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71ECBC7C05B
-	for <lists@lfdr.de>; Sat, 22 Nov 2025 01:42:17 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FF27C851CE
+	for <lists@lfdr.de>; Tue, 25 Nov 2025 14:10:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 206804E28F4
-	for <lists@lfdr.de>; Sat, 22 Nov 2025 00:42:16 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A4B9135033B
+	for <lists@lfdr.de>; Tue, 25 Nov 2025 13:10:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD23F21D3E8;
-	Sat, 22 Nov 2025 00:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DBD8322A1C;
+	Tue, 25 Nov 2025 13:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cMF58gDy"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SGkgoZvP"
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46AAB219A8E;
-	Sat, 22 Nov 2025 00:42:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA27320CA2
+	for <ksummit@lists.linux.dev>; Tue, 25 Nov 2025 13:09:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763772132; cv=none; b=AghoMNZp9AQPLe6R7hcWQ5asoQMy0yeH62+tz5u5B1ZtXc1YJs/AcxSy8h2pjTQIbhBVFj0zXpoT6/dniKWBS6l1PczVSQaDq1R1a+V7yGYyC9mxtEx4tNi80vgFhrCAclCgxJlnnwuH1lWYohfdK8VzH+KcrxoBX4c3Fu9XLoA=
+	t=1764076199; cv=none; b=YMmoPyLckKz85xuACVw3G1bxCLs21lg9s/eiOLkDnlw5YsDhbwe8ng0ebu9xH0x4xBHxmYQP70kJQh8tH6DHMsNTpxqO6raZsAEjOPJICfvCS3XCVhetaT0OngORp3cGkonvMMspwc+8p9qIzpVqrkB9KH+JLeaHtkz87dho/xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763772132; c=relaxed/simple;
-	bh=4TqWPjNfFywo6teVc9vYsRsvM90uFubxjLUmBBdLQiA=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=rhzQdaDtb7ObrlVHgl2x4ULZ0Rh9EvBD7aWzQdu14UiXjMsEuJHry/Wr2LIsOTecvqqVS7eDqgnS+lqnHSGpEsfiHBbIfww3WJS/3W414DUinC0RvjIfS1MsO6r8eZmTbxV5W0QzwoUIuETid7LiNQIVv0py5tv551Xjj+KmLlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cMF58gDy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D63E2C4CEF1;
-	Sat, 22 Nov 2025 00:42:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763772131;
-	bh=4TqWPjNfFywo6teVc9vYsRsvM90uFubxjLUmBBdLQiA=;
-	h=From:To:Subject:Date:From;
-	b=cMF58gDy2gIwsUT91ZhcoNon+s+LnYdKA0UAfPpiO5EuxjZ/PUohfjHpNTzu6MjfN
-	 Qc6DHVFUEG7OCH2OQELJeRulAEzlWXMFEZoMZmO3q6bDRUAQWUlsux/Q+eDt9bww10
-	 Z2r8vt+I3dCuRQ6KmP3Vq3mxRPHxQeXqR1lVrnrPyYhXG69cnc1gc7QsCQRnCaSLnR
-	 OFoxCfHeNGijlBdr9GtlCuwMMuXaMPB0QxfgpVSJFT0jxB6PSc6b3kQXEgaHhh46b8
-	 wpkOFIQj2T3f9XGLZH38py6NQPyztzQnCluEM64zGN3dIw19fr4tQWyQyQdJbAcMg8
-	 QG3n6MrJt/Hiw==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: tab-elections@lists.linux.dev,
-	tech-board-discuss@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	ksummit@lists.linux.dev
-Subject: 2025 LF Technical Advisory Board election - call for candidates
-Date: Sat, 22 Nov 2025 01:41:47 +0100
-Message-ID: <20251122004147.1655175-1-ojeda@kernel.org>
+	s=arc-20240116; t=1764076199; c=relaxed/simple;
+	bh=6t9Kl37s61tp9c3olKv2s7NlEriPDiNEThrlUnj/cmo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=iWOIbn4R+oAKLtkgTffzi13zaXKdXfQO3hDcDtn/fecQfsbUFOUL0hHYQM6DlEWKEKyMfvJDMQp+RvmvQ8QYYOCdvbYmVZYciKg0iFEcU5rxGonR4PILzittvEt0XKhtACbtPFOGETcd+eAfLzvogbMQXID6IVh1FJLM4HcoRQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SGkgoZvP; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764076198; x=1795612198;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=6t9Kl37s61tp9c3olKv2s7NlEriPDiNEThrlUnj/cmo=;
+  b=SGkgoZvPtr08c8raCw4kUbhYn+uW1nWqT0gqkaU1ZnA8MRQj58NmeLNY
+   Xb1G6AAHxZC9y+C3/9d4ozwtXWrefSBednb03wDnGV4deknPebNz5wb7Z
+   fg7W1c9GzYmdv4Tf9AHqdisDLKgd7kCJLVv4GdG+/TLdbeh32zawR5D9g
+   3UAouMlJBf6/w9pgyDNwRNQSKLVCWDl8wxexz1nJeSywVL2zmhcFGOp52
+   H3udcJMlaV9RWK8l+IfdXofXUBGMMKDIeN/lyomuBe3wqY/sx0AiZMzRD
+   PU+0LVm5Kzv1d32l2lG/Oskoit5amP9lSoh1CyPL5yeUZtS1rL7Ytt5bX
+   g==;
+X-CSE-ConnectionGUID: 0CG3hxtxSVS0IMKcLHdTMw==
+X-CSE-MsgGUID: driOWlBLT5WZyMcqn95snA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="66169929"
+X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; 
+   d="scan'208";a="66169929"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 05:09:58 -0800
+X-CSE-ConnectionGUID: 6mH1ts/tRgu3zNKVmoZqRg==
+X-CSE-MsgGUID: gtvZBVQATm2o+x0zCmkDhA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; 
+   d="scan'208";a="197116274"
+Received: from ettammin-desk.ger.corp.intel.com (HELO localhost) ([10.245.246.213])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 05:09:55 -0800
+From: Jani Nikula <jani.nikula@intel.com>
+To: James Bottomley <James.Bottomley@HansenPartnership.com>,
+ ksummit@lists.linux.dev, Dan Williams <dan.j.williams@intel.com>
+Cc: linux-kernel <linux-kernel@vger.kernel.org>, Dan Carpenter
+ <dan.carpenter@linaro.org>
+Subject: Re: Clarifying confusion of our variable placement rules caused by
+ cleanup.h
+In-Reply-To: <58fd478f408a34b578ee8d949c5c4b4da4d4f41d.camel@HansenPartnership.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <58fd478f408a34b578ee8d949c5c4b4da4d4f41d.camel@HansenPartnership.com>
+Date: Tue, 25 Nov 2025 15:09:52 +0200
+Message-ID: <063cb6d370f94088d5e2a385acf14d96f06e6686@intel.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-The 2025 election for membership on the Linux Foundation Technical
-Advisory Board (TAB) will be held electronically after the 2025 Linux
-Plumbers Conference, from December 13 to 20.  This announcement covers
-both the call for candidates and the details of voting in this election.
+On Tue, 18 Nov 2025, James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
+> For myself I do find some value in the C89 declarations at the
+> beginning of the block for readability, so I'm happy to relax the
+> mixing rule to cases where it's strictly necessary and require
+> documenting in the comment what the necessity is.
 
-The TAB exists to provide advice from the kernel community to the Linux
-Foundation and holds a seat on the LF's board of directors; it also serves
-to facilitate interactions both within the community and with outside
-entities.  Over the last year, the TAB has overseen the organization of the
-Linux Plumbers Conference, advised on the setup of the kernel CVE numbering
-authority, worked behind the scenes to help resolve a number of contentious
-community discussions, worked with the Linux Foundation on community
-conference planning, and more.
+I think I've seen an increase in patches using non-pointer const local
+variables. No metrics, just a gut feeling.
 
-The public minutes from TAB meetings can be found in this repository:
+	const int foo = bar + 5;
 
-    https://git.kernel.org/pub/scm/docs/tab/tab.git/
+I haven't really decided whether I like that or not, and subsequently I
+have neither encouraged or discouraged that usage. I don't think we have
+any style guidance on that either.
 
-Note that there will be an "ask us anything" session with the current TAB
-at the Linux Plumbers Conference; it is currently scheduled for 15:00 on
-Friday, December 11:
+Anyway, more const usage like that would also benefit from declaration
+and initialization at a later point when the initializer value is
+available, if it's not at the beginning.
 
-    https://lpc.events/event/19/contributions/2260/
+BR,
+Jani.
 
-CALL FOR NOMINATIONS
 
-The TAB has ten members serving two-year terms; half of the board is
-elected each year.  The members whose terms are expiring this year are:
-
-  - Jonathan Corbet
-  - Greg Kroah-Hartman
-  - Sasha Levin
-  - Steve Rostedt
-  - Ted Ts'o
-
-The members whose terms expire next year are:
-
-  - Kees Cook
-  - Dave Hansen
-  - Shuah Khan
-  - Miguel Ojeda
-  - Dan Williams
-
-Anybody who meets the voting criteria (described below) may
-self-nominate to run in this election.  To nominate yourself, please
-send an email to:
-
-    tech-board-discuss@lists.linux.dev
-
-Please include a short (<= 200 words) statement describing why you are
-running and what you would like to accomplish on the TAB; these
-statements will be collected and made publicly available.
-
-The nomination deadline is 17:00 JST (GMT + 9) on December 13.
-
-VOTING IN THE TAB ELECTION
-
-The criteria for voting in this year's TAB election are unchanged from last
-year.  To be eligible to vote, you must have at least three commits in a
-released mainline or stable kernel that:
-
-  - Have a commit date in 2024 or later
-  - List your email in a Signed-off-by, Tested-by, Reported-by,
-    Reviewed-by, or Acked-by tag.
-
-Everybody with at least 50 commits meeting this description will receive
-a ballot automatically; they will receive an email confirming this
-status shortly.  Eligible voters with less than 50 commits can receive a
-ballot by sending a request to tab-elections@lists.linuxfoundation.org.
-
-We will, once again, be using the Condorcet Internet Voting Service
-(CIVS) https://civs1.civs.us .  This is a voting service focused on
-security and privacy.  There are sample polls on the website if you would
-like to see what a ballot will look like.
-
-Please contact tab-elections@lists.linux.dev if you have any questions.
+-- 
+Jani Nikula, Intel
 
