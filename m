@@ -1,119 +1,182 @@
-Return-Path: <ksummit+bounces-2655-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2656-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99486CABF9F
-	for <lists@lfdr.de>; Mon, 08 Dec 2025 04:42:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8967BCAC062
+	for <lists@lfdr.de>; Mon, 08 Dec 2025 05:23:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EC290300F9E4
-	for <lists@lfdr.de>; Mon,  8 Dec 2025 03:42:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D0B8300D405
+	for <lists@lfdr.de>; Mon,  8 Dec 2025 04:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA8E2F7478;
-	Mon,  8 Dec 2025 03:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FEB2FD673;
+	Mon,  8 Dec 2025 04:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="sdMF33Kz"
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="WhBL4hfx"
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E551223D7FB
-	for <ksummit@lists.linux.dev>; Mon,  8 Dec 2025 03:42:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9B92F9DBB
+	for <ksummit@lists.linux.dev>; Mon,  8 Dec 2025 04:23:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765165360; cv=none; b=oYg1IWsbEOoYJoKVO6Pd7f3QdLAFpXoL1Lt2jeE5B9+4ddtdj+lVIBEYvpkyDbPrSsAhI67Qtv1+MOGY1+Wjm7VfyhYrr3F+aJS9wtubmPYBOR4xmgNu06pMAOz3t0jzRYkCGz4maT4dIjkDracJacnAGddnV9jFBCv9+dwbppM=
+	t=1765167787; cv=none; b=qhuETDV3VDv7G3TCHFW6VdPPRfCLieaycADY06194PmFR/IHg8n4X9OCTNas/N4NtjzG0Ae/seY5NFbmEtaroh+fLABl82ppgic3ybXUiMVGURzy8RFp5j0XNWswZFyjv/lz3ChnNvcnK9atFG+zmkDdTbNZd7DF+hArjO4bq30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765165360; c=relaxed/simple;
-	bh=UofDsbD5TWswc5Sj+9HMVGYwEBv73cAtJBi+MnDspWQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HKuu874SHqYE76+3ZdsAjRzJvUa8HpNDwY4NAsaj7ZOiegsjkF6hRZoOBEWMHeUwWYRuoyWmeeSMc2EMnyFshij6Nap09B+YacxCOw0DyS2IxM6c9FQVYhU5YmKIxCpN85mzDizbtTanwtmPO/UkOgZ/44N7ukkx9RGa4mmMWsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=sdMF33Kz; arc=none smtp.client-ip=198.37.111.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1765165356;
-	bh=UofDsbD5TWswc5Sj+9HMVGYwEBv73cAtJBi+MnDspWQ=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=sdMF33KzQS5ubxy7UST4wKd86tajdp6lUqhDydZ8hgqr2ZcN/D5mPy3uLDIo4S1Vd
-	 L2FWtY3yMfPgInpaYPDGAtR/1SUkeEVIbstO8NVyEXtdvFPSveEXu1nrh9ZkQXdDGo
-	 lnOJZvbxkvUXg44Dc3yOywByIFbK/M17D54aqdgY=
-Received: from [172.20.4.117] (122x212x32x58.ap122.ftth.ucom.ne.jp [122.212.32.58])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 8B16E1C0160;
-	Sun, 07 Dec 2025 22:42:35 -0500 (EST)
-Message-ID: <88091c9ac1d8f20bade177212445a60c752ba8b5.camel@HansenPartnership.com>
+	s=arc-20240116; t=1765167787; c=relaxed/simple;
+	bh=7ANo9qqfVI3hp5t4F71K/KcTJEo5JFpPmuyplvatjPY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CVTbLgB4sO+OyQ+2lCUIUQ+YnNigoK5woGULJ7pQV4x0alCqxPs7/Z0Z6WFsv9qCxpGVTiVoMCN7ch9CTeVc3uxRpSTLBWoMORK7UyFqGYRVOOE0lNrW0DjpJl0LCtwF2oggkgbIDSQo5crlmdf+WJl+ah4l+0sN4mFCRLKFwio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=WhBL4hfx; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (p7838222-ipoefx.ipoe.ocn.ne.jp [123.225.39.221])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 0CD0389A;
+	Mon,  8 Dec 2025 05:13:07 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1765167188;
+	bh=7ANo9qqfVI3hp5t4F71K/KcTJEo5JFpPmuyplvatjPY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WhBL4hfxXOmoP5wpcmG8WhXZ3B6YXdViLqYE/ZgGvMnV+wCErgqnW3mqZjox1sAk5
+	 JXULtpt3ZqoyrIiuaZPNuKpCESgORcENCKFJSUGzvz3vKMJx8/DEHs39poPqCJJiKj
+	 EE3aIfWQaYVyedRv1AsMg2LpWctGNIdVomAUp/LQ=
+Date: Mon, 8 Dec 2025 13:15:07 +0900
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: ksummit@lists.linux.dev
 Subject: Re: [MAINTAINERS SUMMIT] The role of AI and LLMs in the kernel
  process
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Steven Rostedt <rostedt@goodmis.org>, Jonathan Corbet <corbet@lwn.net>
-Cc: "H. Peter Anvin" <hpa@zytor.com>, Sasha Levin <sashal@kernel.org>, 
-	ksummit@lists.linux.dev
-Date: Mon, 08 Dec 2025 12:42:32 +0900
-In-Reply-To: <20251207221532.4d8747f5@debian>
+Message-ID: <20251208041507.GB30348@pendragon.ideasonboard.com>
 References: <e3188fe2-4b6c-4cb2-b5ae-d36c27de6832@lucifer.local>
-	 <aTYmE53i3FJ_lJH2@laps> <4BDD9351-E58A-4951-9953-00F1E9F24FB4@zytor.com>
-	 <87zf7tg2dk.fsf@trenco.lwn.net> <20251207221532.4d8747f5@debian>
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+ <aTYmE53i3FJ_lJH2@laps>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aTYmE53i3FJ_lJH2@laps>
 
-On Sun, 2025-12-07 at 22:15 -0500, Steven Rostedt wrote:
-> On Sun, 07 Dec 2025 18:59:19 -0700
-> Jonathan Corbet <corbet@lwn.net> wrote:
->=20
-> > > I contend there is a huge difference between *code* and
-> > > descriptions/documentation/...
->=20
-> >=20
-> > As you might imagine, I'm not fully on board with that.=C2=A0 Code is
-> > assumed plagiarized, but text is not?=C2=A0 Subtly wrong documentation
-> > is OK?
-> >=20
-> > I think our documentation requires just as much care as our code
-> > does.
->=20
-> I assumed what hpa was mentioning about documentation, may be either
-> translation of original text of the submitter, or AI looking at the
-> code that was created and created a change log. In either case, the
-> text was generated from the input of the author
+Hi Sasha,
 
-I think this is precisely the problem Jon was referring to: you're
-saying that if AI generates *text* based on input prompts it's not a
-copyright problem, but if AI generates *code* based on input prompts,
-it is.  As simply a neural net operational issue *both* input to output
-sets are generated in the same way by the AI process and would have the
-same legal probability of being copyright problems.  i.e. if the first
-likely isn't a copyright problem, the second likely isn't as well (and
-vice versa).
+Thank you for summarizing the long discussions. I won't ask if this
+summary has been written by an LLM :-)
 
-> . Where as AI generated code likely comes from somebody else's code.
-> Perhaps AI was trained on somebody else's text, but the output will
-> likely not be a derivative of it as the input is still original.
+On Sun, Dec 07, 2025 at 08:12:51PM -0500, Sasha Levin wrote:
+> This (and parallel) threads have generated substantial discussion across
+> several related topics.  In preperation for the Maintainer's summit, here's a
+> summary of where we appear to have consensus, where we don't, and some
+> questions to consider before the summit.
+> 
+> Where We Have Consensus:
+> 
+> 1. Human accountability is non-negotiable:
+> 
+> The From: line must always be a human who takes full responsibility for the
+> patch. No "but the AI wrote that part" excuses. This maps cleanly to our
+> existing DCO requirements and approach to tooling.
+> 
+> 2. Some form of disclosure is needed:
+> 
+> Whether it's a trailer tag, a note below the cut line, or something else,
+> there's broad agreement that AI involvement should be disclosed. The exact
+> mechanism is debatable, but the principle is not.
+> 
+> 3. Maintainer autonomy matters:
+> 
+> Individual subsystem maintainers should be empowered to set their own policies.
+> An opt-in approach per-subsystem seems preferred over a kernel-wide mandate
+> that doesn't account for different subsystem needs.
+> 
+> 4. This isn't going away:
+> 
+> Industry is already using AI extensively. We're already receiving AI-generated
+> bug reports. Ignoring this won't make it disappear; better to have a thoughtful
+> policy than no policy.
+> 
+> 5. Language assistance for non-native speakers is legitimate
+> 
+> Using AI to improve documentation and commit messages should not be stigmatized
+> or treated the same as AI-generated code.
+> 
+> 
+> Where We Don't Have Consensus:
+> 
+> 1. The nature of AI errors:
+> 
+> Some argue AI makes fundamentally different errors than humans - subtle
+> mistakes that slip past review because we're trained to spot human-pattern
+> errors. Others argue AI errors are obvious when the model is under-trained, and
+> that better training can address most issues. This affects how much scrutiny
+> AI-assisted patches need.
+> 
+> 2. Same bar or higher bar?
+> 
+> The kernel already has a significant bug rate - roughly 20% of commits in a
+> release cycle are fixes. Should we hold AI to the same standard we hold humans,
+> or does the kernel's criticality demand a higher bar for AI? There's genuine
+> disagreement here.
+> 
+> 3. Legal risk tolerance:
+> 
+> DCO clause (a) requires certifying "I have the right to submit it under the
+> open source license." With AI training data provenance unclear and litigation
+> ongoing, how cautious should we be? Some advocate waiting for legal clarity;
+> others argue the legal concerns are overblown and we should focus on practical
+> guardrails.
+> 
+> 4. The asymmetric effort problem:
+> 
+> AI can generate patches in seconds; review takes hours. Unlike human
+> contributors who learn from feedback and improve, AI models will repeat the
+> same mistakes. How do we prevent maintainer overload? There's no clear answer
+> yet.
+> 
+> 
+> Questions for the Summit:
+> 
+> 1. Policy scope: Should we establish a kernel-wide minimum policy, or
+>     simply document that subsystem maintainers set their own rules?
+> 
+> 2. Disclosure format: What should disclosure look like? Options discussed
+>     include:
+> 
+>     - Trailer tag (e.g., `Assisted-by:`, `Generated-by:`)
+>     - Below-the-cut note
+>     - Verbose commit log explanation
+>     - Technology-agnostic "tooling" terminology vs. AI-specific
+> 
+> 3. Generation vs. review: AI for code review and debugging seems less
+>     controversial than AI for code generation. Should we treat these
+>     differently in policy?
+> 
+> 4. What requires disclosure?: Where's the line? Clearly, wholesale
+>     AI-generated patches need disclosure. What about:
+> 
+>     - AI-suggested fixes that a human then implements?
+>     - Using AI to understand an API before writing code?
+>     - AI assistance with commit message wording?
+> 
+> 5. Legal stance: Should we take a position on AI-generated code and DCO
+>     compliance, or leave that to individual contributors to assess?
+> 
+> 6. Enforcement reality: We can't even get everyone to run checkpatch.
+>     Whatever policy we adopt, how do we think about enforcement?
 
-That's an incorrect statement: if the output is a derivative of the
-training (which is a big if given the current state of the legal
-landscape) and the training set was copyrighted, then even a translated
-text using that training data will pick up the copyright violation
-regardless of input prompting.
+This is a pretty good summary. It's missing one point in my opinion,
+partly related to the legal stance: the ethical stance.
 
+The Linux kernel is governed by the GPL. There are contributors who care
+about the copyleft aspect of the license. Even if the legal issues get
+cleared in the future, not everybody will agree that usage of GPL code
+as input to create proprietary LLMs is ethical: it may not breach the
+letter of the license while breaching the spirit. I would like to see
+this question being discussed.
+
+> Looking forward to the discussion.
+
+-- 
 Regards,
 
-James
-
+Laurent Pinchart
 
