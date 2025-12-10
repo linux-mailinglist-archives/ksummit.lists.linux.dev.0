@@ -1,276 +1,265 @@
-Return-Path: <ksummit+bounces-2664-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2665-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5601ACACD82
-	for <lists@lfdr.de>; Mon, 08 Dec 2025 11:22:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B26CB1EC9
+	for <lists@lfdr.de>; Wed, 10 Dec 2025 05:48:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1F392300F72A
-	for <lists@lfdr.de>; Mon,  8 Dec 2025 10:22:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A48183007681
+	for <lists@lfdr.de>; Wed, 10 Dec 2025 04:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D8DA2D9EC9;
-	Mon,  8 Dec 2025 10:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC5E2773D9;
+	Wed, 10 Dec 2025 04:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rt+IXL0O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o60f0vka"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2941624D5
-	for <ksummit@lists.linux.dev>; Mon,  8 Dec 2025 10:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A35248896
+	for <ksummit@lists.linux.dev>; Wed, 10 Dec 2025 04:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765189327; cv=none; b=Hx6+vg9GrchDUripfpCTqdm4SVPQbowqp887C2TRW7aao3SO+7cqUuPyW1QF2r6ZVVUqCXyE7TXg3C2R9Dqxg6xCt0mXli2gh83X83x4Ed21MuxrhALg3bWAoD8gA6v5fsrzBzIQefaAhYL3RWwnGas/2LZJxXSIDeneNYTLouk=
+	t=1765342107; cv=none; b=dLn5VvOPWLQc0InSlOan56Bv5G9kMR81ADxswUHwuxomkurb8kTqcoNb/O5sTNFNW0+czMpy+PbgJ8HAoCdVR6XI1h+x6nfvV/b5cFQGAbBSAJ1R2XhZZnpv3dzDwRZsVrFscSW3N+R0TOES+hdmiWxmmgZ2PNsGXDMGapMJLcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765189327; c=relaxed/simple;
-	bh=mD+ieQVLq8zBszj1O57Pg61BfrO7nxSDC+cKexLA0YM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rKdruo8pm9S3zX4bvJEbWGTI9vsDzwp982n8UELDcM1rUgDkfl4lWNNCxuWoSaku31L6DAi4CT3o/KPlNNfpw19Ka27NcjK1yDKmLBRvuPa5qzu076GUJw43jnWdoPUOd5LuyVifu5Mdl6mqZLFsuM46m3sVFCozSMgNUzMaktg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rt+IXL0O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FEE0C16AAE;
-	Mon,  8 Dec 2025 10:22:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765189325;
-	bh=mD+ieQVLq8zBszj1O57Pg61BfrO7nxSDC+cKexLA0YM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Rt+IXL0OjqtvwunCegTAgCxwcQ4ylgqBo3e5gRJtPE66uk7KG0Fea2YMxEi8QtlBl
-	 HrhCCu4IBd12MZBaKE+QMhSXMIbX5CV0rtH+bdib/JuyLSKC2MKTHYGgcFXeXMS01r
-	 De91z6f4DkJqgYS5b9Afi1L9hI8iyga7Sq145NPGBuRKYiK96PrzMCLiOAbh9tQ8IO
-	 nDqYDhh2h+CcweR+8OuEWSRzcUnlODiBkQytvY+F1g1Bi+NK8n9R4TdJF3tvtnK6tZ
-	 z6pGwXGSC0DgCF1awpoyTTNQO9Tszkldg2Nu3VKuW5JfCR4D7nCkTzBBo0OLFLdtzQ
-	 8Wn9QLWtFMvig==
-Received: from mchehab by mail.kernel.org with local (Exim 4.99)
-	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1vSYNW-00000002F8A-46b0;
-	Mon, 08 Dec 2025 11:22:02 +0100
-Date: Mon, 8 Dec 2025 11:22:02 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Jonathan Corbet <corbet@lwn.net>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Sasha Levin <sashal@kernel.org>, ksummit@lists.linux.dev
-Subject: Re: [MAINTAINERS SUMMIT] The role of AI and LLMs in the kernel
- process
-Message-ID: <rtxwa23krfv4xqi2c3eb6f2zygppuft4fesg532squ656v7jba@iniftynodbt2>
-References: <e3188fe2-4b6c-4cb2-b5ae-d36c27de6832@lucifer.local>
- <aTYmE53i3FJ_lJH2@laps>
- <4BDD9351-E58A-4951-9953-00F1E9F24FB4@zytor.com>
- <87zf7tg2dk.fsf@trenco.lwn.net>
- <20251207221532.4d8747f5@debian>
- <88091c9ac1d8f20bade177212445a60c752ba8b5.camel@HansenPartnership.com>
- <20251208094116.6757ddeb@foz.lan>
- <4597dfe45c9ff2991ed5221c618602ea42993940.camel@HansenPartnership.com>
+	s=arc-20240116; t=1765342107; c=relaxed/simple;
+	bh=gJjkuwFPS7/7D3SSH7Vka8eeDZcGIxoavcb2N+G3Bbw=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=OrAQ/6JtK8Q6L+Rxd6nwVyE6iT6c03YQI7biYjPcJu2rIqq73HXQCg6Kga4x9CuyeFBsYs7CeWx944h856MtLsAKufFZQpC9hmYQjbI/V9XtWeCONpxc+2N4ZEjUdZ1wRTGExbe60Dl4pzzIinPmIrGnTgsopChJDGBKk277gRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o60f0vka; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D26C16AAE;
+	Wed, 10 Dec 2025 04:48:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1765342106;
+	bh=gJjkuwFPS7/7D3SSH7Vka8eeDZcGIxoavcb2N+G3Bbw=;
+	h=Date:From:To:Subject:From;
+	b=o60f0vkac/pGgY4GFoJKl1XlkQl2dmRKdJ2oalCMDcO/GPigumI1rFLYaC+FOMoJO
+	 RHH29yd5JJfvx5lD1i9YTvGQz8GNo4koL99Njzdp1rrvNFToWEA8LEtEAeG7vdva1v
+	 KXhmPuq3hyOTuYd1tWFMHkYGzTQZGGXGCuMuvQwI=
+Date: Tue, 9 Dec 2025 23:48:24 -0500
+From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+To: users@kernel.org, ksummit@lists.linux.dev
+Subject: kernel.org tooling update
+Message-ID: <20251209-roaring-hidden-alligator-068eea@lemur>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4597dfe45c9ff2991ed5221c618602ea42993940.camel@HansenPartnership.com>
-Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-On Mon, Dec 08, 2025 at 06:16:52PM +0900, James Bottomley wrote:
-> On Mon, 2025-12-08 at 09:41 +0100, Mauro Carvalho Chehab wrote:
-> > Em Mon, 08 Dec 2025 12:42:32 +0900
-> > James Bottomley <James.Bottomley@HansenPartnership.com> escreveu:
-> > 
-> > > On Sun, 2025-12-07 at 22:15 -0500, Steven Rostedt wrote:
-> > > > On Sun, 07 Dec 2025 18:59:19 -0700
-> > > > Jonathan Corbet <corbet@lwn.net> wrote:
-> > > >   
-> > > > > > I contend there is a huge difference between *code* and
-> > > > > > descriptions/documentation/...  
-> > > >   
-> > > > > 
-> > > > > As you might imagine, I'm not fully on board with that.  Code
-> > > > > is assumed plagiarized, but text is not?  Subtly wrong
-> > > > > documentation is OK?
-> > > > > 
-> > > > > I think our documentation requires just as much care as our
-> > > > > code does.  
-> > > > 
-> > > > I assumed what hpa was mentioning about documentation, may be
-> > > > either translation of original text of the submitter, or AI
-> > > > looking at the code that was created and created a change log. In
-> > > > either case, the text was generated from the input of the author 
-> > > 
-> > > I think this is precisely the problem Jon was referring to: you're
-> > > saying that if AI generates *text* based on input prompts it's not
-> > > a copyright problem, but if AI generates *code* based on input
-> > > prompts, it is.  As simply a neural net operational issue *both*
-> > > input to output sets are generated in the same way by the AI
-> > > process and would have the same legal probability of being
-> > > copyright problems.  i.e. if the first likely isn't a copyright
-> > > problem, the second likely isn't as well (and vice versa).
-> > 
-> > I'd say that there are different things placed in the same box. Those
-> > two, for example sound OK on my eyes:
-> > 
-> > - translations - either for documentation of for the code.
-> >   The original copyrights maintain on any translations. This is
-> > already
-> >   proofed in courts: if one translates Isaac Asimov's "Foundation" to
-> >   Greek, his copyright remains at the translation. Ok, if the
-> > translation
-> >   is done by a human, he can claim additional copyrights for the
-> >   translation, but a machine doesn't have legal rights to claim for
-> >   copyrights. Plus, the translation is a derivative work of the
-> > original
-> >   text, so, I can't see how this could ever be a problem, if the
-> >   copyrights of the original author is placed at the translation;
-> 
-> I can explain simply how I as a translator could cause a copyright
-> problem with no AI involvement: let's say I translate Foundation from
-> English to French but while doing so I embed a load of quotes from the
-> novels of Annie Ernaux but in a way that it nicely matches the Azimov
-> original.  Now I've created a work which may be derivative of
-> Foundation and partly owned by me but which also has claims of
-> copyright abuse from Annie Ernaux.
+Hi, all:
 
-A usage like that would likely be fair use/fair dealing.
+These are the topics that were touched on at the maintainer summit when
+discussing tooling on the kernel.org side of things.
 
-> The above is directly analogous to what would happen if the AI output
-> were decided to be a derivative of its training for an AI translator.
+--
 
-As AI would pick most likely translations, the risk of picking quotes
-would be less likely.
+# What is the state of tooling?
 
-Worse case scenario on something digitally published: one can change
-the translation to a different translated text/code if a valid copyright
-claim would apply.
+## b4 development update
 
-> 
-> > - code filling - if a prompt requests to automate a repetitive task,
-> >   like creating a skeleton code, adding includes, review coding style
-> >   and other brute force "brainless" activities, the generated code
-> > won't
-> >   be different than what other similar tools of what the developer
-> > would
-> >   do - AI is simply a tool to speedup it, just like any other similar
-> >   tools. No copyright issues.
-> > 
-> > Things could be in gray area if one uses AI to write a patch from the
-> > scratch. Still, if the training data is big enough, the weights at
-> > the neuron network will be calibrated to repeat the most common
-> > patterns, so the code would probably be similar to what most
-> > developers would do.
-> >
-> > 
-> > On some experiments I did myself, that's what it happened: the
-> > generated code wasn't much different than what a junior student with
-> > C knowledge would write, with about the same mistakes. The only thing
-> > is that, instead of taking weeks, the code materialized in seconds.
-> > To be something that a maintainer would pick, a senior developer
-> > would be required to cleanup the mess.
-> 
-> How good (or not) AI is at coding is different from the question of
-> whether the output has its copyright contaminated by the training data.
+Past year:
 
-True.
+- No major new features in b4 over the past year, excepting `b4 dig`
+- Seeing lots of adoption and use across subsystem, with a lot of maintainers
+  recommending b4 as the preferred mechanism to submit patches
+- Starting to see adoption by several non-kernel projects (openembedded, u-boot, others)
+- Significant behind-the-scenes move of codebase to stricter typed code
+- Continued work on `b4 review` that got shelved temporarily for other
+  priorities.
 
-> > 
-> > > > . Where as AI generated code likely comes from somebody else's
-> > > > code. Perhaps AI was trained on somebody else's text, but the
-> > > > output will likely not be a derivative of it as the input is
-> > > > still original. 
-> > > 
-> > > That's an incorrect statement: if the output is a derivative of the
-> > > training (which is a big if given the current state of the legal
-> > > landscape) and the training set was copyrighted, then even a
-> > > translated text using that training data will pick up the copyright
-> > > violation regardless of input prompting.
-> > 
-> > If one trains it only with internal code from an specific original 
-> > product that won't have any common patterns which anyone else would
-> > do, then this could be the case.
-> > 
-> > However, this is usually not the case: models are trained with big
-> > data from lots of different developers and projects. As Neural
-> > networks training is based on settings up weights based on
-> > inputs/outputs, if the training data is big enough, such weights will
-> > tend to follow the most repetitive patterns from similar code/text. 
-> > 
-> > On other words, AI training will generate a model that tends to
-> > repeat sequences with the most common patterns from its training
-> > data. This is not different than what a programming student would do
-> > without using AI when facing a programming issue: he would likely
-> > search for it on a browser. The search engine algorithms from search
-> > providers are already showing results with the more likely answers
-> > for such question on the top.
-> 
-> Patterns are not expression in the copyright sense.  Indeed, code tends
-> to be much more amenable to the independent invention defence than
-> literature: If I give the same programming task to a set of engineers
-> with the same CS training, most of them would come up with pretty
-> identical programs even if they don't collaborate.
+### LETS PUT MOAR AI INTO IT!!1
 
-True. Also, such common patterns that are repeated everywhere are
-very likely fair use, if they originally came from copyrighted material.
+I spent a lot of time on trying to integrate AI into b4 workflows, but with
+little to show for it in the end due to lackluster results.
 
-> However, as long as
-> they didn't copy from each other the programs they come up with are
-> separate works even if they're very similar in expression.
+- Used local ollama as opposed to proprietary services, with the goal to avoid
+  introducing hard dependencies on third-party commercial tooling. This is
+  probably the main reason why my results were not so exciting as what others
+  see with much more powerful models.
 
-Those are indeed separate works. A code written by some developer,
-either using as basis his CS training, an AI-generated code, a text
-book code or a searched code from the Internet as an example can become
-copyrighted by the developer who wrote it.
+- Focused on thread/series summarization features as opposed to code analysis:
 
-For me, AI, when used as an ancillary tool, is not any different than
-what developers have been doing.
+    - Summarize follow-ups (trailers, acks/nacks received), though this is
+      already fairly well-handed with non-AI tooling.
 
-Now, using AI as replacement for humans is a hole different thing:
-I don't think we are on that stage yet. I'm also not convinced that
-this would happen anytime soon.
+    - Gauge "temperature" of the discussion to highlight controversial series.
 
-On some tests I did, even the most complex engines are not currently
-capable of generating proper code: it usually requires lots of
-interactions to refine prompts and new prompts to modify the produced
-results to something more palatable. The output was almost always
-a code skeleton that requires manual work.
+    - Gauge quality of the submission; help decide "is this series worth
+      looking at" before maintainers spend their effort looking at it, using
+      maintainer-tailored prompts. This may be better done via CI/patchwork
+      integration, than with b4.
 
-On such workflow, the prompts can be considered as copyright material.
-As such, the transformation into code also carries copyrights from
-the developer. As the output requires manual changes to reach
-production level, such changes are also copyrighted by the developer.
+    - Use LLM to prepare a merge commit message using the cover letter and
+      summarizing the patches.
 
-Again, this is not different than doing a research at specialized
-literature and/or the Internet: one needs to do the right research,
-classify the results and modify the code examples to generate the
-real code.
+I did not end up releasing any features based on that work, because:
 
-> Just because code is more likely to be independently invented than
-> literature doesn't make it more prone to copyright violations (although
-> it does give more scope to the litigious to claim this).
+    - LLM was not fantastic at following discussions and keeping a clear
+      picture of who said what, which is kind of crucial for maintainer
+      decision making.
 
-True, but this is not different than not using AI at all.
+    - Very large series and huge threads run out fo context window, which
+      causes the LLM to get even worse at "who said what" (and it's
+      already not that great at it).
 
-> 
-> Regards,
-> 
-> James
-> 
-> > The AI generated code won't be much different than that, except that,
-> > instead of taking just the first search result, it would use
-> > a mix of the top search results for the same prompt to produce its
-> > result.
-> > 
-> > In any case (googling or using AI), the tool-produced code examples
-> > aren't ready for submission. It can be just the beginning of some
-> > code that will require usually lots of work to be something that
-> > could be ready for submission - or even - it can be an example of
-> > what one should not do. In the latter case, the developer would need
-> > to google again or to change the prompt, until it gets something that
-> > might be applicable to the real use case.
-> > 
-> > Thanks,
-> > Mauro
-> > 
-> 
+    - Thread analysis requires lots of VRAM and a modern graphics card, and is
+      still fairly slow there (I used a fairly powerful GeForce RTX).
 
--- 
-Thanks,
-Mauro
+    - Actual code review is best if it happens post-apply in a temporary
+      workdir or a temporary branch, so the agent can see the change in the
+      context of the git tree and the entire codebase, not just the context
+      lines of the patch itself.
+
+I did have much better success when I worked to represent a thread not as
+multiple messages, but as a single document with all interleaved follow-up
+conversations collated together. However, this was done manually --
+representing emails from arbitrary threads as such collated documents is a
+separate challenge.
+
+Using proprietary models and remote services will probably show better
+results, but I did not have the funds or the inkling to do it (plus see the
+concern for third-party commercial tooling). I may need to collaborate more
+closely with the maintainers already doing it on their own instead of
+continuing my separate work on it.
+
+### AI crawler scourge
+
+While working on LLM integration, it was certainly ironic that one of the
+top challenges for us was to try to keep AI crawlers from overwhelming
+kernel.org infrastructure. While we've put several mitigations in place, it's
+a temporary relief at best.
+
+## Continuous degradation of SMTP
+
+We're increasingly having to deal with the degradation of the SMTP support by
+all commercial companies:
+
+    - major hosts are increasingly not interested in getting mail from anyone
+      who isn't also a major mail service provider
+
+    - their "bulk sender" guidelines are no good for us (e.g. requiring that
+      we add one-click unsubscribe footers to all email)
+
+    - their "spam filters" are increasingly based on training data, which
+      means that "looks different from what most of our users receive" is
+      enough to have patches and code discussions put into the "Junk" folder
+
+    - they apply arbitrary throttling ("too many deliveries for the same
+      message-id", "too many messages from the DKIM domain foobar.com")
+
+    - anti-phishing services at commercial IT companies do horrible things to
+      incoming messages
+
+## Are we finally moving away from patches sent over email?
+
+There are still important concerns when we consider moving away from "patches
+sent via email":
+
+    - SMTP is still the only widely used protocol we have for decentralized
+      communication; everything else is experimental or has important
+      drawbacks, such as:
+
+        - it relies on single-point-of-failure services (e.g. Signal), or
+        - it requires standing up esoteric software (which then become
+          single-point-of-failure services), or
+        - it requires an "everyone-must-switch-now" flag day
+
+    - RFC-5322, with all its warts, is a well-defined standard for internet
+      messages:
+
+        - robust, capable of dealing with change while preserving legacy
+        - easy to parse with libraries for almost any framework
+        - easy to archive and query
+        - has lots of tooling built around it
+
+With lore and public-inbox, we *are* in the process of moving away from
+relying on the increasingly unreliable SMTP layer. Lore can already let you do
+the following things:
+
+    - lets anyone submit patches via the web endpoint
+    - lets anyone subscribe to lists via several protocols (NNTP, POP, IMAP)
+    - lets anyone use lei to receive arbitrary feeds
+    - can aggregate any number of sources, as long as they are RFC-5322
+      messages (or can be converted to them)
+
+Lore and public-inbox is becoming a kind of a distributed, replicating
+messaging bus with a robust query and retrieval interface on top of it, and I
+believe it's a fairly powerful framework we can build upon.
+
+## Work on "local lore"
+
+One downside of lore.kernel.org is that it's a central service, which runs
+counter to our goal of limiting how many single points of failure we have.
+There is fault-tolerance built into the system (lore.kernel.org is actually 4
+different nodes in various parts of the world), but an adversary would have no
+difficulty knocking out all nodes at once, which would impact the project
+significantly.
+
+The "local lore" projects it the attempt to provide a kind of "maintainer
+container" that can be run locally or in any public cloud:
+
+    - comes with a 6-month constantly-updating mirror of lore, using a
+      failover set of replication URLs (including tor/onion)
+    - comes with a pre-configured mirror of git repositories that are kept
+      up-to-date in the same fashion
+    - lets the maintainer set up lei queries that can push into their
+      inbox, supporting Gmail+OAuth, JMAP, IMAP
+    - provides a web submission endpoint and an SMTP service that can
+      integrate with other SMTP relays
+    - publishes a public-inbox feed of maintainer activity that central
+      lore can pick up and integrate
+
+There is a parallel goal here, which is to make it easier for devs to assume
+maintainer duties without having to spend a week setting up their tooling.
+In theory, all they would be need to do is to set up their maintainer
+container and then use the web menu to choose which feeds they want to pull
+and where they want messages delivered.
+
+This project is still early in development, but I hope to be able to provide
+test containers soon that people can set up and run.
+
+## Other tools
+
+### Bugzilla
+
+It may be time to kill bugzilla:
+
+    - despite periodic "we're not dead yet" emails, it doesn't appear very
+      active
+    - the upgrade path to 6.0 is broken for us due to bugzilla abandoning the
+      5.2 development branch and continuing with 5.1
+    - question remains with what to replace bugzilla, but it's a longer
+      discussion topic that I don't want to raise here; it may be a job for
+      the bugspray bot that can extend the two-way bridge functionality to
+      multiple bug tracker frameworks
+
+### Patchwork
+
+Patchwork continues to be used widely:
+
+    - we've introduced query-based patchworks, where instead of consuming the
+      entire mailing list, we feed it the results of lei queries
+    - I'm hoping to work with upstream to add a couple of features that would
+      be of benefit to us, such as:
+
+        - support for annotating patches and series (e.g. with LLM summaries)
+        - an API endpoint to submit patches, so maintainers could add
+          arbitrary series to their patchwork project, integrating with b4
+
+## Web of Trust work
+
+There is an ongoing work to replace our home-grown web of trust solution (that
+does work but has important bottlenecks and scaling limitations) with
+something both more distributed and easier to maintain. We're working with
+OpenSSF to design the framework and I hope to present it to the community in
+the next few months.
+
+## Questions?
+
+Send away!
+
+-K
 
