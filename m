@@ -1,176 +1,179 @@
-Return-Path: <ksummit+bounces-2666-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2667-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03897CB25E0
-	for <lists@lfdr.de>; Wed, 10 Dec 2025 09:13:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AB1FCB3081
+	for <lists@lfdr.de>; Wed, 10 Dec 2025 14:33:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1E2BF30194DA
-	for <lists@lfdr.de>; Wed, 10 Dec 2025 08:11:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 40B1B30C7888
+	for <lists@lfdr.de>; Wed, 10 Dec 2025 13:30:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A70762FFDF5;
-	Wed, 10 Dec 2025 08:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C19731A04E;
+	Wed, 10 Dec 2025 13:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VTkVkN35"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="MrPQ50em"
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170892E7BC2
-	for <ksummit@lists.linux.dev>; Wed, 10 Dec 2025 08:11:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB3C20322;
+	Wed, 10 Dec 2025 13:30:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765354318; cv=none; b=gSHNpAfdyTOHbIfI3EnWg7RsPRfNL2NqGiPzuB51dyhrUEZEjLuLxlNalCsJnq2tgz1YOtJhhmzmtmgyjvUFBLfUaQG1vD9kEmITVBUoFwdfnovQz/CABYBtaF4tKVFaSJznh2krfCSZ1hZEr2Bzev97ovdCmzjqxHx2yxKnWV8=
+	t=1765373447; cv=none; b=ZLYPDJsc3n2CdHp4rUatSCfZTvGrVlPANzY5G1ezWcgfPXfAHdwwNK5bQ9pKBbpYyM1BgnMDvFvxJzpS65EqtUs4NlM7LB9FOpu/HBeUtA9kT9tUyTMFwmkuqSzrL0KWzDgzsifHbN/tTpQOj3zqr4XGaKQQ375/Ky5OE8g75eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765354318; c=relaxed/simple;
-	bh=QRuJ4pN+LZwhPXJV+ToRPwfiWbwV/DT9xrXsnuOh4LY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mf6yD53Tsz2aexk9RU7rlCXZmCE3W0UIWph2d+tpTb0hapNqfbj+5Dh0aTEojFKWV9zd6+C9F6VghnN0O3TKuNQTyxRbreYsf+mHkQlSf6mKBTWo5ODdjBe5gxTXo1CLD8GicaeiluVOeRsiD4pXZkDfnlZiWGMR7Po7fpsj+Sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VTkVkN35; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E98C4CEF1;
-	Wed, 10 Dec 2025 08:11:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765354317;
-	bh=QRuJ4pN+LZwhPXJV+ToRPwfiWbwV/DT9xrXsnuOh4LY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=VTkVkN35gKxkIyBOi01VWvAV4q7YbsBs/bAJKpy6htPuJTzDdBMANPn3KSd+RJ44X
-	 OnxNYKWLUtXHfGhtA6XjThOK2Rk6zzyFSlltfdqTP0ganouuMzxJiTTQJUyHo84x4U
-	 EyrlTiaJq5dJuXC7Ke7/mM8trMuhwloip2oT5fT0WNrvH858f/MtsMCGPhRtpuBPZl
-	 1AU61b9iVwEf428zFqopIK3yuyoXH1g4mTr0wOr3TdSAV8WcM9xNLsvgZ69dGjRSFa
-	 p7TPrgjxB1995BwjU+3JQ1+g4jdcN6ujvtuk+FhGYGL5JiuI4o04Vqh0IFymQ/1/dQ
-	 TDgNFPjjxXhrQ==
-Date: Wed, 10 Dec 2025 09:11:53 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-Cc: users@kernel.org, ksummit@lists.linux.dev
-Subject: Re: kernel.org tooling update
-Message-ID: <20251210091153.014a5618@foz.lan>
-In-Reply-To: <20251209-roaring-hidden-alligator-068eea@lemur>
-References: <20251209-roaring-hidden-alligator-068eea@lemur>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1765373447; c=relaxed/simple;
+	bh=05yYjy5mrMUyG8FBlX0G1vLs+XKvBoh3o+6q6lApECc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=ZQpXJyqcSayFAGBnf18CcJjZSyVScxw1i/iplUn/RCw4yCvCss0qQMCy4uj60LtGYFdN45N/8Qkzmoy/4EXxEtuj/xTXZyLz7Xex2OZ6zbnY9MsYziB6SdkSllr+A/Mw5ii9YlR9b4snCiUSY96cTn3s+KAcobQe4/behj3VFvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=MrPQ50em; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:To:Subject:MIME-Version:Date:Message-ID:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=NxJCdZazrfoG/nCZRMUrPGp6MVF0tbYbSd+fLg7kSXk=; t=1765373445;
+	x=1765805445; b=MrPQ50emvdpDWAvJUYL1ntmqU7/LKTwkklGT+xwDGLDugZeMxYz+8/kN9fJk2
+	1wOPFj6ZsMwhXtKngvbw+xlzvuZu8c/HMVnEe10MVXMWa9bvb/07Ic+D9nfMuZHql/V5Qfi6cfbfA
+	NpGAL5995jpBNk49d2yNCrQmyumYHLRCJiGaSBnP03HrFMx0fgFYvP1S8g3+stX9axa8NBdw6d169
+	4vD8q3aKjWDPpDtxWYKF01gvmsk1SwKPLhBQOYbg5p5Qw1PbHirgJQ1tdiwOQyUbdXpX3lN4taItH
+	zjgLkI8EcoeZeQLGLqos2YEVI90xMsjBnOggeQ0tVVkQiJkjjQ==;
+Received: from [2a02:8108:8984:1d00:a0cf:1912:4be:477f]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
+	id 1vTKH8-00BEjC-1I;
+	Wed, 10 Dec 2025 14:30:38 +0100
+Message-ID: <f1bb8d04-9949-417d-9726-64787994d40e@leemhuis.info>
+Date: Wed, 10 Dec 2025 14:30:37 +0100
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: kernel.org tooling update
+To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>, users@kernel.org,
+ ksummit@lists.linux.dev,
+ Linux kernel regressions list <regressions@lists.linux.dev>
+References: <20251209-roaring-hidden-alligator-068eea@lemur>
+From: Thorsten Leemhuis <linux@leemhuis.info>
+Content-Language: de-DE, en-US
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 MEK4
+In-Reply-To: <20251209-roaring-hidden-alligator-068eea@lemur>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1765373445;76b848db;
+X-HE-SMSGID: 1vTKH8-00BEjC-1I
 
-Hi Konstantin,
+Lo! Thx for the update, much appreciated!
 
-Em Tue, 9 Dec 2025 23:48:24 -0500
-Konstantin Ryabitsev <konstantin@linuxfoundation.org> escreveu:
+On 12/10/25 05:48, Konstantin Ryabitsev wrote:
 
-> I spent a lot of time on trying to integrate AI into b4 workflows, but with
-> little to show for it in the end due to lackluster results.
+> ### Bugzilla
 > 
-> - Used local ollama as opposed to proprietary services, with the goal to avoid
->   introducing hard dependencies on third-party commercial tooling. This is
->   probably the main reason why my results were not so exciting as what others
->   see with much more powerful models.
-> 
-> - Focused on thread/series summarization features as opposed to code analysis:
-> 
->     - Summarize follow-ups (trailers, acks/nacks received), though this is
->       already fairly well-handed with non-AI tooling.
-> 
->     - Gauge "temperature" of the discussion to highlight controversial series.
-> 
->     - Gauge quality of the submission; help decide "is this series worth
->       looking at" before maintainers spend their effort looking at it, using
->       maintainer-tailored prompts. This may be better done via CI/patchwork
->       integration, than with b4.
-> 
->     - Use LLM to prepare a merge commit message using the cover letter and
->       summarizing the patches.
-> 
-> I did not end up releasing any features based on that work, because:
-> 
->     - LLM was not fantastic at following discussions and keeping a clear
->       picture of who said what, which is kind of crucial for maintainer
->       decision making.
-> 
->     - Very large series and huge threads run out fo context window, which
->       causes the LLM to get even worse at "who said what" (and it's
->       already not that great at it).
-> 
->     - Thread analysis requires lots of VRAM and a modern graphics card, and is
->       still fairly slow there (I used a fairly powerful GeForce RTX).
-> 
->     - Actual code review is best if it happens post-apply in a temporary
->       workdir or a temporary branch, so the agent can see the change in the
->       context of the git tree and the entire codebase, not just the context
->       lines of the patch itself.
-> 
-> I did have much better success when I worked to represent a thread not as
-> multiple messages, but as a single document with all interleaved follow-up
-> conversations collated together. However, this was done manually --
-> representing emails from arbitrary threads as such collated documents is a
-> separate challenge.
+> It may be time to kill bugzilla:
 
-I would love to see what you got there. I tried to an experiment similar
-to it, also with ollama, writing some code Python code from scratch, aiming
-to run locally on my GPU (with has only 16GB VRAM but it is a brand new
-RDNA4 GPU), using a prompt similar to this:
+Thx for bringing this up, as I a few months ago again looked somewhat
+closer at the state of how well our bugzilla is working for the core
+kernel. I didn't post the analysis in the end, but to me it looked like
+the state of things was round the same as it was three years ago -- when
+it wasn't working well, which was among the reasons why we came close to
+abandoning bugzilla for kernel bugs[1].
 
-            You are an expert at summarizing email threads and discussion forums. 
-	    Your task is to analyze the following text, which is a chunk of an
-	    email thread with nested replies, and provide a concise, structured summary.
+[1] for those that don't remember, see https://lwn.net/Articles/910740/
+and
+https://lore.kernel.org/all/aa876027-1038-3e4a-b16a-c144f674c0b0@leemhuis.info/
 
-            **Instructions:**
-            1.  **Reconstruct the Chronology:** Carefully analyze the indentation levels (e.g., `>>>`, `>`, `>>`) 
-		and timestamps to determine the correct order of messages. The oldest message is likely the most indented.
-            2.  **Identify Speakers:** For each message, extract the first name from the "From:" field (e.g., "From: John Doe" becomes "John").
-            3.  **Consolidate by Topic and Speaker:** Group the main discussion points by topic. 
-		For each topic, summarize what each person contributed, consolidating their points 
-		even if they appear in multiple messages.
-            4.  **Focus on New Information:** Ignore salutations (e.g., "Hi Mike,") and email
-		signature blocks. Focus on the substantive content of each message.
-            5.  **Output Format:** Provide the summary in the following structure:
-                -   **Main Topic(s) of Discussion:** [List 1-3 main topics]
-                -   **Summary by Participant:**
-                    -   **[First Name 1]:** [Concise summary of their stance, questions,
-			or information provided, in chronological order if important.]
-                    -   **[First Name 2]:** [Concise summary of their stance, questions,
-			or information provided.]
-                -   **Outcome/Next Steps:** [Note any conclusions, decisions, or action items agreed upon.]
 
-            **Text to Summarize:**
-            {chunk}
 
-Yet, grouping e-mails per thread is a challenge, specially since
-I was planning to ask it to summarize it in short time intervals,
-so, picking only the newer emails, and re-using already parsed data.
+>     - despite periodic "we're not dead yet" emails, it doesn't appear very
+>       active
+>     - the upgrade path to 6.0 is broken for us due to bugzilla abandoning the
+>       5.2 development branch and continuing with 5.1
+>     - question remains with what to replace bugzilla,
 
-My goal is not to handle patches, as I doubt this would give anything
-relevant. Instead, I wanted to keep in track with LKML and other high
-traffic mailing lists to pick most relevant threads.
+To me it looks like most subsystems don't care much or at all about
+bugzilla.kernel.org. This made me wonder (and maybe you could gather
+some opinions on this in Tokyo):
 
-Btw, I got some success summarizing patch series from a given Kernel author
-along an entire month using just the e-mail subject, with mistral-small3.2
-LLM model, and a somewhat complex prompt. Goal was to summarize how many
-patches were submitted, grouping them by threads and different open source
-projects. Output were far a way from being perfect, and, if the number of
-patches is too big, it starts forgetting about the context - with is one of
-the current challenges with current LLM technology - even on proprietary
-models.
+* How many kernel subsystems have a strong interest in a bug tracking
+solution at all[2]? And how many of those might be happy by using some
+external issue tracker, like those in github (like Rust for Linux,
+thesofproject, and a few others do), gitlab (either directly, like
+apparmor, or self-hosted, like the DRM subsystem)?
 
-It sounds to me that, with the current technology, the best approach
-would be to ask AI to summarize each e-mail individually, then group 
-the results using a non-AI approach (or mixing AI with normal programming).
+* Does the kernel as a whole need a bug tracking solution at all to
+receive reports? We for now require email for patches, so why not for
+bugs as well, unless a subsystem really wants something (see above)?
 
-> Using proprietary models and remote services will probably show better
-> results, but I did not have the funds or the inkling to do it (plus see the
-> concern for third-party commercial tooling). I may need to collaborate more
-> closely with the maintainers already doing it on their own instead of
-> continuing my separate work on it.
+[2] Some numbers:
+$ for i in "" mailto bugzilla github gitlab; do echo -n "Searching for
+'^B:.*${i}': "; grep -c -E "^B:.*${i}" MAINTAINERS; done
+Searching for '^B:.*': 70
+Searching for '^B:.*mailto': 12
+Searching for '^B:.*bugzilla': 23
+Searching for '^B:.*github': 17
+Searching for '^B:.*gitlab': 11
 
-Yeah, the best is to have this not dependent on proprietary
-models or on external GPU farms. I wonder if a DSX Spark would be
-reasonably good with its 128GB unified RAM for something like that.
-Its price is still too high, but maybe we'll end having similar
-models next year to allow local tests with bigger models.
+> but it's a longer discussion topic that I don't want to raise here;
 
-Thanks,
-Mauro
+Would like to be involved there.
+
+> it may be a job for
+>       the bugspray bot that can extend the two-way bridge functionality to
+>       multiple bug tracker frameworks
+
+FWIW, development of my regression tracker (regzbot) and me using it to
+track regressions nearly stalled but is slowly restarting. Would be good
+if we could work together here, as there is some overlap -- and
+regression tracking afaics is something that a lot of people want and
+consider important. And regzbot is already capable of monitoring reports
+in various places (lore, gitlab, github, bugzilla); so if we decide that
+we don't need a tracker for the kernel as a whole, it might already do
+nearly everything for the bugs where tracking really helps a lot.
+
+Ciao, Thorsten
 
