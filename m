@@ -1,92 +1,98 @@
-Return-Path: <ksummit+bounces-2673-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2674-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD0A1CBB664
-	for <lists@lfdr.de>; Sun, 14 Dec 2025 04:27:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E6BCC4561
+	for <lists@lfdr.de>; Tue, 16 Dec 2025 17:37:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C4913300DA7B
-	for <lists@lfdr.de>; Sun, 14 Dec 2025 03:27:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C47C43062E7D
+	for <lists@lfdr.de>; Tue, 16 Dec 2025 16:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D08332E1EF8;
-	Sun, 14 Dec 2025 03:27:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qtuUhH5n"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEEF430CD93;
+	Tue, 16 Dec 2025 16:31:51 +0000 (UTC)
+Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [144.76.133.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447EC29B239;
-	Sun, 14 Dec 2025 03:27:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD1C30B52F
+	for <ksummit@lists.linux.dev>; Tue, 16 Dec 2025 16:31:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.133.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765682861; cv=none; b=EgDFuqu+APiPeifnqKhg/1qbI2+NBlqFmbfsaZGOPTumtvrwil5i7XKgj8Z0mjIAks7uBUd157CpM/VKsTZ+nuVn8TVyninGcgBtz07Yp4pDK2gIl928TTHbzTy2zehM7ks+na0jiw8NFKPh8G1K7STkmKI776tMWs2962SfQrQ=
+	t=1765902709; cv=none; b=DhEYkybC7b4TLb5aLjSZV9DaBFUbGGPaWthbc3bIJqzrjz5pC2Z1R0N39gJHZZjuVJEcGtSiRo2vuK2Ik19eeUOM34BCV1OI3z1nAOV2R8K9l44taFxu7egKhyc9m+TJUCUjXxkbbE6VRa2jLYtIfui6w8d3YL8LjkRb2n1feC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765682861; c=relaxed/simple;
-	bh=P2Z+/AQAc9l3yrYiwDGSasvicwDwY8z+0D3PszV4bi0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KFWvt+nlQgqbYWjSnQ0j5R+xAKkLKWyUX2do6vgGzAE/hPFTljlsG7WyN5XiKOXJWQ5iTT36RK3nmgAtqFJ0QGcufPyms39C0fEowQHjd5De3Zp3oFSvIonb29vSHRym0UjQ0eUuzPTDHlp1qszixc7+9gYhwrqT/r4GE7qs9/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qtuUhH5n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D243EC4CEF1;
-	Sun, 14 Dec 2025 03:27:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765682860;
-	bh=P2Z+/AQAc9l3yrYiwDGSasvicwDwY8z+0D3PszV4bi0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qtuUhH5ncdSkXi3WXiTCrBJr5gVom9GrWUhvgSQh+8VOhq2T6a8KwvwcOVF1k1Ec2
-	 QbjMJdj5O3oI8mgRV9aG/ANbRjlsfP/2cJ/t/Fp5knTZtlYWvHTuCMkZYgxpCvwEJ7
-	 vgRiRN06/KUK2mglbisH92Z0f6w5a8+Uq7xIqLyeOkLy31OsbkvIXsAuWr0obI3X5b
-	 IhwfCNGhZ4Px9KMeu3htbuQTG+3FZgiOphgwLMe5e5NOwvCegrc8Xv7cmV7jVNx71/
-	 NWNZA2XyQyEssxuAu0hhI9FHDdoRHgZIsn3QU0jcHmgy1mCA+vFHaQelThbb4+P4UY
-	 IKm5kArxPTBpg==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: ojeda@kernel.org
-Cc: ksummit@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	tab-elections@lists.linux.dev,
-	tech-board-discuss@lists.linux.dev
-Subject: 2025 LF Technical Advisory Board election - voting started
-Date: Sun, 14 Dec 2025 04:27:16 +0100
-Message-ID: <20251214032716.12886-1-ojeda@kernel.org>
-In-Reply-To: <20251213030516.42855-1-ojeda@kernel.org>
-References: <20251213030516.42855-1-ojeda@kernel.org>
+	s=arc-20240116; t=1765902709; c=relaxed/simple;
+	bh=OpRlVXxe9XEH6nzrofUytNlrcJqJwV9TCIFUSCodI3E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iPbhqsRBe2ts5jx2mRJ0jS5WuGGayy6S0Y+d74y/AcwBkuKjAKfe6EyINGeTDkoc3iFeum8wyzW+L78nfw5I0dJjTkZarfhm1w+eaaYJoK9uDYd7U1SdPe68ZMxWxBll2rsW519kTlau3lLQIWMZWRnvNNGAkPpWtSZhS2Juq48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=144.76.133.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384
+	 client-signature ECDSA (secp384r1) client-digest SHA384)
+	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
+	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 642BA2C003DA;
+	Tue, 16 Dec 2025 17:21:48 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 287074D9D; Tue, 16 Dec 2025 17:21:48 +0100 (CET)
+Date: Tue, 16 Dec 2025 17:21:48 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
+	Bjorn Helgaas <helgaas@kernel.org>
+Cc: users@kernel.org, ksummit@lists.linux.dev
+Subject: Re: kernel.org tooling update
+Message-ID: <aUGHHFWe_CFuOnRJ@wunner.de>
+References: <20251209-roaring-hidden-alligator-068eea@lemur>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251209-roaring-hidden-alligator-068eea@lemur>
 
-In the end, we had nine nominations for this year's TAB election:
+[cc += Bjorn, start of thread is here:
+https://lore.kernel.org/ksummit/20251209-roaring-hidden-alligator-068eea@lemur/
+]
 
-  - Alejandro Colomar
-  - Cong Wang
-  - David Hildenbrand
-  - Greg Kroah-Hartman
-  - Jiri Kosina
-  - Julia Lawall
-  - Matthew Wilcox
-  - Steven Rostedt
-  - Theodore Ts'o
+On Tue, Dec 09, 2025 at 11:48:24PM -0500, Konstantin Ryabitsev wrote:
+> ### Bugzilla
+> 
+> It may be time to kill bugzilla:
+> 
+>     - despite periodic "we're not dead yet" emails, it doesn't appear very
+>       active
+>     - the upgrade path to 6.0 is broken for us due to bugzilla abandoning the
+>       5.2 development branch and continuing with 5.1
+>     - question remains with what to replace bugzilla, but it's a longer
+>       discussion topic that I don't want to raise here; it may be a job for
+>       the bugspray bot that can extend the two-way bridge functionality to
+>       multiple bug tracker frameworks
 
-Voting has begun, and everybody who is eligible for an automatic ballot,
-or who has requested a ballot, should have received voting instructions
-from the CIVS system.  If you were expecting a ballot and did not get
-it, then:
+The PCI subsystem relies heavily on bugzilla to track issues,
+collect dmesg/lspci output from reporters and furnish them with
+debug or test patches.
 
-  - Perhaps it ended up in your spam folder?
+The SOP when issues are reported on the mailing list without
+sufficient information is to ask the reporter to open a bugzilla
+issue and attach full dmesg and lspci -vvv output for analysis.
 
-  - Have you enabled your email address in the CIVS system?  It will not
-    send you anything until you have done that.  The place to enable an
-    address is https://civs1.civs.us/cgi-bin/opt_in.pl
+If bugzilla is deprecated, we'll need at least a way to exchange
+files with reporters.  Preferably on kernel.org infrastructure
+to be independent from 3rd parties.  A way to communicate with
+reporters outside the mailing list is also useful to prevent
+spamming linux-pci@vger.kernel.org with messages relevant only
+to a single issue or system.
 
-Please contact us at tab-elections@lists.linux.dev if you have
-difficulties or questions.
+All the information now recorded in bugzilla should continue
+to be available indefinitely so that Link: tags in commits
+continue to work.  It's not uncommon to have to dig in old
+bugzilla entries in order to understand the motivation for
+a particular code section that was introduced years earlier.
 
-Voting will remain open through December 20.
+Thanks,
 
-Thanks!
-
-Cheers,
-The LF TAB elections team
+Lukas
 
