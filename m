@@ -1,79 +1,105 @@
-Return-Path: <ksummit+bounces-2680-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2681-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC291CD405C
-	for <lists@lfdr.de>; Sun, 21 Dec 2025 13:52:41 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80B12CDA028
+	for <lists@lfdr.de>; Tue, 23 Dec 2025 17:58:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 97391300C0F8
-	for <lists@lfdr.de>; Sun, 21 Dec 2025 12:52:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7AA75301ABEC
+	for <lists@lfdr.de>; Tue, 23 Dec 2025 16:58:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00C91286D4E;
-	Sun, 21 Dec 2025 12:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B9A3446A0;
+	Tue, 23 Dec 2025 16:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hwTYzpre"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRKuSNXz"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4D63A1B5;
-	Sun, 21 Dec 2025 12:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C84343204;
+	Tue, 23 Dec 2025 16:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766321552; cv=none; b=jRZpG6GGycC6wYyBuuGju35VMd0kyAj/yW487YgMPp/2i5GVzuM88Byz+g2/thQGh2SipINxsLC41lyzMbgIVV7wtzjrELn19XFIlsuLYEUZSE5/16sLOrvVbr49ztr5K7YV0PbYBZ2WDySGv4DkXPdGPKTBC9hEeYPPMppURxc=
+	t=1766509088; cv=none; b=oDDnZx2wS0aJN/dx51XBLc6pry3AHFGSj/JVgBcJ6YvAFfF+vt9f5T5Q6E+SjmOEgu+MmNVE1dU8ZhQwbqPq54FkJBD7u4Ftabcn7XecYWGYoExONwEeIhUVcQWwojtU1vXUH70ul/H+A76aA+47+pOf74bkqY1HxW2dJAujZiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766321552; c=relaxed/simple;
-	bh=CA2hmjKkRG3mQVoyidQkY+JH9tkrlZoyyk8kU6l3lIA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z541ogpSfD4xgJaQft56Zu8GT2EawizLSOpwFxK8wg//iGH0xaTMptrSVE/Ldmpi4mciCYG6F4+6KYZDvRi6gAthjlNu0TtsZqQ3EF52NyKSpq5bULErSy42Pn3VK/cp7IFYZuaw/VidfksSFcE5ISF23SwsDgFPz6HTlUuAGFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hwTYzpre; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3BDC4CEFB;
-	Sun, 21 Dec 2025 12:52:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766321551;
-	bh=CA2hmjKkRG3mQVoyidQkY+JH9tkrlZoyyk8kU6l3lIA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hwTYzpreHtW6isxBd4L4J60+pDjpRhTNN/NeZkP6wcAlKJNVIYqurRGYh+jvZ18aK
-	 LbEyD3cIdAlPnQ88nevEuCNwWlIK+OgbYfMRSBGKKTwr6Y9uGpmN0wXAHokXdSVnc/
-	 5ifqOHarKWGQ3RA9ZnZIv6ipTtwehcOngaQX9gFdoIBgevjuT+JC42L2cJMnW+TTUQ
-	 3ITj4qJivJUsr+W+5F5ri3EnMw20nuNfVjKoA+CzpfYsBxBYQcTG8rIcvRQbJViCGp
-	 T9tMa5VOSzUheE7VKKjnuqxbN2yRfNxDDeWdNWB5n+1ADJ08TUM0txFpy0t6qhhA5P
-	 T09xY+J3yE+nQ==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: ojeda@kernel.org
-Cc: ksummit@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	tab-elections@lists.linux.dev,
-	tech-board-discuss@lists.linux.dev
-Subject: 2025 LF Technical Advisory Board election - results
-Date: Sun, 21 Dec 2025 13:52:06 +0100
-Message-ID: <20251221125206.99296-1-ojeda@kernel.org>
-In-Reply-To: <20251220140205.43515-1-ojeda@kernel.org>
-References: <20251220140205.43515-1-ojeda@kernel.org>
+	s=arc-20240116; t=1766509088; c=relaxed/simple;
+	bh=iRfx5sbhKK7mbSnqzuBYfqkPxqmsOVDNyp5shCl4pxs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oLgIySoob6XRxFNwYotKINmKtA7B+bOcioyVY86cDsp9hHW6K34wGRtVX6/fdYtbbo5yxoypgezGbDpceu3s2/jjjFfY9PqDAy8U69foCZEoyXC5WIAZHHzqxxbdZJCPbZjT4xpDGMrF6OVKVmTqJzlPt+b+BiTf4CM2tsuKoFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRKuSNXz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57982C116C6;
+	Tue, 23 Dec 2025 16:58:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1766509088;
+	bh=iRfx5sbhKK7mbSnqzuBYfqkPxqmsOVDNyp5shCl4pxs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YRKuSNXzSsbpruPQ/eT0uCA+9Vqsq5rCVWORCFwFf5U6L0M9kcSlrCXccVV8qfREb
+	 8clwYGFvoAncUHQSNbaH86ywFUEuV3qtHlEfiHL6zVck25nGlCFxw7VIQz/wcakCpy
+	 r/NL6omVbsN+sqvS+I7Bkw0UPGEpcF1fvRoFmduQ=
+Date: Tue, 23 Dec 2025 17:55:32 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Kees Cook <kees@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, dave@sr71.net,
+	Shuah Khan <shuah@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	NeilBrown <neilb@ownmail.net>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Theodore Ts'o <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Vlastimil Babka <vbabka@suse.cz>,
+	workflows@vger.kernel.org, ksummit@lists.linux.dev
+Subject: Re: [PATCH] [v3] Documentation: Provide guidelines for
+ tool-generated content
+Message-ID: <2025122358-flyover-tidy-6f4d@gregkh>
+References: <20251114183528.1239900-1-dave.hansen@linux.intel.com>
+ <20251115140746.6a3acfd5@batman.local.home>
+ <877bvqan70.ffs@tglx>
+ <2804290.mvXUDI8C0e@rafael.j.wysocki>
+ <EEF974E1-08D5-4E67-8AC4-4315CF9D10C1@kernel.org>
+ <20251116111732.5159839e@batman.local.home>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251116111732.5159839e@batman.local.home>
 
-There were 1054 registered voters in this year's TAB election; 265 of
-them cast ballots.  The results were (with the top five being elected):
+On Sun, Nov 16, 2025 at 11:17:32AM -0500, Steven Rostedt wrote:
+> On Sun, 16 Nov 2025 07:25:46 -0800
+> Kees Cook <kees@kernel.org> wrote:
+> 
+> > A tag isn't going to capture what we need today. Because the LLM
+> > usage is so variable, it'll be, at best, misleading or, at worst,
+> > totally inaccurate. I've provided several examples of this where the
+> > range of LLM involvement is very low to very high. The prior
+> > discussions have shown that we haven't yet found a sensible way for a
+> > tag to capture that.
+> > 
+> > But the common thing everyone appears to agree on is the "show your
+> > work" concept that this patch is trying to capture. I think it's
+> > likely we'll grow a tag eventually, but it isn't something we
+> > understand the context for yet. As a first step, this document is
+> > designed to show the foundational goals for what we want documented.
+> > 
+> > Over some time of applying this, we'll start to see common patterns
+> > and repeated descriptions in commit logs. At that point, I think a
+> > tag will be warranted. But right now, we don't generally agree about
+> > what aspects we want a tag to cover.
+> 
+> Exactly. My fear was that by adding any new rules (like a tag) will
+> steer this conversation into a never ending bikeshed arguments, which
+> was exactly what we wanted to avoid.
+> 
+> Let's have the "tag" conversation at Maintainers Summit and just keep
+> this document as something to describe what we do today.
 
-     1. Greg Kroah-Hartman
-     2. Steven Rostedt
-     3. Julia Lawall
-     4. David Hildenbrand
-     5. Theodore Ts'o
-    -----------------------
-     6. Jiri Kosina
-     7. Matthew Wilcox
-     8. Cong Wang
-     9. Alejandro Colomar
+What's the status of this patch?  I don't see it in linux-next, is it
+supposed to go through some specific tree?
 
-Thanks to everybody who voted and to the candidates for putting their
-names forward, and congratulations to those elected!
+thanks,
 
-Cheers,
-Miguel
+greg k-h
 
