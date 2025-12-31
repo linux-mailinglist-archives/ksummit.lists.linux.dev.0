@@ -1,113 +1,163 @@
-Return-Path: <ksummit+bounces-2685-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2686-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFEEFCDCD9E
-	for <lists@lfdr.de>; Wed, 24 Dec 2025 17:24:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4B58CEBEDD
+	for <lists@lfdr.de>; Wed, 31 Dec 2025 13:17:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 557093035243
-	for <lists@lfdr.de>; Wed, 24 Dec 2025 16:24:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 44ED4300B287
+	for <lists@lfdr.de>; Wed, 31 Dec 2025 12:17:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55C4E328B5E;
-	Wed, 24 Dec 2025 16:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4AE2DF12F;
+	Wed, 31 Dec 2025 12:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="HJtOuYp/"
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="blsyIm0f"
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90168328B5F
-	for <ksummit@lists.linux.dev>; Wed, 24 Dec 2025 16:23:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35CC72634
+	for <ksummit@lists.linux.dev>; Wed, 31 Dec 2025 12:17:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766593440; cv=none; b=t7VFObA91iMAp6c0Iifhv86r7/t1t2Y2zm72XU5hQhQatVZcoarW6cDG3HTgknf9Las9DOlt09lA6WOFNsQ2IOYHLNzphrIaobSxBHoZPkSEZ3rO5kaBjBX5necU/LQYR5J/JDxOq2U0Dzs1bgXfj28Ccy2VErmSpm6kUa3/XoY=
+	t=1767183458; cv=none; b=E3GBfecmpLNvCmtD7Tej23PY4qqwCqE4Kp0HlwCo87NVVJIgCZE7xNEePDFOtXFiDWHfef1KkjHLgxX1TMVo4DbvMwVI/f2TtjxGz/sQR5bC5eYXnKnAVqhElCKkpDUNIGhgddiLIF9GRROF4B+D1kulRYZnI0v0L6XFYTss9ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766593440; c=relaxed/simple;
-	bh=7WV4T5nuWxBWWhHewV5tiqZjFlpfY8Yhcb5MtCObx84=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hYcZGbmi7LPfgnWNe+6NNqGk7aMvdAHXZsZe0JXIxqqUXAlZDZGD25gZ+T0vxH0SNMn5SjJoe5E6I9pgvsG5zcDZYmbAiwq7AQ6mu4ZiEZnYSGpCAdOt2QmsWh6crn0FlYuuqng79bQ81wSIAHPjd8ghusnrXN7zzy/0BbRQo/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=HJtOuYp/; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b73a9592fb8so1145262266b.1
-        for <ksummit@lists.linux.dev>; Wed, 24 Dec 2025 08:23:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1766593433; x=1767198233; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=B+ZwzLNirOF+Nxyrl5IUrZXM9GbaHlaE6cKByPnKroI=;
-        b=HJtOuYp/VhW+leXY/Zj6AtNCIZHcbQhUTKipApVSPOOC/Wv630Bw3lazEJPuTXxNj8
-         I4ni45jWeHhwcbgO2lYx3MXCpP4Jhboa58MKxArkogg96ZQ+Xl6q3+HHMmzd68yLraMQ
-         l0LVbgf7qmqPGzuPPdMIs6rgTkFiYgkAwzI3Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766593433; x=1767198233;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=B+ZwzLNirOF+Nxyrl5IUrZXM9GbaHlaE6cKByPnKroI=;
-        b=i9VuFe4J6JmjMf/EwtuAc2DHlVFvIFkI+5IGP9qQJIlcRYVVYVUDNOrEOVaqsDJqW9
-         Ock2NWag42AFz2YG8ba9wAYPkdzOGGH821DXU2ab5Jd4E/6aOt4Ns3BvS/sE3H+mJkOL
-         tmWnF3aQ5R/pu718VnYX0QlncNAbsiRrJOW986DJFqusJhx/TdwZJ1G7wjee47Vmurts
-         jLJjIqFL9Yn15bEeZRqUxwyvuw3yTjKmbk03hKJlcaFVS8JazTbta8nkWvRsT18pdc6v
-         gIsKOfG+reVx1yc18kpwqVfwsLAmxuVLCucoYJJiuhWQ2MhXMmOz6ZWLMhQXNqQP/dBa
-         QmMg==
-X-Forwarded-Encrypted: i=1; AJvYcCUjWNyYqXBWh654cS8cndrbi1rVswqsfJaFEsBY0lwWwUeILgGz3k4KrV2DofYBR8kgN4c0u/FS@lists.linux.dev
-X-Gm-Message-State: AOJu0YzfEzGzhJXLQZl1cwqoa3RvzIMmsWWzsO6hsyU8Yt4pKux2V+kQ
-	Tt5u/Czk9Fc5d+S1ekG7YdW/dvLKmxNV25/oKCW6tpK1PWgHYJ0qs+SPsMmPq0tZQNII3S7AAVI
-	dCRF6ISEqwFkarZZQxVgvqPlPZdNYERKdB6z1x2HD
-X-Gm-Gg: AY/fxX46ctCi/zgSRvVgzMQWf8aXts5vEDme0wCbR3MMpwx1nhnE32RdHyvipa7WDAr
-	vPkiqFk36BriaoRJswgtdQLsp4gtGhObnNdiimNF7iNx833k0kxlGhSW1e7imx7rwae16a3XmWW
-	cs7CHpS9Ujps+ZWgNW55nRSteIIMQ4Rp+cMgKRHTewKjf/jCbv0TQLIkiJfU5K5dhjDhAilQl43
-	ysqgx8wIIn+GumiCzzkM4VdjnEyFyfDIAbNYPobaqH/SRbTzEXOcVLOa8TRTvNKspyq2A==
-X-Google-Smtp-Source: AGHT+IHrab0+kO4y0JQH91dach7KFNzglk360nuduWGFeAfxIGSG1kEXAf/RL4F8aIqSzYjSylJ87f0JC2QNWe99oEk=
-X-Received: by 2002:a17:906:30d4:b0:b7c:cc8d:14f4 with SMTP id
- a640c23a62f3a-b8020400995mr1822714466b.4.1766593432970; Wed, 24 Dec 2025
- 08:23:52 -0800 (PST)
+	s=arc-20240116; t=1767183458; c=relaxed/simple;
+	bh=WFlhCs+zTmmMkG2xAhSNuK/ayTWD/rejobA6sC9FPMo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QTkZ/zS4nthHSMTL5Q20DhHHumWB9UwLbfp3eL9j5tMlYHd9SyRcnkLM85RyW7RlL58v+DXeQekrtlGImCCNY2wfb73/pSpjsJylF2ZuE92Nqkxlqr4gvWwNf7R04y2MrEmaafNUDzGXphWzIakbBb//CumHpRwTJDcw1cLFzGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=blsyIm0f; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767183456; x=1798719456;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=WFlhCs+zTmmMkG2xAhSNuK/ayTWD/rejobA6sC9FPMo=;
+  b=blsyIm0fqVZ3kP2SCinkaUDIO38SoXBzexmep4n7eF5BQpasQo0uiQlk
+   Kzs4OZNAFRjS48QEEWFFYaSt8fUIXDzMzuNWtiSFVRKk9K3eXPJDPY40D
+   htdurxbCNr5msrJqZ1xUTuKJlCrE+1LmUl48Vdw1o9lVPO/mCCqu8Q1Xp
+   3xQb1wubu2Y7uNAFO88BeKx4A3ZnIAwSyt1wD2vhRoi9Jt07JwMK5PjBZ
+   sJ12bozhuQJlTF0irN1ErN0G7Ed5Modtgh+NtF8CQmP0VTsQgbAerJd31
+   7DDAvecw4Y2QI+s1c5CDUOQ8APxVV4aOdzsuwTvLFAgjP9qDqlUd2DsZR
+   Q==;
+X-CSE-ConnectionGUID: FpZx4gNjS7OWohRd4mps+A==
+X-CSE-MsgGUID: TDKH/J1xT429PkM7W0Q0rQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11657"; a="67949521"
+X-IronPort-AV: E=Sophos;i="6.21,191,1763452800"; 
+   d="scan'208";a="67949521"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Dec 2025 04:17:36 -0800
+X-CSE-ConnectionGUID: WkzN/0q+TSSgbT7kbKQ8+A==
+X-CSE-MsgGUID: cS9hLEasSxidgahFQUh9Wg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,191,1763452800"; 
+   d="scan'208";a="205942885"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa004.jf.intel.com with ESMTP; 31 Dec 2025 04:17:33 -0800
+Received: by black.igk.intel.com (Postfix, from userid 1003)
+	id 122D38E; Wed, 31 Dec 2025 13:17:32 +0100 (CET)
+Date: Wed, 31 Dec 2025 13:17:32 +0100
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Alexey Dobriyan <adobriyan@gmail.com>
+Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
+	ksummit@lists.linux.dev, Dan Williams <dan.j.williams@intel.com>,
+	linux-kernel <linux-kernel@vger.kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>
+Subject: Re: Clarifying confusion of our variable placement rules caused by
+ cleanup.h
+Message-ID: <aVUUXAKjiNroU5tR@black.igk.intel.com>
+References: <58fd478f408a34b578ee8d949c5c4b4da4d4f41d.camel@HansenPartnership.com>
+ <7b37e1cb-271e-49fe-a3ee-5443006284e1@p183>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251114183528.1239900-1-dave.hansen@linux.intel.com>
- <20251115140746.6a3acfd5@batman.local.home> <877bvqan70.ffs@tglx>
- <2804290.mvXUDI8C0e@rafael.j.wysocki> <EEF974E1-08D5-4E67-8AC4-4315CF9D10C1@kernel.org>
- <20251116111732.5159839e@batman.local.home> <2025122358-flyover-tidy-6f4d@gregkh>
- <87a4z9w2dl.fsf@trenco.lwn.net> <20251223155652.7c52630e@gandalf.local.home> <d0903ed7-e2db-4d8c-ab7f-0beb84760f07@sr71.net>
-In-Reply-To: <d0903ed7-e2db-4d8c-ab7f-0beb84760f07@sr71.net>
-From: Simon Glass <sjg@chromium.org>
-Date: Wed, 24 Dec 2025 09:23:44 -0700
-X-Gm-Features: AQt7F2pPYuh-Vujbi48OAsni9r8b11fc7mGCDi8cjVLkwuPwny1V9yiTwFwNa-A
-Message-ID: <CAFLszThGBdc9TOen9=hgkNQOhDUoRZgpj4QHts4we+_J7JuQBA@mail.gmail.com>
-Subject: Re: [PATCH] [v3] Documentation: Provide guidelines for tool-generated content
-To: Dave Hansen <dave@sr71.net>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Kees Cook <kees@kernel.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Shuah Khan <shuah@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, NeilBrown <neilb@ownmail.net>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Dan Williams <dan.j.williams@intel.com>, 
-	"Theodore Ts'o" <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	workflows@vger.kernel.org, ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7b37e1cb-271e-49fe-a3ee-5443006284e1@p183>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Wed, 24 Dec 2025 at 08:47, Dave Hansen <dave@sr71.net> wrote:
->
-> On 12/23/25 12:56, Steven Rostedt wrote:
-> >>> What's the status of this patch?  I don't see it in linux-next, is it
-> >>> supposed to go through some specific tree?
-> >> I've been assuming there would be another version after the meeting, so
-> >> haven't applied anything.  (Besides, between travel, 100mph winds, and
-> >> several days without power, I've not gotten much done in general...)
-> >>
-> > Yeah. I was talking with Dave on the way to the Kill Bill evening event and
-> > I believe he was planning on doing another version sometime when he got back.
-> >
-> > Dave correct me if I'm wrong.
->
-> Yup, I was just waiting to post again until I know I can be attentive to
-> email and responsive to an reviewers. It's definitely not dropped on the
-> floor.
->
+On Tue, Nov 25, 2025 at 05:25:19PM +0300, Alexey Dobriyan wrote:
+> On Tue, Nov 18, 2025 at 11:39:26AM -0500, James Bottomley wrote:
+> 
+> > So which should we do?
+> 
+> The best way to understand that C89 style of declaring in the beginning
+> of the function is pointless rule is to write some code in a language
+> which doesn't enforce it. You should see that nothing bad happens.
+> 
+> It increases bug rate due to increased variable scope allowing typos.
+> 
+> It bloats LOC -- in many cases declaration and initializer can fit
+> into a single line.
 
-Reviewed-by: Simon Glass <simon.glass@canonical.com>
+It's a weak argument, see below.
+
+> It prevents adding "const" qualifier if necessary.
+> 
+> Pressing PageUp and PageDown when adding new variable is pointless
+> busywork and distracts, breaks the tempo(flow?) so to speak.
+
+I think with something like VSCode, it's much easier to handle, but it's just a
+side note.
+
+> C89 style provokes substyles(!) which makes adding new variables even
+> more obnoxious: some subsystems have(had?) a rule saying that declarations
+> (with initializers) must be sorted by length, so not only programmer has
+> to PageUp to the beginning of the block, but then aim carefully and
+> insert new declaration.
+> 
+> None of this is necessary (or possible) if the rule says "declare as low
+> as possible".
+
+This is a bad rule, if hard defined, as it provokes to have a code like
+
+	int ret = foo(...);
+
+	if (ret)
+		do_smth(...);
+
+The evolution of such code is prone to subtle mistakes, as more code will be
+added during the development of the mentioned function. I saw the real error
+case when somebody does something wrong in between the lines. That's why I
+prefer the assignment to be split from the definition.
+
+	int ret;
+
+	ret = foo(...);
+	if (ret)
+		do_smth(...);
+
+is more maintainable and robust.
+
+However, if we talk about RAII variables, the assignment and definition makes
+a lot of sense to go together.
+
+> There was variation of this type of nonsense with headers (not only it has
+> to be sorted alphabetically but by length too!)
+
+By length it indeed sounds weird, but alphabetical is the natural language
+order everybody learnt from the daycare / school years, so it's properly
+programmed in our deep brain. Having that allows to find easily if anything one
+is interested in is already being included. Also it allows to avoid dup inclusions
+(was there, fixed that for real). So, it's not bad.
+
+> There is no practical difference between code and declarations:
+> declarations can have initializers which can be arbitrary complex,
+> just like "real" code. So the only difference is superficial.
+> 
+> C89 declaration style is pointless and dumb, no wonder other programming
+> languages dumped it (or never had), it should be simply discarded.
+> 
+> It will also make Linux slightly less white crow to newcomers
+> (C++ doesn't have this rule after all).
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
