@@ -1,163 +1,82 @@
-Return-Path: <ksummit+bounces-2686-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2687-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4B58CEBEDD
-	for <lists@lfdr.de>; Wed, 31 Dec 2025 13:17:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22C0FCEECCC
+	for <lists@lfdr.de>; Fri, 02 Jan 2026 15:51:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 44ED4300B287
-	for <lists@lfdr.de>; Wed, 31 Dec 2025 12:17:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E4E873028F4E
+	for <lists@lfdr.de>; Fri,  2 Jan 2026 14:50:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4AE2DF12F;
-	Wed, 31 Dec 2025 12:17:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="blsyIm0f"
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6473222ACEF;
+	Fri,  2 Jan 2026 14:50:26 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35CC72634
-	for <ksummit@lists.linux.dev>; Wed, 31 Dec 2025 12:17:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ACAC20299B
+	for <ksummit@lists.linux.dev>; Fri,  2 Jan 2026 14:50:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767183458; cv=none; b=E3GBfecmpLNvCmtD7Tej23PY4qqwCqE4Kp0HlwCo87NVVJIgCZE7xNEePDFOtXFiDWHfef1KkjHLgxX1TMVo4DbvMwVI/f2TtjxGz/sQR5bC5eYXnKnAVqhElCKkpDUNIGhgddiLIF9GRROF4B+D1kulRYZnI0v0L6XFYTss9ws=
+	t=1767365426; cv=none; b=SqfAFXxrQajCL2toIuliObrR7wbEFWUNFisNm7pUsTGCqufGo7A+l9SM2wlqg6ztZFDrA286dC55gs/DA9Xp251kQSks9EP4o+duPNQoI/kPzM1M6MQorMzH1FrxJlC2NxlMdJuVYPA7FKr9mcxPsBRrSWv1sS+mnHJLKLNC030=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767183458; c=relaxed/simple;
-	bh=WFlhCs+zTmmMkG2xAhSNuK/ayTWD/rejobA6sC9FPMo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QTkZ/zS4nthHSMTL5Q20DhHHumWB9UwLbfp3eL9j5tMlYHd9SyRcnkLM85RyW7RlL58v+DXeQekrtlGImCCNY2wfb73/pSpjsJylF2ZuE92Nqkxlqr4gvWwNf7R04y2MrEmaafNUDzGXphWzIakbBb//CumHpRwTJDcw1cLFzGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=blsyIm0f; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767183456; x=1798719456;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=WFlhCs+zTmmMkG2xAhSNuK/ayTWD/rejobA6sC9FPMo=;
-  b=blsyIm0fqVZ3kP2SCinkaUDIO38SoXBzexmep4n7eF5BQpasQo0uiQlk
-   Kzs4OZNAFRjS48QEEWFFYaSt8fUIXDzMzuNWtiSFVRKk9K3eXPJDPY40D
-   htdurxbCNr5msrJqZ1xUTuKJlCrE+1LmUl48Vdw1o9lVPO/mCCqu8Q1Xp
-   3xQb1wubu2Y7uNAFO88BeKx4A3ZnIAwSyt1wD2vhRoi9Jt07JwMK5PjBZ
-   sJ12bozhuQJlTF0irN1ErN0G7Ed5Modtgh+NtF8CQmP0VTsQgbAerJd31
-   7DDAvecw4Y2QI+s1c5CDUOQ8APxVV4aOdzsuwTvLFAgjP9qDqlUd2DsZR
-   Q==;
-X-CSE-ConnectionGUID: FpZx4gNjS7OWohRd4mps+A==
-X-CSE-MsgGUID: TDKH/J1xT429PkM7W0Q0rQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11657"; a="67949521"
-X-IronPort-AV: E=Sophos;i="6.21,191,1763452800"; 
-   d="scan'208";a="67949521"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Dec 2025 04:17:36 -0800
-X-CSE-ConnectionGUID: WkzN/0q+TSSgbT7kbKQ8+A==
-X-CSE-MsgGUID: cS9hLEasSxidgahFQUh9Wg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,191,1763452800"; 
-   d="scan'208";a="205942885"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by orviesa004.jf.intel.com with ESMTP; 31 Dec 2025 04:17:33 -0800
-Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id 122D38E; Wed, 31 Dec 2025 13:17:32 +0100 (CET)
-Date: Wed, 31 Dec 2025 13:17:32 +0100
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
-	ksummit@lists.linux.dev, Dan Williams <dan.j.williams@intel.com>,
-	linux-kernel <linux-kernel@vger.kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>
+	s=arc-20240116; t=1767365426; c=relaxed/simple;
+	bh=yfRx30KjDTEX4KAZyZqR747iZZKamAXMrYRCbmdoXdY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VJ2n8KeGqSRvHv1WSIaWZcoHtFaG8Rv/4kt/+cAhQJlgQEgeQAK20rruvpNXURB8EW+hgQLah7veABaTsVelQ3XxTEEaufCp0tz6QCbbboPCqD42ylL/y2dMxF4ZdRswfYvY39a34/pq/zwGQUilNP7l954Bl6lkGQUFS+zh2I4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B484F1A03D2;
+	Fri,  2 Jan 2026 14:50:16 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf02.hostedemail.com (Postfix) with ESMTPA id AADB880009;
+	Fri,  2 Jan 2026 14:50:14 +0000 (UTC)
+Date: Fri, 2 Jan 2026 09:50:29 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>, James Bottomley
+ <James.Bottomley@hansenpartnership.com>, ksummit@lists.linux.dev, Dan
+ Williams <dan.j.williams@intel.com>, linux-kernel
+ <linux-kernel@vger.kernel.org>, Dan Carpenter <dan.carpenter@linaro.org>
 Subject: Re: Clarifying confusion of our variable placement rules caused by
  cleanup.h
-Message-ID: <aVUUXAKjiNroU5tR@black.igk.intel.com>
+Message-ID: <20260102095029.03481f90@gandalf.local.home>
+In-Reply-To: <aVUUXAKjiNroU5tR@black.igk.intel.com>
 References: <58fd478f408a34b578ee8d949c5c4b4da4d4f41d.camel@HansenPartnership.com>
- <7b37e1cb-271e-49fe-a3ee-5443006284e1@p183>
+	<7b37e1cb-271e-49fe-a3ee-5443006284e1@p183>
+	<aVUUXAKjiNroU5tR@black.igk.intel.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7b37e1cb-271e-49fe-a3ee-5443006284e1@p183>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: AADB880009
+X-Stat-Signature: gw3uk1c4nh8cht98g4xi6p5kqemdo6uj
+X-Rspamd-Server: rspamout05
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX19fF92WfXwRHI2suQUgYvmdUN7owaZNG7A=
+X-HE-Tag: 1767365414-960068
+X-HE-Meta: U2FsdGVkX19OZmoNBFlMnruJahKt80+qXPziuaFwTo4TAwem8EkhCFcTsebfwNnh8KsEf83waIgxOy//FDlmevwsq8r8GS4S+cVMKpYh0f0AnsW0ZZ6gsADszt2MoDZMzsQw8V5hPXy4SoVAARRugHAJhqd9fjLeJoTw+J5mPsYX58tmQGrRCnx5SBWEam2mUFJRamkLUIh8h1rdTN95R4dB04iuBZUzGu8NE6YFHN0LqeWND6kKNwXj3iJR6iEwmLCz1Z8UScHPptueBkGnjy5BiwbVepVsNvQejQLVt/tUwhr9bwgVjs3b9ALmWnwvU3m6zjsraMfeKyFS4SdK4PcjIVNq66dfLdCCrWznLjFhZ5RF4zbpkg==
 
-On Tue, Nov 25, 2025 at 05:25:19PM +0300, Alexey Dobriyan wrote:
-> On Tue, Nov 18, 2025 at 11:39:26AM -0500, James Bottomley wrote:
+On Wed, 31 Dec 2025 13:17:32 +0100
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+
+> > There was variation of this type of nonsense with headers (not only it has
+> > to be sorted alphabetically but by length too!)  
 > 
-> > So which should we do?
-> 
-> The best way to understand that C89 style of declaring in the beginning
-> of the function is pointless rule is to write some code in a language
-> which doesn't enforce it. You should see that nothing bad happens.
-> 
-> It increases bug rate due to increased variable scope allowing typos.
-> 
-> It bloats LOC -- in many cases declaration and initializer can fit
-> into a single line.
+> By length it indeed sounds weird, but alphabetical is the natural language
+> order everybody learnt from the daycare / school years, so it's properly
+> programmed in our deep brain. Having that allows to find easily if anything one
+> is interested in is already being included. Also it allows to avoid dup inclusions
+> (was there, fixed that for real). So, it's not bad.
 
-It's a weak argument, see below.
+Actually, I like the "by length" because its aesthetically easier on the eyes.
 
-> It prevents adding "const" qualifier if necessary.
-> 
-> Pressing PageUp and PageDown when adding new variable is pointless
-> busywork and distracts, breaks the tempo(flow?) so to speak.
+Alphabetically is fine, but either one helps in catching duplicate headers.
 
-I think with something like VSCode, it's much easier to handle, but it's just a
-side note.
-
-> C89 style provokes substyles(!) which makes adding new variables even
-> more obnoxious: some subsystems have(had?) a rule saying that declarations
-> (with initializers) must be sorted by length, so not only programmer has
-> to PageUp to the beginning of the block, but then aim carefully and
-> insert new declaration.
-> 
-> None of this is necessary (or possible) if the rule says "declare as low
-> as possible".
-
-This is a bad rule, if hard defined, as it provokes to have a code like
-
-	int ret = foo(...);
-
-	if (ret)
-		do_smth(...);
-
-The evolution of such code is prone to subtle mistakes, as more code will be
-added during the development of the mentioned function. I saw the real error
-case when somebody does something wrong in between the lines. That's why I
-prefer the assignment to be split from the definition.
-
-	int ret;
-
-	ret = foo(...);
-	if (ret)
-		do_smth(...);
-
-is more maintainable and robust.
-
-However, if we talk about RAII variables, the assignment and definition makes
-a lot of sense to go together.
-
-> There was variation of this type of nonsense with headers (not only it has
-> to be sorted alphabetically but by length too!)
-
-By length it indeed sounds weird, but alphabetical is the natural language
-order everybody learnt from the daycare / school years, so it's properly
-programmed in our deep brain. Having that allows to find easily if anything one
-is interested in is already being included. Also it allows to avoid dup inclusions
-(was there, fixed that for real). So, it's not bad.
-
-> There is no practical difference between code and declarations:
-> declarations can have initializers which can be arbitrary complex,
-> just like "real" code. So the only difference is superficial.
-> 
-> C89 declaration style is pointless and dumb, no wonder other programming
-> languages dumped it (or never had), it should be simply discarded.
-> 
-> It will also make Linux slightly less white crow to newcomers
-> (C++ doesn't have this rule after all).
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+-- Steve
 
