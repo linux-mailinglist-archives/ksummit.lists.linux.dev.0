@@ -1,138 +1,142 @@
-Return-Path: <ksummit+bounces-2697-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2698-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82325D00724
-	for <lists@lfdr.de>; Thu, 08 Jan 2026 01:07:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 031BBD00740
+	for <lists@lfdr.de>; Thu, 08 Jan 2026 01:21:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 25F5630039C1
-	for <lists@lfdr.de>; Thu,  8 Jan 2026 00:06:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7CAD3302EF73
+	for <lists@lfdr.de>; Thu,  8 Jan 2026 00:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72DA946B5;
-	Thu,  8 Jan 2026 00:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 739CF13A258;
+	Thu,  8 Jan 2026 00:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="QytYrfwD"
-Received: from mail-ed1-f66.google.com (mail-ed1-f66.google.com [209.85.208.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ey6yowp4"
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258BD8F5B
-	for <ksummit@lists.linux.dev>; Thu,  8 Jan 2026 00:06:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3A22CCC5
+	for <ksummit@lists.linux.dev>; Thu,  8 Jan 2026 00:20:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767830816; cv=none; b=PuH1Tf/NJXKjSMhZSeBiX1XZBraC48ICwLE9J26wbsiZMY2rFpOoTz2w9X4hSOXgBirP1BMQUiEED4dzD00vdJyEEur7oGg9MIZsR6Ovk170g7jmpW5TWy2YBMu5mIAn3p6/Ad4MJiYVw8kIkoig8f/ftpK/O14pfA3MUJVdvpA=
+	t=1767831607; cv=none; b=NWP2Ae7ELQ2znvcMJ05H67BJx1UYuJTvyqr0mawZgHcN6ms2z+yOnL5PMbDQOQxyUJvzs4wpMpdKQd8/tkjoZ65hCxeK9kLYtzGpHhpjsnPoBeHe47FJqzZtZS3mG4+KNybOgqzB+c+W0uEno3fVigmwWmAa/ppl9e857z4e+h8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767830816; c=relaxed/simple;
-	bh=QtEAbfVtiKn5cj5XRGpsGTJDUKFjZEuBHGDKzvXXDjI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NEW5tJLO7e7AeHGZ+390kDPana2IHn3P9BFw38rRAuxi4bPQsqFeOs1cr4aifCqNKaxsPDav/lYJZNqRuegzm3ktOB/My6wYF5s/boD9UOxsTnsHrzdRtWEimRhTX/au1/FXdfjGUczQmhsS2diTC4uIw92B3/voJzxx8yLGL7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=QytYrfwD; arc=none smtp.client-ip=209.85.208.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ed1-f66.google.com with SMTP id 4fb4d7f45d1cf-64b9b0b4d5dso5361607a12.1
-        for <ksummit@lists.linux.dev>; Wed, 07 Jan 2026 16:06:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1767830813; x=1768435613; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=foSy0mHbq+bvIgetJxzEzdfsEyD2VC5LP6q78bup1rM=;
-        b=QytYrfwDnXxVnFNafzMg2Es64QJeDfPWHp9+bvultBthMVmmXJ5lWld1okgEaARYDd
-         +5UBKsXgHTR+CtkfHL/fGo/O3bcNfn/1LYYDk+9HW4ut4f8RVrRitKG0vz3b6XN9luLv
-         o3KVXWrYSfFDpyQSR/IbjEBpE+2c2VnT0Lcxs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767830813; x=1768435613;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=foSy0mHbq+bvIgetJxzEzdfsEyD2VC5LP6q78bup1rM=;
-        b=lfVKnHRCpBpvuWhdAisuh0BcHMPf6uHc3ivbLSnX9D/AIcWWKOqDmoH8DRTJzNH0/l
-         d7DvVelIIJsd96gOWem4Xo6YtF4grlw3c63VijYhWk38aht+aLs8FE43xSTxuh2BeKWE
-         1t2o7iouhslar/ZnfsfHzF8TmVfNLSBzuHoDLzxh4HM+MyeoYgN6Cwwp7pVk0HNNXKOQ
-         1X3eKI13+2cOUw1hcakjOI3JYVm4q4YPCsMSVRmLuyWNyGEjXmuSMl7lphMy1LyIFIFv
-         NXLzk6/T+AL/s5CTkoszuq6G9b/GKTqGFbY67GzxVHxDQOp4qFBRQO0o8QwiOsxXIiGP
-         w2tQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX27CpbU7BLSdi7PTzGpwKJc6QortCzsQtqPDbfmReqTL+Qqe6a0wnIFRv2/eqUCO1vapcEeS4n@lists.linux.dev
-X-Gm-Message-State: AOJu0YzYxCGIxJotPZPln4uP9m/Y/ICYpZldlYjyCvnK8cjrqnXh3reU
-	bfjovGxZ2Un8EdizsbtogrFIVy3XX5r/WsLhpzLZMJ/9qVTafoHTz0ezGPuUhSq8ubeeYyGW+nw
-	yeVe4KitwpA==
-X-Gm-Gg: AY/fxX76RpzU8MS/a7t3nX/IoFIv/OIuVG/i2c2aCpnECiTA+vdNZ0TITf+HsRsNdFT
-	iiW1XyqYXXMxiGpZBvnxaVI8e+J7+lZYhOqR5Dv2um+rO5SPd8D8A4XOhP7sh0OITHqX/uTOPDO
-	nIkBshGSP49OapmCkIALp5KkxIjV4Ik8uNAQ+qxBEgiAwnSnxOg+0B7UHY3l6zuBb1dblwJhd8v
-	/H1iigUkx5yefj8alrPk9J50TgkTEPbSaNhQ5If88l5q1MTyxvWk+m3+Eb7Aj1l8lQYML0ZwVSp
-	ugN0j8Og7uKYCx22eXVYXz9C/qNt/EXvEGv8YaQW4R2cEe5Ev3Ib5UD7T7VZjZJ81WhUv9EB4Tp
-	HH31tKm3k2qzG7fsG28UJiZ0hm6mGRyTNVfdWHTlIb9DjR4G8IxOUUqRH1G0wPBaChKBb3fEPoY
-	WAKE7qMBGr4jbX4gGj0NTvysoKtNrGNQm7V8jP5tQ+Ly7ZDKTcq1YFTjtdfRlPIhsavIVtlcE=
-X-Google-Smtp-Source: AGHT+IFbk83ViDPsvJN2Kdzsq7su1r3/du8YBQg3dwA1SHdfUbwFw4AK6NgrHzPJ1/mTIAM8FBddqQ==
-X-Received: by 2002:a17:906:308b:b0:b84:5818:6130 with SMTP id a640c23a62f3a-b8458186688mr123098466b.43.1767830813331;
-        Wed, 07 Jan 2026 16:06:53 -0800 (PST)
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com. [209.85.218.42])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a27c755sm651249066b.18.2026.01.07.16.06.51
-        for <ksummit@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Jan 2026 16:06:51 -0800 (PST)
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b83b72508f3so431019566b.2
-        for <ksummit@lists.linux.dev>; Wed, 07 Jan 2026 16:06:51 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXTLhj4j8zaOhH0JrT5J23j89S+sn5Vy4Xh8yajgLLl28Kd7nI6kgblrsiwJSJP18HINIZ6pm9A@lists.linux.dev
-X-Received: by 2002:a17:907:9716:b0:b80:411f:aa50 with SMTP id
- a640c23a62f3a-b844538b340mr480612266b.48.1767830811282; Wed, 07 Jan 2026
- 16:06:51 -0800 (PST)
+	s=arc-20240116; t=1767831607; c=relaxed/simple;
+	bh=WnksBgLzSwcnwfEPkiI6Ej/MuM2kHlmexPYvsR1E4Yw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=X1ikiC/kht6736AyjCMv2I+X9qb0B5S4LtjeWPtS2Ac9vZYoYZRmb+1qpm0rNq+9zTSduu2gHwk+BeQ4Ey+XfU4/V35RX7K34EmMArjDIzmWnPj8F8ns1VdyCJ/ZLre/2e7NdaBt1yFGC+j7kgM5ijrOVSf258rT4T1Id7juykE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ey6yowp4; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767831606; x=1799367606;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=WnksBgLzSwcnwfEPkiI6Ej/MuM2kHlmexPYvsR1E4Yw=;
+  b=Ey6yowp4fIG4tG0dOOr21UJD4+3y/p//AF2nRnyuN5hh0a6GjjSD5YGW
+   v7eJizYFANeoAxhg2kPpe4Do/ofkOwSP4N68QHB1GtY6ztXq30WVNammM
+   qDR2EuFjfwww9uS6fFmTMD3DDB+zUNl+n8nUcg+KIIUkOxMlXmxicf6wE
+   CBjWvIWr75yzaSC38yTP1a588uBaJS8wNaBTXTFIldLo7IOtjZCtrlgqC
+   WNKtnKtbiLtz9wfO6ERmYkusVwv6iW6nFk9emotyNtI9fr5MpMZudMVwU
+   vJqwThcq8ZyhQyz3FytXxKewdKT6u2SktEEXze0ZXmewMfz4iIFi0qvVT
+   Q==;
+X-CSE-ConnectionGUID: rHohCf2iTfeo+Qip8CrFYw==
+X-CSE-MsgGUID: QbcIx2WYSUqyLLhIJ5NA9w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="69256948"
+X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; 
+   d="scan'208";a="69256948"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 16:20:05 -0800
+X-CSE-ConnectionGUID: v8XYAmART4OLu3LMI5V8Rw==
+X-CSE-MsgGUID: x5hBKBo5T+O0i1lZXEY9bg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; 
+   d="scan'208";a="202266137"
+Received: from aduenasd-mobl5.amr.corp.intel.com (HELO [10.125.109.145]) ([10.125.109.145])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 16:20:05 -0800
+Message-ID: <6c71554c-4fa1-4b99-9d46-2f1a2ecc1b7f@intel.com>
+Date: Wed, 7 Jan 2026 16:20:04 -0800
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] [v3] Documentation: Provide guidelines for tool-generated
+ content
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Dave Hansen <dave@sr71.net>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org,
+ Shuah Khan <shuah@kernel.org>, Kees Cook <kees@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
+ SeongJae Park <sj@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
+ Steven Rostedt <rostedt@goodmis.org>, NeilBrown <neilb@ownmail.net>,
+ Theodore Ts'o <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Vlastimil Babka <vbabka@suse.cz>,
+ workflows@vger.kernel.org, ksummit@lists.linux.dev
 References: <20260106205105.4037716-1-dave.hansen@linux.intel.com>
- <1e982055-47c2-43d1-a919-93b3e59f2ed0@lucifer.local> <93aadf2b-0df4-49eb-91fd-b401b44ce3af@sr71.net>
+ <1e982055-47c2-43d1-a919-93b3e59f2ed0@lucifer.local>
+ <93aadf2b-0df4-49eb-91fd-b401b44ce3af@sr71.net>
  <1c74353c-40de-4d0b-a517-92a94f8b4af8@lucifer.local>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
 In-Reply-To: <1c74353c-40de-4d0b-a517-92a94f8b4af8@lucifer.local>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Wed, 7 Jan 2026 16:06:35 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wg0sdh_OF8zgFD-f6o9yFRK=tDOXhB1JAxfs11W9bX--Q@mail.gmail.com>
-X-Gm-Features: AQt7F2o7ADy4euEN0cDDHOeWG2qEVyCnup91Q83wkHbB-5SZ2fIILimORUfY0t0
-Message-ID: <CAHk-=wg0sdh_OF8zgFD-f6o9yFRK=tDOXhB1JAxfs11W9bX--Q@mail.gmail.com>
-Subject: Re: [PATCH] [v3] Documentation: Provide guidelines for tool-generated content
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Dave Hansen <dave@sr71.net>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	linux-kernel@vger.kernel.org, Shuah Khan <shuah@kernel.org>, 
-	Kees Cook <kees@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, SeongJae Park <sj@kernel.org>, 
-	Dan Williams <dan.j.williams@intel.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	NeilBrown <neilb@ownmail.net>, "Theodore Ts'o" <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Vlastimil Babka <vbabka@suse.cz>, workflows@vger.kernel.org, 
-	ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, 7 Jan 2026 at 13:20, Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
->
+On 1/7/26 13:15, Lorenzo Stoakes wrote:
 > Thinking LLMs are 'just another tool' is to say effectively that the kernel
 > is immune from this. Which seems to me a silly position.
 
-No. Your position is the silly one.
-
-There is *zero* point in talking about AI slop. That's just plain stupid.
-
-Why? Because the AI slop people aren't going to document their patches
-as such. That's such an obvious truism that I don't understand why
-anybody even brings up AI slop.
-
-So stop this idiocy.
-
-The documentation is for good actors, and pretending anything else is
-pointless posturing.
-
-As I said in private elsewhere, I do *not* want any kernel development
-documentation to be some AI statement. We have enough people on both
-sides of the "sky is falling" and "it's going to revolutionize
-software engineering", I don't want some kernel development docs to
-take either stance.
-
-It's why I strongly want this to be that "just a tool" statement.
-
-And the AI slop issue is *NOT* going to be solved with documentation,
-and anybody who thinks it is either just naive, or wants to "make a
-statement".
-
-Neither of which is a good reason for documentation.
-
-             Linus
+I had a good chat with Lorenzo on IRC. I had it in my head that he
+wanted a really different document than the one I posted. After talking,
+it sounds like he had some much more modest changes in mind. I caught
+him at the end of his day, but I think he's planning to send out a small
+diff on top of what I posted so I can get a better idea of what he wants
+to see tweaked.
 
