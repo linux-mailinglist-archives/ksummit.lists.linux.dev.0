@@ -1,98 +1,132 @@
-Return-Path: <ksummit+bounces-2750-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2751-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 379A2D0B255
-	for <lists@lfdr.de>; Fri, 09 Jan 2026 17:13:10 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2A69D0B496
+	for <lists@lfdr.de>; Fri, 09 Jan 2026 17:37:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5DF853057F7F
-	for <lists@lfdr.de>; Fri,  9 Jan 2026 16:07:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B5F16302D2EB
+	for <lists@lfdr.de>; Fri,  9 Jan 2026 16:30:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBFF5363C53;
-	Fri,  9 Jan 2026 16:07:37 +0000 (UTC)
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A641364042;
+	Fri,  9 Jan 2026 16:30:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d0BaxQeH"
+Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB89635CB86
-	for <ksummit@lists.linux.dev>; Fri,  9 Jan 2026 16:07:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7526D78F2B
+	for <ksummit@lists.linux.dev>; Fri,  9 Jan 2026 16:30:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767974857; cv=none; b=DOISATtvLJevq8ESmJRQhwEaUFUbWfxCKyYY4/MxyNfrGOsCMzJm7qLDxUmSmhCLtNjUKWQWO+O5G+rUddKNdNKx0+2YCq9yfq+U5EBnVXLxQS4WliUMvPHzdtBY37iRVYINxD5US4dWIxfLp+qrYY/xX6eycM0Scr7t8nzO0YY=
+	t=1767976232; cv=none; b=TBibSOYMYE4TAXVb7AzPnqK3+H4lCAfeyDkVEpEQz8pql6azBiPq/qXRhVFuPmK8b6+anA7RtuVsrMbLyHQTH8IQR5XN+v0gjTzZvPLWqoh9XJrDNoDNAUJsvsF3zVCC3Mc0MTOHKAM0VGRur5p7FMaMtdwsvsg1pAmy8I2/MkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767974857; c=relaxed/simple;
-	bh=pfnpiyHn27em+rvVc3b8E6XRaOyJ2DfcaVt+Ni9AwTY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p+InJC/I70gZdW8Wy4eALpWwOw+kTZ1MGTpDWaSrCJ+2CcQjVa5jkjJVTwz5luG/oYDpGvAPPIH/vMej/qwOFbeCPa1IJfZGb8CiQ4KEtxqCSWf3DQNPNBr+fOTpT1nzqNDM7VPqxE0DslLmjglu9UBmFWr00CVT5aadA3Z8o/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EA89E1AB13C;
-	Fri,  9 Jan 2026 16:07:32 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf02.hostedemail.com (Postfix) with ESMTPA id 259BA8000E;
-	Fri,  9 Jan 2026 16:07:28 +0000 (UTC)
-Date: Fri, 9 Jan 2026 11:07:59 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Dan Carpenter
- <dan.carpenter@linaro.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Jens Axboe <axboe@kernel.dk>, Dave Hansen <dave.hansen@intel.com>, James
- Bottomley <James.Bottomley@hansenpartnership.com>, Dave Hansen
- <dave@sr71.net>, Dave Hansen <dave.hansen@linux.intel.com>,
- linux-kernel@vger.kernel.org, Shuah Khan <shuah@kernel.org>, Kees Cook
- <kees@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel
- Ojeda <ojeda@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, SeongJae
- Park <sj@kernel.org>, Dan Williams <dan.j.williams@intel.com>, NeilBrown
- <neilb@ownmail.net>, Theodore Ts'o <tytso@mit.edu>, Sasha Levin
- <sashal@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Vlastimil Babka
- <vbabka@suse.cz>, workflows@vger.kernel.org, ksummit@lists.linux.dev
-Subject: Re: [PATCH] [v3] Documentation: Provide guidelines for
- tool-generated content
-Message-ID: <20260109110759.036473ba@gandalf.local.home>
-In-Reply-To: <4a8256ae-04b4-4b4e-b638-5e4cbc2362c5@lucifer.local>
-References: <e7a2e69991943777f30743868bdc04332a52037b.camel@HansenPartnership.com>
-	<a70d3156-ad96-4ad7-90ff-624fab62fe7d@lucifer.local>
-	<6e9cab54-7b66-45e9-af96-e52b3eba1034@intel.com>
-	<f93a5311-4689-486b-aea8-261263f4d447@lucifer.local>
-	<711d9e37-6fe7-4783-8ac4-5269279bb9fe@kernel.dk>
-	<3xf3f4b3vegssexoid746y7isuswwsgmac5hy2hm4ipisdcxaf@nbi67byycwj5>
-	<aWCSVh6NocePMvp8@stanley.mountain>
-	<0b9a8f99-5cc4-40e8-a0e6-4887d1e1a796@lucifer.local>
-	<20260109085446.GA9782@pendragon.ideasonboard.com>
-	<20260109105104.57d308f7@gandalf.local.home>
-	<4a8256ae-04b4-4b4e-b638-5e4cbc2362c5@lucifer.local>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1767976232; c=relaxed/simple;
+	bh=tGnqbLmOhP9isHiPxWN/XPpA61Oj201z3O7nsWOI7Sc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=X5iTdX9XiSi44+iVEpHSD/l2M2e0PphIaC8J25vHjLH5b3SVr4W2LCMBzXnSJyf8oSOecLiPfrPQwyI9Nc5O5YRGC8/vHmuaq3R4/NWBDUC8XyqLuYFLEfJ61UpU9rNoHKqCkpTLShktbSbBgiu7Hj8SQD7tpvjM8Dzwn1/xLRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d0BaxQeH; arc=none smtp.client-ip=74.125.82.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-2b1161400afso190353eec.0
+        for <ksummit@lists.linux.dev>; Fri, 09 Jan 2026 08:30:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767976230; x=1768581030; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KgVHrGpFOZu3o9W2smUjiAbx/IB6ia8N7DTDEB731Qg=;
+        b=d0BaxQeHa0MkQunzil4QUIBR+mAQ+ref3Ny5+zKY/yoLEPkExxxCQUq6eJ7Dsw25ca
+         FDuRDBaxLyft+GuMKInbG7Hro8ZVKy6radZkpPIKWHmKDwpFQ0zLNfsMvlVBEvzizfEp
+         LyHXq0O4qep347jpluSEf432NXXP6eunD+8ZGvGLrAkbpNfb9MCS49T8sab1cbmvsn9l
+         EEDiCOAmIfSb7UKTfNgQ/DpmA59BFxeHwTkTm9yktPJ3oxwpLAC/CFKteG8e4HAhwhxg
+         7UnnstNqxfJ6Le2JRtXM4HDqZIntmRg9e5DPQg4mb3f7NZ86md5Fq+3IDjTiA+Jg4gIt
+         VFfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767976230; x=1768581030;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KgVHrGpFOZu3o9W2smUjiAbx/IB6ia8N7DTDEB731Qg=;
+        b=RAn/zeA1M20s+BaiMzheE3heilHMjpfQOqLbF27TTfzvUyd/4teodcQ2rWuRjKGHA/
+         2znu4DyV4OSmeBFxpk9QJu1LyigQutvsfYcpqTDseXxC3ZLNyJqzbcV5PU5cP/BBRNiQ
+         Vwnvneq36oVCiQwJxubPGFhjcijrGDJIg4sg6NDW7M4ziZNqAy6kWl5UeSXgcnu6Vcq+
+         gbFFaS6I2IEHGyn6kjvQPnMpwRZruFGB8NgPzFPV4ODY9x2GMwwchYW8NqSM9mx60bIx
+         vkyX747S6gqFO5CBCv1Qsxz5A0Mh7hap70PHS/rpN6MMXmXIru2PSbCdBIiOEVwrNGoU
+         3B5w==
+X-Forwarded-Encrypted: i=1; AJvYcCWo38Bl33Kz9UDiDdgsjr/+HEmIXvOdOB8ZjTu+XL8qd6Czbt4zmVvVUNt1Dri1fLQZhFLRsV4C@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx40IalC/cRnD6obVVlprX9xBJurYp5dmK2UvGRKtThWFUDnY9N
+	WHaqGt/qyhDJoZsbjFJ2Q28Fx25mjeB8ZUGoJ312E+PAilkFOqDKmDaVHL3tM3bWTCu6pSYAaeS
+	aXT41Je1wR6xnEBcy7tYodUkThmJ3McU=
+X-Gm-Gg: AY/fxX6sXHXNHwDVvupi5PHY071n+LLNPm5uz1A9O21zUqmiqopmjfd27wCKFPTFxkL
+	kZiZExFffJXN/yraUHfr5BOqTbwI/GDtOsVto02a3xkJbrlP6bOQ2XOQVhD8hSiORnT1IWZog03
+	xz6wOTn8p0egmfxxXYVGisAVDWaWwRixHnFvB3FY0Ud1sh7XRGfHd0NLGlmImqVThibPyiUyJE4
+	iQbuPM6GpLgF4hMxSxvz23T5RS9F40cjUs8DyvZDb+hWKWGdy2veXpcWdGQ+1WF4lPSQGPTpQzd
+	d1LXarrxrd3jpJRHsq/eKd0JqFj9tS4oZijypP/ot+cy2wsFJ7mThjNAZD9SofAzatc2naiodl9
+	8ayvL8xVfwVEQ
+X-Google-Smtp-Source: AGHT+IFPnMs8tYXrKC6QRTGlKt5c3UHbQ20I+iMpQeJtUFKAL06cbpiGchT05O1IclG935flftNB9uOe0tl1k8An8q0=
+X-Received: by 2002:a05:693c:2a11:b0:2ab:ca55:89cb with SMTP id
+ 5a478bee46e88-2b17d336c9amr3307855eec.6.1767976229504; Fri, 09 Jan 2026
+ 08:30:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 259BA8000E
-X-Stat-Signature: xqdfc3n36b4aoqgahukggf3oaozeu1yi
-X-Rspamd-Server: rspamout05
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX18X6Ot+mhU3NXqMBgmI7jIM34Ha4me4H8U=
-X-HE-Tag: 1767974848-41460
-X-HE-Meta: U2FsdGVkX1/JcW6TqJePIxeAukzcrfKshoQimfd72E2HfI5ryg7SKB7i3S3UIDzocszh99uZzc89IGoa4KBdgbWLMnfLfMvQswIChgIobPDLLdZn2O75ZxVmYURtyOtlejwWa5z+tMsAKgs8hLGikI6MFQH3DG2vv0lUH00BvLhcuiheZBA4lUVYUKvVA/r4GFBBlfzCnoig6VC8eA/IKU/DQtih7bbExRaLT1jP2okFR+3b22WQFDwVXjA37sV8QCIYEvc69MWfSB0A3NLX+cyz8+ZAnGWFUt6SMMBJvOshh97dubkJMV1gQ7PV2B212q1L4eWloXzjw5zS4GyCur0ChB0T6FJo
+References: <20260106205105.4037716-1-dave.hansen@linux.intel.com>
+ <1e982055-47c2-43d1-a919-93b3e59f2ed0@lucifer.local> <93aadf2b-0df4-49eb-91fd-b401b44ce3af@sr71.net>
+ <1c74353c-40de-4d0b-a517-92a94f8b4af8@lucifer.local> <6c71554c-4fa1-4b99-9d46-2f1a2ecc1b7f@intel.com>
+ <611c4a95-cbf2-492c-a991-e54042cf226a@lucifer.local> <aV_eiRqUsK2KWkww@laps>
+ <CANiq72mw1bis7aE9b=Htx9=Sd9jZH1rJmew1xqhPiCWu=EyzPw@mail.gmail.com> <b7469e4e-d711-467f-839f-4a9688d25a23@lucifer.local>
+In-Reply-To: <b7469e4e-d711-467f-839f-4a9688d25a23@lucifer.local>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 9 Jan 2026 17:30:17 +0100
+X-Gm-Features: AZwV_Qi9VSP2AMrsmou5qnQmy5TBXFzhlEy2iJtX864Gee6M0-zqG561EpAZSLM
+Message-ID: <CANiq72=yOkv_GK=V5k-WTYE-Fv++K+OtVUdrLQcH+75qRMN-Aw@mail.gmail.com>
+Subject: Re: [PATCH] [v3] Documentation: Provide guidelines for tool-generated content
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Sasha Levin <sashal@kernel.org>, Dave Hansen <dave.hansen@intel.com>, 
+	Dave Hansen <dave@sr71.net>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	linux-kernel@vger.kernel.org, Shuah Khan <shuah@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, SeongJae Park <sj@kernel.org>, 
+	Dan Williams <dan.j.williams@intel.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	NeilBrown <neilb@ownmail.net>, "Theodore Ts'o" <tytso@mit.edu>, Jonathan Corbet <corbet@lwn.net>, 
+	Vlastimil Babka <vbabka@suse.cz>, workflows@vger.kernel.org, ksummit@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 9 Jan 2026 15:55:01 +0000
-Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+On Thu, Jan 8, 2026 at 8:28=E2=80=AFPM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> 'You _can_ be more transparent by adding information like this:...'
 
-> Sure to the above, but it seems (...?) you are ok with my addition to the
-> document which hopefully is tempered enough to provide the emphasis I'm
-> looking for (note I say - all tools - even if LLMs are the most obvious
-> exmaple) - without being so strident as to seem out of scope?
+I am not a native speaker, but my reading of that "can" was that it is
+suggesting ways to be more transparent that may or may not apply in
+particular cases, but the requirement of being transparent was already
+established by the previous sentence:
 
-Yes I liked the last example. As I stated, this discussion helped me
-understand the issues I had with what you wanted to add. I wanted this
-document to be just as applicable to checkpatch and sed scripts as it is to
-LLMs. My fear was it was becoming too focused on AI where those that are
-submitting checkpatch and coccinelle scripts will think this doesn't apply
-to them.
+    Second, when making a contribution, be transparent about
+    the origin of content in cover letters and changelogs.
 
--- Steve
+Which is reinforced by another imperative in the bullet point about prompts=
+:
 
+    If code was largely generated from a single or short set of
+    prompts, include those prompts.
+
+Similarly, I read those other "might"s you quote like a set of things
+that could happen or not (and is not exhaustive) in particular cases
+and/or depending on the maintainer etc.
+
+At least that is my reading, and as far as I understood the TAB
+discussions, the goal of this patch was to document that non-trivial
+tool usage needs to be disclosed, including LLM use, and to me the
+patch already did that, but perhaps the wording can be more direct.
+
+I hope that clarifies a bit...
+
+Cheers,
+Miguel
 
