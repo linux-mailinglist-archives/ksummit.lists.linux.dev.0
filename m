@@ -1,51 +1,81 @@
-Return-Path: <ksummit+bounces-2739-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2740-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2766D08000
-	for <lists@lfdr.de>; Fri, 09 Jan 2026 09:55:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E81B3D08CC8
+	for <lists@lfdr.de>; Fri, 09 Jan 2026 12:05:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F30223012CDC
-	for <lists@lfdr.de>; Fri,  9 Jan 2026 08:55:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3874D30A50DC
+	for <lists@lfdr.de>; Fri,  9 Jan 2026 11:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B588354AFE;
-	Fri,  9 Jan 2026 08:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE75B2DF6F4;
+	Fri,  9 Jan 2026 11:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="EEoha4qT"
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="esmzqy+R"
+Received: from mail-lf1-f66.google.com (mail-lf1-f66.google.com [209.85.167.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389D1354ADD
-	for <ksummit@lists.linux.dev>; Fri,  9 Jan 2026 08:55:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3E733BBBA
+	for <ksummit@lists.linux.dev>; Fri,  9 Jan 2026 11:00:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767948921; cv=none; b=gxL97+OC94mzhd42BB0O3IEyVGTK0nPk/KYHbFNRvhe7DUzVIR+0kdnonH0untoNENkS2nzEhUrogO+Vh5YtOpK7i8U7HTPlWIEWUjwdhXaovZgaurJwJQmOmHIDkN3gEgH6sGKEDV//3ElPlrUjLjmdqeGcGhUBxORV0YhEV2s=
+	t=1767956451; cv=none; b=E8NW5PD6gRaSOAvk8XCk+sgAt/yYy3QSYsNfmoi/589gcHK5Vby5I9xEdTG5vyV1koN165FxCwLRSAeaSQwPrJ3+NeerOaoZ06midfOK2xdwIj4iXB3y7uq0syg0FAKKsJ5gWbKLDhag37JWFN/P2bMrVb1CFrTKFXr0o0OvA3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767948921; c=relaxed/simple;
-	bh=/DH86oEU4jaLO5QsM18oXASbn5kgHpDZa2mzmyvtiRM=;
+	s=arc-20240116; t=1767956451; c=relaxed/simple;
+	bh=hZXJGPMssGAfFbu+bAlt6gHtJ32mOvpL6uEOa1ztUIo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IU6lLrmSwuSJjo6yx5OOSxui/qJ/RewmOEA0K3h+GRlZFNLVlQVpxBViwBpU0DKJrptZLLcnj2jBdw1MhVomxf5mRcWIq91Jm0clJuvQ+6RgBXn7Fgg9S0R1SbP6o9+XnCOyf3oXEc3vRJf4ya5SLv+bcG/OMENdu9KbxqE8TKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=EEoha4qT; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-152.bb.dnainternet.fi [81.175.209.152])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 4391D6DF;
-	Fri,  9 Jan 2026 09:54:43 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1767948883;
-	bh=/DH86oEU4jaLO5QsM18oXASbn5kgHpDZa2mzmyvtiRM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EEoha4qTP9QUlXkZ8Kk2KZoWJu+RKVlS9Ib42SNTrgrIQy2+ijNZSld7vfIqwocEz
-	 1dJz5tNlqCk57ZeToproWZNH0cvw2Xp7VUtPGuOI/ZRSwaXNPM99PjAuABMIccRX4p
-	 AUrQy8qwE7n18CSFqCkEFvX7YS6B0meEwuhb7ARk=
-Date: Fri, 9 Jan 2026 10:54:46 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=MyjlmJ63a5YqGg9mq5ZgIgcYayO111OZVoznSjfPr0UM1AemABpKC7uEC0duHr8qTZ+C/Z4olWJpOZemUguoJ+PM7FQnkmMp4R88cpJKB8IQ8aXNrFP+ClJ8MRTckrwHOcBCjwWfCwDREpwih+mMtf2SsnmhjJAsBA8EH1JFU2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=esmzqy+R; arc=none smtp.client-ip=209.85.167.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f66.google.com with SMTP id 2adb3069b0e04-59b685d2b79so3982656e87.3
+        for <ksummit@lists.linux.dev>; Fri, 09 Jan 2026 03:00:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1767956444; x=1768561244; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bCAkSgcFGLWAnWdp4SQJtJGZ2mOqXTVgkdEMSVyfWUo=;
+        b=esmzqy+RjBNBaE0b+rhCn+Gjg/Lz8feaGhuRIyocL4tLTrvThqkChA3hSdZMbwC+mC
+         iRsRyw8rXLO0lpE3IIBgRZjGGdPIl7AW6TLBoZ1Xgtw81yoF1D8QqEcpn+lKXKq6Bup+
+         qwPZsAsroPIgDptbNk0GeRlng8uXzD119cifkAnull3w2wrzmCXbzQJi0L6d0osNCMpQ
+         M4eaqZTzF1y9/rLgpoQ4Mlw89HO4aAVfRRPkAP9Zvmsscu18rQQPZzT88JPoepnsNTN0
+         5OaLIcp0QPNCHuYL7vIRpPojtsICbWJXFm8pQErkK+Zc97yzHTeSr81XJe0B9NJgfzx3
+         thSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767956444; x=1768561244;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bCAkSgcFGLWAnWdp4SQJtJGZ2mOqXTVgkdEMSVyfWUo=;
+        b=NNx3BB5wMQRcy6CmLxWuQBZO28FMVx0Xqci81o3/bteo545MIcvh3cI4jAMq6d2V7o
+         swU03fVZImuuNT7Z14U7TZF0T2NyBagKhTXSjRHQqLg25IIygP8+buGxP9/RQWyEsLli
+         OYRRbY3UxdZOX/Ilzqagxj8d+hBPMIz3tHuL1A+DYeRBCIVeQ8kKAk+U68YHbpPFUmKU
+         /Z6WViyTu9S4VqSqqOMOA+Wo9Qy/51BeyLzlYkZFvPTzOiENADS0zQc75DRt1bFVrjTA
+         Xck+OFB6myQ0lOcRSDlrch1xOKG0QD8BooRISwlHVwkCOXAGj9wpzvjhd5BsN9V7L7Tt
+         cwpA==
+X-Forwarded-Encrypted: i=1; AJvYcCXcrRVd4/ANPZgMXHg7LQovNiskDJ66NktBnpHrHGcb6bzOdwW3rGVwQg2QCqrRmphZPhZ/FkHx@lists.linux.dev
+X-Gm-Message-State: AOJu0YxSTV8232x3JHBhRmKpd/FbxffMWXY9tRZFQAssNoPIPJwc2UHI
+	EUHqRhkVE8/AkTdpBP8s0U9oN+Bmf2NXpKlPef9qf3LQwxUPWmH099H1Yl55v0LJC4o=
+X-Gm-Gg: AY/fxX6g3Fxm0u56Cmyuvf00qcD1dScVQU72DGF5CkP4x9Uy7zBBwOZ1FFP8XM09Osx
+	N2JA67zqxWYRbRmtklEPlXeRsfGPgoqGw6LgDu51XEjIcBgRfgFrSulspm8xJH+CEBmUgszHGOX
+	busySxgKPM07KxOlgazavv7EqwG3PyU1BX7i6X5SEuBS2wiEfQeXcCSJkOpisw/2k04UI+4kkzq
+	J2tWCWCfToEJYRinSG+dO4DwlF5tevgA+UdhxE7q/IYh0gi1i/EPnzCq0W9sI2gq2Q9sNUkK5zN
+	u//Dg0n9w/pHLQmIlLDRMH2A2fd2jLifDUoPJD/n/w7gQ9m0Eu4snWWkdBWrgP/5CyqLGdx6cLO
+	ivgrcl1lhKJBSe8DkugadQWbiuM+WU84V46Hx7lix1KRATF/b+uhCbQJubWlYfG5bWUbxeJ0Qtv
+	iCmKsHjeEQyfAJ1rgB
+X-Google-Smtp-Source: AGHT+IGXxI7r72eOkIy1KhlxJm58/JxPLQ5FF6CoxfgXHR2DOpaiFz27HbBI+CxtT+yMU4/t1/5Biw==
+X-Received: by 2002:ac2:4e04:0:b0:598:de38:9150 with SMTP id 2adb3069b0e04-59b6ebe3029mr3229097e87.0.1767956443522;
+        Fri, 09 Jan 2026 03:00:43 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59b728badebsm1800519e87.67.2026.01.09.03.00.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Jan 2026 03:00:43 -0800 (PST)
+Date: Fri, 9 Jan 2026 14:00:39 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>, Dave Hansen <dave.hansen@intel.com>,
+Cc: Steven Rostedt <rostedt@goodmis.org>, Dave Hansen <dave@sr71.net>,
+	Dave Hansen <dave.hansen@intel.com>,
 	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Dave Hansen <dave@sr71.net>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	linux-kernel@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
 	Kees Cook <kees@kernel.org>,
@@ -53,143 +83,110 @@ Cc: Dan Carpenter <dan.carpenter@linaro.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Luis Chamberlain <mcgrof@kernel.org>, SeongJae Park <sj@kernel.org>,
 	Dan Williams <dan.j.williams@intel.com>,
-	Steven Rostedt <rostedt@goodmis.org>, NeilBrown <neilb@ownmail.net>,
-	Theodore Ts'o <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, Vlastimil Babka <vbabka@suse.cz>,
-	workflows@vger.kernel.org, ksummit@lists.linux.dev
+	NeilBrown <neilb@ownmail.net>, Theodore Ts'o <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Vlastimil Babka <vbabka@suse.cz>, workflows@vger.kernel.org,
+	ksummit@lists.linux.dev, Jens Axboe <axboe@kernel.dk>
 Subject: Re: [PATCH] [v3] Documentation: Provide guidelines for
  tool-generated content
-Message-ID: <20260109085446.GA9782@pendragon.ideasonboard.com>
-References: <a60e0e566edbcbd70176045ae077176444ca25a9.camel@HansenPartnership.com>
+Message-ID: <aWDf1zlLTKmw9xnq@stanley.mountain>
+References: <611c4a95-cbf2-492c-a991-e54042cf226a@lucifer.local>
+ <a60e0e566edbcbd70176045ae077176444ca25a9.camel@HansenPartnership.com>
  <85614f7f-f217-47e5-a9f7-0a012f6e6ecd@lucifer.local>
  <e7a2e69991943777f30743868bdc04332a52037b.camel@HansenPartnership.com>
  <a70d3156-ad96-4ad7-90ff-624fab62fe7d@lucifer.local>
  <6e9cab54-7b66-45e9-af96-e52b3eba1034@intel.com>
  <f93a5311-4689-486b-aea8-261263f4d447@lucifer.local>
- <711d9e37-6fe7-4783-8ac4-5269279bb9fe@kernel.dk>
- <3xf3f4b3vegssexoid746y7isuswwsgmac5hy2hm4ipisdcxaf@nbi67byycwj5>
- <aWCSVh6NocePMvp8@stanley.mountain>
- <0b9a8f99-5cc4-40e8-a0e6-4887d1e1a796@lucifer.local>
+ <5a301272-31ea-44b8-9518-8151edca6c06@sr71.net>
+ <20260108151437.3188cd53@gandalf.local.home>
+ <cfb8bb96-e798-474d-bc6f-9cf610fe720f@lucifer.local>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0b9a8f99-5cc4-40e8-a0e6-4887d1e1a796@lucifer.local>
+In-Reply-To: <cfb8bb96-e798-474d-bc6f-9cf610fe720f@lucifer.local>
 
-On Fri, Jan 09, 2026 at 07:54:31AM +0000, Lorenzo Stoakes wrote:
-> On Fri, Jan 09, 2026 at 08:29:58AM +0300, Dan Carpenter wrote:
-> > On Thu, Jan 08, 2026 at 04:04:39PM -0500, Liam R. Howlett wrote:
-> > > * Jens Axboe <axboe@kernel.dk> [260108 15:54]:
-> > > > On 1/8/26 12:23 PM, Lorenzo Stoakes wrote:
-> > > > >> @@ -95,3 +95,8 @@ choose how they handle the contribution. For example, they might:
-> > > > >>   - Ask the submitter to explain in more detail about the contribution
-> > > > >>     so that the maintainer can feel comfortable that the submitter fully
-> > > > >>     understands how the code works.
-> > > > >> +
-> > > > >> +Finally, always be prepared for tooling that produces incorrect or
-> > > > >> +inappropriate content. Make sure you understand and to be able to
-> > > > >> +defend everything you submit. If you are unable to do so, maintainers
-> > > > >> +may choose to reject your series outright.
-> > > > >>
-> > > > >
-> > > > > I feel like this formulation waters it down so much as to lose the emphasis
-> > > > > which was the entire point of it.
-> > > > >
-> > > > > I'm also not sure why we're losing the scrutiny part?
-> > > > >
-> > > > > Something like:
-> > > > >
-> > > > > +If tools permit you to generate series entirely automatically, expect
-> > > > > +additional scrutiny.
-> > > > > +
-> > > > > +As with the output of any tooling, the result maybe incorrect or
-> > > > > +inappropriate, so you are expected to understand and to be able to defend
-> > > > > +everything you submit. If you are unable to do so, maintainers may choose
-> > > > > +to reject your series outright.
+On Fri, Jan 09, 2026 at 07:48:35AM +0000, Lorenzo Stoakes wrote:
+> +cc Jens as reference him
+> 
+> On Thu, Jan 08, 2026 at 03:14:37PM -0500, Steven Rostedt wrote:
+> > On Thu, 8 Jan 2026 11:50:29 -0800
+> > Dave Hansen <dave@sr71.net> wrote:
+> >
+> > > On 1/8/26 11:23, Lorenzo Stoakes wrote:
+> > > > I'm also not sure why we're losing the scrutiny part?
 > > > >
-> > > > Eh, why not some variant of:
+> > > > Something like:
 > > > >
-> > > > "If you are unable to do so, then don't submit the resulting changes."
-> > > >
-> > > > Talking only for myself, I have ZERO interest in receiving code from
-> > > > someone that doesn't even understand what it does. And it'd be better to
-> > > > NOT waste my or anyone elses time if that's the level of the submission.
+> > > > +If tools permit you to generate series entirely automatically, expect
+> > > > +additional scrutiny.
 > > >
-> > > Yes, agreed.
+> > > The reason I resisted integrating this is it tries to draw too specific
+> > > a line in the sand. Someone could rightfully read that and say they
+> > > don't expect additional scrutiny because the entire series was not
+> > > automatically generated.
+> 
+> I mean you are making an absolutely valid point, I'd say that'd be a rather
+> silly conclusion to take, but we have to be wary of 'lawyering' the doc
+> here.
+> 
 > > >
-> >
-> > Yeah.  Me too.
-> >
-> > > If I cannot understand it and the author is clueless about the patch,
-> > > then I'm going to be way more grumpy than the wording of that statement.
+> > > What I want to say is: the more automation your tool provides, the more
+> > > scrutiny you get. Maybe:
 > > >
-> > > I'd assume the submitter would just get the ai to answer it anyways
-> > > since that's fitting with the level of the submission.
+> > > 	Expect increasing amounts of maintainer scrutiny on
+> > > 	contributions that were increasingly generated by tooling.
 > >
-> > Yes.  That has happened to me.  I asked the submitter how do you know
-> > this is true? And the v2 had a long AI generated explanation which quoted
-> > a spec from an AI hallucination.
+> > Honestly that just sounds "grumpy" to me ;-)
 > >
-> > I like Dave's document but the first paragraph should be to not send AI
-> > slop.
+> > How about something like:
+> >
+> > 	All tooling is prone to make mistakes that differ from mistakes
+> > 	generated by humans. A maintainer may push back harder on
+> > 	submissions that were entirely or partially generated by tooling
+> > 	and expect the submitter to demonstrate that even the generated
+> > 	code was verified to be accurate.
+> >
+> > -- Steve
 > 
-> This is the entire point of my push back here :)
+> I don't really read that as grumpy, I understand wanting to be agreeable
+> but sometimes it's appropriate to be emphatic, which is the entire purpose
+> of this amendment.
 > 
-> I'd prefer us to be truly emphatic with a 'NO SLOP PLEASE' as the opener and
-> using that term, but I'm compromising because... well you saw Linus's position
-> right?
+> Taking into account Jens's input too:
 > 
-> I do find it... naive to think that we won't experience this. For one it's
-> already started, for another people working on open source projects like
-> Postgres may have something to say e.g. [0]...
-> 
-> [0]:https://mastodon.social/@AndresFreundTec/115860496055796941
-> 
-> Do we really want to provide a milquetoast document that is lovely and agreeable
-> and reading it doesn't explicitly say no slop that _will_ be reported on like that?
-> 
-> Note that Linus's position on this has been reported as essentially 'Linus says
-> AI tools are like other tools and you are STUPID if you think otherwise they are
-> FINE' - which is not what he said, but does that matter?
-> 
-> Do we really truly think doing that is going to have no impact on people sending
-> us crap? There are a bunch of well-meaning but less-talented people who try to
-> do kernel stuff, we've all seen it and dealt with it. These same people _will_
-> pay attention to this kind of thing and try it on.
-> 
-> Yes we can't do anything about bad faith people who'll ignore everything. But in
-> that case being able to point at the doc will make life practically _easier_.
-> 
-> Either way I think it's important we have something vaguely emphatic there.
-> 
-> Which is why I'm tiring myself out with this thread when I have a lot of other
-> things to do :)
+> +If tools permit you to generate series automatically, expect
+> +additional scrutiny in proportion to how much of it was generated.
+> +
+> +As with the output of any tooling, the result maybe incorrect or
+> +inappropriate, so you are expected to understand and to be able to defend
+> +everything you submit. If you are unable to do so, then don't submit the
+> +resulting changes.
+> +
+> +If you do so anyway, maintainers are entitled to reject your series without
+> +detailed review.
 
-Thank you for that. As a lurker in this mail thread, I really appreciate
-your efforts as they're saving the time I would need to argue as
-strongly as you do :-)
+This is too subtle.  In real life if we suspect a patchset is AI Slop,
+then we're going to reject the whole thing immediately.  No one is
+going to review all fifteen patches one by one as if we're searching
+through monkey poo for edible grains of corn.
 
-While I agree with the argument that kernel documentation should not
-cover every single hypothetical case that one could come up with, the
-issue at hand here is real (based on the multiple people who have
-replied saying they have seen it happen), and I don't think anyone
-expects the problem to disappear magically given the industry trend.
+The AI slop patches I've seen were not bad actors.  Someone saw a
+TODO in the file and thought that AI could solve it.  The patch
+compiled, it was formatted correctly and the commit message sounded
+confident so they sent it.
 
-It is also absolutely true that actors with questionable ethics will not
-care about the documentation. I do see value in being able to point
-developers acting in good faith to the rules, but an even more important
-point in my opinion is the message your proposal gives to maintainers.
+To me the audience for this is maybe a team working on AI and they
+don't have any kernel developers on staff so they assume they're being
+helpful sending unreviewed patches.  The message should be that every
+patch needs to be reviewed carefully before it is sent upstream.  I've
+been asked to review patches like this in the past.  Get outside help
+if you need to, but every patch needs to be reviewed.
 
-On a side note, I wonder if this is symptomatic of an erosion of trust
-in this conflictual world, with some maintainers increasingly fearing
-they will be forced or overridden.
-
--- 
-Regards,
-
-Laurent Pinchart
+regards,
+dan carpenter
 
