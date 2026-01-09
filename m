@@ -1,131 +1,118 @@
-Return-Path: <ksummit+bounces-2751-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2752-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2A69D0B496
-	for <lists@lfdr.de>; Fri, 09 Jan 2026 17:37:35 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78275D0B485
+	for <lists@lfdr.de>; Fri, 09 Jan 2026 17:36:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B5F16302D2EB
-	for <lists@lfdr.de>; Fri,  9 Jan 2026 16:30:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 08C68300DB91
+	for <lists@lfdr.de>; Fri,  9 Jan 2026 16:33:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A641364042;
-	Fri,  9 Jan 2026 16:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D896364046;
+	Fri,  9 Jan 2026 16:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d0BaxQeH"
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VO//QE//"
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7526D78F2B
-	for <ksummit@lists.linux.dev>; Fri,  9 Jan 2026 16:30:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB5935A956
+	for <ksummit@lists.linux.dev>; Fri,  9 Jan 2026 16:33:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767976232; cv=none; b=TBibSOYMYE4TAXVb7AzPnqK3+H4lCAfeyDkVEpEQz8pql6azBiPq/qXRhVFuPmK8b6+anA7RtuVsrMbLyHQTH8IQR5XN+v0gjTzZvPLWqoh9XJrDNoDNAUJsvsF3zVCC3Mc0MTOHKAM0VGRur5p7FMaMtdwsvsg1pAmy8I2/MkU=
+	t=1767976432; cv=none; b=rPCwY1+7OBbwZf55tirMPqE9tXdjfYL37Ops+TxR/OSxzNwu/YBM/+EIUEkCdz7t9iJrOZm90ZH55yWKFiGHAiwjLbMsNhXWWGr0AaZP2AxNkwc4bEyt5xOixP3/7LjEDlp+ebs8m5SkQ5dwcrZJmDkqsUlKxaAb5YpjZfmoA64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767976232; c=relaxed/simple;
-	bh=tGnqbLmOhP9isHiPxWN/XPpA61Oj201z3O7nsWOI7Sc=;
+	s=arc-20240116; t=1767976432; c=relaxed/simple;
+	bh=uv4N8WCxqirDaDiJi9ylGK7eD5jNkl62arIAHY3Au4A=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X5iTdX9XiSi44+iVEpHSD/l2M2e0PphIaC8J25vHjLH5b3SVr4W2LCMBzXnSJyf8oSOecLiPfrPQwyI9Nc5O5YRGC8/vHmuaq3R4/NWBDUC8XyqLuYFLEfJ61UpU9rNoHKqCkpTLShktbSbBgiu7Hj8SQD7tpvjM8Dzwn1/xLRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d0BaxQeH; arc=none smtp.client-ip=74.125.82.176
+	 To:Cc:Content-Type; b=cc35Ph58YWCRJi5Uk8fUQU8rFDfZ2HJq0mlHDwPoP4bO5r+ABDGr3i4QvaTXmR7oOemqm2S8lkYI/WXjpYrvZeRrVz7810UEQabL48QYB+PXcXurcOV5sIc9voiRTGt70dOQoSxXj0a5+E81RqdMe4okidNN9ip/kQAn9t9243A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VO//QE//; arc=none smtp.client-ip=74.125.82.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-2b1161400afso190353eec.0
-        for <ksummit@lists.linux.dev>; Fri, 09 Jan 2026 08:30:30 -0800 (PST)
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-2b1769fda0eso80213eec.3
+        for <ksummit@lists.linux.dev>; Fri, 09 Jan 2026 08:33:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767976230; x=1768581030; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1767976431; x=1768581231; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KgVHrGpFOZu3o9W2smUjiAbx/IB6ia8N7DTDEB731Qg=;
-        b=d0BaxQeHa0MkQunzil4QUIBR+mAQ+ref3Ny5+zKY/yoLEPkExxxCQUq6eJ7Dsw25ca
-         FDuRDBaxLyft+GuMKInbG7Hro8ZVKy6radZkpPIKWHmKDwpFQ0zLNfsMvlVBEvzizfEp
-         LyHXq0O4qep347jpluSEf432NXXP6eunD+8ZGvGLrAkbpNfb9MCS49T8sab1cbmvsn9l
-         EEDiCOAmIfSb7UKTfNgQ/DpmA59BFxeHwTkTm9yktPJ3oxwpLAC/CFKteG8e4HAhwhxg
-         7UnnstNqxfJ6Le2JRtXM4HDqZIntmRg9e5DPQg4mb3f7NZ86md5Fq+3IDjTiA+Jg4gIt
-         VFfA==
+        bh=uv4N8WCxqirDaDiJi9ylGK7eD5jNkl62arIAHY3Au4A=;
+        b=VO//QE//yZ/o59sj41dB0uM6V579+a0+SAmzHIJEerlC3++/6Ij3F9OPEdKLc32u7s
+         piy+SUhroyeU6f0KqfIwEE18Sl5eHyQE96BXGqUb8Oi81cfY/J56Hwk7Lb++2Qp7HQEU
+         Yxt0YrlUErugOZaaAxNOGMCEGPt3RozwSw7C9Fu9LS5DHeNFhi8G2JbnIR6kZaiFsPHd
+         COeG77ufa5q+3A4Fejvnd8q19V8UCmKD3FNtxaWPyoplWTNhT4pcNPcuEGVaVb5R37FS
+         6n0A2IhLH4M+OTKC8hGM5UKQHh7iKLN7z/R5ErgDAXjDUeKsWWoU4q8Ys+9KU9QsA0s3
+         Becg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767976230; x=1768581030;
+        d=1e100.net; s=20230601; t=1767976431; x=1768581231;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=KgVHrGpFOZu3o9W2smUjiAbx/IB6ia8N7DTDEB731Qg=;
-        b=RAn/zeA1M20s+BaiMzheE3heilHMjpfQOqLbF27TTfzvUyd/4teodcQ2rWuRjKGHA/
-         2znu4DyV4OSmeBFxpk9QJu1LyigQutvsfYcpqTDseXxC3ZLNyJqzbcV5PU5cP/BBRNiQ
-         Vwnvneq36oVCiQwJxubPGFhjcijrGDJIg4sg6NDW7M4ziZNqAy6kWl5UeSXgcnu6Vcq+
-         gbFFaS6I2IEHGyn6kjvQPnMpwRZruFGB8NgPzFPV4ODY9x2GMwwchYW8NqSM9mx60bIx
-         vkyX747S6gqFO5CBCv1Qsxz5A0Mh7hap70PHS/rpN6MMXmXIru2PSbCdBIiOEVwrNGoU
-         3B5w==
-X-Forwarded-Encrypted: i=1; AJvYcCWo38Bl33Kz9UDiDdgsjr/+HEmIXvOdOB8ZjTu+XL8qd6Czbt4zmVvVUNt1Dri1fLQZhFLRsV4C@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx40IalC/cRnD6obVVlprX9xBJurYp5dmK2UvGRKtThWFUDnY9N
-	WHaqGt/qyhDJoZsbjFJ2Q28Fx25mjeB8ZUGoJ312E+PAilkFOqDKmDaVHL3tM3bWTCu6pSYAaeS
-	aXT41Je1wR6xnEBcy7tYodUkThmJ3McU=
-X-Gm-Gg: AY/fxX6sXHXNHwDVvupi5PHY071n+LLNPm5uz1A9O21zUqmiqopmjfd27wCKFPTFxkL
-	kZiZExFffJXN/yraUHfr5BOqTbwI/GDtOsVto02a3xkJbrlP6bOQ2XOQVhD8hSiORnT1IWZog03
-	xz6wOTn8p0egmfxxXYVGisAVDWaWwRixHnFvB3FY0Ud1sh7XRGfHd0NLGlmImqVThibPyiUyJE4
-	iQbuPM6GpLgF4hMxSxvz23T5RS9F40cjUs8DyvZDb+hWKWGdy2veXpcWdGQ+1WF4lPSQGPTpQzd
-	d1LXarrxrd3jpJRHsq/eKd0JqFj9tS4oZijypP/ot+cy2wsFJ7mThjNAZD9SofAzatc2naiodl9
-	8ayvL8xVfwVEQ
-X-Google-Smtp-Source: AGHT+IFPnMs8tYXrKC6QRTGlKt5c3UHbQ20I+iMpQeJtUFKAL06cbpiGchT05O1IclG935flftNB9uOe0tl1k8An8q0=
-X-Received: by 2002:a05:693c:2a11:b0:2ab:ca55:89cb with SMTP id
- 5a478bee46e88-2b17d336c9amr3307855eec.6.1767976229504; Fri, 09 Jan 2026
- 08:30:29 -0800 (PST)
+        bh=uv4N8WCxqirDaDiJi9ylGK7eD5jNkl62arIAHY3Au4A=;
+        b=HSMwlWXg4XNdQQ5BLQjunxMEJg6EfGetNxuK/NHbPWCADwth5pu6e6QF485BD0iQeN
+         sLqdhD0YAomYwKEua/dea7/26EljSpIqytOYUQZrjTaKAudTwd0NTHQn9QLEUnKQNtuu
+         6kOo292fepfUadh5DggwBpmGKFVzfsMO4HHCC3rtDWusCEtir9MHk7i27Hk0wPsfZKnl
+         IdIZeU/FhZJwSdmK4piD50RxL9b3aPUDW3MaeP5NbZ5YBJ/Tbe/JjH6M86A6fgw+0d3f
+         8Rsz1XnwVEIq4Fby0osRwGAf2QeMPN6C5q+64BHsp4FeDjqRNCVc6UiIS9qEtNvyZ69t
+         HAZg==
+X-Forwarded-Encrypted: i=1; AJvYcCWpQdnPJY9yHOB1o/JTkg+RPwkcabinbxiDNaa7njMq073tpNL9yK/TTWBOW+OVbRE5mpP/Oxek@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw0pPwsAo/DsNLr6OvAShV1Ctsf/hCskZIbLL5/mzQyxsLvumGV
+	8qFrAjOHsRuZhTCqnO2421Rq8MvO0FN+KhZbJOpDY69ip/ljgJUIDpgSnkM1Ia3QwAugbfMS13f
+	Z99EgNPXSTJlQkPK2oXxsVsWq33pD2o0=
+X-Gm-Gg: AY/fxX70vg/aZv4QBdjMG46QetvFUkNG+sB5k+F1DU22V/XMqnRfoisLURcDb5n5Hfm
+	WCkY8rZV47pmPvRVpnIrXODL0ZMiy5NUV4gfjwwEqHchCZbxX9Oz4Xdu7DNYVIROd0qnVfLjmR0
+	0hI2pNxy+9ovv3YWkZx/+k6NlHpBT/y9XaaLO653pdYpxCJq7fG9vJmapJIEeuTZa3/07QSHVqj
+	7RdK6sjc2EQlA/HiB+YW5yt7iJZorkqz3bw79cup4b8tcinmgoZ5rxedmUwdR8uJ6P4n4kNHrZv
+	feMVlY1JtEx3ExiwnFzE5swG3ufdS6ZwPLT4X2H0gKl2bPaIKoL+Tz/El1okL+oz+uz4OSZNlVs
+	p3nRn3Ojj2mbt
+X-Google-Smtp-Source: AGHT+IEjU3/kJGOtPK4YL35P03625mkvXRPZFko4y4f+QMx+9mg7IfKKpLVoOaWxcQHpwaDZ7iBFYlfkuKiPOLyhOs0=
+X-Received: by 2002:a05:7300:2154:b0:2b1:79b7:5850 with SMTP id
+ 5a478bee46e88-2b17d34ee36mr5478630eec.8.1767976430783; Fri, 09 Jan 2026
+ 08:33:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260106205105.4037716-1-dave.hansen@linux.intel.com>
- <1e982055-47c2-43d1-a919-93b3e59f2ed0@lucifer.local> <93aadf2b-0df4-49eb-91fd-b401b44ce3af@sr71.net>
- <1c74353c-40de-4d0b-a517-92a94f8b4af8@lucifer.local> <6c71554c-4fa1-4b99-9d46-2f1a2ecc1b7f@intel.com>
- <611c4a95-cbf2-492c-a991-e54042cf226a@lucifer.local> <aV_eiRqUsK2KWkww@laps>
- <CANiq72mw1bis7aE9b=Htx9=Sd9jZH1rJmew1xqhPiCWu=EyzPw@mail.gmail.com> <b7469e4e-d711-467f-839f-4a9688d25a23@lucifer.local>
-In-Reply-To: <b7469e4e-d711-467f-839f-4a9688d25a23@lucifer.local>
+References: <a60e0e566edbcbd70176045ae077176444ca25a9.camel@HansenPartnership.com>
+ <85614f7f-f217-47e5-a9f7-0a012f6e6ecd@lucifer.local> <e7a2e69991943777f30743868bdc04332a52037b.camel@HansenPartnership.com>
+ <a70d3156-ad96-4ad7-90ff-624fab62fe7d@lucifer.local> <6e9cab54-7b66-45e9-af96-e52b3eba1034@intel.com>
+ <f93a5311-4689-486b-aea8-261263f4d447@lucifer.local> <711d9e37-6fe7-4783-8ac4-5269279bb9fe@kernel.dk>
+ <3xf3f4b3vegssexoid746y7isuswwsgmac5hy2hm4ipisdcxaf@nbi67byycwj5>
+ <aWCSVh6NocePMvp8@stanley.mountain> <0b9a8f99-5cc4-40e8-a0e6-4887d1e1a796@lucifer.local>
+ <20260109085446.GA9782@pendragon.ideasonboard.com> <20260109105104.57d308f7@gandalf.local.home>
+In-Reply-To: <20260109105104.57d308f7@gandalf.local.home>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 9 Jan 2026 17:30:17 +0100
-X-Gm-Features: AZwV_Qi9VSP2AMrsmou5qnQmy5TBXFzhlEy2iJtX864Gee6M0-zqG561EpAZSLM
-Message-ID: <CANiq72=yOkv_GK=V5k-WTYE-Fv++K+OtVUdrLQcH+75qRMN-Aw@mail.gmail.com>
+Date: Fri, 9 Jan 2026 17:33:38 +0100
+X-Gm-Features: AZwV_QjJwaXXKSwiQi8MluNd2x3mpci_pDnE1e-RLQenqw0FAlzgw9Aeuqp5h6s
+Message-ID: <CANiq72m0_m4Tcn4YZvw_4cKjqsrJCDcfobLnt=Oai2d8y5FyBg@mail.gmail.com>
 Subject: Re: [PATCH] [v3] Documentation: Provide guidelines for tool-generated content
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Sasha Levin <sashal@kernel.org>, Dave Hansen <dave.hansen@intel.com>, 
-	Dave Hansen <dave@sr71.net>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	linux-kernel@vger.kernel.org, Shuah Khan <shuah@kernel.org>, 
-	Kees Cook <kees@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, SeongJae Park <sj@kernel.org>, 
-	Dan Williams <dan.j.williams@intel.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	NeilBrown <neilb@ownmail.net>, "Theodore Ts'o" <tytso@mit.edu>, Jonathan Corbet <corbet@lwn.net>, 
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Dan Carpenter <dan.carpenter@linaro.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Jens Axboe <axboe@kernel.dk>, 
+	Dave Hansen <dave.hansen@intel.com>, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, Dave Hansen <dave@sr71.net>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, 
+	Shuah Khan <shuah@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, SeongJae Park <sj@kernel.org>, 
+	Dan Williams <dan.j.williams@intel.com>, NeilBrown <neilb@ownmail.net>, 
+	"Theodore Ts'o" <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
 	Vlastimil Babka <vbabka@suse.cz>, workflows@vger.kernel.org, ksummit@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 8, 2026 at 8:28=E2=80=AFPM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
+On Fri, Jan 9, 2026 at 4:50=E2=80=AFPM Steven Rostedt <rostedt@goodmis.org>=
+ wrote:
 >
-> 'You _can_ be more transparent by adding information like this:...'
+> In the TAB, where we started discussing this (and I was
+> supposed to be the one that wrote the first version, but thankfully Dave
+> did a great job at getting it going). The focus was to be to document wha=
+t
+> we currently do in practice when it comes to tool-generated content.
 
-I am not a native speaker, but my reading of that "can" was that it is
-suggesting ways to be more transparent that may or may not apply in
-particular cases, but the requirement of being transparent was already
-established by the previous sentence:
-
-    Second, when making a contribution, be transparent about
-    the origin of content in cover letters and changelogs.
-
-Which is reinforced by another imperative in the bullet point about prompts=
-:
-
-    If code was largely generated from a single or short set of
-    prompts, include those prompts.
-
-Similarly, I read those other "might"s you quote like a set of things
-that could happen or not (and is not exhaustive) in particular cases
-and/or depending on the maintainer etc.
-
-At least that is my reading, and as far as I understood the TAB
-discussions, the goal of this patch was to document that non-trivial
-tool usage needs to be disclosed, including LLM use, and to me the
-patch already did that, but perhaps the wording can be more direct.
-
-I hope that clarifies a bit...
+Yes, that matches my understanding of the TAB discussions.
 
 Cheers,
 Miguel
