@@ -1,45 +1,41 @@
-Return-Path: <ksummit+bounces-2754-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2755-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03BDAD0BD99
-	for <lists@lfdr.de>; Fri, 09 Jan 2026 19:34:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91BF3D0C034
+	for <lists@lfdr.de>; Fri, 09 Jan 2026 20:08:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 37910301869E
-	for <lists@lfdr.de>; Fri,  9 Jan 2026 18:34:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9B7B7303BC1C
+	for <lists@lfdr.de>; Fri,  9 Jan 2026 19:08:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76FA725A2A2;
-	Fri,  9 Jan 2026 18:34:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="TNTcj0BG"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A662DECCB;
+	Fri,  9 Jan 2026 19:08:24 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA3C1DE89A;
-	Fri,  9 Jan 2026 18:34:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE21F2E54CC
+	for <ksummit@lists.linux.dev>; Fri,  9 Jan 2026 19:08:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767983677; cv=none; b=gZihXCAwqGhHS61t+gpA+K9zZXVDqkb82QeBTlF5u+DSxqtlMzPWAlflx5WoUS+/aCZMZqoAGux0pQNem7+pQxXv3OoHaNuLzjlm8EZ8P8WNkXaeCJ6LmSr/uFtlcYVu7lcj9JJ7Dpp1iUgDav4z7jlcrWogk9gmNhGh+fBC/10=
+	t=1767985704; cv=none; b=XQmxXdhzTEY+OfJOqnGZxPJfqUrn074UWlDSd4NJawRj+I4YFW32y6BnEVV/C4WHs/4Ga5zX4/dxUl3FoI6BSJMyVQvZQOgESOz/q17I9YyZvvrk9jW+vWGlLIiwDc+k3GneoonNenlClhoXedoH/cNxaEgE6JQ8mTD6zx22dJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767983677; c=relaxed/simple;
-	bh=cHYbO2Ri25fGsDImWN04eVPPkTiiok8R9YQ3sJCU9nU=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=YJ9nZjfISuoI59nN74n0kLY/OThivkQVTgF7ifaa5pJRsxJbSCqkaVHL1pV0Xjgsm8Xp934x1OIBUCPXUpdcI3KW4RYvZWg2A5PG4DSKx06/CkgG+TA9nc1mDgpcl8gnMlf+TqbMqO/f9s6FWYC9/yGu7+3YjExy2BkxlS2TjVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=TNTcj0BG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B39E3C4CEF7;
-	Fri,  9 Jan 2026 18:34:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1767983676;
-	bh=cHYbO2Ri25fGsDImWN04eVPPkTiiok8R9YQ3sJCU9nU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=TNTcj0BGR3lXIPPMuP6EldIesmy2I5C08yPHLyeEYOt8qyS49UGnQ3KFLb93wO3PM
-	 5BIhS30m/v2u+JHrk1WU3Bx18YiaJl88nm9pwpZ+Zb0EdzknCrT4EBv1+1VFN6QRDh
-	 dNYfoj0PSa1oggkHGSKC2oHm6OC5jryBKQGBgb3g=
-Date: Fri, 9 Jan 2026 10:34:35 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Steven Rostedt
- <rostedt@goodmis.org>, Dave Hansen <dave@sr71.net>, Dave Hansen
+	s=arc-20240116; t=1767985704; c=relaxed/simple;
+	bh=Zlt2xaYFDRYmeGe845puoyPls5sQHwv4pqv3rJqOc1o=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=brh9E51h9NuD323czEbtZVa2Tww6Z60L+8yL65+CplxF+IaOoPnFZor0niOiXiVr7Fbseh7oubUccjQl7vKKuiFWOcquTZB/j9KVb/A8ZoHBb14wI3cTygxZih6wvLDmsbk3jyZINTT0S6TdnJH0tX8kcLY/t5z6p6QtPr72Z/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 29E16BB493;
+	Fri,  9 Jan 2026 19:08:12 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf14.hostedemail.com (Postfix) with ESMTPA id BDB0E34;
+	Fri,  9 Jan 2026 19:08:07 +0000 (UTC)
+Date: Fri, 9 Jan 2026 14:08:39 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, Dave Hansen <dave@sr71.net>, Dave Hansen
  <dave.hansen@intel.com>, James Bottomley
  <James.Bottomley@hansenpartnership.com>, Dave Hansen
  <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, Shuah Khan
@@ -53,8 +49,8 @@ Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Steven Rostedt
  <axboe@kernel.dk>
 Subject: Re: [PATCH] [v3] Documentation: Provide guidelines for
  tool-generated content
-Message-Id: <20260109103435.cb555ad5374a50db413e3861@linux-foundation.org>
-In-Reply-To: <aWDf1zlLTKmw9xnq@stanley.mountain>
+Message-ID: <20260109140839.4182fa0b@gandalf.local.home>
+In-Reply-To: <20260109103435.cb555ad5374a50db413e3861@linux-foundation.org>
 References: <611c4a95-cbf2-492c-a991-e54042cf226a@lucifer.local>
 	<a60e0e566edbcbd70176045ae077176444ca25a9.camel@HansenPartnership.com>
 	<85614f7f-f217-47e5-a9f7-0a012f6e6ecd@lucifer.local>
@@ -66,34 +62,37 @@ References: <611c4a95-cbf2-492c-a991-e54042cf226a@lucifer.local>
 	<20260108151437.3188cd53@gandalf.local.home>
 	<cfb8bb96-e798-474d-bc6f-9cf610fe720f@lucifer.local>
 	<aWDf1zlLTKmw9xnq@stanley.mountain>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	<20260109103435.cb555ad5374a50db413e3861@linux-foundation.org>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspamout07
+X-Rspamd-Queue-Id: BDB0E34
+X-Stat-Signature: gjjaa3omo738gzi5n5t54e5d3zp4tjiz
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX19fMXmrir82i+19M7/Mfy4Zw85DRUpp1SI=
+X-HE-Tag: 1767985687-450843
+X-HE-Meta: U2FsdGVkX18pLMF2iTSKhpl8bgQIslyqOlbLs/nnA9OTbBhfHx3cuxx0tjatz9JJNZCgfWgQCwFeJ/S/8IDKB5jRf4+Ee6XRqUhSofUKg6V5IS/HAOGZsTOuVfdUAU7x8nWODQL2XJMc3u7iZYfTkzO1xwivHvkw0ROhQqELybcLkltn7cEymF7je2pI3IczYr/8+8n5QL8Aomoak/Z6w+9GkwrZRBg6yEVa2rfXQDqfSmAohLromYbAw7UYW0/yqgKUeRaPybe0OWbKA89L/kfmkQoHXq6BCFa/JPEBFAY9O9wJVbKHYPvQ/1u2ki9ygrWAsDVSciP2dxlSG8Dt6XSf0unxSDMhPKe5eQv09JnoCe9rBwtXCsjw+Xjegj6h59mBgG97ujYRBo552SbMf4At4v5O5FLMeEZSqGyaiUFQCvp/1BEmQA==
 
+On Fri, 9 Jan 2026 10:34:35 -0800
+Andrew Morton <akpm@linux-foundation.org> wrote:
 
-Dan, thanks for taking care of this.
+> As we work through these issues, please let's not accidentally do
+> anything which impedes our ability to receive AI-generated bug reports.
+> If that means having to deal with poor fixes for those bugs then so be
+> it - the benefit of the bug report outweighs the cost of discarding the
+> purported fix.
 
-My overall not-strongly-held take is that we shouldn't try to be overly
-proscriptive at this stage.  Wait and see if a problematic pattern
-emerges and then deal with it.
+I agree with this statement. I just said that I find AI a much better bug
+finder than code creator:
 
-But my main reason for weighing in: I haven't yet seen evidence that
-the LLMs produce useful kernel changes, but AI is looking to be useful
-at finding bugs.
+  https://lore.kernel.org/all/20260109111929.2010949e@gandalf.local.home/
 
-If an AI-generated bug report comes in the form of a purported code fix
-then it's "thanks for the bug report", delete the email then get in
-and fix the issue in our usual way.
-
-As we work through these issues, please let's not accidentally do
-anything which impedes our ability to receive AI-generated bug reports.
-If that means having to deal with poor fixes for those bugs then so be
-it - the benefit of the bug report outweighs the cost of discarding the
-purported fix.
+-- Steve
 
