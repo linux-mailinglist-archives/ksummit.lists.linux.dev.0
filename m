@@ -1,165 +1,235 @@
-Return-Path: <ksummit+bounces-2774-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2772-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D6B5D1B48E
-	for <lists@lfdr.de>; Tue, 13 Jan 2026 21:48:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23AF2D1B05E
+	for <lists@lfdr.de>; Tue, 13 Jan 2026 20:24:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 94CEB30B5142
-	for <lists@lfdr.de>; Tue, 13 Jan 2026 20:46:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4C071309C3BF
+	for <lists@lfdr.de>; Tue, 13 Jan 2026 19:22:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D5A131AF3D;
-	Tue, 13 Jan 2026 20:46:38 +0000 (UTC)
-Received: from mail-qk1-f194.google.com (mail-qk1-f194.google.com [209.85.222.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0239315D5A;
+	Tue, 13 Jan 2026 19:22:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="Q9VH+1ob"
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE78E3195FD
-	for <ksummit@lists.linux.dev>; Tue, 13 Jan 2026 20:46:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7312536AB51
+	for <ksummit@lists.linux.dev>; Tue, 13 Jan 2026 19:22:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768337197; cv=none; b=QntFn68s+XLM2EeRqq0hdvEZodEIdlssdzik2gUP1lZYhb4zXplAH9wSUBj1sj08TT7G5RGFEygk2mmJvh2jl1fa4rKAjt++pbydo3wWu5uNlD4aqXLMieN9z06suk88aQXvsWZhIE38Un1kPuT5xTg+gji5lSk51hSsTCHAaQY=
+	t=1768332134; cv=none; b=kGPHtSpEvB18Is/qb//OQOWU3HXzTS0ZHRHc6ZimOCPig59AaRUeZ76m5p677WxZZZ5iTsWNpbYHBtpc/rBLQxToHV0kmbFVj76gR8MvtrAyNUCn5budHYn1ZcXm7S7M5QX6kDLA9R2Fe0MoVkyHNpmyg0gSzJEwMj4NDv95a78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768337197; c=relaxed/simple;
-	bh=8q51W8p4lFL62dwhn7ILuet12kILdNK8mg5KalyWgM0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QPi7FaeBGQ4+L1w+LfnTHRSW3MP91zqdWDQcR6xLELw0rT9aHSj+d/m8GgdnagDaZ0L7FV6+21W/ahF2PbZPndOuHnoiN+H+aX5HPNriLRgWawqj3bvg9e/B1hpPkg2ucA8jn0lddRPLfLpU5hPnXu2s38pf/K7+hlZQmmAfA1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f194.google.com with SMTP id af79cd13be357-8c52c1d2a7bso21066885a.0
-        for <ksummit@lists.linux.dev>; Tue, 13 Jan 2026 12:46:35 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768337195; x=1768941995;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NjWKof4076b+nCQR/PRIrOGanRyaKJuuJZgutI/yHYg=;
-        b=o1y1sfgYDkveLOePvFQRfkT2e0yZuH688Z3dJQEULrGwNqhzL+uY4nI5JXIWs/vSec
-         t93TOTaYdmUMa/p//YMt7LZVl2myZiGa2tkfLSSXJbz8FUVKX3RNG3Zk3j2qMBnTmjVZ
-         bZcMCU70OqVS3k4XfQYylny30lAMWvfms7gPxk5V3ejooRCZgp92o8Iued8HvlstmMLI
-         OW+sZGazQSyj/TIOwVN5XJmrKDtkfFKuBlB9z8triFl4nCd7zDf/1RwhKh5gKSJ7qL8N
-         aFEH8wz5qn16fjpUVGLpZkXZMZdXdRhREi3KHmt7stOGLjf2CmTeNkXBRn+fB55kmuMI
-         eKyA==
-X-Forwarded-Encrypted: i=1; AJvYcCUQT533/rkdRnuvApf9RgqDp4NZsjl3b6PruuIftM9bZj6vh9IudLxvlF/E7D77torrp1gESNT5@lists.linux.dev
-X-Gm-Message-State: AOJu0YyAT5IfYHuWvFr7QGAynQd1dDJP5IVD+aLg0n7h9+YXAN2Jbbu0
-	p8dfg7PsdtJrFD5ZZjP7EJdpgqCLWbObB14m3DlJwJGShj17Vpbngh9cIi+ODAb9OdQ=
-X-Gm-Gg: AY/fxX5SlZ7mP03k6x4xR3mxHhP5SLjw6dPRaGnb/53xXn/opbCE4NRWdKCvbYLuUPq
-	u0pXhfg1dd+Dz5E9SOK3Sq5L4xcndfL42sSeG9v44rPlPD9IZOqaJSCEEwOBjz6M5VW9PhMHcJU
-	odspeEDoH5zVZ/KPr9rZyS0qkEfbexnilUTS0voqfle7MUTC9Yr/25vzx6lVpPr5Beur0QBnBY1
-	cMgf92bHgTHyIxXQuVhcqVntz+FzDY1d7AbGiFowS6svqmjuXdk/GAmhiEQAEAYg8PCbosKC/n3
-	j6f0fDQe82lKC5dirYj3Xxe8bmDOnWizfNRwaunNmGA1ZXESAv5D1j7B8Mehky1uq6NhYMtzxcn
-	ByVvtv5i2HFMnJ9zWx681s8LNt2RiGVaZ1pSbgK1HWAstButKG+6YWltALzw4pV563wKaVMMoFF
-	8W2fda7G0btoaJY1D8fhJ7072Ze10kagEjKapx5+ppEt1AvkTz
-X-Received: by 2002:a05:6102:38d4:b0:5ef:233e:6b25 with SMTP id ada2fe7eead31-5f16cb3b278mr1757910137.13.1768330517077;
-        Tue, 13 Jan 2026 10:55:17 -0800 (PST)
-Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com. [209.85.222.50])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-944124c087bsm20016318241.12.2026.01.13.10.55.16
-        for <ksummit@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Jan 2026 10:55:16 -0800 (PST)
-Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-93f5910b06cso86262241.0
-        for <ksummit@lists.linux.dev>; Tue, 13 Jan 2026 10:55:16 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVGsSA77q1k5J559aIN/1s1ASDNuHFjUfIB32zHeG9p+qBJidroyQCeeVDTDMENy2QckFWDNFiz@lists.linux.dev
-X-Received: by 2002:a05:6102:38d4:b0:5ef:233e:6b25 with SMTP id
- ada2fe7eead31-5f16cb3b278mr1757899137.13.1768330516560; Tue, 13 Jan 2026
- 10:55:16 -0800 (PST)
+	s=arc-20240116; t=1768332134; c=relaxed/simple;
+	bh=fliP3u1AyBaQEW8zTrzwBptj8SvPrltHjbIqzwRwQo8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=TIPWu0qK8X61QTbMB+Ggz73Os8TnKpuBuVu9RDtP94uWGnwH7m4X6S/yed+7OkslZYs7EN04NUnQKHGY8ToNp+EcQGaSSD0vbctA1XBdrlU7SxVRpkG7z52O4f6TcxuHu7n/RgKKTJn0H11qMqP/tIpbzt2mRVhAjf9i2kEt2GA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=Q9VH+1ob; arc=none smtp.client-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 0235E40C7C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1768332124; bh=hkrY2AHtEhWHIFzb7ipRx+NbI+67cl2riZoulH8Zh4M=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Q9VH+1obGDExVRj9iX1SeIQmx3kLPJoUaGi6wooBhiaT5f+Bm8hZ1JRcTYI5yvcHx
+	 E3kLjSKdKafoxlH1u1E0DO8CUMp4twjGYjR1XlEXCIn9uS5K2zNpNTya13/PYlCtXv
+	 /YKAid7tOhRDYY/PbzkiXYLJKykI9xtVKxQ7ISKWA3jHHbGEjBvhYuonVvtZF59q7N
+	 Kt8/zDDsZV+YK4mOrXh2BURoaKacs6v2HaSdyVL3hBsJ6vAbWwKXJ6+9ROHz1TFtXM
+	 cYL8uWrbtEduANjz0YV8K1WYy8TAkBoqp/vU10xiu3nKJEeLoCNcyKHdXhd0ZhWl+b
+	 PKqHe1mNfmiZA==
+Received: from localhost (unknown [IPv6:2601:280:4600:27b::1fe])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id 0235E40C7C;
+	Tue, 13 Jan 2026 19:22:03 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, Shuah Khan
+ <shuah@kernel.org>, Kees Cook <kees@kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, Luis
+ Chamberlain <mcgrof@kernel.org>, SeongJae Park <sj@kernel.org>, Dan
+ Williams <dan.j.williams@intel.com>, Steven Rostedt <rostedt@goodmis.org>,
+ "Paul E . McKenney" <paulmck@kernel.org>, Simon Glass
+ <simon.glass@canonical.com>, NeilBrown <neilb@ownmail.net>, Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>, Theodore Ts'o <tytso@mit.edu>, Sasha
+ Levin <sashal@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ workflows@vger.kernel.org, ksummit@lists.linux.dev
+Subject: Re: [PATCH] [v5] Documentation: Provide guidelines for
+ tool-generated content
+In-Reply-To: <20260113000612.1133427-1-dave.hansen@linux.intel.com>
+References: <20260113000612.1133427-1-dave.hansen@linux.intel.com>
+Date: Tue, 13 Jan 2026 12:22:03 -0700
+Message-ID: <875x95xqqs.fsf@trenco.lwn.net>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260113000612.1133427-1-dave.hansen@linux.intel.com>
- <20260113103609.GA1902656@google.com> <921e154d-7e54-40ff-ae85-97b6cee7f8b2@intel.com>
-In-Reply-To: <921e154d-7e54-40ff-ae85-97b6cee7f8b2@intel.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 13 Jan 2026 19:55:06 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdUJX4DZzUuy9k8WBtRJm2QHdN=xQ9zfXudTPdHyLRvUrw@mail.gmail.com>
-X-Gm-Features: AZwV_QhkcBOxhfA-T8w_e1l-LSq2Jx22XOANMJuW-iYC-FegHcdFGbGLo6DoatQ
-Message-ID: <CAMuHMdUJX4DZzUuy9k8WBtRJm2QHdN=xQ9zfXudTPdHyLRvUrw@mail.gmail.com>
-Subject: Re: [PATCH] [v5] Documentation: Provide guidelines for tool-generated content
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Lee Jones <lee@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	linux-kernel@vger.kernel.org, Shuah Khan <shuah@kernel.org>, 
-	Kees Cook <kees@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, SeongJae Park <sj@kernel.org>, 
-	Dan Williams <dan.j.williams@intel.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	"Paul E . McKenney" <paulmck@kernel.org>, Simon Glass <simon.glass@canonical.com>, 
-	NeilBrown <neilb@ownmail.net>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Theodore Ts'o" <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Vlastimil Babka <vbabka@suse.cz>, workflows@vger.kernel.org, ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Tue, 13 Jan 2026 at 19:05, Dave Hansen <dave.hansen@intel.com> wrote:
+Dave Hansen <dave.hansen@linux.intel.com> writes:
+
+> In the last few years, the capabilities of coding tools have exploded.
+> As those capabilities have expanded, contributors and maintainers have
+> more and more questions about how and when to apply those
+> capabilities.
 >
-> On 1/13/26 02:36, Lee Jones wrote:
-> ...
-> >> +Even if your tool use is out of scope, you should still always consid=
-er
-> >> +if it would help reviewing your contribution if the reviewer knows
-> >> +about the tool that you used.
-> >
-> > Parsing ... okay, that took a few goes.  How about:
-> >
-> >   Even if disclosure of your tool isn't mandated, providing this contex=
-t
-> >   often helps reviewers evaluate your contribution more effectively.
-> >   Clear documentation of your workflow ensures a faster review with les=
-s
-> >   contention.
-> I agree that the sentence is hard to parse. But, I want to explicitly
-> say "out of scope" to tie this in to the rest of the section. How about
-> this?
->
->         Even if your tool use is out of scope, consider disclosing how
->         you used the tool. Clear documentation of your workflow often
->         helps reviewers do their jobs more efficiently.
->
-> BTW, I do think we're well into diminishing returns territory. I'll roll
-> this into a v6 if there's a v6. But, if it's pulled in as-is, I think
-> the original can stay without causing too much harm.
->
-> ...>> +Some examples:
-> >> + - Any tool-suggested fix such as ``checkpatch.pl --fix``
-> >> + - Coccinelle scripts
-> >> + - A chatbot generated a new function in your patch to sort list entr=
-ies.
-> >> + - A .c file in the patch was originally generated by a coding
-> >> +   assistant but cleaned up by hand.
-> >> + - The changelog was generated by handing the patch to a generative A=
-I
-> >> +   tool and asking it to write the changelog.
-> >> + - The changelog was translated from another language.
-> >
-> > Nit: Suggest removing the sporadic use of full-stops (periods) across a=
-ll lists.
-> >
-> > Or add them everywhere - so long as it's consistent.
->
-> The rule that I read is that when the bullets are full, complete
-> sentences, you should use periods. When they are just nouns or shards of
-> sentences, leave off the periods.
+> Add new Documentation to guide contributors on how to best use kernel
+> development tools, new and old.
 
-Or for the latter: use commas for all but the last one, and finish
-with a period.
+So, in substance, this seems fine to me.
 
-Just my 0.02=E2=82=AC, from an old LaTeX user...
+Naturally I have some nits I'll point out below.  But if you're tired of
+this I'm happy to apply this version as well, let me know.
 
-P.S. Linus seems to disagree, as he consistently drops the carefully
-     placed commas and periods when merging my pull requests...
+For the record, going forward, I'm likely to treat proposed changes to
+this file the way I do coding-style.rst - I'll be highly reluctant to
+apply them without a strong sense of community consensus behind them.
 
-Gr{oetje,eeting}s,
+[...]
 
-                        Geert
+> diff --git a/Documentation/process/generated-content.rst b/Documentation/process/generated-content.rst
+> new file mode 100644
+> index 000000000000..867bf8894289
+> --- /dev/null
+> +++ b/Documentation/process/generated-content.rst
+> @@ -0,0 +1,108 @@
+> +============================================
+> +Kernel Guidelines for Tool-Generated Content
+> +============================================
+> +
+> +Purpose
+> +=======
+> +
+> +Kernel contributors have been using tooling to generate contributions
+> +for a long time. These tools can increase the volume of contributions.
+> +At the same time, reviewer and maintainer bandwidth is a scarce
+> +resource. Understanding which portions of a contribution come from
+> +humans versus tools is helpful to maintain those resources and keep
+> +kernel development healthy.
+> +
+> +The goal here is to clarify community expectations around tools. This
+> +lets everyone become more productive while also maintaining high
+> +degrees of trust between submitters and reviewers.
+> +
+> +Out of Scope
+> +============
+> +
+> +These guidelines do not apply to tools that make trivial tweaks to
+> +preexisting content. Nor do they pertain to AI tooling that helps with
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+It seems you have gone out of your way to avoid using "AI" and refer to
+"tooling" in general, so it's a bit strange to see that term here,
+especially at the head of a list of mostly non-AI tasks.
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+> +menial tasks. Some examples:
+> +
+> + - Spelling and grammar fix ups, like rephrasing to imperative voice
+> + - Typing aids like identifier completion, common boilerplate or
+> +   trivial pattern completion
+> + - Purely mechanical transformations like variable renaming
+> + - Reformatting, like running Lindent, ``clang-format`` or
+> +   ``rust-fmt``
+> +
+> +Even if your tool use is out of scope, you should still always consider
+> +if it would help reviewing your contribution if the reviewer knows
+
+s/if/whether/
+
+> +about the tool that you used.
+> +
+> +In Scope
+> +========
+> +
+> +These guidelines apply when a meaningful amount of content in a kernel
+> +contribution was not written by a person in the Signed-off-by chain,
+> +but was instead created by a tool.
+> +
+> +Detection of a problem and testing the fix for it is also part of the
+> +development process; if a tool was used to find a problem addressed by
+> +a change, that should be noted in the changelog. This not only gives
+> +credit where it is due, it also helps fellow developers find out about
+> +these tools.
+> +
+> +Some examples:
+> + - Any tool-suggested fix such as ``checkpatch.pl --fix``
+> + - Coccinelle scripts
+> + - A chatbot generated a new function in your patch to sort list entries.
+> + - A .c file in the patch was originally generated by a coding
+> +   assistant but cleaned up by hand.
+> + - The changelog was generated by handing the patch to a generative AI
+> +   tool and asking it to write the changelog.
+> + - The changelog was translated from another language.
+> +
+> +If in doubt, choose transparency and assume these guidelines apply to
+> +your contribution.
+> +
+> +Guidelines
+> +==========
+> +
+> +First, read the Developer's Certificate of Origin:
+> +Documentation/process/submitting-patches.rst. Its rules are simple
+> +and have been in place for a long time. They have covered many
+> +tool-generated contributions. Ensure that you understand your entire
+> +submission and are prepared to respond to review comments.
+> +
+> +Second, when making a contribution, be transparent about the origin of
+> +content in cover letters and changelogs. You can be more transparent
+> +by adding information like this:
+> +
+> + - What tools were used?
+> + - The input to the tools you used, like the Coccinelle source script.
+> + - If code was largely generated from a single or short set of
+> +   prompts, include those prompts. For longer sessions, include a
+> +   summary of the prompts and the nature of resulting assistance.
+> + - Which portions of the content were affected by that tool?
+> + - How is the submission tested and what tools were used to test the
+> +   fix?
+> +
+> +As with all contributions, individual maintainers have discretion to
+> +choose how they handle the contribution. For example, they might:
+> +
+> + - Treat it just like any other contribution.
+> + - Reject it outright.
+> + - Treat the contribution specially like reviewing with extra scrutiny,
+
+s/ like/, for example,/
+
+> +   or at a lower priority than human-generated content.
+> + - Suggest a better prompt instead of suggesting specific code changes.
+> + - Ask for some other special steps, like asking the contributor to
+> +   elaborate on how the tool or model was trained.
+> + - Ask the submitter to explain in more detail about the contribution
+> +   so that the maintainer can be assured that the submitter fully
+> +   understands how the code works.
+> +
+> +If tools permit you to generate a contribution automatically, expect
+> +additional scrutiny in proportion to how much of it was generated.
+> +
+> +As with the output of any tooling, the result may be incorrect or
+> +inappropriate. You are expected to understand and to be able to defend
+> +everything you submit. If you are unable to do so, then do not submit
+> +the resulting changes.
+> +
+> +If you do so anyway, maintainers are entitled to reject your series
+> +without detailed review.
+> diff --git a/Documentation/process/index.rst b/Documentation/process/index.rst
+> index aa12f2660194..e1a8a31389f5 100644
+> --- a/Documentation/process/index.rst
+> +++ b/Documentation/process/index.rst
+> @@ -68,6 +68,7 @@ beyond).
+>     stable-kernel-rules
+>     management-style
+>     researcher-guidelines
+> +   generated-content
+
+At some point, $SOMEBODY should probably add a brief reference to
+submitting-patches.rst as well.
+
+Thanks,
+
+jon
 
