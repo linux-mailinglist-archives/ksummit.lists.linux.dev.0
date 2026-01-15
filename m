@@ -1,118 +1,130 @@
-Return-Path: <ksummit+bounces-2776-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2777-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BCAAD1B9F4
-	for <lists@lfdr.de>; Tue, 13 Jan 2026 23:44:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85D4BD2528A
+	for <lists@lfdr.de>; Thu, 15 Jan 2026 16:06:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 90AD93019BD3
-	for <lists@lfdr.de>; Tue, 13 Jan 2026 22:44:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6E8923005FC6
+	for <lists@lfdr.de>; Thu, 15 Jan 2026 15:04:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D56A4368271;
-	Tue, 13 Jan 2026 22:44:16 +0000 (UTC)
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2485F3AA185;
+	Thu, 15 Jan 2026 15:04:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YHx2SFf8"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0AB280335
-	for <ksummit@lists.linux.dev>; Tue, 13 Jan 2026 22:44:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1235C352C5E;
+	Thu, 15 Jan 2026 15:04:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768344256; cv=none; b=RUf2JUwD66D+BWmbhq7yAJaAwTPyMiU2UPbKq9Bi1CxhtjIQ1yiJXUj8C1pFQk9VsSpYsHj58QUgGz3Y2EjtuL89TgH8g4+x2eoQk4wmhNC1Crki11c9C8tNzgNnzE80alYhEy2DES8fy2xbvGdgogxMICL/fK1rAnczAW7AFO8=
+	t=1768489465; cv=none; b=sibYJme1dnTRctX/rsz65vErGXtZUlsvXnH8ktFiaP9GJXSXkc8bPJbAHYyzzAn9UsagDnZu+TXJjAtKMmN3FPsjGi3g/tE6gDtApcRVf6FVhpVrZsjFWpXYz6Ivx+/Xw7ZU5cbFLewJNiSsg7/TqP+NKMa9BJA21ilmo9HSp78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768344256; c=relaxed/simple;
-	bh=OS6Xlc2NavHVpQF5AXOJXg4jonR/sgRyrGwnpDxrZsw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E2j4XppetsfHz5JZN8k+L3GApzOeGuvuZAGL3FwbpVItzTvtWIJvGkhRfrcT4t9DorsuhOz4S/dzm1v/jg3N78sK/1agsnGXuWDDxRYm8P0R53CKUl3RscHiVY4Q+8FzOU6VeFWrjRKdvKhwGDSNf09Rf9JkcjIroDAayqv57Bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BC395B6B50;
-	Tue, 13 Jan 2026 22:44:06 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf17.hostedemail.com (Postfix) with ESMTPA id C634018;
-	Tue, 13 Jan 2026 22:44:02 +0000 (UTC)
-Date: Tue, 13 Jan 2026 17:44:08 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: dan.j.williams@intel.com, Dan Carpenter <dan.carpenter@linaro.org>, Dave
- Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, Shuah
- Khan <shuah@kernel.org>, Kees Cook <kees@kernel.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, Luis
- Chamberlain <mcgrof@kernel.org>, SeongJae Park <sj@kernel.org>, "Paul E .
- McKenney" <paulmck@kernel.org>, Simon Glass <simon.glass@canonical.com>,
- NeilBrown <neilb@ownmail.net>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, Theodore Ts'o <tytso@mit.edu>, Jonathan
- Corbet <corbet@lwn.net>, Vlastimil Babka <vbabka@suse.cz>,
- workflows@vger.kernel.org, ksummit@lists.linux.dev
+	s=arc-20240116; t=1768489465; c=relaxed/simple;
+	bh=W+/hsOufitxJT0wRIw4Z0krHmUQrYDhKT22VqlQwNQw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JaWyt+C4+PUe53vCW7ubCmF1e6OK2Ktvbei8zM2jIYq+7QMHXcnbd+G1YEIKAQWEFVnbKf1vO+ts4aHVU6xNTgrxuSpZErlZ1IQx1y+S9wCLfqc5NJU1FURJpodCIuFbwYz2/wdZPsfcU9qx4SVquVdGDG+Ai7by6vw44Q1dG4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YHx2SFf8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5230BC116D0;
+	Thu, 15 Jan 2026 15:04:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768489463;
+	bh=W+/hsOufitxJT0wRIw4Z0krHmUQrYDhKT22VqlQwNQw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YHx2SFf8oSvoj2ZSec3bfA3py8uTdV71Qt4zAQ3Cw2mm+LpuaZf3DGBrRSIXywsIp
+	 rEDCvv+4liievZP+fv2Zn5kxnnaPlht6E+2nmyu9ps7bVqAEcmOnRs1YBDzpCVdTyr
+	 /X/rU/O7VHNLB2o8zWNpcZMv44QbJEsnT26lgkCl1X/OAvr0fhJ7Uv1z0dOxAyaALy
+	 CAVpndIYRzqcGdMwepQxJVr+Dlno24yz8L32lKXAHIByXS1ArkZIIlWPoxzFYkSpBm
+	 sHS7PDygssC5FV51089NgIfaKvJBcW02iOLKq0vJy+/4QFWMREZJH6j86X1Fcwd+Wu
+	 07YZMKVYhHKBQ==
+Date: Thu, 15 Jan 2026 15:04:16 +0000
+From: Lee Jones <lee@kernel.org>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org,
+	Shuah Khan <shuah@kernel.org>, Kees Cook <kees@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>, SeongJae Park <sj@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Simon Glass <simon.glass@canonical.com>,
+	NeilBrown <neilb@ownmail.net>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Theodore Ts'o <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Vlastimil Babka <vbabka@suse.cz>,
+	workflows@vger.kernel.org, ksummit@lists.linux.dev
 Subject: Re: [PATCH] [v5] Documentation: Provide guidelines for
  tool-generated content
-Message-ID: <20260113174408.3fe7497a@gandalf.local.home>
-In-Reply-To: <aWaSQsl8h2wnBjzj@laps>
+Message-ID: <20260115150416.GE2842980@google.com>
 References: <20260113000612.1133427-1-dave.hansen@linux.intel.com>
-	<aWXYi35pu9IHf2eE@stanley.mountain>
-	<69668cfc63bb1_875d1004@dwillia2-mobl4.notmuch>
-	<aWaSQsl8h2wnBjzj@laps>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+ <20260113103609.GA1902656@google.com>
+ <921e154d-7e54-40ff-ae85-97b6cee7f8b2@intel.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: fbn8ptutbbcc88bmfw75fsn4h93afj8a
-X-Rspamd-Server: rspamout01
-X-Rspamd-Queue-Id: C634018
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX18Bg5wSBjJZUAZ5BYRHIY9IW/Z2UnHjT4E=
-X-HE-Tag: 1768344242-648761
-X-HE-Meta: U2FsdGVkX1+TZYzQr2Gv6HRBy+bvSfkXRdzc4VasN8nzwy66DVBkNmLwkJ8aQUcxe1bH7FrDrI0jVV6VdOknfgbgL5Gp9D4nWQZoC3DjPNcVAvxhYkJvx15cexFZHNNK0LxXjSR7SZ6rMXpT2/Dg+NGm2Ig+GxbwR0QDgOKLekXRsstUZ8UpJjy4fl1Zo2vmgdI3la4JC3zdtw6WC73qKOXr6nILBqHRhkmGIu9ETHZHk3rz0TH6r75Tcz7sWUtPIfRpqjUmXxFbXxR0GD6RZqKZqQTPGc4wSf6wMCwA9DL74mXkL7i8GzKJvgX7WEgRy0Et2Oxi+M9O8WMvl7OoxQX4jjaEAgII
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <921e154d-7e54-40ff-ae85-97b6cee7f8b2@intel.com>
 
-On Tue, 13 Jan 2026 13:43:14 -0500
-Sasha Levin <sashal@kernel.org> wrote:
+On Tue, 13 Jan 2026, Dave Hansen wrote:
 
-> >Contributions are accepted in large part based in trust in the author.
-> >So much so that even long time contributors self censor, self mistrust,
-> >based on the adage "debugging is harder than developing, if you develop
-> >at the limits of your cleverness you will not be able to debug the
-> >result." Tools potentially allow you to develop beyond the limits of
-> >your own cleverness which implicates the result as "undebuggable" and
-> >unmaintainable.
-
-Trust does play a large role here. I get annoyed when someone I never heard
-of sends me a patch because a tool told them it was wrong but when looking
-at the code, the tool was wrong.
-
-Every so often Dan sends me one of these types of patches because of a
-false positive in smatch or something like that. But Dan also sends me
-overwhelming more patches that actual fix real bugs. The signal to noise
-ratio is rather high with Dan so I never get annoyed from a missed patch
-here or there.
-
-But someone I never heard of sending me one of these are totally annoying
-as the signal to noise ratio is 0 for them :-p
-
-> >
-> >So a simple rule of "generally you should be able to demonstrate the
-> >ability to substantively review a contribution of similar complexity
-> >before expecting the kernel community to engage in earnest" mitigates
-> >the asymmetric threat of AI contributions *and* contributors that have
-> >not built-up enough trust capital with their upstream maintainer.  
+> On 1/13/26 02:36, Lee Jones wrote:
+> ...
+> >> +Even if your tool use is out of scope, you should still always consider
+> >> +if it would help reviewing your contribution if the reviewer knows
+> >> +about the tool that you used.
+> > 
+> > Parsing ... okay, that took a few goes.  How about:
+> > 
+> >   Even if disclosure of your tool isn't mandated, providing this context
+> >   often helps reviewers evaluate your contribution more effectively.
+> >   Clear documentation of your workflow ensures a faster review with less
+> >   contention.
+> I agree that the sentence is hard to parse. But, I want to explicitly
+> say "out of scope" to tie this in to the rest of the section. How about
+> this?
 > 
-> Looking at recent history (v6.12..v6.18) we had 1902 authors (a third of
-> overall contributors) who contributed a single commit. Out of those 1902, only
-> 177 have a Reviewed-by tag pointing to them.
+> 	Even if your tool use is out of scope, consider disclosing how
+> 	you used the tool. Clear documentation of your workflow often
+> 	helps reviewers do their jobs more efficiently.
 > 
-> With a rule like the above, 1700+ contributors would have not been able to send
-> their patch in.
+> BTW, I do think we're well into diminishing returns territory. I'll roll
+> this into a v6 if there's a v6. But, if it's pulled in as-is, I think
+> the original can stay without causing too much harm.
 
-But were these all tool submissions?
+Agree.  Thanks for considering.
 
-I also wouldn't expect (or particularly want) new contributors doing
-reviews. I think "Reported-by" is a much better metric for new submitters.
-I trust people who found real bugs more than people that just slap their
-"Reviewed-by" tag on something they probably don't understand.
+> ...>> +Some examples:
+> >> + - Any tool-suggested fix such as ``checkpatch.pl --fix``
+> >> + - Coccinelle scripts
+> >> + - A chatbot generated a new function in your patch to sort list entries.
+> >> + - A .c file in the patch was originally generated by a coding
+> >> +   assistant but cleaned up by hand.
+> >> + - The changelog was generated by handing the patch to a generative AI
+> >> +   tool and asking it to write the changelog.
+> >> + - The changelog was translated from another language.
+> > 
+> > Nit: Suggest removing the sporadic use of full-stops (periods) across all lists.
+> > 
+> > Or add them everywhere - so long as it's consistent.
+> 
+> The rule that I read is that when the bullets are full, complete
+> sentences, you should use periods. When they are just nouns or shards of
+> sentences, leave off the periods.
+> 
+> I _think_ that's the consensus for how to punctuate bulleted list items.
+> 
+> But I don't remember where I read that, if it was in Documentation/
+> somewhere or it was some random rule on the Internet I decided to apply.
 
--- Steve
+The non-consistency of it makes me twitch, but perhaps just my issue.
+
+-- 
+Lee Jones [李琼斯]
 
