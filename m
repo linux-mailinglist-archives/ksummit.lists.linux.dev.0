@@ -1,135 +1,81 @@
-Return-Path: <ksummit+bounces-2784-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2785-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 934AAD39970
-	for <lists@lfdr.de>; Sun, 18 Jan 2026 20:33:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70DDAD3999D
+	for <lists@lfdr.de>; Sun, 18 Jan 2026 20:52:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B69AE3007E7A
-	for <lists@lfdr.de>; Sun, 18 Jan 2026 19:33:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BC99C30080CD
+	for <lists@lfdr.de>; Sun, 18 Jan 2026 19:52:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEF3F279DB1;
-	Sun, 18 Jan 2026 19:33:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HISugnnv"
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C699124466B;
+	Sun, 18 Jan 2026 19:52:48 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2067248873
-	for <ksummit@lists.linux.dev>; Sun, 18 Jan 2026 19:33:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406F854652
+	for <ksummit@lists.linux.dev>; Sun, 18 Jan 2026 19:52:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768764829; cv=none; b=uwNOIT48rTwd+NmTU9oFTlrX7GhxzYQhG7lwv81lr5LrhvhIm1EDG0mX7SbNA2X48LVbgSHAWSdYfKarYYJaPosZRhbG+w9Nt4EogW4USAcCUUiWZhjP8gj3xiSLQ0blF3kIxkFjihI6MMlxGRnKQiezr+1ynNgzh1Gkq2gCAWM=
+	t=1768765968; cv=none; b=Dq63ssC9dQY4JYN/KeJLOsVQeKcEr/NZ07zXjPBLPVC3qA4K+GEu3VdauXDUQdqgpLs9xrrAFX2DGTY3O4eGpTTge5wQOtNfEOccul6Ef1lZNLjIICQ9Zs3jnNLNabRNroPJ4OrAr5DwQsGefczD3J08USgSUqrMk/SBRbPu7vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768764829; c=relaxed/simple;
-	bh=AKR3eMWL6zHg+nKctSxSWnd3qEwAX5BIgCGV2foHpqc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Dt0yWd7TzsHRF+tMuJEshyH+gDDvdopyDd00VoPE5+P2HgoJrWWjjP+Essn30+h8YhIVZ8P1Lde0Xbvwa0go9mVNO235uVTY3pXGjINfjE/EyVxndpBM74WTUpCIMEWZPx3bNXIFf37WNPO3DfI0opO3BuuXwSc6xZAdIrr7z8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HISugnnv; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-47ee301a06aso32388865e9.0
-        for <ksummit@lists.linux.dev>; Sun, 18 Jan 2026 11:33:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1768764826; x=1769369626; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DCGffHwXbO5L2VRVDSYUp8+JhXbgsDHUs3A9I1vIj08=;
-        b=HISugnnvT+dYwsO0dgSbGoggP1gCmVK5xUwsDWypnM8fYgfKGF8P5aDx+BeGd7OZfX
-         Z72wDUpEsqPB+wKr1SWU4soRurzzLZK/VvWN4yj/9UfWrbCTWtbxMnVqm+W4+GrTTCwH
-         cDSrwZPJ8BpYnq3Y1pT9TB74sfsGxiFycjkaX+FxHSyxvE015kFN23dFatxg9e+Iv4dy
-         ekJtBUOzxX/6E6deeuAES1+v8ct7qBY+CsvojnYbNq81Z9w7HeM0P2GQWc59rU9GGdLq
-         1jsGz/yZNF8jy+lvNbRdJnXOAlFSkTamVkisQily1oNZSNgMpaELq73B0s456FZySuJm
-         KI9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768764826; x=1769369626;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DCGffHwXbO5L2VRVDSYUp8+JhXbgsDHUs3A9I1vIj08=;
-        b=JkCdeiypqZ3wgmhrf4OSiEcYyX6nYSGnY0y5GZvx1SGeYubZf6dP4nXNnxW6a7apAe
-         RFp6tsLXm6ZblkTBb/HqdvUl8MFCJ8Sh2Is+TCr7xAoUzPYn8cfK+q0wwNnDN7e9YmRb
-         0DU1MJz45XMT6Dmvofz600+HvU6nEcejnMxjj2EQ4Bi5IA8eJ6PLFlF6MY+5bmAPsnXV
-         ssDQkDbdfRT4uVYbDZ9QgxEFLzMV7dJYRaCiMqu2k+/KPgndx+1qTpixamkVuiY3mTMn
-         tj/v5A+ahIlp+ysorNEkWo/v8M7XVuo0l2AmF8aLc9giHA2CkbAgJ6fwoqXNk8FR1+0U
-         tuRA==
-X-Forwarded-Encrypted: i=1; AJvYcCWVUY5epTMKhwXiGSoY5NVTxtEHQ/tz9xZBDs0t1mu/ySlNX4VNKCOr10VAlFaGGlfX+siSIs4B@lists.linux.dev
-X-Gm-Message-State: AOJu0YzBtY/eJqvw5SHdANTMH0U9WCK4DeP0F/09QpElYr6RO6JRcFGX
-	irIwvKW46hA7qijdcHXcXiCwfT3v4CM4pNHCBzeUELu6kn7LkDtNKP4pHxvo3z/4CYNVjywtAVk
-	yflBt
-X-Gm-Gg: AY/fxX5jSMDAWvsxpEtb1z56BS2G8Ocz/3cF0ut0D14xeR8Igs4iAVXryQor6o5Tviv
-	VuYF9xSAxuzmH5unWlt4Abzr5/B4yGRAZwyF+Kfo0m8RqjSU/FRenbn30LR68MDytuZzDXH2DYb
-	ANE5d3dXeW+qiztmajf1L1Noa7l1GH6Vr4KsnP/jxA6vvcJOu367q3E/6bc5azeO8008YbtWTJz
-	UoFhBpkO2Q2h2zmd9eslUmMpFwAe5MyGghFmLlUYvcKUvWY8UUBOcZlAMosl1lc7xtEKRtYVmZm
-	9g5vdgmbDXk2HY1p7ygJ7wHudE52CK609kI694sNyxV+uJaW1ONlaAFIKaXXr/OiXKWC7jvN9Uy
-	Wy97NOc2/AUEtwTHu//c21+Eh2bZUtgv4mjIvcl0WvGHJOJeB2y5JrtS55OKOG//ThYBzi4cFhW
-	58P0sDiHDxc4c/tGk7
-X-Received: by 2002:a05:600c:198e:b0:477:9976:9e1a with SMTP id 5b1f17b1804b1-4801eaadc94mr100700555e9.6.1768764826120;
-        Sun, 18 Jan 2026 11:33:46 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4801e8c0499sm158271425e9.9.2026.01.18.11.33.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Jan 2026 11:33:45 -0800 (PST)
-Date: Sun, 18 Jan 2026 22:33:42 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	ksummit@lists.linux.dev, Dan Williams <dan.j.williams@intel.com>,
-	linux-kernel <linux-kernel@vger.kernel.org>
+	s=arc-20240116; t=1768765968; c=relaxed/simple;
+	bh=eCg4bDmGFp0PCLIzYlb5cVvyey4yicKX0iM1roFTk1U=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Or1IRN0qOvU48SLKIwircSDm52aAH0A3Kk9H/xVDBvCsVjs5ZzkzHnib1UfqX+GmHGUhQM+livFov1qMnaSdiDksWgGdBb7mpyElCeLlCiO7pu5FAO7Yn17cl3PRWAI59yv24sdnQGV5nnbR+BjW7/UNYFA5pmbTpgBkOme9HLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com; spf=pass smtp.mailfrom=perches.com; arc=none smtp.client-ip=216.40.44.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
+Received: from omf18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DAB35B9BAC;
+	Sun, 18 Jan 2026 19:52:45 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf18.hostedemail.com (Postfix) with ESMTPA id 977E72F;
+	Sun, 18 Jan 2026 19:52:43 +0000 (UTC)
+Message-ID: <ff13a1753f2395ebfe4fe559958ae5af5b0b424b.camel@perches.com>
 Subject: Re: Clarifying confusion of our variable placement rules caused by
  cleanup.h
-Message-ID: <aW01ludvLz9xNzkd@stanley.mountain>
-References: <58fd478f408a34b578ee8d949c5c4b4da4d4f41d.camel@HansenPartnership.com>
- <7b37e1cb-271e-49fe-a3ee-5443006284e1@p183>
- <aVUUXAKjiNroU5tR@black.igk.intel.com>
- <20260102095029.03481f90@gandalf.local.home>
- <38d7b19f-b6ff-437b-bc88-fa2047ca556a@p183>
- <20260118110454.4d51a50a@robin>
- <d187bc4bb0ff1de7812cc4d1673a55b45cb59d68.camel@HansenPartnership.com>
+From: Joe Perches <joe@perches.com>
+To: Dan Carpenter <dan.carpenter@linaro.org>, James Bottomley
+	 <James.Bottomley@hansenpartnership.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Alexey Dobriyan
+ <adobriyan@gmail.com>,  Andy Shevchenko <andriy.shevchenko@intel.com>,
+ ksummit@lists.linux.dev, Dan Williams <dan.j.williams@intel.com>, 
+ linux-kernel <linux-kernel@vger.kernel.org>
+Date: Sun, 18 Jan 2026 11:52:42 -0800
+In-Reply-To: <aW01ludvLz9xNzkd@stanley.mountain>
+References:
+	 	<58fd478f408a34b578ee8d949c5c4b4da4d4f41d.camel@HansenPartnership.com>
+		 <7b37e1cb-271e-49fe-a3ee-5443006284e1@p183>
+		 <aVUUXAKjiNroU5tR@black.igk.intel.com>
+		 <20260102095029.03481f90@gandalf.local.home>
+		 <38d7b19f-b6ff-437b-bc88-fa2047ca556a@p183>
+	 <20260118110454.4d51a50a@robin>
+		 <d187bc4bb0ff1de7812cc4d1673a55b45cb59d68.camel@HansenPartnership.com>
+		 <aW01ludvLz9xNzkd@stanley.mountain>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d187bc4bb0ff1de7812cc4d1673a55b45cb59d68.camel@HansenPartnership.com>
+X-Rspamd-Server: rspamout07
+X-Rspamd-Queue-Id: 977E72F
+X-Stat-Signature: f74skjyegiwatqsgq88pzo9fdp91p7z3
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX1/NYgfxF9bapuXvvPHEH1ESHr6GygMsl6M=
+X-HE-Tag: 1768765963-338946
+X-HE-Meta: U2FsdGVkX19ieeHBDR2sVD7uIZ8YMkHvq/Sq+CoG4zQNU41C3vkXVffG6D5Cr058fQfPgp7K1tbD7kOspyhAjRStQ1IWe8cAFBqrEn1Q0RO1awqm+JzVX5zVeBjCwzeKDFaHmdJaXv477iGHJl4KO0e/z+WR9qjzkYdaKkIzE/pCt8dMRfkJJXy6ahaNh1CkMAtF8NoQvAqwbcGKCQ0zH7Xrbx0jCSuk3CDvrg/Zd94DPxa7Ux09m6Rx98xBNLNQO1XjbIHIREPUyT7SXlQozVs2YL/vSdmw+AMahWcAJCHXxm+0NW3nNIMVkGfCtzgD03qwqBfw3iJ3MnfQKgwwjtp4r7JdXgd6SLPPtrlCyK6QpP6UDkMDWhwMZNM8NprCrmk2b0sY5CRO6kUXXGmEOw==
 
-On Sun, Jan 18, 2026 at 02:17:30PM -0500, James Bottomley wrote:
-> > > Duplicate header are trivially caught by tooling.
-> > > 
-> > > But such rules aren't useful either -- I've seen that Python IDEs
-> > > hide import list by default (and probably manage it) because it is
-> > > not "real" code.
-> > > 
-> > > Rules for initializers can be harmful because ordering affects code
-> > > generation.
-> > 
-> > I agree. I still prefer the upside-down x-mas tree approach for
-> > declaring variables, but obviously if they also get initialized, then
-> > that trumps aesthetic reasoning.
-> 
-> How is any of this relevant to a style document?  You're quibbling over
-> individual maintainer foibles which, while they may be deeply held to
-> you (and obviously are relevant to contributors to your subsystems
-> because they need to know your foibles), can't be part of our universal
-> advice because not all maintainers agree (not even on the direction of
-> the Christmas Tree).
-> 
+On Sun, 2026-01-18 at 22:33 +0300, Dan Carpenter wrote:
+> If you're working across the entire kernel like I do then it's safest
+> to assume Upside Down Christmas Tree is the rule.
 
-The direction of the Christmas Tree is always upside down.  That's a
-standard in networking and a bunch of other subsystems.  Otherwise
-people don't care.  I've seen people who write code in Right Side Up
-Christmas Tree style but they don't reject code which is in a different
-order.
+It's still a silly rule.  Like James wrote: Foible.
 
-If you're working across the entire kernel like I do then it's safest
-to assume Upside Down Christmas Tree is the rule.
+I did about 10 years ago suggest a checkpatch test though:
 
-regards,
-dan carpenter
-
+https://lore.kernel.org/lkml/1478242438.1924.31.camel@perches.com/
 
