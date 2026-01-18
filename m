@@ -1,93 +1,100 @@
-Return-Path: <ksummit+bounces-2781-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2782-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00164D397B5
-	for <lists@lfdr.de>; Sun, 18 Jan 2026 17:05:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F1E9D3994F
+	for <lists@lfdr.de>; Sun, 18 Jan 2026 20:12:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6A1CC30056D6
-	for <lists@lfdr.de>; Sun, 18 Jan 2026 16:05:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 451E9300B825
+	for <lists@lfdr.de>; Sun, 18 Jan 2026 19:12:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 934E11FF7B3;
-	Sun, 18 Jan 2026 16:05:07 +0000 (UTC)
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2019C27144B;
+	Sun, 18 Jan 2026 19:12:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jsJ2dN2C"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E4B171CD
-	for <ksummit@lists.linux.dev>; Sun, 18 Jan 2026 16:05:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A233C17BCA;
+	Sun, 18 Jan 2026 19:12:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768752307; cv=none; b=AUwav5d2hDgW3drUXh/O64TQiayAHbmGoSIkTBoEnrPTCQwVAj5o7Ck2dwDE0UFoB9auGSky+bWmQrl8M/+f7nYnYCfkBMpgUe0VAOn7Rg3j2QM7Uxyl9PECNgMOinjKQyYSm/fQpcWePVMQuT2yhupkFL0L2XLYxHXXTHRg7TE=
+	t=1768763549; cv=none; b=lEQkSBELxF2gaRf8O+uYn0LhYzAz5ulchI/phkjoAPcBx6JYHVpsVxCNnDoT32ECKUOFHBJeTYcuBHbQj80d/MpaX/HRzE5TKYFSR22vzgk+NBZ3y+FYzAcUzrBgsAcaq0NFHyuxyuYbaGO4srqeGFAPoyc3/CywHmT965ZGE4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768752307; c=relaxed/simple;
-	bh=Ffo0W/ZOsqP785D+OFgx9XrayYUV+4phCNMC1hAClg4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T5uWMmI33KCVZLoAjOcun8d5KhjWVnUtjJDL+hD86HvZy9VzvFhw9gRCfJ/jVIUpF+sjBGbBsWx3w/dukx6LPpKrkGrbLRMt1l1fPHALbGsr2ajgmInXXoXzrfelwnF6jqd6j4r4hb1oj8cEyuUZGlF7Qq6beuYFw21mEwkdWZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 49F96C2079;
-	Sun, 18 Jan 2026 16:04:58 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf14.hostedemail.com (Postfix) with ESMTPA id 45C252D;
-	Sun, 18 Jan 2026 16:04:56 +0000 (UTC)
-Date: Sun, 18 Jan 2026 11:04:54 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, James Bottomley
- <James.Bottomley@hansenpartnership.com>, ksummit@lists.linux.dev, Dan
- Williams <dan.j.williams@intel.com>, linux-kernel
- <linux-kernel@vger.kernel.org>, Dan Carpenter <dan.carpenter@linaro.org>
+	s=arc-20240116; t=1768763549; c=relaxed/simple;
+	bh=QlGjU+xOiN1gnFNz/pVQI8fMJ3bEb+wR/xbROmy/6Es=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YR8Jv80NJ2jr4Xz1OSWq/4eDKlXFZo42RLgwR1gelX0SQNsaQixqgFUCb1e6xcgEtNWpWaNmN9iViS2mKIw0dVlw6OA6BI6wnj1LaDwzsbTt/0W01NmFVf/r9iId/Ko84eGY0MJpUUGjLe4RRpHUwHlecn/+eirLmeXSeMKu4T8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jsJ2dN2C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 399E9C116D0;
+	Sun, 18 Jan 2026 19:12:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768763549;
+	bh=QlGjU+xOiN1gnFNz/pVQI8fMJ3bEb+wR/xbROmy/6Es=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=jsJ2dN2CnRe2UO+AgdZANAK+J4b7N0JxxTP1zNiVK0DhIkNmbYOGS0HVEh8NdU8wb
+	 d7GzXFNzjNSKYRX4yp+/MA8pvfnY9IY8KopNAqkC5Ud9S8D0AHClqjP03DKO/hd7ax
+	 N8m2mhDcxlmb7A8U0jXpb3Di7sotSAOYmDQf6oRzsNwAPP1UJ/IsKBh5X3zeMZThsB
+	 EF/dzfU9jar+3DZ2cEuQkCepgNx3rA4V0ENGGRTIdJVz1Zcua5J8gawNGCyE49SbN/
+	 ajmEDO1fTdXvcljB7C88OzDpHS1zdnqbeNDMtKOgxbr0tQvgcegc3QgAvgNTLJAMUj
+	 Bq6Twhp4R81zw==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id BA56ECE0BA5; Sun, 18 Jan 2026 11:12:28 -0800 (PST)
+Date: Sun, 18 Jan 2026 11:12:28 -0800
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	ksummit@lists.linux.dev, Dan Williams <dan.j.williams@intel.com>,
+	linux-kernel <linux-kernel@vger.kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>
 Subject: Re: Clarifying confusion of our variable placement rules caused by
  cleanup.h
-Message-ID: <20260118110454.4d51a50a@robin>
-In-Reply-To: <38d7b19f-b6ff-437b-bc88-fa2047ca556a@p183>
+Message-ID: <43b01411-5125-4e23-a6ed-d9e818944557@paulmck-laptop>
+Reply-To: paulmck@kernel.org
 References: <58fd478f408a34b578ee8d949c5c4b4da4d4f41d.camel@HansenPartnership.com>
-	<7b37e1cb-271e-49fe-a3ee-5443006284e1@p183>
-	<aVUUXAKjiNroU5tR@black.igk.intel.com>
-	<20260102095029.03481f90@gandalf.local.home>
-	<38d7b19f-b6ff-437b-bc88-fa2047ca556a@p183>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+ <7b37e1cb-271e-49fe-a3ee-5443006284e1@p183>
+ <aVUUXAKjiNroU5tR@black.igk.intel.com>
+ <20260102095029.03481f90@gandalf.local.home>
+ <38d7b19f-b6ff-437b-bc88-fa2047ca556a@p183>
+ <20260118110454.4d51a50a@robin>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 1m7io55whfohtayu8zgfem3s1jotkje4
-X-Rspamd-Server: rspamout04
-X-Rspamd-Queue-Id: 45C252D
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX183q7gpo5GToNE1rBgBYWjgpZSa90InMpw=
-X-HE-Tag: 1768752296-667103
-X-HE-Meta: U2FsdGVkX18SZqvtGF5pspEuSly3UVOleiNmijpoFlSUHOmt+BpS/rAqIgB+4KeszWETkpm6oCvBdMIj6l4zKEGDMCK3MfplAgqqVEgZUidADYVDHg4X06HVJpbN7f3MYBLeidFJsSGjb8kpIYzxUW7R7QkTN4b4z75woYDD55e1oiat5BdJTQQPsjgYHVsvtqBPNV5IY28sD/LUOLasOY3pXQ9DmqVpylfe8POh8y4jtQvGPOWaoKeRdqY2ekb6n8FD7l0RQhLhZPVtpOXMeA6hN6f98jzb1ptYWCA18w8gMIXY6vbCxdgXRA/cx9OuWHG5R7Svut2DVkNIv2unSYQT7rnM6/qi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260118110454.4d51a50a@robin>
 
-On Sat, 17 Jan 2026 19:23:07 +0300
-Alexey Dobriyan <adobriyan@gmail.com> wrote:
-
-> Such rules for headers are mostly harmless -- headers are supposed to be
-> idempotent so ordering doesn't matter. But if ordering doesn't matter
-> why have a rule at all?
-
-As I mentioned, for aesthetic reasons only. If code is easy to look at,
-it's easier to review. Especially for those with OCD ;-)
-
+On Sun, Jan 18, 2026 at 11:04:54AM -0500, Steven Rostedt wrote:
+> On Sat, 17 Jan 2026 19:23:07 +0300
+> Alexey Dobriyan <adobriyan@gmail.com> wrote:
 > 
-> Duplicate header are trivially caught by tooling.
+> > Such rules for headers are mostly harmless -- headers are supposed to be
+> > idempotent so ordering doesn't matter. But if ordering doesn't matter
+> > why have a rule at all?
 > 
-> But such rules aren't useful either -- I've seen that Python IDEs hide
-> import list by default (and probably manage it) because it is not "real"
-> code.
+> As I mentioned, for aesthetic reasons only. If code is easy to look at,
+> it's easier to review. Especially for those with OCD ;-)
 > 
-> Rules for initializers can be harmful because ordering affects code
-> generation.
+> > 
+> > Duplicate header are trivially caught by tooling.
+> > 
+> > But such rules aren't useful either -- I've seen that Python IDEs hide
+> > import list by default (and probably manage it) because it is not "real"
+> > code.
+> > 
+> > Rules for initializers can be harmful because ordering affects code
+> > generation.
+> 
+> I agree. I still prefer the upside-down x-mas tree approach for
+> declaring variables, but obviously if they also get initialized, then
+> that trumps aesthetic reasoning.
 
-I agree. I still prefer the upside-down x-mas tree approach for
-declaring variables, but obviously if they also get initialized, then
-that trumps aesthetic reasoning.
+Alphabetic order.  Works for Kconfig "select" statements.  ;-)
 
--- Steve
-
+							Thanx, Paul
 
