@@ -1,92 +1,164 @@
-Return-Path: <ksummit+bounces-2786-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2787-lists=lfdr.de@lists.linux.dev>
 X-Original-To: lists@lfdr.de
 Delivered-To: lists@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BF8AD399EE
-	for <lists@lfdr.de>; Sun, 18 Jan 2026 22:14:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 776F6D3B7CF
+	for <lists@lfdr.de>; Mon, 19 Jan 2026 20:58:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 175F83001637
-	for <lists@lfdr.de>; Sun, 18 Jan 2026 21:14:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E7324305BA36
+	for <lists@lfdr.de>; Mon, 19 Jan 2026 19:57:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F6B26CE3F;
-	Sun, 18 Jan 2026 21:14:23 +0000 (UTC)
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E038D2E764D;
+	Mon, 19 Jan 2026 19:57:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ImvQATFy"
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78DF381AF
-	for <ksummit@lists.linux.dev>; Sun, 18 Jan 2026 21:14:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CDE26B2DA
+	for <ksummit@lists.linux.dev>; Mon, 19 Jan 2026 19:57:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768770863; cv=none; b=O8dG71JRBBdSGBCd2fJyF1VdWRA9qGq7nDtl+D5nUxOFeaRi5yUj6lZiOKUk6F9A0ovUwmfW3YE2wVAd7Qr4MPuZb9tVcf2nsXl+8xo7g2VzVgJV42GLHY3jXaZzzC13iEQ0Lt9Dj6KUXK0Q64Lwx1eA2rapFFhGYW0h8BSBLi4=
+	t=1768852653; cv=none; b=Onjd6HLZtPbWyA1C76etLPfO2Bhdx891ttvLuSPc94dv6QsUKSC5BrLsnN/ot+7hTi56XhTMirSGME9tnXrmf4j60m5IiRtDgkyA04DMopYlwSBdeHYlI7UFjfsHJNKvJVOOIgZdmEl95E1mlH0tjT2ZWCXbnQf/ISERnovY3EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768770863; c=relaxed/simple;
-	bh=UeReLyqPeeae1u6C75RcwhMLaFTC4K3UKQbIFG5seCU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JOTpBHmKCQStMm/tTZDh9no1dQ05yw40IJwYs50JwJB8DNjEdacMeo+mLlpCiDC9zzwT/fVL6Jm19MwiOWwmw432uF9K6/dzdJSfldsCuWoF0CbHB/rYcz/3neuiTuMDtu4Aod50huxfj8qta+tfZ7Xuxmxksj+uTl5l1kWUX3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0F4131605BC;
-	Sun, 18 Jan 2026 21:07:08 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf05.hostedemail.com (Postfix) with ESMTPA id 103E22000D;
-	Sun, 18 Jan 2026 21:07:05 +0000 (UTC)
-Date: Sun, 18 Jan 2026 16:07:04 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>, Andy Shevchenko
- <andriy.shevchenko@intel.com>, ksummit@lists.linux.dev, Dan Williams
- <dan.j.williams@intel.com>, linux-kernel <linux-kernel@vger.kernel.org>,
- Dan Carpenter <dan.carpenter@linaro.org>
-Subject: Re: Clarifying confusion of our variable placement rules caused by
- cleanup.h
-Message-ID: <20260118160704.4f7dda8c@robin>
-In-Reply-To: <d187bc4bb0ff1de7812cc4d1673a55b45cb59d68.camel@HansenPartnership.com>
-References: <58fd478f408a34b578ee8d949c5c4b4da4d4f41d.camel@HansenPartnership.com>
-	<7b37e1cb-271e-49fe-a3ee-5443006284e1@p183>
-	<aVUUXAKjiNroU5tR@black.igk.intel.com>
-	<20260102095029.03481f90@gandalf.local.home>
-	<38d7b19f-b6ff-437b-bc88-fa2047ca556a@p183>
-	<20260118110454.4d51a50a@robin>
-	<d187bc4bb0ff1de7812cc4d1673a55b45cb59d68.camel@HansenPartnership.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1768852653; c=relaxed/simple;
+	bh=fRZG+v2MN4Y3832spJtdKDF1VYxYcrSg0TympOyTeaU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=L7QTZ626CADo8hHukI9W4tLISTSvUJ1u0Lqq3hWbGkL1M6KoTPIBK0XTLD647RRJyodrWCET2zNGOR8TeyGtPsGiaCrt+iaQoDXkJ+Cxu1MZgG8aH8WfANR3+t46/OVEDD5zJx6TEltkODhszY9yjjnKDBEeFCVCI6tgjmWV86o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ImvQATFy; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768852651; x=1800388651;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=fRZG+v2MN4Y3832spJtdKDF1VYxYcrSg0TympOyTeaU=;
+  b=ImvQATFyfFxdl2OU95MEV5YqYiYyhznN38gtcph5A/ExF/bogzdw2bo3
+   EnRVbKugAyIV0j1ylL/iKXtAHrRadE17fmLZ84bYhvP6zDBt8xx3VVIbK
+   aEvA1sFK/xAeq1bDlgpprqNUFCCcmyo9W4CEYksuTZc7LS/25xCgMeFog
+   H4uQNwM9IrxE0xmsFislD9aqTkvs3dziTPWwCkkY1i+dtjFrfdN9Ecp4N
+   yb2xdFoMGHwZGpyYehh1cfay3wj1WKFgRmt+XNAqBxB832KMpUxFGN2Ol
+   vrVJeH//Ox3nPmYmHojDvhAlcnkZjS0OD8F4Lm+KwKLIoKL/TrFYKNXgv
+   g==;
+X-CSE-ConnectionGUID: mSN7wECOSTWaWYm++OHJ4Q==
+X-CSE-MsgGUID: Ue+a90VaQnCGFNyWUg6WZw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="81504045"
+X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; 
+   d="scan'208";a="81504045"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 11:57:31 -0800
+X-CSE-ConnectionGUID: nHujhow8SXCgiQJWvt/yOg==
+X-CSE-MsgGUID: kGdMAwBnSNimOztgvDATkw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; 
+   d="scan'208";a="228872961"
+Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.111.250]) ([10.125.111.250])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 11:57:29 -0800
+Message-ID: <3ad94715-8645-4520-83fc-b3bf18c472cd@intel.com>
+Date: Mon, 19 Jan 2026 11:57:28 -0800
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] [v5] Documentation: Provide guidelines for tool-generated
+ content
+To: Jonathan Corbet <corbet@lwn.net>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org
+Cc: Shuah Khan <shuah@kernel.org>, Kees Cook <kees@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
+ SeongJae Park <sj@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
+ Steven Rostedt <rostedt@goodmis.org>, "Paul E . McKenney"
+ <paulmck@kernel.org>, Simon Glass <simon.glass@canonical.com>,
+ NeilBrown <neilb@ownmail.net>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Theodore Ts'o <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>, workflows@vger.kernel.org,
+ ksummit@lists.linux.dev
+References: <20260113000612.1133427-1-dave.hansen@linux.intel.com>
+ <875x95xqqs.fsf@trenco.lwn.net>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <875x95xqqs.fsf@trenco.lwn.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: pkr1rakmbwgz1hbx7pugnqzx6tjdcmze
-X-Rspamd-Server: rspamout01
-X-Rspamd-Queue-Id: 103E22000D
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX1/v9Ir5hD0TAoKL3nOazXQsjyf7wBJqFaM=
-X-HE-Tag: 1768770425-990117
-X-HE-Meta: U2FsdGVkX19+6szTaqzK58Jz/Zlimx8u3h1M/RO/Qt7CvzJJhwDChSZimL2MmUrM5AH7RZnRzk9CbeeGdgN9sgfT1Iwftvt13IzClYtPT1iVS1wZi2Zq30gyQVs+mD/x36Jaxni7gGqHKApT6tb4Cc65CmcEKm/ulmfRpHnAc35Usk+qCHrF1YsaAtBii3AslgvGDMNNE2JZO3BhSxdyzxQNWojA08tfg8amoG0Vu31XEtQ4NIuym48JimKub4LzGEJ25+42Sjmu513nIdYalASuNj26U5vp2CM1aBBv3hZnALnD5yFmRI0lVmpidzAt5N+lnhFXKXOx0ZJOFXnbCL58MQdFhWMSe0DFx04t9DHhmTwX9Fsnp3KbfPRFeIdY
 
-On Sun, 18 Jan 2026 14:17:30 -0500
-James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
+On 1/13/26 11:22, Jonathan Corbet wrote:
+>> --- a/Documentation/process/index.rst
+>> +++ b/Documentation/process/index.rst
+>> @@ -68,6 +68,7 @@ beyond).
+>>     stable-kernel-rules
+>>     management-style
+>>     researcher-guidelines
+>> +   generated-content
+> At some point, $SOMEBODY should probably add a brief reference to
+> submitting-patches.rst as well.
 
-> How is any of this relevant to a style document?  You're quibbling over
-> individual maintainer foibles which, while they may be deeply held to
-> you (and obviously are relevant to contributors to your subsystems
+I can definitely send a follow-up for that.
 
-Not just me, there are other maintainers that feel this way.
+It has a "Tooling" section. But it also seems like a sentence at the
+top, like:
 
-> because they need to know your foibles), can't be part of our universal
-> advice because not all maintainers agree (not even on the direction of
-> the Christmas Tree).
+...
+--- a/Documentation/process/submitting-patches.rst
++++ b/Documentation/process/submitting-patches.rst
+@@ -15,6 +15,8 @@ Documentation/process/submit-checklist.rst
+ for a list of items to check before submitting code.
+ For device tree binding patches, read
+ Documentation/devicetree/bindings/submitting-patches.rst.
++If you used tools to generate part of your contribution, read
++Documentation/process/generated-content.rst.
+ 
+ This documentation assumes that you're using ``git`` to prepare your patches.
+ If you're unfamiliar with ``git``, you would be well-advised to learn how to
 
-I don't believe the direction is controversial with variable
-declarations. Maybe for header files, in which case, either is fine
-with me.
+might also be appropriate.
 
-Again, it's mostly due to aesthetics and it's more of a guideline than
-a rule (for me). I do know of other maintainers where they are more
-strict about it than I am.
-
--- Steve
-
+Any preferences?
 
