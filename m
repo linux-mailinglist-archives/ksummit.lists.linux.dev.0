@@ -1,186 +1,182 @@
-Return-Path: <ksummit+bounces-2803-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2804-lists=lfdr.de@lists.linux.dev>
 Delivered-To: lists@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2LGFGLCpc2nOxwAAu9opvQ
-	(envelope-from <ksummit+bounces-2803-lists=lfdr.de@lists.linux.dev>)
-	for <lists@lfdr.de>; Fri, 23 Jan 2026 18:02:40 +0100
+	id eKVnAsiuc2nOxwAAu9opvQ
+	(envelope-from <ksummit+bounces-2804-lists=lfdr.de@lists.linux.dev>)
+	for <lists@lfdr.de>; Fri, 23 Jan 2026 18:24:24 +0100
 X-Original-To: lists@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6E0878BF3
-	for <lists@lfdr.de>; Fri, 23 Jan 2026 18:02:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AF6378FA7
+	for <lists@lfdr.de>; Fri, 23 Jan 2026 18:24:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F0D1C301F9C3
-	for <lists@lfdr.de>; Fri, 23 Jan 2026 17:02:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 516913038F63
+	for <lists@lfdr.de>; Fri, 23 Jan 2026 17:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE016274B23;
-	Fri, 23 Jan 2026 17:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2722C15B0;
+	Fri, 23 Jan 2026 17:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="W6qj4wNr"
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="l8ES3cCN"
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79DE3A1C9
-	for <ksummit@lists.linux.dev>; Fri, 23 Jan 2026 17:02:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769187745; cv=pass; b=ddZybX9VvfwvJ7V1F05WkxUpZb/4xpVvhkpRWhw94x/hHYoBaHX0uNwwiJt5R5AS2e6+lUKY3XiUP6hbbetsQW8d2zz/VttqK9AFbevM8Ud197SCCjQG/vY/hn7A8A3/18nN4vdCPIXnJAafiA/9uhPGkY+ymw2iK5/U9jL/P5g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769187745; c=relaxed/simple;
-	bh=3xW18q4fqifFThB2HJQsLeOSogXstpaMB3rW9T9EPAo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ie93Jwuz+BOIRxi4IGevn2qzCeWNQ7u4K3zIcRxGNss3c55aSeRq1l7zEk+yemWGNWVBonN2ArYJgVeQlxlQXuTpELuLGVxT2MGSOMsnYLIIZTKnK7dfQ1T5JRoAxgQkosWzJflpVw5wiJc35DlUsnarVYofWsxiQHnblzaRHis=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=W6qj4wNr; arc=pass smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-8230d228372so1050651b3a.1
-        for <ksummit@lists.linux.dev>; Fri, 23 Jan 2026 09:02:23 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769187743; cv=none;
-        d=google.com; s=arc-20240605;
-        b=gJ1U02uLptHOi6GmxbvDWGjoxy/YGxaQvlCtE++zgKKM7LxTxpt1cKHmsiabPnbK18
-         y8IJJBIGShUXzY4wkRrLgq7bzht4dF04o5AqWmrqBD4jiPE5y+GyS63YCwISXCNsV/Yy
-         ghQpYu8jHVzt8IX9QmMEJ2p8yAZmocNlEYch+qFkTWQFG7+6UFtO/SyJsua7s/90EnmL
-         EfKS8Jp9qWYeNon6/wCqojzRL5h8Ai8WdTjgDUtQgixdMj+9yHdkN2SFBXMD2NbFvOkv
-         TmNLqI7rnOnZ8nPaixRoJnEZCbqMAbkK1lLT3tv74xyPWVvF/R3byO1qdL1gL0JuENHP
-         xjXQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LbjCiTEAZbXzffExN0XfNVlLkho12ju0K4Wb4j38RJ0=;
-        fh=7l3fPM3IvAug5/YmHnTq9aeJ5xFhYa54AVGJ5fZ7Ne4=;
-        b=H2SZsl0HhTcx2Dme5ywHuqjTv+AjMoTut+lFOj/nrhM+ddHcTcHLBIV4rTEwoVToRy
-         1ZaTWbUwnKQ9cxyzM+RmluEbuVVhsPavgl6YDV/t+RpNOVXHLbhZrzckfyJKB4V94J0T
-         kON7v/2UIqoEH34hQR/USBNHcSZ55dFIm1tBuMxFbcTNr6EL/sq844IOHjeFRH/Y4Syf
-         p2AJivbp69CdhVC+mdQaqT1V7w41z/NBPp6ZKbPDW6FNOKa3U8H5SOzf7WucraSKgtng
-         CVeLnWFxLfl/wcnd5pwuCBp+dRmJKKCOlxBECDRcUdghhHRyHSkY22Ftoyg6Z7w4Fza2
-         KM0A==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1769187743; x=1769792543; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LbjCiTEAZbXzffExN0XfNVlLkho12ju0K4Wb4j38RJ0=;
-        b=W6qj4wNr8HJA0eXRYlev5gBJ4AhsEc43gmw6ByW7XEjgNqPvw9cMn/HF0WXmJ0X63T
-         dpaNXgysC4ITHMVo8ddN/0v2mETbLRKXH4AXnThdRtzLaM24GUnukZZv4RzD91adt+02
-         qHGVcZgrCUHFPzD1OUnI338L7UFVsbky9PP3/rCYYjAyY+nwJI31rwvgpgFHjeV6qUDr
-         /vu2TvtCIWs2tAxqiYycECAe8CftoFiFWbJ6yanncaBBMAw3z313/iFrVTMlCS0VfPmP
-         VjyQcBLU7PWj3d5bu58CUuI2NfVYUBj4SwpVWzb+GZV0/R9cYLeCBt4k5/Cw4DPd9ADS
-         eZ+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769187743; x=1769792543;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LbjCiTEAZbXzffExN0XfNVlLkho12ju0K4Wb4j38RJ0=;
-        b=JdpT8+Mb4FxE+34kd09aeOjvXZggOHIap7nqeCLKWjwj+GoFi7uHhiQQZcyeKS8Q1Y
-         vruEk9DcWXCeNYA2a7/KOUMdjh2O+vNX8lHcRN1FnT8SADAUe5O4MT6jE+GXCBoKltui
-         l3FVZg/dqaXMXs+zse8AA3CNE7UJ2R28eHP5v9JYUElcnFsUgW/8RBKjxP2jGzoV0BXQ
-         /PvImSMwD3O0n1zgp3MfN/0bOSeGLzwtGgcXs0hIOKO999wCefPudlurOrtG+e7lNz3f
-         GxDabcm7QVLg450kq2eyMiGVuIxZAYObQEKtcCfeA1kyAoDJs3wLLHuixmIP/GHFzm3M
-         ldSg==
-X-Forwarded-Encrypted: i=1; AJvYcCWN7GovZfH+y5A3uH0qG7CdhPKNMK564+iffrSJ2jVbng9USwlwxQs3oh/xt5UBECPMQICTcW+h@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz7RmVVSM5pOZEf6hMKTv6IXV+fe7GxmwGIVNnl0KBhEarq3DMz
-	ce2faa6Z2/1My1iQ/pA0hu6t/ea55XOPA1oH2bkCGJcyB0UhiVun0nQ8hunkIC+85GdZR/L1HXT
-	D73ZbUgj7si9Ku59MHUFbNhGxVXSafHPp9I0I2nSF
-X-Gm-Gg: AZuq6aIHc3koDxIHlsE8yFo55Zsn8WJw/GtJebUgWz/TtIlF8kxR4sidhYllym/YMBS
-	xA4JZmTCUs/ZJB1AzF83LCvqn6Ecq9GhLTJUFbqFBUagHjcbvast10CdymG2rMNWlDT8iZ0ODx6
-	Vr+EkgeuV3W9ZcsGd7APjM1kbhQp/VoeMvyF5jLrNgvizmd8QSJRS569HEIxaGp0nQoYBwgCa5P
-	hI7ludiq6jP5I/eIBxes6crhJ/ZRuJmjTewEs7reNFjKrtP9/q/HPAf6fUxTdzSPmBiFb4=
-X-Received: by 2002:a05:6a20:9190:b0:384:d09f:f610 with SMTP id
- adf61e73a8af0-38e772ccdb4mr1835215637.32.1769187742683; Fri, 23 Jan 2026
- 09:02:22 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E742857F4
+	for <ksummit@lists.linux.dev>; Fri, 23 Jan 2026 17:23:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769188993; cv=none; b=Z2m4STiGPWRVwbn515ItaLinz4YLPcuLBPYMMjLN6bKzHskg5l+XLdLQX4maxIPagLdNEU5zbvwLkiQUPYcRgs5+/qzMpNdG5w0XHuh1R9BQfFuK2NPGdUF3yh5wLRS25YpTFjAuVYpx3bY5JNNi8JlWysTS0VAh0cUqqLQTYUw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769188993; c=relaxed/simple;
+	bh=f6pZE+NscANxJHc/R+MVSpyMBjN+N2AcSmQ8ZjfI0GY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=I0TYwVbJuAQJMmg8bMhwllnCCyzZlkqrIT1Gz/W8Iy6QYDWteitajn89rYOUizwTwiOHk726UMAtHgywEgRtOfAl0cjIYvBCUeilQMtwD9KncbMOPDoYPO7hBVx7e2+/9sm4frJEb/Nmpczpx5Bsg3Vk+X3rhhe+wm50OAdvlM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=l8ES3cCN; arc=none smtp.client-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1769188990;
+	bh=f6pZE+NscANxJHc/R+MVSpyMBjN+N2AcSmQ8ZjfI0GY=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=l8ES3cCNKkct4xSt1cRF+SJ6uVb1xcJgNXbGcBdDKLgDFHoAZtt51xyAcOF+LznBp
+	 /YRoFYKYbuGgePdcH6NpnPVj3OJYdzLvstmxZ7YLNwUKGep/l0COjYiH1jFkyUe1hS
+	 FkJN0PPoiIZf18Fb1B4MkGo/8/UnrCgvk41pYfFM=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4300:d341::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 7E4541C02CA;
+	Fri, 23 Jan 2026 12:23:10 -0500 (EST)
+Message-ID: <8fde8057e2bacb1bd3bd2c15134a6f69ef037699.camel@HansenPartnership.com>
+Subject: Re: Web of Trust work [Was: kernel.org tooling update]
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>, Konstantin
+ Ryabitsev <konstantin@linuxfoundation.org>, users@kernel.org,
+ ksummit@lists.linux.dev
+Date: Fri, 23 Jan 2026 12:23:09 -0500
+In-Reply-To: <2026012340-wildlife-scratch-1efd@gregkh>
+References: <20251209-roaring-hidden-alligator-068eea@lemur>
+	 <6e0c8c00-4efe-432a-92e8-c51aa15b4a34@kernel.org>
+	 <2026012340-cannot-spud-5d46@gregkh>
+	 <806a695eff99bd2eba935d0d5ada29cc29b31818.camel@HansenPartnership.com>
+	 <2026012340-wildlife-scratch-1efd@gregkh>
+Autocrypt: addr=James.Bottomley@HansenPartnership.com;
+ prefer-encrypt=mutual;
+ keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251209-roaring-hidden-alligator-068eea@lemur>
- <6e0c8c00-4efe-432a-92e8-c51aa15b4a34@kernel.org> <2026012340-cannot-spud-5d46@gregkh>
- <806a695eff99bd2eba935d0d5ada29cc29b31818.camel@HansenPartnership.com> <20260123-hallowed-catfish-of-pizza-bde94f@lemur>
-In-Reply-To: <20260123-hallowed-catfish-of-pizza-bde94f@lemur>
-From: Paul Moore <paul@paul-moore.com>
-Date: Fri, 23 Jan 2026 12:02:10 -0500
-X-Gm-Features: AZwV_QhUt66I0NdvcTyB47-is0y5qL5GOcACoYO5Ph78iJ4BklwIremb0GPYOfk
-Message-ID: <CAHC9VhRwMpSCphW_FsHojX1r12D5MOMUBm6MAzpGYD_FDjEVtA@mail.gmail.com>
-Subject: Re: Web of Trust work [Was: kernel.org tooling update]
-To: Greg KH <gregkh@linuxfoundation.org>, Konstantin Ryabitsev <mricon@kernel.org>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, users@kernel.org, 
-	ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[paul-moore.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[paul-moore.com:s=google];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[hansenpartnership.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[hansenpartnership.com:s=20151216];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[paul@paul-moore.com,ksummit@lists.linux.dev];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-2804-lists=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_COUNT_THREE(0.00)[4];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,paul-moore.com:url,paul-moore.com:dkim];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-2803-lists=lfdr.de];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[paul-moore.com:+]
-X-Rspamd-Queue-Id: B6E0878BF3
+	FROM_NEQ_ENVFROM(0.00)[James.Bottomley@HansenPartnership.com,ksummit@lists.linux.dev];
+	DKIM_TRACE(0.00)[hansenpartnership.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1AF6378FA7
 X-Rspamd-Action: no action
 
-On Fri, Jan 23, 2026 at 11:38=E2=80=AFAM Konstantin Ryabitsev <mricon@kerne=
-l.org> wrote:
+On Fri, 2026-01-23 at 17:33 +0100, Greg KH wrote:
 > On Fri, Jan 23, 2026 at 11:24:33AM -0500, James Bottomley wrote:
-> > > There will be a presentation about this in February at a conference
-> > > and hopefully it will be made public then as the work is still
-> > > ongoing.
-> >
-> > Could you please stop doing this?  The Open Source norm is to release
-> > early and often and long before you have stable code so you get
-> > feedback incorporated *before* you're committed to something.
->
-> I will provide this feedback to them when we meet in a week. It's not the=
- LF
-> itself who are writing this code, but a bunch of security devs funded by
-> OpenSSF and they *are* closely working with me and Greg during the initia=
-l
-> iteration to make sure that what they come up with is actually going to b=
-e
-> suitable and well-received by the kernel community (like, don't write it =
-in
-> nodejs or something).
->
-> So, I'd say we're doing it right -- write the initial tool based on the
-> requirements provided by some key users, then release the 0.1 for broader=
- use
-> and do iterative development based on feedback.
+> > On Fri, 2026-01-23 at 10:29 +0100, Greg KH wrote:
+> > > On Fri, Jan 23, 2026 at 10:19:56AM +0100, Uwe Kleine-K=C3=B6nig wrote=
+:
+> > > > Hello Konstantin,
+> > > >=20
+> > > > On 12/10/25 05:48, Konstantin Ryabitsev wrote:
+> > > > > ## Web of Trust work
+> > > > >=20
+> > > > > There is an ongoing work to replace our home-grown web of
+> > > > > trust solution (that does work but has important bottlenecks
+> > > > > and scaling limitations) with something both more distributed
+> > > > > and easier to maintain. We're working with OpenSSF to design
+> > > > > the framework and I hope to present it to the community in
+> > > > > the next few months.
+> > > >=20
+> > > > the current home-grown solution is
+> > > > https://git.kernel.org/pub/scm/docs/kernel/pgpkeys.git/, right?
+> > > >=20
+> > > > I wonder what the bottlenecks and scaling limitations are that
+> > > > you mention.
+> > > >=20
+> > > > Is there some info available already now about the path you
+> > > > (and OpenSSF) intend to propose?
+> > >=20
+> > > There will be a presentation about this in February at a
+> > > conference and hopefully it will be made public then as the work
+> > > is still ongoing.
+> >=20
+> > Could you please stop doing this?=C2=A0 The Open Source norm is to
+> > release early and often and long before you have stable code so you
+> > get feedback incorporated *before* you're committed to something.
+>=20
+> I'm not doing anything here, sorry.
 
-Based on the comments above, it sounds like there have been at least
-some requirements/design discussions already, were those on a public
-list?  Perhaps they were and I simply missed it (always a real
-possibility), but based on the other reactions in this thread I don't
-believe that is the case.
+You're listed as a presenter on the session Mauro pointed to.  And
+you're the only kernel developer on it, so I was presuming you were
+helping them out with kernel requirements.  If that's not true then we
+have even more cause to worry that people who don't understand how we
+work are coming up with what they consider to be a "solution" without
+any consultation.
 
-I don't believe I'm alone when I say that I have a "complicated"
-relationship with the LF; a large part of that is due to what I would
-call a delayed transparency, of which this seems like it might be a
-good example.  If the LF is sponsoring a project/effort that somehow
-involves the community, why is the kickoff not public?  Why are other
-community members not involved in establishing a list of requirements,
-or participating in the design discussions?
+> > You're making it very hard for those of us engaged in open source
+> > advocacy inside various companies because we seem to spend a lot of
+> > our time trying to get our engineers not to drop fully polished
+> > projects into the public view but engage early on prototypes.=C2=A0 It
+> > rather undermines our position if they can point to the Linux
+> > Foundation and say "but they do it so why shouldn't we?".
+>=20
+> When there is something that is reviewable, it will be released as a
+> starting point for everyone to review and comment on, like any other
+> normal open source project.=C2=A0 It's as if you don't think we know how
+> any of this works...
+>=20
+> Surely you don't want us to be touting a bunch of vaporware at this
+> point in time, right?
 
---=20
-paul-moore.com
+There's a fairly reasonable separation between touting vapourware and
+discussing requirements.  You're already causing requirements based
+questions in the community, like worrying that we're ditching pgp that
+Konstantin just answered.  A lot of us have a variety of solutions to
+the web of trust problem.  I think you already know I use DNS based
+distribution of my keys over DANE and am happy with it, but it's not
+available to everyone  because you need to ground your email in a
+DNSSEC backed domain to use it (and kernel.org still doesn't use
+DNSSEC).  I'd be unhappy if DANE stopped working for the kernel web of
+trust simply because no-one thought about it.
+
+Regards,
+
+James
+
 
