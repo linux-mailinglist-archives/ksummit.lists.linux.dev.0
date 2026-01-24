@@ -1,128 +1,194 @@
-Return-Path: <ksummit+bounces-2809-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2810-lists=lfdr.de@lists.linux.dev>
 Delivered-To: lists@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +G1XAYf8c2mf0gAAu9opvQ
-	(envelope-from <ksummit+bounces-2809-lists=lfdr.de@lists.linux.dev>)
-	for <lists@lfdr.de>; Fri, 23 Jan 2026 23:56:07 +0100
+	id uKiDDN4edGk32QAAu9opvQ
+	(envelope-from <ksummit+bounces-2810-lists=lfdr.de@lists.linux.dev>)
+	for <lists@lfdr.de>; Sat, 24 Jan 2026 02:22:38 +0100
 X-Original-To: lists@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 101857B4CE
-	for <lists@lfdr.de>; Fri, 23 Jan 2026 23:56:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82C997BEDE
+	for <lists@lfdr.de>; Sat, 24 Jan 2026 02:22:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CA3283004412
-	for <lists@lfdr.de>; Fri, 23 Jan 2026 22:55:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 10EA93019508
+	for <lists@lfdr.de>; Sat, 24 Jan 2026 01:21:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB1022857F6;
-	Fri, 23 Jan 2026 22:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F631F0995;
+	Sat, 24 Jan 2026 01:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YUBPUJF1"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZqI5CJlU"
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748BE25F98B
-	for <ksummit@lists.linux.dev>; Fri, 23 Jan 2026 22:55:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F014C27732;
+	Sat, 24 Jan 2026 01:21:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769208955; cv=none; b=i2CnLk/rHGUrweOjXDhLx0LxJqmNPNliqFXHKW5v6ltBP9o0zMelSyze9Vd1v1/BaszDDL1m9/AQTvvg6Xyeii2p1VB6vNY2byCo88AuR3XQK7vM6fxexkqOs1EtJDsOJ9oxyJAHeXjDEyRnyUpKzHvUqSbRAbQIJHRlwgUj7SA=
+	t=1769217704; cv=none; b=BJvUVssyf3emeix0S+92Twl3bzAAgDZjzw8Ivi3oEkTtQY24tVfQNjFu5MYt0DEeVhgXR5jroGKidvMNCftQgH179VFBLlP3DiZxpA4BVsBGsf6WM9oBWM8BAy8JUZpmaWs+lMHWw7Ho430saFQuyUMMzXmMjBHeHJOFkoHj8vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769208955; c=relaxed/simple;
-	bh=Y5U/wJTfbiAnjOt0/0ZPa+E4q27Rqm0qtPkPOJLRLTI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dYXtUaSxWYLzRllTFK+1m3g70zLOqwPL2ksCFbvPvzw6okINDjnhcTVvJA1d+ohiRDySSH/4Bx8bT8kzk3M+Iv3T34YbZMGP8kbT76lHE6Ads+VB0qHJlwUXKbNKhkIp1LGMl1A5oIPErTDOWI8kKPJTCHrBLoKfPQmAr5VJDm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YUBPUJF1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4F66C19423;
-	Fri, 23 Jan 2026 22:55:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769208955;
-	bh=Y5U/wJTfbiAnjOt0/0ZPa+E4q27Rqm0qtPkPOJLRLTI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YUBPUJF1GR3U71mRwLpRAOO4VJ7Bf+vradfTbY9Q6FpU3iAFqNsNXqvYihaszEF3N
-	 U1MeJ+kuWO1lpV+2lARX6lpQVTYIjPL1cUjYx3yjZWzU5u/ehL/bhmHGhsl7d69MMO
-	 W3blk+eQBpVWow4wmM53lZbaWwfUtKnlHQS6rNYcoLIFhNQ8RKji1UJBsvRPTgw/Ae
-	 poVYEc+B5R923X+wKKxAZKfZQOEZO/gw6AtkgYcTfd0D1aSWNNIGqRm7zO4KePQoJn
-	 3+agAurOcrjWO/92WwEZI+bR4Pjd7XmCwaE4DCe7e2VzSFenilFWETjWMMcH9UflHA
-	 D2oUVUVa/O8Kw==
-Date: Fri, 23 Jan 2026 23:55:49 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Konstantin Ryabitsev <mricon@kernel.org>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, Greg KH
- <gregkh@linuxfoundation.org>, Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?=
- <ukleinek@kernel.org>, users@kernel.org, ksummit@lists.linux.dev
-Subject: Re: Web of Trust work [Was: kernel.org tooling update]
-Message-ID: <20260123235549.45e0f75b@foz.lan>
-In-Reply-To: <20260123-provocative-tungsten-curassow-cc2aac@lemur>
-References: <20251209-roaring-hidden-alligator-068eea@lemur>
-	<6e0c8c00-4efe-432a-92e8-c51aa15b4a34@kernel.org>
-	<2026012340-cannot-spud-5d46@gregkh>
-	<806a695eff99bd2eba935d0d5ada29cc29b31818.camel@HansenPartnership.com>
-	<2026012340-wildlife-scratch-1efd@gregkh>
-	<8fde8057e2bacb1bd3bd2c15134a6f69ef037699.camel@HansenPartnership.com>
-	<20260123-provocative-tungsten-curassow-cc2aac@lemur>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1769217704; c=relaxed/simple;
+	bh=uJJVg+a/BYrXg+/kiUruYLx01YjvmEYSWxLiJISnL1Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ubVQlWZjLnOpmQKzGB0GsctkfMHkDKRwsv8yhdAki7rrw5wxU0T9SYnhiIyf69/1f7cEVGJBiRrq4aS29lODCMGBMDQaNczim0PD1Y1Iie2wGnmYW1yn9gOiXUHNcaMSoJO3Ux+5PAW0sxg7SNSgtnMbQnYbdfnbDa56ZZQ2fPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZqI5CJlU; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769217703; x=1800753703;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=uJJVg+a/BYrXg+/kiUruYLx01YjvmEYSWxLiJISnL1Q=;
+  b=ZqI5CJlUP675tYnMkyYn1EvEM2GLCVSSWBMKMy7EzdMTgh8YPxVk87Jb
+   eIC+KRgCYBFxOFtqdKJHO6FWOPypmOFtRHIgw95x81BkjMqfxbkejrrsb
+   +gw94RqFJKRBTmJ4i8zE0tnGT8wC7YxJ+t1zsaKt+QYfgnwNL14dtvg+o
+   fji1R+kkGl1AyvTqaYXAybdGyGkfZYJ19F0Eqs1Nr04UjsEilIKt/YHuq
+   WM69xp7S/MBLAxppJTBsWGHvA9F5voavXt7p+6tXek7Vo7uh2gUbjtYAu
+   HRbzrVujSeeF8A3mQ5SLBUh4UK3VcvU1zqabPY5eumd1Bs11O99stvnYf
+   g==;
+X-CSE-ConnectionGUID: fm9jjxoZRg++4cWttUgSgw==
+X-CSE-MsgGUID: 0b4uWEo/Q5u1+QHQLsDHJA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11680"; a="88048347"
+X-IronPort-AV: E=Sophos;i="6.21,249,1763452800"; 
+   d="scan'208";a="88048347"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2026 17:21:42 -0800
+X-CSE-ConnectionGUID: zFeBk/u0Si6dgKj47j2J+Q==
+X-CSE-MsgGUID: 1W+EXFDLTDmnsmHZ2bg0eA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,249,1763452800"; 
+   d="scan'208";a="206975704"
+Received: from dwillia2-desk.jf.intel.com ([10.88.27.145])
+  by orviesa009.jf.intel.com with ESMTP; 23 Jan 2026 17:21:43 -0800
+From: Dan Williams <dan.j.williams@intel.com>
+To: corbet@lwn.net
+Cc: ksummit@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	tech-board-discuss@lists.linux.dev,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Kees Cook <kees@kernel.org>
+Subject: [PATCH] Documentation: Project continuity
+Date: Fri, 23 Jan 2026 17:22:56 -0800
+Message-ID: <20260124012256.1856709-1-dan.j.williams@intel.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mchehab@kernel.org,ksummit@lists.linux.dev];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-2809-lists=lfdr.de,huawei];
+	TAGGED_FROM(0.00)[bounces-2810-lists=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,foz.lan:mid];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dan.j.williams@intel.com,ksummit@lists.linux.dev];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+]
-X-Rspamd-Queue-Id: 101857B4CE
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,intel.com:mid,linux.dev:email,lwn.net:url,lwn.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 82C997BEDE
 X-Rspamd-Action: no action
 
-On Fri, 23 Jan 2026 13:23:58 -0500
-Konstantin Ryabitsev <mricon@kernel.org> wrote:
+Document project continuity procedures. This is a plan for a plan for
+navigating events that affect the forward progress of the canonical Linux
+repository, torvalds/linux.git. It is a follow-up from Maintainer Summit
+[1].
 
-> - I said: sure, come up with some code and let's see, as long as the foll=
-owing
->   is assured:
->=20
->   - It's opt-in; anyone who is happy using GnuPG can continue without any
->     change
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Co-developed-by: Jonathan Corbet <corbet@lwn.net>
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
+Reviewed-by: Kees Cook <kees@kernel.org>
+Link: https://lwn.net/Articles/1050179/ [1]
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+---
+ Documentation/process/conclave.rst | 41 ++++++++++++++++++++++++++++++
+ Documentation/process/index.rst    |  1 +
+ 2 files changed, 42 insertions(+)
+ create mode 100644 Documentation/process/conclave.rst
 
-This insurance is enough for me, provided that I can still revoke my
-current keys and create new ones whenever needed. For this to keep
-working for the ones that don't opt-in, it should still be possible
-to update the existing GPG keychain and having gpg key parties from
-time to time.
+diff --git a/Documentation/process/conclave.rst b/Documentation/process/conclave.rst
+new file mode 100644
+index 000000000000..6a1234f54612
+--- /dev/null
++++ b/Documentation/process/conclave.rst
+@@ -0,0 +1,41 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++Linux kernel project continuity
++===============================
++
++The Linux kernel development project is widely distributed, with over
++100 maintainers each working to keep changes moving through their own
++repositories. The final step, though, is a centralized one where changes
++are pulled into the mainline repository. That is normally done by Linus
++Torvalds but, as was demonstrated by the 4.19 release in 2018, there are
++others who can do that work when the need arises.
++
++Should the maintainers of that repository become unwilling or unable to
++do that work going forward (including facilitating a transition), the
++project will need to find one or more replacements without delay. The
++process by which that will be done is listed below. $ORGANIZER is the
++last Maintainer Summit organizer or the current Linux Foundation (LF)
++Technical Advisory Board (TAB) Chair as a backup.
++
++- Within 72 hours, $ORGANIZER will open a discussion with the invitees
++  of the most recently concluded Maintainers Summit. A meeting of those
++  invitees and the TAB, either online or in-person, will be set as soon
++  as possible in a way that maximizes the number of people who can
++  participate.
++
++- If there has been no Maintainers Summit in the last 15 months, the set of
++  invitees for this meeting will be determined by the TAB.
++
++- The invitees to this meeting may bring in other maintainers as needed.
++
++- This meeting, chaired by $ORGANIZER, will consider options for the
++  ongoing management of the top-level kernel repository consistent with
++  the expectation that it maximizes the long term health of the project
++  and its community.
++
++- Within two weeks, a representative of this group will communicate to the
++  broader community, using the ksummit@lists.linux.dev mailing list, what
++  the next steps will be.
++
++The Linux Foundation, as guided by the TAB, will take the steps
++necessary to support and implement this plan.
+diff --git a/Documentation/process/index.rst b/Documentation/process/index.rst
+index aa12f2660194..492b808a6977 100644
+--- a/Documentation/process/index.rst
++++ b/Documentation/process/index.rst
+@@ -68,6 +68,7 @@ beyond).
+    stable-kernel-rules
+    management-style
+    researcher-guidelines
++   conclave
+ 
+ Dealing with bugs
+ -----------------
 
-However, it actually means more work for the ones maintaining the
-infra, as you'll still need to maintain the current web of trust - at=20
-least for the current users on it - and then maintain the new solution.
+base-commit: e9a6fb0bcdd7609be6969112f3fbfcce3b1d4a7c
+-- 
+2.52.0
 
--
-
-=46rom my side, I don't intend to opt-in to a new solution until I trust
-it enough - and even after opting in - I'll continue using my GPG key
-as a backup plan.
-
-
-Thanks,
-Mauro
 
