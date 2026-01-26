@@ -1,196 +1,153 @@
-Return-Path: <ksummit+bounces-2823-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2824-lists=lfdr.de@lists.linux.dev>
 Delivered-To: lists@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cK85FZHzd2npmgEAu9opvQ
-	(envelope-from <ksummit+bounces-2823-lists=lfdr.de@lists.linux.dev>)
-	for <lists@lfdr.de>; Tue, 27 Jan 2026 00:06:57 +0100
+	id iFPQIWr3d2mBmwEAu9opvQ
+	(envelope-from <ksummit+bounces-2824-lists=lfdr.de@lists.linux.dev>)
+	for <lists@lfdr.de>; Tue, 27 Jan 2026 00:23:22 +0100
 X-Original-To: lists@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF5B88E25C
-	for <lists@lfdr.de>; Tue, 27 Jan 2026 00:06:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B5098E319
+	for <lists@lfdr.de>; Tue, 27 Jan 2026 00:23:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 33ECA3036066
-	for <lists@lfdr.de>; Mon, 26 Jan 2026 23:06:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A1E07301BC2E
+	for <lists@lfdr.de>; Mon, 26 Jan 2026 23:23:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108A130C36E;
-	Mon, 26 Jan 2026 23:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E0230C36E;
+	Mon, 26 Jan 2026 23:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TiY84qPT"
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="aD3tJ81O"
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FDF30C353
-	for <ksummit@lists.linux.dev>; Mon, 26 Jan 2026 23:06:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B160238178
+	for <ksummit@lists.linux.dev>; Mon, 26 Jan 2026 23:23:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769468789; cv=none; b=ODs81wlIM2FE89o2wiK0WOhIRHgiHG5GPz/2htNDe5RU1KHhKkcGpe1Lub6zzI9S9Q0r2d1CKOLI2/HQ36zjPhyBu92JrqlpTj/QSdnExjf6yAy6yoH8IaNoKjBlQ3Jvfoc+7pxqxJ0zXZpo2fwtKkoCC562PxJ1ImZ8aNmQ+Cc=
+	t=1769469794; cv=none; b=Pzlb3HMsRbECkbu9EIKd8qKKbaZw+kMsOSuPoMNwiQmR/PMbAlYDWrRspUe8/Sa4fmOILALsGKh+tllhuUGsdnlucVHUndsZFF7I7nH703dasti9TinGBQXndx+GlXiX2Prk+qICKoen/EWTcNyzZDT/5DfwVDQ/L6vbBAnYado=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769468789; c=relaxed/simple;
-	bh=QJkjd/gJTRdjMgyovQj/JwLUaclB4twTqgDxIVuGqpo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BcZXIdVizAPIp+xkjsqHKCTLCT5cLdJomAPflaWTiAv4e/J74OgGSo6tvOY2Wd87ruihyat8xlrPEyMaQ63HpD3pPCMSUzHcGJZb5wdY4k6IuLZyvXWFxt0fHbVIOGZdk67lY9+yLMOqCYFwcLWjpwOvvBEPRpoKrGr97A26NRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TiY84qPT; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-47ee3a63300so57001715e9.2
-        for <ksummit@lists.linux.dev>; Mon, 26 Jan 2026 15:06:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769468786; x=1770073586; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nOZ1ZFivJamEOHgzehoLqsnmdkwkHNZ0PwJ9bU8ee5M=;
-        b=TiY84qPTZ4F0xrilEoVJlmJSwb2pplRAijiVW4uJMPc0iwiifZWEWhEqXbH4wSDkf5
-         oUTqxYmfdeafku6zper2pmnD1tSUNPufrhr9b/3vOsl3r0sUd2WeEdCdEA6Enc8g/rhl
-         CQoRD5b2+zc9M5ye+zXR4XcFY0aSiW/yZtPcpA+I3DE+/FNC/gvOU4Bt6EaTXDHPclXo
-         m8teV7yx4esvrF4GOyA2DXW5Rg3ADG8CdTfo5ksqag0oAMWj+0+q+wYUIa550nFCwSux
-         1zm0eS7grk4Gh51Ky/s93M4NeUcbql49rLiIodv+UyeFiW63aV2V0xBNAZjkiB7EO8AI
-         2x0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769468786; x=1770073586;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=nOZ1ZFivJamEOHgzehoLqsnmdkwkHNZ0PwJ9bU8ee5M=;
-        b=Q3ElP50X9IqJVbth+Py/fTxDj820+/oOKiG5Wk5D/awLClCEG8PTrzUkcFYJ/Q9frP
-         bNYhwYDMPPXsYIRK/e30wNP1SOF/kWz602EuL71ZvfSFokSY1xO4wGBtLGJXS1yzDXWz
-         0XczP4IVum8a4hOut9iJJtTHKuU9IEE2r1vXiL0FXtXuQJARrGv1qxvhBGdkXNeU5KkW
-         o1rWmfr+PHfU9K4PVK1nBkaWYJ/Hsvk8D58HfqnmMmPqEb8li4IQUS3vUdpBkFzTXeDY
-         AJU4jihp8LpxD4O9NP4vHiQUOTa+3pYdDMRy+OKIbZ23yOTZwOSGKgEaovFPitqtDu0y
-         DPuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV6Tsd3kxCiiE/Ph6E/Eifdg0mwCTAItVN6i5bHuPn7jTuNVy22wDrkDfFM7fPLxajTg7XUey6N@lists.linux.dev
-X-Gm-Message-State: AOJu0YzMOFjPhn9OFFLblZwb8ZtvRjr1GyJcvBuuvhycD7hkP5czG12s
-	8z3AgvzjyC1FB7/+B6JDoHAlNeWWnkHgdR1uQmFpYGfqfo8+yRcaX30oIX7AMQ==
-X-Gm-Gg: AZuq6aKdR4yatzeEVFYUxxy+TjE0LZ3rqOjF8mEXPpLsfzLt5RG1eqWPQRKWc5SyGGu
-	xG3Ib4tFLQt0Hi4+yM1RBEYh9CH8Wbh4ZvQ8tu5N7JZTbAGjcPKmH0DoNaBJwE1u596IOpfF5x1
-	v0sYCD/Z01/z2D5+9afo31mxg8XHfhq7U021NGG7wzglKRpqaXf9HdfxhyNPsNpIEHI76Xz6bHT
-	3Rx+KCtAwqes1mQueaUCNUPDcfc5CdczcKI7TOxwGSh0GUDp0lVpIUcApdWZkAp+Mg67sbGp7Hh
-	O20tITuVaTfS+AeVs9ecmgx7iLkowVMgGYeq0m/MJ1Ioqer08Zy9zppLBzbphV4xRrcIZ+y9/ug
-	mN1HoWQ5pTs0wQ6LqV5+nVtdjII/JSMRDM/Fee62qek5X5R9fJqGCViyTSc6S3eP3brvK2KJeA7
-	WKEE09zA==
-X-Received: by 2002:a05:600c:35c2:b0:47f:b737:5ce0 with SMTP id 5b1f17b1804b1-4805cf66771mr100880545e9.23.1769468786128;
-        Mon, 26 Jan 2026 15:06:26 -0800 (PST)
-Received: from foz.lan ([95.90.158.170])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48066bee30dsm16882875e9.6.2026.01.26.15.06.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jan 2026 15:06:25 -0800 (PST)
-Date: Tue, 27 Jan 2026 00:06:24 +0100
-From: Mauro Carvalho Chehab <maurochehab@gmail.com>
-To: Konstantin Ryabitsev <mricon@kernel.org>
-Cc: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@kernel.org>, Greg KH
- <gregkh@linuxfoundation.org>, users@kernel.org, ksummit@lists.linux.dev
+	s=arc-20240116; t=1769469794; c=relaxed/simple;
+	bh=FTbi2IrSd0IHkpTHc7/y4eBFkAq5C7BXqj4kVGoWYTs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=NC6B3e3EoSdkmQhpYakxDQZH0KtIbUdIbCxZ3w8k0uRLu3amurHZH7vhiIVASPCpm7XA1h6QNw0jKuIOQJRxcAkBrhA1N+aMjzwpwA53esWVcUz/XLv44R1TfSl8udKnEsA4wnxVMBfHHcl6U4XXEk1+XuhI7opi6LgurLLEAS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=aD3tJ81O; arc=none smtp.client-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1769469790;
+	bh=FTbi2IrSd0IHkpTHc7/y4eBFkAq5C7BXqj4kVGoWYTs=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=aD3tJ81OdhPU9ryDzWZCdI1AS8Mes/SkQLZCRvJTpAbaVMgzDDu0vCJD37DQzJtkN
+	 SXuMZ17YEqotNQBXVQsh94LMN17A6zGh4Ao3OxJcehGUNtOayvuRuY3PAc2lwetSRM
+	 ng6psoD/0gK2cXExC0egGZf3Q1Wu4yQEJrLtamK0=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4300:d341::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id B7AF01C02F2;
+	Mon, 26 Jan 2026 18:23:10 -0500 (EST)
+Message-ID: <2ef60fa3afe287cec92020b8b77a37c0b70cefaa.camel@HansenPartnership.com>
 Subject: Re: Web of Trust work [Was: kernel.org tooling update]
-Message-ID: <20260127000624.48c1af49@foz.lan>
-In-Reply-To: <20260126-sophisticated-beluga-of-hurricane-00e16b@lemur>
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>, Konstantin
+	Ryabitsev <mricon@kernel.org>
+Cc: Greg KH <gregkh@linuxfoundation.org>, users@kernel.org, 
+	ksummit@lists.linux.dev
+Date: Mon, 26 Jan 2026 18:23:08 -0500
+In-Reply-To: <x5nnix4t2w74flef4xnivzw43gx7wdk7v3cirawq52qfd6qdty@he74b5uk26zc>
 References: <20251209-roaring-hidden-alligator-068eea@lemur>
-	<6e0c8c00-4efe-432a-92e8-c51aa15b4a34@kernel.org>
-	<2026012340-cannot-spud-5d46@gregkh>
-	<806a695eff99bd2eba935d0d5ada29cc29b31818.camel@HansenPartnership.com>
-	<2026012340-wildlife-scratch-1efd@gregkh>
-	<8fde8057e2bacb1bd3bd2c15134a6f69ef037699.camel@HansenPartnership.com>
-	<20260123-provocative-tungsten-curassow-cc2aac@lemur>
-	<c4aa6604-e076-4f04-85a6-d0267a3fb8e8@kernel.org>
-	<20260126-sophisticated-beluga-of-hurricane-00e16b@lemur>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	 <6e0c8c00-4efe-432a-92e8-c51aa15b4a34@kernel.org>
+	 <2026012340-cannot-spud-5d46@gregkh>
+	 <806a695eff99bd2eba935d0d5ada29cc29b31818.camel@HansenPartnership.com>
+	 <2026012340-wildlife-scratch-1efd@gregkh>
+	 <8fde8057e2bacb1bd3bd2c15134a6f69ef037699.camel@HansenPartnership.com>
+	 <20260123-provocative-tungsten-curassow-cc2aac@lemur>
+	 <c4aa6604-e076-4f04-85a6-d0267a3fb8e8@kernel.org>
+	 <20260126-sophisticated-beluga-of-hurricane-00e16b@lemur>
+	 <x5nnix4t2w74flef4xnivzw43gx7wdk7v3cirawq52qfd6qdty@he74b5uk26zc>
+Autocrypt: addr=James.Bottomley@HansenPartnership.com;
+ prefer-encrypt=mutual;
+ keydata=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
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-lfwCOL37ifx0l3Dgh6qm"
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-4.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[hansenpartnership.com,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[hansenpartnership.com:s=20151216];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-2823-lists=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-2824-lists=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maurochehab@gmail.com,ksummit@lists.linux.dev];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[James.Bottomley@HansenPartnership.com,ksummit@lists.linux.dev];
+	DKIM_TRACE(0.00)[hansenpartnership.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,foz.lan:mid]
-X-Rspamd-Queue-Id: AF5B88E25C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[HansenPartnership.com:mid,hansenpartnership.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1B5098E319
 X-Rspamd-Action: no action
 
-Hi Konstantin,
 
-On Mon, 26 Jan 2026 11:23:43 -0500
-Konstantin Ryabitsev <mricon@kernel.org> wrote:
+--=-lfwCOL37ifx0l3Dgh6qm
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> On Fri, Jan 23, 2026 at 10:12:39PM +0100, Uwe Kleine-K=C3=B6nig wrote:
-> > >   - I am the bottleneck in the process, because all updates have to g=
-o through
-> > >     me; even if we add more people to have access, this would still b=
-e a
-> > >     bottleneck, because the more keys there are in the web of trust, =
-the more
-> > >     finagling the whole process requires to deal with expirations, key
-> > >     updates, identity updates, etc. We can rely on modern keyservers =
-for some
-> > >     of it, but not for third-party signatures, which are key for our
-> > >     distributed trust. =20
-> >=20
-> > Just to ensure we're talking about the same thing: This is about calling
-> > a script once a week or so, check the resulting diff, commit and push,
-> > right? =20
->=20
-> This is for updates, yes, and this is mostly hands-off except final revie=
-w.
-> Adding new keys is usually a lot more involved, because there's frequentl=
-y a
-> back-and-forth required (they sent a key without any signatures, there is=
- not
-> enough signatures, the signatures are too far removed from Linus, etc). We
-> currently have about 600 keys in the keyring we maintain, and we clearly =
-can
-> do a much better job like being more proactive when someone's expiry date=
- is
-> approaching. I'm worried that if we tried to maintain a keyring for sever=
-al
-> thousand people as opposed to several hundred, this would snowball into an
-> unmaintainable mess.
->=20
-> > I personally am happy with PGP and I don't see the benefit of using ssh
-> > keys instead. But I'm open to look at the approach that we will see in
-> > February. =20
->=20
-> Supporting ssh keys (along with minisign keys) is a Frequently Requested
-> Feature (TM) -- not so much among kernel users, but among several other
-> projects that use non-forge workflows.
+On Mon, 2026-01-26 at 18:32 +0100, Uwe Kleine-K=C3=B6nig wrote:
+> Actually I'd like to see you/us add still more burden and asking
+> developers to only hand in keys with an expiry date <=3D (say) 3 years.
+> Something similar to what
+> https://www.gentoo.org/glep/glep-0063.html#bare-minimum-requirements
+> requests.
 
-Replacing PGP with ssh keys to push stuff at kernel.org is
-welcomed, together with any mechanism to ensure the web of trust
-for ssh keys, but see, the Web of Trust PGP keys are also used when we
-sign git tags before asking Linus to merge:
+You have seen Linus' views on gpg key expiry, right?
 
-	https://git.kernel.org/pub/scm/linux/kernel/git/mchehab/linux-media.git/ta=
-g/?h=3Dmedia/v6.19-3
+https://lore.kernel.org/linux-scsi/CAHk-=3Dwi03SZ4Yn9FRRsxnMv1ED5Qw25Bk9-+o=
+fZVMYEDarHtHQ@mail.gmail.com/
 
-And also when we sign tags at the userspace tools we maintain. Any
-alternative Web of Trust mechanism shall keep us allowing to sign
-git tags with the same trust level.
-
-At least up to git version 2.52.0, PGP is the only allowed
-mechanism to sign tags.
+As a result of that I've taken to using much longer expiry periods.
 
 Regards,
-Mauro
+
+James
+
+
+--=-lfwCOL37ifx0l3Dgh6qm
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABMIADkWIQTnYEDbdso9F2cI+arnQslM7pishQUCaXf3XRsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMSwyLDIACgkQ50LJTO6YrIU12wEAkVYJjl8sBHm9CIPyY/W4
+3uI7jz+xIC4iREnibrs48/wBAKENAJ1K3ochYTIfp32zcVWi2IB2bQw2/AEfooqs
+SE3i
+=b8eA
+-----END PGP SIGNATURE-----
+
+--=-lfwCOL37ifx0l3Dgh6qm--
 
