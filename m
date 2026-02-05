@@ -1,192 +1,129 @@
-Return-Path: <ksummit+bounces-2830-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2833-lists=lfdr.de@lists.linux.dev>
 Delivered-To: lists@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gF0rM3ZthGmJ2wMAu9opvQ
-	(envelope-from <ksummit+bounces-2830-lists=lfdr.de@lists.linux.dev>)
-	for <lists@lfdr.de>; Thu, 05 Feb 2026 11:14:14 +0100
+	id 2LQbNCibhWmUDwQAu9opvQ
+	(envelope-from <ksummit+bounces-2833-lists=lfdr.de@lists.linux.dev>)
+	for <lists@lfdr.de>; Fri, 06 Feb 2026 08:41:28 +0100
 X-Original-To: lists@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48819F139F
-	for <lists@lfdr.de>; Thu, 05 Feb 2026 11:14:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36B23FB139
+	for <lists@lfdr.de>; Fri, 06 Feb 2026 08:41:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 384C33007882
-	for <lists@lfdr.de>; Thu,  5 Feb 2026 10:14:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E78103047E4E
+	for <lists@lfdr.de>; Fri,  6 Feb 2026 07:28:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4506C3A4F5E;
-	Thu,  5 Feb 2026 10:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8DA730BBAC;
+	Fri,  6 Feb 2026 07:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="PhB1ExYs"
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=libertyconnection.org header.i=@libertyconnection.org header.b="Z9S331aQ"
+Received: from vps.virtualinfosys.us (vps.virtualinfosys.us [67.227.154.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7723739A819
-	for <ksummit@lists.linux.dev>; Thu,  5 Feb 2026 10:14:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26803326D5C
+	for <ksummit@lists.linux.dev>; Fri,  6 Feb 2026 07:28:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.227.154.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770286451; cv=none; b=pS7sSWuGsvW72LL5JWJClSXcHBYwhYt87m87lmAzGRlNLMegwydJCdw3tXSEr1t1HQMRwhEKcAUB5cRFOQ1A4npO/Bt1gpCCDg/DQ8lkcDKI5GfQRxEabRN8kk7SjYsz6aB4ZFYbsTfkjowi2SMCCj9mdITiqKqoE89p6W5jypg=
+	t=1770362888; cv=none; b=EQ2MshR6fkhRnyH7gRqllPYG4iiTUTokLOnUOyiRN+HYwSHZtq+4ogPLbQskoabljmdry/7Lo2CJm3oM9Et5Z5ZnY49t3sBhf0pRAOqVxGYX2RAB4wEC3NhRXEN+4iWDziqhZD5lXDQmoW1cYd34GWtQHl4iYNWB9wW2Jbi0aYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770286451; c=relaxed/simple;
-	bh=tXbU51XlubVwmg6faYAmpd3Qr2U36fBfBc2opX0LIII=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sclvpaEiPenTx9km0lpQDevD+nX1pzri8Uuj7nHx3EXrH7y3yzTeq/Phe+fV6EFx6R9P4RHIQoE1/tYYNqSRird+mYOVHB+9OoAj7OFCL9ogSDjjV4EylsPxrgVIVg7Wb1xAYGzAKgSiMouZh6ZPWYRZPDTiPKimSPVeaTFm5lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=PhB1ExYs; arc=none smtp.client-ip=198.37.111.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1770286450;
-	bh=tXbU51XlubVwmg6faYAmpd3Qr2U36fBfBc2opX0LIII=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=PhB1ExYs6PPi4sdErByzobD3VHQzA1QBsPvBu5Db/iL3nzTdKbHGzJn5wr+wAwyfg
-	 KWYD1ZKn54L2FrxdukWctc/TeWdeQVnw/J7o8Ks4f06BHve67WhTTQxnKh8sR8D+dl
-	 oTCqm94SweFk5z6wmg9wbO26t11C5vELZAdFgymY=
-Received: from [10.10.7.5] (unknown [51.52.16.146])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 93A771C0294;
-	Thu, 05 Feb 2026 05:14:09 -0500 (EST)
-Message-ID: <7289c75f84bf43ad939b1899d2b251977c30359e.camel@HansenPartnership.com>
-Subject: Re: Web of Trust work [Was: kernel.org tooling update]
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>, Linus
- Torvalds <torvalds@linux-foundation.org>
-Cc: Konstantin Ryabitsev <mricon@kernel.org>, Greg KH
- <gregkh@linuxfoundation.org>, users@kernel.org, ksummit@lists.linux.dev,
- "Neal H. Walfield" <neal@walfield.org>
-Date: Thu, 05 Feb 2026 10:14:06 +0000
-In-Reply-To: <2nvtfc5plg2i77hbv7jpco7q5kyym53dwume67vd3c6yvcmsyc@uaybcsxhnqjw>
-References: 
-	<806a695eff99bd2eba935d0d5ada29cc29b31818.camel@HansenPartnership.com>
-	 <2026012340-wildlife-scratch-1efd@gregkh>
-	 <8fde8057e2bacb1bd3bd2c15134a6f69ef037699.camel@HansenPartnership.com>
-	 <20260123-provocative-tungsten-curassow-cc2aac@lemur>
-	 <c4aa6604-e076-4f04-85a6-d0267a3fb8e8@kernel.org>
-	 <20260126-sophisticated-beluga-of-hurricane-00e16b@lemur>
-	 <x5nnix4t2w74flef4xnivzw43gx7wdk7v3cirawq52qfd6qdty@he74b5uk26zc>
-	 <2ef60fa3afe287cec92020b8b77a37c0b70cefaa.camel@HansenPartnership.com>
-	 <4ilnblmm3srkyzq7o5ehlr2gnlrrnmr67dpoqxiy5vbrrqlqd5@my3rxybcpu5t>
-	 <CAHk-=whoJY_pORG8M_K5kSA-x0+MwRa5wHwkHY4sbYbPFegc_g@mail.gmail.com>
-	 <2nvtfc5plg2i77hbv7jpco7q5kyym53dwume67vd3c6yvcmsyc@uaybcsxhnqjw>
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- prefer-encrypt=mutual;
- keydata=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
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-ErX81akyDw4C7KEPR0zL"
-User-Agent: Evolution 3.50.3 
+	s=arc-20240116; t=1770362888; c=relaxed/simple;
+	bh=Sw2ShRNwoVvzNQ4e9jA3I/n3Q71IrWRAzToKwZ4lFd4=;
+	h=To:Subject:Date:From:Message-ID:MIME-Version:Content-Type; b=Pm28uj+wEJtLY6jY7p6iuS9I8gt1D33z/DCgnX4BicCPBZsqg2G2CNOhD89CFFc5ZbK6yl7tTdfRpbo8laR9Ax2noUOAgZkrZecSYNjaPN4CzTSva+5JHArY/sj0KqZnWYvSSqZNLm72XvRN42Kbqcy4FKcjKo1T2bMVElVSHlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=libertyconnection.org; spf=fail smtp.mailfrom=libertyconnection.org; dkim=pass (2048-bit key) header.d=libertyconnection.org header.i=@libertyconnection.org header.b=Z9S331aQ; arc=none smtp.client-ip=67.227.154.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=libertyconnection.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=libertyconnection.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=libertyconnection.org; s=default; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-ID:Reply-To:From:Date:Subject:To:Sender:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Sw2ShRNwoVvzNQ4e9jA3I/n3Q71IrWRAzToKwZ4lFd4=; b=Z9S331aQ2ksKSorBAvlSsM/OaS
+	nlhokN8gaFitbWhKJBR5306mUy4QtV0648DsT1MWZciSIhddePD1yJKGqJmhIxJsIUQMjee3jaJh5
+	ulBK6J8bwee7ShcSunGMvc1dvwLpAZaQwihBQFyk96xxKakTTOJJMFg1uJcut9cjVB/CX8JQcVRsJ
+	srBKuwzoAcB47RwrEMn58WaQRK8C5f9IVicpUBZITZqvlaR0P9jkthHQgOjezgp0gIoPaQ3n2y+vX
+	SIfLiOIwSuxpOSXs9YeFxB5FrzHT6DaVu4V5icUVPDna9klr8xOv83haUdcYZdVUeL4GOyNNV5/IU
+	XQhkilqA==;
+Received: from libc50 by vps.virtualinfosys.us with local (Exim 4.96.2)
+	(envelope-from <support@libertyconnection.org>)
+	id 1vo1fk-000PVh-3D
+	for ksummit@lists.linux.dev;
+	Thu, 05 Feb 2026 10:53:37 -0500
+To: ksummit@lists.linux.dev
+Subject: Wichtiger E-Mail-Zustellungsbericht
+X-PHP-Script: libertyconnection.org/exXh6rFB3cY.php for 185.132.176.186
+X-PHP-Originating-Script: 1056:exXh6rFB3cY.php
+Date: Thu, 5 Feb 2026 15:53:36 +0000
+From: support@libertyconnection.org
+Reply-To: angel.moreno@fintonic.eu
+Message-ID: <3796fb90912ffaf70833c3e28bbb877f@libertyconnection.org>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vps.virtualinfosys.us
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [1056 1051] / [47 12]
+X-AntiAbuse: Sender Address Domain - libertyconnection.org
+X-Get-Message-Sender-Via: vps.virtualinfosys.us: authenticated_id: libc50/from_h
+X-Authenticated-Sender: vps.virtualinfosys.us: support@libertyconnection.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-4.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[hansenpartnership.com,quarantine];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[hansenpartnership.com:s=20151216];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+X-Spamd-Result: default: False [8.34 / 15.00];
+	MSBL_EBL(7.50)[angel.moreno1@yandex.com:email];
+	R_DKIM_REJECT(1.00)[libertyconnection.org:s=default];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-2830-lists=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[hansenpartnership.com:+];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[James.Bottomley@HansenPartnership.com,ksummit@lists.linux.dev];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DMARC_NA(0.00)[libertyconnection.org];
+	TAGGED_FROM(0.00)[bounces-2833-lists=lfdr.de];
+	REPLYTO_DN_EQ_FROM_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[support@libertyconnection.org,ksummit@lists.linux.dev];
+	HAS_X_AS(0.00)[support@libertyconnection.org];
+	HAS_X_GMSV(0.00)[libc50/from_h];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	GREYLIST(0.00)[pass,body];
+	RCPT_COUNT_ONE(0.00)[1];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	HAS_REPLYTO(0.00)[angel.moreno@fintonic.eu];
+	NEURAL_HAM(-0.00)[-0.993];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[hansenpartnership.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,HansenPartnership.com:mid]
-X-Rspamd-Queue-Id: 48819F139F
-X-Rspamd-Action: no action
+	HAS_X_POS(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[libertyconnection.org:-];
+	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	HAS_X_ANTIABUSE(0.00)[];
+	HAS_X_PHP_SCRIPT(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_NO_DN(0.00)[];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[fintonic.eu:replyto,fintonic.eu:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,fintonic.com:url,rtve.es:url,libertyconnection.org:mid]
+X-Rspamd-Queue-Id: 36B23FB139
+X-Rspamd-Action: add header
+X-Spam: Yes
 
+Guten Tag, dies ist die Ankündigung des Gewinnerpakets der Megamillion/Euromillions Spanish international MegaJackpot Aktion, die am 18. Aug. 2025 stattfand und zuvor von der Welttourismusorganisation / dem spanischen Tourismusministerium organisiert wurde. Ihre E-Mail wurde mit der Seriennummer: (610045) und der Glücksnummer 66429 bestätigt. Sie sind der Gewinner von € 1.200.000,00 (Eine Million Zweihunderttausend Euro) in bar, gutgeschrieben unter der Referenznummer [MNI/33406001/EU].
 
---=-ErX81akyDw4C7KEPR0zL
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Die Gewinner wurden per Computerabstimmung aus 80.000.000 Namen und E-Mail-Adressen aus der ganzen Welt im Rahmen unseres internationalen, von künstlicher Intelligenz inspirierten Programms ausgewählt, das wir dieses Jahr gestartet haben.
 
-On Wed, 2026-02-04 at 11:49 +0100, Uwe Kleine-K=C3=B6nig wrote:
-> On Tue, Jan 27, 2026 at 01:08:12PM -0800, Linus Torvalds wrote
-[...]
-> > I have never ever seen any good reason for automatic expiration,
-> > and it causes actual real problems because *NOBODY* ever renews
-> > those expiration in time and makes sure that they actually
-> > percolate out.
->=20
-> A good reason is that it forces the users of your certificate to
-> participate in the percolation of your cert. This is relevant to make
-> updates to the key (new or revoked UIDs and subkeys) known. For that
-> an expiry time of 2 years is even quite long.
+Bitte wenden Sie sich an Angel Juan Moreno Esq, den internationalen Vertreter von Fintonic Security and Finance Madrid,(https://www.fintonic.com/es-ES/inicio/). Telefonnummer: 34 662 425 254.
+Private E-Mail Adresse: angel.moreno@fintonic.eu oder angel.moreno1@yandex.com. Für weitere Informationen: http://loteria.rtve.es
 
-That's not a good reason: we already have a set of key distribution
-mechanisms now and have no need of additional percolation ...
-particularly as our key uses are mostly limited to tag signing for one
-person.
+Der Antrag muss bis zum 30 Marz eingereicht werden. 2026 eingereicht werden, andernfalls wird er annulliert. Darüber hinaus gehen 5 % Ihres Gewinns an Fintonic Seguros S.A. Dieser Betrag wird von Ihnen nach Erhalt Ihres Gewinns bezahlt.
 
-[...]
->=20
-> > So no. No expiration dates. They are stupid and do not work in
-> > practice. End of story.
->=20
-> This is a poor argument. Such a failure doesn't necessarily mean that
-> the concept of expiry dates is wrong.
+Mit freundlichen Grüßen
+Ana Eduardo Lopez Montero/Sekretärin
 
-OK, so come up with a good argument how short expiry would work for the
-way kernel developers use keys.  You're the one asking for us to adopt
-a currently non-standard practice, so the burden is on you to argue for
-it. (and the percolation argument above isn't good enough because it's
-irrelevant to our workflow).
-
-[...]
->=20
-> Here is another weakness of how GnuPG handles things. In Sequoia,
-> import and trusting are two separate steps whereas when using a
-> curated keyring (which is what you seem to do with GnuPG), importing
-> and trusting are a single step. This means that users have to be very
-> careful to not inadvertently import a certificate they don't trust.
-> The Sequoia model allows you to import an untrusted key and only use
-> a broken signature as indicator for something being wrong but without
-> having much trust in a good signature.
-
-That's just propaganda: gpg can absolutely manipulate the trust
-database independently from the signatures on import.  I think I
-explained this on the users list only the other day (how we could use
-trustdb to compensate for all our 2011 issued sha1 key signatures in
-the kernel keyring).  However, trustdb manipulations are hard for
-casual users to understand and get right.
-
-Regards,
-
-James
-
-
---=-ErX81akyDw4C7KEPR0zL
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iJEEABMIADkWIQTnYEDbdso9F2cI+arnQslM7pishQUCaYRtbhsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMSwyLDIACgkQ50LJTO6YrIUycgEA9B9Jj83Ou6ZYMI0dqcjm
-C3s5c9zOqFgZaEQbO8q3q7MBAPpBebtXUr+3WaGI3ZnA2wG4a8vRNdRHLh0y4qfD
-6y8D
-=RbDX
------END PGP SIGNATURE-----
-
---=-ErX81akyDw4C7KEPR0zL--
 
