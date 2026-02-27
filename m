@@ -1,124 +1,119 @@
-Return-Path: <ksummit+bounces-2842-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2843-lists=lfdr.de@lists.linux.dev>
 Delivered-To: lists@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gBbiE+K9oWnCwAQAu9opvQ
-	(envelope-from <ksummit+bounces-2842-lists=lfdr.de@lists.linux.dev>)
-	for <lists@lfdr.de>; Fri, 27 Feb 2026 16:53:06 +0100
+	id eOYpDh2/oWnPwAQAu9opvQ
+	(envelope-from <ksummit+bounces-2843-lists=lfdr.de@lists.linux.dev>)
+	for <lists@lfdr.de>; Fri, 27 Feb 2026 16:58:21 +0100
 X-Original-To: lists@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A4CB1BA55E
-	for <lists@lfdr.de>; Fri, 27 Feb 2026 16:53:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D7F31BA6B4
+	for <lists@lfdr.de>; Fri, 27 Feb 2026 16:58:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1DCFB30D0F09
-	for <lists@lfdr.de>; Fri, 27 Feb 2026 15:37:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1FBCC307BA74
+	for <lists@lfdr.de>; Fri, 27 Feb 2026 15:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A7943DA43;
-	Fri, 27 Feb 2026 15:36:02 +0000 (UTC)
-Received: from lithops.sigma-star.at (mailout.nod.at [116.203.167.152])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7FD643E9EC;
+	Fri, 27 Feb 2026 15:45:06 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F06A43D50C
-	for <ksummit@lists.linux.dev>; Fri, 27 Feb 2026 15:35:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.167.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E0E43DA56
+	for <ksummit@lists.linux.dev>; Fri, 27 Feb 2026 15:45:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772206562; cv=none; b=dtY45Wu/VN+EdrxD4a8juDXe5r+hJCO2Ul9eQ331FDwS0ruSkUBjo7Gu6F1saOm6rkmL9zHFJCcTXvJIMi17TUachLtjkyoCCtbsX23mH2dUTWN5IPVwBaiad+UNbJzKK1YcSooux/lB+CNVrErKenCVwpzEtnC7yvVfJxa1QRw=
+	t=1772207106; cv=none; b=fRqkrx9LMx1rZoP4c52C8f8UtVtiZ9/gMbeqmwrLK718eSdBubFCYlzMR1PkDeOrHQco9HMtkOWoYKEMDdfKIm7JdexAmDDUMZqRQFagD2QeDty9e3IJjlI6Wpb6Qeb9KLXIu+BDmt1avP4x1KzwxAq8qfm5LnWaswYIxlLlVzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772206562; c=relaxed/simple;
-	bh=U4pXdTOpdB1sO10xvFxz67p240gPxLCm2d4lzSdJxlg=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=XLRdhIdttXwG5HQXf1xXEtS/hzIgcrjwdphfpw09hvo4UWjOUNiGC0HG3S/258fJXw4SJNUuimmzXgb2yNY+dCW5OYrF35nAkiJpT+edtsNobWi/v5ecsj7fVxi/fKnNpxN3i0LxlISMXfY67vc08KQQXOKsJZ+Z/Bl3WbbPpGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at; spf=fail smtp.mailfrom=nod.at; arc=none smtp.client-ip=116.203.167.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nod.at
-Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id AC193298599;
-	Fri, 27 Feb 2026 16:35:56 +0100 (CET)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id dQGRkIY-y3TB; Fri, 27 Feb 2026 16:35:56 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id E14D929859D;
-	Fri, 27 Feb 2026 16:35:55 +0100 (CET)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id E6eljODaYosr; Fri, 27 Feb 2026 16:35:55 +0100 (CET)
-Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
-	by lithops.sigma-star.at (Postfix) with ESMTP id B17F6298599;
-	Fri, 27 Feb 2026 16:35:55 +0100 (CET)
-Date: Fri, 27 Feb 2026 16:35:55 +0100 (CET)
-From: Richard Weinberger <richard@nod.at>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Thorsten Leemhuis <linux@leemhuis.info>, 
-	Konstantin Ryabitsev <konstantin@linuxfoundation.org>, 
-	users <users@kernel.org>, ksummit <ksummit@lists.linux.dev>
-Message-ID: <677258882.1999.1772206555300.JavaMail.zimbra@nod.at>
-In-Reply-To: <20260227101631.67756268@gandalf.local.home>
-References: <20251209-roaring-hidden-alligator-068eea@lemur> <b93eae05-5e40-42f0-8256-d46d411008a4@leemhuis.info> <20260226090425.11bb585062783c0e1fcf0b32@linux-foundation.org> <20260227101631.67756268@gandalf.local.home>
+	s=arc-20240116; t=1772207106; c=relaxed/simple;
+	bh=acCFWFL5cQQMzlwaF3nKbcKIsIgKCJNZmkUSWADJo3Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LsnWbj7t7auJLsBcI3SAOw+EYdAVjYDWg4eVKAcMr6Y8ulL6ncGckdUB5boje7tTb231Txn4UE2nw93lEuzfdtdMmjp82mner1x3txa8GfSM5txH3cXtZllo9g22+rLTKz+D+RS9MrCqrFQ8XCqkBs7VzwVrTZDOD4R8Lf+HQYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 703DDBB231;
+	Fri, 27 Feb 2026 15:45:03 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf05.hostedemail.com (Postfix) with ESMTPA id 70BCA20011;
+	Fri, 27 Feb 2026 15:45:01 +0000 (UTC)
+Date: Fri, 27 Feb 2026 10:44:59 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Thorsten Leemhuis
+ <linux@leemhuis.info>, Konstantin Ryabitsev
+ <konstantin@linuxfoundation.org>, users@kernel.org, ksummit@lists.linux.dev
 Subject: Re: slowly decommission bugzilla? (was: Re: kernel.org tooling
  update)
+Message-ID: <20260227104459.2ff7b561@fedora>
+In-Reply-To: <f1366d58-c3bb-464c-8436-5770a9eb8c91@sirena.org.uk>
+References: <20251209-roaring-hidden-alligator-068eea@lemur>
+	<b93eae05-5e40-42f0-8256-d46d411008a4@leemhuis.info>
+	<20260226090425.11bb585062783c0e1fcf0b32@linux-foundation.org>
+	<20260227101631.67756268@gandalf.local.home>
+	<f1366d58-c3bb-464c-8436-5770a9eb8c91@sirena.org.uk>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF147 (Linux)/8.8.12_GA_3809)
-Thread-Topic: slowly decommission bugzilla? (was: Re: kernel.org tooling update)
-Thread-Index: mzZhyKGKEMeeEOcVDbWfScedFnLeBg==
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: jepqp6etrsrk695juxhrhm4dkm59qbxm
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1/XRfDgazMX/EJrcLPpY2Ym2E8T9X5CfRg=
+X-HE-Tag: 1772207101-79334
+X-HE-Meta: U2FsdGVkX1/tVqhqUm6VHTtHZOLe+qmTUi6c2hKmH7WaHW16qLDp8iwo6oqmKSiB+ilUgtx1gUg5onxSkUHr/475h11UhYOA+Hg61SUQvv415Bc6Ka7zsNlIunMVzFnHZ+rbXAv0e5ciP+KhjCVbQJlpgCUPYKaGNm/F+HH1Bp9BeLYdbiWuVHyrmMIN+v23N3e+4YenQHkoCoNq/dh08zNLg00FVE2Pltd9s/VR3qwZM0Bamq1a5Q3UJG8O5CLH70hpFxm7y1OS12MLJjN7KppNzOEYTyRoZVVk4wzhGbIZTgGOc3nhshLgQZcocvGhBxYNZABfqz7dbeSanTpRerfkY7SStYHQ
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-0.86 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[goodmis.org : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-2842-lists=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_ALL(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-2843-lists=lfdr.de];
+	URIBL_MULTI_FAIL(0.00)[get_maintainers.pl:server fail,sin.lore.kernel.org:server fail];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[nod.at];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,get_maintainers.pl:url,goodmis.org:email,nod.at:mid];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[richard@nod.at,ksummit@lists.linux.dev];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	SUBJECT_HAS_QUESTION(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[rostedt@goodmis.org,ksummit@lists.linux.dev];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
 	R_DKIM_NA(0.00)[];
-	SUBJECT_HAS_QUESTION(0.00)[]
-X-Rspamd-Queue-Id: 5A4CB1BA55E
+	NEURAL_HAM(-0.00)[-0.997];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,get_maintainers.pl:url]
+X-Rspamd-Queue-Id: 4D7F31BA6B4
 X-Rspamd-Action: no action
 
------ Urspr=C3=BCngliche Mail -----
-> Von: "Steven Rostedt" <rostedt@goodmis.org>
->> Or heck, add a front-end to get_maintainer right here in this web page.
->> People paste in a pathname and it spits back a bunch of email
->> addresses.
->=20
-> This actually sounds like a good idea. Someone just told me that they fou=
-nd
-> a bug in a driver and I asked them if they notified upstream about it. Th=
-ey
-> said no, because they didn't know how.
->=20
-> I just told them to randomly modify the file, do a git diff and redirect =
-it
-> into another file (making a random patch), and run get_maintainers.pl on
-> it. That's a big hack and having a better interface to point others too
-> would be useful.
+On Fri, 27 Feb 2026 15:18:10 +0000
+Mark Brown <broonie@kernel.org> wrote:
 
-I'm pretty sure someone can vibe code us a neat webinterface which queries
-get_maintainers.pl in the background.
+> On Fri, Feb 27, 2026 at 10:16:31AM -0500, Steven Rostedt wrote:
+> 
+> > This actually sounds like a good idea. Someone just told me that they found
+> > a bug in a driver and I asked them if they notified upstream about it. They
+> > said no, because they didn't know how.  
+> 
+> > I just told them to randomly modify the file, do a git diff and redirect it
+> > into another file (making a random patch), and run get_maintainers.pl on
+> > it. That's a big hack and having a better interface to point others too
+> > would be useful.  
+> 
+> ./scripts/get_maintainer.pl --file is a bit more direct there.
 
-Thanks,
-//richard
+Yeah, I always forget that it can handle files. I only run it on
+patches. I was also using it as a way to get someone used to making
+patches ;-)
+
+-- Steve
 
