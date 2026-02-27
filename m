@@ -1,154 +1,130 @@
-Return-Path: <ksummit+bounces-2844-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2845-lists=lfdr.de@lists.linux.dev>
 Delivered-To: lists@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CG5fIJfCoWkVwQQAu9opvQ
-	(envelope-from <ksummit+bounces-2844-lists=lfdr.de@lists.linux.dev>)
-	for <lists@lfdr.de>; Fri, 27 Feb 2026 17:13:11 +0100
+	id ePmrHsTEoWkVwQQAu9opvQ
+	(envelope-from <ksummit+bounces-2845-lists=lfdr.de@lists.linux.dev>)
+	for <lists@lfdr.de>; Fri, 27 Feb 2026 17:22:28 +0100
 X-Original-To: lists@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96BBD1BA9F3
-	for <lists@lfdr.de>; Fri, 27 Feb 2026 17:13:10 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09F961BAC13
+	for <lists@lfdr.de>; Fri, 27 Feb 2026 17:22:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8A70B3093D65
-	for <lists@lfdr.de>; Fri, 27 Feb 2026 16:00:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 425CE301BDD8
+	for <lists@lfdr.de>; Fri, 27 Feb 2026 16:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A845B44B68E;
-	Fri, 27 Feb 2026 16:00:31 +0000 (UTC)
-Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E65BA42E007;
+	Fri, 27 Feb 2026 16:22:23 +0000 (UTC)
+Received: from lithops.sigma-star.at (mailout.nod.at [116.203.167.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C282644B689
-	for <ksummit@lists.linux.dev>; Fri, 27 Feb 2026 16:00:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA6C43E9DF
+	for <ksummit@lists.linux.dev>; Fri, 27 Feb 2026 16:22:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.167.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772208031; cv=none; b=esUXHxluW9TZkx81yer4CHua3zNB4oaBBUqKvs0UNmY+eo5Djj2NFQb0qGiHZ/3uy76zp2Yg/toxlOgb4zJgLTPQODZ0r17lCITCOdBehPg/9OODobRUjI73q7+wUUIzFUaEyqMCqafVNaZN4f4jZM6nHyxdrwpv3rrDz294W+c=
+	t=1772209343; cv=none; b=erllpWCAk2jMPjVHy5yVet96d3CsFBghj0IaN+GOQehrjlX8TFRLdsqKvO/VXUkqwspJjjTagxOf95h/IczQIi9nLz7BLiB3kDKZrIZ51K4CHvgX9peLMAomDRlIsebv//Y7+T+H17aatK5CckLvhcjSBPjZwtvBl90kpVoDxVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772208031; c=relaxed/simple;
-	bh=C6ij9Pv+KthNFd+u0NLmqyeRVvbXuWCGZRJE3yZykUg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MXSr0jYOQipYZIbF7NqDInMe6ryYtFDMNR7L8SchxZcjXjRJ2LgYRyVTOD7riSMjzFWvVWN+aEOtzB8Uf5sdLpUncnZxNtMkrK2OMSQaiB1zsvsP9jCwM+IxCfJMoO8GTrTXJ9Q8LITOMYqBeLV8WYA846lQniMavssxA2tDflw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-56a8dce7235so757502e0c.1
-        for <ksummit@lists.linux.dev>; Fri, 27 Feb 2026 08:00:29 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772208029; x=1772812829;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QYj66+1FdQ5QV3PBY3JUSzuGMNGXMDOS0Gs97hvScLg=;
-        b=o0xFPYpq6gniTXfsbBZiBgDByF38s3nl5oKn2lN7orCCO3iK5wZmKX7KEeh01JoCDo
-         AhYaXA+Wt7W3l+EuOLl2J3Mk32Mpfslc4UBJRcJ/JESQLijUrRaQBbW6i01vMp/lrZzG
-         1gNq5oJhzm4J4Fo03QLjf1kXZwlR4mxeiYn+73kXkRmLhIEahoYU39ckcrfkMndxDmRw
-         cNe0j0TcsgmvmxKLCmaT7Md4LvHVrKkvvduHkV986bg055nOhB9/opNGnksm9PcEU12R
-         /yqypl9iSvkgo3rXjc/BCKL8/dnNuzNT2Y5rGPTb5fAOeEOtX/+B5kQvAFb+Q8VVt+0l
-         lCSg==
-X-Forwarded-Encrypted: i=1; AJvYcCUO7I6n+N/v2psHyvdFW1PS0jM8qJI/GF+QDCDccFtsQLLTMbTFMo2IR92TLTUWigvVzz48mT0S@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw2aR7818RGjX7Adm2MHxXOY8khUlGXtYkkjWKOC5faVDnRWYSH
-	pLSBdYXufiodPjVg99ozCOFDf3QyA17ASjO396zIbz+bLCSAc9MTjtcsWNsckUOa
-X-Gm-Gg: ATEYQzxpr5teOdqS1CxQVa2B63LxMHaLmDKrdEt4U7MPjenp1teHC+IqqF+C+RhB81q
-	pyQ1cOFXNJ6HtiqCXKOwQjNJ8it9ABsqckXHnH0s0y01gc/oQqU96ecHYU0B3WUHpH+CA32ZINf
-	+aV2hPVUF1cSQC00Ol7W6FUylDLgrzb2emhLLuPrQuEusflKorb+Zc/dySlvBuIxUk9vVhPn+KL
-	e3Oiunn1TKpU3WCngR3JCqR7UppG6m86GYBmHfAD1EHm7pQgFOw67/L1xUMSxWcSnF3QOLjJdl+
-	jE0Blrzwjfk3v0xhRM5oI/vRGGM1bYvFIrOvZw4eXlLpdljfsb/EtQbyuj2dU/AncG0jheW99sq
-	sO7NLTcHyBfW8ou9hyUWuPuY8qEbl9602uWRRujtDbmShU3PYiocJqOddr7hakf7ny4hgSAp4I7
-	yaVD7wK/zzmkoQIWTTf9euv4BlnqYYDKJxZOtogJpXCzIHR5vI7721Mh2dkZyZ
-X-Received: by 2002:a05:6123:a9:b0:567:4722:66a3 with SMTP id 71dfb90a1353d-56aa0a4c4femr1648591e0c.8.1772208028452;
-        Fri, 27 Feb 2026 08:00:28 -0800 (PST)
-Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com. [209.85.222.47])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-94df644d593sm4932648241.7.2026.02.27.08.00.23
-        for <ksummit@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Feb 2026 08:00:24 -0800 (PST)
-Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-94acf3fa688so620512241.0
-        for <ksummit@lists.linux.dev>; Fri, 27 Feb 2026 08:00:23 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXeLH7ku+QM2EGYlVJ2fO/pTWAUEaUgzC0TZJ2zzJsDCvYyAX2ihl6rhKOeWkimw5xdgrQjGb+P@lists.linux.dev
-X-Received: by 2002:a05:6102:3746:b0:5fe:49f:e89d with SMTP id
- ada2fe7eead31-5ff3256fd36mr1678278137.36.1772208023630; Fri, 27 Feb 2026
- 08:00:23 -0800 (PST)
+	s=arc-20240116; t=1772209343; c=relaxed/simple;
+	bh=J9lH0VrroKOLYhyTClG/V9Fpfls/zYsSotlwSxx7XH0=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=ITTEL1WsHJosz2HMo+YraiSm72f9egWjz4zup6ze9buBoZc98U+yUDPwwG5T42B/pMr39bgBawa3nCaMXb7f9T1A5ENc0XwgJDqygczckNOai5cHVkjB6IZU+JVfFkA7KVbDF4uRBsKTJLpDEb5LZOXqDZ8bafBz/DaZgJKt62Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at; spf=fail smtp.mailfrom=nod.at; arc=none smtp.client-ip=116.203.167.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nod.at
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id C1A59298599;
+	Fri, 27 Feb 2026 17:22:19 +0100 (CET)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id t2eJT85eN0Oi; Fri, 27 Feb 2026 17:22:19 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id E0E8429859D;
+	Fri, 27 Feb 2026 17:22:18 +0100 (CET)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id kGguvjIe1LuU; Fri, 27 Feb 2026 17:22:18 +0100 (CET)
+Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
+	by lithops.sigma-star.at (Postfix) with ESMTP id C0481298599;
+	Fri, 27 Feb 2026 17:22:18 +0100 (CET)
+Date: Fri, 27 Feb 2026 17:22:18 +0100 (CET)
+From: Richard Weinberger <richard@nod.at>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, 
+	Thorsten Leemhuis <linux@leemhuis.info>, 
+	Konstantin Ryabitsev <konstantin@linuxfoundation.org>, 
+	users <users@kernel.org>, ksummit <ksummit@lists.linux.dev>
+Message-ID: <1655051015.2216.1772209338375.JavaMail.zimbra@nod.at>
+In-Reply-To: <CAMuHMdWHRdsXahgxXMsSDFuuUwxzpvkT4oujg=tje2Rr5jr3SA@mail.gmail.com>
+References: <20251209-roaring-hidden-alligator-068eea@lemur> <b93eae05-5e40-42f0-8256-d46d411008a4@leemhuis.info> <20260226090425.11bb585062783c0e1fcf0b32@linux-foundation.org> <20260227101631.67756268@gandalf.local.home> <677258882.1999.1772206555300.JavaMail.zimbra@nod.at> <CAMuHMdWHRdsXahgxXMsSDFuuUwxzpvkT4oujg=tje2Rr5jr3SA@mail.gmail.com>
+Subject: Re: slowly decommission bugzilla? (was: Re: kernel.org tooling
+ update)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251209-roaring-hidden-alligator-068eea@lemur>
- <b93eae05-5e40-42f0-8256-d46d411008a4@leemhuis.info> <20260226090425.11bb585062783c0e1fcf0b32@linux-foundation.org>
- <20260227101631.67756268@gandalf.local.home> <677258882.1999.1772206555300.JavaMail.zimbra@nod.at>
-In-Reply-To: <677258882.1999.1772206555300.JavaMail.zimbra@nod.at>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 27 Feb 2026 17:00:12 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdWHRdsXahgxXMsSDFuuUwxzpvkT4oujg=tje2Rr5jr3SA@mail.gmail.com>
-X-Gm-Features: AaiRm50zknxRFcAk5K4X5W3iXuJC4dJtPMsUf5iySci-V0lJ7jy7n2JzmTzUzsg
-Message-ID: <CAMuHMdWHRdsXahgxXMsSDFuuUwxzpvkT4oujg=tje2Rr5jr3SA@mail.gmail.com>
-Subject: Re: slowly decommission bugzilla? (was: Re: kernel.org tooling update)
-To: Richard Weinberger <richard@nod.at>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Thorsten Leemhuis <linux@leemhuis.info>, Konstantin Ryabitsev <konstantin@linuxfoundation.org>, 
-	users <users@kernel.org>, ksummit <ksummit@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF147 (Linux)/8.8.12_GA_3809)
+Thread-Topic: slowly decommission bugzilla? (was: Re: kernel.org tooling update)
+Thread-Index: qIV4IaWyd6aVoOYWIzsFBUk5jNx7lA==
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_ALL(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-2844-lists=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-2845-lists=lfdr.de];
+	TO_DN_ALL(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[linux-m68k.org];
-	SUBJECT_HAS_QUESTION(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DMARC_NA(0.00)[nod.at];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-m68k.org:email,get_maintainers.pl:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[richard@nod.at,ksummit@lists.linux.dev];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[geert@linux-m68k.org,ksummit@lists.linux.dev];
-	FROM_HAS_DN(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_SEVEN(0.00)[8];
 	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.987];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux-m68k.org:email,mail.gmail.com:mid,get_maintainers.pl:url,goodmis.org:email]
-X-Rspamd-Queue-Id: 96BBD1BA9F3
+	SUBJECT_HAS_QUESTION(0.00)[]
+X-Rspamd-Queue-Id: 09F961BAC13
 X-Rspamd-Action: no action
 
-On Fri, 27 Feb 2026 at 16:44, Richard Weinberger <richard@nod.at> wrote:
-> > Von: "Steven Rostedt" <rostedt@goodmis.org>
-> >> Or heck, add a front-end to get_maintainer right here in this web page.
-> >> People paste in a pathname and it spits back a bunch of email
-> >> addresses.
-> >
-> > This actually sounds like a good idea. Someone just told me that they found
-> > a bug in a driver and I asked them if they notified upstream about it. They
-> > said no, because they didn't know how.
-> >
-> > I just told them to randomly modify the file, do a git diff and redirect it
-> > into another file (making a random patch), and run get_maintainers.pl on
-> > it. That's a big hack and having a better interface to point others too
-> > would be useful.
->
-> I'm pretty sure someone can vibe code us a neat webinterface which queries
-> get_maintainers.pl in the background.
+----- Urspr=C3=BCngliche Mail -----
+> Von: "Geert Uytterhoeven" <geert@linux-m68k.org>
+>> > I just told them to randomly modify the file, do a git diff and redire=
+ct it
+>> > into another file (making a random patch), and run get_maintainers.pl =
+on
+>> > it. That's a big hack and having a better interface to point others to=
+o
+>> > would be useful.
+>>
+>> I'm pretty sure someone can vibe code us a neat webinterface which queri=
+es
+>> get_maintainers.pl in the background.
+>=20
+> ... including a big fat message wrapped in a <BLINK> tag, which suggests
+> to check manually if a few addresses should be dropped?
+>=20
+> Or perhaps this should be restricted to return mailing lists only?
 
-... including a big fat message wrapped in a <BLINK> tag, which suggests
-to check manually if a few addresses should be dropped?
+Sure.
+What I have in mind is something like a web interface where you
+enter either the source file, module name, heck even a stack trace or a BUG=
+/WARN_ON/Oops
+and the interface gives an advice how to mail to which mailing list.
+E.g. what information to include, how to send plain text mail, etc...
 
-Or perhaps this should be restricted to return mailing lists only?
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Thanks,
+//richard
 
