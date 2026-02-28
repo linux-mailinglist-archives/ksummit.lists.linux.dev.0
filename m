@@ -1,163 +1,218 @@
-Return-Path: <ksummit+bounces-2847-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2848-lists=lfdr.de@lists.linux.dev>
 Delivered-To: lists@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WPRaJmPPoWn3wQQAu9opvQ
-	(envelope-from <ksummit+bounces-2847-lists=lfdr.de@lists.linux.dev>)
-	for <lists@lfdr.de>; Fri, 27 Feb 2026 18:07:47 +0100
+	id aPx5Osnwomkm8QQAu9opvQ
+	(envelope-from <ksummit+bounces-2848-lists=lfdr.de@lists.linux.dev>)
+	for <lists@lfdr.de>; Sat, 28 Feb 2026 14:42:33 +0100
 X-Original-To: lists@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0010A1BB357
-	for <lists@lfdr.de>; Fri, 27 Feb 2026 18:07:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 633AE1C34B4
+	for <lists@lfdr.de>; Sat, 28 Feb 2026 14:42:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8444A306144A
-	for <lists@lfdr.de>; Fri, 27 Feb 2026 17:07:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 982C03043AC0
+	for <lists@lfdr.de>; Sat, 28 Feb 2026 13:42:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54AC53612F7;
-	Fri, 27 Feb 2026 17:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D874A2D1907;
+	Sat, 28 Feb 2026 13:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="fpUfZ2Q8"
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="EvD4wPQF"
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.166])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6AA92C2349
-	for <ksummit@lists.linux.dev>; Fri, 27 Feb 2026 17:07:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B211E98E3
+	for <ksummit@lists.linux.dev>; Sat, 28 Feb 2026 13:42:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772212054; cv=none; b=ZLEF64iPj+VJLQVkecjEoUArZ1ekTHeMVtA/lKonae06HRk25k7+eqzzXWL+wI0UYXSimVVPVooOscVGATOBR2pu8NlQLTI1MXbEhPKCzP8Wc30g77dcOMxK9hYjc9Vd8FpmfdviboV936a+mCN53qeQeMwDvnrYsr4/Qw7rOA0=
+	t=1772286148; cv=none; b=AjaIaG8xnLHNlV2URkAFSugMY7QPh2COw+HxYln9r8EadKcAdThLa9Amovs7UNZDy3QWvrMhXcItnvRs2vTOl7dwyE9zJfZVA9FlRL42jgGiMDkkYDwPOiREazSSzTieXEJzOz/e20skm2DFCI+b1kZEao8B47gPzEkTDPwEDnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772212054; c=relaxed/simple;
-	bh=eF/KLmJvseffNe9hFJi3dotrZRpq0k34XDaHU+3VmTw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=T9srpfy71yH39j5TH/7MGZIcJXRLzzBxgjaJtTgIn0OEADByg1RsZb8JqDq1574g9A6VLU9/SsT/7bVxZn8ii/wEzsgagMue0DVcvKkM4sAbMgKHu7If6Fc9Ik8SEa/A5ZFgd0zP4MozS9FrT7Dv/u825YFd3KdmkkgRIidLqkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=fpUfZ2Q8; arc=none smtp.client-ip=198.37.111.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1772212050;
-	bh=eF/KLmJvseffNe9hFJi3dotrZRpq0k34XDaHU+3VmTw=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=fpUfZ2Q8GRseu6zf5f/NR6lQ6yblkSHdm1ea79CsT+FkOOhlIJk2SGYo1IE6Ed2qw
-	 MeMTfyfE/pQoAQrWSbZ4KkUN+R8uM+wGRZjI6AFy+gSAvjR0GpTJHiu8uO4fmJukbV
-	 04YoSTb+o/nJCe5ACuRxd2qik60wzxB+ts5TNF5Q=
-Received: from [IPv6:2601:5c4:4300:d341::a774] (unknown [IPv6:2601:5c4:4300:d341::a774])
+	s=arc-20240116; t=1772286148; c=relaxed/simple;
+	bh=CCDGjTQtgDycR5VwzaJB5UznSytDG8iY4vwkgYigKE4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iKU8wBHk7PkQEi1NuEB1X+vJesLRH6RV1dNImU+xjE8QNvdT+yj4gqqGEBJW97oYNkBfTHzONgYAfUP03fV1IjrZGanQ3KfiCLKWugNWHvq2ekH9nj/nf40Aa0LXsSk3qdwQLUAr6riScgaYG9HiioMPUglZofsZ3s/VcKfYEIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=EvD4wPQF; arc=none smtp.client-ip=188.68.63.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from mors-relay-8202.netcup.net (localhost [127.0.0.1])
+	by mors-relay-8202.netcup.net (Postfix) with ESMTPS id 4fNRDh3H2Nz3tKq;
+	Sat, 28 Feb 2026 14:41:24 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1772286084;
+	bh=CCDGjTQtgDycR5VwzaJB5UznSytDG8iY4vwkgYigKE4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=EvD4wPQF5XdWCnl5cHF856hOzlfYiPjNwYTGpTPpMxsHhvkceruqaxKfQmBzldpq4
+	 gPpaAWbZOrNuvtS4bmGBGwxPSrjD3kJOiGgl95Jk1Xhl2AeXLJG37yUFL+yjCjrVgH
+	 GTFKSC3Tpm/DDzsoxwUmYuNitib+obHPBmUFCeyxKyxnEQ5OKz3p9TmG3Qrh8MD9E4
+	 DUU7/owkWcQrIFvSVNnBIHkie8g6879XRsRCXSGHLSRDKzyLGRxyqcmC8OzxhvcA7v
+	 nn7ziWDh9QnSykQ5kRKzGyblwkU59ix15ZvpfB360rTRJCKqmJFXY/RO1tzfcG3ICc
+	 CmQh5YeeCLKPQ==
+Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
+	by mors-relay-8202.netcup.net (Postfix) with ESMTPS id 4fNRDh2X2Rz3tJZ;
+	Sat, 28 Feb 2026 14:41:24 +0100 (CET)
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id DD2DC1C029E;
-	Fri, 27 Feb 2026 12:07:29 -0500 (EST)
-Message-ID: <9c129f8cfef67aa00f4153399af4c2d413bc286c.camel@HansenPartnership.com>
-Subject: Re: slowly decommission bugzilla? (was: Re: kernel.org tooling
- update)
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Peter Zijlstra <peterz@infradead.org>, Richard Weinberger
- <richard@nod.at>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Steven Rostedt
- <rostedt@goodmis.org>, Andrew Morton <akpm@linux-foundation.org>, Thorsten
- Leemhuis <linux@leemhuis.info>, Konstantin Ryabitsev
- <konstantin@linuxfoundation.org>, users <users@kernel.org>, ksummit
- <ksummit@lists.linux.dev>
-Date: Fri, 27 Feb 2026 12:07:28 -0500
-In-Reply-To: <20260227162909.GJ606826@noisy.programming.kicks-ass.net>
-References: <20251209-roaring-hidden-alligator-068eea@lemur>
-	 <b93eae05-5e40-42f0-8256-d46d411008a4@leemhuis.info>
-	 <20260226090425.11bb585062783c0e1fcf0b32@linux-foundation.org>
-	 <20260227101631.67756268@gandalf.local.home>
-	 <677258882.1999.1772206555300.JavaMail.zimbra@nod.at>
-	 <CAMuHMdWHRdsXahgxXMsSDFuuUwxzpvkT4oujg=tje2Rr5jr3SA@mail.gmail.com>
-	 <1655051015.2216.1772209338375.JavaMail.zimbra@nod.at>
-	 <20260227162909.GJ606826@noisy.programming.kicks-ass.net>
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4fNRDg3SxVz8svF;
+	Sat, 28 Feb 2026 14:41:23 +0100 (CET)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 5547F61741;
+	Sat, 28 Feb 2026 14:41:22 +0100 (CET)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=linux@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <5dea1bca-75fe-4e3c-950d-d489a438299a@leemhuis.info>
+Date: Sat, 28 Feb 2026 14:41:21 +0100
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: slowly decommission bugzilla?
+To: Richard Weinberger <richard@nod.at>,
+ Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
+ users <users@kernel.org>, ksummit <ksummit@lists.linux.dev>
+References: <20251209-roaring-hidden-alligator-068eea@lemur>
+ <b93eae05-5e40-42f0-8256-d46d411008a4@leemhuis.info>
+ <20260226090425.11bb585062783c0e1fcf0b32@linux-foundation.org>
+ <20260227101631.67756268@gandalf.local.home>
+ <677258882.1999.1772206555300.JavaMail.zimbra@nod.at>
+ <CAMuHMdWHRdsXahgxXMsSDFuuUwxzpvkT4oujg=tje2Rr5jr3SA@mail.gmail.com>
+ <1655051015.2216.1772209338375.JavaMail.zimbra@nod.at>
+From: Thorsten Leemhuis <linux@leemhuis.info>
+Content-Language: de-DE, en-US
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 MEK4
+In-Reply-To: <1655051015.2216.1772209338375.JavaMail.zimbra@nod.at>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-PPP-Message-ID: <177228608267.1179507.8244685339638036233@mxe9fb.netcup.net>
+X-NC-CID: oVeGiF4+NIjtJ6ek9N6BhO0Zyxb9yqf9ndpWPfDpReXEcsizVL8=
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUBJECT_ENDS_QUESTION(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[hansenpartnership.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
-	R_DKIM_ALLOW(-0.20)[hansenpartnership.com:s=20151216];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-2847-lists=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux-m68k.org:email,get_maintainers.pl:url,leemhuis.info:mid,leemhuis.info:dkim];
+	DKIM_TRACE(0.00)[leemhuis.info:+];
+	TAGGED_FROM(0.00)[bounces-2848-lists=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[leemhuis.info];
 	TO_DN_ALL(0.00)[];
-	DKIM_TRACE(0.00)[hansenpartnership.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux-m68k.org:email];
-	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[James.Bottomley@HansenPartnership.com,ksummit@lists.linux.dev];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	SUBJECT_HAS_QUESTION(0.00)[]
-X-Rspamd-Queue-Id: 0010A1BB357
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[linux@leemhuis.info,ksummit@lists.linux.dev];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 633AE1C34B4
 X-Rspamd-Action: no action
 
-On Fri, 2026-02-27 at 17:29 +0100, Peter Zijlstra wrote:
-> On Fri, Feb 27, 2026 at 05:22:18PM +0100, Richard Weinberger wrote:
-> > ----- Urspr=C3=BCngliche Mail -----
-> > > Von: "Geert Uytterhoeven" <geert@linux-m68k.org>
-> > > > > I just told them to randomly modify the file, do a git diff
-> > > > > and redirect it into another file (making a random patch),
-> > > > > and run get_maintainers.pl on it. That's a big hack and
-> > > > > having a better interface to point others too would be
-> > > > > useful.
-> > > >=20
-> > > > I'm pretty sure someone can vibe code us a neat webinterface
-> > > > which queries get_maintainers.pl in the background.
-> > >=20
-> > > ... including a big fat message wrapped in a <BLINK> tag, which
-> > > suggests to check manually if a few addresses should be dropped?
-> > >=20
-> > > Or perhaps this should be restricted to return mailing lists
-> > > only?
-> >=20
-> > Sure.
-> > What I have in mind is something like a web interface where you
-> > enter either the source file, module name, heck even a stack trace
-> > or a BUG/WARN_ON/Oops and the interface gives an advice how to mail
-> > to which mailing list. E.g. what information to include, how to
-> > send plain text mail, etc...
->=20
-> Oh, with these modern AI tools, you could even make that phone based
-> and accept screen shots... /me runs for the hills.
+On 2/27/26 17:22, Richard Weinberger wrote:
+> ----- Ursprüngliche Mail -----
+>> Von: "Geert Uytterhoeven" <geert@linux-m68k.org>
+>>>> I just told them to randomly modify the file, do a git diff and redirect it
+>>>> into another file (making a random patch), and run get_maintainers.pl on
+>>>> it. That's a big hack and having a better interface to point others too
+>>>> would be useful.
+>>>
+>>> I'm pretty sure someone can vibe code us a neat webinterface which queries
+>>> get_maintainers.pl in the background.
+>>
+>> ... including a big fat message wrapped in a <BLINK> tag, which suggests
+>> to check manually if a few addresses should be dropped?
+>>
+>> Or perhaps this should be restricted to return mailing lists only?
+> 
+> Sure.
+> What I have in mind is something like a web interface where you
+> enter either the source file,
 
-Many a true word and all that ...
+Well, regular users reporting a bug usually don't deal with source files
+and might not even have an idea how to get from a module name to source
+files. For kernel developers it's obviously different, but those most
+likely have the source tree lying around already and thus can run
+scripts/get_maintainer.pl -f directly. So support for source files
+doesn't help that much, I'd say (but of course it would be "nice to
+have", too).
 
-You know, it shouldn't be beyond the wit of Claude, with suitable
-prompts of course, to guide a novice through gathering enough
-information to actually send a bug report.  The ability to translate
-screenshots to text dumps would only be one advantage, it should also
-be able to identify the place in the kernel it occurred and compose an
-email to the correct lists.  We probably don't want to add AI agents on
-kernel.org pages, but it's perfectly possible to point to a git repo
-like the review-prompts one where all the precursors get setup (it
-would probably have to have an easy tar file download, but
-git.kernel.org can do that).
+> module name,
 
-Regards,
+This, on the other hand, would help quite a few people.
 
-James
+Also, broad categories with optional, more fine-graded subcategories
+would be nice for some areas. Like mm, which has 18 entries in
+MAINTAINERS that start with "MEMORY MANAGEMENT - ", which confuses
+people that do not know "if in doubt, just use the entry for MEMORY
+MANAGEMENT"
 
+> heck even a stack trace or a BUG/WARN_ON/Oops
+
+This even more (but of course this is harder)
+
+> and the interface gives an advice how to mail to which mailing list.
+> E.g. what information to include, how to send plain text mail, etc...
+
+Yeah. But unless somebody volunteers to realize this within a few weeks,
+I'd say: Let's finally first reduce the immediate problem (users
+reporting bugs to a place where they might not even reach the
+developers) by putting a new welcome page on bugzilla.kernel.org in place.
+
+Ciao, Thorsten
 
