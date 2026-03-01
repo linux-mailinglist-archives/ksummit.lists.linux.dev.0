@@ -1,181 +1,176 @@
-Return-Path: <ksummit+bounces-2859-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2860-lists=lfdr.de@lists.linux.dev>
 Delivered-To: lists@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8FA9MbVlpGlcfgUAu9opvQ
-	(envelope-from <ksummit+bounces-2859-lists=lfdr.de@lists.linux.dev>)
-	for <lists@lfdr.de>; Sun, 01 Mar 2026 17:13:41 +0100
+	id CIyhKURmpGlcfgUAu9opvQ
+	(envelope-from <ksummit+bounces-2860-lists=lfdr.de@lists.linux.dev>)
+	for <lists@lfdr.de>; Sun, 01 Mar 2026 17:16:04 +0100
 X-Original-To: lists@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B206A1D08CC
-	for <lists@lfdr.de>; Sun, 01 Mar 2026 17:13:40 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88FF61D08F4
+	for <lists@lfdr.de>; Sun, 01 Mar 2026 17:16:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5D12B300FED1
-	for <lists@lfdr.de>; Sun,  1 Mar 2026 16:13:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B32123006821
+	for <lists@lfdr.de>; Sun,  1 Mar 2026 16:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741543203A0;
-	Sun,  1 Mar 2026 16:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8868284686;
+	Sun,  1 Mar 2026 16:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="sN0Qzr1i"
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="KEDIDi+Z"
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09C0317157
-	for <ksummit@lists.linux.dev>; Sun,  1 Mar 2026 16:13:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CFA175A6C
+	for <ksummit@lists.linux.dev>; Sun,  1 Mar 2026 16:15:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772381607; cv=none; b=nBvOIt3DVkCgh29NHWSZlJshlTDcGyvPMgV42M2A0CRYex42E7wvunNAT7PL9Isa+oA4I8dYQhQLD5pU4oHaHZeewqHYKPW0sbM1q4AIhyzu/8Sfv8HMSt8A60CDFR1GzEVbqoyVX950TpthJk0yRA9jkvV8HFtgSao6KjZVOb0=
+	t=1772381757; cv=none; b=t83N6NRASe8QZtlrtqGHPmQJ/krNLPEVFweeBbvyMythYFI+lymWP/XuH0Y/F6LlY+nMQGRiIS+lENxVirKsbbnve7jo0sL32wXWNt/n8V9xhT3/Gorz1/HrKkb+Va9Cz7JFlatft9AQqbjvUWc2xj/Ye/r3FMy+Eu73JURXu5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772381607; c=relaxed/simple;
-	bh=G7PHH6syJfNZBU4uT1IIGE05Rl97nY7MhLHlXZxPHPE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aHU9l81HjN/kxogjYOHRjQ8UV7YC+OvlcxAgfnOknG4A5WASRuktXDGQIv/8497TvTTuKRufiQILBpc4CLzW1Pp52VBSye7iXxfRbXS6YKTZ035QBT7MivapGotflNoDV8ai1Hf6cIEhNtrvuUW+7/JYOpocF6E53LJrqhLqE98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=sN0Qzr1i; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from killaraus.ideasonboard.com (unknown [83.245.248.187])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id C41C7673;
-	Sun,  1 Mar 2026 17:12:21 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1772381542;
-	bh=G7PHH6syJfNZBU4uT1IIGE05Rl97nY7MhLHlXZxPHPE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sN0Qzr1ixEK/CN2IStK1JaJHgIzg5E9g87Pjz7lKqIuf6nHYWgSzohbk/FDdLwOmB
-	 LvADSK3+cYxcNc4ZzyHbY9cq0kLHOZrEZJ99w+DdqbQp0gvpwW6bY5BrKkwvy5GlM5
-	 Vdy/o8JwZVcYWuZs9MiMTD9k8iPGxLLUTWA+GlhQ=
-Date: Sun, 1 Mar 2026 17:13:17 +0100
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
-	Richard Weinberger <richard@nod.at>,
-	Linus Torvalds <torvalds@linuxfoundation.org>,
-	Thorsten Leemhuis <linux@leemhuis.info>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
-	users <users@kernel.org>, ksummit <ksummit@lists.linux.dev>
+	s=arc-20240116; t=1772381757; c=relaxed/simple;
+	bh=muwWw9NcUGyTv2FbbK/wg7n0uLBSnbo1Bxh+rPLsw44=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=k39ocqBoePpFSISxoNWnvQA5bB+9jpQ7yCYC5ZPOdj07JwtV/GGLLmARgvqoaSoeQlwIUCtboCNrjMy6uDGeUtEu7NzlwBXKbKcDL1vgAUMZvxFWto+GozhzWMdGFxH0yE1kuS9oiBv1Y/coV3vOoqpmbBRQ7EWavFbWEvNSi1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=KEDIDi+Z; arc=none smtp.client-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1772381754;
+	bh=muwWw9NcUGyTv2FbbK/wg7n0uLBSnbo1Bxh+rPLsw44=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=KEDIDi+ZQghFUKsCi6Au7D5nXklV+AIRjlsC8Ad/8JK3omvNL4AiL3vaQaIXR09iu
+	 1md6birhEp0NmW7EPd+URoC2KBUkR/Q+iCBHZQ5PIIgFg18c0Qz/P8sqT9P3wGfoIN
+	 albKMveTlWlKFWirpFE2GFMdBMw61/+UeFyW/UcE=
+Received: from [IPv6:2601:5c4:4300:d341::a774] (unknown [IPv6:2601:5c4:4300:d341::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 693F11C0179;
+	Sun, 01 Mar 2026 11:15:54 -0500 (EST)
+Message-ID: <f748d3e345d0e0df0b927be20693ae4dee02d3de.camel@HansenPartnership.com>
 Subject: Re: slowly decommission bugzilla?
-Message-ID: <20260301161317.GA2906342@killaraus.ideasonboard.com>
-References: <5dea1bca-75fe-4e3c-950d-d489a438299a@leemhuis.info>
- <1786920159.1633.1772291851870.JavaMail.zimbra@nod.at>
- <CAHk-=wh3fsqZ=KUfm2cnq_D_U63Pk33Q7cs8_QYdyzbPXjE1bw@mail.gmail.com>
- <1661016163.157.1772303364121.JavaMail.zimbra@nod.at>
- <20260228152617.06b392de@fedora>
- <583136576.604.1772310537428.JavaMail.zimbra@nod.at>
- <20260228155611.70911c0f@fedora>
- <aaRZ1EIDE-SlqWOo@laps>
- <20260301153526.GE2860169@killaraus.ideasonboard.com>
- <aaRegZjbE6SgyaDq@laps>
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Sasha Levin
+	 <sashal@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Richard Weinberger
+ <richard@nod.at>,  Linus Torvalds <torvalds@linuxfoundation.org>, Thorsten
+ Leemhuis <linux@leemhuis.info>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Andrew Morton <akpm@linux-foundation.org>,  Konstantin Ryabitsev
+ <konstantin@linuxfoundation.org>, users <users@kernel.org>, ksummit
+ <ksummit@lists.linux.dev>
+Date: Sun, 01 Mar 2026 11:15:53 -0500
+In-Reply-To: <20260301153526.GE2860169@killaraus.ideasonboard.com>
+References: 
+	<CAMuHMdWHRdsXahgxXMsSDFuuUwxzpvkT4oujg=tje2Rr5jr3SA@mail.gmail.com>
+	 <1655051015.2216.1772209338375.JavaMail.zimbra@nod.at>
+	 <5dea1bca-75fe-4e3c-950d-d489a438299a@leemhuis.info>
+	 <1786920159.1633.1772291851870.JavaMail.zimbra@nod.at>
+	 <CAHk-=wh3fsqZ=KUfm2cnq_D_U63Pk33Q7cs8_QYdyzbPXjE1bw@mail.gmail.com>
+	 <1661016163.157.1772303364121.JavaMail.zimbra@nod.at>
+	 <20260228152617.06b392de@fedora>
+	 <583136576.604.1772310537428.JavaMail.zimbra@nod.at>
+	 <20260228155611.70911c0f@fedora> <aaRZ1EIDE-SlqWOo@laps>
+	 <20260301153526.GE2860169@killaraus.ideasonboard.com>
+Autocrypt: addr=James.Bottomley@HansenPartnership.com;
+ prefer-encrypt=mutual;
+ keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aaRegZjbE6SgyaDq@laps>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
-	SUBJECT_ENDS_QUESTION(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
+	SUBJECT_ENDS_QUESTION(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[hansenpartnership.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[hansenpartnership.com:s=20151216];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-2859-lists=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-2860-lists=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[hansenpartnership.com:+];
 	TO_DN_ALL(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[ideasonboard.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[laurent.pinchart@ideasonboard.com,ksummit@lists.linux.dev];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,decode_stacktrace.sh:url,ideasonboard.com:dkim]
-X-Rspamd-Queue-Id: B206A1D08CC
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[James.Bottomley@HansenPartnership.com,ksummit@lists.linux.dev];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nod.at:email,decode_stacktrace.sh:url]
+X-Rspamd-Queue-Id: 88FF61D08F4
 X-Rspamd-Action: no action
 
-Hello Sasha,
+On Sun, 2026-03-01 at 16:35 +0100, Laurent Pinchart wrote:
+> On Sun, Mar 01, 2026 at 10:23:00AM -0500, Sasha Levin wrote:
+> > On Sat, Feb 28, 2026 at 03:56:11PM -0500, Steven Rostedt wrote:
+> > > On Sat, 28 Feb 2026 21:28:57 +0100 (CET)
+> > > Richard Weinberger <richard@nod.at> wrote:
+> > >=20
+> > > > Wouldn't that only work if the report is able to upload the
+> > > > kernel debug info too?
+> > >=20
+> > > Yes, this would be nice if we had the help from the distros that
+> > > could automate this process.
+> >=20
+> > So I've been poking at using LLMs for this.
+> >=20
+> > decode_stacktrace.sh is great when you have a debug build handy,
+> > but asking a random bug reporter to obtain debuginfo, set up the
+> > tooling, and run the script is quite the hurdle.
+> >=20
+> > The debuginfo problem is solvable on the server side though. Given
+> > a kernel version string from the oops, an LLM can figure out which
+> > distro and package version the reporter is running, pull the right
+> > debuginfo (or build from the matching config/tag if no debuginfo
+> > package exists), and run decode_stacktrace.sh itself.
+>=20
+> Do we really have to use non-deterministic tools that will inevitably
+> produce correct-looking but otherwise useless backtraces from time to
+> time, confusing developers and wasting time for everybody, when we
+> can instead easily develop tools that will work in a deterministic
+> fashion ?
 
-On Sun, Mar 01, 2026 at 10:42:57AM -0500, Sasha Levin wrote:
-> On Sun, Mar 01, 2026 at 04:35:26PM +0100, Laurent Pinchart wrote:
-> > On Sun, Mar 01, 2026 at 10:23:00AM -0500, Sasha Levin wrote:
-> >> On Sat, Feb 28, 2026 at 03:56:11PM -0500, Steven Rostedt wrote:
-> >> > On Sat, 28 Feb 2026 21:28:57 +0100 (CET) Richard Weinberger wrote:
-> >> >
-> >> >> Wouldn't that only work if the report is able to upload the kernel debug
-> >> >> info too?
-> >> >
-> >> > Yes, this would be nice if we had the help from the distros that could
-> >> > automate this process.
-> >>
-> >> So I've been poking at using LLMs for this.
-> >>
-> >> decode_stacktrace.sh is great when you have a debug build handy, but
-> >> asking a random bug reporter to obtain debuginfo, set up the tooling,
-> >> and run the script is quite the hurdle.
-> >>
-> >> The debuginfo problem is solvable on the server side though. Given a
-> >> kernel version string from the oops, an LLM can figure out which distro
-> >> and package version the reporter is running, pull the right debuginfo
-> >> (or build from the matching config/tag if no debuginfo package exists),
-> >> and run decode_stacktrace.sh itself.
-> >
-> > Do we really have to use non-deterministic tools that will inevitably
-> > produce correct-looking but otherwise useless backtraces from time to
-> > time, confusing developers and wasting time for everybody, when we can
-> > instead easily develop tools that will work in a deterministic fashion ?
-> > I'm getting *really* sick of people pushing for LLM usage when it's
-> > clearly the wrong tool. Please stop.
-> 
-> The LLM actually runs scripts/decode_stacktrace.sh. The non-deterministic part
-> is being able to get our hands on various debug symbols from
-> distros/vendors/etc.
+So "non-deterministic" is the new anti-AI phrase?  I get that some
+people think it's never useful, but this does seem like one of the
+cases where humans can't be bothered most of the time and AI can
+provide a reasonable response.
 
-That was my understanding, yes.
+We could even give it bonus points for building the kernel with the
+revert and asking the reporter to try it (which should also be possible
+if a bit expensive in terms of cloud resources).
 
-> Instead of just crapping on everything,
+> I'm getting *really* sick of people pushing for LLM usage when it's
+> clearly the wrong tool. Please stop.
+> >=20
+That's both uncalled for and unfair.  If we're not going to let AI
+write code then the most useful thing it can do for us is automate
+repetitive task we can't be bothered to do most of the time.  Bug
+triage seems to me to be an excellent example of that, particularly
+with reporters who aren't on upstream kernels.  Rather than having it
+declared useless ab initio, let's give it a chance to see how useful
+the actual results are.
 
-Please tone the insults down.
-
-> can you propose a different
-> deterministic solution that would have worked for
-> https://lore.kernel.org/all/DGRCO9SL0T5U.JTINSHJQ9KPK@imlonghao.com/ ?
-
-Not as a procedure to extract line numbers that will work retroactively
-of course, but I don't think that's the point.
-
-As we're discussing new developments to replace bugzilla, working with
-distributions to streamline bug reporting would be more deterministic.
-Running the stack trace decode in the server side is a good idea, and
-the server should receive in addition to the stack trace either the
-debuginfo or, when running a distro kernel, an identifier of the exact
-kernel version to download the debuginfo from an authoritative source.
-
-> Or should we just let that bug report rot as it usually happens because you have
-> some dislike for LLMs?
-
-Let's not resort to straw man arguments, you know that's not what I
-said.
-
-I will stand by my original claim, that using the community's
-development resources to create non-deterministic tools when a
-deterministic solution isn't more difficult is a waste of time and
-resources. I've always disliked suboptimal solutions, it's not limited
-to LLMs.
-
--- 
 Regards,
 
-Laurent Pinchart
+James
+
+>=20
+>=20
 
