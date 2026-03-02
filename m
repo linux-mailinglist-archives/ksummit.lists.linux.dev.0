@@ -1,186 +1,184 @@
-Return-Path: <ksummit+bounces-2866-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2867-lists=lfdr.de@lists.linux.dev>
 Delivered-To: lists@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qRe6OIh4pGk1iAUAu9opvQ
-	(envelope-from <ksummit+bounces-2866-lists=lfdr.de@lists.linux.dev>)
-	for <lists@lfdr.de>; Sun, 01 Mar 2026 18:34:00 +0100
+	id 2E+VH9tQpWnS8QUAu9opvQ
+	(envelope-from <ksummit+bounces-2867-lists=lfdr.de@lists.linux.dev>)
+	for <lists@lfdr.de>; Mon, 02 Mar 2026 09:56:59 +0100
 X-Original-To: lists@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D409A1D0D46
-	for <lists@lfdr.de>; Sun, 01 Mar 2026 18:33:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9F7D1D50BA
+	for <lists@lfdr.de>; Mon, 02 Mar 2026 09:56:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 461633004681
-	for <lists@lfdr.de>; Sun,  1 Mar 2026 17:33:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 13DFC301A7DD
+	for <lists@lfdr.de>; Mon,  2 Mar 2026 08:56:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E888530AD05;
-	Sun,  1 Mar 2026 17:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D84E538BF60;
+	Mon,  2 Mar 2026 08:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JIlw0l+7"
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iQHgtxOg"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC06E2D94A7
-	for <ksummit@lists.linux.dev>; Sun,  1 Mar 2026 17:33:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62ECE38A71C
+	for <ksummit@lists.linux.dev>; Mon,  2 Mar 2026 08:56:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772386434; cv=none; b=pNC7ohLHBeNRFvBeWPgDfnaH6/eRH14tGpW9nqMmlHxTm2peivfTjInbCv8Ed8aTrv+5gMBl5JwrdHCMw/DNW4wSA2nIlYvnXSydm4WOCgK9uhIWAwlE3yVRLGtugM4mnTXZopbgRU+8+mw0tkOmxNM8mhtg4wgnxycXALyU2x4=
+	t=1772441760; cv=none; b=HRSDgwXG3nVC7jBH6Q33MZcArOfNKlQ9ZU4iA8512rqO5+Vt00a+rkErvG6D1QmeMuwYSzjQqeSfcUKM1ueQhc2zJT38XlW3vhJ124Izu7N0QJoB+2igdEHeMYqSwjU67mWSBz3oZKQZzzQcwieeOZWOejDkBeo6g+C1JntdwPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772386434; c=relaxed/simple;
-	bh=/vKCW48X+626AJz7hc1bOxNbOS88IU5Ge3jrX7YJIXc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Bz1tqD1dM7F3uwOGDnTxzIq5mrG9m67VLJd9rLMSwwIJAY0y5Zb/rSNsQzBiF0m2xD1ArYdg1rDqThfyykHkiswUJ3PCXcJMCZwcyzR2/vW+G+5R3uYtVgbkzTMSXWSYToolthtGitUc8L1Kvi7d+rve9MDP8XV4g5wWOliFpzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JIlw0l+7; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-65a43a512b0so4103190a12.3
-        for <ksummit@lists.linux.dev>; Sun, 01 Mar 2026 09:33:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1772386431; x=1772991231; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=PkMl8jtfZr5Lv8TbSzeB3XapV4DOUgTl0P+4M/75wn0=;
-        b=JIlw0l+70B+siLTSIqNws4hcDSuFlv7K4pYS6hfFTQjpnPv9QXGMWNowwDJqZBH0KH
-         p3CkCxFBOvRsOQ+p6Zojsy9K9hFyp45Gqeg3jTIn3Rnm9V6mCo2KtI2ODaOtRf3IL+ZM
-         ZPb0jdqm9DE3ihrrttgeR6x0cU4D8a7SMHHTc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772386431; x=1772991231;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PkMl8jtfZr5Lv8TbSzeB3XapV4DOUgTl0P+4M/75wn0=;
-        b=Vpg1+OnWG4B4AuKM4ygWhmJT6qjiVHUwnt4E/t7DS1kQTTd2kxzDUtZdndQIyfLkg4
-         nnpzJsxcqK2DxExablQmdKrPjRJNGzg0VvYOrScvdZSrKfZBQKIerFNocMBciKBqvmOC
-         siAeurnFcJHq/YRC16TlmQzsDbORd9HaU3nLj6qxvZ77yuzgIYOVJAw0KuQJV1TUOSBU
-         S3In50Bs3L6fXYoXfp5x4ehbNL7tYqCoRQM8ysdNyHonj/AVP8mu5q56F4o64j91ZiqA
-         xCFqUVNc2fTfdNw7cKoQCaTjhQN2bb6UVfsfB5jRVfkK5d9wLet69clc9UP5Jcmhxv7o
-         mFhg==
-X-Forwarded-Encrypted: i=1; AJvYcCXPgSWHN/TQAfEGlvjkqENJaisjlfB/+o7RcdqpL5L90668jSSroEEHVTuabJq0/WdkWXrp+jGS@lists.linux.dev
-X-Gm-Message-State: AOJu0YzQpIyn1YKg6vTtn37b9xKEofosz84LpkWvpKjfxBlGtwjZEgo3
-	b0Gr1WQjpCg+/IAk+v3k9Kc/K+QB4TkVPI0WVA0khq2flZEKzND+VdDsuO8fX9y01Xo1Gbf5TMe
-	wIm3kNfM=
-X-Gm-Gg: ATEYQzxyG49SIXDxKdhacRIWJrChCR5hY0eL+K9GHCownCb9KVNPoUVzdiVCQmtfHyS
-	U+FnJ4FBqfBqLamVhqyDG2GmDCnXg68TSTF74UuvfHLVl30+v5iG0Y7PJ+tMIu5xzF9GMjdpoHU
-	YyGEJyj5uE+qUTUmALZvMZ+FANUBkzGbjLex6BGESNN2/gZjaBUAdwVN2p1fjftWf/uYodlhNgi
-	kiKwFFZpCawIZkpn45e7NUQ8sLVqjVyHggcm9TzjZN8uwGeVuKo+kO/1Sk2RKZ+X1Q2pmkRABCk
-	NZnVYjJ0Wa0x8dm4YnMgu+AA8dcG6hfNPi9WLZ4JK+wifRC3UB1/6Yd8y5VcQvz11Dhspr+xjzz
-	dW1BzeD5qs5q8/WPBlxit3EwIZtoj2f29MT7FmAqpzbhqd28RwLdwz4RCVg2G30b8IdYCLXFoLv
-	kSgwDyJYMBCG58XLCwlcnOaM0gdsepsxSI52oB8214yyI5rBX5URaGBIUtsPsPwnSjhv7RMc9oC
-	V+2zwYzow==
-X-Received: by 2002:a05:6402:270a:b0:65a:2903:3164 with SMTP id 4fb4d7f45d1cf-65fde4d2d6dmr6170146a12.30.1772386431176;
-        Sun, 01 Mar 2026 09:33:51 -0800 (PST)
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com. [209.85.218.50])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-65fac06dd07sm2797078a12.24.2026.03.01.09.33.50
-        for <ksummit@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 01 Mar 2026 09:33:50 -0800 (PST)
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b934f8ec6acso434068466b.2
-        for <ksummit@lists.linux.dev>; Sun, 01 Mar 2026 09:33:50 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUc6bhnQYA2h6Xgzsgy3s4F3n0omZ+ctrJE+3ShgJeNYw9I7RGpuYoIzpoDlHT0SjZjUheAHMYL@lists.linux.dev
-X-Received: by 2002:a17:906:6a14:b0:b93:5f43:ccbc with SMTP id
- a640c23a62f3a-b9376599d3bmr594132466b.53.1772386430447; Sun, 01 Mar 2026
- 09:33:50 -0800 (PST)
+	s=arc-20240116; t=1772441760; c=relaxed/simple;
+	bh=WId2eLBsRbziq4Ervkbn2juOSwZdpEd9snIXbYFJe6Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Iwm4Qb02UXQ6aotyJQ/5fYCSjKB3pcJRUbEhbVngtGoQ5bfz2khoWfs3KHj9y937wTip+7iK3IDV570UIj9I6JUUou6PVd5Ud55aIftmnbaqykXp2uB8d+WEZCP/2+5sg+yEQndcQGC5/bQ9SgTuM7bYWumiPVgTvZmLTqZgv7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iQHgtxOg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5E49C2BC9E;
+	Mon,  2 Mar 2026 08:55:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772441760;
+	bh=WId2eLBsRbziq4Ervkbn2juOSwZdpEd9snIXbYFJe6Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=iQHgtxOgmV05FrF2W91vHJjHT2FPiAe1vBj8s/wZosRFAn8p9bRCM3OX/00s4q5GE
+	 DjghFoUFU6/g0CmHXvcCHhay1m8AHvEXfO1aW9LrLtnXv3pkwNcqCR4HNCLK2BzbHZ
+	 eD4+bJg6XndnrCCKh3zcZqHDiaqP77TTp+ABGoEdWW9lB2BOPuhyRxrCA7lajWyBWC
+	 9lSHmpbYYvMKHZNv8AnUm4xT7biC7HOdjeklNqAkLVXfCky/B8fSVcCsbp1/ckU1z9
+	 nlaNa3TEMUOWepK2/JDQGx8qWKMzk7n2ntD8e61SfrKAUcleU77vDkmCwh2EPSbyl8
+	 fdI8OoRtmCsjQ==
+Date: Mon, 2 Mar 2026 09:55:54 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Sasha Levin 
+ <sashal@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, Richard
+ Weinberger <richard@nod.at>, Linus Torvalds <torvalds@linuxfoundation.org>,
+ Thorsten Leemhuis <linux@leemhuis.info>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Konstantin Ryabitsev <konstantin@linuxfoundation.org>, users
+ <users@kernel.org>, ksummit <ksummit@lists.linux.dev>
+Subject: Re: slowly decommission bugzilla?
+Message-ID: <20260302095554.3ee591d6@foz.lan>
+In-Reply-To: <f748d3e345d0e0df0b927be20693ae4dee02d3de.camel@HansenPartnership.com>
+References: <CAMuHMdWHRdsXahgxXMsSDFuuUwxzpvkT4oujg=tje2Rr5jr3SA@mail.gmail.com>
+	<1655051015.2216.1772209338375.JavaMail.zimbra@nod.at>
+	<5dea1bca-75fe-4e3c-950d-d489a438299a@leemhuis.info>
+	<1786920159.1633.1772291851870.JavaMail.zimbra@nod.at>
+	<CAHk-=wh3fsqZ=KUfm2cnq_D_U63Pk33Q7cs8_QYdyzbPXjE1bw@mail.gmail.com>
+	<1661016163.157.1772303364121.JavaMail.zimbra@nod.at>
+	<20260228152617.06b392de@fedora>
+	<583136576.604.1772310537428.JavaMail.zimbra@nod.at>
+	<20260228155611.70911c0f@fedora>
+	<aaRZ1EIDE-SlqWOo@laps>
+	<20260301153526.GE2860169@killaraus.ideasonboard.com>
+	<f748d3e345d0e0df0b927be20693ae4dee02d3de.camel@HansenPartnership.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAMuHMdWHRdsXahgxXMsSDFuuUwxzpvkT4oujg=tje2Rr5jr3SA@mail.gmail.com>
- <1655051015.2216.1772209338375.JavaMail.zimbra@nod.at> <5dea1bca-75fe-4e3c-950d-d489a438299a@leemhuis.info>
- <1786920159.1633.1772291851870.JavaMail.zimbra@nod.at> <CAHk-=wh3fsqZ=KUfm2cnq_D_U63Pk33Q7cs8_QYdyzbPXjE1bw@mail.gmail.com>
- <1661016163.157.1772303364121.JavaMail.zimbra@nod.at> <20260228152617.06b392de@fedora>
- <583136576.604.1772310537428.JavaMail.zimbra@nod.at> <20260228155611.70911c0f@fedora>
- <aaRZ1EIDE-SlqWOo@laps> <20260301153526.GE2860169@killaraus.ideasonboard.com>
-In-Reply-To: <20260301153526.GE2860169@killaraus.ideasonboard.com>
-From: Linus Torvalds <torvalds@linuxfoundation.org>
-Date: Sun, 1 Mar 2026 09:33:34 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wiUOYn4nyWyuvLh1O0j2reB_ec+4DAO06h7Pu36aA4iDg@mail.gmail.com>
-X-Gm-Features: AaiRm52AB5znH2LQsZnFtA2EvQ9g4t5cwGw1-rFuNRjG-xZA_NRs8I44hHsNz4s
-Message-ID: <CAHk-=wiUOYn4nyWyuvLh1O0j2reB_ec+4DAO06h7Pu36aA4iDg@mail.gmail.com>
-Subject: Re: slowly decommission bugzilla?
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Sasha Levin <sashal@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Richard Weinberger <richard@nod.at>, Thorsten Leemhuis <linux@leemhuis.info>, 
-	Geert Uytterhoeven <geert@linux-m68k.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Konstantin Ryabitsev <konstantin@linuxfoundation.org>, users <users@kernel.org>, 
-	ksummit <ksummit@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	SUBJECT_ENDS_QUESTION(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=google];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-2866-lists=lfdr.de];
-	TO_DN_ALL(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TO_DN_ALL(0.00)[];
+	TAGGED_FROM(0.00)[bounces-2867-lists=lfdr.de,huawei];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[torvalds@linuxfoundation.org,ksummit@lists.linux.dev];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[6];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[mchehab@kernel.org,ksummit@lists.linux.dev];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.995];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,ideasonboard.com:email,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D409A1D0D46
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,hansenpartnership.com:email,decode_stacktrace.sh:url]
+X-Rspamd-Queue-Id: E9F7D1D50BA
 X-Rspamd-Action: no action
 
-On Sun, 1 Mar 2026 at 07:35, Laurent Pinchart
-<laurent.pinchart@ideasonboard.com> wrote:
->
-> Do we really have to use non-deterministic tools that will inevitably
-> produce correct-looking but otherwise useless backtraces from time to
-> time, confusing developers and wasting time for everybody, when we can
-> instead easily develop tools that will work in a deterministic fashion ?
+On Sun, 01 Mar 2026 11:15:53 -0500
+James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
 
-Please do develop that, since it's so easy. We haven't done it in 35
-years, but I'm sure you can whip something up in an afternoon.
+> On Sun, 2026-03-01 at 16:35 +0100, Laurent Pinchart wrote:
+> > On Sun, Mar 01, 2026 at 10:23:00AM -0500, Sasha Levin wrote:  
+> > > On Sat, Feb 28, 2026 at 03:56:11PM -0500, Steven Rostedt wrote:  
+> > > > On Sat, 28 Feb 2026 21:28:57 +0100 (CET)
+> > > > Richard Weinberger <richard@nod.at> wrote:
+> > > >   
+> > > > > Wouldn't that only work if the report is able to upload the
+> > > > > kernel debug info too?  
+> > > > 
+> > > > Yes, this would be nice if we had the help from the distros that
+> > > > could automate this process.  
+> > > 
+> > > So I've been poking at using LLMs for this.
+> > > 
+> > > decode_stacktrace.sh is great when you have a debug build handy,
+> > > but asking a random bug reporter to obtain debuginfo, set up the
+> > > tooling, and run the script is quite the hurdle.
+> > > 
+> > > The debuginfo problem is solvable on the server side though. Given
+> > > a kernel version string from the oops, an LLM can figure out which
+> > > distro and package version the reporter is running, pull the right
+> > > debuginfo (or build from the matching config/tag if no debuginfo
+> > > package exists), and run decode_stacktrace.sh itself.  
+> > 
+> > Do we really have to use non-deterministic tools that will inevitably
+> > produce correct-looking but otherwise useless backtraces from time to
+> > time, confusing developers and wasting time for everybody, when we
+> > can instead easily develop tools that will work in a deterministic
+> > fashion ?  
+> 
+> So "non-deterministic" is the new anti-AI phrase?  I get that some
+> people think it's never useful, but this does seem like one of the
+> cases where humans can't be bothered most of the time and AI can
+> provide a reasonable response.
+> 
+> We could even give it bonus points for building the kernel with the
+> revert and asking the reporter to try it (which should also be possible
+> if a bit expensive in terms of cloud resources).
 
-.. and in the meantime, how about we not waste real humans' time
-having *them* be very frustrated and generating non-deterministic
-guesses - and inevitably incorrect analyses - of the reason for bugs.
+Sounds an interesting idea, but making AI write patches (or produce
+an output that requires a more strict format) is not something that
+doesn't work out of the box, if you use only LLM. 
 
-Christ people - have you even *looked* at bug discussions? They are
-*full* of those "non-deterministic and correct-looking but wrong"
-guesses.
+I did some tests myself, writing a program meant to strings on a .po 
+file, meant to complete a language translation(*). The only way it worked
+is when I used a prompt asking it to produce a "from/to" table, and
+then writing a function that would do the string replacements.
 
-And that's the _good_ case, when you have people actively following up
-on oopses.
+If we want AI to produce revert patches, it is probably better to:
 
-Yes, there are real humans that are trying to use informed guesses as
-way to a solution. Sometimes that guess is correct - and with decades
-of experience that percentage certainly goes up - but quite often it's
-a "maybe you can try XYZ".
+- use a prompt for LLM to pick the original code and generate a new
+  code to replace;
+- compile the code to be sure that LLM didn't break it. If it does,
+  send back the issues to LLM - eventually repeating this step a
+  couple of times before giving up;
+- run "diff" command line (or use a diff library) to produce a valid
+  output.
+    
+(*) In the end, I opted to not use it in practice, nor the produced
+    patches, as despite LLM translation were not bad (I tested it on
+    languages I can understand), it didn't pick right some more
+    technical messages. It also mangled a little bit with message
+    capitalization and whitespacing. 
 
-What the hell is wrong with people? This whole "AI can be very wrong"
-is obviously true.
+    If I had enough time to do translations myself, though, I would
+    use it, as the core of the translations are good, but a
+    significantly amount of them would require manual adjustments. 
+    Still, it could reduce a lot the time spent on doing 
+    translations.
 
-But it's irrelevant, and equally misleading as the Sam Altmans of the
-world that lie and exaggerate through their teeth to make a buck (but
-when you do it for money, it's called "marketing" and is obviously ok.
-Sigh).
-
-Determinism is fine. But the world isn't entirely deterministic, and
-it looks particularly non-deterministic when there just isn't enough
-information.
-
-A "good guess" is sometimes the best you can do. And there's nothing
-wrong with trying tooling that does exactly that.
-
-Should those guesses be *marked* as such? Hell yes.
-
-But this crazy "it's AI, so it's bad" needs to stop.
-
-               Linus
+Thanks,
+Mauro
 
