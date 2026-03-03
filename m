@@ -1,92 +1,67 @@
-Return-Path: <ksummit+bounces-2869-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2870-lists=lfdr.de@lists.linux.dev>
 Delivered-To: lists@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qEZ+C85zpmkuQAAAu9opvQ
-	(envelope-from <ksummit+bounces-2869-lists=lfdr.de@lists.linux.dev>)
-	for <lists@lfdr.de>; Tue, 03 Mar 2026 06:38:22 +0100
+	id yFg5LRZ/pmnhQQAAu9opvQ
+	(envelope-from <ksummit+bounces-2870-lists=lfdr.de@lists.linux.dev>)
+	for <lists@lfdr.de>; Tue, 03 Mar 2026 07:26:30 +0100
 X-Original-To: lists@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AB941E94B2
-	for <lists@lfdr.de>; Tue, 03 Mar 2026 06:38:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 596121E99A6
+	for <lists@lfdr.de>; Tue, 03 Mar 2026 07:26:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C9208305022B
-	for <lists@lfdr.de>; Tue,  3 Mar 2026 05:38:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 810413021B84
+	for <lists@lfdr.de>; Tue,  3 Mar 2026 06:26:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A42A1DF261;
-	Tue,  3 Mar 2026 05:38:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HaZcc/NV"
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31ABA383C90;
+	Tue,  3 Mar 2026 06:26:26 +0000 (UTC)
+Received: from lithops.sigma-star.at (mailout.nod.at [116.203.167.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82BF2AD03
-	for <ksummit@lists.linux.dev>; Tue,  3 Mar 2026 05:38:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D0433507E
+	for <ksummit@lists.linux.dev>; Tue,  3 Mar 2026 06:26:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.167.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772516296; cv=none; b=NKziRZsi5VqWDdK3BqdnhvrCPgEg+2+ok+n4FjFKjCmKRXE89IYpf3FYd/854cyIRwxUaYDUoiQx2zrrlak55xQ3kyA5ESk2mqvebtdQ4q45niF70X2sOfLwKvaHam0TA4zIYYCknJKyuZtlCjssoMMfbpUHgRewH/g9upgFjsc=
+	t=1772519185; cv=none; b=sH9o2Y4AlSUoAwgoi4S9/oUoy//xQ3yTmZvMM8ZWAxC88d6nOjkkJ7mjmStlmSNPUDggnPkBKbJr1N+PM/DdDSxJdj2gdpAiiJ9Z7HA44v/TcVNjiF1efONEU4+qiAE8JuyRuZ2gyiOq+R3fQhd/FncDxNyP/0wHWWCxNsvzb+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772516296; c=relaxed/simple;
-	bh=nGnyG2rKAK28agcjFXZxIKw7z4EJbUV7GdS+AqZrt+E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PzwjoHC8U+YwqcF0fgNfX5bqQylT94X2nAswPJa29sBODtn4ysD2I2/3RDG+P1F6h1GB9usvBfm6C59a8okPS0HQI/SCuLhvck/zhbLWwqYABmeDGOkPSJCPiPRAAnCMurwN3gZY+H5hxDx41UI+/m3oDc9xgAb1uw+AdU0dtDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HaZcc/NV; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-48370174e18so29741495e9.2
-        for <ksummit@lists.linux.dev>; Mon, 02 Mar 2026 21:38:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772516294; x=1773121094; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KpIdZ9Y4OtCFHLn9n/UH21WO8yQvx/FPgACDFVQp4eo=;
-        b=HaZcc/NVcZPizey2NR/055i9DiKnOQhboT6qZ9CGS/zqgn84uPGCNyRhC6HuAC20T/
-         xaJV1S0YeslAj/BESe9DmrTsdFWm/T5QZNABTEU0m6DniwRkxh7HCJRwghgo7P+cjRZw
-         tRofiCrLlXJPuWtmkUgn2HIUtpX3ImLkD/pKPx8KRje2zxARmUBwkxj9WggQUz98QIw7
-         fvu1eXm/vJ/8gbarW5OlGsm6Mo6fDcz83v2DZ3W7MqPT2W0bkDT5iuNQMfVcm3A7hC7L
-         Vj0zpcUzmWS+k1TYuhiIPG/XZ24xixi5i5DqzdJ6Gc/4wd7X58SZH6Lt7j91LC8SmCgR
-         t98w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772516294; x=1773121094;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KpIdZ9Y4OtCFHLn9n/UH21WO8yQvx/FPgACDFVQp4eo=;
-        b=Gk1+PM1r7WfsAGPo1ht1O8vypdAaqFEuqAKHCWVYykGgyrbqFcgb4m02se57Mfu6Oj
-         phx1BtwgDfxzjGKo+QmJqvPf7qSeckQWbHN3pGQzHJC/x+nEtC/QntLlmT5kotemkOYe
-         ueTHnELeu8nr/1uUoDJIX26Qi1iUUiJURGLz6Y7dTOR/UxUeX7kriJVBSZNU9ZavZgdN
-         u5wbflkroYp9GBl7FAY7Q8BtdBHiZgp/4UbEyGJwrGruMyVrdcZzNmmKidoUcJ45GTko
-         byRcddLAp6QwmXPst3XSg9FYWQPifg1LoGJzwJr0bYuD4J6PNV5/kwxc3zPx7dzsCCkF
-         1hAg==
-X-Forwarded-Encrypted: i=1; AJvYcCXeEg344r3+nfP0dgXY4UTDjvsUDWdam0IVr7esEgvqvL93uRJTF2lG59vdeVHx9P7zfmLnnygn@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw1KtWJkeksnv+Y+yWAXA+ixJ7br+LPeuWdjf4AzwYT34z1CpsQ
-	imUzp1po6+7T6U/+hr2Ukyg2xDKfeALbt1JmVAXyAOS2QTOXTAY5ZEo=
-X-Gm-Gg: ATEYQzzXX9WnyA8553fV2+tdjlbJQWKy2Baq/eC2HUcXBoiude7xgiATUcnASnW3gwY
-	YHgkcIKjWlJIZhfLfXeacH28QVVPnNLSpcHS1CK8U+wx3aRFbNIKfwpi6+2WhJdGP16rbONtXiO
-	eAqDHGVFWjTkGzaSk0C+aA5KxddDedQ0OMJ64C7bxjY2kmlohRC0B030i/88QpV9WGQlb+ewCdY
-	FmG3vD65U1o27SlcafJqoFkwg3tmdKLg2LWgHY7xVHpsNdSvWNUXP0oHUj2XV8v6bYjBCOiMZAi
-	umglbEYnQxTUKOFt8YZ6BJ6jM/OMsevM9lKD5cy6CoK7fjW3ixNQe/3nl91tdaXSIUs2onvYlM9
-	f5R7LVy/RyK+MOTpoyEe+m7LkS2POhvhJrDlimtP+bfBVWFCCMGNHcrCt5HBIfvB05yxqmAri2H
-	tKgsiO/YgNIqKs04Nm6MyUBLc=
-X-Received: by 2002:a05:600c:a0a:b0:47e:e20e:bba3 with SMTP id 5b1f17b1804b1-483c9b9425emr237301305e9.7.1772516293828;
-        Mon, 02 Mar 2026 21:38:13 -0800 (PST)
-Received: from p183 ([178.172.147.242])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4399c75a25dsm31628240f8f.21.2026.03.02.21.38.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Mar 2026 21:38:13 -0800 (PST)
-Date: Tue, 3 Mar 2026 08:39:36 +0300
-From: Alexey Dobriyan <adobriyan@gmail.com>
+	s=arc-20240116; t=1772519185; c=relaxed/simple;
+	bh=CdrNtsOkOF1cezCjq8/2Pn73wWO2alcsP4kPyJp3fj4=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=uNzhYh+RA5977z9kD20f+PPfhjeb0knmL6GCpIy8tCdFI8LALwcjL2saXroTUFL4NOB2fl/PlX2pmXzIF+ln+aye3NIAlwqC69WMaZy8aQUQ/l8AxAAPznPQn/sMMGMszE5PojI5tN2OevCMqVQiT3nunuAq8oy0nbQsYT00H7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at; spf=fail smtp.mailfrom=nod.at; arc=none smtp.client-ip=116.203.167.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nod.at
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id 7F63E298599;
+	Tue,  3 Mar 2026 07:26:14 +0100 (CET)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id vCd9kAbPBQUM; Tue,  3 Mar 2026 07:26:13 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id D0CC52918DC;
+	Tue,  3 Mar 2026 07:26:13 +0100 (CET)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id CKdzJ7JVcpOW; Tue,  3 Mar 2026 07:26:13 +0100 (CET)
+Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
+	by lithops.sigma-star.at (Postfix) with ESMTP id 8E3FB29ABCA;
+	Tue,  3 Mar 2026 07:26:13 +0100 (CET)
+Date: Tue, 3 Mar 2026 07:26:13 +0100 (CET)
+From: Richard Weinberger <richard@nod.at>
 To: Sasha Levin <sashal@kernel.org>
-Cc: torvalds@linuxfoundation.org, akpm@linux-foundation.org,
-	geert@linux-m68k.org, konstantin@linuxfoundation.org,
-	ksummit@lists.linux.dev, laurent.pinchart@ideasonboard.com,
-	linux@leemhuis.info, richard@nod.at, rostedt@goodmis.org,
-	users@kernel.org
+Cc: Linus Torvalds <torvalds@linuxfoundation.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Konstantin Ryabitsev <konstantin@linuxfoundation.org>, 
+	ksummit <ksummit@lists.linux.dev>, 
+	laurent pinchart <laurent.pinchart@ideasonboard.com>, 
+	Thorsten Leemhuis <linux@leemhuis.info>, 
+	Steven Rostedt <rostedt@goodmis.org>, users <users@kernel.org>
+Message-ID: <91334269.1714.1772519173246.JavaMail.zimbra@nod.at>
+In-Reply-To: <20260302202828.2722037-1-sashal@kernel.org>
+References: <CAHk-=wiUOYn4nyWyuvLh1O0j2reB_ec+4DAO06h7Pu36aA4iDg@mail.gmail.com> <20260302202828.2722037-1-sashal@kernel.org>
 Subject: Re: [RFC] kallsyms: embed source file:line info in kernel stack
  traces
-Message-ID: <7e3ee6b2-62f9-4876-ae1a-d1473d126309@p183>
-References: <CAHk-=wiUOYn4nyWyuvLh1O0j2reB_ec+4DAO06h7Pu36aA4iDg@mail.gmail.com>
- <20260302202828.2722037-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -94,46 +69,98 @@ List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260302202828.2722037-1-sashal@kernel.org>
-X-Rspamd-Queue-Id: 9AB941E94B2
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF147 (Linux)/8.8.12_GA_3809)
+Thread-Topic: kallsyms: embed source file:line info in kernel stack traces
+Thread-Index: BKkw+nNLVZTCDCazNF7hJcps8miqEQ==
+X-Rspamd-Queue-Id: 596121E99A6
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-2869-lists=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nod.at:mid,localhost:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo];
+	DMARC_NA(0.00)[nod.at];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.979];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[adobriyan@gmail.com,ksummit@lists.linux.dev];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	R_DKIM_NA(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[richard@nod.at,ksummit@lists.linux.dev];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-2870-lists=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_ALL(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[8]
 X-Rspamd-Action: no action
 
-On Mon, Mar 02, 2026 at 03:28:28PM -0500, Sasha Levin wrote:
->   [   11.206749]  dump_stack_lvl+0x5d/0x80 (lib/dump_stack.c:94)
+----- Urspr=C3=BCngliche Mail -----
+> Von: "Sasha Levin" <sashal@kernel.org>
+> Add CONFIG_KALLSYMS_LINEINFO, which embeds a compact address-to-line
+> lookup table in the kernel image so stack traces directly print source
+> file and line number information:
+>=20
+>  root@localhost:~# echo c > /proc/sysrq-trigger
+>  [   11.201987] sysrq: Trigger a crash
+>  [   11.202831] Kernel panic - not syncing: sysrq triggered crash
+>  [   11.206218] Call Trace:
+>  [   11.206501]  <TASK>
+>  [   11.206749]  dump_stack_lvl+0x5d/0x80 (lib/dump_stack.c:94)
+>  [   11.207403]  vpanic+0x36e/0x620 (kernel/panic.c:650)
+>  [   11.208565]  ? __lock_acquire+0x465/0x2240 (kernel/locking/lockdep.c:=
+4674)
+>  [   11.209324]  panic+0xc9/0xd0 (kernel/panic.c:787)
+>  [   11.211873]  ? find_held_lock+0x2b/0x80 (kernel/locking/lockdep.c:535=
+0)
+>  [   11.212597]  ? lock_release+0xd3/0x300 (kernel/locking/lockdep.c:5535=
+)
+>  [   11.213312]  sysrq_handle_crash+0x1a/0x20 (drivers/tty/sysrq.c:154)
+>  [   11.214005]  __handle_sysrq.cold+0x66/0x256 (drivers/tty/sysrq.c:611)
+>  [   11.214712]  write_sysrq_trigger+0x65/0x80 (drivers/tty/sysrq.c:1221)
+>  [   11.215424]  proc_reg_write+0x1bd/0x3c0 (fs/proc/inode.c:330)
+>  [   11.216061]  vfs_write+0x1c6/0xff0 (fs/read_write.c:686)
+>  [   11.218848]  ksys_write+0xfa/0x200 (fs/read_write.c:740)
+>  [   11.222394]  do_syscall_64+0xf3/0x690 (arch/x86/entry/syscall_64.c:63=
+)
+>  [   11.223942]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>  (arch/x86/entry/entry_64.S:121)
 
-This is super useful, thanks.
+Seems useful. :-)
+=20
+> At build time, a new host tool (scripts/gen_lineinfo) reads DWARF
+> .debug_line from vmlinux using libdw (elfutils), extracts all
+> address-to-file:line mappings, and generates an assembly file with
+> sorted parallel arrays (offsets from _text, file IDs, and line
+> numbers). These are linked into vmlinux as .rodata.
+>=20
+> At runtime, kallsyms_lookup_lineinfo() does a binary search on the
+> table and __sprint_symbol() appends "(file:line)" to each stack frame.
+> The lookup uses offsets from _text so it works with KASLR, requires no
+> locks or allocations, and is safe in any context including panic.
+>=20
+> The feature requires CONFIG_DEBUG_INFO (for DWARF data) and
+> elfutils (libdw-dev) on the build host.
+>=20
+> Memory footprint measured with a simple KVM guest x86_64 config:
+>=20
+>  Table: 4,597,583 entries from 4,841 source files
+>    lineinfo_addrs[]     4,597,583 x u32  =3D 17.5 MiB
+>    lineinfo_file_ids[]  4,597,583 x u16  =3D  8.8 MiB
+>    lineinfo_lines[]     4,597,583 x u32  =3D 17.5 MiB
+>    file_offsets + filenames              ~  0.1 MiB
+>    Total .rodata increase:              ~ 44.0 MiB
+>=20
+>  vmlinux (stripped):  529 MiB -> 573 MiB  (+44 MiB / +8.3%)
 
-Can the 0x prefix be dropped as well?
-It is shorter to print in decimal up to 1 million.
+Hm, that's a significant increase.
 
-() are just character noise, I'd drop them
+Thanks,
+//richard
 
