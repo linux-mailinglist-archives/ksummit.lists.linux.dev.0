@@ -1,50 +1,50 @@
-Return-Path: <ksummit+bounces-2874-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2875-lists=lfdr.de@lists.linux.dev>
 Delivered-To: lists@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +K+vL7qkpmlpSQAAu9opvQ
-	(envelope-from <ksummit+bounces-2874-lists=lfdr.de@lists.linux.dev>)
-	for <lists@lfdr.de>; Tue, 03 Mar 2026 10:07:06 +0100
+	id 4ITqIy6rpmkySwAAu9opvQ
+	(envelope-from <ksummit+bounces-2875-lists=lfdr.de@lists.linux.dev>)
+	for <lists@lfdr.de>; Tue, 03 Mar 2026 10:34:38 +0100
 X-Original-To: lists@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A8541EBA0B
-	for <lists@lfdr.de>; Tue, 03 Mar 2026 10:07:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E84E01EBEE2
+	for <lists@lfdr.de>; Tue, 03 Mar 2026 10:34:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1526030584C1
-	for <lists@lfdr.de>; Tue,  3 Mar 2026 09:04:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EA3DF3055E78
+	for <lists@lfdr.de>; Tue,  3 Mar 2026 09:31:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26FF238C2B1;
-	Tue,  3 Mar 2026 09:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 610F738C427;
+	Tue,  3 Mar 2026 09:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DlA3KLhz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="efB+eAi2"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00FC375AC3
-	for <ksummit@lists.linux.dev>; Tue,  3 Mar 2026 09:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B0526C38C
+	for <ksummit@lists.linux.dev>; Tue,  3 Mar 2026 09:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772528696; cv=none; b=uD8Aiv0FlVO4axkOjZ0w27gTIQjpDa+OP5rDbPk7cBuvOifyWetOKfH9QxAwnaj/+/uGqJ6402pDH6KDcv1cShUpOdoLiFgPsY06mJwoXjqwjfPmyUpM4VidGUys7Z8P7bNXZbotWMWp1/nE+uXe17F+qqi4ZmSRfvLMvX+r8BQ=
+	t=1772530311; cv=none; b=TP0W/1T8F1/xYizGqkA/P9WxUkJjZUY72K5LfnMOzrx3x9yWXA7cPlk3k9+KZ9e/U6r8uaTzVhDZcZXiAIF5yahJ5veN3zvM5ykhkQxAxozslXAsFjtYakI6Z6Nk+1T1wuLhTdcEKBUe8iyPqV7/kAIv0gFuLFVlpIdU/RLBY2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772528696; c=relaxed/simple;
-	bh=v4W07b6IBE11k67IglXjM+gXfTvQJy/SRQ49IMklHJI=;
+	s=arc-20240116; t=1772530311; c=relaxed/simple;
+	bh=5k595noegC1Xk9Vu+ecz4v6twATEWBxFXL1BMtuodzc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XCuVwOFIzk3lyOkRH3PTJ9lDuPikKpWzZCKk0uWkReZTqT7Y9xuMrvIuJF5zBW58ySEtQSJ5g+e1oKzHMFFMlUDcRS6A6Qc2tfWq7g5FJo7AuaMR6bXCIJNomWpBRQ46+Gf2X14GEZ9uE4pQ6eQFbIAa2XLDBK6UB8pquXxCINg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DlA3KLhz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E9EC2BC87;
-	Tue,  3 Mar 2026 09:04:53 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=XfaYqUGYoGe0K1e6XBlLxAJvi7IIIOk5ymKOUvAWe5nKqQbWCstEZ6cYt4qJBbkLrY3EyJVCdW1jfdAESh39K0ZKEUHXXbXE5QERm0qJk6/7hgnxhAcwkAI8G7uQUBkUFcXEBIXiDsnyAxD0aDkAY/EhxVEtlG6ZPb4neGM+ydI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=efB+eAi2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E22DC116C6;
+	Tue,  3 Mar 2026 09:31:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772528696;
-	bh=v4W07b6IBE11k67IglXjM+gXfTvQJy/SRQ49IMklHJI=;
+	s=k20201202; t=1772530311;
+	bh=5k595noegC1Xk9Vu+ecz4v6twATEWBxFXL1BMtuodzc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DlA3KLhzMnXcvgir/3qFCtKeIstacO9g25eq0MMpnCpjzseYiIdnCDEDoWq6eBChp
-	 cAn42ionD+v1beSsyyD61QZkAkXal3OuojL/4Y7ZuCZIfyjZrNmlnlvy0D8Z4zzxRW
-	 oGXITl6k7yV7RFycNb49jo2RIIL6tJiXCivp3fA7fyPC5qhwbZesrQtCyzXrMGWys3
-	 HVx919k23NLUcITmDq/V0TOfUWF06nLGSiBlEwx1T1DQYoeNH8kdAFdeBh210HA3iJ
-	 FMTVF9G5VVlU7dbXmTVvU6tj+CyfhJDsSrHMp4lpKiPHEQJA+qIaMiOn1KcgzbOW3o
-	 ht68qwXEbTKhg==
-Message-ID: <e63b348f-3527-41ac-8b1f-3c04aba87d73@kernel.org>
-Date: Tue, 3 Mar 2026 10:04:51 +0100
+	b=efB+eAi2IhPQumEo7ep4YVjMOnd4zHVKdcChA9Jgm43ii7VFm80DXzPDIFXchHN1m
+	 0dk2GhKKDm1U5TpaxK5JMDZ25V+2fuYfoEdEX9oJqM0dOqVN9XQVuMvJ9++qqPD5Um
+	 G9YF4gVkPp3CN0qIa7RPBlZRh9JrZKQfJ7n37vuHuBQyEcgmAOhcNV0Kc/X7nzQ8B0
+	 J10WYKNqBsOjkpxpb1+7xv6KMPKt9EhIIkgSPNahiT3LqjTXkgpUnATi637KTORbuK
+	 i0xhXlobYhSNXHRgS5ytgsgK6Vyjv+qTNQb0jB0zVKuAc1G75zAXSexUkNwwwMuDKV
+	 53ha73ZiErsDQ==
+Message-ID: <10bef54e-eb0c-4ed3-84ca-4e393449e974@kernel.org>
+Date: Tue, 3 Mar 2026 10:31:46 +0100
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
@@ -54,12 +54,11 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC] kallsyms: embed source file:line info in kernel stack
  traces
-Content-Language: en-US
-To: Tomasz Figa <tomasz.figa@gmail.com>, Richard Weinberger <richard@nod.at>
+To: Geert Uytterhoeven <geert@linux-m68k.org>,
+ Richard Weinberger <richard@nod.at>
 Cc: Sasha Levin <sashal@kernel.org>,
  Linus Torvalds <torvalds@linuxfoundation.org>,
  Andrew Morton <akpm@linux-foundation.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
  Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
  ksummit <ksummit@lists.linux.dev>,
  laurent pinchart <laurent.pinchart@ideasonboard.com>,
@@ -68,70 +67,110 @@ Cc: Sasha Levin <sashal@kernel.org>,
 References: <CAHk-=wiUOYn4nyWyuvLh1O0j2reB_ec+4DAO06h7Pu36aA4iDg@mail.gmail.com>
  <20260302202828.2722037-1-sashal@kernel.org>
  <91334269.1714.1772519173246.JavaMail.zimbra@nod.at>
- <CA+Ln22Giw4_RL-BCGot9hsgQU5LA3HeFM3bppyz0XW6py=UwoQ@mail.gmail.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <CA+Ln22Giw4_RL-BCGot9hsgQU5LA3HeFM3bppyz0XW6py=UwoQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+ <CAMuHMdXevwo-dgURJimDJrrfgt108v9TR=P1fq6N5P36egz4tA@mail.gmail.com>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <CAMuHMdXevwo-dgURJimDJrrfgt108v9TR=P1fq6N5P36egz4tA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 7A8541EBA0B
+X-Rspamd-Queue-Id: E84E01EBEE2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-2874-lists=lfdr.de];
-	TO_DN_ALL(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-2875-lists=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,nod.at];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vbabka@kernel.org,ksummit@lists.linux.dev];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_ALL(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jirislaby@kernel.org,ksummit@lists.linux.dev];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On 3/3/26 07:48, Tomasz Figa wrote:
->> > Memory footprint measured with a simple KVM guest x86_64 config:
->> >
->> >  Table: 4,597,583 entries from 4,841 source files
->> >    lineinfo_addrs[]     4,597,583 x u32  = 17.5 MiB
->> >    lineinfo_file_ids[]  4,597,583 x u16  =  8.8 MiB
->> >    lineinfo_lines[]     4,597,583 x u32  = 17.5 MiB
->> >    file_offsets + filenames              ~  0.1 MiB
->> >    Total .rodata increase:              ~ 44.0 MiB
->> >
->> >  vmlinux (stripped):  529 MiB -> 573 MiB  (+44 MiB / +8.3%)
+On 03. 03. 26, 9:11, Geert Uytterhoeven wrote:
+> On Tue, 3 Mar 2026 at 07:26, Richard Weinberger <richard@nod.at> wrote:
+>>> Von: "Sasha Levin" <sashal@kernel.org>
+>>> Add CONFIG_KALLSYMS_LINEINFO, which embeds a compact address-to-line
+>>> lookup table in the kernel image so stack traces directly print source
+>>> file and line number information:
+> 
+>>> Memory footprint measured with a simple KVM guest x86_64 config:
+>>>
+>>>   Table: 4,597,583 entries from 4,841 source files
+>>>     lineinfo_addrs[]     4,597,583 x u32  = 17.5 MiB
+>>>     lineinfo_file_ids[]  4,597,583 x u16  =  8.8 MiB
+>>>     lineinfo_lines[]     4,597,583 x u32  = 17.5 MiB
+>>>     file_offsets + filenames              ~  0.1 MiB
+>>>     Total .rodata increase:              ~ 44.0 MiB
+>>>
+>>>   vmlinux (stripped):  529 MiB -> 573 MiB  (+44 MiB / +8.3%)
 >>
 >> Hm, that's a significant increase.
 > 
-> Random idea: Could this additional information (and I guess the code
-> that uses it too) be moved out to a loadable module?
-> 
-> The obvious limitation would be that the user would need to have the
-> module loaded for the decoding to work, but that could be worked
-> around by marking it for autoload when a crash is noticed the first
-> time and then getting a better report the second time.
+> Other random idea: this data is only needed in case of a crash.
+> Perhaps it can be stored compressed, and only be decompressed
+> when needed, or even during look-up?
 
-IMHO that's too big of a disadvantage. Many crashes are rare and either you
-have this always enabled, or you missed your only chance.
+But obviously not when dumping OOM stack traces :P.
 
-> Best,
-> Tomasz
-> 
-
+-- 
+js
+suse labs
 
