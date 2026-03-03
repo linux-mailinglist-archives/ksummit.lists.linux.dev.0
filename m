@@ -1,176 +1,116 @@
-Return-Path: <ksummit+bounces-2875-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2876-lists=lfdr.de@lists.linux.dev>
 Delivered-To: lists@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4ITqIy6rpmkySwAAu9opvQ
-	(envelope-from <ksummit+bounces-2875-lists=lfdr.de@lists.linux.dev>)
-	for <lists@lfdr.de>; Tue, 03 Mar 2026 10:34:38 +0100
+	id qA5kAxfZpmnHWgAAu9opvQ
+	(envelope-from <ksummit+bounces-2876-lists=lfdr.de@lists.linux.dev>)
+	for <lists@lfdr.de>; Tue, 03 Mar 2026 13:50:31 +0100
 X-Original-To: lists@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E84E01EBEE2
-	for <lists@lfdr.de>; Tue, 03 Mar 2026 10:34:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C7681EFB7E
+	for <lists@lfdr.de>; Tue, 03 Mar 2026 13:50:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EA3DF3055E78
-	for <lists@lfdr.de>; Tue,  3 Mar 2026 09:31:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F08B7314128E
+	for <lists@lfdr.de>; Tue,  3 Mar 2026 12:44:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 610F738C427;
-	Tue,  3 Mar 2026 09:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDD634D911;
+	Tue,  3 Mar 2026 12:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="efB+eAi2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B+5K+esn"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B0526C38C
-	for <ksummit@lists.linux.dev>; Tue,  3 Mar 2026 09:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02C3342CA2
+	for <ksummit@lists.linux.dev>; Tue,  3 Mar 2026 12:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772530311; cv=none; b=TP0W/1T8F1/xYizGqkA/P9WxUkJjZUY72K5LfnMOzrx3x9yWXA7cPlk3k9+KZ9e/U6r8uaTzVhDZcZXiAIF5yahJ5veN3zvM5ykhkQxAxozslXAsFjtYakI6Z6Nk+1T1wuLhTdcEKBUe8iyPqV7/kAIv0gFuLFVlpIdU/RLBY2U=
+	t=1772541860; cv=none; b=Ta1Yz0A5Th9svLyisVpPAWXP3eN0xF564dcnVvm66q8TG2wfXXs9ktYTwQVvO7FSRYTOfdwyRbjk6vXRHsIPDU0y5U808NuFWytpiVCgmwijXEPQF57dLeO8pYuehMJvILLa3Thu1CtBjTqEVm+d1JzSgRK5RnJhzQV0YM2dXa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772530311; c=relaxed/simple;
-	bh=5k595noegC1Xk9Vu+ecz4v6twATEWBxFXL1BMtuodzc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XfaYqUGYoGe0K1e6XBlLxAJvi7IIIOk5ymKOUvAWe5nKqQbWCstEZ6cYt4qJBbkLrY3EyJVCdW1jfdAESh39K0ZKEUHXXbXE5QERm0qJk6/7hgnxhAcwkAI8G7uQUBkUFcXEBIXiDsnyAxD0aDkAY/EhxVEtlG6ZPb4neGM+ydI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=efB+eAi2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E22DC116C6;
-	Tue,  3 Mar 2026 09:31:49 +0000 (UTC)
+	s=arc-20240116; t=1772541860; c=relaxed/simple;
+	bh=EeuuuXqPgNQ80Y6k3sed8vjchEc89e7iCxBcTFKljFQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PpsCOYoLydv+i9ctQeIIqmFlQ6XS7QikqIHfT4eiJ/TaLSTUI2Yd7y/YSfN4NTAYvBuv3tU8/aESJz81AEnQ87FiEBdSpSDwwTCjRnBzk5HefjyBizDbxwApYTbPULbHnZoCpfuWbCogW8GTF7bKoiOiSu+rNmYICscM7M6fISc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B+5K+esn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50C5AC116C6;
+	Tue,  3 Mar 2026 12:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772530311;
-	bh=5k595noegC1Xk9Vu+ecz4v6twATEWBxFXL1BMtuodzc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=efB+eAi2IhPQumEo7ep4YVjMOnd4zHVKdcChA9Jgm43ii7VFm80DXzPDIFXchHN1m
-	 0dk2GhKKDm1U5TpaxK5JMDZ25V+2fuYfoEdEX9oJqM0dOqVN9XQVuMvJ9++qqPD5Um
-	 G9YF4gVkPp3CN0qIa7RPBlZRh9JrZKQfJ7n37vuHuBQyEcgmAOhcNV0Kc/X7nzQ8B0
-	 J10WYKNqBsOjkpxpb1+7xv6KMPKt9EhIIkgSPNahiT3LqjTXkgpUnATi637KTORbuK
-	 i0xhXlobYhSNXHRgS5ytgsgK6Vyjv+qTNQb0jB0zVKuAc1G75zAXSexUkNwwwMuDKV
-	 53ha73ZiErsDQ==
-Message-ID: <10bef54e-eb0c-4ed3-84ca-4e393449e974@kernel.org>
-Date: Tue, 3 Mar 2026 10:31:46 +0100
+	s=k20201202; t=1772541860;
+	bh=EeuuuXqPgNQ80Y6k3sed8vjchEc89e7iCxBcTFKljFQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=B+5K+esnVYQyGKrYZ9iRexr4W7+Mx42ZWx8YUIY+s0nIoSYV8KE0bvDWrwJ0HOYPt
+	 zw/0UtTBFJJMsbWCPELsW1F1rU0GSel9MQzIqXvYhIHyzxJrI96oVnemyDTtaOC+J1
+	 Se0jbyEi7c9UJqzVWBZWlh+3Oz8srdXptnghBg7pQ7Vp3j+le20dbdxzaSPZRm1mh4
+	 ljKstehi2KEh8YW0NIwMpZkN9KXGIAv6O6x/1mPUoe93x6vLzHtt39csCj7bjeYH1C
+	 PSOplxJ5/fEdM+z/vFZuffvKYltNz9UXcwLU8JpvdE9g6mfgfJXdVAdNRDYk6wmbEm
+	 zA9drr6TiUdfQ==
+Date: Tue, 3 Mar 2026 07:44:19 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Alexey Dobriyan <adobriyan@gmail.com>
+Cc: torvalds@linuxfoundation.org, akpm@linux-foundation.org,
+	geert@linux-m68k.org, konstantin@linuxfoundation.org,
+	ksummit@lists.linux.dev, laurent.pinchart@ideasonboard.com,
+	linux@leemhuis.info, richard@nod.at, rostedt@goodmis.org,
+	users@kernel.org
+Subject: Re: [RFC] kallsyms: embed source file:line info in kernel stack
+ traces
+Message-ID: <aabXo2XYUmtlRT6f@laps>
+References: <CAHk-=wiUOYn4nyWyuvLh1O0j2reB_ec+4DAO06h7Pu36aA4iDg@mail.gmail.com>
+ <20260302202828.2722037-1-sashal@kernel.org>
+ <7e3ee6b2-62f9-4876-ae1a-d1473d126309@p183>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] kallsyms: embed source file:line info in kernel stack
- traces
-To: Geert Uytterhoeven <geert@linux-m68k.org>,
- Richard Weinberger <richard@nod.at>
-Cc: Sasha Levin <sashal@kernel.org>,
- Linus Torvalds <torvalds@linuxfoundation.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
- ksummit <ksummit@lists.linux.dev>,
- laurent pinchart <laurent.pinchart@ideasonboard.com>,
- Thorsten Leemhuis <linux@leemhuis.info>, Steven Rostedt
- <rostedt@goodmis.org>, users <users@kernel.org>
-References: <CAHk-=wiUOYn4nyWyuvLh1O0j2reB_ec+4DAO06h7Pu36aA4iDg@mail.gmail.com>
- <20260302202828.2722037-1-sashal@kernel.org>
- <91334269.1714.1772519173246.JavaMail.zimbra@nod.at>
- <CAMuHMdXevwo-dgURJimDJrrfgt108v9TR=P1fq6N5P36egz4tA@mail.gmail.com>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <CAMuHMdXevwo-dgURJimDJrrfgt108v9TR=P1fq6N5P36egz4tA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E84E01EBEE2
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <7e3ee6b2-62f9-4876-ae1a-d1473d126309@p183>
+X-Rspamd-Queue-Id: 8C7681EFB7E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-2875-lists=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_ALL(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-2876-lists=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jirislaby@kernel.org,ksummit@lists.linux.dev];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,ksummit@lists.linux.dev];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On 03. 03. 26, 9:11, Geert Uytterhoeven wrote:
-> On Tue, 3 Mar 2026 at 07:26, Richard Weinberger <richard@nod.at> wrote:
->>> Von: "Sasha Levin" <sashal@kernel.org>
->>> Add CONFIG_KALLSYMS_LINEINFO, which embeds a compact address-to-line
->>> lookup table in the kernel image so stack traces directly print source
->>> file and line number information:
-> 
->>> Memory footprint measured with a simple KVM guest x86_64 config:
->>>
->>>   Table: 4,597,583 entries from 4,841 source files
->>>     lineinfo_addrs[]     4,597,583 x u32  = 17.5 MiB
->>>     lineinfo_file_ids[]  4,597,583 x u16  =  8.8 MiB
->>>     lineinfo_lines[]     4,597,583 x u32  = 17.5 MiB
->>>     file_offsets + filenames              ~  0.1 MiB
->>>     Total .rodata increase:              ~ 44.0 MiB
->>>
->>>   vmlinux (stripped):  529 MiB -> 573 MiB  (+44 MiB / +8.3%)
->>
->> Hm, that's a significant increase.
-> 
-> Other random idea: this data is only needed in case of a crash.
-> Perhaps it can be stored compressed, and only be decompressed
-> when needed, or even during look-up?
+On Tue, Mar 03, 2026 at 08:39:36AM +0300, Alexey Dobriyan wrote:
+>On Mon, Mar 02, 2026 at 03:28:28PM -0500, Sasha Levin wrote:
+>>   [   11.206749]  dump_stack_lvl+0x5d/0x80 (lib/dump_stack.c:94)
+>
+>This is super useful, thanks.
+>
+>Can the 0x prefix be dropped as well?
+>It is shorter to print in decimal up to 1 million.
+>
+>() are just character noise, I'd drop them
 
-But obviously not when dumping OOM stack traces :P.
+Possibly, but I don't think it's related to this work :)
 
 -- 
-js
-suse labs
+Thanks,
+Sasha
 
