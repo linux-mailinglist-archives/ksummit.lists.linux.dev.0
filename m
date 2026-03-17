@@ -1,129 +1,134 @@
-Return-Path: <ksummit+bounces-2895-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2896-lists=lfdr.de@lists.linux.dev>
 Delivered-To: lists@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uHBcG618uGmVewEAu9opvQ
-	(envelope-from <ksummit+bounces-2895-lists=lfdr.de@lists.linux.dev>)
-	for <lists@lfdr.de>; Mon, 16 Mar 2026 22:57:01 +0100
+	id KDqGK7kIuWm+nQEAu9opvQ
+	(envelope-from <ksummit+bounces-2896-lists=lfdr.de@lists.linux.dev>)
+	for <lists@lfdr.de>; Tue, 17 Mar 2026 08:54:33 +0100
 X-Original-To: lists@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF8EB2A1326
-	for <lists@lfdr.de>; Mon, 16 Mar 2026 22:57:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AA212A5246
+	for <lists@lfdr.de>; Tue, 17 Mar 2026 08:54:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2FCA43032F65
-	for <lists@lfdr.de>; Mon, 16 Mar 2026 21:56:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 818043036753
+	for <lists@lfdr.de>; Tue, 17 Mar 2026 07:51:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9659C36A014;
-	Mon, 16 Mar 2026 21:56:57 +0000 (UTC)
-Received: from lithops.sigma-star.at (mailout.nod.at [116.203.167.152])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189C1391849;
+	Tue, 17 Mar 2026 07:51:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rtMyRNZY"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BD933CEA5
-	for <ksummit@lists.linux.dev>; Mon, 16 Mar 2026 21:56:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.167.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF08192D97
+	for <ksummit@lists.linux.dev>; Tue, 17 Mar 2026 07:51:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773698217; cv=none; b=pCz2TpnqQlZSInoZS+HWb5zBbF6sF2CSqE2YVWyY3ABt6sW6zcFPL4bfqvjRzY2Dv4e0dPje0mxUblz/pjbvbymm2ms9Hu+3kAE0CTtNiqP0d1vn4pVVRarZWf0FkRFSrz0wauGyE95fmL1C/ZS3E4hMouz3/sapQepFe2qqDao=
+	t=1773733868; cv=none; b=Mt1TbSQ7hHO2xEkGSMH3zTAgtPc2O5D3DVzrUhfswKoAEiFQEGIO562/kIFc8iAk4BOseGmKOjOXy1GNyEqrB6R+vQhN48LuQ8kgI36hiuAkIm2yF6HxEVNV0LwT1eESFTdMrLsJWUaNVl2Ti/zr1e4PXCFc7RaZ8BYcWLyLIBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773698217; c=relaxed/simple;
-	bh=s9oS5qVjqR5+z0NnuDTUFws+bBfyRxyyv6TaIHzhEfc=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=phVHxGzBTSVY/s3jA4J2775YqbFguCKd8a0JYBjvcJgeM3bhPfg8wL6vDwFVrBOO+zL/XIeEMYhQhmZX3ZbxxNn5+wxHXNOPPk86b05VSVVhXOWbHD8sgYXj2BY+3a7RC2BNJTd32ubdefhFJ21309aBpnfrodik2wF3XDKoNG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at; spf=fail smtp.mailfrom=nod.at; arc=none smtp.client-ip=116.203.167.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nod.at
-Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id 434382C14A6;
-	Mon, 16 Mar 2026 22:56:54 +0100 (CET)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id QzKpxKy84CT2; Mon, 16 Mar 2026 22:56:53 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id 7A2222C14A8;
-	Mon, 16 Mar 2026 22:56:53 +0100 (CET)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id jRhg9Oo-B9RU; Mon, 16 Mar 2026 22:56:53 +0100 (CET)
-Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
-	by lithops.sigma-star.at (Postfix) with ESMTP id 4B5432C14A6;
-	Mon, 16 Mar 2026 22:56:53 +0100 (CET)
-Date: Mon, 16 Mar 2026 22:56:53 +0100 (CET)
-From: Richard Weinberger <richard@nod.at>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Thorsten Leemhuis <linux@leemhuis.info>, 
-	Steven Rostedt <rostedt@goodmis.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, 
-	Konstantin Ryabitsev <konstantin@linuxfoundation.org>, 
+	s=arc-20240116; t=1773733868; c=relaxed/simple;
+	bh=VQOuwhEtLzHEY1C7LlONnYPk+gDaCuefsotr4p0cNZs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DsAzukhQntFSoVgO6HuShD2X/r9HPgGXh39nEdWZAmsLCF7/JodCSiEigVI+s5xvZgvX/1TfsiK9ofDDSKRlVY4XvLK8xUrj/rm3knuEsiHa8tcyT2POxgKnR3ISGU8zMaFK3HLiYJAGR0lDmEonVjuzpokuGDzhzmkGeEPJC40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rtMyRNZY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E63C4CEF7;
+	Tue, 17 Mar 2026 07:51:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773733868;
+	bh=VQOuwhEtLzHEY1C7LlONnYPk+gDaCuefsotr4p0cNZs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rtMyRNZYj5UBNVT6Dsyb0Xf6j9yyiCgXbK7G4Pyzg7eiQyovupN+j2nk2iPD/e/f3
+	 9ih1rOzWkzVlM0pUzWrBl4PspyrcHF+5njqPOb1HnLDgdBAymRJhzKe/CQ0OYxiSiV
+	 HP3yUIWq7hzfCNeEt0vhLcydG57lxIfYaKYdLTwk=
+Date: Tue, 17 Mar 2026 08:51:04 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Richard Weinberger <richard@nod.at>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+	Thorsten Leemhuis <linux@leemhuis.info>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
 	users <users@kernel.org>, ksummit <ksummit@lists.linux.dev>
-Message-ID: <1440843008.46131.1773698213099.JavaMail.zimbra@nod.at>
-In-Reply-To: <2026031615-amusement-yam-d036@gregkh>
-References: <20251209-roaring-hidden-alligator-068eea@lemur> <1655051015.2216.1772209338375.JavaMail.zimbra@nod.at> <5dea1bca-75fe-4e3c-950d-d489a438299a@leemhuis.info> <1786920159.1633.1772291851870.JavaMail.zimbra@nod.at> <1617579485.3599.1772793456949.JavaMail.zimbra@nod.at> <CAMuHMdVUoDsZeewXFevLR4kw6iWXwrGRzdZ+N5BFzzLUuLu1Ww@mail.gmail.com> <571171361.40507.1773586731470.JavaMail.zimbra@nod.at> <2026031615-amusement-yam-d036@gregkh>
 Subject: Re: slowly decommission bugzilla?
+Message-ID: <2026031746-rarity-acutely-2eaf@gregkh>
+References: <20251209-roaring-hidden-alligator-068eea@lemur>
+ <1655051015.2216.1772209338375.JavaMail.zimbra@nod.at>
+ <5dea1bca-75fe-4e3c-950d-d489a438299a@leemhuis.info>
+ <1786920159.1633.1772291851870.JavaMail.zimbra@nod.at>
+ <1617579485.3599.1772793456949.JavaMail.zimbra@nod.at>
+ <CAMuHMdVUoDsZeewXFevLR4kw6iWXwrGRzdZ+N5BFzzLUuLu1Ww@mail.gmail.com>
+ <571171361.40507.1773586731470.JavaMail.zimbra@nod.at>
+ <2026031615-amusement-yam-d036@gregkh>
+ <1440843008.46131.1773698213099.JavaMail.zimbra@nod.at>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF148 (Linux)/8.8.12_GA_3809)
-Thread-Topic: slowly decommission bugzilla?
-Thread-Index: EPhkEsGjVFnNAML1qZ1jJuAPWfK5Xg==
-X-Spamd-Result: default: False [-0.46 / 15.00];
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1440843008.46131.1773698213099.JavaMail.zimbra@nod.at>
+X-Spamd-Result: default: False [3.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	SUBJECT_ENDS_QUESTION(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.889];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DMARC_NA(0.00)[nod.at];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	R_DKIM_NA(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[richard@nod.at,ksummit@lists.linux.dev];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	TO_DN_ALL(0.00)[];
-	TAGGED_FROM(0.00)[bounces-2895-lists=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-2896-lists=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[8]
-X-Rspamd-Queue-Id: BF8EB2A1326
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,ksummit@lists.linux.dev];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nod.at:email,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 2AA212A5246
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
------ Urspr=C3=BCngliche Mail -----
-> Von: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-> An: "richard" <richard@nod.at>
->> > Nice! I threw a few arm/arm64 crash logs I had lying around at it,
->> > and the results looked good enough to be usable!
->>=20
->> Due to bad weather here in Austria I found more time.
->> I polished the web page added some notes on reporting bugs and
->> published the source code of the tool which generated the JSON "database=
-".
->>=20
->> https://github.com/sigma-star/kbooboo/tree/master/datagen
->>=20
->> I'm not sure how to progress.
->> Is this something we want on kernel.org?
->> Hosting is easy, all it needs is a static web server.
->=20
-> Why not have kernelci host it?
+On Mon, Mar 16, 2026 at 10:56:53PM +0100, Richard Weinberger wrote:
+> ----- Ursprüngliche Mail -----
+> > Von: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+> > An: "richard" <richard@nod.at>
+> >> > Nice! I threw a few arm/arm64 crash logs I had lying around at it,
+> >> > and the results looked good enough to be usable!
+> >> 
+> >> Due to bad weather here in Austria I found more time.
+> >> I polished the web page added some notes on reporting bugs and
+> >> published the source code of the tool which generated the JSON "database".
+> >> 
+> >> https://github.com/sigma-star/kbooboo/tree/master/datagen
+> >> 
+> >> I'm not sure how to progress.
+> >> Is this something we want on kernel.org?
+> >> Hosting is easy, all it needs is a static web server.
+> > 
+> > Why not have kernelci host it?
+> 
+> Do you mean the data generation tool or the frontend?
+> For the data generation tool kernelci makes a lot of sense,
+> they should have enough versatile kernel builds to compute data file.
+> 
+> For the frontend I don't care much. It should be some location potential
+> bug reporters can find.
 
-Do you mean the data generation tool or the frontend?
-For the data generation tool kernelci makes a lot of sense,
-they should have enough versatile kernel builds to compute data file.
+I would recommend both, but have no idea how to do so, sorry.
 
-For the frontend I don't care much. It should be some location potential
-bug reporters can find.
-
-Thanks,
-//richard
+greg k-h
 
