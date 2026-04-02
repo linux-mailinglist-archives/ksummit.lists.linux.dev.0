@@ -1,271 +1,214 @@
-Return-Path: <ksummit+bounces-2902-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2903-lists=lfdr.de@lists.linux.dev>
 Delivered-To: lists@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uHGzCeVyzmnxngYAu9opvQ
-	(envelope-from <ksummit+bounces-2902-lists=lfdr.de@lists.linux.dev>)
-	for <lists@lfdr.de>; Thu, 02 Apr 2026 15:45:09 +0200
+	id sAIeNGx0zmkpnwYAu9opvQ
+	(envelope-from <ksummit+bounces-2903-lists=lfdr.de@lists.linux.dev>)
+	for <lists@lfdr.de>; Thu, 02 Apr 2026 15:51:40 +0200
 X-Original-To: lists@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD4FA389F28
-	for <lists@lfdr.de>; Thu, 02 Apr 2026 15:45:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 726AA38A099
+	for <lists@lfdr.de>; Thu, 02 Apr 2026 15:51:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id ADC753044238
-	for <lists@lfdr.de>; Thu,  2 Apr 2026 13:43:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A857D3026F4D
+	for <lists@lfdr.de>; Thu,  2 Apr 2026 13:51:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A2831B823;
-	Thu,  2 Apr 2026 13:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD653DE426;
+	Thu,  2 Apr 2026 13:51:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="BxZ9E6fl"
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.61.103])
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="GS+eARjC"
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A6C729B228
-	for <ksummit@lists.linux.dev>; Thu,  2 Apr 2026 13:43:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.61.103
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EECCF28504D
+	for <ksummit@lists.linux.dev>; Thu,  2 Apr 2026 13:51:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775137398; cv=none; b=bZvlOcTeuYhMdzuxryNlYmqHiPt4g/4AP9RHYBf+Gc1vumkxRhnpclLHc9zbNhHvaw+rlu9JPYcsShs7/wQ5P8I4ICv3LGomu79iDZKaToIrWbpqvh6HqMPDF2/0Hm9m5ukRD3ox/bc5VrP+e74aJM9cwc17r163NYEah9z5ebs=
+	t=1775137881; cv=none; b=TaEXIpw8bT4rNs70j1qQvisn8F2+yp3DEAX5mt/XtWT5CIG5tCt+fo6pbSF4D6btaFmuzpKEmBDn8R0hX1aqVk76HsD3oJ3Sj5iAmeLvbrFLLJszczQ/2wWrLFnuTTkse1ffwxSWBtVWYydSK2yucHOeqzUsTMhkUgCCJcbpB98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775137398; c=relaxed/simple;
-	bh=x9HbQwT5s2Q2aNpBbVxabLEM3ShixRf+JJwAARDb5jw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kaT8kHQbqtIhbxZU6R1P7kfUlpeeydKULHmLpov2TXBRfcBV2dY2N/jOvNwj1/u5pZvphPSVzsXNwvGpiqHTGxAsPAJFX6movEh7oHvzfYFjD8XEqaBiBUAamw/7PvKMxy1k0YQn7m0dpJp0LkuCSfd78vBKbabTNYu9++Kn1QY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=BxZ9E6fl; arc=none smtp.client-ip=188.68.61.103
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from mors-relay-8403.netcup.net (localhost [127.0.0.1])
-	by mors-relay-8403.netcup.net (Postfix) with ESMTPS id 4fmjjW6mlpz8Cqj;
-	Thu,  2 Apr 2026 15:43:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1775137392;
-	bh=x9HbQwT5s2Q2aNpBbVxabLEM3ShixRf+JJwAARDb5jw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BxZ9E6flMwb3kA8+IQG7GxaHqLZrgO6ZniiY50z5L/kR7e1ipG7mX1Ri+7jHterH5
-	 RFloMHymmqquCcvQeY6qlJFTO5bAM4tdq602mnw/BuRcQ3P3ff2KSC0H/1NGSxaalO
-	 GN5rC3+0s5l69Sa1tSrSEB6nL8ppu4mXN9YggPFcRV5v4cXNud2M/Rp7VrVbSwj4ul
-	 l961QKiVknOpis4QqxktY8vc4QwHR7Ty6lmAaOra9PEOXgKGXnTe2IPRAdkR0+6kSz
-	 g8bbNkzKaUSsrA65MOHoF1+jfbNFoqpLjOrRpwhq/s62iclsqokV4XcqEwqw/6hP2c
-	 EkbqpyoDwL+9Q==
-Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay-8403.netcup.net (Postfix) with ESMTPS id 4fmjhN0yKyz880R;
-	Thu,  2 Apr 2026 15:42:12 +0200 (CEST)
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	s=arc-20240116; t=1775137881; c=relaxed/simple;
+	bh=mE0ifBVDNkf2PEVQRbGxki8ZdAMaw+HPDuLfZ0e+hOQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MmWXGUp5b4SZi86a10DR388vXVE/3tH0/3msaOXlczMHSwrbB4qkdqZMtGcRgaLqaxEIs0hAl5v3xdLR2wFzNtFOtHYhzOv2TsrhHyR2AX6zqQLSVG4F7Nv0a/LX9UE6b8X3/dQ/ED7bNvrtNd+ACZIsEyn6NmyjTBAiJxO1m+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=GS+eARjC; arc=none smtp.client-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1775137877;
+	bh=mE0ifBVDNkf2PEVQRbGxki8ZdAMaw+HPDuLfZ0e+hOQ=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=GS+eARjC8S6BMQjyVR0NfnRA3QZRj/Tx0cTaTH1rk0XngdJwvY4x+s0aZmRrmXEkZ
+	 OhO2EZPAykedBUkEiJQr1zaT3peivpUAY/b4cTEmAH/UbUCTnZRpsFdausVWGEQfBo
+	 U2/z9Cy0xU8VjKXBOH7g0+9myytwCWOFCZOuo7KQ=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4300:d341::db7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4fmjhM4DP6z8svF;
-	Thu,  2 Apr 2026 15:42:11 +0200 (CEST)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id C469C633E1;
-	Thu,  2 Apr 2026 15:42:10 +0200 (CEST)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=linux@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <ef874caf-5345-4c0d-8855-1338b5177d8b@leemhuis.info>
-Date: Thu, 2 Apr 2026 15:42:04 +0200
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 7D73F1C0265;
+	Thu, 02 Apr 2026 09:51:17 -0400 (EDT)
+Message-ID: <18e36b49096851ad93b8c048368e534a228c1952.camel@HansenPartnership.com>
+Subject: Re: slowly decommission bugzilla? (was: Re: kernel.org tooling
+ update)
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Theodore Tso <tytso@mit.edu>, Konstantin Ryabitsev
+	 <konstantin@linuxfoundation.org>
+Cc: Thorsten Leemhuis <linux@leemhuis.info>, users@kernel.org, 
+	ksummit@lists.linux.dev
+Date: Thu, 02 Apr 2026 09:51:16 -0400
+In-Reply-To: <20260402130706.GA15407@macsyma-wired.lan>
+References: <20251209-roaring-hidden-alligator-068eea@lemur>
+	 <b93eae05-5e40-42f0-8256-d46d411008a4@leemhuis.info>
+	 <20260402-expert-maroon-partridge-f77f94@lemur>
+	 <20260402130706.GA15407@macsyma-wired.lan>
+Autocrypt: addr=James.Bottomley@HansenPartnership.com;
+ prefer-encrypt=mutual;
+ keydata=mQENBE58FlABCADPM714lRLxGmba4JFjkocqpj1/6/Cx+IXezcS22azZetzCXDpm2MfNElecY3qkFjfnoffQiw5rrOO0/oRSATOh8+2fmJ6el7naRbDuh+i8lVESfdlkoqX57H5R8h/UTIp6gn1mpNlxjQv6QSZbl551zQ1nmkSVRbA5TbEp4br5GZeJ58esmYDCBwxuFTsSsdzbOBNthLcudWpJZHURfMc0ew24By1nldL9F37AktNcCipKpC2U0NtGlJjYPNSVXrCd1izxKmO7te7BLP+7B4DNj1VRnaf8X9+VIApCi/l4Kdx+ZR3aLTqSuNsIMmXUJ3T8JRl+ag7kby/KBp+0OpotABEBAAG0N0phbWVzIEJvdHRvbWxleSA8SmFtZXMuQm90dG9tbGV5QEhhbnNlblBhcnRuZXJzaGlwLmNvbT6JAVgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAhkBFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAml2ZBIFCS3GUMIACgkQgUrkfCFIVNZKjQf/deRzlXZClKxTC/Ee2yEPqqS7mm/INUA49KdQQ5oIhSxkUBy09J4qjMIo5F8ZFkFTqikBqeL35LKu7O7rn8WETfX8Bxvos3HUsl3jHo34DES4MUFIpoQPgtiLRGwLbK0cVCAArR2u2qj4ABmTRrs1I1kvdjEw6gatOuXtEe/j5O2fvfzTq9GBr0Q3n2IAsFXi4hLlx6VPE8tyWUZ8BWJKtih3JAeUiXFvASL3McV0rV9RnU0VbjEQEhSE7PMYhWpnDC9AyBb0lXJllQRvC3NSkUB8KVQgNNxRPss0WE/nBoZ4dFA42jTyzTz8lNylxZoAWV7WJb3QxVg4oCodRVrxxrQhSmFtZXMgQm90dG9tbGV5IDxqZWpiQGtlcm5lbC5vcmc+iQFVBBMBCAA/AhsDBgsJCAcDAgYVCAIJCgsEFgIDA
+	QIeAQIXgBYhBNVgbnPItGJxvq2a34FK5HwhSFTWBQJpdmQTBQktxlDCAAoJEIFK5HwhSFTWUDYH/0VLi3FXXzg2duSRFBjEv2T+GojyX8UfFDejhGo52YHshpVbUE2loQg3ETn6LJq4UxmMZJYymRbe9BA3kSPS6NtFfnf90ssWgRMf7WYPMj98DOu5UlZpV2WMhvUfKI/gNfkeVW3dR7JNBZTQZv/1nNVFi/AWqf7ToEik8VcoyVuf+8Dlqyfer2xUM8QPV9XcZsu+PRSOdl8z3SH8+M9whspR1qqX7fABGSaOkZr/D3mDS8cr1ATdLbSxu8CMBMfMHbhOKoepTeXgQL/PnmZukrrFlnshJIWa7UVVrYB3qLVaujn8aP+yQqSHE7XXYku0+OWcpMa7fdjGwHKfPJnMeiO0LEphbWVzIEJvdHRvbWxleSA8amVqYkBoYW5zZW5wYXJ0bmVyc2hpcC5jb20+iQFXBBMBCABBAhsDBQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAml2ZBQFCS3GUMIACgkQgUrkfCFIVNbpRAf8DEpytkSbT9Nm8Aifzm3j5TlrRUFZc0V1/U4VmB/lju2lU9ns8o/j1I0ZJ7uYjbZWK3pSRxb6IqZrOZGaERnLjjuJlzGvnk93+qaYGxiI2CMNNepgEBReBRxRnY5vznjmqNjbOWWgYdbb5WyypX/Yn3uVCQ0x00DQLByXEeCLDvK8Cqc+//krDSI44N/YQ0RMcAtVpHLSCXZbJ2igj9rqsJ7W0lcM8FCqyKhxPde9td0sQrKV8FbhzekHQfXpvOwS5KnKNGWE2opnYOh/vlX6z5uMm3AvIcWSib00Y3xgoc4PTOnCVFR2VieWqhtjadFKipYenA+KQ/St6c/F5ymo/LhSBFpntuYTCCqGSM49AwEHAgMEfgawiAvTJCKPlLkhINmaVHuoNA9xZT
+	ExXHrNU+wCghN2MoWNoOZQBORL6XnOaIKtQFwnowFq8+JhDiSqfj/HBokBswQYAQgAJgIbAhYhBNVgbnPItGJxvq2a34FK5HwhSFTWBQJpdmSfBQkh2rC5AIF2IAQZEwgAHRYhBOdgQNt2yj0XZwj5qudCyUzumKyFBQJaZ7bmAAoJEOdCyUzumKyF2L0BAPI68tg4GTKUGqJOUmsycYIKxaAZnA+kqrd7ezslD/EEAQCXHb2k9jnPREvIgNSyN/2a2RI1Np5pDpMiMOsVr7xcfwkQgUrkfCFIVNbHmQgAk3WhtOC5ajSffgDF25vqZreQJPJS0HCRnHxvfLe2WnJvShmaexY6BFyYtLmamrBRYcefLZSZkgc8nWOdlA7kr94Hj8GMrX5hZQHi6zzN0g3v9B+YTUh1btDbIcuPQWKjKUhD9EGrH0XNhB8nRIeSfwb3mDHyQ1tcd2lso5GUaYPHIgO8VKkNAJHyurxuyTYJjQi2T0i656zCK8I9NBh7gs58BTbHMqBRI5Q4oDLgzXg6o5CUUmZhS7ON2Xb7J+twT6GXG+iRjE+uMa72fiZax5l0upKcYYkOS2q2lSVwgwsGBftya4CPWzMwmCI3NYPFO2XdAOVP9ouvFQSSK1Sm6LhWBFpntyUSCCqGSM49AwEHAgMEx+4y4T48QJs6hiOQPRN6ejtMNtyDEk2A9XtjaVBs0Gd7Ews4Rjr/EnNGLVeb+j2Y7Jn5UiPyHgblX95ZKe02TAMBCAeJATwEGAEIACYCGwwWIQTVYG5zyLRicb6tmt+BSuR8IUhU1gUCaXZkMwUJIdqwDgAKCRCBSuR8IUhU1pfLB/wLszTzsV2JYbCYLOdPF0dGcv+dSx8rLiydrJ/hgv4fcTJgXv45zzNCL/QqHAiKjnxXeSRsFBjyHf3gYXmhbP5eGCW81eZHOUDy7CoSyZRPzIPf1At8IFia3pPZ+xibcIz7JntKFWWw43YdtVghoGZIxa5PM4v
+	ESQBwmRFUv0DF2TFKWHM7amrZAal162kknsH5gKQnFRdX1uLZHw51BzeW+Mzso3xcGi2iby9hcACv1L5TZTQpyD67B+znqj884Vgj4JKdInPQgxJ1yS7aR0ezRHqJYJrjHmzR4aSRFIEnw5azZlH/lsvKCee42fPGoZ956VcVZCagf29mjzDLXxGmuQINBFR2FpkBEACl4X2Bs1IEG51bzF4xAiIH8JnArhU4Q/ucYdmfdSxZ6ay8T2W+NsXNupwiRtSnZXoTEzm3ISDOKjYFq8t7VkkYdVoqQvdwosAGhiL/IEsSeiA8XPNh8rZ92KmbYb4aEtqp8PG0BDtypd6jVMKxktK+MP6QtVXVO8qVodLy1QKHahTJHt9Nu/pYeLkfwMvJHQ+du30T38ZyzWPXUlf4xYnuOx63YVUOwHlTUszvQCOFeIOJAK00nMpqop0x6LzNrNZLnSIwop6jib9p1YGMb/yV3d9Dv8dyPo6mSHzE9oKeaANmi9gZq/DgCba2NGoTobqs9ClLTB7kjqVKwo0E//YWEuYj1+ewGdkLWXU2sBJFJfUErTF/gtgHZbDd9hCZtsCkBQFtZn/VpChzYQIptIr2JbSB9nysOCB8zDyfOmYQQTGXSFTrC0kvKbINX5Aag/HkrBgr/qoBQ0lAidRjPzPYREz8c4jT1m7eOJq4UEO2i5Iitpf/YMO9N/st97X6KEBEVKWnriQQwCyMq600Era7miPgfuFDvMP4G9YsfEyDKw61hi3CCDB46sz+TdGd2xn/PeewaoXSCBy3VUu4fZ7OcOSwj4qRncGDRaKFDIntn2iaBpADJEMVy36Ocmy/YjNr7Ei896L5+lsY0DIW+PR75OxmhAZwLfj+KkbDN7rnVQARAQABiQEfBCgBAgAJBQJVPoFoAh0DAAoJEIFK5HwhSFTWnlAIALumCM4zXsfHCrP2aUYQuKViqPM09Shm3nGyVxMUbGP9BY3O7QryARA94+dzl1N+
+	6bNYvTvufGF0pi2irCbYLp86ZeIkFnHqSEF9Gpy1S83YOU4Hp0V/kj7VBP1NEG9x4bPDTUTgaLTGNYoAHo4ggwB2c9wNUXNpcl2UAAl2N+D+XIm0DLGJ9+Ubw2dcnd6XAaqgGyjzhcE1ZbNtzlUqZq3OFgs69e1/MOG7iY0+//PtLUdO1GC4jQ2UflFUHNK9/PJuKf2HKwTf/6vcLQcnbGI4fO5w0CYbTdrO3NlgMxNspBbhtCp4PkwnFPry8Fi7wy3N8h7jWVIulv+qXCrWqDSJASUEGAECAA8FAlR2FpkCGwwFCQDtTgAACgkQgUrkfCFIVNbdiAf8DIkvauUK8auQtxqz3g0P0+afRxSVWs+XvBUZwhX7ojievDq7j1PKo0yaxhqbZimN6u8kaBu8hszOgcUJESLpH1fJSzDnDsYJGhZ6DDZuVliLkDnbF7nTT79Gu4b/8wp861VSi27c367sVxdpgCD2Bth4Y1kJXvS8j5ycWCrQAQlF2OJ3N8JZUo+Np9OjuMd4XFftDbaRR9Y6QzPOGgNsWDSM+FVg2IRek3JcLCKvO8oDtu8XBk+VGRt+KFqJcMTtAohS1DXSLmTDgL2uoMrDHwXQ9pYNEX2AZop3v8gkYclppz85xInfrPGCQ2AuxVfkZSugnYZplxHtb1WmmPkf4LhSBGS5HJMTCCqGSM49AwEHAgME7JKiaexbZKQCle/XNQFoPfx0USPQtB4MQx1ITtubV+et2MBi3R/8K1tRSINo+h1CTap4fM4/rAD/YrquuPA0hYkBPQQYAQgAJwMbIAQWIQTVYG5zyLRicb6tmt+BSuR8IUhU1gUCaXZkiAUJF4lK9QAKCRCBSuR8IUhU1t6CCACFp/Wk55zQu2MQAvzXSexcBczROJSLUiNL8hRejgidulGRb/nvvxgsPQkdKxvxi02LFcU2jeFK5TuuRvebZozJ0LDJsECWJ0CHUoWzN+FZ/j0IG4qPgGSD1DIdfwGft
+	AHBLpBdnl9SOe8ETkv6GqbZrXUED/dAbRVIT5vHP51zyYB8rAUjp3PnzxsXFG8eQaacEyKSl0DKDlgKuQ+k292LVGJhEva8z4cwg3JcrQWzbpTRskQRP624aQ7t0LKbNfXqfYT13TvZNTDdjQaCJRJ3EG8uXOszVKuc0guXunZPmmq6x1Y3bOfOezcFYoywwL3nKef+Z5sQrjG3/5NLeu+W
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: slowly decommission bugzilla?
-To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-Cc: users@kernel.org, ksummit@lists.linux.dev
-References: <20251209-roaring-hidden-alligator-068eea@lemur>
- <b93eae05-5e40-42f0-8256-d46d411008a4@leemhuis.info>
- <20260402-expert-maroon-partridge-f77f94@lemur>
-From: Thorsten Leemhuis <linux@leemhuis.info>
-Content-Language: de-DE, en-US
-Autocrypt: addr=linux@leemhuis.info; keydata=
- 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 MEK4
-In-Reply-To: <20260402-expert-maroon-partridge-f77f94@lemur>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-PPP-Message-ID: <177513733107.2991759.5298379634954390989@mxe9fb.netcup.net>
-X-NC-CID: qdfuFQ4rAYC0+wducx7l35Z0YsOo4XEilgedlBVBAWlt71+tuF0=
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	SUBJECT_ENDS_QUESTION(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[hansenpartnership.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[hansenpartnership.com:s=20151216];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
-	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	TAGGED_FROM(0.00)[bounces-2902-lists=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-2903-lists=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,hansenpartnership.com:dkim,HansenPartnership.com:mid];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[leemhuis.info];
-	DKIM_TRACE(0.00)[leemhuis.info:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,leemhuis.info:dkim,leemhuis.info:mid,gitlab.freedesktop.org:url];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux@leemhuis.info,ksummit@lists.linux.dev];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[hansenpartnership.com:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[James.Bottomley@HansenPartnership.com,ksummit@lists.linux.dev];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: BD4FA389F28
+	SUBJECT_HAS_QUESTION(0.00)[]
+X-Rspamd-Queue-Id: 726AA38A099
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/2/26 06:59, Konstantin Ryabitsev wrote:
-> On Thu, Feb 26, 2026 at 09:44:32AM +0100, Thorsten Leemhuis wrote:
->> Lo! I wonder if we should slowly and publicly start decommission
->> bugzilla in areas where it's not working well today. I have a few
->> reasons for that:
->>
->>> It may be time to kill bugzilla:
->>>
->>>     - despite periodic "we're not dead yet" emails, it doesn't appear very
->>>       active
->>>     - the upgrade path to 6.0 is broken for us due to bugzilla abandoning the
->>>       5.2 development branch and continuing with 5.1
->>
->> * It looks like we will decommission Bugzilla anyway, and a replacement
->> is afaics likely quite a while (years?) away
+On Thu, 2026-04-02 at 09:07 -0400, Theodore Tso wrote:
+> On Thu, Apr 02, 2026 at 12:59:46AM -0400, Konstantin Ryabitsev wrote:
+> > # git-bug
+> >=20
+> > The git-bug project aims to keep bug tracking integrated into the
+> > git repository itself. It's not a new project -- it's been around
+> > for a while, though its development has been advancing in spurts.
+> > The fundamentals are sound and the design is robust. It's an active
+> > project with ongoing development:
+>=20
+> The documentation from git-bug is not great from the perspective of
+> someone who is trying to understand the security properties of the
+> system.=C2=A0 But after looking at the architecture documents, I *think*
+> this is how it works.=C2=A0 Please correct me if I'm wrong, perhaps git-
+> bug can improve their architecture docs?
 
-Seems we'll get there faster. Thx Konstantin!
+I'll second that.  I didn't really understand how it works until I both
+read the docs and played with the b4 bugs to see what they were
+storing.
 
->> -- so what is there now will likely be kept running for a while.
-> Thank you for starting the thread -- it's been burning a hole through my inbox
-> and I honestly wasn't trying to ignore it. :)
+> 1) A separate git repository is used for the bug store it's not the
+> same git repo as the project where the project's sources are stored.
+> (Your use of "the git repro" in your first paragraph made me made my
+> eyebrows --- *surely* we wouldn't put the bug tracking information in
+> linux.git, right?=C2=A0 But looking at the the git-bug documentation, it
+> wasn't immediately obvious without my having to read way more
+> documentation pages than I would have liked.=C2=A0 From git-bug's
+> perspective, if they want to keep people from running away screaming
+> before giving it a fair shake, they should think about having some
+> high-level architecture documents that explains how this actually
+> works.)
 
-No worries, I from social.kernel.org posts in March had noticed that you
-were working on something, so I let things rest.
+No, that's not necessarily correct.  For instance if you look at the
+bugs in the b4 repo, they're in the main tree and you can fetch them
+with
 
-But this git-bug thing will take a while to get established. That makes
-me wonder if we independent of that should do what was partly discussed
-in this thread:
+git fetch origin +refs/bugs/*:refs/bugs/*
 
-Change the front page text of bugzilla now to at least make people
-better aware that it might be a bad place to file bug (which even some
-kernel developers are not aware of).
+However, each bug is its own disconnected commmit tree, so technically
+they can be separated from the main repo and certainly if you remove
+the refs/bugs/<id> and do a git prune it will eliminate all commits for
+that bug because they're now disconnected (modulo some playing with the
+packs, if they're already packed).
 
-> - anyone can go to a site like bugs.kernel.org, which will be a simple bug
->   entry form of the style:
-> 
->   1. tell us what happened
->   2. attach any files you want to attach
->   3. tell us how we can contact you (with round-trip verification)
-> 
-> - the report then goes into a review queue that can be pre-processed by an LLM
->   to help immediately weed out non-actionable items: spam, reports for tainted
->   kernels, reports for distro kernels, etc. The agent can reply with
->   cookie-cutter answers to those with a suggested course of action:
->>   1. Please report this to your distro here: {url}
->   2. Sorry, we can't help you because you're running a binary-only driver
->   3. This report is for kernel 2.6, what is even happening?
+> 2) The primary way that git-bug seems to be focused is that "bridges"
+> are used to sync status between some other bug tracker (such as
+> github's issue tracker) and the git bug.
 
-If you ask me, that's the wrong way around. We IMHO want an LLM that
-helps users to submit good reports directly. That is in the interest of
-users, as then they won't waste time on submitting something that an LLM
-later will reject quickly, which they'll rightfully find annoying. And I
-guess it will be less work and thus cheaper for LLM, too.
+I think bridges are just for portability.  They don't seem to be
+required (at least the only bridge is a jira one and b4 isn't using
+it).
 
-The LLM, for example, could, at the start of the process, query (or ask)
-"uname -r" and ask "Is it a bug with a graphics driver for AMD or Intel"
--- and depending on the outcome tell users, "You are at the wrong place,
-you have a heavily patched and outdated kernel, your want to file that
-at your distro" or "You are in the wrong place, you have to file that at
-gitlab.freedesktop.org/drm/".
+> 3) You *can* create new bugs via the git-bug CLI, but this
+> seems... weird, since only a person who has write access to a git
+> repo can create a bug.=C2=A0 Sure, anyone can fork the git repo, and
+> create a bug in their local repo, but then in order to publish it,
+> either (a) you have to have credentials so you can publish to some
+> publically available bug tracker via a bridge, or (b) you can
+> convince someone to pull from your repo to get your new bug --- but
+> that is going to have to be a trusted source, because...
 
-In fact I started looking into something like that two days ago (by
-taking a closer look at Chris's review prompts and how sashiko uses them
--- and how something like that can be used for a LLM assisted bug
-reporting process. But I need a few days to see if I get this to work well.
+Perhaps it would be better to look at it the same way we look at
+development trees: anyone can create a bug in their local tree at
+refs/bugs/<id>.  By virtue of the id is generated, it will be globally
+unique.  But you're right, to make it visible to all, the master tree
+has to pull it.  git-bugs doesn't define the mechanism by which the
+master tree decides to pull, so that's up to the implementation I
+suppose.
 
-> - the agent can also try to figure out which subsystem this report is for
->   based on the details of the report; this is where various tools to extract
->   info from dumps would come in handy
+Part of the idea of b4 bugs seems to be a web interface for creating
+bugs in projects.
 
-Just wondering: what Richard posted in this thread (would you be willing
-to host that?), or do you have something else in mind?
+> 4) A git pull from some other bug tracking repo would completely
+> bypass any kind of anti-SPAM or quality checking.=C2=A0 This is much like
+> how a maintainer might trust doing a git pull from a submaintainer,
+> but the submaintainer has to be trusted, because doing code review
+> before doing a pull is... possible, but it requires a human being to
+> sanity check a pull and make look for red flags, but in general you
+> only pull from trusted repositories.=C2=A0 (Which is why I hate github
+> PR's as being a security disaster in waiting for Jia Tan style
+> attacks, but that's for another rant.)
 
-> -- though I expect final human-based
->   review will be required for this to be not waste people's time
-Yeah, but that is always the case at some point -- whatever we do will
-likely improve things for developers and users.
+Well, yes, but you could say the same about any code pull request a
+maintainer accepts.  We mitigate this by only pulling from trusted
+sources, so the same mitigations should work for bugs.
 
-> [...]
-> - the maintainers can their either handle this directly via email without
->   turning the report into a bug entry, or they can use the above described
->   tooling to manage the bug report's lifecycle via git-bug/b4 bugs
+> 5) If there are any data format attacks where a maliciously crafted
+> git-bug object can trigger some kind of security failure (SQL
+> injection, shell quoting attacks, ... the mind boggles), which can be
+> introduced either via a malicious issue that translates through a
+> bridge, or via a "git pull" from a trusted repository, this could be
+> used to attack either trusted infrastructure where the webui is
+> hosted, or a developer's development machine behind their firewall.
 
-There will be a email on lore in the latter case, too? Sounds like it,
-but I just want to be sure. Because it's already painful to search for
-existing bugs, as one has to search lore, bugzilla, and in some cases
-places like gitlab.freedesktop.org/drm/,
-https://github.com/thesofproject/linux/issues,
-https://github.com/AsahiLinux/linux/issues,
-https://github.com/Rust-for-Linux/linux/issues,
-https://github.com/multipath-tcp/mptcp_net-next/issues,
-https://github.com/facebook/zstd/issues, etc. Would be good to lower
-that number; in a ideal world we'd likely have a "bugs" mailing list
-where all of those external issue tracker automatically forward all
-newly submitted issues and later replies to.
+I could say the same as above, but I think here you're talking about
+the json data in /ops which is easier to craft maliciously than simple
+git pull data which is all blobs as far as our web based git repos see.
+The risk is certainly there, yes, but there are well known ways of
+sanitizing json data, so it doesn't look to be off the charts.
 
-> This is my "bird's eye view" proposal, and I'm happy to now refine this and
-> find a solution that would be actually useful to maintainers.
+Regards,
 
-All that sounds like I can continue with regzbot (which we soon
-hopefully will rework to make it more useful for everyone) without
-stepping on each others toes and solving the same or similar problems
-twice? Because that would be a pity and a waste or rare ressources,
-which I guess we'd all like to avoid.
+James
 
-But regzbot afaics (and definitively correct me if I'm wrong) handles
-just a subset of bugs -- but does that in all the places (email, gitlab,
-github), which git-bug won't be able to handle afaics.  I see some
-overlap with bugspray (which seems to be still involved, am I right?),
-but I guess we might find a way to work together there.
-
-Ciao, Thorsten
 
