@@ -1,202 +1,271 @@
-Return-Path: <ksummit+bounces-2901-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2902-lists=lfdr.de@lists.linux.dev>
 Delivered-To: lists@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6De6JXBxzmkhnwYAu9opvQ
-	(envelope-from <ksummit+bounces-2901-lists=lfdr.de@lists.linux.dev>)
-	for <lists@lfdr.de>; Thu, 02 Apr 2026 15:38:56 +0200
+	id uHGzCeVyzmnxngYAu9opvQ
+	(envelope-from <ksummit+bounces-2902-lists=lfdr.de@lists.linux.dev>)
+	for <lists@lfdr.de>; Thu, 02 Apr 2026 15:45:09 +0200
 X-Original-To: lists@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3089C389DE7
-	for <lists@lfdr.de>; Thu, 02 Apr 2026 15:38:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD4FA389F28
+	for <lists@lfdr.de>; Thu, 02 Apr 2026 15:45:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 704C3304A205
-	for <lists@lfdr.de>; Thu,  2 Apr 2026 13:29:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id ADC753044238
+	for <lists@lfdr.de>; Thu,  2 Apr 2026 13:43:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 074033043DC;
-	Thu,  2 Apr 2026 13:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A2831B823;
+	Thu,  2 Apr 2026 13:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQXhWJLw"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="BxZ9E6fl"
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.61.103])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7DD2DE6F1
-	for <ksummit@lists.linux.dev>; Thu,  2 Apr 2026 13:29:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A6C729B228
+	for <ksummit@lists.linux.dev>; Thu,  2 Apr 2026 13:43:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.61.103
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775136542; cv=none; b=DWZKQyZ504v4W7t8jBRyo7SJIQipuDfqK6yjhxTiuIsEnyb4GI2is21BR6Ea/fRdqyZjP8zKKBv96tXTya5s2rJ2jEZ/K8a6DpM3cwaYyoewRzyUJ7KAMuX7seee/KCJzhuxmYl5zFBKe1GZbaE9AJTJujD92fMFTRWgiGIaSWY=
+	t=1775137398; cv=none; b=bZvlOcTeuYhMdzuxryNlYmqHiPt4g/4AP9RHYBf+Gc1vumkxRhnpclLHc9zbNhHvaw+rlu9JPYcsShs7/wQ5P8I4ICv3LGomu79iDZKaToIrWbpqvh6HqMPDF2/0Hm9m5ukRD3ox/bc5VrP+e74aJM9cwc17r163NYEah9z5ebs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775136542; c=relaxed/simple;
-	bh=FZ5k1hxSM7HRpFgRdxXN3KDE0QRPGPoA6VVJZEe45+Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZGfaonm/CqqNNMqjiKhVINFruJJcTBTAnufQc/ypCFwFNBuHATmw2I9nKsHJb9XQAAO2VI0AfI6s6WTv79sLKZgaa1q0Uplhv6MVXc/UBg64hRgZFXQeR3r07MI1GFLh1gqQ0DhNzpg32a70hG0mqF2IwppZfrZsKKS1ENI6pUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQXhWJLw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E99B8C116C6;
-	Thu,  2 Apr 2026 13:29:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775136542;
-	bh=FZ5k1hxSM7HRpFgRdxXN3KDE0QRPGPoA6VVJZEe45+Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dQXhWJLwYavSJ98DZgPyjQ3kYsMLwzI4PlV0qBfwhbTt4YroxMxn8PHitJx55oLdJ
-	 dbhmI5dy6kEebFzNCQ1uGfKNT9Pu7oZgh7RGPEaOQn/S45sWIVOFni964yZye/mwlS
-	 HA6818IHCJJKfbT2ewTdiwGSnks428DlEVZzrwoU=
-Date: Thu, 2 Apr 2026 09:28:58 -0400
-From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-To: Theodore Tso <tytso@mit.edu>
-Cc: Thorsten Leemhuis <linux@leemhuis.info>, users@kernel.org, 
-	ksummit@lists.linux.dev
-Subject: Re: slowly decommission bugzilla? (was: Re: kernel.org tooling
- update)
-Message-ID: <20260402-complex-ultraviolet-limpet-aea0bc@lemur>
-References: <20251209-roaring-hidden-alligator-068eea@lemur>
- <b93eae05-5e40-42f0-8256-d46d411008a4@leemhuis.info>
- <20260402-expert-maroon-partridge-f77f94@lemur>
- <20260402130706.GA15407@macsyma-wired.lan>
+	s=arc-20240116; t=1775137398; c=relaxed/simple;
+	bh=x9HbQwT5s2Q2aNpBbVxabLEM3ShixRf+JJwAARDb5jw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kaT8kHQbqtIhbxZU6R1P7kfUlpeeydKULHmLpov2TXBRfcBV2dY2N/jOvNwj1/u5pZvphPSVzsXNwvGpiqHTGxAsPAJFX6movEh7oHvzfYFjD8XEqaBiBUAamw/7PvKMxy1k0YQn7m0dpJp0LkuCSfd78vBKbabTNYu9++Kn1QY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=BxZ9E6fl; arc=none smtp.client-ip=188.68.61.103
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from mors-relay-8403.netcup.net (localhost [127.0.0.1])
+	by mors-relay-8403.netcup.net (Postfix) with ESMTPS id 4fmjjW6mlpz8Cqj;
+	Thu,  2 Apr 2026 15:43:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1775137392;
+	bh=x9HbQwT5s2Q2aNpBbVxabLEM3ShixRf+JJwAARDb5jw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=BxZ9E6flMwb3kA8+IQG7GxaHqLZrgO6ZniiY50z5L/kR7e1ipG7mX1Ri+7jHterH5
+	 RFloMHymmqquCcvQeY6qlJFTO5bAM4tdq602mnw/BuRcQ3P3ff2KSC0H/1NGSxaalO
+	 GN5rC3+0s5l69Sa1tSrSEB6nL8ppu4mXN9YggPFcRV5v4cXNud2M/Rp7VrVbSwj4ul
+	 l961QKiVknOpis4QqxktY8vc4QwHR7Ty6lmAaOra9PEOXgKGXnTe2IPRAdkR0+6kSz
+	 g8bbNkzKaUSsrA65MOHoF1+jfbNFoqpLjOrRpwhq/s62iclsqokV4XcqEwqw/6hP2c
+	 EkbqpyoDwL+9Q==
+Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
+	by mors-relay-8403.netcup.net (Postfix) with ESMTPS id 4fmjhN0yKyz880R;
+	Thu,  2 Apr 2026 15:42:12 +0200 (CEST)
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4fmjhM4DP6z8svF;
+	Thu,  2 Apr 2026 15:42:11 +0200 (CEST)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id C469C633E1;
+	Thu,  2 Apr 2026 15:42:10 +0200 (CEST)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=linux@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <ef874caf-5345-4c0d-8855-1338b5177d8b@leemhuis.info>
+Date: Thu, 2 Apr 2026 15:42:04 +0200
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260402130706.GA15407@macsyma-wired.lan>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: slowly decommission bugzilla?
+To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Cc: users@kernel.org, ksummit@lists.linux.dev
+References: <20251209-roaring-hidden-alligator-068eea@lemur>
+ <b93eae05-5e40-42f0-8256-d46d411008a4@leemhuis.info>
+ <20260402-expert-maroon-partridge-f77f94@lemur>
+From: Thorsten Leemhuis <linux@leemhuis.info>
+Content-Language: de-DE, en-US
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 MEK4
+In-Reply-To: <20260402-expert-maroon-partridge-f77f94@lemur>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-PPP-Message-ID: <177513733107.2991759.5298379634954390989@mxe9fb.netcup.net>
+X-NC-CID: qdfuFQ4rAYC0+wducx7l35Z0YsOo4XEilgedlBVBAWlt71+tuF0=
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	SUBJECT_ENDS_QUESTION(1.00)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-2901-lists=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-2902-lists=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[leemhuis.info];
+	DKIM_TRACE(0.00)[leemhuis.info:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[konstantin@linuxfoundation.org,ksummit@lists.linux.dev];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,leemhuis.info:dkim,leemhuis.info:mid,gitlab.freedesktop.org:url];
 	TO_DN_SOME(0.00)[];
-	SUBJECT_HAS_QUESTION(0.00)[]
-X-Rspamd-Queue-Id: 3089C389DE7
+	FROM_NEQ_ENVFROM(0.00)[linux@leemhuis.info,ksummit@lists.linux.dev];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: BD4FA389F28
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Apr 02, 2026 at 09:07:06AM -0400, Theodore Tso wrote:
-> On Thu, Apr 02, 2026 at 12:59:46AM -0400, Konstantin Ryabitsev wrote:
-> > # git-bug
-> > 
-> > The git-bug project aims to keep bug tracking integrated into the git
-> > repository itself. It's not a new project -- it's been around for a while,
-> > though its development has been advancing in spurts. The fundamentals are
-> > sound and the design is robust. It's an active project with ongoing
-> > development:
+On 4/2/26 06:59, Konstantin Ryabitsev wrote:
+> On Thu, Feb 26, 2026 at 09:44:32AM +0100, Thorsten Leemhuis wrote:
+>> Lo! I wonder if we should slowly and publicly start decommission
+>> bugzilla in areas where it's not working well today. I have a few
+>> reasons for that:
+>>
+>>> It may be time to kill bugzilla:
+>>>
+>>>     - despite periodic "we're not dead yet" emails, it doesn't appear very
+>>>       active
+>>>     - the upgrade path to 6.0 is broken for us due to bugzilla abandoning the
+>>>       5.2 development branch and continuing with 5.1
+>>
+>> * It looks like we will decommission Bugzilla anyway, and a replacement
+>> is afaics likely quite a while (years?) away
+
+Seems we'll get there faster. Thx Konstantin!
+
+>> -- so what is there now will likely be kept running for a while.
+> Thank you for starting the thread -- it's been burning a hole through my inbox
+> and I honestly wasn't trying to ignore it. :)
+
+No worries, I from social.kernel.org posts in March had noticed that you
+were working on something, so I let things rest.
+
+But this git-bug thing will take a while to get established. That makes
+me wonder if we independent of that should do what was partly discussed
+in this thread:
+
+Change the front page text of bugzilla now to at least make people
+better aware that it might be a bad place to file bug (which even some
+kernel developers are not aware of).
+
+> - anyone can go to a site like bugs.kernel.org, which will be a simple bug
+>   entry form of the style:
 > 
-> The documentation from git-bug is not great from the perspective of
-> someone who is trying to understand the security properties of the
-> system.  But after looking at the architecture documents, I *think*
-> this is how it works.  Please correct me if I'm wrong, perhaps git-bug
-> can improve their architecture docs?
-
-Yes, I can totally relate to that sentiment, but "scant docs" is definitely
-not a problem unique to this project. :)
-
-> 1) A separate git repository is used for the bug store it's not the
-> same git repo as the project where the project's sources are stored.
-> (Your use of "the git repro" in your first paragraph made me made my
-> eyebrows --- *surely* we wouldn't put the bug tracking information in
-> linux.git, right?
-
-Right, let me clarify this. I don't expect that we'd be keeping *any* kernel
-bugs in torvalds/linux.git. Kernel development happens on a subsystem level
-and especially bugs are rarely relevant across the tree, so, in my mind, bug
-tracking would be done per-subsystem. They can either use their own fork of
-the kernel for this, or they can use a dedicated repo just for bugs.
-
-E.g.:
-
-    pub/scm/linux/kernel/git/mysubsystem/linux.git:refs/bugs/
-    pub/scm/linux/kernel/git/mysubsystem/bugs.git:refs/bugs/
-
-You can definitely keep the bugs in your main subsystem tree, as they are in
-their own ref and don't impact the heads in any way.
-
-> 2) The primary way that git-bug seems to be focused is that "bridges"
-> are used to sync status between some other bug tracker (such as
-> github's issue tracker) and the git bug.
-
-That part we don't really care about, though if subsystems like, they can
-bridge to a GH/GL tracker. The primary purpose of git-bug, to me, is to keep
-bug data a) transparent, b) capable of fully replicating so it doesn't get
-gated at a single-point-of-failure.
-
-> 3) You *can* create new bugs via the git-bug CLI, but this
-> seems... weird, since only a person who has write access to a git repo
-> can create a bug.
-
-That's actually the whole point. Only subsystem maintainers would be able to
-create a bug. To *report* a bug, the reporter would use an ingestion frontend
-as I described -- bugs.kernel.org or similar that would pre-analyze the bug,
-create a bug report and *then* send the report to maintainers. A bug report
-doesn't automatically become a tracked bug in git-bug unless the maintainer
-then imports that report into their bug-tracker.
-
-So, yes, only the person who has write access to the repo can create a bug and
-that's by design. Everyone else participates via discussions that are synced
-to the bug entry whenever the maintainer runs "update" on the bug.
-
-The git-bug entry is simply for lifecycle/tracking/triage purposes.
-
-> Sure, anyone can fork the git repo, and create a
-> bug in their local repo, but then in order to publish it, either (a)
-> you have to have credentials so you can publish to some publically
-> available bug tracker via a bridge, or (b) you can convince someone to
-> pull from your repo to get your new bug --- but that is going to have
-> to be a trusted source, because...
+>   1. tell us what happened
+>   2. attach any files you want to attach
+>   3. tell us how we can contact you (with round-trip verification)
 > 
-> 4) A git pull from some other bug tracking repo would completely
-> bypass any kind of anti-SPAM or quality checking.
+> - the report then goes into a review queue that can be pre-processed by an LLM
+>   to help immediately weed out non-actionable items: spam, reports for tainted
+>   kernels, reports for distro kernels, etc. The agent can reply with
+>   cookie-cutter answers to those with a suggested course of action:
+>>   1. Please report this to your distro here: {url}
+>   2. Sorry, we can't help you because you're running a binary-only driver
+>   3. This report is for kernel 2.6, what is even happening?
 
-Not even part of the picture. The only pushing/pulling that happens is
-between co-maintainers to their canonical repo and never from any other
-source.
+If you ask me, that's the wrong way around. We IMHO want an LLM that
+helps users to submit good reports directly. That is in the interest of
+users, as then they won't waste time on submitting something that an LLM
+later will reject quickly, which they'll rightfully find annoying. And I
+guess it will be less work and thus cheaper for LLM, too.
 
-> This is much like
-> how a maintainer might trust doing a git pull from a submaintainer,
-> but the submaintainer has to be trusted, because doing code review
-> before doing a pull is... possible, but it requires a human being to
-> sanity check a pull and make look for red flags, but in general you
-> only pull from trusted repositories.  (Which is why I hate github PR's
-> as being a security disaster in waiting for Jia Tan style attacks, but
-> that's for another rant.)
+The LLM, for example, could, at the start of the process, query (or ask)
+"uname -r" and ask "Is it a bug with a graphics driver for AMD or Intel"
+-- and depending on the outcome tell users, "You are at the wrong place,
+you have a heavily patched and outdated kernel, your want to file that
+at your distro" or "You are in the wrong place, you have to file that at
+gitlab.freedesktop.org/drm/".
 
-Hopefully that clarifies this concern.
+In fact I started looking into something like that two days ago (by
+taking a closer look at Chris's review prompts and how sashiko uses them
+-- and how something like that can be used for a LLM assisted bug
+reporting process. But I need a few days to see if I get this to work well.
 
-> 5) If there are any data format attacks where a maliciously crafted
-> git-bug object can trigger some kind of security failure (SQL
-> injection, shell quoting attacks, ... the mind boggles), which can be
-> introduced either via a malicious issue that translates through a
-> bridge, or via a "git pull" from a trusted repository, this could be
-> used to attack either trusted infrastructure where the webui is
-> hosted, or a developer's development machine behind their firewall.
+> - the agent can also try to figure out which subsystem this report is for
+>   based on the details of the report; this is where various tools to extract
+>   info from dumps would come in handy
 
-This, too.
+Just wondering: what Richard posted in this thread (would you be willing
+to host that?), or do you have something else in mind?
 
-> This is making me super nervous.
-> 
-> What am I missing?  How can these concerns be mitigated?
+> -- though I expect final human-based
+>   review will be required for this to be not waste people's time
+Yeah, but that is always the case at some point -- whatever we do will
+likely improve things for developers and users.
 
-Regards,
--- 
-KR
+> [...]
+> - the maintainers can their either handle this directly via email without
+>   turning the report into a bug entry, or they can use the above described
+>   tooling to manage the bug report's lifecycle via git-bug/b4 bugs
+
+There will be a email on lore in the latter case, too? Sounds like it,
+but I just want to be sure. Because it's already painful to search for
+existing bugs, as one has to search lore, bugzilla, and in some cases
+places like gitlab.freedesktop.org/drm/,
+https://github.com/thesofproject/linux/issues,
+https://github.com/AsahiLinux/linux/issues,
+https://github.com/Rust-for-Linux/linux/issues,
+https://github.com/multipath-tcp/mptcp_net-next/issues,
+https://github.com/facebook/zstd/issues, etc. Would be good to lower
+that number; in a ideal world we'd likely have a "bugs" mailing list
+where all of those external issue tracker automatically forward all
+newly submitted issues and later replies to.
+
+> This is my "bird's eye view" proposal, and I'm happy to now refine this and
+> find a solution that would be actually useful to maintainers.
+
+All that sounds like I can continue with regzbot (which we soon
+hopefully will rework to make it more useful for everyone) without
+stepping on each others toes and solving the same or similar problems
+twice? Because that would be a pity and a waste or rare ressources,
+which I guess we'd all like to avoid.
+
+But regzbot afaics (and definitively correct me if I'm wrong) handles
+just a subset of bugs -- but does that in all the places (email, gitlab,
+github), which git-bug won't be able to handle afaics.  I see some
+overlap with bugspray (which seems to be still involved, am I right?),
+but I guess we might find a way to work together there.
+
+Ciao, Thorsten
 
