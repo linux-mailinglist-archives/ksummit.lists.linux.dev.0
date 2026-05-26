@@ -1,197 +1,186 @@
-Return-Path: <ksummit+bounces-2912-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2913-lists=lfdr.de@lists.linux.dev>
 Delivered-To: lists@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yDBpNOlfEGobWwYAu9opvQ
-	(envelope-from <ksummit+bounces-2912-lists=lfdr.de@lists.linux.dev>)
-	for <lists@lfdr.de>; Fri, 22 May 2026 15:53:45 +0200
+	id WBwfIf1OFWpMUQcAu9opvQ
+	(envelope-from <ksummit+bounces-2913-lists=lfdr.de@lists.linux.dev>)
+	for <lists@lfdr.de>; Tue, 26 May 2026 09:42:53 +0200
 X-Original-To: lists@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68FBF5B592C
-	for <lists@lfdr.de>; Fri, 22 May 2026 15:53:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F01265D1D54
+	for <lists@lfdr.de>; Tue, 26 May 2026 09:42:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BA8403066339
-	for <lists@lfdr.de>; Fri, 22 May 2026 13:27:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C473C3019923
+	for <lists@lfdr.de>; Tue, 26 May 2026 07:41:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF2E3A1A5B;
-	Fri, 22 May 2026 13:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0C83AC0D7;
+	Tue, 26 May 2026 07:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Uuz3llCl";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="PYCNX46z"
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nxnKSAD1"
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4EE5221277
-	for <ksummit@lists.linux.dev>; Fri, 22 May 2026 13:26:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.180.131
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779456374; cv=pass; b=HHRWCjPWVehFlpJTeAM0PKiaU7C9Zs+OeYA9preGDLATEYQa5V1DeiFFPd9HePzOr9snY2Ghl3dHx3yT907QGdzSqlreA4PMsXcooUuhU9FXzH9lQEQttEuxn+QqlwDcfUc+ZqUjDGmrGNnNppw2DscmZ1+TuboBk4jMgoU7SRE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779456374; c=relaxed/simple;
-	bh=cR01YuBOJBFa2Nl2N3gGgI7rO0zjnLePzS8uS/KB6uM=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=D7PERlAfu8hMD0GOHKUXC1DRyV1HbFioEN0ZBzqHrKLUsXlwLEkmAfeXfZHquJIv9l2XMEH1tgLTBjtzXkR4+8exAAyT6t6XTrOAUUxOjts8UpMmTftDU97jQ7mCHywc0CxTRViTjE5tHx37mQRz0KO/Q3OVJ/HolIeelcLiX3U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Uuz3llCl; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=PYCNX46z; arc=pass smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64MBWwdA776908
-	for <ksummit@lists.linux.dev>; Fri, 22 May 2026 13:26:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:message-id:mime-version:subject:to; s=
-	qcppdkim1; bh=4c1ALum3p81Zd2+7v5NX0tsU/qlUTXoR2hTFDR6MsYI=; b=Uu
-	z3llClaPqieageyhcM2HF5gbjwUJRFfo32s3cXTTH2H32rpIMfQU2P3QIJcKpQBn
-	5T5CI3X6DE3Nt2YW/craA5W3SmSdSoDPQPn7f7Nn7neZsAxz+cW7Ldq0phCOlqlU
-	CJIrd2Wus8hOxon0smeSfeDMbNooaY7BEAEoeYHOvMsm15hbvJBccu9Bo0vvVZsT
-	94jVbvwdH6kHPxXDwW5N7hV8KqpQmkDsV1XkGYIOOjaUanVB8477zyIcOF6o5u75
-	diJ4XSrtnwNZcDkKalYhN3lFS0uKUnvJAx8v+0kPkTpBxjYACu+nYRGRzbFhzzDc
-	i2g86OS1lZtF2AZGw8VQ==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ea94h3n3n-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <ksummit@lists.linux.dev>; Fri, 22 May 2026 13:26:11 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2ba115ab6bbso77662105ad.3
-        for <ksummit@lists.linux.dev>; Fri, 22 May 2026 06:26:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779456370; cv=none;
-        d=google.com; s=arc-20240605;
-        b=AgnmMdwBUZEQ5rq5QK8Sb4gLtf9iJQxh1+bCjR53uCQUHlQM0PJ9kgvTrSDq4uOG4B
-         nRZDH4iO84NOApZa7S9pqcgRv+VTLAg9ymQ7iIhvHTGAMCDHEpj6dZ7QcZqrT9tycg55
-         GH+FKAq95+wvdHzCMEiz4bTlsmGzmu8mxjeYoK8tGctjPc/6dLUkCuX7od4/IFxZP8Es
-         jMCl/G9cf8IqhFj8oeM2kg+iweMbzu6zCVauPalErEP1ZfwE7nVECbw3B+XoFoq6LOlO
-         p4PO4dfRbKB4ULRDBHROQQGVpYYL82937hlfnDW7dp7WR6TOZ5bhf4JVmHU/dA2JQweK
-         Shtg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=4c1ALum3p81Zd2+7v5NX0tsU/qlUTXoR2hTFDR6MsYI=;
-        fh=RDYH4N7g1pqMAfK0OKc976h8l5gV9Lcgjtv3LohqGog=;
-        b=IgV0NEonTpp6SDjJYWmnyj68Ppr4OQNjKmfAPTxl7efg6KTL/1vbjSHdJ+8otG/Xmh
-         UWbAOkL7bb0cjDuFen88anN+Xaz6jrXpj7NuGHJSauPRd4D+baaNk0ME6Acj+IiDnkN1
-         R+C2+XWk8EeGS77qaSPkGyILOpRV4KaKbY5cpiEH0D74kqVIwdjcSVIKyvM7uvzlqCtG
-         5wKOq33ZXZOMBeVb8nYmoGcmpv5PUR67Tfr60CXmBP6fJ70LWK0OLZSBlLthlcxxQtcK
-         74WSH5q4C6EfW3mvh0bK14VCw4o6GidrakLNtTw6u6US+ddKrUDreti/ktCXoFuTwHK1
-         2zQA==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8403CBE6B
+	for <ksummit@lists.linux.dev>; Tue, 26 May 2026 07:41:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779781283; cv=none; b=jxgwtJgg1kCa/YGL1vqrmSGIyGvqOjv1AoCyYjcAKlt42lqWe0eem2BkLK5aW59UHvPLGSlQ68ef3Jf33JxnI/BWUsAtbwZR9Y7wdB2TbB5/m/O+4licbk58h83CBRbuSfDOSFBcjTetFWC784DxV/NZn1X1r2R8bPlnVI7kyBk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779781283; c=relaxed/simple;
+	bh=TcHW2fmZdpqQPC4/yfN23L/D7bKnZmL5KNrI0Ay4jmo=;
+	h=Message-ID:Date:MIME-Version:To:From:Cc:Subject:Content-Type; b=K6q8oQiI8Zu64bAs7+lsG15pC26xg1HDenPolh1b+EV1fP1/xo6lDEW2QgUYE1C/tywNGQDQCF21WDLCjMNU1eTY77JJn+XxhAnsJyyCa8YjZvOG6ZEp1YXDIsR8Yq21aupNTh5jBOQb6J+fHvq+YraXUn7wOjoZfF2GGFlbuxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nxnKSAD1; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-4585a116a4aso8490694f8f.3
+        for <ksummit@lists.linux.dev>; Tue, 26 May 2026 00:41:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1779456370; x=1780061170; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=4c1ALum3p81Zd2+7v5NX0tsU/qlUTXoR2hTFDR6MsYI=;
-        b=PYCNX46zBxUOnBdy/fQczzsrVVE8jeRwW1N9VtYA3AabEYk+KfFtRz83f91NJcFFEK
-         VRwO7XcD40U1cJ4sB4BV5v8KX6W3Jz5gfWya68UqDiYwANbwt+l9kIfeUnpNInGpEmi0
-         PCyUbIONka4giDpl21dMYMfAP+/o+8UZM/Vp0inHxNh0Nlw5ZhUoTyM7Afk0HeNzwU1y
-         63AkR6HyQ7s1ZOflnxCc1vVKH8tbkcee2JkJBc7iMdyMNipHgKvnIKcCW/epGLdEHSBh
-         cLifjpkY0UhLqqemV6DoytAnDXiE39rvqi5d6Qw4DOcr4tJS9Do+8SeqRl2lpRSkmPTK
-         wi/Q==
+        d=linaro.org; s=google; t=1779781280; x=1780386080; darn=lists.linux.dev;
+        h=content-transfer-encoding:organization:autocrypt:subject:cc
+         :content-language:from:reply-to:to:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=GAJTABl14UZSq0dt5QE7+J2IQHG9q3nLrKLLjA0KxpM=;
+        b=nxnKSAD15XkqanjAMkEGJaj1Kda/Vf8gDj8stmk3X1GWK4ujzwuRUI+BRYwm6D0aTp
+         dII+CAq5PpDFuODP9CCAVTlzivtrj16A3kNaDKG95NQLs4OmfvLU02k7Ue/hh9jJRTw0
+         oZnpfbD5lS12Gu/brYs+TROs6+Q5TP41DPF6y1q/rMHh4jHIulpH4rFp8k6+GNMfYgeB
+         cPeUte9/JbNEpLwwPVApcHIpBGftCmbQFCytDZTM2nQ9BG9ijR/thMvdJGDKnjG7gpFy
+         Ypk1ZwRQTr1qgx3KOB4yGqW1fmPR9vClBTV8Xfck+vfRDqC82wW8s2Kljz7rVXDHGSZY
+         djVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779456370; x=1780061170;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4c1ALum3p81Zd2+7v5NX0tsU/qlUTXoR2hTFDR6MsYI=;
-        b=X1njQNSZGRDbLBJn2cE83F80gM+WG15RXGH8gsDebXgG8SzMJSYANqVe4PiPkxuWQT
-         SgQZiKzPLQ0R54xvPDtPx6rBqLIpjoIgGRw09U2CqOBNYeCSH9CNs0L99h1QdIXt4eh4
-         /MPTXPSy07d5fKTjYJDOJh7Pe8in0x9Nr8L7DkuHzPEUK7WNOUwXHVzFsdkSR+bc43Mx
-         YPHaWaSVHMXRmXhER+NhijlwrnV1EPr1UeIZXqUC0a2Ml4WnUleoHIi2pMVk4NTUnH61
-         wsqqWO7C65sloaQu/oxNdJ3kR7lUayZwUvM1FuDPRafavv9r1aRY7Gy+QS9FoDloF6vg
-         HoRg==
-X-Gm-Message-State: AOJu0YxPEeDnksDOFuqvWH6qJfoUiam+iEfTvCmrkjX01iHK6ZLY4lTG
-	VJbXQ9VJSegTcfVGI2SHqQxx+qJQ9PH1Dcoqd2V3D+RTZ4c7TiYnaHQWGAOLDg3MFgB4dFqpEjC
-	Kx+gmT68X1QpgoGzKy1WME1oMQlUJTo93jG6UywF8AealtNhOHEQ/MZ4Ubv+YieP8N/De05eB3f
-	pphBGqAKeve+HnFBRqvQodUxWlRMA6EHytC28AjWUoTys=
-X-Gm-Gg: Acq92OG+VV0IAKGtwWLlI/QT+VUlUPGq5GIYUKHpbJkxSha4gzlpkv2fFkUfqxpVEta
-	GJTP4BS2KcOJWglU2vBQjwXra5coG9Yaf2NZA9DnwlVJTJzf+4cIESgG5hFbzwfzkDXsT0aA7wM
-	mtbFPaUDyYSJM1VnjKqHRxChMELsClCfbh0fGw7LaZqFFnPvpx1WqO6ibeohZZYLGa3lGeOW4Uo
-	T6hlQ==
-X-Received: by 2002:a05:6a21:600f:b0:35d:5d40:6d79 with SMTP id adf61e73a8af0-3b329152a47mr3664856637.12.1779456370474;
-        Fri, 22 May 2026 06:26:10 -0700 (PDT)
-X-Received: by 2002:a05:6a21:600f:b0:35d:5d40:6d79 with SMTP id
- adf61e73a8af0-3b329152a47mr3664818637.12.1779456369982; Fri, 22 May 2026
- 06:26:09 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779781280; x=1780386080;
+        h=content-transfer-encoding:organization:autocrypt:subject:cc
+         :content-language:from:reply-to:to:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GAJTABl14UZSq0dt5QE7+J2IQHG9q3nLrKLLjA0KxpM=;
+        b=sfoUvXXWXY/Xg+FBJFPdZUf8gDoOAEfBhF96TbTeS7+dRnfoX0Qau6nUU/cShsiq3t
+         kRVGRLUfqwJzXoQ+i+S3rCycYgHQZSdTV/5kQMxOWEM2NPM0/5T/GjYD70fb0wiMC2kN
+         0NKRxHCyCxe8n8o9zGgSyLkJ59Rr+vGjk0ewi927qPGtUV+Avg8OLI2rbuaHpDCruz2v
+         rH9rr+p1sbffMW6Ji6wnAD/99b8u/yT2Xw9eGhtOOiSNeL7kvT41u7j3Or2dwP7fy/RB
+         9q1hyZMm9Ett+lVOWWZUwqyaxfgRQSt6nPKo1MJfflcgpX2MuHwhiL3/jCPsnr+nn1hO
+         ytDA==
+X-Gm-Message-State: AOJu0YwAXWcs3uQwZo7TzOof2K+LFDRI3fz5wXIMNzA1rp41aMI4VP5M
+	qYHgSG0upGOQokFWl79MJ1Ip2C4OM0Bw0YWsSaLrw8XZpMfUIJyZsZ3YCiOhNkN55CPUfpEkn/x
+	/m25JcNA=
+X-Gm-Gg: Acq92OE7HpfdBxZtH4JNJPpz15j/TTgUiP7kmyldoknfqMyxDuEou46v9ZqgG6tm6+S
+	BwSX1ylrrNSrp6bfnFY0KiqP5bWMkHur7eFVM7cTh60pZly7OQyBUzz70Q/0cx6B3/XYJssPRrk
+	iEYL77UI/deiBq/kpedu5rf/cVyDfBhsmV6vQ4wid47HOGlhv/trrVc5AmgXRifxtUPtp/l0XUn
+	HZXC/LpE/2t5c2+ELgb/gWsRE/JcUBzcR8FHku1ecjk+lIhvbfzt/8gZ00iDX5+CWy/FZ2I1lXE
+	wlsYhaIFpErSO3D0E+tZoNFA9VJIh/+qgLAZSohW1ZpmRPHLFFlb/ZZi1iPcEToHh2RH8QrUU46
+	e3fnSWbODoTCVQqMR+IJErq4J/fBSeLa28NIzF2TX9KbrzoHZwQYW+a8yDz9kAkr330mfllRoxW
+	neB2reRzDu6VhmWj/M7DlbBb3ps0tW9PYlV2W42loF8KCniwaHTl3NYbb0CPNDzzylSr7fEXZuq
+	1ElMOcQCDW8tFYJ4w==
+X-Received: by 2002:a05:600c:1c0a:b0:490:402f:324d with SMTP id 5b1f17b1804b1-490428e03admr282358995e9.29.1779781279689;
+        Tue, 26 May 2026 00:41:19 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:106d:1080:aba9:2be3:1465:636a? ([2a01:e0a:106d:1080:aba9:2be3:1465:636a])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4904561f682sm326605975e9.13.2026.05.26.00.41.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 May 2026 00:41:19 -0700 (PDT)
+Message-ID: <0fa2fb42-0714-49f7-ba43-22928e1dd488@linaro.org>
+Date: Tue, 26 May 2026 09:41:18 +0200
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Date: Fri, 22 May 2026 16:25:57 +0300
-X-Gm-Features: AVHnY4JiwhliqENIAvaaHtqgo9OQ3UWRZE_Y1Yd9o_4g-QQr7gFQNonr1J0WLlM
-Message-ID: <CAO9ioeVKp9_WpNO8UrFMh=9nMz1yMCOe1FVXnD078sbg4FRrQQ@mail.gmail.com>
-Subject: [TECH TOPIC] DRM: handling runtime requirements for device components.
+User-Agent: Mozilla Thunderbird
 To: ksummit@lists.linux.dev
-Cc: Maxime Ripard <mripard@kernel.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Proofpoint-GUID: y9ZOvqumN6upukc3i0lsS10NniQP76Bg
-X-Authority-Analysis: v=2.4 cv=QblWeMbv c=1 sm=1 tr=0 ts=6a105973 cx=c_pps
- a=JL+w9abYAAE89/QcEU+0QA==:117 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=3WHJM1ZQz_JShphwDgj5:22 a=iGdi3G1Nflt79jdLyawA:9 a=QEXdDO2ut3YA:10
- a=zZCYzV9kfG8A:10 a=324X-CrmTo6CU4MGRt3R:22
-X-Proofpoint-ORIG-GUID: y9ZOvqumN6upukc3i0lsS10NniQP76Bg
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIyMDEzMiBTYWx0ZWRfX3pR3NgktJowC
- 8z+4vLTB6VQhSEZnsF0A26bGLmRktDMntEiL4GCMek18RTR5gmQqtCTILta/3nEKtsW7dyteyku
- HeADk3iHyQIR7Fj9E+v9IxGZJ4y5l/O+q/uEA0n4ddG019vEKmTQqilqSRk4UYeCJDZhfFHkXNN
- Apj3HsFsQwaAmWhiqQwKjBvGYR+jUFXCk84vW1xyls9mYKs+IvgDYkvY3ypR4YcmqBLjugxeRex
- Fdwp5i4rwIRdxNXDUFIIWlQ33MKOcDCfbdeNRdge9YRbKm4t1IPNgMxMzkEaNTf4FdCqUohFy8r
- DeQLUsqfey95cCa51McL7ddzuTqpA1pnznHZfKbmtFNDk7k66RRc7mX3LcqAj/Ul/CGoQUttYGd
- IN5ueO0qbaZP/x6ocTdO3k+7g+aBZVPBhyHku1XzHhpxcVCrWATViaK61cQKNiEplz1tsAAMCSI
- cyju4yyBZ+0vI96hYDQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-22_03,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0 spamscore=0
- suspectscore=0 adultscore=0 clxscore=1011 priorityscore=1501 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605220132
+Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Content-Language: en-US, fr
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ Douglas Anderson <dianders@chromium.org>, Maxime Ripard
+ <mripard@kernel.org>, Linus Walleij <linus.walleij@linaro.org>
+Subject: DRM/panel: Bringing Linux DRM Display Panel support in the modern age
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_COUNT_FIVE(0.00)[6];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dmitry.baryshkov@oss.qualcomm.com,ksummit@lists.linux.dev];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_FROM(0.00)[bounces-2912-lists=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
+	TAGGED_FROM(0.00)[bounces-2913-lists=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[linaro.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:replyto,linaro.org:url,linaro.org:email,linaro.org:mid,linaro.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+]
-X-Rspamd-Queue-Id: 68FBF5B592C
+	FROM_NEQ_ENVFROM(0.00)[neil.armstrong@linaro.org,ksummit@lists.linux.dev];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	HAS_REPLYTO(0.00)[neil.armstrong@linaro.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	REPLYTO_EQ_FROM(0.00)[]
+X-Rspamd-Queue-Id: F01265D1D54
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello,
+Hi,
 
-As we don't have a separate Graphis MC this year, I've submitted the
-talk to the KTS trail.
+Since the introduction of the first Samsung DSI panel, the Linux DRM panel
+API has been a crucial piece of software for enabling displays across
+diverse architectures, but it has not evolved alongside modern graphics stacks.
+Currently, the API lacks atomic DRM API support and the ability to adapt
+power setups during mode changes.
+Furthermore, it fails to support advanced Display Driver IC (DDIC) features
+that modern hardware heavily relies on, including:
+- Standby and advanced power states
+- Advanced color management
+- Dynamic rate switching
+- Command mode self-refresh
 
-In the DRM subsystem the callbacks setting up the display pipeline are
-not supposed to fail. This is not the problem for the desktop GPUs,
-but embedded display devices, containing multiple components with
-varying runtime requirements, often have to call fallible setup
-functions (clk_prepare_enable(), pm_runtime_resume_and_get(),
-phy_init() / phy_power_on(), etc.)  in those callbacks. This
-frequently results in the clumsy and error prone code, tracking at
-which step the enablement functions have failed in order to prevent
-unblocked register access and to handle disablement correctly in the
-atomic_disable() paths.
+This lack of evolution has led to severe fragmentation between upstream
+and vendor downstream trees for advanced devices support, creating a heavy
+maintenance burden and making native hardware support incredibly difficult.
 
-The goal of the talk is to trigger the discussion on possible ways of
-handling these runtime requirements, while not breaking the existing
-DRM API contract.
+The goal would be to outline these architectural limitations and trigger a
+discussion on how to collaboratively modernize the panel API.
+By standardizing advanced DDIC capabilities and fully embracing the atomic DRM API,
+we hope to establish a unified path forward for the entire Linux community.
 
+Submitting this via the Kernel Summit track as we don't have a separate DRM micro-conference this year.
+
+Neil
 -- 
-With best wishes
-Dmitry
+Neil Armstrong <neil.armstrong@linaro.org>
+Senior Kernel Engineer - Linaro
+https://linaro.org/
+
 
