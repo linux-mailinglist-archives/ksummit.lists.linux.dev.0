@@ -1,221 +1,194 @@
-Return-Path: <ksummit+bounces-2914-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2915-lists=lfdr.de@lists.linux.dev>
 Delivered-To: lists@lfdr.de
 Received: from mail.lfdr.de
-	by lfdr with LMTP
-	id OPvpMpRpFWrgUwcAu9opvQ
-	(envelope-from <ksummit+bounces-2914-lists=lfdr.de@lists.linux.dev>)
-	for <lists@lfdr.de>; Tue, 26 May 2026 11:36:20 +0200
+	by mail.lfdr.de with LMTP
+	id rP+OMWh8H2psmQAAu9opvQ
+	(envelope-from <ksummit+bounces-2915-lists=lfdr.de@lists.linux.dev>)
+	for <lists@lfdr.de>; Wed, 03 Jun 2026 02:59:20 +0200
 X-Original-To: lists@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A5395D36CE
-	for <lists@lfdr.de>; Tue, 26 May 2026 11:36:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BA9F633444
+	for <lists@lfdr.de>; Wed, 03 Jun 2026 02:59:20 +0200 (CEST)
+Authentication-Results: mail.lfdr.de;
+	dkim=pass header.d=chromium.org header.s=google header.b=NiF2MgpE;
+	spf=pass (mail.lfdr.de: domain of "ksummit+bounces-2915-lists=lfdr.de@lists.linux.dev" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="ksummit+bounces-2915-lists=lfdr.de@lists.linux.dev";
+	dmarc=pass (policy=none) header.from=chromium.org;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8F6C0307FA89
-	for <lists@lfdr.de>; Tue, 26 May 2026 09:30:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DC5183020037
+	for <lists@lfdr.de>; Wed,  3 Jun 2026 00:59:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B7763D79E3;
-	Tue, 26 May 2026 09:30:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cbXlZHYi"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0A72749C1;
+	Wed,  3 Jun 2026 00:59:16 +0000 (UTC)
+Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E920738CFEE
-	for <ksummit@lists.linux.dev>; Tue, 26 May 2026 09:30:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5567517B505
+	for <ksummit@lists.linux.dev>; Wed,  3 Jun 2026 00:59:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779787835; cv=none; b=MS+3weEK+AGxR54TUIr8aeVsdolS0PREEfQR4b0JYvoxgOpGoKfBnNj5rWQAx5sEcwO9TlVep/R2Zmk2NcP0oU5Sdhe3kpi9px2nZ48RNSQTyTCBA45MDmxtISfY7UlCsz3mOQydgaDwznyZ7seiSwd6CUe+pd89uH5XPdCcsu4=
+	t=1780448355; cv=none; b=K42Yd4Y2/6z1LwHgJK0dW77A8L9INcmjwe4AddsvxWuyJLzxcImrb5IidaiSb6LjJ7OglFH7D94yj/V1SBhFNo4AS9D03i7ucG5Xq/3tzlVTQAPhbqHLcx0F2zR110MN7Kqwq9KRvjwjnw8JFOAp92/efmlj7/XdaAb4qNYHfpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779787835; c=relaxed/simple;
-	bh=eHRTPCNHrk6eDGvRoxnQRQ+2klTdLEGutgll1FypAYQ=;
+	s=arc-20240116; t=1780448355; c=relaxed/simple;
+	bh=uoiyqNXK8uxHvEs5ydefIL36ZwPdxLGs9GezVzcAbvE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fY8x2FcNqstAfaqxQDc7jQpSgCI/8QuZItnkRVEbHQ+eW1vDIeImSZipPxxzmnT8OJq1CL4QCbOHCfXAsPdOUylc/dZOSgRgMWQbigh7i20FZEwO0ByOYhx/d2G2Xmkhwiq9kCotkOy4JocmhB5ISrpAMUfRE3LEeC5b2UpDOqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cbXlZHYi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8FAA1F00A3D
-	for <ksummit@lists.linux.dev>; Tue, 26 May 2026 09:30:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779787832;
-	bh=PPSj4T/WTidhPMCzPd75gN6Ts3UI95FBgpmSJZ1Jcw0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=cbXlZHYiKDL5khKTjS6n//FsdYVBFqac8qxnbSUUKsF0gpPX+fWZzBnjbT/B43ZCM
-	 eL+2ZAlvbBbqXGaszNcprdOjmKS7mCDS9ntNCBCKJeonwPjkmq+2b3h3AfuBRZ6OGX
-	 /cueSCTxLjZtot/KWhNlGQiOPmJ5eBxAsVBHv/f5o/GbHKeuohEOWdGnxHYl0WSTHw
-	 dbQRCEuOXhk4UPZj0GNF8UD4LIEJsIan5Exv4O1s8FN7HuDxV8Lqy7Z7PgIQzD1QMT
-	 t+MOqd4/JNkAGwL8ilIlpWTKfxlf58jHCkaWHgm4VrRSrZymHl5iPoXhjY8KiCx2nD
-	 L4hBc+1osr6OA==
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5a8738c178dso9074639e87.1
-        for <ksummit@lists.linux.dev>; Tue, 26 May 2026 02:30:32 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yw93+9GGELsj3fDWu09eLakAjk6jx5zgfwihE5umVoX8+Ljcd+T
-	7uh1yzjzPEEh2w2FOaxj5vJUmVJBKk/X0whSdaUf/HpkEkfMLK0LA8TztpUbhN1LsaWIYDiJHRi
-	HcK31+Yo8mfeMsCkuXByBZno41hHbfgE=
-X-Received: by 2002:a05:6512:3d05:b0:5a8:73c3:f27b with SMTP id
- 2adb3069b0e04-5aa323b28c4mr4823182e87.15.1779787831516; Tue, 26 May 2026
- 02:30:31 -0700 (PDT)
+	 To:Cc:Content-Type; b=q39o99ys2R5UskWwvY8hOQDuyOyVXzds0+17xVG5XwCwl3cHEiKWJ2QIdkBGDXAGPLuMq8SFc1v/o9HCG4fnrrz2Nx90HKq47cT+NT9HSh9GqpIiutic5D/fJHe4QbhIBnv5XY14Y3iXWbiV5rNP+OQ7OOE4wI9OmC+LxJcdorU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=NiF2MgpE; arc=none smtp.client-ip=209.85.222.49
+Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-963b8b4382dso2638715241.0
+        for <ksummit@lists.linux.dev>; Tue, 02 Jun 2026 17:59:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1780448353; x=1781053153; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uoiyqNXK8uxHvEs5ydefIL36ZwPdxLGs9GezVzcAbvE=;
+        b=NiF2MgpE+Y1oVCLVkveMT65Zgmr1t+USckIqnl7jUZuLdBUnRsJL+uI5yMrItvFTyt
+         0G4pDf/nsSrp3XRx+qQNO4R7XrFPVbob+peR4LCrl9UUNfJF3zNoNhEA5jAsdaao6Aw0
+         etjhdSdNx90Gr1kNjeIb9rtFOMw79K11Cn+VQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780448353; x=1781053153;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=uoiyqNXK8uxHvEs5ydefIL36ZwPdxLGs9GezVzcAbvE=;
+        b=ouMF04KzzgefnQ4NYDhXlCLOgQkON4ZARr+rjjPqhbm4jEAM9FwDF5VRrdDs5fCYwS
+         eYVGulRkU1+ElGDQe6go2aXb3dHNxjWWyfSaBRXKEII2CmDHex6ttcCCUkRJiR9zXYOe
+         qrT/GXK6f11UaUZs0EMUnyV1PNXOCNn73zGX1nM8Reb2K50Gyqbx+G/ocxzC3kc2/BoU
+         jVI1NBPGOzmMa7nKAXR4zqH6bG89eFvXzTOWT6AsOlIYMFqu3UkDR16350JJwqQb36iu
+         4kXEKZeyOAHschYUmcKMWm3+JKb8eCH6htC0+IS9LHD3Vnv1KaNCbOCgGIojSEIOENI8
+         NRtQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9B1TjXy/DTZAhKpM0UHIwDKW0vV3s8AcaqLN9AfEXDsRp55j3ib6j8RYsrITliDh3asfQf+dLj@lists.linux.dev
+X-Gm-Message-State: AOJu0YwDNibYCgrlCEjJRmA7ObIeSSuMD8jJN1zpiUYO0PksCKmKJR/A
+	5pgwi9lEV2iPNb8KsGShAVoh0EO0tNwq6d9Be6soyQrrbZ3pIfsqh/QIU4g7yT5RblNH1byPEf0
+	kudA=
+X-Gm-Gg: Acq92OHpTmkIk1Sde1isP2KhibNZBp1KBaak/9qE3XmrF9YQr/ngzY85km0OQCcpgz8
+	JTqYIDyh5jSljceIfXN7Czeiu+bVeeDEmqsYMkp/qcWTbexoLgCr5AZiq2qtPzYLu/JSDdmO2RU
+	2m5YlTww08ILqoaietbAuqv0WtsFw74lCUewTfqPqy+xUMVpc7RBVFcnvW+fffAnAkZUhI1/pr9
+	8PyWYho5jGzT8jwq0gkkfiBSc4p1d/Wa6DuadGqYIFzWHk4Y6TGPE3+OD7PBl8H7BUIgBoFLjqA
+	AylMrk2wc5wN48jsA3fjl1aeR/c1uWzKkeNuTZXgSjv9emzgpBilFQmRF6YDdc2tVKl/JMFNi13
+	O7H5XXbn9zmCqciyJMIA5BPhyXj6eObz2D6OTGBrhf2knSstxOwIKk3xWNgMRkDEEG2jJIDbD1+
+	U4vLpH6REF6F4DA49KM0EYoXfbd+ybVuTT2+6ZltixELV+dlUYYA4Y7AUjMnm5Yfx+gVnqy35UN
+	+DIaz/aD9k=
+X-Received: by 2002:a67:e7c4:0:b0:6cf:882e:c445 with SMTP id ada2fe7eead31-6ec2bfe927bmr514539137.10.1780448353200;
+        Tue, 02 Jun 2026 17:59:13 -0700 (PDT)
+Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com. [209.85.222.52])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-96413f9afe7sm651346241.6.2026.06.02.17.59.11
+        for <ksummit@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Jun 2026 17:59:11 -0700 (PDT)
+Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-963a997dea4so3829833241.2
+        for <ksummit@lists.linux.dev>; Tue, 02 Jun 2026 17:59:11 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8P0PkFYIVic/xAs7vCnLMgnnoSaBEv1zZfqf5WkDDWjCta0Um36I+m3obr1qQItD9APQ/RY95x@lists.linux.dev
+X-Received: by 2002:a05:6102:38c6:b0:632:78bc:2bdf with SMTP id
+ ada2fe7eead31-6ec4e759414mr522432137.31.1780448350096; Tue, 02 Jun 2026
+ 17:59:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <0fa2fb42-0714-49f7-ba43-22928e1dd488@linaro.org>
-In-Reply-To: <0fa2fb42-0714-49f7-ba43-22928e1dd488@linaro.org>
-From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 26 May 2026 11:30:19 +0200
-X-Gmail-Original-Message-ID: <CAD++jLnM0VjQ-51MaW49y6-JukcOiV8aZeq2uHy-T+f8mPWOxg@mail.gmail.com>
-X-Gm-Features: AVHnY4JIkKZ3ceN6xsYvCesnxfHYhTEB7gyNkmFqh39LdK-yWO9M5rO_AzHYnaI
-Message-ID: <CAD++jLnM0VjQ-51MaW49y6-JukcOiV8aZeq2uHy-T+f8mPWOxg@mail.gmail.com>
+References: <0fa2fb42-0714-49f7-ba43-22928e1dd488@linaro.org> <CAD++jLnM0VjQ-51MaW49y6-JukcOiV8aZeq2uHy-T+f8mPWOxg@mail.gmail.com>
+In-Reply-To: <CAD++jLnM0VjQ-51MaW49y6-JukcOiV8aZeq2uHy-T+f8mPWOxg@mail.gmail.com>
+From: Doug Anderson <dianders@chromium.org>
+Date: Tue, 2 Jun 2026 17:58:59 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=VCpr6eUSN7=MF4ud=JxhUPwZJUgEMZJBz0wcF=LQNuvQ@mail.gmail.com>
+X-Gm-Features: AVHnY4LeUoQkg9YEH3ljqmKPkhIJVqJAr42r_Q7a1kkkRS50xj2TpC_YvgGO72A
+Message-ID: <CAD=FV=VCpr6eUSN7=MF4ud=JxhUPwZJUgEMZJBz0wcF=LQNuvQ@mail.gmail.com>
 Subject: Re: DRM/panel: Bringing Linux DRM Display Panel support in the modern age
-To: Neil Armstrong <neil.armstrong@linaro.org>
-Cc: ksummit@lists.linux.dev, Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
-	Douglas Anderson <dianders@chromium.org>, Maxime Ripard <mripard@kernel.org>, 
+To: Linus Walleij <linusw@kernel.org>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>, ksummit@lists.linux.dev, 
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, Maxime Ripard <mripard@kernel.org>, 
 	Linus Walleij <linus.walleij@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-2914-lists=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linusw@kernel.org,ksummit@lists.linux.dev];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dianders@chromium.org,ksummit@lists.linux.dev];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linaro.org:email]
-X-Rspamd-Queue-Id: 2A5395D36CE
-X-Rspamd-Action: no action
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-2915-lists=lfdr.de];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[chromium.org:+]
 X-Rspamd-Server: lfdr
+X-Rspamd-Queue-Id: 1BA9F633444
 
-Hi Neil,
+Hi,
 
-I support this topic. I have hesitated to sign up as panel maintainer mainl=
-y
-because I have too much other stuff to do.
-
-One thing we need to discuss is the hostility or active disinterest of
-panel IC vendors to the Linux community, or maybe to all their customers.
-My general impression is that they rarely publish datasheets, and if so
-under NDA, and their idea of a driver is a bunch of opaque custom
-commands sent during panel start-up and other infliction points.
-
-Has there ever been a single kernel commit directly from a panel IC
-company such as Novatek, Ilitek, Samsung (their panel business unit,
-not Samsung mobile), etc?
-
-Do we have any indication that there is interest from the companies
-actually doing display controllers?
-
-My view of them is that they seem to be a bunch of company in
-Asia who are deeply suspicious of each other and just think their
-competitors will copy everything they do, but this may be prejudice
-from my side.
-
-On Tue, May 26, 2026 at 9:41=E2=80=AFAM Neil Armstrong
-<neil.armstrong@linaro.org> wrote:
-
-> Furthermore, it fails to support advanced Display Driver IC (DDIC) featur=
-es
-> that modern hardware heavily relies on, including:
-> - Standby and advanced power states
-
-There are at least some standard DCS commands for this.
-
-> - Advanced color management
-
-For example panel-novatek-nt35510.c, my most ambitious driver:
-
-/*
- * These gamma correction values are 10bit tuples, so only bits 0 and 1 is
- * ever used in the first byte. They form a positive and negative gamma
- * correction curve for each color, values must be strictly higher for each
- * step on the curve. As can be seen these default curves goes from 0x0001
- * to 0x03FE.
- */
-#define NT35510_GAMMA_POS_DEFAULT 0x00, 0x01, 0x00, 0x43, 0x00, \
-                0x6B, 0x00, 0x87, 0x00, 0xA3, 0x00, 0xCE, 0x00, 0xF1, 0x01,=
- \
-(...)
-#define NT35510_GAMMA_NEG_DEFAULT 0x00, 0x01, 0x00, 0x43, 0x00, \
-                0x6B, 0x00, 0x87, 0x00, 0xA3, 0x00, 0xCE, 0x00, 0xF1, 0x01,=
- \
-(...)
-        /**
-         * @gamma_corr_pos_r: Red gamma correction parameters, positive
-         */
-        u8 gamma_corr_pos_r[NT35510_P1_GAMMA_LEN];
-        /**
-         * @gamma_corr_pos_g: Green gamma correction parameters, positive
-         */
-        u8 gamma_corr_pos_g[NT35510_P1_GAMMA_LEN];
-        /**
-         * @gamma_corr_pos_b: Blue gamma correction parameters, positive
-         */
-        u8 gamma_corr_pos_b[NT35510_P1_GAMMA_LEN];
-        /**
-         * @gamma_corr_neg_r: Red gamma correction parameters, negative
-         */
-        u8 gamma_corr_neg_r[NT35510_P1_GAMMA_LEN];
-        /**
-         * @gamma_corr_neg_g: Green gamma correction parameters, negative
-         */
-        u8 gamma_corr_neg_g[NT35510_P1_GAMMA_LEN];
-        /**
-         * @gamma_corr_neg_b: Blue gamma correction parameters, negative
-         */
-        u8 gamma_corr_neg_b[NT35510_P1_GAMMA_LEN];
-
-(...)
-        /* Default gamma correction values */
-        .gamma_corr_pos_r =3D { NT35510_GAMMA_POS_DEFAULT },
-        .gamma_corr_pos_g =3D { NT35510_GAMMA_POS_DEFAULT },
-        .gamma_corr_pos_b =3D { NT35510_GAMMA_POS_DEFAULT },
-        .gamma_corr_neg_r =3D { NT35510_GAMMA_NEG_DEFAULT },
-        .gamma_corr_neg_g =3D { NT35510_GAMMA_NEG_DEFAULT },
-        .gamma_corr_neg_b =3D { NT35510_GAMMA_NEG_DEFAULT },
-
-I have added driver support for this based on the code drops from Novatek.
-
-So what we want is being able to actually adjust these curves, like we
-do for professional monitors.
-
-However without the datasheet how am I supposed to do anything with this?
-I can't just trial-and-error such stuff. Novatek need to back any attempts
-and provide feedback to do such stuff.
-
-I guess adding gamma correction to the panel frameworks and using
-the existing infrastructure in DRM for this is our problem, but then we at
-least need to know what we are doing.
-
-> - Dynamic rate switching
-> - Command mode self-refresh
+On Tue, May 26, 2026 at 2:30=E2=80=AFAM Linus Walleij <linusw@kernel.org> w=
+rote:
 >
-> This lack of evolution has led to severe fragmentation between upstream
-> and vendor downstream trees for advanced devices support, creating a heav=
-y
-> maintenance burden and making native hardware support incredibly difficul=
-t.
+> Hi Neil,
+>
+> I support this topic. I have hesitated to sign up as panel maintainer mai=
+nly
+> because I have too much other stuff to do.
 
-How do these vendor trees look?
+At the moment, my day job has taken me further away from interacting
+with panels, but I'm still interested in the topic for sure. ;-)
 
-I'm curious. What I expect is more blobs of random hex digits without
-explanation writing magic into the display IC and named do_the_stuff().
-But maybe there are actually some real first class citizens here with
-proper structured drivers and a datasheet to back the code up?
 
-Yours,
-Linus Walleij
+> One thing we need to discuss is the hostility or active disinterest of
+> panel IC vendors to the Linux community, or maybe to all their customers.
+> My general impression is that they rarely publish datasheets, and if so
+> under NDA, and their idea of a driver is a bunch of opaque custom
+> commands sent during panel start-up and other infliction points.
+>
+> Has there ever been a single kernel commit directly from a panel IC
+> company such as Novatek, Ilitek, Samsung (their panel business unit,
+> not Samsung mobile), etc?
+
+I share Linus's sentiments here. I've only interacted with panel
+manufacturers by proxy: I've interacted with ODMs who then interacted
+with panel vendors. I've always been a bit shocked by the "sequence of
+opaque hex commands" and would love to see something better if we can
+figure out a way to improve it.
+
+
+> > This lack of evolution has led to severe fragmentation between upstream
+> > and vendor downstream trees for advanced devices support, creating a he=
+avy
+> > maintenance burden and making native hardware support incredibly diffic=
+ult.
+>
+> How do these vendor trees look?
+>
+> I'm curious. What I expect is more blobs of random hex digits without
+> explanation writing magic into the display IC and named do_the_stuff().
+> But maybe there are actually some real first class citizens here with
+> proper structured drivers and a datasheet to back the code up?
+
+The only drivers I have experience with (other than ones I've
+performed random cleanups on) were ones that were part of Chromebooks,
+and there were no downstream trees there. Are there example vendor
+drivers you can point to? My first instinct would be for someone to
+take one of the vendor drivers with advanced features and start trying
+to upstream it. It would be even better to look at two (or three)
+different vendor drivers that all tried to add the same type of
+feature, but that might be asking too much.
+
+...but if that's a bunch of hex blobs, then maybe that doesn't help us
+much. To make progress, we'd need to find someone making a product
+that cares enough about upstream drivers that they will put pressure
+on a panel vendor. Unfortunately, ChromeOS mostly focused on eDP
+panels, with a few cheap MIPI panels here and there. ...and Android's
+GKI tends to discourage people from upstreaming driver code...
+
+-Doug
 
