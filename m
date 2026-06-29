@@ -1,156 +1,140 @@
-Return-Path: <ksummit+bounces-2941-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2942-lists=lfdr.de@lists.linux.dev>
 Delivered-To: lists@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6KdzLmegQmp1+wkAu9opvQ
-	(envelope-from <ksummit+bounces-2941-lists=lfdr.de@lists.linux.dev>)
-	for <lists@lfdr.de>; Mon, 29 Jun 2026 18:42:15 +0200
+	id KP8xAUihQmrD+wkAu9opvQ
+	(envelope-from <ksummit+bounces-2942-lists=lfdr.de@lists.linux.dev>)
+	for <lists@lfdr.de>; Mon, 29 Jun 2026 18:46:00 +0200
 X-Original-To: lists@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E08E16DD6FB
-	for <lists@lfdr.de>; Mon, 29 Jun 2026 18:42:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05C9D6DD782
+	for <lists@lfdr.de>; Mon, 29 Jun 2026 18:45:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=zytor.com header.s=2026062701 header.b="o19i7F/2";
-	spf=pass (mail.lfdr.de: domain of "ksummit+bounces-2941-lists=lfdr.de@lists.linux.dev" designates 172.105.105.114 as permitted sender) smtp.mailfrom="ksummit+bounces-2941-lists=lfdr.de@lists.linux.dev";
-	dmarc=pass (policy=none) header.from=zytor.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pXuLHmMY;
+	spf=pass (mail.lfdr.de: domain of "ksummit+bounces-2942-lists=lfdr.de@lists.linux.dev" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="ksummit+bounces-2942-lists=lfdr.de@lists.linux.dev";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 275D430699D8
-	for <lists@lfdr.de>; Mon, 29 Jun 2026 16:38:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BBC8A300407B
+	for <lists@lfdr.de>; Mon, 29 Jun 2026 16:45:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52EB245BD57;
-	Mon, 29 Jun 2026 16:38:05 +0000 (UTC)
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AEFE44D693;
+	Mon, 29 Jun 2026 16:45:05 +0000 (UTC)
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D053F8EAB
-	for <ksummit@lists.linux.dev>; Mon, 29 Jun 2026 16:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A95F3BBFCC
+	for <ksummit@lists.linux.dev>; Mon, 29 Jun 2026 16:45:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782751084; cv=none; b=ZlZZRnQNTASyX9Feev7M6Nm1w6ABdd+D3IRXQciqqh2Vz2dXNTs6e2Egi+3IZu4/GnFyXgEKGBD320HIIlYRzZbkvZDB3xEA8aPVNQ2uWmmrAMiZRyPrMl9/rwrIMgPoFmR+2c2iYnJIg9XqPIZdpn2LuWvQGtMMUK7dkX7Nrgo=
+	t=1782751504; cv=none; b=b4IZ3+RuCOQ/qKr87tl2hv6uJeWUvP/6xTvXk5pFJZ9JTi82/UxPOybAdMBo0mEPdGho67VCRPOh5rEbcAgjTkwvQv9swtlgk6e6qvTOI360ZB3JiCarVujXZTM6Fb8YjlkEDay4ll9tgKH6LC7pTm46tKQGXZoeMNz5frzDA/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782751084; c=relaxed/simple;
-	bh=GLRFrFaFI3l7oOzXRGuh61uyENfykobrmO2VmaiuHXk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n1WsCSNiiYPgtuxBpj/w0E+8zXANLD1KAy/Bj/pW9s6RmWyzRC9/bKVvEmhJg7NlF02InoK9SxdLVMq5uZcoloE7n4Zq0P7IiTQf3eqgxSYSCKhhirzEGvuSWGlmmzovCLz/Q9q0BTrKBbf6FX/TEa+ILCVrvR4ryOhOVrqN84E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=o19i7F/2; arc=none smtp.client-ip=198.137.202.136
-Received: from [IPV6:2601:646:8081:7da1:68c9:ba90:b2f5:8138] ([IPv6:2601:646:8081:7da1:68c9:ba90:b2f5:8138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 65TGbuIQ647921
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Mon, 29 Jun 2026 09:37:56 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 65TGbuIQ647921
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026062701; t=1782751076;
-	bh=qZ9EdVoJBk/qoTKP9/s1uIv+8KwgcOAnVbf6pMAqAKc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=o19i7F/2gwzRJ+FRaixNj0Fe5S1GGCW/HYCa7ilWebMFsiFxO5HJITYsrNOXH5W/Z
-	 xcvUXmUsYFkpfUg4syyWiriikCvumXeOZShfHK5+mxbel0CkqQ5CpedRJf0rgFF5ZX
-	 FtXnh6dtWdG3Vh+OYCtvOPWf996cPFRqC6+hebO6fnyM3IYhLHQpUaK1mPLUmrC8Ld
-	 TTy7XYOxasRwHDLE8rzDyRdCZ9yYrdfU77PRJNyT04IobQX0bRjh/hfCYkMbjzWxna
-	 pzD85J40ReLW92LNz8I3HuHrdI7n0VBonA5tpj8U/Xw7yDlGHmokmooSDS/QOf0/fV
-	 v//4iq2rYpCiA==
-Message-ID: <35704824-3341-4c6a-b4d1-cba0bdbdbcd4@zytor.com>
-Date: Mon, 29 Jun 2026 09:37:50 -0700
+	s=arc-20240116; t=1782751504; c=relaxed/simple;
+	bh=/6+ifZtDHprQU+FN5r9GAztnJ2O8TUcMnfW6h8fBET8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KIv833jl2E87oUZ5GVw4sQkEdpGhCJNUXzv5CegjI5AkgvkQHVq/6JyBIwJxXh7Lmcio6XxsnpQx6PbtnoTgLl+u6c9eBUb53iow04EglFsalbVgAe6GIwum764zOIt63hX2DwRqT8q8lEcGY7+BSiiEVZfp7K9YWLB+ymsBkFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pXuLHmMY; arc=none smtp.client-ip=209.85.128.54
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-493b0fe95feso7299525e9.3
+        for <ksummit@lists.linux.dev>; Mon, 29 Jun 2026 09:45:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782751502; x=1783356302; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=y8YC4i0TJNYj4I3vuqg4MX62HSz69vAn6pP0YmQIjPs=;
+        b=pXuLHmMYBktjUD8JUmLSfPO6rsRm7uvlU6cz+qnIsHN8zZZLL/bUhaM5LYoEtWXz34
+         DUY32S296C8H3CWMlV1KSzjathr4MRbRgZ1lZuHn0DOK4ACULB9WTkcyqGaLTsiHV7L5
+         NZB1v2+9dx+SuehBUwftXywEK28ah6d8cA1ta9qMVeZZokGZTwZOEuVG+oOHQBUDUIOz
+         a+LGJa0ih4r3Xp+1E6IFIV1Q2iyE7bf2tCJsMDj9bMA2iafNPsVvqDJNqLScbOVWNyg/
+         +V1sW/+ZIVQaSC9M95tEWFgw3JWv2UIdYv1cRfu9LfTpkOMuCZYTSaJQ5FhFJ+CXbqRE
+         GuGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782751502; x=1783356302;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=y8YC4i0TJNYj4I3vuqg4MX62HSz69vAn6pP0YmQIjPs=;
+        b=e7KhTvVwG//lj6YNgNiHFB1YD18QehVihhiKG5oPqUjof57HnKzoz5kwg5OzI0ZQ/e
+         YzMs17q8BhJdiTdh7SOEJrVIgUkeYBDkC3FYRN9fjdesFXoyIFZUjq6alN35y3tF1Nsv
+         zGMMb91kYusInMyRYvYFJt1JhbsqMNh++gXfDc8+TSyg3yOKca040AYC3DF8jBwW4kZI
+         DN0xkgTpExDLOfvsm99MUiEUWXOZAAu8LOlp2Q+u16QlN5hMffndEQB+sCmkmQ1ITZ8L
+         06OpGwKhVdiMVQfV6tBut9HfvqqlCZOdPtdFwTqqqhi1kPG222RDSVy0VL1mIxQuox4y
+         P6dA==
+X-Gm-Message-State: AOJu0YwtRdiDwnvqExbgzingpvPzoJ4gmH2dzlpMZtxtDRKWxiB5nxqA
+	vaR7nHlz1ry86XqGu4/30g+NTlaXjkmdFggAE119xTkkKVF38X+PuhE=
+X-Gm-Gg: AfdE7clO2m7joVob9kGiIYFCtoGYxl7Q1xGYNcHWN6ZvQAwbdnCyVAdn1aRtWpSCPyF
+	nbzczSBpsAiGBFzHZ/KhlaLBEzmteX8FD9ptFdh1CYbtawZyQAWaiygAdXNKyI2eMJ3euK3fY9Q
+	xav3Aiqtt1m81tz6H4J7sGeIssbk3w57RgEsWpmahX8qDlZVcVyta0MhKtKind+4vHI6l9H190L
+	cZF+M24f6lGM9tyFsIudMLBL5HEUnpZBWnjkNafErNJMFVAyYQcxOI4II0VnV+LKLR6TLve+hhC
+	ZtxFqGN4eWWYgmPlC09fFfLjXYd876CVLLG9JAObxLqSv+9zRAMJQ7sGMjkv2ACXIvuo3B4KjMI
+	azbGLqUhyAPzInDAOyxXca/09U9firrlo0gJXVQPULNXhvrcba+cRUHdqpVtjFQqqi4VVIv8yqN
+	wNFcjnfqIlFNuLnoBfiaIev0e/obznzXtOmSUv6tUDOY4wugqW4wXlHykwa9kKftZ3
+X-Received: by 2002:a7b:cb8a:0:b0:492:43d2:9e6e with SMTP id 5b1f17b1804b1-493b828c82dmr5364955e9.9.1782751501538;
+        Mon, 29 Jun 2026 09:45:01 -0700 (PDT)
+Received: from p183 (dynamic-vpdn-brest-46-53-134-59.brest.telecom.by. [46.53.134.59])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493b8d0462asm295645e9.11.2026.06.29.09.45.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jun 2026 09:45:01 -0700 (PDT)
+Date: Mon, 29 Jun 2026 19:48:08 +0300
+From: Alexey Dobriyan <adobriyan@gmail.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: ksummit@lists.linux.dev
+Subject: Re: [TECH TOPIC] Implementing malloc
+Message-ID: <1853b736-b043-4ce6-9fbb-98e482311682@p183>
+References: <akKBVsFBro_4QM74@casper.infradead.org>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [TECH TOPIC] Implementing malloc
-To: Matthew Wilcox <willy@infradead.org>, Dan Carpenter <error27@gmail.com>
-Cc: ksummit@lists.linux.dev
-References: <akKBVsFBro_4QM74@casper.infradead.org>
- <akKKP4SlVs846Qp0@stanley.mountain> <akKPtGfBKDtuTai2@casper.infradead.org>
-Content-Language: en-US, sv-SE
-From: "H. Peter Anvin" <hpa@zytor.com>
-In-Reply-To: <akKPtGfBKDtuTai2@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <akKBVsFBro_4QM74@casper.infradead.org>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[zytor.com,none];
-	R_DKIM_ALLOW(-0.20)[zytor.com:s=2026062701];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-2941-lists=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[infradead.org,gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-2942-lists=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	TO_DN_SOME(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hpa@zytor.com,ksummit@lists.linux.dev];
-	DKIM_TRACE(0.00)[zytor.com:+];
+	FROM_NEQ_ENVFROM(0.00)[adobriyan@gmail.com,ksummit@lists.linux.dev];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[zytor.com:dkim,zytor.com:mid,zytor.com:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,lists.linux.dev:from_smtp]
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.linux.dev:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,p183:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E08E16DD6FB
+X-Rspamd-Queue-Id: 05C9D6DD782
 
-On 2026-06-29 08:31, Matthew Wilcox wrote:
+On Mon, Jun 29, 2026 at 03:29:42PM +0100, Matthew Wilcox wrote:
+> malloc() is a standard part of the C library.  Yet we force new Linux
+> programmers to learn the difference between vmalloc(), kmalloc() and
+> kvmalloc().  They even have to acquire an understanding of the difference
+> between GFP_KERNEL and GFP_ATOMIC.  If they are particularly unlucky,
+> they may have to understand other combinations of GFP flags.
 > 
-> I'm not proposing introducing any kind of "new standard".  I'm proposing
-> that we implement the old standard from the 1970s which is "good enough"
-> for most allocations.
-> 
+> This topic proposes that we should implement malloc() and calloc().
 
-... and which has 60 years of computer science textbooks talking about all the
-problems with it.
+I'd say no.
 
-malloc() models - although doesn't require - the natural API of an arena
-allocator operating on a fixed-sized memory pool. Only hard failures are
-recognized.
+* they return void*, not T*,
 
-The kernel is a very special environment, and nothing is more special about it
-than memory. The interface we have for "most allocations" is
-kmalloc(..., GFP_KERNEL), which already there shows the need for controlling
-error handling in the kernel environment.
+* individual kmemcaches should be used more for better debugging
+  experience
 
-We have all these APIs because they have different fragmentation, performance,
-and failure attributes, and we need that if we want the Linux kernel to remain
-lean and performant.
-
-> At some future point, I might suggest that we remove kvmalloc(), which
-> would reduce the number of APIs we support.  But that's not on the cards
-> for this year.
-> 
->> Are we just collecting a wish list?
-> 
-> No, I'll have a concrete proposal by then.
-> 
->> I wish that we would just acknowledge say that small allocations cannot
->> fail.  We could add a BUILD_BUG_ON() in km/zalloc_obj() which ensures that
->> it is only used for small allocations.  Then we could remove all the
->> error handling from those.
-> 
-> That's part of the fallibility discussion I alluded to.  The problem
-> is that kzalloc_obj(x, GFP_NOWAIT) can fail, even for small objects.
-> And that is what the caller asked for!  So we have a tension there.
-
-Touché.
-
->> With regards to use after frees, my impression is that the places which
->> use caches are the worst affected and also where we do the worst at
->> detecting them?  Does KASAN detect use after frees with kmem_cache and
->> mempools?
-> 
-> I believe it does, but I'm not an expert.  My question in this instance
-> is really, "Are KASAN et al now good enough and widely deployed enough
-> that we don't need eg red zones or unmapped pages to catch these things".
-
-No. Nor will it be, because the overhead is much too high.
-
-	-hpa
-
+	malexey()
 
