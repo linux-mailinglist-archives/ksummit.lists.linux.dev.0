@@ -1,148 +1,174 @@
-Return-Path: <ksummit+bounces-2939-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2940-lists=lfdr.de@lists.linux.dev>
 Delivered-To: lists@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id iD5UHJ+RQmqZ9wkAu9opvQ
-	(envelope-from <ksummit+bounces-2939-lists=lfdr.de@lists.linux.dev>)
-	for <lists@lfdr.de>; Mon, 29 Jun 2026 17:39:11 +0200
+	id cR8fK7GbQmpq+gkAu9opvQ
+	(envelope-from <ksummit+bounces-2940-lists=lfdr.de@lists.linux.dev>)
+	for <lists@lfdr.de>; Mon, 29 Jun 2026 18:22:09 +0200
 X-Original-To: lists@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0539E6DCCC8
-	for <lists@lfdr.de>; Mon, 29 Jun 2026 17:39:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23CCA6DD485
+	for <lists@lfdr.de>; Mon, 29 Jun 2026 18:22:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Rc4KeSJc;
-	spf=pass (mail.lfdr.de: domain of "ksummit+bounces-2939-lists=lfdr.de@lists.linux.dev" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="ksummit+bounces-2939-lists=lfdr.de@lists.linux.dev";
-	dmarc=pass (policy=none) header.from=infradead.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="N/C+8gb6";
+	spf=pass (mail.lfdr.de: domain of "ksummit+bounces-2940-lists=lfdr.de@lists.linux.dev" designates 172.105.105.114 as permitted sender) smtp.mailfrom="ksummit+bounces-2940-lists=lfdr.de@lists.linux.dev";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C79F73049EF1
-	for <lists@lfdr.de>; Mon, 29 Jun 2026 15:31:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E24E130683FC
+	for <lists@lfdr.de>; Mon, 29 Jun 2026 16:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E483DC4B6;
-	Mon, 29 Jun 2026 15:31:06 +0000 (UTC)
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BCED43E9CD;
+	Mon, 29 Jun 2026 16:00:44 +0000 (UTC)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1969519DF62
-	for <ksummit@lists.linux.dev>; Mon, 29 Jun 2026 15:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9905043DA31
+	for <ksummit@lists.linux.dev>; Mon, 29 Jun 2026 16:00:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782747065; cv=none; b=Kk0Pxt9Xb6NtUGOBuoJU8tNPKahVaBzEbeHHZ4Z0Ae4Qn/36D9mTnCwcZ5kh+thTumAgGflyUhLSUHiJlNZPvLfqYE3giJkymrY36kngqUfK3GxnAzdOAVsomOjnNrIpSEo0aFEt7kQOtPrOwQFnyhISZ3IYLfakvQApFa+0obw=
+	t=1782748843; cv=none; b=M3DmuAWcvRM0PLqCGcHUqJ8lVBnd0GS3cVJeZ3Tvtx2w3+Sern0TaoqgEC4z1st5HtRarVZebPdiagIDtou/Oi3WH4ajKb/U5Z5UihJDvVgFO/of4k6/fXVgW4pPhXCL6WHkHk+iFEbzEftDdQHRn+NFnfnStMVsh276sGvrWtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782747065; c=relaxed/simple;
-	bh=F+olvb8X3SFFmKI1emWWJBrS309+m0IpBoerlFzvYXQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eOrvw46DFb4RiHYP9zk/zVqd62vSLBxpbzeZfRl2xGwRuKyinwuRAS/mY8VnXENwKkINaS2E89nhJ7upBAIzUdHwlPmC1pIVQqZoiH9wCQPDZnpQlmpxuacFywqSr0r6r9Ze5GqYtDooZhCvlA0PSUSojxMtI0/1X6Dl6X4UMmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Rc4KeSJc; arc=none smtp.client-ip=90.155.50.34
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=RYL8a7aD4noigWRObVAHwA5AECxSZ2Q/C7ukj9v3Ags=; b=Rc4KeSJcm+XaCsxrjVhMhK5Txm
-	8sRwE4o9igJq9nZLNgg0mBXjG3HputhMqFkccUd47BzGiWmSPahUcEmfFCwUrNzyJWV6XcqV70Mdk
-	h2m9pZX0Mg9xiGxn1r50CAxQn4v0k5l6F0HGatll1wvX1CX/96OEsRljTGajf0+WxV4sjQPY+fe8U
-	PVjH0yoK99rnLfKqxuBCfIHWY0ohu3lSFs0GZFa58oRoY2pmUw4F1noOVP8o7QoxNjQgG2KWc6fNP
-	jlpamo6CbDljqjccF2+5ecrc0/Tfec/9yJcTnWqKZyjDkFA4hJ6mKKyMQfQ9uYLJSeJutxD5ZQ+Cp
-	6KGCtrkw==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1weDwq-00000003Rx3-4C8F;
-	Mon, 29 Jun 2026 15:31:01 +0000
-Date: Mon, 29 Jun 2026 16:31:00 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Dan Carpenter <error27@gmail.com>
-Cc: ksummit@lists.linux.dev
-Subject: Re: [TECH TOPIC] Implementing malloc
-Message-ID: <akKPtGfBKDtuTai2@casper.infradead.org>
-References: <akKBVsFBro_4QM74@casper.infradead.org>
- <akKKP4SlVs846Qp0@stanley.mountain>
+	s=arc-20240116; t=1782748843; c=relaxed/simple;
+	bh=jr33+xN9GZ/Y45yw8kVAwl06p4Tnpw3Tr/5t8N2AAYw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iSIqgR024yfeSVBeAS1hMc+uTAvh1n6eq6hOomhHynjCs+/yKVfNx67zvv2s8Rk66mqfZOkU6v3tuQbshtwfEi7as4mUHhqKBIZESI5Gx3sGJyRpdKJZHnsap2ZpXlj1MytGE4y76Cswub+inq53+Q68nIC/vqRNq3nB+tbAMms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N/C+8gb6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66AA41F000E9;
+	Mon, 29 Jun 2026 16:00:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782748842;
+	bh=4mQKOszc6amaCCSYdlKj9jSCb28EHcKyJZoGxBdCiAg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=N/C+8gb6GLv0ZKTGKqph0t/a4W7TdfN79P5ZflsNA7UOsIxnBF0Jjfwzo2MhE320a
+	 mlkxwhCXobrIot23CD4B5qYVDtkuFID6pNskQoW5BYgutGweTIejrOJ5BtzgVL6QhO
+	 AV4kh322XAw1AGcYU4YNhg05wK0cBi2eK3HpMDyzGdyteeGuRe27F3BBEMt8gD5PrJ
+	 e+nruu56pzA/DBBWriv6etj9l0QamvK2Hu8XWwUFLfMbby4nK9/63N3sIORT10QUyd
+	 d6FDa7vHlZALHumfe9BdG30yrSOm09dm8PPBHhnk5H7+LLtOBN8hHtY2+cbmyV24cB
+	 EiwoZSUK8xJDQ==
+Message-ID: <e74cc115-23e2-45b7-b273-4c3c030738b5@kernel.org>
+Date: Mon, 29 Jun 2026 18:00:40 +0200
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <akKKP4SlVs846Qp0@stanley.mountain>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [TECH TOPIC] Implementing malloc
+Content-Language: en-US
+To: Matthew Wilcox <willy@infradead.org>, Dan Carpenter <error27@gmail.com>
+Cc: ksummit@lists.linux.dev
+References: <akKBVsFBro_4QM74@casper.infradead.org>
+ <akKKP4SlVs846Qp0@stanley.mountain> <akKPtGfBKDtuTai2@casper.infradead.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
+ KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
+ 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
+ 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
+ tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
+ Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
+ 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
+ LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
+ 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
+ BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSNWbGFzdGltaWwg
+ QmFia2EgPHZiYWJrYUBrZXJuZWwub3JnPsLBsAQTAQoAWhYhBKlA1DSZLC6OmRA9UCJPp+fM
+ gqZkBQJqFFy6GxSAAAAAAAQADm1hbnUyLDIuNSsxLjEyLDIsMgIbAwUJGtCBUAULCQgHAwUV
+ CgkICwUWAgMBAAIeBQIXgAAKCRAiT6fnzIKmZJIUEADFx/tREzUImHrEwVHeSvDFmA7tJysI
+ UVrlvrM09E7GIuzphzv7jYmo8n3ANpCczLEVr4G0syYQdTigaZgv3+FQDIIzhKih1IHhu1Ei
+ XHlywNWKnQxxQEUNi5Mwx43wQz5XVw9F1A7gtKBKNtfogO511hAbrzagrYajyQacEJ/+sfhZ
+ 9Da8ltHIXD8pcYaHUfQgEusCgmEd9+KrUwrTbckFKmYq5chuE6yJ4J0EmWknL096jIE6CnzF
+ FRslQ3B1UKDjxVsm1ZHfir5NeWszLkTvGFsddFaWTgh8UycESG6VQzKXjjewXu2pG7YQYRpj
+ QKm1W5X2TkwWkXRBZTmfmbhxIUMh3+zf5wQ463rSmDN/8v81tdqBtAW6rH/kzg1GvkaTHXn0
+ 507yEHFzBksk2viAuIxxr7km8+/KARYLIdGtx30EG8cKzAUZOK6WqxtNCsXUJNrVE8CWrCaD
+ icoNu7Fs1c5hmPHdSTnU48ce67449DdnO4neLSNhRiGlMHJgfJUmgrxu/hcYeOZ3haWmEQ2w
+ uW1Mh01OHi8QZHCEyAbABrPs9GUgccc/4eYXX9hIgxfSkYzn8f+8NuIFPWl/0uTvjgqU29FQ
+ SbzOLxHq9439Ox40G5mS5eZXRGxITYR+6TXvRGI6P/264jvflnr/pDGUttaikU+0W+1uxgKH
+ cmYbEc7ATQRbGTU1AQgAn0H6UrFiWcovkh6EXVcl+SeqyO6JHOPm+e9Wu0Vw+VIUvXZVUVVQ
+ La1PQDUi6j00ChlcR66g9/V0sPIcSutacPKfdKYOBvzd4rlhL8rfrdEsQw5ApZxrA8kYZVMh
+ FmBRKAa6wos25moTlMKpCWzTH84+WO5+ziCTsTUZASAToz3RdunTD+vQcHj0GqNTPAHK63sf
+ bAB2I0BslZkXkY1RLb/YhuA6E7JyEd2pilZOrIuBGl/5q2qSakgnAVFWFBR/DO27JuAksYnq
+ +aH8vI0xGvwn75KqSk4UzAkDzWSmO4ZHuahKtQgZNsMYV+PGayRBX9b9zbldzopoLBdqHc4n
+ jQARAQABwsF8BBgBCgAmAhsMFiEEqUDUNJksLo6ZED1QIk+n58yCpmQFAmfIHFQFCRYU6J8A
+ CgkQIk+n58yCpmS2PA//bqN1LfcotmArgElsa+0EGZSQlYgK48pm8WAeTXTngudP9IJ4SuKY
+ HR5RNjHcBeqN+Me0zxRqYzRb8nGanHEkDyf4Im8DQM8d6vbyU+FcPmG4skud4kgS1zMHnlVd
+ SXfSIwKC/hKgdHG8aBV7545Lz9X6Iohea+94wneD0aw/hqF+QWewGZhWJriWAZtvEkzNjQOi
+ 4U9F/trLten/x7bpphDSnDMKJtITbtzATT1Dq7o7VpIUK1nCTQALMuMjKCdi8OdU/+V+R3O4
+ 0PXWvX8qrvqYapVbZ+9KqT74FsuB0Ya9uXwgBF2Q6cRuETZk5vqaqKxzqoQZCO8AOz/58j6O
+ 2RHNy/mZEN+7tJ5Tsq42zVJ4jxsT8b9YplavCMsnBgDeRWhcbYhCyttoL7nYISyWg4kQYZ/P
+ wIV3OuNv2f8iKYsxNsRuClOAF82+gvqOy1/1pprFjy8uo2pkoOrb63aOP3vO5VHnRKgra6dq
+ NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
+ OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
+ jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
+In-Reply-To: <akKPtGfBKDtuTai2@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
-	R_DKIM_ALLOW(-0.20)[infradead.org:s=casper.20170209];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-2940-lists=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-2939-lists=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[infradead.org,gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[willy@infradead.org,ksummit@lists.linux.dev];
-	DKIM_TRACE(0.00)[infradead.org:+];
+	FROM_NEQ_ENVFROM(0.00)[vbabka@kernel.org,ksummit@lists.linux.dev];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[xkcd.com:url,lists.linux.dev:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,infradead.org:dkim,infradead.org:from_mime]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.linux.dev:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0539E6DCCC8
+X-Rspamd-Queue-Id: 23CCA6DD485
 
-On Mon, Jun 29, 2026 at 06:07:43PM +0300, Dan Carpenter wrote:
-> On Mon, Jun 29, 2026 at 03:29:42PM +0100, Matthew Wilcox wrote:
-> > malloc() is a standard part of the C library.  Yet we force new Linux
-> > programmers to learn the difference between vmalloc(), kmalloc() and
-> > kvmalloc().  They even have to acquire an understanding of the difference
-> > between GFP_KERNEL and GFP_ATOMIC.  If they are particularly unlucky,
-> > they may have to understand other combinations of GFP flags.
-> > 
-> > This topic proposes that we should implement malloc() and calloc().
-> > Various options will be discussed, their increasing implementation
-> > complexity corresponding to utility in a greater range of situations.
-> > This will also benefit Rust as we can use the same infrastructure to
-> > implement std::alloc.
-> > 
-> > We'll also discuss the semantics of corner cases (fallibility, zero
-> > sized allocations, overflowing allocations and very large allocations)
-> > as well as out-of-bounds and use-after-free detection.
+On 6/29/26 17:31, Matthew Wilcox wrote:
+> On Mon, Jun 29, 2026 at 06:07:43PM +0300, Dan Carpenter wrote:
+>> I wish that we would just acknowledge say that small allocations cannot
+>> fail.  We could add a BUILD_BUG_ON() in km/zalloc_obj() which ensures that
+>> it is only used for small allocations.  Then we could remove all the
+>> error handling from those.
 > 
-> I'm not sure I understand.  You're saying that it's too complicated
-> and then you're suggesting we introduce a new kind of allocation function
-> as the fix.  It feels like the classic XKCD comic about standards:
-> https://xkcd.com/927/
+> That's part of the fallibility discussion I alluded to.  The problem
+> is that kzalloc_obj(x, GFP_NOWAIT) can fail, even for small objects.
+> And that is what the caller asked for!  So we have a tension there.
 
-I'm not proposing introducing any kind of "new standard".  I'm proposing
-that we implement the old standard from the 1970s which is "good enough"
-for most allocations.
+Indeed. Also userspace malloc() isn't "cannot fail" either?
 
-At some future point, I might suggest that we remove kvmalloc(), which
-would reduce the number of APIs we support.  But that's not on the cards
-for this year.
+>> With regards to use after frees, my impression is that the places which
+>> use caches are the worst affected and also where we do the worst at
+>> detecting them?  Does KASAN detect use after frees with kmem_cache and
+>> mempools?
+> 
+> I believe it does, but I'm not an expert.  My question in this instance
+> is really, "Are KASAN et al now good enough and widely deployed enough
+> that we don't need eg red zones or unmapped pages to catch these things".
 
-> Are we just collecting a wish list?
+My understanding (also not KASAN expert, but through the slab interactions
+learned some stuff) is that HW TAGS based KASAN is enough for Android
+production, but the overhead is not negligible and the HW support isn't
+ubiquitous.
 
-No, I'll have a concrete proposal by then.
+"Classic" KASAN is powerful but overhead is large and needs a recompile. Not
+something suitable for production.
 
-> I wish that we would just acknowledge say that small allocations cannot
-> fail.  We could add a BUILD_BUG_ON() in km/zalloc_obj() which ensures that
-> it is only used for small allocations.  Then we could remove all the
-> error handling from those.
+Stuff like poisoning and slab_debug or debug_pagealloc (unmapping) is weaker
+(less likely to catch a culprit), also have overhead, but their advantage is
+they can be always compiled-in in a generic distro kernel and you can tell a
+user to enable it on boot as part of chasing a bug seen in production,
+without using a special debug kernel.
 
-That's part of the fallibility discussion I alluded to.  The problem
-is that kzalloc_obj(x, GFP_NOWAIT) can fail, even for small objects.
-And that is what the caller asked for!  So we have a tension there.
-
-> With regards to use after frees, my impression is that the places which
-> use caches are the worst affected and also where we do the worst at
-> detecting them?  Does KASAN detect use after frees with kmem_cache and
-> mempools?
-
-I believe it does, but I'm not an expert.  My question in this instance
-is really, "Are KASAN et al now good enough and widely deployed enough
-that we don't need eg red zones or unmapped pages to catch these things".
+So I'd say everything above has its use case and its not time to drop
+something in favor of something else.
 
