@@ -1,140 +1,181 @@
-Return-Path: <ksummit+bounces-2956-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2957-lists=lfdr.de@lists.linux.dev>
 Delivered-To: lists@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lGbgCa/uT2pyqgIAu9opvQ
-	(envelope-from <ksummit+bounces-2956-lists=lfdr.de@lists.linux.dev>)
-	for <lists@lfdr.de>; Thu, 09 Jul 2026 20:55:43 +0200
+	id GO+RHNPtT2oSqgIAu9opvQ
+	(envelope-from <ksummit+bounces-2957-lists=lfdr.de@lists.linux.dev>)
+	for <lists@lfdr.de>; Thu, 09 Jul 2026 20:52:03 +0200
 X-Original-To: lists@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EA9F7349D0
-	for <lists@lfdr.de>; Thu, 09 Jul 2026 20:55:42 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0686B734898
+	for <lists@lfdr.de>; Thu, 09 Jul 2026 20:52:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CfgClVQp;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CBRNr6m6;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "ksummit+bounces-2956-lists=lfdr.de@lists.linux.dev" designates 172.105.105.114 as permitted sender) smtp.mailfrom="ksummit+bounces-2956-lists=lfdr.de@lists.linux.dev";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	spf=pass (mail.lfdr.de: domain of "ksummit+bounces-2957-lists=lfdr.de@lists.linux.dev" designates 172.232.135.74 as permitted sender) smtp.mailfrom="ksummit+bounces-2957-lists=lfdr.de@lists.linux.dev";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E2B5930EF67E
-	for <lists@lfdr.de>; Thu,  9 Jul 2026 18:47:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 754713063240
+	for <lists@lfdr.de>; Thu,  9 Jul 2026 18:48:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA8E3437459;
-	Thu,  9 Jul 2026 18:43:05 +0000 (UTC)
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8523543B4BC;
+	Thu,  9 Jul 2026 18:44:26 +0000 (UTC)
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8504499B3
-	for <ksummit@lists.linux.dev>; Thu,  9 Jul 2026 18:43:03 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783622585; cv=none; b=E7xKA8uFQuviqU87T7DJAEDxHs559iZpcJ22UyvVGE+/ogs4+7t2JzrG2VO+wpBX/d5C8J99tnONj9zoU/I8CHaGnNsgfYfWBe4kv9uW0RrKqib4r+CMHSWwfa13a8XMd3ijok2I3AOgtdmK6jcLbhy1i9YP9YEonPl76TS0gqI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783622585; c=relaxed/simple;
-	bh=f3OFMRUmnByeXDsr36+213ykBDaAtLfpaEiDz+Q9gxc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P7678hCsT3ZTCLcYqkBd154rKtl9ZxCois5LwqZCc8U4NlSkm4E6NbKY0QsLXK9tCFMpqQyACbkixihCQK0Y8u+8yK0fI3loBpTrFGGf49Z1YT6FUDeT+8O0Pzj+4kE64sBGnTPBioK9zccTgyVYfGfAnayA3hDEYeMWMITqkaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CfgClVQp; arc=none smtp.client-ip=209.85.210.53
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7e9ecd7216cso120377a34.3
-        for <ksummit@lists.linux.dev>; Thu, 09 Jul 2026 11:43:03 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC48843746A
+	for <ksummit@lists.linux.dev>; Thu,  9 Jul 2026 18:44:24 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783622666; cv=pass; b=lYHQBpgPhxwQt+6f+HrgIiUy84tqoaJwrGku30XJcJb4r6lTEGkQ4TEljvO4dHFrczd6+S+q2yTllJdaRcdiQa8hkuR0HAuCDmJ0bDQgjRuE3BHR1N9niJRqIBTTXVN6Toui1F3bL7o7AgGxfbjU7s8A4XKEr+VQBy1eP7joxy0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783622666; c=relaxed/simple;
+	bh=bF7Dpl1te4Lk6J9LHE9t8SYycWMlNdylssKH6TQcsZ0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DuqlIi0hfU5cVD+XN5Mks1IG/BQKiQiMbs5TdJul/1XxmnY5/mnxCexNz3MWx+r+JGEj6GmKc95KlQ3yQnbFCl9sxgibpZVzc5zYYn+8zo1pEHuE3MyxEe+VThujPeKYgggs9vZJ9M9PDDw9y16CovJd8k0M32LwYp+nf4FCKlQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CBRNr6m6; arc=pass smtp.client-ip=209.85.215.182
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c88ada0e12aso21268a12.0
+        for <ksummit@lists.linux.dev>; Thu, 09 Jul 2026 11:44:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783622664; cv=none;
+        d=google.com; s=arc-20260327;
+        b=M3e51IQbRJDYfz8X6DNIfUSVquLkRP2oiCaBDE5dkG04Eaa1Kjy1Qjvd15X0Ih+J90
+         yY/bhMJNlrPoVHp8NiUY1LlAiqxg2tMTBGQrlOHAF3xUtQwe0PidiQJwVAcBzggTvIC5
+         IYOeDh0HVkcZRFa1Zo7oCSxWXoxwsneBQd2Ix22RZFTwQFpIZYCNHklTLKC+7DfAWndg
+         +imyJg3CwMtPt+wUCoo2hEQLnCAmczt9GEzxdugxs00tcAF+okC4xBzJl+o+WWVA3J6g
+         bb1AQo3h6th+NL8RPi5V2JoR1DP4nntIDLHbAK5l2cqVWEqyoYxNLHU3oycPzDD7uCh8
+         ovLw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=pfL/jqBrR6ltGD6VxOxqggwTNXk0Dly8MDIQnLtuDT0=;
+        fh=NvFUNcaOzhQob/Cmmek0JBcgGDdBBbWbAQpDV2tiYDs=;
+        b=lN7Zh8j5nvPKHqW6l30fQZFMIDOhiDKkGdYOnqhb90g05h+nr29qyUVlu1+A059Ken
+         qBbuEleI6fax93OsO5oL819KcDTn7IUKhcslBZGqc4h+y3OOiwUpZdfRF2myGMxXFXlU
+         McFj/tNxhKV+r4Hh8gHl5mmPNuS3lY0qkb3935KEplRI+pBvYcQapTMxfxnmKakiekrD
+         ZICst8F4KCcw/XXDj7p/fE4A3x6nPbnC8tPpCLT4yP1YR5mPAIeoSX6rEqrlPM4eTHMi
+         JBBzfV4x/HLiEad6X5mb1l5pjTgPi/MvdZoLMfrLJsF3dY+bNyihIe2KY8TBS5CZtcLG
+         ezXQ==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783622583; x=1784227383; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1783622664; x=1784227464; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=aSynCpTlkZr3xhq4uPTGumAVYY1t7kcTvSs03LT7yd4=;
-        b=CfgClVQpzDYp4d+E/zjLosK8dJZek+khBRZVivtpzr05Td2wu/cn4OdGoZrKP8q9is
-         mR0WJbbtSOu8KDRzDoL/S+wYo/xB1f+Oh8knPqSL1FNgJGtER6z4Tau6+DfBHXHfYKCN
-         JE7IVhMdjwvmRRMUsTI3U9LaUFHVydqckZHlzgqCQaTf5LUHTL6usAwO6tc3fHCe/Mgd
-         1Fn0zSIeB2b8639q7ho1P6FIIa86F1HH+UNlkUfd8UvVcRXTV+9IiALd/RCbhk+5Enb/
-         4iufNXcwQiQzFfEJ2OmDhZ3yKUCZjnIIX3yACsTAoIhwGClolZwTcibnOdfcih1Z+2Mb
-         uk8w==
+        bh=pfL/jqBrR6ltGD6VxOxqggwTNXk0Dly8MDIQnLtuDT0=;
+        b=CBRNr6m6zzjW9mHilOCGdE0jlOJEKeudeXXLO6TkSRn7bTvvzvpdnBiJeWaiwxR9IL
+         4Byudfuax8f4zvZeJ/WUczQy2CiGv5Jo8C2cDKzPL6K6OfwfYcswacwyFxcW8V9ZG//y
+         y8DYhQLqqHxR5AxrpO5CvULp6blf1b8SCspzLOREyKLabFqqYFFPIJ4DbJ+IgkXvusRs
+         oi4lvVFIj70xB80n3ta4pkcvUE3HomcwqGQFbNc9m7e9FQDm5x1f9QdGhLhs4KFnCt59
+         Jl2cU6OOK8xJ/ugTqrZtZXYdN8mhxHmAJ1gkCz2xYckxfY6RIRjPq3q+H2hyOUX7RGzu
+         bWsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783622583; x=1784227383;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1783622664; x=1784227464;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=aSynCpTlkZr3xhq4uPTGumAVYY1t7kcTvSs03LT7yd4=;
-        b=VNsL/XYIfeAQhGCTP7LjyBOClXOHm8uU9AXo5t7xYWRIvfcmAaX2ukMUIjxbgSubYp
-         rcjTtM7Tojn/jGFiNx3enHO8cBe4gzcwiNr6mB2+LNMDUcXnC0hVxYjrs4cLClWthCwx
-         GnNySGHXghf2RDaOb/h3ApZhBvM9df7gm/ooF5xjzELe7JtgMG/UTTCXoGt7ITpnSf2d
-         KQmSXQCA0tb+u/+p/Rr98lyLkEtppaAIe4Je3Vu6KT5r6S7OzjyTCPL9e3qiiZqxqK69
-         K/giMkTocefIOlBwHjE6mr0/dlBjVtTiLiyoTNd2e+5X5jF+e8zvzyXY1iy3+Dk9tbLg
-         2uag==
-X-Forwarded-Encrypted: i=1; AFNElJ9od9ZjTAMo0iC+/9o3r1ROL1NtTJDlIOeeN28VHW/UOi6U+WYKRI/TdSoIFDFFd/Qu5bOvlS35@lists.linux.dev
-X-Gm-Message-State: AOJu0YzI8deUp2vLJ+7XYHTRvHY3paSLdcP67wxw+fCr7AuQnvOQb3ux
-	d2pUe6h9RBL6KTajmzVK7P0M1NfeHJmfDROMNWlftpFsat7pAF25eMn6
-X-Gm-Gg: AfdE7cnxR4qLnAAzomihbZ8hqvPRuTUVsbdnuTc4a8iFsSAeY4RFVOD7i2zKCA9OdzJ
-	ESVU8q1gc4udWPF8bhGmvnc1q5vxBq3JNZCX1PXFtmOV1OV/ircxd4TVlu2R0THqzxlAuvA0QuG
-	l6ftUZAYksFNlLIjN+DR1LUYjw8zxocd+4HxPqHPrC/uaYlxRNP/w9tRUItRXLmD3i0ySPRnWS2
-	8w4RZ9kzZBjekQ5MMQpsG/mBrYr8BubWIV2SSz2JIS9+1896aO0R3Fg8MVQNJXzQS7mF242vIFm
-	DzT4b8On0KBP+OU9JOTcqaicW2EgDBzJS3q8RjJJS31gmK8CpUwKZQiggpX70MRnEFwMFhSK/oD
-	QrdrRb7dgmZxrINxHYMyX9VxwA6j5ZXC1gumebEAPQnrepISqDersyRDtGlI9l1nTYGkfVUcSwj
-	J66pvZMHw=
-X-Received: by 2002:a05:6820:217:b0:6a1:7bd2:744b with SMTP id 006d021491bc7-6a36db430acmr5540354eaf.38.1783622582606;
-        Thu, 09 Jul 2026 11:43:02 -0700 (PDT)
-Received: from localhost ([45.136.154.250])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6a36a5ef513sm5205207eaf.6.2026.07.09.11.43.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 11:43:01 -0700 (PDT)
-Date: Thu, 9 Jul 2026 21:42:55 +0300
-From: Dan Carpenter <error27@gmail.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Kees Cook <kees@kernel.org>, ksummit@lists.linux.dev
-Subject: Re: [TECH TOPIC] Implementing malloc
-Message-ID: <ak_rr7I4wVPieWYT@stanley.mountain>
-References: <akKBVsFBro_4QM74@casper.infradead.org>
- <202607090956.6381F35@keescook>
- <ak_WOfpcaZIuh99t@casper.infradead.org>
+        bh=pfL/jqBrR6ltGD6VxOxqggwTNXk0Dly8MDIQnLtuDT0=;
+        b=A8OCmqMfPFnmTjf9IFxI3iNsS91zrk81rIeK3XQBCBmAH1WBuFvRt5F7Z9z4WN9D+a
+         xs5+mrT134hBCCC74PHg9xzgfGo0VJlZfgmkJNFyIUF1n+ErjE5KI5gfGo8OOqdBxEle
+         dJABaNjdJJsGiHTWCsaXkaXl2/dUXbzfJyMGOhfdiCohjcL3IjXFoBail8pJDDU7ioE9
+         nWGRcmVdywyhVJOdV0w+mA1ltOg1x8iBbJSRB8/h9kXkEe0rfAUwx7vSji2JNlImjDDR
+         J+tKoArj1eJoiKqdY/5n8N2v03AG4MyqmONYEISprMaCvHwrjA1Xuql+O6wrQdHzMku1
+         v1vw==
+X-Forwarded-Encrypted: i=1; AHgh+Row0jpoos9C009E2NpEPC37cQpQ4ZuHeH16ikYZkl2aQ5wdtELjWo6IbXUsEtynkvaWcxIR470T@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzpcl7rl9P3oxtfL7j51hT6qIEUJb5B5iyoylaTR97zn0fTNGqp
+	2/LV8GyfqeIdhon9Z8RkXdG1AinT3pWobUSz1LDqHsWF2EZMUaF0KmosKG4iVOPrx1WxnxjIIKW
+	Hp0doJFUKsUSqcT/uoa4s7mHk9rqVA7Y=
+X-Gm-Gg: AfdE7ckxPpWYCGgxB6HKS0gpCT6MWAv7RYp0IxdbbTv8AG7thPSTcF1r84BPeP24cn6
+	m+vQkqqBWvisIY2eK62bwKKTMvGKdqXZShXFobKwvOY5jPQrLjNXAmKOK8pkypG/nqUx37+zwIu
+	aoJ5R9NYk1VQ3YKcVZwO9RRsmm5CC+b70lxhB+v8TCXC24rUEY+ResEcSuMjlYBcXa2k2dwyPPq
+	yHhlZLzv9DQRcRGqh0UChXKp8tLbXQaQHzp8nHHAOzZ5GgHbFEbK1e6t3cOs3CcP3WlY2HH7h6/
+	rCLXLg5GdbVd0Nbh+BGzlsXIO/MlrAAZDIdcMaV58+VaET/cdEtZU0N0VXmIwOxo3+ZDme/f6pU
+	3IFQ6iuW5r8s5Cj1dYnkDYaU=
+X-Received: by 2002:a17:90b:3fc5:b0:37f:bfc9:55fe with SMTP id
+ 98e67ed59e1d1-38a20c49089mr4107095a91.3.1783622664188; Thu, 09 Jul 2026
+ 11:44:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ak_WOfpcaZIuh99t@casper.infradead.org>
+References: <akKBVsFBro_4QM74@casper.infradead.org> <202607090956.6381F35@keescook>
+ <ak_WOfpcaZIuh99t@casper.infradead.org> <CANiq72nQ=BmM0GRVrcmXHfE6VqD2hsssxqJEE40TirDiy82+wA@mail.gmail.com>
+ <1F884E12-63DA-4A65-A811-C2D40FD9B5F7@zytor.com>
+In-Reply-To: <1F884E12-63DA-4A65-A811-C2D40FD9B5F7@zytor.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 9 Jul 2026 20:44:11 +0200
+X-Gm-Features: AUfX_mxOoQ7RqqQNLgp4uTzipc6y_LfMp0cxy6WGg01uzMDy0MSuitpFYJuUqJ4
+Message-ID: <CANiq72m+YTQ7NG4m8h7ho+GCkx_1Gdk6WuAeZ+KAORiETytWig@mail.gmail.com>
+Subject: Re: [TECH TOPIC] Implementing malloc
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Matthew Wilcox <willy@infradead.org>, Kees Cook <kees@kernel.org>, ksummit@lists.linux.dev, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-2956-lists=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-2957-lists=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[error27@gmail.com,ksummit@lists.linux.dev];
+	FROM_NEQ_ENVFROM(0.00)[miguelojedasandonis@gmail.com,ksummit@lists.linux.dev];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.linux.dev:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lists.linux.dev:from_smtp,mail.gmail.com:mid,rust-for-linux.com:url,zytor.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7EA9F7349D0
+X-Rspamd-Queue-Id: 0686B734898
 
-On Thu, Jul 09, 2026 at 06:11:21PM +0100, Matthew Wilcox wrote:
-> I agree that many memory allocations benefit from providing more semantic
-> information to both the compiler and the runtime, as you suggest.
-> What I don't think we benefit from is "And you have to pass this magic
-> GFP_KERNEL argument too.  Unless it's GFP_ATOMIC or something".
+On Thu, Jul 9, 2026 at 8:18=E2=80=AFPM H. Peter Anvin <hpa@zytor.com> wrote=
+:
+>
+> In case it was not obvious, my comment was meant to be ironic (reductio a=
+d absurdum).
 
-You know that most people are using kzmalloc_obj() these days and so
-they don't pass GFP_KERNEL...
+Ok, I appreciate the clarification and that you consider it the right call =
+then.
 
-regards,
-dan carpenter
+> In fact, I'm surprised and worried to hear how recent this was. This unde=
+rscores my main concern with Rust, which is that it seems to have *very* di=
+fferent stability criteria than the C code, where we are not allowed to req=
+uire anything that hasn't been in gcc for 5-10 years, after which the clang=
+ people discover they never implemented it and so they ask for another 5+ y=
+ears of keeping the old-syle or fallback code.
 
+Hmm... What is the concern? If it is about the window of supported
+compilers, the current policy is to follow Debian Stable's version as
+the minimum.
+
+  https://rust-for-linux.com/rust-version-policy#minimum-upgrade-policy
+
+It was openly discussed and finally decided in the Maintainers Summit.
+
+As things mature and we get the improvements we want, we may want to
+extend it to two Debian Stables etc.
+
+But please note that, regarding allocators, we could have moved
+earlier. As I mentioned, we waited as long as we could to see if
+upstream could give us what we needed. It didn't happen, so we
+pivoted, but we could have done it earlier.
+
+Cheers,
+Miguel
 
