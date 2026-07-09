@@ -1,156 +1,149 @@
-Return-Path: <ksummit+bounces-2954-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2955-lists=lfdr.de@lists.linux.dev>
 Delivered-To: lists@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id sYRpFPHeT2rlpQIAu9opvQ
-	(envelope-from <ksummit+bounces-2954-lists=lfdr.de@lists.linux.dev>)
-	for <lists@lfdr.de>; Thu, 09 Jul 2026 19:48:33 +0200
+	id 8bQjJ0rmT2q6pwIAu9opvQ
+	(envelope-from <ksummit+bounces-2955-lists=lfdr.de@lists.linux.dev>)
+	for <lists@lfdr.de>; Thu, 09 Jul 2026 20:19:54 +0200
 X-Original-To: lists@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 920FE733F58
-	for <lists@lfdr.de>; Thu, 09 Jul 2026 19:48:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA1CD734320
+	for <lists@lfdr.de>; Thu, 09 Jul 2026 20:19:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=awcrAS3L;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "ksummit+bounces-2954-lists=lfdr.de@lists.linux.dev" designates 172.234.253.10 as permitted sender) smtp.mailfrom="ksummit+bounces-2954-lists=lfdr.de@lists.linux.dev";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=zytor.com header.s=2026062701 header.b=pSWQT8dX;
+	dmarc=pass (policy=none) header.from=zytor.com;
+	spf=pass (mail.lfdr.de: domain of "ksummit+bounces-2955-lists=lfdr.de@lists.linux.dev" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="ksummit+bounces-2955-lists=lfdr.de@lists.linux.dev";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9286E301016B
-	for <lists@lfdr.de>; Thu,  9 Jul 2026 17:43:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1351A303A270
+	for <lists@lfdr.de>; Thu,  9 Jul 2026 18:18:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C044195C4;
-	Thu,  9 Jul 2026 17:43:14 +0000 (UTC)
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7524DBD6B;
+	Thu,  9 Jul 2026 18:18:58 +0000 (UTC)
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2314195C2
-	for <ksummit@lists.linux.dev>; Thu,  9 Jul 2026 17:43:12 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783618993; cv=pass; b=PX9dCqf9LBBlelesdF8TfTZ1AxmQEXhQAYlBfVDo7XOK9R/guNPHTD/dWhmSKtzHTAjfDLSp/dvkCIkKrYiTYjPjXTbI1t7e28gW4+2ZWTvOaioF5JofUxyX3nski0BPQIXmrHJFsF3RJM1N2+PZsNbS2Msezyi9LItDd3XlgXg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783618993; c=relaxed/simple;
-	bh=Wuxy3VYKNOQQHVdndA/SvYoe3iZbwJ6MdTo/lB2nmZo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Gom/cHV/OGyCGozCjvOBPZ4Vk/8fSqVFkvgQsmY3bVApjlYH973/uqfBVx4//Q5rYKpbcMFH1VrC/8ZtSM5ag9dgm4/i15JDH1jY93aQBECFJQIiifS/0hIQxQV3PMCb7fxFAQs6fgFPlhpnZWsDl2nFMSAQ06Dc2rTODAZPEOE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=awcrAS3L; arc=pass smtp.client-ip=209.85.216.49
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-384422b05b5so35207a91.2
-        for <ksummit@lists.linux.dev>; Thu, 09 Jul 2026 10:43:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783618992; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Sg0Vff0xeR3DJTSgEGlZvxrkC80mhVtxyyieEoZvOHi+jneLfufJ8z1Luj5juxrZ0h
-         zkt6i+JLELWzBrLWc0FKC65UXa7qEPKUXul4w9Q0086fTlIEmrBVb6a1NyXdVfNObIy/
-         9S2IJd0CQ5dQokZO/vOEw4wtTjKPzJTz1eHGKMHZPUQyqKNR6f+cXLfc6WPfg81TdTD4
-         pSgbzVWJDcQqjo2VWATeM/eCI0/UJBxy6k2/1KJ0BksIgz4Tydvzyl1Z8mYKrqn30UJv
-         yCbUQcVHkdWFVZPBC1pnU0lj+W6BjTYpVahSmqe9EmdBXB3OFR0Qgg6YVeGeTLpE4I+q
-         W8Aw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Wuxy3VYKNOQQHVdndA/SvYoe3iZbwJ6MdTo/lB2nmZo=;
-        fh=/kk7WyxME2XdGyimw0CkKOTnFaod/C8QcLILFmrZhys=;
-        b=f1EA6ugtMVj9/GWLhpn/5usUt1uorl6LHxEGDczOzXz8MdHiXaBSuWP5s1Q6AZ2Api
-         IdxVSyWAkVa2YWEqMO/lZ/8v4c8f+SQX2xZiqCXNpvawkKBnRWWxo1m7SBRJ8AMAsS6d
-         uTQMc12myN4S6uKzJJJw945GmbjEa54oFLviUB/5xsvl7+Z2kK0qPi6iTQlJRiomf/Wq
-         J4uZtzdPi0WSf8QRv+bFPPpX+fU1P4Yv21gfoNYJCtz7P8lrNvnkkdDm82HTTbRdOo+n
-         MoPwh6IvUzjAEEFDnyexhNSIErx29yAYhZkE4g73JLzCRW1NyaIcc34wWKAaTTIUqG+g
-         41Ig==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783618992; x=1784223792; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Wuxy3VYKNOQQHVdndA/SvYoe3iZbwJ6MdTo/lB2nmZo=;
-        b=awcrAS3LAq6Ro6DW/jTv5BlE6wSlogRY947xooUgM+F4YDi3NBKh9Ske9NbqWHArau
-         x/m3ai415+0XxyOpok25iXCpaqYXJe8dty4ic+DIxsxMdjoISgsp/w5JuZijOK5Cvjo7
-         QK5vjh9vW1lNeSpATGnXlV6sWOgSrrLdztisfLKETUqgzXz1dzMEnYyWLLGaQiogl58C
-         X+5fQYQI2ZI7/wfxkN/UK0QltL3PV48TLJ9c/MG9GwZrEg5K0IzWqKhJXrfOTVDIVDVR
-         /t487PAoB4C3e2Ug0RFh197wSXo+6JJwvYIDskLGVkrQunS70IGrRfdgiymksmyhaFH2
-         2QGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783618992; x=1784223792;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Wuxy3VYKNOQQHVdndA/SvYoe3iZbwJ6MdTo/lB2nmZo=;
-        b=Wo5aEn33mTjK0zegFlIiSRD+V9qJVtZmGg9DETDRdCaD/itsMuneeBrP4Uwd20Mx5W
-         /zVWwC2H8lDKxC5ujkhpsNJqT8ZXnvsZQGq40xB2IiuxLrPQFqt18NRGJdxKN4G7UlG0
-         MrZ/Z6AIrVYKOH0ml66fGonoHmvZgegUNo85WUbWPYmzGihMsKKRAWjDpeDapX2omzBM
-         M409SdnJ5elBE6wsGuQ3aYpahSbUfIfNoTT/uI2+nTs5T9GF68S+mcaKeJYHaAQXUFGq
-         7sbYmSf+Ef3bJwHoN/6PVb261gRI0AEIlUZ0SVzwYbVdwjWMAMOCtE9iajjjTi1+KId4
-         lkQA==
-X-Forwarded-Encrypted: i=1; AHgh+RpF6Ln0NtKfs7qD8jpSlhM2V++bpSYBKO5H6NRN4wRYb1Q16rxXXzJKkHg3ba0AHI8xm4jL7eDX@lists.linux.dev
-X-Gm-Message-State: AOJu0YwHRhC1msPaPky6o+VrCD3LQzblb0pMVRzka0Mfinki4EfKHDz/
-	4g5XWFoD94+Ic8vcz+8sHcqHKaFB8s3i7RGf3sPTtjmn958ls6b6T8tw71hOeFhOnEVseXrxPLc
-	XFxdrehJMK1T/sk0MNJ/HRthGn4/nsWNHizvR
-X-Gm-Gg: AfdE7cmHW7y15c2xq2AG6r60OqDvG+mtIZIU8LIJSdMnOQh5nsYtMoY+SsCx9Bx8Vp5
-	kNYl3mZ+EKZoh/Ypg47uE6+ygk5Egb8lBjU0AMnTUP3T2TO1mgyD+deN6XHP6G2RWqkdCMhzUG3
-	BwPkYNN1lUF2AAKQLLfZSdZFny/BPeeY3Lkup4c0vMOx5hVe28gVwPaapGZRrWVvuJAuOM37Raj
-	dF9UZStRYSf7daKvafFviiseSkrzVoYWmDd9pzIdh3ootNuwVCS3nk/+Rw2z4uGiCVmQWC4Z+DE
-	MDRtEB/2UAC1Q7KepUmASH9u4DetTtOe+2EDzuxtpTJGNzApph8tXol1UMuE60UfLk5ATDApL3P
-	cdID3Wod4xuFC
-X-Received: by 2002:a17:90b:1d50:b0:37f:eac0:18f6 with SMTP id
- 98e67ed59e1d1-38942b7d8c3mr6216937a91.8.1783618992079; Thu, 09 Jul 2026
- 10:43:12 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9FF4DB577;
+	Thu,  9 Jul 2026 18:18:56 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783621138; cv=none; b=NK0USoyW9IRdeTSUAijvBvmkuFM2ttp5xhMtjrHkulVRo2KlOtuUGcJvfRDQTbfjeCzDqJoDpMKpnHyVfsA6tVmrqgq3LFT2hVHGFASc53ulsXifoVQVDMTMnLCuBysWfMroM41rG1ojO9kjMtHxqYKKNrk48eexe7qvZIQkMaA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783621138; c=relaxed/simple;
+	bh=a7oxLAGaNkcB3tQfCgq+b3/RwKTl/Z6/YS2dQiTjNt8=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=GE8HPmpwk97eWJ5t4CDESmshCGy/0YpnLZWJFVL5rCBb7rZI+q0w5lYlASSOUoqzWBF+yep72C4IXWkRo568fVDcOc5RgdFC+t7WlIAsIHTgqLyVtefrOweT9pAWSJebhIxv7bt7pVY4CROEuetVHpXufaPZdZuSwW10IdpDAR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=pSWQT8dX; arc=none smtp.client-ip=198.137.202.136
+Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 669IImGW1987563
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Thu, 9 Jul 2026 11:18:49 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 669IImGW1987563
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026062701; t=1783621129;
+	bh=DbByMtnI99z40g9OS8AsGPosrrs4ja/b+2xKWC+Cc1Q=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=pSWQT8dXMy3jbTnATTP27fAF6QMd24Aod/pWssAxxyE/4KTmHHNpVLE3obwo5IHQN
+	 JqDYVyVCu5MpS3wlJwJ67Dm+uAnpzPwe7P3ZG2fpaJ1A1GwPWj69fwBhYHeqaTzNlP
+	 avjPcUONif5+d03+QL6ZqBsBA9NersrziWuKoMMIpNhLvhn5hHFnc3S1RvR3YPX52k
+	 wIGb6GOj7YDg/98lCmsoOdoik6ESqUEPrJQnjpqlaBFYhyApVaZXFfufuoSYXvWGiC
+	 Z0Dygin29hMPAiSwRhkOsfjlUM1QY7wK6b/AkP3WiRGyn3uUSJxzjM7yahogp6Aniv
+	 3TJ3N9K//3ynw==
+Date: Thu, 09 Jul 2026 11:18:41 -0700
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Matthew Wilcox <willy@infradead.org>
+CC: Kees Cook <kees@kernel.org>, ksummit@lists.linux.dev,
+        Danilo Krummrich <dakr@kernel.org>,
+        rust-for-linux <rust-for-linux@vger.kernel.org>
+Subject: Re: [TECH TOPIC] Implementing malloc
+User-Agent: K-9 Mail for Android
+In-Reply-To: <CANiq72nQ=BmM0GRVrcmXHfE6VqD2hsssxqJEE40TirDiy82+wA@mail.gmail.com>
+References: <akKBVsFBro_4QM74@casper.infradead.org> <202607090956.6381F35@keescook> <ak_WOfpcaZIuh99t@casper.infradead.org> <CANiq72nQ=BmM0GRVrcmXHfE6VqD2hsssxqJEE40TirDiy82+wA@mail.gmail.com>
+Message-ID: <1F884E12-63DA-4A65-A811-C2D40FD9B5F7@zytor.com>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <akKBVsFBro_4QM74@casper.infradead.org> <202607090956.6381F35@keescook>
- <ak_WOfpcaZIuh99t@casper.infradead.org> <6C80C5B3-7338-41C4-B85D-9526FCA0C8DA@zytor.com>
-In-Reply-To: <6C80C5B3-7338-41C4-B85D-9526FCA0C8DA@zytor.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 9 Jul 2026 19:42:59 +0200
-X-Gm-Features: AUfX_mxz-mLrakXPWzCXwBrKNQxY2SWK3VR2Xf-Fdw7s1azNGuFp1pzGwyXhOps
-Message-ID: <CANiq72ka_Zk6xGUoQqrB+3JMfMJ-JDVyaGFCU+NGo=UF=Sag1w@mail.gmail.com>
-Subject: Re: [TECH TOPIC] Implementing malloc
-To: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Matthew Wilcox <willy@infradead.org>, Kees Cook <kees@kernel.org>, ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[zytor.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[zytor.com:s=2026062701];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-2954-lists=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-2955-lists=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com,infradead.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[miguelojedasandonis@gmail.com,ksummit@lists.linux.dev];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[hpa@zytor.com,ksummit@lists.linux.dev];
+	DKIM_TRACE(0.00)[zytor.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,lists.linux.dev:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.linux.dev:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,zytor.com:from_mime,zytor.com:dkim,zytor.com:mid,infradead.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 920FE733F58
+X-Rspamd-Queue-Id: EA1CD734320
 
-On Thu, Jul 9, 2026 at 7:36=E2=80=AFPM H. Peter Anvin <hpa@zytor.com> wrote=
-:
+On July 9, 2026 10:40:55 AM PDT, Miguel Ojeda <miguel=2Eojeda=2Esandonis@gm=
+ail=2Ecom> wrote:
+>On Thu, Jul 9, 2026 at 7:13=E2=80=AFPM Matthew Wilcox <willy@infradead=2E=
+org> wrote:
+>>
+>> What I really don't want to see is a whole pile of Rust changes to
+>> accommodate having to pass GFP flags to memory allocations=2E  Would th=
+at
+>> be a better vehicle for the discussion?
 >
-> If Rust can't deal with different memory allocators then Rust in Linux wa=
-s a huge mistake that we should rip out right now before it is too late.
+>Currently we already pass the GFP flags and support different allocators=
+=2E
+>
+>For context, initially we used a vendored `alloc` crate, because we
+>were trying to see if upstream could give us what we needed=2E
+>
+>Then in 2024 (v6=2E10) we were able to drop the vendored copy by using a
+>workaround by Wedson that allowed us to pass the GFP flags and avoided
+>our reliance on upstream's allocator unstable feature:
+>
+>  b6a006e21b82 ("rust: alloc: introduce allocation flags")
+>
+>Later that year (v6=2E13), we couldn't wait much more, so we ended up
+>implementing our own `alloc` module and allocator support on our side
+>by Danilo:
+>
+>  b7a084ba4fbb ("rust: alloc: add `Allocator` trait")
+>
+>Cc'ing rust-for-linux and Danilo=2E
+>
+>Cheers,
+>Miguel
+>
+>
 
-That is not the case -- we already support it, so there is no need to
-propose to remove a key feature of the future of the Linux kernel. :)
+In case it was not obvious, my comment was meant to be ironic (reductio ad=
+ absurdum)=2E
 
-Cheers,
-Miguel
+In fact, I'm surprised and worried to hear how recent this was=2E This und=
+erscores my main concern with Rust, which is that it seems to have *very* d=
+ifferent stability criteria than the C code, where we are not allowed to re=
+quire anything that hasn't been in gcc for 5-10 years, after which the clan=
+g people discover they never implemented it and so they ask for another 5+ =
+years of keeping the old-syle or fallback code=2E
+
 
