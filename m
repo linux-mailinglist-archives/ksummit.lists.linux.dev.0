@@ -1,139 +1,148 @@
-Return-Path: <ksummit+bounces-2965-lists=lfdr.de@lists.linux.dev>
+Return-Path: <ksummit+bounces-2966-lists=lfdr.de@lists.linux.dev>
 Delivered-To: lists@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fhmSKNe3VWrGrwAAu9opvQ
-	(envelope-from <ksummit+bounces-2965-lists=lfdr.de@lists.linux.dev>)
-	for <lists@lfdr.de>; Tue, 14 Jul 2026 06:15:19 +0200
+	id LD2MB5jMVmo9BQEAu9opvQ
+	(envelope-from <ksummit+bounces-2966-lists=lfdr.de@lists.linux.dev>)
+	for <lists@lfdr.de>; Wed, 15 Jul 2026 01:56:08 +0200
 X-Original-To: lists@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4A5E750C63
-	for <lists@lfdr.de>; Tue, 14 Jul 2026 06:15:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69697759870
+	for <lists@lfdr.de>; Wed, 15 Jul 2026 01:56:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=mit.edu header.s=outgoing header.b=iIQ6xewQ;
-	spf=pass (mail.lfdr.de: domain of "ksummit+bounces-2965-lists=lfdr.de@lists.linux.dev" designates 172.234.253.10 as permitted sender) smtp.mailfrom="ksummit+bounces-2965-lists=lfdr.de@lists.linux.dev";
-	dmarc=pass (policy=none) header.from=mit.edu;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hhqtgCjg;
+	spf=pass (mail.lfdr.de: domain of "ksummit+bounces-2966-lists=lfdr.de@lists.linux.dev" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="ksummit+bounces-2966-lists=lfdr.de@lists.linux.dev";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5BE1B3037686
-	for <lists@lfdr.de>; Tue, 14 Jul 2026 04:15:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AA3543069963
+	for <lists@lfdr.de>; Tue, 14 Jul 2026 23:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B9936A033;
-	Tue, 14 Jul 2026 04:15:16 +0000 (UTC)
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0860B43304C;
+	Tue, 14 Jul 2026 23:55:02 +0000 (UTC)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22CDD3D3304
-	for <ksummit@lists.linux.dev>; Tue, 14 Jul 2026 04:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87552366DA3
+	for <ksummit@lists.linux.dev>; Tue, 14 Jul 2026 23:55:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784002509; cv=none; b=h06WHa0qESgFBUJ8gqAdPuH9UumjNdDCmyB6ktSmTus+uIFihU0lvkramCyWbaMsc8Z1au44JV66R/coP2AaiD1bOCF6KA07h+v3tW/1eIQxupzln+mMTFuPejao0w3GQSdQy2PRUs/LJFN6cCTYPs5eP58w45NEnzZ6paIm5ro=
+	t=1784073301; cv=none; b=pHA7zjOw1v6NvBfRyCx76LmcZRgnYWDzUnIm5adtFa7/IvuunViINzVuM8xwKdy8q/PN80f9KzFluU7KTuNySZ4TjQ5eZp1TmAbHkF3itW0P4pFpAVeIlrOuLYUDXOd3lNfyI0x50Yc1OrT3A4/cq2qbd1DQ09tStGFC+90hrNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784002509; c=relaxed/simple;
-	bh=vJrxMfVwbCIAJH/l2/d4/earlMFVUXka6g/p9DJdDXw=;
+	s=arc-20240116; t=1784073301; c=relaxed/simple;
+	bh=2tKQYzV7DMMDRoeebKIKXQGdq0UGbKUF2kpZgtzBVvI=;
 	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=bo9cnTmMUCAazBMDO5Nz/uCkqAEKZh1vgF9JP9isGgqYzE5GhRVz2NFXxgdEfRB2FJ74lWDbOqRQDe2ec+mITpBf6wxs3WCtaOCa22TM509nljA5897F2jN7tvpTo/2qEnMaXbClFXSO8OPQptABq/q96uFVC4f9a6e/wMEut9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=iIQ6xewQ; arc=none smtp.client-ip=18.9.28.11
-Received: from macsyma.thunk.org ([151.240.45.25])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 66E4ErRC025390
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Jul 2026 00:14:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1784002496; bh=MV2PppsIiMWqIO+DNMAc6xCQwmADIksnc8DCtHjHJMI=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=iIQ6xewQv08RpAocToswgcb8vVJMxz9k1bD7fceVk+A763UEO24mt1+/b4GT46IUP
-	 NjyJieu6TJDOGhozlV65RysZm4E3muBfUP+LbD195TGkwOfl7L8+0jRUOBOouRE5U9
-	 65+kNDdOgNQt6azYCU3QJwFW1IP0hig6PB4toXyhgVLpuKTTA6hVYVmB+UL7f1KwdN
-	 1vAPffzNJ2Zo4MNONM3va4Pn8ZoMipvUYJrHNF9LIPi6H54YfxiZnmFZEwrKEYI+/s
-	 QRoPyEdQkxJ4neHEVUTgyE87/s+E4L1Wxzh51941RJYYZSZzPNaylQiRwy+N3lYpzr
-	 SMgrWzkHYZEMw==
-Received: by macsyma.thunk.org (Postfix, from userid 15806)
-	id C5547A04BAB; Tue, 14 Jul 2026 00:14:53 -0400 (EDT)
-Date: Tue, 14 Jul 2026 00:14:53 -0400
-From: "Theodore Tso" <tytso@mit.edu>
-To: linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-mm@kvack.org, ksummit@lists.linux.dev
-Subject: Maintainers Summit 2026 Call for Topics
-Message-ID: <alW3eJ9x6iJ8Juhi@mit.edu>
+	 Content-Disposition; b=Y/dheQkkBuGER9xVLuUZ/DrqiO5YsLAyt0vukJLmMUbkr2q2hJh+HI+XuF9PamIlFEyf8rtxqNxJOBCF3kkMaRf3Bq9JnO+grkn6NSmFGmzd/TpJou5OkgvQ0ngGT6kDM2ZvnHIcbMcAuucmgn6u7tETkgSwqxDgqXchOJLuaHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hhqtgCjg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E193F1F000E9
+	for <ksummit@lists.linux.dev>; Tue, 14 Jul 2026 23:54:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784073300;
+	bh=nNxJ3h1O/85lHQgQhk6JZglznxtwnmxZEdxjD0eJ9XY=;
+	h=Date:From:To:Subject;
+	b=hhqtgCjgZI31zqdGiWd+iy4Xm8TngaS8KGbgSLbecMLF+90ZPuHRXT6/3wUGLe70v
+	 f+7NK+KsNy75WdXYQkAH5EfphYWVwz7tVECAQPdPhUQ4oKixZ1uuw0lT6MM1FxAwfN
+	 plU94DxWfwnFgvM1o+xx9bJKd/KLbACmn0kP7zBZ5kdx1zMkEhYnruiBnajfZ9fsx2
+	 KYVZR8bjHw4wiyMwtAz7O8UIcIXEHhm+132CeudaALYjgHvwhJdqt6RZF+tCV/Y5hP
+	 ko5z/hPrf0AQauVHoDKwMenlSHDHlEh6xSt4fmrynkZshd8iQFeg1/Xovcon6GGpli
+	 ueVy+VTDavlvg==
+Date: Tue, 14 Jul 2026 19:54:58 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: ksummit@lists.linux.dev
+Subject: [MAINTAINERS SUMMIT] Scaling our security process
+Message-ID: <albMUqack9yMq0rF@laps>
 Precedence: bulk
 X-Mailing-List: ksummit@lists.linux.dev
 List-Id: <ksummit.lists.linux.dev>
 List-Subscribe: <mailto:ksummit+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:ksummit+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[mit.edu,none];
-	R_DKIM_ALLOW(-0.20)[mit.edu:s=outgoing];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[mit.edu:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-2965-lists=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-2966-lists=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_ONE(0.00)[1];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tytso@mit.edu,ksummit@lists.linux.dev];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	ALIAS_RESOLVED(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,ksummit@lists.linux.dev];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_NONE(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lists.linux.dev:from_smtp]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lists.linux.dev:from_smtp,laps:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E4A5E750C63
+X-Rspamd-Queue-Id: 69697759870
 
-This year, the Maintainers Summit will be held in Prague, Czech
-Republic on Thursday, October 8th, 2026, just after the Linux
-Plumber's Conference (October 5 -- 7th).
+Hi folks,
 
-As in previous years, the Maintainers Summit is invite-only, where the
-primary focus will be process issues around Linux Kernel Development.
-It will be limited to 30 invitees and a handful of sponsored
-attendees.
+As everyone might have noticed by now, LLMs are finding real, exploitable bugs
+at a growing rate, and the same tools are available to people who won't report
+what they find. At the same time we're getting a stream of plausible looking AI
+slop that wastes reviewer time.
 
-The Maintainers Summit depends on the development community to bring
-forward topics that can benefit from discussion in that setting.  What
-are the nagging development issues, pain points, or other important
-decisions that are not amenable to resolution on the mailing lists?
-If you have a topic in mind, please send it to ksummit@lists.linux.dev
-with a subject prefix of [MAINTAINERS SUMMIT].
+Clearly this is not kernel-specific, but given where the kernel sits in the
+stack this creates more of a problem for us. We spent decades saying security
+by obscurity doesn't work and that being open makes us more secure. In practice
+we leaned a bit on a version of it anyway: security by complexity. The code was
+public, but it was complicated enough, and there was so much of it, that
+finding a serious bug took rare skills and a lot of time. AI removes that
+barrier. What's left is how fast we triage, fix, and ship.
 
-The attendees are jointly selected by Linus Torvlads (who has provided
-us with a roughly a dozen maintainers that he would like to attend),
-and the program committee, who choose from maintainers and developers
-who have been the most active in the past year.
+With that in mind, I'd like to discuss:
 
-Anybody proposing a topic before July 24th will be added to the list
-of potential attendees selected by the program committee; other
-potential nominees can be proposed (as a self-nomination or by others)
-by sending a note to the ksumimt list saying why that person's
-presence would help the discussion.
+1. Does security@ still work? It was built for a handful of carefully written
+reports, handled start to finish by a small group of volunteers. That process
+never really scaled before, and it won't scale now. Does it make sense to
+separate the roles? let AI driven tooling handle intake, filtering, and
+reproduction, and keep the humans for developing and coordinating fixes for
+reports that survive triage?
 
-For an examples of past Maintainers Summit topics, please see the
-these LWN articles:
+2. Where does stable@ fit? Landing a fix upstream and calling it a day helps
+nobody. Our users don't run mainline; they benefit when the fix shows up in the
+kernel they actually run. Today a fix that goes through security@ often lands
+in Linus's tree with no stable tag and no backport, sometimes not even to
+recent LTS trees. If a security fix isn't in the LTS trees, is the bug actually
+fixed? And should folks who care about these backports be in the loop while the
+fix is being developed instead of finding out after the fact?
 
- * 2025 https://lwn.net/Articles/1049982/
- * 2024 https://lwn.net/Articles/990740/
- * 2023 https://lwn.net/Articles/951847/
+3. Do we want some sort of a shared distro security backport list? Every major
+distro pays people to backport security fixes, and they all do the same work in
+parallel behind separate walls. A list where upstream and distro security teams
+write and review backports together, would pool that effort and land fixes
+where users are. Sure, it allows for more leaks, but we end up causing these
+leaks ourselves when we release a fix without working backports.
 
-The program committee this year is composed of the following people:
+4. How can CVE tracking better serve our users? We assign a lot of CVEs, and
+the common complaint is that consumers can't tell which ones matter for the
+kernel they actually run. The CVE program's SADP pilot points at one answer:
+downstream suppliers attach "affected / not affected / fixed in X" status
+directly to upstream CVE records. Do we want to push the ecosystem in that
+direction, and what should the kernel CNA provide to make it easy?
 
-Christian Brauner
-Jon Corbet
-Greg KH
-Ted Ts'o
-Rafael J. Wysocki
+5. Do we need a policy on AI generated reports and patches? Other projects have
+one. Can we tell AI assisted quality work from slop without burning out the
+people doing triage?
 
+
+I'd really want to steer away from the "AI is good/evil" discussion, and just
+focus on the reality we have all seen through the past year or so.
+
+-- 
+Thanks,
+Sasha
 
